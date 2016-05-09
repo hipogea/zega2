@@ -1,0 +1,306 @@
+<?php
+
+// uncomment the following to define a path alias
+// Yii::setPathOfAlias('local','path/to/local-folder');
+
+// This is the main Web application configuration. Any writable
+// CWebApplication properties can be configured here.
+return array(
+	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
+	'name'=>'',
+	'language'=>'es',
+    'theme'=>'super',
+	//'theme'=>'super',
+	// preloading 'log' component
+	'preload'=>array('log'),
+
+	// autoloading model and component classes
+	'import'=>array(
+		'application.models.*',
+		'application.components.*',
+		'application.modules.cruge.components.*',
+		'application.modules.cruge.extensions.crugemailer.*',		
+        'application.extensions.galleria.*',      
+
+
+			),
+
+	
+	'aliases' => array(
+'xupload' => 'application.modules.sforum.components.xupload', //used for the attachment uploads
+),
+
+	
+	
+	
+	'modules'=>array(
+		// uncomment the following to enable the Gii tool
+		
+		'cruge'=>array(
+				'tableprefix'=>'cruge_',
+
+				// para que utilice a protected.modules.cruge.models.auth.CrugeAuthDefault.php
+				//
+				// en vez de 'default' pon 'authdemo' para que utilice el demo de autenticacion alterna
+				// para saber mas lee documentacion de la clase modules/cruge/models/auth/AlternateAuthDemo.php
+				//
+				'availableAuthMethods'=>array('default'),
+
+				'availableAuthModes'=>array('username','email'),
+
+                                // url base para los links de activacion de cuenta de usuario
+				'baseUrl'=>'http://localhost/',
+
+				 // NO OLVIDES PONER EN FALSE TRAS INSTALAR
+				 'debug'=>false,
+				 'rbacSetupEnabled'=>true,
+				 'allowUserAlways'=>FALSE,
+
+				// MIENTRAS INSTALAS..PONLO EN: false
+				// lee mas abajo respecto a 'Encriptando las claves'
+				//
+				'useEncryptedPassword' => true,
+
+				// Algoritmo de la función hash que deseas usar
+				// Los valores admitidos están en: http://www.php.net/manual/en/function.hash-algos.php
+				'hash' => 'md5',
+
+				// a donde enviar al usuario tras iniciar sesion, cerrar sesion o al expirar la sesion.
+				//
+				// esto va a forzar a Yii::app()->user->returnUrl cambiando el comportamiento estandar de Yii
+				// en los casos en que se usa CAccessControl como controlador
+				//
+				// ejemplo:
+				//		'afterLoginUrl'=>array('/site/welcome'),  ( !!! no olvidar el slash inicial / )
+				//		'afterLogoutUrl'=>array('/site/page','view'=>'about'),
+				//
+				'afterLoginUrl'=>array('/site/index'),
+				'afterLogoutUrl'=>null,
+				'afterSessionExpiredUrl'=>null,
+
+				// manejo del layout con cruge.
+				//
+				'loginLayout'=>'//layouts/column2',
+				'registrationLayout'=>'//layouts/column2',
+				'activateAccountLayout'=>'//layouts/column2',
+				'editProfileLayout'=>'//layouts/column2',
+				// en la siguiente puedes especificar el valor "ui" o "column2" para que use el layout
+				// de fabrica, es basico pero funcional.  si pones otro valor considera que cruge
+				// requerirá de un portlet para desplegar un menu con las opciones de administrador.
+				//
+				'generalUserManagementLayout'=>'ui',
+
+				// permite indicar un array con los nombres de campos personalizados, 
+				// incluyendo username y/o email para personalizar la respuesta de una consulta a: 
+				// $usuario->getUserDescription(); 
+				'userDescriptionFieldsArray'=>array('email'), 
+
+			),
+
+			'gii'=>array(
+			'class'=>'system.gii.GiiModule',
+			'password'=>'grecita',
+			// If removed, Gii defaults to localhost only. Edit carefully to taste.
+			//'ipFilters'=>array('192.168.26.*','::1'),
+		),
+		/*
+		'gii'=>array(
+			'class'=>'system.gii.GiiModule',
+			'password'=>'Enter Your Password Here',
+			// If removed, Gii defaults to localhost only. Edit carefully to taste.
+			'ipFilters'=>array('127.0.0.1','::1'),
+		),
+		*/
+	),
+
+	// application components
+	'components'=>array(
+	
+										
+										'excel'=>array(
+													'class' => 'application.extensions.phpexcel.Classes.PHPExcel',				
+														),
+
+										'file'=>array(
+													'class'=>'application.extensions.file.CFile',
+												),
+												
+										'explorador'=>array(
+													'class'=>'application.extensions.explorador.Explorador',
+												),		
+				 'ePdf' => array(
+								'class' => 'ext.yii-pdf.EYiiPdf',
+								'params'        => array(
+															'mpdf'     => array(
+																				'librarySourcePath' => 'application.vendors.mpdf.*',
+																				'constants'         => array(
+																											'_MPDF_TEMP_PATH' => Yii::getPathOfAlias('application.runtime'),
+																											),
+																				'class'=>'mpdf', // the literal class filename to be loaded from the vendors folder
+                /*'defaultParams'     => array( // More info: http://mpdf1.com/manual/index.php?tid=184
+                    'mode'              => '', //  This parameter specifies the mode of the new document.
+                    'format'            => 'A4', // format A4, A5, ...
+                    'default_font_size' => 0, // Sets the default document font size in points (pt)
+                    'default_font'      => '', // Sets the default font-family for the new document.
+                    'mgl'               => 15, // margin_left. Sets the page margins for the new document.
+                    'mgr'               => 15, // margin_right
+                    'mgt'               => 16, // margin_top
+                    'mgb'               => 16, // margin_bottom
+                    'mgh'               => 9, // margin_header
+                    'mgf'               => 9, // margin_footer
+                    'orientation'       => 'P', // landscape or portrait orientation
+                )*/
+																					),
+															'HTML2PDF' => array(
+																				'librarySourcePath' => 'application.vendors.html2pdf.*',
+																				'classFile'         => 'html2pdf.class.php', // For adding to Yii::$classMap
+              
+			  /*'defaultParams'     => array( // More info: http://wiki.spipu.net/doku.php?id=html2pdf:en:v4:accueil
+                    'orientation' => 'P', // landscape or portrait orientation
+                    'format'      => 'A4', // format A4, A5, ...
+                    'language'    => 'en', // language: fr, en, it ...
+                    'unicode'     => true, // TRUE means clustering the input text IS unicode (default = true)
+                    'encoding'    => 'UTF-8', // charset encoding; Default is UTF-8
+                    'marges'      => array(5, 5, 5, 8), // margins by default, in order (left, top, right, bottom)
+                )*/
+																			)
+															),
+										),
+	
+	   'simpleImage'=>array(
+                        'class' => 'application.extensions.CSimpleImage',
+                ),
+	//  IMPORTANTE:  asegurate de que la entrada 'user' (y format) que por defecto trae Yii
+			//               sea sustituida por estas a continuación:
+			//
+		'user'=>array(
+				'allowAutoLogin'=>true,
+				'class' => 'application.modules.cruge.components.CrugeWebUser',
+				'loginUrl' => array('/cruge/ui/login'),
+			),
+			
+			
+			
+			'authManager' => array(
+				'class' => 'application.modules.cruge.components.CrugeAuthManager',
+			),
+			'crugemailer'=>array(
+				//'class' => 'application.modules.cruge.components.CrugeMailer', ///esta es la original 
+				'class' => 'application.components.MiClaseCrugeMailer', //le pongo una extension del la clase cruge mailer basada en la original 
+				'mailfrom' => 'Administrador Web <jramirez@exalmar.com.pe>',
+				'subjectprefix' => '',
+				'debug' => false,
+			),
+			'format' => array(
+				'datetimeFormat'=>"d M, Y h:m:s a",
+			),
+  
+
+	
+	
+	
+	
+	
+	
+	
+	
+	/*	'user'=>array(
+			// enable cookie-based authentication
+			'allowAutoLogin'=>true,
+		),*/
+		
+		
+		// uncomment the following to enable URLs in path-format
+		
+		'urlManager'=>array(
+			'urlFormat'=>'path',
+			'showScriptName'=>false,
+			'rules'=>array(
+				'<controller:\w+>/<id:\d+>'=>'<controller>/view',
+				'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
+				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
+			),
+		),
+		
+		
+		
+		'db'=>array(
+        'connectionString' => 'pgsql:host=localhost;port=5432;dbname=pruebas ',
+        'username' => 'tomasito',
+        'password' => 'grecita',
+		 'tablePrefix' => 'tbl_',
+        'charset' => 'utf8',
+        ),
+		
+		
+		
+		// uncomment the following to use a MySQL database
+		/*
+		'db'=>array(
+			'connectionString' => 'mysql:host=localhost;dbname=testdrive',
+			'emulatePrepare' => true,
+			'username' => 'root',
+			'password' => '',
+			'charset' => 'utf8',
+		),
+		*/
+		'errorHandler'=>array(
+			// use 'site/error' action to display errors
+			'errorAction'=>'site/error',
+		),
+		'log'=>array(
+			'class'=>'CLogRouter',
+			'routes'=>array(
+				array(
+					'class'=>'CFileLogRoute',
+					//'levels'=>'error, info, rbac', // <--- agregar 'rbac'
+					'levels'=>'error, info,rbac,warning, email', //agreagamos aqui el mail para probar los correos en modo DEBUG 
+					
+				),
+				// uncomment the following to show log messages on web pages
+				/*
+				array(
+					'class'=>'CWebLogRoute',
+				),
+				*/
+			),
+		),
+	),
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// application-level parameters that can be accessed
+	// using Yii::app()->params['paramName']
+	'params'=>array(
+		// this is used in contact pageoel
+		'nombrecamposlog'=>array('creadopor','creadoel','modificadopor','modificadoel'), //la matriz con le nombre delos campos de auditoria de cualquier tabla
+		
+		
+		'adminEmail'=>'Julian Ramirez Tenorio <jramirez@exalmar.com.pe>',
+		'rutainternafotos'=>DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'FOTOS'.DIRECTORY_SEPARATOR,
+		'aliasfotosinventario'=>'webroot.assets.FOTOS',
+		'aliastema'=>'webroot.themes',
+		'rutatemagrid'=>DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'gridview'.DIRECTORY_SEPARATOR,
+		'rutatemadetalle'=>DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'detailview'.DIRECTORY_SEPARATOR,
+		'rutatemaimagenes'=>DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'imagenes'.DIRECTORY_SEPARATOR,
+		'rutadescargas'=>'/recurso/assets/DESCARGAS/',
+		'rutadescargas2'=>'/recurso/assets/DESCARGAS/',
+		//'rutafotosinventario'=>DIRECTORY_SEPARATOR.DIRECTORY_SEPARATOR.'192.168.26.100'.DIRECTORY_SEPARATOR.'web'.DIRECTORY_SEPARATOR.'motoristas'.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'FOTOS'.DIRECTORY_SEPARATOR,
+		'rutafotosinventario'=>'d:/web/motoristas/assets/FOTOS/',
+		//'rutafotosinventario_'=> DIRECTORY_SEPARATOR.'motoristas'.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'FOTOS'.DIRECTORY_SEPARATOR,
+		'rutafotosinventario_'=> '/motoristas/assets/FOTOS/',
+		'rutaimagenes'=>'/motoristas/images/',
+		'rutaabsoluta'=>'http://192.168.26.100/web/motoristas/',
+		'ipservidor'=>'192.168.26.100',
+	),
+);

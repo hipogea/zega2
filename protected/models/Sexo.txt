@@ -1,0 +1,10 @@
+class Sexo extends CActiveRecord
+{
+    public function getSexo()
+    {
+        return array(
+            'M' => 'Masculino',
+            'F' => 'Femenino',
+        );
+    }
+}

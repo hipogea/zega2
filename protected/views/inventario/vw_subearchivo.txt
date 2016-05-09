@@ -1,0 +1,6 @@
+<?php $form=$this->beginWidget('CActiveForm', array( 
+        'id'=>'miscellaneous-pages-form', 
+        'enableAjaxValidation'=>false, 
+'htmlOptions'=>array('enctype'=>'multipart/form-data'), 
+)); ?>
+

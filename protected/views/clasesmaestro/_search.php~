@@ -1,0 +1,50 @@
+<?php
+/* @var $this ClasesmaestroController */
+/* @var $model Clasesmaestro */
+/* @var $form CActiveForm */
+?>
+
+<div class="wide form">
+
+<?php $form=$this->beginWidget('CActiveForm', array(
+	'action'=>Yii::app()->createUrl($this->route),
+	'method'=>'get',
+)); ?>
+
+	<div class="row">
+		<?php echo $form->label($model,'codclasema'); ?>
+		<?php echo $form->textField($model,'codclasema',array('size'=>4,'maxlength'=>4)); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->label($model,'nomclase'); ?>
+		<?php echo $form->textField($model,'nomclase',array('size'=>35,'maxlength'=>35)); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->label($model,'creadopor'); ?>
+		<?php echo $form->textField($model,'creadopor'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->label($model,'modificadopor'); ?>
+		<?php echo $form->textField($model,'modificadopor'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->label($model,'creadoel'); ?>
+		<?php echo $form->textField($model,'creadoel',array('size'=>30,'maxlength'=>30)); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->label($model,'modificadoel'); ?>
+		<?php echo $form->textField($model,'modificadoel',array('size'=>30,'maxlength'=>30)); ?>
+	</div>
+
+	<div class="row buttons">
+		<?php echo CHtml::submitButton('Search'); ?>
+	</div>
+
+<?php $this->endWidget(); ?>
+
+</div><!-- search-form -->

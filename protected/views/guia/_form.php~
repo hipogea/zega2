@@ -1,0 +1,348 @@
+<?php
+/* @var $this GuiaController */
+/* @var $model Guia */
+/* @var $form CActiveForm */
+?>
+
+<div class="wide form">
+
+	
+<?php $form=$this->beginWidget('CActiveForm', array(
+	'id'=>'guia-form',
+	'enableClientValidation'=>false,
+    'clientOptions' => array(
+        'validateOnSubmit'=>true,
+         'validateOnChange'=>true       
+     ),
+	'enableAjaxValidation'=>true,
+	
+)); ?>
+
+	<div class="row buttons">
+		<?php echo CHtml::submitButton($model->isNewRecord ? 'Crear' : 'Grabar'); ?>
+	</div>
+
+	<?php //echo $form->errorSummary($model); ?>
+  
+ <fieldset>
+   <div style="float:left ; width:400px;"> 
+     <fieldset>
+      <legend> Datos generales </legend>
+     <div class="row">
+	  
+		
+		<?php echo $form->labelEx($model,'c_rsguia'); ?>
+		<?php  $datos1 = CHtml::listData(Sociedades::model()->findAll(array('order'=>'dsocio')),'socio','dsocio');
+		  echo $form->DropDownList($model,'c_rsguia',$datos1, array('empty'=>'--Seleccione un emisor--')  )  ;
+		?>
+		<?php echo $form->error($model,'c_rsguia'); ?>
+	</div>
+     <div class="row">
+		<?php echo $form->labelEx($model,'n_dirsoc'); ?>
+		<?php $this->widget('ext.matchcode.MatchCode',array(		
+												'nombrecampo'=>'n_dirsoc',
+												//'urlinputbox'=>'/Guia/relaciona',
+												//'urllink'=>'/Guia/recibevalor',
+												'ordencampo'=>1,
+												'controlador'=>$this->id,
+												'relaciones'=>$model->relations(),
+												//'nombreclase'=>'Direcciones',
+												'tamano'=>6,
+												'model'=>$model,
+												'form'=>$form,
+												'nombredialogo'=>'cru-dialog3',
+												'nombreframe'=>'cru-frame3',
+												'nombrearea'=>'cocoloco5',
+													)
+													
+								);
+								
+			   ?>
+	</div>
+			
+			<div style='float: left;'>
+					<?php echo $form->error($model,'n_dirsoc'); ?>
+			</div>
+
+		
+		<div class="row">
+		            <?php echo $form->labelEx($model,'c_coclig'); ?>
+					<?php $this->widget('ext.matchcode.MatchCode',array(		
+												'nombrecampo'=>'c_coclig',
+												//'urlinputbox'=>'/Guia/relaciona',
+												'urllink'=>'/Guia/recibevalor',
+												'ordencampo'=>1,
+												'controlador'=>$this->id,
+												'relaciones'=>$model->relations(),
+												'tamano'=>6,
+												'model'=>$model,
+												'form'=>$form,
+												'defol'=>'107977',
+												'nombredialogo'=>'cru-dialog3',
+												'nombreframe'=>'cru-frame3',
+												'nombrearea'=>'cocoloco3',
+													)
+													
+								);
+								
+			   ?>
+			   
+	</div>
+	
+			<div style='float: left;'>
+					<?php echo $form->error($model,'c_coclig'); ?>
+			</div>
+	<div class="row">
+		<?php echo $form->labelEx($model,'n_direc'); ?>
+		   <?php $this->widget('ext.matchcode.MatchCode',array(		
+												'nombrecampo'=>'n_direc',
+												'urlinputbox'=>'/Guia/relaciona',
+												//'urllink'=>'/Guia/recibevalor',
+												'ordencampo'=>1,
+												'controlador'=>$this->id,
+												'relaciones'=>$model->relations(),
+												'tamano'=>6,
+												'model'=>$model,
+												'form'=>$form,
+												'nombredialogo'=>'cru-dialog3',
+												'nombreframe'=>'cru-frame3',
+												'nombrearea'=>'cocoloco2',
+													)
+													
+								);
+								
+			   ?>
+	</div>
+			
+			<div style='float: left;'>
+					<?php echo $form->error($model,'n_direc'); ?>
+			</div>
+	
+	<div class="row">
+		<?php echo $form->labelEx($model,'c_codtra'); ?>
+		<?php $this->widget('ext.matchcode.MatchCode',array(		
+												'nombrecampo'=>'c_codtra',
+												//'urlinputbox'=>'/Guia/relaciona',
+												'urllink'=>'/Guia/recibevalor',
+												'ordencampo'=>1,
+												'controlador'=>$this->id,
+												'relaciones'=>$model->relations(),
+												'tamano'=>6,
+												'model'=>$model,
+												'form'=>$form,
+												'nombredialogo'=>'cru-dialog3',
+												'nombreframe'=>'cru-frame3',
+												'nombrearea'=>'cocoloco',
+													)
+													
+								);
+								
+			   ?>
+	</div>
+			
+			<div style='float: left;'>
+					<?php echo $form->error($model,'c_codtra'); ?>
+			</div>
+	
+	
+	<div class="row">
+		<?php echo $form->labelEx($model,'c_motivo'); ?>
+		<?php  $datos1 = CHtml::listData(CMotivo::model()->findAll(array('order'=>'desmotivo')),'codmotivo','desmotivo');
+		  echo $form->DropDownList($model,'c_motivo',$datos1, array('empty'=>'--Seleccione un motivo--')  )  ;
+		?>
+		<?php echo $form->error($model,'c_motivo'); ?>
+	</div>
+	<div class="row">
+		<?php echo $form->labelEx($model,'c_desgui'); ?>
+		<?php echo $form->textField($model,'c_desgui',array('size'=>40,'maxlength'=>40)); ?>
+		<?php echo $form->error($model,'c_desgui'); ?>
+	</div>
+	
+	<div class="row">
+		<?php echo $form->labelEx($model,'c_texto'); ?>
+		<?php echo $form->textArea($model,'c_texto',array('rows'=>3, 'cols'=>50)); ?>
+		<?php echo $form->error($model,'c_texto'); ?>
+	</div>
+	
+	
+  <div>
+
+  </div>
+  </fieldset>
+ </div>
+ 
+  <div style="float:right; width:300px; clear :right ; ">
+   <fieldset>
+      <legend> Registro </legend>
+     <div class="row">
+		<?php echo $form->labelEx($model,'c_numgui'); ?>
+		<?php //echo $form->labelEx($model,'c_serie'); ?>
+		<?php echo $form->textField($model,'c_serie',array('style'=>'font-size: 14px; color:red; font-weight:bold; ','size'=>3,'maxlength'=>3)); ?>
+		<?php echo $form->error($model,'c_serie'); ?>
+	
+		
+				<?php echo $form->textField($model,'c_numgui',array('style'=>'font-size: 14px; color:red; font-weight:bold; ','size'=>8,'maxlength'=>8)); 
+				?>
+		<?php echo $form->error($model,'c_numgui'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'d_fecgui'); ?>
+		<?php  $this->widget('zii.widgets.jui.CJuiDatePicker', array(
+										//'name'=>'my_date',
+										'model'=>$model,
+										'attribute'=>'d_fecgui',
+										'language'=>Yii::app()->language=='es' ? 'es' : null,
+											'options'=>array(
+													'showAnim'=>'fold', // 'show' (the default), 'slideDown', 'fadeIn', 'fold'
+													'showOn'=>'button', // 'focus', 'button', 'both'
+													'buttonText'=>Yii::t('ui','...'),													
+													'dateFormat'=>'yy-mm-dd',		
+														),
+												'htmlOptions'=>array(
+															'style'=>'width:60px;vertical-align:top',
+															'readonly'=>'readonly',
+															),
+															));
+
+		?>		
+		<?php echo $form->error($model,'d_fecgui'); ?>
+	</div>
+      
+	<div class="row">
+		<?php echo $form->labelEx($model,'c_estgui'); ?>
+		<?php IF(!$model->isNewRecord) { 
+		       
+		     echo CHtml::textField('hola',
+			  Estado::model()->find('codestado=:miestado and codocu=:midocumento',array(':midocumento'=>'001',':miestado'=>$model->c_estgui))->estado,
+			  array('disabled'=>'disabled','size'=>20));
+			  }
+		?>
+		
+	</div>
+
+	
+</fieldset>
+</div>
+<div style="float:right ; width:300px;" >
+   <fieldset>
+     <legend> Transporte </legend>
+	<div class="row">
+		<?php echo $form->labelEx($model,'d_fectra'); ?>
+		<?php
+							    $this->widget('zii.widgets.jui.CJuiDatePicker', array(
+										//'name'=>'my_date',
+										'model'=>$model,
+										'attribute'=>'d_fectra',
+										'language'=>Yii::app()->language=='es' ? 'es' : null,
+											'options'=>array(
+													'showAnim'=>'fold', // 'show' (the default), 'slideDown', 'fadeIn', 'fold'
+													'showOn'=>'button', // 'focus', 'button', 'both'
+													'buttonText'=>Yii::t('ui','...'),													
+													'dateFormat'=>'yy-mm-dd',		
+														),
+												'htmlOptions'=>array(
+															'style'=>'width:60px;vertical-align:top',
+															'readonly'=>'readonly',
+															),
+															));
+
+								?>		
+		<?php echo $form->error($model,'d_fectra'); ?>
+	</div>
+
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'c_trans'); ?>
+		<?php echo $form->textField($model,'c_trans',array('size'=>20,'maxlength'=>20)); ?>
+		<?php echo $form->error($model,'c_trans'); ?>
+	</div>
+    <div class="row">
+		<?php echo $form->labelEx($model,'c_licon'); ?>
+		<?php $this->widget('ext.matchcode.MatchCode',array(		
+												'nombrecampo'=>'c_licon',
+												//'urlinputbox'=>'/Guia/relaciona',
+												'urllink'=>'/Guia/recibevalor',
+												'ordencampo'=>1,
+												'controlador'=>$this->id,
+												'relaciones'=>$model->relations(),
+												'tamano'=>6,
+												'model'=>$model,
+												'form'=>$form,
+												'nombredialogo'=>'cru-dialog3',
+												'nombreframe'=>'cru-frame3',
+												'nombrearea'=>'cocoloco7',
+													)
+													
+								);
+								
+			   ?>
+	</div>
+			<div style='float: left; background-color :#CEF6F5;'>	
+			
+			</div>
+			<div style='float: left;'>
+					<?php echo $form->error($model,'c_licon'); ?>
+			</div>
+			
+			<div class="row">
+		<?php echo $form->labelEx($model,'c_placa'); ?>
+		<?php echo $form->textField($model,'c_placa',array('size'=>15,'maxlength'=>15)); ?>
+		<?php echo $form->error($model,'c_placa'); ?>
+	  </div>
+	</div>
+	
+    <div style="float:left; width:100%; clear :right ; background : #eee "> 
+<fieldset>
+	<?php
+
+ if ( !$model->isNewRecord )  {
+				  
+				$this->renderpartial('vw_detalle_guia',array('modelcabecera'=>$model));  
+				  
+				}
+
+
+
+ ?>
+ </div>
+	</fieldset>
+</fieldset>
+</div>
+ 
+  
+
+ </fieldset>
+ 
+
+
+<?php $this->endWidget(); ?>
+
+</div><!-- form -->
+
+
+
+
+
+
+
+<?php
+//--------------------- begin new code --------------------------
+   // add the (closed) dialog for the iframe
+    $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
+    'id'=>'cru-dialog3',
+    'options'=>array(
+        'title'=>'Explorador',
+        'autoOpen'=>false,
+        'modal'=>true,
+        'width'=>600,
+        'height'=>500,
+    ),
+    ));
+?>
+<iframe id="cru-frame3" width="100%" height="100%"></iframe>
+<?php
+ 
+$this->endWidget();
+//--------------------- end new code --------------------------
+?>

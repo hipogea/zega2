@@ -1,0 +1,42 @@
+<?php
+/* @var $this SociedadesController */
+/* @var $model Sociedades */
+/* @var $form CActiveForm */
+?>
+
+<div class="form">
+
+<?php $form=$this->beginWidget('CActiveForm', array(
+	'id'=>'sociedades-form',
+	'enableAjaxValidation'=>false,
+)); ?>
+
+	
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'socio'); ?>
+		<?php echo $form->textField($model,'socio',array('size'=>1,'maxlength'=>1)); ?>
+		<?php echo $form->error($model,'socio'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'dsocio'); ?>
+		<?php echo $form->textField($model,'dsocio',array('size'=>40,'maxlength'=>40)); ?>
+		<?php echo $form->error($model,'dsocio'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'rucsoc'); ?>
+		<?php echo $form->textField($model,'rucsoc',array('size'=>11,'maxlength'=>11)); ?>
+		<?php echo $form->error($model,'rucsoc'); ?>
+	</div>
+
+	
+
+	<div class="row buttons">
+		<?php echo CHtml::submitButton($model->isNewRecord ? 'Crear' : 'Grabar'); ?>
+	</div>
+
+<?php $this->endWidget(); ?>
+
+</div><!-- form -->

@@ -1,0 +1,84 @@
+<?php
+/* @var $this CentrosController */
+/* @var $model Centros */
+/* @var $form CActiveForm */
+?>
+
+<div class="form">
+
+<?php $form=$this->beginWidget('CActiveForm', array(
+	'id'=>'centros-form',
+	'enableAjaxValidation'=>false,
+)); ?>
+
+	<p class="note">Fields with <span class="required">*</span> are required.</p>
+
+	<?php echo $form->errorSummary($model); ?>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'codcen'); ?>
+		<?php echo $form->textField($model,'codcen',array('size'=>4,'maxlength'=>4)); ?>
+		<?php echo $form->error($model,'codcen'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'codsoc'); ?>
+		<?php echo $form->textField($model,'codsoc',array('size'=>2,'maxlength'=>2)); ?>
+		<?php echo $form->error($model,'codsoc'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'nomcen'); ?>
+		<?php echo $form->textField($model,'nomcen',array('size'=>35,'maxlength'=>35)); ?>
+		<?php echo $form->error($model,'nomcen'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'descricen'); ?>
+		<?php echo $form->textArea($model,'descricen',array('rows'=>6, 'cols'=>50)); ?>
+		<?php echo $form->error($model,'descricen'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'creadopor'); ?>
+		<?php echo $form->textField($model,'creadopor',array('size'=>25,'maxlength'=>25)); ?>
+		<?php echo $form->error($model,'creadopor'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'creadoel'); ?>
+		<?php echo $form->textField($model,'creadoel',array('size'=>20,'maxlength'=>20)); ?>
+		<?php echo $form->error($model,'creadoel'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'modificadopor'); ?>
+		<?php echo $form->textField($model,'modificadopor',array('size'=>25,'maxlength'=>25)); ?>
+		<?php echo $form->error($model,'modificadopor'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'modificadoel'); ?>
+		<?php echo $form->textField($model,'modificadoel',array('size'=>20,'maxlength'=>20)); ?>
+		<?php echo $form->error($model,'modificadoel'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'n_dir'); ?>
+		<?php echo $form->textField($model,'n_dir'); ?>
+		<?php echo $form->error($model,'n_dir'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'c_planta'); ?>
+		<?php echo $form->textField($model,'c_planta'); ?>
+		<?php echo $form->error($model,'c_planta'); ?>
+	</div>
+
+	<div class="row buttons">
+		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+	</div>
+
+<?php $this->endWidget(); ?>
+
+</div><!-- form -->

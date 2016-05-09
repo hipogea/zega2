@@ -1,0 +1,49 @@
+<?php
+/* @var $this ObjetosClienteController */
+/* @var $model ObjetosCliente */
+/* @var $form CActiveForm */
+?>
+
+<div class="form">
+
+<?php $form=$this->beginWidget('CActiveForm', array(
+	'id'=>'objetos-cliente-form',
+	'enableAjaxValidation'=>false,
+)); ?>
+
+	<p class="note">Fields with <span class="required">*</span> are required.</p>
+
+	<?php echo $form->errorSummary($model); ?>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'codpro'); ?>
+		<?php echo $form->textField($model,'codpro',array('size'=>6,'maxlength'=>6)); ?>
+		<?php echo $form->error($model,'codpro'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'codobjeto'); ?>
+		<?php echo $form->textField($model,'codobjeto',array('size'=>3,'maxlength'=>3)); ?>
+		<?php echo $form->error($model,'codobjeto'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'nombreobjeto'); ?>
+		<?php echo $form->textField($model,'nombreobjeto',array('size'=>40,'maxlength'=>40)); ?>
+		<?php echo $form->error($model,'nombreobjeto'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'descripcionobjeto'); ?>
+		<?php echo $form->textArea($model,'descripcionobjeto',array('rows'=>6, 'cols'=>50)); ?>
+		<?php echo $form->error($model,'descripcionobjeto'); ?>
+	</div>
+
+
+	<div class="row buttons">
+		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+	</div>
+
+<?php $this->endWidget(); ?>
+
+</div><!-- form -->

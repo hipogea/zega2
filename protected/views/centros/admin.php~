@@ -1,0 +1,54 @@
+<?php
+/* @var $this CentrosController */
+/* @var $model Centros */
+
+$this->breadcrumbs=array(
+	'Centroses'=>array('index'),
+	'Manage',
+);
+
+$this->menu=array(
+	//array('label'=>'List Centros', 'url'=>array('index')),
+	array('label'=>'Crear Centro', 'url'=>array('create')),
+);
+
+Yii::app()->clientScript->registerScript('search', "
+$('.search-button').click(function(){
+	$('.search-form').toggle();
+	return false;
+});
+$('.search-form form').submit(function(){
+	$('#centros-grid').yiiGridView('update', {
+		data: $(this).serialize()
+	});
+	return false;
+});
+");
+?>
+
+<h1> Centrose</h1>
+
+
+
+<?php echo CHtml::link('Buscar','#',array('class'=>'search-button')); ?>
+<div class="search-form" style="display:none">
+<?php $this->renderPartial('_search',array(
+	'model'=>$model,
+)); ?>
+</div><!-- search-form -->
+
+<?php $this->widget('zii.widgets.grid.CGridView', array(
+	'id'=>'centros-grid',
+	'dataProvider'=>$model->search(),
+	'filter'=>$model,
+	'columns'=>array(
+		'codcen',
+		'codsoc',
+		'nomcen',
+		'descricen',
+		
+		array(
+			'class'=>'CButtonColumn',
+		),
+	),
+)); ?>

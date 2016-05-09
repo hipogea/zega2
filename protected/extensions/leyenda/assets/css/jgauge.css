@@ -1,0 +1,65 @@
+
+.grid-view
+{
+	padding: 1px 0;
+}
+
+.grid-view table.items
+{
+	background: white;
+	border-collapse: collapse;
+	width: 100%;
+	border: 1px #ccc solid;
+	font-size: 8px;
+}
+
+
+.grid-view table.items th a:hover
+{
+	color: #FFF;
+}
+
+
+
+.grid-view table.items tr.even
+{
+	background: #00F8F8;
+}
+
+.grid-view table.items tr.odd
+{
+	background: #E5F1F4;
+}
+
+.grid-view table.items tr.selected
+{
+	background: #BC0074;
+}
+
+.grid-view table.items tr:hover.selected
+{
+	background: #CCFF66;
+}
+
+.grid-view table.items tbody tr:hover
+{
+	background: #ECFBD4;
+}
+
+.grid-view .link-column img
+{
+	border: 0;
+}
+
+.grid-view .button-column
+{
+	text-align: center;
+	width: 60px;
+}
+
+.grid-view .button-column img
+{
+	border: 0;
+}
+
+

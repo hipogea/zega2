@@ -1,0 +1,85 @@
+<?php
+/* @var $this DocumentosController */
+/* @var $model Documentos */
+/* @var $form CActiveForm */
+?>
+
+<div class="wide form">
+
+<?php $form=$this->beginWidget('CActiveForm', array(
+	'action'=>Yii::app()->createUrl($this->route),
+	'method'=>'get',
+)); ?>
+
+	<div class="row">
+		<?php echo $form->label($model,'coddocu'); ?>
+		<?php echo $form->textField($model,'coddocu',array('size'=>3,'maxlength'=>3)); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->label($model,'desdocu'); ?>
+		<?php echo $form->textField($model,'desdocu',array('size'=>45,'maxlength'=>45)); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->label($model,'clase'); ?>
+		<?php echo $form->textField($model,'clase',array('size'=>1,'maxlength'=>1)); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->label($model,'tipo'); ?>
+		<?php echo $form->textField($model,'tipo',array('size'=>2,'maxlength'=>2)); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->label($model,'creadopor'); ?>
+		<?php echo $form->textField($model,'creadopor',array('size'=>25,'maxlength'=>25)); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->label($model,'creadoel'); ?>
+		<?php echo $form->textField($model,'creadoel',array('size'=>20,'maxlength'=>20)); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->label($model,'modificadopor'); ?>
+		<?php echo $form->textField($model,'modificadopor',array('size'=>25,'maxlength'=>25)); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->label($model,'modificadoel'); ?>
+		<?php echo $form->textField($model,'modificadoel',array('size'=>20,'maxlength'=>20)); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->label($model,'coddocupadre'); ?>
+		<?php echo $form->textField($model,'coddocupadre',array('size'=>3,'maxlength'=>3)); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->label($model,'tabla'); ?>
+		<?php echo $form->textField($model,'tabla',array('size'=>50,'maxlength'=>50)); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->label($model,'anuladesde'); ?>
+		<?php echo $form->textField($model,'anuladesde'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->label($model,'cactivo'); ?>
+		<?php echo $form->textField($model,'cactivo',array('size'=>1,'maxlength'=>1)); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->label($model,'abreviatura'); ?>
+		<?php echo $form->textField($model,'abreviatura',array('size'=>5,'maxlength'=>5)); ?>
+	</div>
+
+	<div class="row buttons">
+		<?php echo CHtml::submitButton('Search'); ?>
+	</div>
+
+<?php $this->endWidget(); ?>
+
+</div><!-- search-form -->

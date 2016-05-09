@@ -1,0 +1,176 @@
+
+
+
+
+.botones {
+  border:1px solid #aaa;
+  background: #bbb;
+  float: left;
+  border-radius:3px;
+  margin : 1px;
+  padding: 1px;
+  width: 27px;
+  height: 27px;
+
+
+}
+
+iframe{
+  border:none !important;
+}
+
+
+
+.contenedor
+{
+
+
+
+  border:2px solid #000;
+  margin : 0px;
+  padding: 0px;
+  width: 100%;
+  display:table-row;
+}
+
+
+
+
+
+div.form.division
+{
+
+
+  background-color:#EFFDFF;
+  border:1px solid #79B4DC;
+  margin : 2px;
+  padding: 5px;
+  width: 100%;
+  font-size: 0.2em;
+  clear:both;
+  /*float:left;*/
+
+}
+.division
+{
+  border-radius:5px;
+  -moz-border-radius:5px; /* Firefox */
+  -webkit-border-radius:5px; /* Safari y Chrome */
+  background-color: #e2e2e2;
+  /*border:1px solid #bbb;*/
+  margin : 2px;
+  padding: 5px;
+  width: 98%;
+  overflow:auto;
+  -webkit-box-shadow: 11px 11px 5px -7px rgba(0,0,0,0.23);
+-moz-box-shadow: 11px 11px 5px -7px rgba(0,0,0,0.23);
+box-shadow: 11px 11px 5px -7px rgba(0,0,0,0.23);
+  /*float:left;*/
+}
+
+.ventana
+{
+  display:table-cell;
+  width:100%;
+  height:100%;
+  border:2px solid #bbb;
+}
+
+.panelizquierdo
+{
+  border:1px solid #bbb;
+  margin : 2px;
+  padding: 3px;
+  width: 380px;
+   float:left;
+
+  /*display:table-cell;*/
+}
+
+.panelderecho
+{
+ /* display:table-cell;*/
+  border-top:  1px solid #bbb;
+   border-bottom:  1px solid #bbb;
+    border-right:  1px solid #bbb;
+  margin : 2px;
+  padding: 3px;
+  float:left;
+  width: 380px;
+
+  /*float:right;*/
+
+
+
+
+}
+
+.cuadrito
+{
+  border:1px solid #bbb;
+  margin : 12px;
+  padding: 3px;
+  width: 30%;
+  height: 400px;
+  float:left;
+  border-radius:5px;
+  -moz-border-radius:5px; /* Firefox */
+  -webkit-border-radius:5px; /* Safari y Chrome */
+}
+
+
+
+.botonborra {
+  height:25px;
+  width:25px;
+}
+
+.consultastock
+{
+
+
+
+  margin : 2px;
+  padding: 3px;
+  width: 90%;
+  float:left;
+  font-size:12px !important;
+
+
+}
+
+
+.rotulito
+{
+  margin : 0px;
+  padding: 1px;
+  width: 100px;
+  float:left;
+  clear:right;
+
+}
+
+.mensajeerroracceso{
+  border-radius:10px;
+  -moz-border-radius:10px; /* Firefox */
+  -webkit-border-radius:10px; /* Safari y Chrome */
+
+  /* Otros estilos */
+  float:center;
+  border:1px solid #ccc;
+  background:#eeeeee;
+  width:50%;
+  padding:5px;
+  margin:0 auto;
+}
+
+div.procesandoajax {
+  background-color: #eee;
+  background-image: url('loading.gif');
+  background-position:  center center;
+  background-repeat: no-repeat;
+  opacity: 1;
+}
+div.procesandoajax * {
+  opacity: .8;
+}

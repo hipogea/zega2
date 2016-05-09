@@ -1,0 +1,60 @@
+<?php
+/* @var $this UmsController */
+/* @var $model Ums */
+/* @var $form CActiveForm */
+?>
+
+<div class="form">
+
+<?php $form=$this->beginWidget('CActiveForm', array(
+	'id'=>'ums-form',
+	'enableAjaxValidation'=>false,
+)); ?>
+
+	<p class="note">Fields with <span class="required">*</span> are required.</p>
+
+	<?php echo $form->errorSummary($model); ?>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'um'); ?>
+		<?php echo $form->textField($model,'um',array('size'=>3,'maxlength'=>3)); ?>
+		<?php echo $form->error($model,'um'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'desum'); ?>
+		<?php echo $form->textField($model,'desum',array('size'=>20,'maxlength'=>20)); ?>
+		<?php echo $form->error($model,'desum'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'creadopor'); ?>
+		<?php echo $form->textField($model,'creadopor',array('size'=>25,'maxlength'=>25)); ?>
+		<?php echo $form->error($model,'creadopor'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'creadoel'); ?>
+		<?php echo $form->textField($model,'creadoel',array('size'=>20,'maxlength'=>20)); ?>
+		<?php echo $form->error($model,'creadoel'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'modificadopor'); ?>
+		<?php echo $form->textField($model,'modificadopor',array('size'=>20,'maxlength'=>20)); ?>
+		<?php echo $form->error($model,'modificadopor'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'modificadoel'); ?>
+		<?php echo $form->textField($model,'modificadoel',array('size'=>25,'maxlength'=>25)); ?>
+		<?php echo $form->error($model,'modificadoel'); ?>
+	</div>
+
+	<div class="row buttons">
+		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+	</div>
+
+<?php $this->endWidget(); ?>
+
+</div><!-- form -->

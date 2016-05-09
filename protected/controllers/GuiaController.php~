@@ -1,0 +1,606 @@
+<?php
+
+class GuiaController extends Controller
+{
+	/**
+	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
+	 * using two-column layout. See 'protected/views/layouts/column2.php'.
+	 */
+	public $layout='//layouts/column2';
+
+	/**
+	 * @return array action filters
+	 */
+	public function filters()
+	{
+		return array(
+			'accessControl', // perform access control for CRUD operations
+			'postOnly + delete', // we only allow deletion via POST request
+		);
+	}
+
+
+	
+	
+	/**
+	 * Specifies the access control rules.
+	 * This method is used by the 'accessControl' filter.
+	 * @return array access control rules
+	 */
+	public function accessRules()
+	{
+		return array(
+			array('allow',  // allow all users to perform 'index' and 'view' actions
+				'actions'=>array('index','view'),
+				'users'=>array('*'),
+			),
+			array('allow', // allow authenticated user to perform 'create' and 'update' actions
+				'actions'=>array('Borraitems','imprimir','Configuraop','Modificadetalle','Visualiza','Excel','defaulte','pintamaterial','pintaactivo','pintaequipo','creadetalle','relaciona','recibevalor','create','update','procesarguia','verificaproceso','aplicaproceso','visualizaguia'),
+				'users'=>array('@'),
+			),
+			array('allow', // allow admin user to perform 'admin' and 'delete' actions
+				'actions'=>array('admin','delete'),
+				'users'=>array('admin'),
+			),
+			array('deny',  // deny all users
+				'users'=>array('*'),
+			),
+		);
+	}
+	
+	
+	
+	
+	/**
+	 * Displays a particular model.
+	 * @param integer $id the ID of the model to be displayed
+	 */
+	public function actionImprimir($id)
+	{
+	
+	  $mPDF1=Yii::app()->ePdf->mpdf();
+	    $mPDF1=WriteHTML($this->render('view',array(
+			'model'=>$this->loadModel($id),
+		),true) );
+		
+	      $mPDF1->output();	
+	}
+
+	
+	
+	/**
+	 * Displays a particular model.
+	 * @param integer $id the ID of the model to be displayed
+	 */
+	public function actionView($id)
+	{
+		$this->render('view',array(
+			'model'=>$this->loadModel($id),
+		));
+	}
+
+	
+	
+	public function actionVisualizaguia()
+	{
+		//$id=$_POST['Guia']['id'];
+		
+		$this->layout='//layouts/iframe';
+		$this->render('_view',array(
+			'model'=>$this->loadModel(345),
+		));
+	}
+	/**
+	 * Creates a new model.
+	 * If creation is successful, the browser will be redirected to the 'view' page.
+	 */
+	public function actionCreate()
+	{
+		$model=new Guia;
+		$model->valorespordefecto();
+       $this->layout='//layouts/column_inicio_chico';
+		// Uncomment the following line if AJAX validation is needed
+		 $this->performAjaxValidation($model);
+
+		if(isset($_POST['Guia']))
+		{
+			$model->attributes=$_POST['Guia'];
+			if($model->save())
+			   $model->refresh();
+			   /// $modelodetalle=new Detgui;
+				$this->redirect(array('update','id'=>$model->id));
+		}
+
+		$this->render('create',array(
+			'model'=>$model,
+		));
+	}
+
+	/**
+	 * Updates a particular model.
+	 * If update is successful, the browser will be redirected to the 'view' page.
+	 * @param integer $id the ID of the model to be updated
+	 */
+	public function actionUpdate($id)
+	{
+		$model=$this->loadModel($id);
+			$this->layout='//layouts/column_inicio_chico';
+		// Uncomment the following line if AJAX validation is needed
+		$this->performAjaxValidation($model);
+
+		if(isset($_POST['Guia']))
+		{
+			$model->attributes=$_POST['Guia'];
+			if($model->save())
+			   
+				
+				$this->redirect(array('update','id'=>$model->id));
+		}
+		
+		
+		
+		$this->render('update',array(
+			'model'=>$model,
+		));
+	}
+
+	public function actionVisualiza($id)	{
+	   if( is_null($id)  or empty($id) ) 
+	   Yii::app()->end();
+		$model=Guia::model()->find('n_guia=:mivalor',array(':mivalor'=>$id));
+		$this->render('update',array(
+			'model'=>$model,
+		));
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	public function actionCreadetalle($idcabeza,$cest)
+	{
+		//VERIFICADO PRIMERO SI ES POSIBLE AGREGAR MAS ITEMS
+		
+		if($cest=='01' OR $cest=='99') {
+		
+		$model=new Detgui;
+		$model->valorespordefecto();
+		// Uncomment the following line if AJAX validation is needed
+		$this->performAjaxValidation1($model);
+
+		if(isset($_POST['Detgui']))
+		{
+			$model->attributes=$_POST['Detgui'];
+			$model->codocu='023'; ///detalle guia
+			
+			//crietria para filtrar la cantidad de items del detalle
+			$criterio=new CDbCriteria;			
+			 $criterio->condition="n_hguia=:nguia  ";
+			$criterio->params=array(':nguia'=>$idcabeza);
+			$model->c_itguia=str_pad(Detgui::model()->count($criterio)+1,3,"0",STR_PAD_LEFT);
+			//str_pad($somevariable,$anchocampo,"0",STR_PAD_LEFT);
+			////con esto calculamos el numero de items
+			
+			
+			if($model->save())
+					  if (!empty($_GET['asDialog']))
+												{
+													//Close the dialog, reset the iframe and update the grid
+													echo CHtml::script("window.parent.$('#cru-dialogdetalle').dialog('close');
+													                    window.parent.$('#cru-detalle').attr('src','');
+																		window.parent.$.fn.yiiGridView.update('detalle-grid');
+																		");
+														Yii::app()->end();
+												}
+				
+				//$this->redirect(array('view','id'=>$model->n_guia));
+		}
+		
+		 if (!empty($_GET['asDialog']))
+		$this->layout = '//layouts/iframe';
+		$this->render('_form_detalle',array(
+			'model'=>$model, 'idcabeza'=>$idcabeza
+		));
+		
+		} else{ //si ya cambio el estado impisble agregar mas items
+			
+		   if (!empty($_GET['asDialog']))
+		$this->layout = '//layouts/iframe';
+		$this->render('vw_imposible',array(
+			
+		));	
+		}
+		
+	}
+
+	public function actionModificadetalle($id)
+	{
+		//VERIFICADO PRIMERO SI ES POSIBLE AGREGAR MAS ITEMS
+		
+		//if($cest=='01' OR $cest=='99') {
+		
+		$model=Detgui::Model()->findByPk($id);
+
+		// Uncomment the following line if AJAX validation is needed
+		$this->performAjaxValidation1($model);
+
+		if(isset($_POST['Detgui']))
+		{
+			$model->attributes=$_POST['Detgui'];
+			//$model->codocu='023'; ///detalle guia
+			
+			//crietria para filtrar la cantidad de items del detalle
+			//$criterio=new CDbCriteria;			
+			// $criterio->condition="n_hguia=:nguia  ";
+			//$criterio->params=array(':nguia'=>$idcabeza);
+			//$model->c_itguia=str_pad(Detgui::model()->count($criterio)+1,3,"0",STR_PAD_LEFT);
+			//str_pad($somevariable,$anchocampo,"0",STR_PAD_LEFT);
+			////con esto calculamos el numero de items
+			
+			
+			if($model->save())
+					  if (!empty($_GET['asDialog']))
+												{
+													//Close the dialog, reset the iframe and update the grid
+													echo CHtml::script("window.parent.$('#cru-dialogdetalle').dialog('close');
+													                    window.parent.$('#cru-detalle').attr('src','');
+																		window.parent.$.fn.yiiGridView.update('detalle-grid');
+																		");
+														Yii::app()->end();
+												}
+				
+				//$this->redirect(array('view','id'=>$model->n_guia));
+		}
+		
+		 if (!empty($_GET['asDialog']))
+		$this->layout = '//layouts/iframe';
+		
+		$this->render('_form_detalle',array(
+			'model'=>$model, 
+		));
+		
+		/*} else{ //si ya cambio el estado impisble agregar mas items
+			
+		   if (!empty($_GET['asDialog']))
+		$this->layout = '//layouts/iframe';
+		$this->render('vw_imposible',array(
+			
+		));	
+		}*/
+		
+	}
+	
+	public function actionAprobar()
+	{
+	        $idguia=$_POST['Guia']['n_guia'];
+		$idevento=$_POST['Procesador'];
+		//cargando los 2 modelos
+		if($this->Verificaproceso($idguia,$idevento) and $this->Aplicaproceso($idguia,$idevento)) {
+			
+			///COLOCAR AQUI LAS VERIFICAIONES ANTES DE APROBAR
+			
+			
+			
+			////COLOCAr aqui LAS OTRAS COSAS DESPUES DE APROBAR
+			
+			
+			
+			
+			} else {
+				
+				
+			}
+	}
+	
+	
+	
+	
+	public function actionProcesarguia()
+	{
+		$idguia=$_POST['Guia']['id'];
+		$idevento=$_POST['acciones'];
+	   //Aplicando los cambios
+		/*
+		if($this->Verificaproceso($idguia,$idevento) ) {
+			
+			 switch ($idevento) {   ///Luego hacer los procedimientos segun sea el caso 
+						
+						 case 4: //confirmar despcho
+							
+							//validar aqui si procede el cambio
+							$this->Aplicaproceso($idguia,$idevento);
+							
+							//validar 
+							
+							break;
+						case 5: //revertir despacho
+							//validar aqui si procede el cambio
+							$this->Aplicaproceso($idguia,$idevento);
+							
+							break;
+						 case 6: //anular
+							//validar aqui si procede el cambio
+							$this->Aplicaproceso($idguia,$idevento);
+							
+							
+							break;
+						case 7: //cerrar
+							//validar aqui si procede el cambio
+							$this->Aplicaproceso($idguia,$idevento);
+							
+							
+							break;
+						 case 10: //autorizar
+							//validar aqui si procede el cambio
+							$this->Aplicaproceso($idguia,$idevento);
+							
+							
+							break;
+						
+						
+						default:
+								Yii::app()->end();
+									 }
+			
+			
+			
+			*/
+			///COLOCAR AQUI LAS VERIFICAIONES ANTES DE APROBAR		
+			//
+			//echo "se proceso la guia";
+			$this->redirect(array('update','id'=>23));
+			////COLOCAr aqui LAS OTRAS COSAS DESPUES DE APROBAR		
+			
+			
+			
+			//} else {
+				
+				
+			//}
+	}
+	
+	
+	/****c_estgui************************************************
+	 *  VERIFICA EN LA TABLA EVENTOS SI ES POSIBLE ESTA OPERACION
+	 *+++++++++++++++++++++++++++++++++++++++++++++++++*/
+	
+	public function Verificaproceso($idguia,$idevento)
+	{
+	   
+	   //Cargando los  modelos
+	  $estado= $this->loadModel($idguia)->c_estgui;
+	  $estadoinicial=Eventos::model()->findByPk($idevento)->estadoinicial;
+	  if  (!is_null($estado) and !is_null($estadoinicial) and $estado==$estadoinicial) { return true; } else { return false; }
+	    
+	   		
+	}
+	
+	/****************************************************
+	 *  CAMBIA EL ESTADO DEL DOCUMENTO, SEGUN EL EVENTO
+	 *+++++++++++++++++++++++++++++++++++++++++++++++++*/
+	
+	public function Aplicaproceso($idguia,$idevento)
+	{
+	   
+	   //Cargando los  modelos
+	  
+	  $estadofinal=Eventos::model()->findByPk($idevento)->estadoinicial;
+	  $mimodelo=$this->loadModel($idguia);
+	  $mimodelo->c_estgui=$estadofinal;
+	  if($mimodelo->save()) {return true;} else {return false;}
+	  
+	   		
+	}
+	
+	
+	public function actionConfiguraop()
+	{
+			$docu='001';  //guia de remision
+			$docuhijo='023'; //detalle guia de remisio
+				
+				$command = Yii::app()->db->createCommand("select fn_opciones_documento(".Yii::app()->user->id." ,'".$docu."') "); 
+				 $command->execute();
+				$command = Yii::app()->db->createCommand("select fn_opciones_documento(".Yii::app()->user->id." ,'".$docuhijo."') "); 
+				 $command->execute();
+				 
+				 $proveedor=VwOpcionesdocumentos::model()->search_us($docu,Yii::app()->user->id);
+				  $proveedor1=VwOpcionesdocumentos::model()->search_us($docuhijo,Yii::app()->user->id);
+				 $this->render('vw_admin_opciones',array(
+							'proveedor'=>$proveedor,
+							'proveedor1'=>$proveedor1, 
+							));
+	    
+			
+	}
+	
+	
+	
+	
+	public function actionBorraitems()
+	{
+	
+		$autoIdAll = $_POST['cajita'];
+		$estado=$_POST['Guia']['c_estgui'];
+		 if(count($autoIdAll)>0 and ($this->eseditable($estado)==''))
+			 {
+				 foreach($autoIdAll as $autoId)
+					{
+               // $cadena=		
+				//$modelito=$this->loadModel($autoId);
+				
+				$command = Yii::app()->db->createCommand("update detgui set c_estado='04'  where n_detgui =".$autoId." "); 
+				 $command->execute();
+					 }
+		     
+			
+	    
+			}
+			Yii::app()->end();
+	}
+	
+	/****************************************************
+	 *	Retorna una cadena '' o 'disabled' para deshabilitar los controles del form de la vista
+	 ****************************************************/
+	public function eseditable($estadodelmodelo)
+	{
+		if ($estadodelmodelo=='01' or $estadodelmodelo=='99' or empty($estadodelmodelo) or is_null($estadodelmodelo)) {return '';} else{return 'disabled';}
+	}
+	
+	
+	
+	
+	public function ActionPintamaterial()
+	{
+		//$this->loadModel($id)->delete();
+		$codigosap=$_POST['Detgui']['c_codgui'];
+		$modeli=Maestrocompo::model()->find('codigo=:codig',array(':codig'=>$codigosap));
+		  if (!is_null($modeli)){
+				   // echo "<input size=\"40\" maxlength=\"40\" \"value\"='".$modeli->descripcion."'  name=\"Detgui[c_descri]\" id=\"Detgui_c_descri\" type=\"text\" />	";
+						//sjfsf$;
+						
+						echo "<input size='40' maxlength='40' value='".$modeli->descripcion."'  name='Detgui[c_descri]' id='Detgui_c_descri' 	type='text' />	";
+						
+				
+		       } else    {
+		         echo "<input size='40' maxlength='40'  name='Detgui[c_descri]' id='Detgui_c_descri' 	type='text' />	";
+						
+		       }     
+		//unset($modeli);
+		//ECHO $codigosap;
+		//echo "hola  a ";
+		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+		//if(!isset($_GET['ajax']))
+			//$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+	}
+	
+	public function ActionPintaequipo()
+	{
+		//$this->loadModel($id)->delete();
+		$codigosap=$_POST['Detgui']['c_codsap'];
+		$modeli=Inventario::model()->find('codigosap=:codig',array(':codig'=>$codigosap));
+		  if (!is_null($modeli)){
+				   // echo "<input size=\"40\" maxlength=\"40\" \"value\"='".$modeli->descripcion."'  name=\"Detgui[c_descri]\" id=\"Detgui_c_descri\" type=\"text\" />	";
+						//sjfsf$;
+						
+						echo "<input size='40' maxlength='40' value='".$modeli->descripcion."'  name='Detgui[c_descri]' id='Detgui_c_descri' 	type='text' />	";
+						
+				
+		       } else    {
+		         echo "<input size='40' maxlength='40'  name='Detgui[c_descri]' id='Detgui_c_descri' 	type='text' />	";
+						
+		       }     
+		//unset($modeli);
+		//ECHO $codigosap;
+		//echo "hola  a ";
+		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+		//if(!isset($_GET['ajax']))
+			//$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+	}
+
+	public function ActionPintaactivo()
+	{
+		//$this->loadModel($id)->delete();
+		$codigosap=$_POST['Detgui']['c_codactivo'];
+		$modeli=Inventario::model()->find('codigoaf=:codig',array(':codig'=>$codigosap));
+		  if (!is_null($modeli)){
+				     echo "<input size='40' maxlength='40' value='".$modeli->descripcion."'  name='Detgui[c_descri]' id='Detgui_c_descri' 	type='text' />	";
+								//$modeli->descripcion;
+				
+		       } else    {
+		       
+		          echo "<input size='40' maxlength='40'  name='Detgui[c_descri]' id='Detgui_c_descri' 	type='text' />	";
+					
+		       }     
+		//unset($modeli);
+		//ECHO $codigosap;
+		//echo "  hola  a dgdgdgdg";
+		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+		//if(!isset($_GET['ajax']))
+			//$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+	}
+
+	
+	public function ActionBorraitem($id)
+	{
+		$autoIdAll=array();
+		if(  isset($_GET['cajita'])   ) //If user had posted the form with records selected
+				{
+				$autoIdAll = $_GET['cajita']; ///The records selecteds 
+				};
+				if(count($autoIdAll)>0)
+										{
+										  //Verificando que la guia este previo o creada
+										  $estatus=$this->loadModel($id)->c_estgui;
+										   if (  $estatus=='01' or $estatus=='99' )
+										         foreach ($autoIdAll as $valor) {
+																	Detgui::model()->findByPk($valor)->delete();		
+																		}
+													
+										          echo CHtml::script("window.parent.$.fn.yiiGridView.update('detalle-grid');
+																		");
+														Yii::app()->end();
+										}
+									
+		}
+	
+	
+	
+	
+
+	/**
+	 * Manages all models.
+	 */
+	public function actionAdmin()
+	{
+		$model=new Guia('search');
+		$model->unsetAttributes();  // clear any default values
+		if(isset($_GET['Guia']))
+			$model->attributes=$_GET['Guia'];
+
+		$this->render('admin',array(
+			'model'=>$model,
+		));
+	}
+
+	/**
+	 * Returns the data model based on the primary key given in the GET variable.
+	 * If the data model is not found, an HTTP exception will be raised.
+	 * @param integer the ID of the model to be loaded
+	 */
+	public function loadModel($id)
+	{
+		$model=Guia::model()->findByPk($id);
+		if($model===null)
+			throw new CHttpException(404,'El enlace o direccion solicitado no existe');
+		return $model;
+	}
+
+	
+	 /** Performs the AJAX validation.
+	 * @param CModel the model to be validated
+	 */
+	protected function performAjaxValidation1($model)
+	{
+		if(isset($_POST['ajax']) && $_POST['ajax']==='detgui-form')
+		{
+			echo CActiveForm::validate($model);
+			Yii::app()->end();
+		}
+	}
+	
+	/**
+	 * Performs the AJAX validation.
+	 * @param CModel the model to be validated
+	 */
+	protected function performAjaxValidation($model)
+	{
+		if(isset($_POST['ajax']) && $_POST['ajax']==='guia-form')
+		{
+			echo CActiveForm::validate($model);
+			Yii::app()->end();
+		}
+	}
+}

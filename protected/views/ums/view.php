@@ -1,0 +1,27 @@
+<?php
+/* @var $this UmsController */
+/* @var $model Ums */
+
+$this->breadcrumbs=array(
+	'Ums'=>array('index'),
+	$model->um,
+);
+
+$this->menu=array(
+	//array('label'=>'List Ums', 'url'=>array('index')),
+	array('label'=>'Crear', 'url'=>array('create')),
+	array('label'=>'Actualizar', 'url'=>array('update', 'id'=>$model->um)),
+	//array('label'=>'Delete Ums', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->um),'confirm'=>'Are you sure you want to delete this item?')),
+	array('label'=>'Unidades', 'url'=>array('admin')),
+);
+?>
+
+
+<?php $this->widget('zii.widgets.CDetailView', array(
+	'data'=>$model,
+	'attributes'=>array(
+		'um',
+		'desum',
+		
+	),
+)); ?>

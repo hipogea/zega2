@@ -1,0 +1,21 @@
+<?php $this->widget('zii.widgets.CDetailView', array(
+															'data'=>$model,
+															'attributes'=>array(
+	 //	'id',
+															'destemporada',
+																'nomespecie',
+																'inicio',
+																'termino',
+																'cuota_anchoveta',
+																'sdeclarada',
+																'sdescargada',
+																'sd2',
+																'sct',
+																'sfd',
+																'bodega',
+															'eficienciabodega',
+															'd2porhora',
+															'cumplimiento',
+																	),
+													)); 
+											?>	

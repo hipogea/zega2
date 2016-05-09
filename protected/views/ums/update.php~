@@ -1,0 +1,21 @@
+<?php
+/* @var $this UmsController */
+/* @var $model Ums */
+
+$this->breadcrumbs=array(
+	'Ums'=>array('index'),
+	$model->um=>array('view','id'=>$model->um),
+	'Update',
+);
+
+$this->menu=array(
+	array('label'=>'List Ums', 'url'=>array('index')),
+	array('label'=>'Create Ums', 'url'=>array('create')),
+	array('label'=>'View Ums', 'url'=>array('view', 'id'=>$model->um)),
+	array('label'=>'Manage Ums', 'url'=>array('admin')),
+);
+?>
+
+<h1>Update Ums <?php echo $model->um; ?></h1>
+
+<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

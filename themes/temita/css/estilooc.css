@@ -1,0 +1,264 @@
+
+
+
+
+H1	{
+    color: #000;
+    font-family: arial, sans-serif;
+    font-size: 16px;
+   /* font-weight: bold;*/
+    margin-top: 0px;
+    margin-bottom: 1px;
+}
+
+
+
+.nombreempresa {
+    position: relative;
+
+    top:  0px;
+    left: 00px;
+    color: #000;
+    font-family: Verdana,Tahoma;
+    font-size: 9px;
+    /* font-weight: bold;*/
+    margin-top: 2px;
+    margin-left: 2px;
+}
+
+ .titulo {
+
+  position: absolute;
+  top:  50px;
+  left: 250px;
+     color: #000;
+     font-family: font-family: Verdana,Tahoma;
+     font-size: 16px;
+      font-weight: bold;
+}
+
+.subtitulo {
+    position: absolute;
+    top:  70px;
+    left: 300px;
+    color: #000;
+    font-family: font-family: Verdana,Tahoma;
+    font-size: 10px;
+
+}
+
+.panelizquierdo{
+
+    border:solid 0px #ccc ;
+
+    border-radius:5px;
+
+    width:320px;
+    float:left;
+    font-family: font-family: Verdana,Tahoma;
+    font-size: 10px;
+    font-weight: bold;
+
+}
+.panelderecho{
+    border:solid 0px #ccc ;
+
+    border-radius:5px;
+
+    width:320px;
+    float:right;
+    font-family: font-family: Verdana,Tahoma;
+    font-size: 10px;
+    font-weight: bold;
+}
+.filainterior {
+    width:100%;
+
+    padding-left:1px;
+    padding-top:1px;
+    padding-bottom:1px;
+    padding-right:1px;
+   /* border:solid 1px #d0e;*/
+}
+.etiqueta{
+    /*border:solid 1px #0ff;*/
+    padding-left:2px;width:100px;
+    float:left;
+}
+.valor{
+    /*border:solid 1px #0ff;*/
+    width:150px;
+    float:left;
+    clear:right;
+
+}
+
+.tenor{
+    font-family: font-family: Verdana,Tahoma;
+    font-size: 8px;
+
+}
+.indicaciones{
+    font-family: font-family: Arial,Verdana,Tahoma;
+    font-size: 12px;
+
+}
+
+
+
+
+
+
+
+.textocabecera {
+
+ position: absolute;
+  top:  110px;
+  left: 50px;
+  width: 400px;
+    font-family:Arial, Helvetica, sans-serif;
+    color:#000;
+    font-size:11px;
+    text-shadow: 1px 1px 0px #fff;
+
+}
+
+.fecha {
+font-weight:bold;
+ position: absolute;
+  top:  70px;
+  left: 50px;
+  font-family:Arial, Helvetica, sans-serif;
+    color:#000;
+    font-size:11px;
+    text-shadow: 1px 1px 0px #fff;
+
+}
+
+.usuario {
+font-weight:bold;
+ position: absolute;
+  top:  70px;
+  left: 350px;
+  font-family:Arial, Helvetica, sans-serif;
+    color:#000;
+    font-size:11px;
+    text-shadow: 1px 1px 0px #fff;
+
+}
+
+
+.ceco {
+font-weight:bold;
+ position: absolute;
+  top:  90px;
+  left: 50px;
+  font-family:Arial, Helvetica, sans-serif;
+    color:#000;
+    font-size:11px;
+    text-shadow: 1px 1px 0px #fff;
+
+}
+
+
+.detalle  {
+  position: absolute;
+  top:  200px;
+  left: 50px;
+}
+
+
+.firmas {
+  position: absolute;
+  top:  450px;
+  left: 10px;
+}
+.firma1 {
+position: relative;
+  top:  10px;
+  left: 100px;
+  width: 150px;
+border-bottom: 1px solid #000;
+
+}
+
+.firma2 {
+position: relative;
+  top:  10px;
+  left: 400px;
+   width: 150px;
+border-bottom: 1px solid #000;
+
+}
+
+
+a {
+    font-family:Arial, Helvetica, sans-serif;
+    color:#000;
+    font-size:10px;
+    text-decoration: none;
+}
+
+
+table {
+    font-family:Arial, Helvetica, sans-serif;
+    color:#000;
+    font-size:10px;
+    border:solid 0px #000 ;
+    background-color:  #dedede ;
+    border-radius:5px;
+
+}
+table th {
+    padding:2px 2px 2px 2px;
+    border-bottom:1px solid #000;
+}
+table th:first-child {
+    text-align: left;
+    padding-left:20px;
+}
+table tr:first-child th:first-child {
+
+}
+table tr:first-child th:last-child {
+
+}
+table tr {
+    text-align: left;
+    padding-left:2px;
+
+}
+table td:first-child {
+    text-align: left;
+    padding-left:2px;
+    border-left: 0;
+}
+table td {
+    padding:4px;
+
+    border-bottom:1px solid #ccc;
+
+
+    background: #eee;
+
+}
+table tr.even td {
+    background: #fff;
+
+}
+table tr:last-child td {
+    border-bottom:0;
+}
+table tr:last-child td:first-child {
+    -moz-border-radius-bottomleft:3px;
+    -webkit-border-bottom-left-radius:3px;
+    border-bottom-left-radius:3px;
+}
+table tr:last-child td:last-child {
+    -moz-border-radius-bottomright:3px;
+    -webkit-border-bottom-right-radius:3px;
+    border-bottom-right-radius:3px;
+}
+
+
+

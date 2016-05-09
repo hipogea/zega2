@@ -1,0 +1,118 @@
+<?php
+/* @var $this DireccionesController */
+/* @var $model Direcciones */
+/* @var $form CActiveForm */
+?>
+
+<div class="wide form">
+
+<?php $form=$this->beginWidget('CActiveForm', array(
+	'id'=>'direcciones-form',
+	'enableAjaxValidation'=>false,
+)); ?>
+
+	
+
+	<?php echo $form->errorSummary($model); ?>
+
+	<div class="row">
+		
+		<?php  if(!isset($codpro)) $codpro="";
+		if($model->isNewRecord )
+		    {
+													
+												echo $form->hiddenField($model,'c_hcod',array('size'=>6,'maxlength'=>6,'value'=>$codpro)); 	
+													
+												} else  {
+													
+												echo $form->textField($model,'c_hcod',array('disabled'=>'disabled','size'=>6,'maxlength'=>6,'value'=>$codpro)); 	
+												}
+			
+			
+			?>
+		
+		<?php echo $form->error($model,'c_hcod'); ?>
+	</div>
+	
+	<div class="row">
+		<?php echo $form->labelEx($model,'codplanta'); ?>
+		<?php  $datos = CHtml::listData(Centros::model()->findAll(" c_planta=1",array("order"=>"nomcen")),'codcen','nomcen');
+										echo $form->DropDownList($model,'codplanta',$datos, array('empty'=>'--Seleccione una Planta--')  )  ;
+										?>
+		<?php echo $form->error($model,'codplanta'); ?>
+	</div>
+
+     
+	<div class="row">
+		<?php echo $form->labelEx($model,'c_direc'); ?>
+		<?php echo $form->textField($model,'c_direc',array('size'=>60,'maxlength'=>60)); ?>
+		<?php echo $form->error($model,'c_direc'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'l_vale'); ?>
+		<?php echo $form->checkBox($model,'l_vale'); ?>
+		<?php echo $form->error($model,'l_vale'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'c_nomlug'); ?>
+		<?php echo $form->textField($model,'c_nomlug',array('size'=>12,'maxlength'=>12)); ?>
+		<?php echo $form->error($model,'c_nomlug'); ?>
+	</div>
+
+	
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'c_distrito'); ?>
+		<?php echo $form->textField($model,'c_distrito',array('size'=>20,'maxlength'=>20)); ?>
+		<?php echo $form->error($model,'c_distrito'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'c_prov'); ?>
+		<?php echo $form->textField($model,'c_prov',array('size'=>20,'maxlength'=>20)); ?>
+		<?php echo $form->error($model,'c_prov'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'c_departam'); ?>
+		<?php echo $form->textField($model,'c_departam',array('size'=>20,'maxlength'=>20)); ?>
+		<?php echo $form->error($model,'c_departam'); ?>
+	</div>
+
+	
+
+	
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'creadopor'); ?>
+		<?php echo $form->textField($model,'creadopor',array('disabled'=>'disabled','size'=>25,'maxlength'=>25)); ?>
+		<?php echo $form->error($model,'creadopor'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'creadoel'); ?>
+		<?php echo $form->textField($model,'creadoel',array('disabled'=>'disabled','size'=>20,'maxlength'=>20)); ?>
+		<?php echo $form->error($model,'creadoel'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'modificadopor'); ?>
+		<?php echo $form->textField($model,'modificadopor',array('disabled'=>'disabled', 'size'=>25,'maxlength'=>25)); ?>
+		<?php echo $form->error($model,'modificadopor'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'modificadoel'); ?>
+		<?php echo $form->textField($model,'modificadoel',array('disabled'=>'disabled','size'=>20,'maxlength'=>20)); ?>
+		<?php echo $form->error($model,'modificadoel'); ?>
+	</div>
+
+	<div class="row buttons">
+		<?php echo CHtml::submitButton($model->isNewRecord ? 'Crear' : 'Actualizar'); ?>
+	</div>
+
+<?php $this->endWidget(); ?>
+
+</div><!-- form -->

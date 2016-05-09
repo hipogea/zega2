@@ -1,0 +1,220 @@
+.grid-view table.items {
+	width: 100%;
+	border-collapse:collapse;
+	border:1px solid #7ca3b4;
+
+}
+
+
+.grid-view table.items thead th {
+	vertical-align:bottom;
+	background: rgba(183,222,237,1);
+	background: -moz-linear-gradient(top, rgba(183,222,237,1) 0%, rgba(113,206,239,1) 50%, rgba(33,180,226,1) 51%, rgba(183,222,237,1) 100%);
+	background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(183,222,237,1)), color-stop(50%, rgba(113,206,239,1)), color-stop(51%, rgba(33,180,226,1)), color-stop(100%, rgba(183,222,237,1)));
+	background: -webkit-linear-gradient(top, rgba(183,222,237,1) 0%, rgba(113,206,239,1) 50%, rgba(33,180,226,1) 51%, rgba(183,222,237,1) 100%);
+	background: -o-linear-gradient(top, rgba(183,222,237,1) 0%, rgba(113,206,239,1) 50%, rgba(33,180,226,1) 51%, rgba(183,222,237,1) 100%);
+	background: -ms-linear-gradient(top, rgba(183,222,237,1) 0%, rgba(113,206,239,1) 50%, rgba(33,180,226,1) 51%, rgba(183,222,237,1) 100%);
+	background: linear-gradient(to bottom, rgba(183,222,237,1) 0%, rgba(113,206,239,1) 50%, rgba(33,180,226,1) 51%, rgba(183,222,237,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b7deed', endColorstr='#b7deed', GradientType=0 );
+
+}
+
+.grid-view table.items tbody tr.odd {
+	background: #f2f6f8;
+}
+.grid-view table.items tbody tr.even {
+	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#fefefe+0,d1d1d1+49,dbdbdb+50,e2e2e2+100 */
+	background: #fefefe; /* Old browsers */
+	background: -moz-linear-gradient(top,  #fefefe 0%, #d1d1d1 49%, #dbdbdb 50%, #e2e2e2 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fefefe), color-stop(49%,#d1d1d1), color-stop(50%,#dbdbdb), color-stop(100%,#e2e2e2)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #fefefe 0%,#d1d1d1 49%,#dbdbdb 50%,#e2e2e2 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #fefefe 0%,#d1d1d1 49%,#dbdbdb 50%,#e2e2e2 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #fefefe 0%,#d1d1d1 49%,#dbdbdb 50%,#e2e2e2 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #fefefe 0%,#d1d1d1 49%,#dbdbdb 50%,#e2e2e2 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fefefe', endColorstr='#e2e2e2',GradientType=0 ); /* IE6-9 */
+
+}
+
+
+.grid-view table.items tr.selected
+{
+	background: #9ee7e5;
+}
+.grid-view table.items tbody tr:hover
+{
+	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#fefcea+0,f1da36+100;Gold+3D */
+	background: #fefcea; /* Old browsers */
+	background: -moz-linear-gradient(top,  #fefcea 0%, #f1da36 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fefcea), color-stop(100%,#f1da36)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #fefcea 0%,#f1da36 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #fefcea 0%,#f1da36 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #fefcea 0%,#f1da36 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #fefcea 0%,#f1da36 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fefcea', endColorstr='#f1da36',GradientType=0 ); /* IE6-9 */
+
+}
+.grid-view table.items tr:hover.selected
+{
+	background: #c1ffff;
+}
+
+.grid-view .summary
+{
+	margin: 0 0 2px 0;
+	text-align: right;
+}
+
+
+.grid-view table.items tbody th,td {
+	font-size: 11px;
+	line-height: 1em;
+	font-family: Arial, Helvetica, sans-serif;
+	color: #5477b4;
+	padding: 1px 4px;
+	border-top: 1px solid #ededed;
+	border-right: 1px solid #ededed;
+
+	text-align: left;
+}
+
+
+
+
+
+.grid-view table.items tbody tr a {
+	color: #0D76DD;
+	font-weight: bold;
+	text-decoration: underline;
+}
+.grid-view table.items tbody th a{
+	color: #3651f1;
+	font-weight: bold;
+
+}
+.grid-view table.items a:hover {
+	color: #beecff;
+	text-decoration: underline;
+}
+.grid-view table.items a:visited {
+	color: #d1adc5;
+	text-decoration: underline;
+}
+.grid-view table.items tfoot th {
+	background: url(bg_total.jpg) repeat-x bottom;
+	color: #FFFFFF;
+	height: 30px;
+}
+.grid-view table.items tfoot td {
+	background: url(bg_total.jpg) repeat-x bottom;
+	color: #000;
+	height: 10px;
+}
+.grid-view-loading
+{
+	background:url(loading.gif) no-repeat;
+}
+
+
+
+
+
+
+
+
+
+
+table{max-width:100%;background-color:transparent;border-collapse:collapse;border-spacing:0}
+.table{width:100%;margin-bottom:5px}
+.table th,.table td{
+	padding-left:3px;
+	padding-right:3px;
+	line-height:19px;
+	font-size:10px;
+	color:#3c3c99;
+	border-top:1px solid #ddd
+}
+.table th{
+	font-weight:none;
+	line-height:19px;
+}
+
+
+.grid-view-loading
+{
+
+	background:url(loading.gif) no-repeat;
+}
+
+
+.grid-view  .table caption+thead tr:first-child th,
+.grid-view  .table caption+thead tr:first-child td,.table colgroup+thead tr:first-child th,
+.grid-view  .table colgroup+thead tr:first-child td,.table thead:first-child tr:first-child th,
+.grid-view  .table thead:first-child tr:first-child td{border-top:0}
+.grid-view  .table tbody+tbody{border-top:2px solid #ddd}
+.grid-view  .table-condensed th,.table-condensed td{padding:4px 5px}
+
+
+
+
+.grid-view  .table-bordered th,.table-bordered td{border-left:1px solid #ddd}
+.grid-view  .table-bordered caption+thead tr:first-child th,.table-bordered caption+tbody tr:first-child th,
+.grid-view  .table-bordered caption+tbody tr:first-child td,.table-bordered colgroup+thead tr:first-child th,
+.grid-view  .table-bordered colgroup+tbody tr:first-child th,.table-bordered colgroup+tbody tr:first-child td,
+.grid-view  .table-bordered thead:first-child tr:first-child th,.table-bordered tbody:first-child tr:first-child th,
+.grid-view  .table-bordered tbody:first-child tr:first-child td{border-top:0}
+.grid-view  .table-bordered thead:first-child tr:first-child th:first-child,.table-bordered
+.grid-view  tbody:first-child tr:first-child td:first-child{
+	-webkit-border-top-left-radius:4px;
+	border-top-left-radius:4px;-moz-border-radius-topleft:4px
+}
+.grid-view  .table-bordered thead:first-child tr:first-child th:last-child,
+.grid-view  .table-bordered tbody:first-child tr:first-child td:last-child{
+	-webkit-border-top-right-radius:4px;
+	border-top-right-radius:4px;
+	-moz-border-radius-topright:4px
+}
+.grid-view  .table-bordered thead:last-child tr:last-child th:first-child,
+.grid-view  .table-bordered tbody:last-child tr:last-child td:first-child,
+.grid-view  .table-bordered tfoot:last-child tr:last-child td:first-child
+{
+	-webkit-border-radius:0 0 0 4px;
+	-moz-border-radius:0 0 0 4px;border-radius:0 0 0 4px;
+	-webkit-border-bottom-left-radius:4px;
+	border-bottom-left-radius:4px;-moz-border-radius-bottomleft:4px
+}
+.table-bordered thead:last-child tr:last-child th:last-child,
+.table-bordered tbody:last-child tr:last-child td:last-child,
+.table-bordered tfoot:last-child tr:last-child
+td:last-child{
+	-webkit-border-bottom-right-radius:4px;
+	border-bottom-right-radius:4px;
+	-moz-border-radius-bottomright:4px
+}
+.table-bordered caption+thead tr:first-child th:first-child,
+.table-bordered caption+tbody tr:first-child td:first-child,.table-bordered colgroup+thead tr:first-child th:first-child,
+.table-bordered colgroup+tbody tr:first-child td:first-child
+{
+	-webkit-border-top-left-radius:6px;border-top-left-radius:6px;
+	-moz-border-radius-topleft:6px
+}
+.table-bordered caption+thead tr:first-child th:last-child,
+.table-bordered caption+tbody tr:first-child td:last-child,
+.table-bordered colgroup+thead tr:first-child th:last-child,
+.table-bordered colgroup+tbody tr:first-child
+td:last-child{
+	-webkit-border-top-right-radius:6px;
+	border-top-right-radius:6px;
+	-moz-border-radius-topleft:6px
+}
+.table-striped tbody tr:nth-child(odd) td,
+.table-striped tbody tr:nth-child(odd) th{
+	background-color:#f9f9f9
+}
+.table-striped tbody tr:nth-child(even) td,
+.table-striped tbody tr:nth-child(even) th{
+	background-color:#EDF0F4
+}
+
+.table-hover tbody tr:hover td,.table-hover tbody tr:hover th{
+	background-color:#81DAF5
+}

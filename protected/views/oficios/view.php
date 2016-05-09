@@ -1,0 +1,27 @@
+<?php
+/* @var $this OficiosController */
+/* @var $model Oficios */
+
+$this->breadcrumbs=array(
+	'Oficioses'=>array('index'),
+	$model->codof,
+);
+
+$this->menu=array(
+	//array('label'=>'List Oficios', 'url'=>array('index')),
+	array('label'=>'Crear Oficio', 'url'=>array('create')),
+	array('label'=>'Actualizar Oficio', 'url'=>array('update', 'id'=>$model->codof)),
+	//array('label'=>'Delete Oficios', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->codof),'confirm'=>'Are you sure you want to delete this item?')),
+	array('label'=>'Oficios', 'url'=>array('admin')),
+);
+?>
+
+
+<?php $this->widget('zii.widgets.CDetailView', array(
+	'data'=>$model,
+	'attributes'=>array(
+		'codof',
+		'oficio',
+		
+	),
+)); ?>

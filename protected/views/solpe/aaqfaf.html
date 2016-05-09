@@ -1,0 +1,677 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="/recurso/assets/1463cf7c/jui/css/base/jquery-ui.css" />
+    <link rel="stylesheet" type="text/css" href="/recurso/assets/db022ba7/gridview/styles.css" />
+    <link rel="stylesheet" type="text/css" href="/recurso/assets/1a8cdcfc/pager.css" />
+    <link rel="stylesheet" type="text/css" href="/recurso/assets/1463cf7c/jui/css/default/jquery-ui.css" />
+    <link rel="stylesheet" type="text/css" href="/recurso/themes/abound/css/style-grid.css" />
+    <link rel="stylesheet" type="text/css" href="/recurso/themes/abound/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="/recurso/themes/abound/css/bootstrap-responsive.min.css" />
+    <link rel="stylesheet" type="text/css" href="/recurso/themes/abound/css/abound.css" />
+    <script type="text/javascript" src="/recurso/assets/1463cf7c/jquery.js"></script>
+    <script type="text/javascript" src="/recurso/assets/1463cf7c/jquery.ba-bbq.js"></script>
+    <script type="text/javascript" src="/recurso/assets/1463cf7c/jquery.yiiactiveform.js"></script>
+    <script type="text/javascript" src="/recurso/themes/abound/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/recurso/themes/abound/js/plugins/jquery.sparkline.js"></script>
+    <script type="text/javascript" src="/recurso/themes/abound/js/plugins/jquery.flot.min.js"></script>
+    <script type="text/javascript" src="/recurso/themes/abound/js/plugins/jquery.flot.pie.min.js"></script>
+    <script type="text/javascript" src="/recurso/themes/abound/js/charts.js"></script>
+    <script type="text/javascript" src="/recurso/themes/abound/js/plugins/jquery.knob.js"></script>
+    <script type="text/javascript" src="/recurso/themes/abound/js/plugins/jquery.masonry.min.js"></script>
+    <script type="text/javascript" src="/recurso/themes/abound/js/styleswitcher.js"></script>
+    <title>Helius-Solver</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Soluciones accesibles a la industria">
+    <meta name="author" content="Hipogea Soluciones">
+    <!--<link href='http://fonts.googleapis.com/css?family=Carrois+Gothic' rel='stylesheet' type='text/css'>-->
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!-- Fav and Touch and touch icons -->
+    <link rel="shortcut icon" href="/recurso/themes/abound/img/icons/helius.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/recurso/themes/abound/img/icons/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/recurso/themes/abound/img/icons/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="/recurso/themes/abound/img/icons/apple-touch-icon-57-precomposed.png">
+    <!-- styles for style switcher -->
+    <link rel="stylesheet" type="text/css" href="/recurso/themes/abound/css/style-blue.css" />
+    <link rel="alternate stylesheet" type="text/css" media="screen" title="style2" href="/recurso/themes/abound/css/style-brown.css" />
+    <link rel="alternate stylesheet" type="text/css" media="screen" title="style3" href="/recurso/themes/abound/css/style-green.css" />
+    <link rel="alternate stylesheet" type="text/css" media="screen" title="style4" href="/recurso/themes/abound/css/style-grey.css" />
+    <link rel="alternate stylesheet" type="text/css" media="screen" title="style5" href="/recurso/themes/abound/css/style-orange.css" />
+    <link rel="alternate stylesheet" type="text/css" media="screen" title="style6" href="/recurso/themes/abound/css/style-purple.css" />
+    <link rel="alternate stylesheet" type="text/css" media="screen" title="style7" href="/recurso/themes/abound/css/style-red.css" />
+</head>
+
+<body>
+
+<section id="navigation-main">
+    <!-- Require the navigation -->
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar">hola</span>
+                    <span class="icon-bar">chao</span>
+                    <span class="icon-bar">ya fue</span>
+                </a>
+
+                <!-- Be sure to leave the brand out there if you want it shown -->
+                <a class="brand" href="#"><img width="20" height="20" src="/recurso/themes/abound/img/caja.png" alt="hola" />Helius <small> v1.1</small></a>
+
+                <div class="nav-collapse">
+                    <ul class="pull-right nav" id="yw7">
+                        <li class="item-test"><a href="/recurso/site/index.jsp">Inicio</a></li>
+                        <li class="dropdown item-test" tabindex="-1"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Datos maestros <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li class="item-test"><a href="/recurso/sociedades/admin">Sociedades</a></li>
+                                <li class="item-test"><a href="/recurso/centros/admin">Centros</a></li>
+                                <li class="item-test"><a href="/recurso/almacenes">Almacenes</a></li>
+                                <li class="item-test"><a href="/recurso/ums/admin">Unidades med</a></li>
+                                <li class="item-test"><a href="/recurso/maestrotipos/admin">Tipos mater.</a></li>
+                                <li class="item-test"><a href="/recurso/maestrocompo/admin">Materiales</a></li>
+                                <li class="item-test"><a href="/recurso/Oficios/admin">Cargos</a></li>
+                                <li class="item-test"><a href="/recurso/Trabajadores/admin">Trabajadores</a></li>
+                                <li class="item-test"><a href="/recurso/Cc/admin">Cecos</a></li>
+                                <li class="item-test"><a href="/recurso/Clipro/admin">Proveedores</a></li>
+                                <li class="item-test"><a href="/recurso/Motivo/admin">Motivos traslado</a></li>
+                                <li class="item-test"><a href="/recurso/Clipro/admin">Proveedores</a></li>
+                                <li class="item-test"><a href="/recurso/Areas/admin">Areas</a></li>
+                                <li class="item-test"><a href="/recurso/Documentos/admin">Documentos</a></li>
+                                <li class="item-test"><a href="/recurso/Areas/admin">Areas</a></li>
+                                <li class="item-test"><a href="/recurso/Tipofacturacion/admin">Formas de pago</a></li>
+                                <li class="item-test"><a href="/recurso/Choferes/admin">Transportistas</a></li>
+                                <li class="item-test"><a href="/recurso/Embarcaciones/admin">Vehiculos</a></li>
+                                <li class="item-test"><a href="/recurso/Estado/admin">Estados</a></li>
+                                <li class="item-test"><a href="/recurso/Eventos/admin">Eventos</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown item-test" tabindex="-1"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Operaciones <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li class="item-test"><a href="/recurso/solpe/create">Crear Solicitud</a></li>
+                                <li class="item-test"><a href="/recurso/solpe/admin">Solicitudes</a></li>
+                                <li class="item-test"><a href="/recurso/solpe/Configuraop">Opciones Solpe</a></li>
+                                <li class="item-test"><a href="/recurso/ocompra/create">Crear Orden compra</a></li>
+                                <li class="item-test"><a href="/recurso/ocompra/admin">Ordenes de  compra</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown item-test" tabindex="-1"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Administracion <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li class="item-test"><a href="/recurso/noticias/admin">Novedades</a></li>
+                                <li class="item-test"><a href="/recurso/tipocambio/admin">Tipo cambio</a></li>
+                                <li class="item-test"><a href="/recurso/clipro/agenda">Contactos</a></li>
+                                <li class="item-test"><a href="/recurso/ocompra/create">Trabajadores</a></li>
+                                <li class="item-test"><a href="/recurso/clipro/admin">Proveedores</a></li>
+                                <li class="item-test"><a href="/recurso/docingresados/admin">Recepcion doc.</a></li>
+                                <li class="item-test"><a href="/recurso/Embarcaciones/admin">Vehiculos</a></li>
+                                <li class="item-test"><a href="/recurso/noticias/solicita">Solicitar noticia</a></li>
+                                <li class="item-test"><a href="/recurso/archivador/admin">Biblioteca</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown item-test" tabindex="-1"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Almacen <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li class="item-test"><a href="/recurso/almacendocs/crear">Crear movimiento</a></li>
+                                <li class="item-test"><a href="/recurso/almacendocs/admin">Documentos Almacen</a></li>
+                                <li class="item-test"><a href="/recurso/almacendocs/crear">Crear documento</a></li>
+                                <li class="item-test"><a href="/recurso/almacendocs/ajuste">Ajustes de inventario</a></li>
+                                <li class="item-test"><a href="/recurso/alkardex/admin">Doc material</a></li>
+                                <li class="item-test"><a href="/recurso/alinventario/admin">Existencias</a></li>
+                                <li class="item-test"><a href="/recurso/solpe/atiendesolpe">Ajuste de solicitudes</a></li>
+                                <li class="item-test"><a href="/recurso/alinventario/repinventario">Reportes de inventario</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown item-test" tabindex="-1"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Autorizaciones <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li class="item-test"><a href="/recurso/solpe/liberacion">Solicitudes</a></li>
+                                <li class="item-test"><a href="/recurso/ocompra/libmasiva">Compras</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown item-test" tabindex="-1"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Transporte <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li class="item-test"><a href="/recurso/guia/create">Crear Doc Transp</a></li>
+                                <li class="item-test"><a href="/recurso/ne/create">Crear Doc Recep</a></li>
+                                <li class="item-test"><a href="/recurso/guia/admin">Documentos</a></li>
+                                <li class="item-test"><a href="/recurso/choferes/create">Crear Conductores</a></li>
+                                <li class="item-test"><a href="/recurso/direcciones/create">Crear Direccion</a></li>
+                                <li class="item-test"><a href="/recurso/lugares/create">Crear Ubicaciones</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown item-test" tabindex="-1"><a class="dropdown-toggle" data-toggle="dropdown" href="#">G. Activos <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li class="item-test"><a href="/recurso/Inventario/admin">Inventario AF</a></li>
+                                <li class="item-test"><a href="/recurso/Inventario/create">Crear AF</a></li>
+                                <li class="item-test"><a href="/recurso/Observaciones/admin">Observaciones</a></li>
+                                <li class="item-test"><a href="/recurso/Inventario/create">Crear AF</a></li>
+                            </ul>
+                        </li>
+                        <li class="item-test"><a href="/recurso/cruge/ui/logout.jsp">Cerrar sesion (admin)1</a></li>
+                    </ul>    	</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="subnav navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+
+                <div class="style-switcher pull-left">
+                    <a href="javascript:chooseStyle('none', 60)" checked="checked"><span class="style" style="background-color:#0088CC;"></span></a>
+                    <a href="javascript:chooseStyle('style2', 60)"><span class="style" style="background-color:#7c5706;"></span></a>
+                    <a href="javascript:chooseStyle('style3', 60)"><span class="style" style="background-color:#468847;"></span></a>
+                    <a href="javascript:chooseStyle('style4', 60)"><span class="style" style="background-color:#4e4e4e;"></span></a>
+                    <a href="javascript:chooseStyle('style5', 60)"><span class="style" style="background-color:#d85515;"></span></a>
+                    <a href="javascript:chooseStyle('style6', 60)"><span class="style" style="background-color:#a00a69;"></span></a>
+                    <a href="javascript:chooseStyle('style7', 60)"><span class="style" style="background-color:#a30c22;"></span></a>
+                </div>
+                <form class="navbar-search pull-right" action="">
+
+                    <input type="text" class="search-query span2" placeholder="Buscar">
+
+                </form>
+            </div><!-- container -->
+        </div><!-- navbar-inner -->
+    </div><!-- subnav --></section><!-- /#navigation-main -->
+
+<section class="main-body">
+
+
+<div id='info' style='text-align:left'>
+</div>
+
+
+
+<div class="container-fluid">
+<!-- Include content pages -->
+
+<div class="row-fluid">
+<div class="span3">
+    <div class="">
+        <div class="portlet" id="yw3">
+            <div class="portlet-decoration">
+                <div class=""><span class="icon-picture"></span>  Operaciones</div>
+            </div>
+            <div class="portlet-content">
+
+                <ul class="operations" id="yw4">
+                    <li><a href="/recurso/ocompra/77.jsp">Visualizar Oc</a></li>
+                    <li><a href="/recurso/ocompra/create.jsp">Crear Oc</a></li>
+                    <li><a href="/recurso/ocompra/configuraop.jsp">Opciones Oc</a></li>
+                    <li><a href="/recurso/ocompra/admin.jsp">Listado Oc</a></li>
+                    <li><a href="/recurso/ocompra/imprimir/77.jsp">Imprimir</a></li>
+                </ul>
+            </div>
+        </div>		</div>
+
+
+
+
+
+
+    <div class="">
+        <div class="portlet" id="yw5">
+            <div class="portlet-decoration">
+                <div class=""><span class="icon-picture"></span>  Tipo cambio  (USD)</div>
+            </div>
+            <div class="portlet-content">
+
+                <a onclick="$(&#039;#cru-framegeneral&#039;).attr(&#039;src&#039;,&#039;/recurso/site/Colocatipocambio.jsp?maccion=update&amp;mcontrolador=ocompra&amp;asDialog=1&amp;gridId=favoritos-grid &#039;); $(&#039;#cru-dialoggeneral&#039;).dialog(&#039;open&#039;);" href="#"><img width="30" height="30" src="/recurso/themes/abound/img/dinero.png" alt="hola" /></a>
+                <div class="rotulito" id="zonacompra"> Compra : 2.98</div>
+                <div class="rotulito" id="zonaventa"> Venta  : 2.99</div>
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="">
+        <div class="portlet" id="yw6">
+            <div class="portlet-decoration">
+                <div class=""><span class="icon-picture"></span>  Usuario</div>
+            </div>
+            <div class="portlet-content">
+                <img width="25" height="25" src="/recurso/themes/abound/img/user.png" alt="hola" />         (admin) - Conectado          <br>
+
+
+                <img width="15" height="15" src="/recurso/themes/abound/img/estrella.png" alt="hola" />         Favoritos
+                <a onclick="$(&#039;#cru-framegeneral&#039;).attr(&#039;src&#039;,&#039;/recurso/site/agregafavorito.jsp?maccion=update&amp;mcontrolador=ocompra&amp;asDialog=1&amp;gridId=favoritos-grid &#039;); $(&#039;#cru-dialoggeneral&#039;).dialog(&#039;open&#039;);" href="#"><img width="15" height="15" src="/recurso/themes/abound/img/mas.png" alt="hola" /></a>
+
+
+                <br>
+
+                <div id="favoritos-grid" class="grid-view">
+                    <div class="summary"></div>
+                    <table class="items">
+                        <tbody>
+                        <tr class="odd">
+                            <td><a href="/recurso/documentos/admin">DOCUMENTOS</a></td><td class="button-column">  <a class="delete" title="Aprobar" href="/recurso/usuariosfavoritos/borrar/22.jsp" id="yt5"><img src="/recurso/themes/abound/img/view.png" alt="Aprobar" /></a></td></tr>
+                        <tr class="even">
+                            <td><a href="/recurso/estado/admin">ESTADOS</a></td><td class="button-column">  <a class="delete" title="Aprobar" href="/recurso/usuariosfavoritos/borrar/23.jsp" id="yt6"><img src="/recurso/themes/abound/img/view.png" alt="Aprobar" /></a></td></tr>
+                        </tbody>
+                    </table>
+                    <div class="keys" style="display:none" title="/recurso/ocompra/update/77.jsp"><span>22</span><span>23</span></div>
+                </div>
+                <div id="maletin">
+                    <a href="#"><img width="20" height="20" src="/recurso/themes/abound/img/maletin.png" alt="hola" /></a>    -  Mi maletin         </div>
+                <br>
+                <a href="/recurso/cruge/ui/usermanagementadmin.jsp"><img width="20" height="20" src="/recurso/themes/abound/img/config1.png" alt="hola" /></a>         <a href="/recurso/cruge/ui/editprofile">  -  Mi cuenta</a>
+
+
+            </div>
+        </div>
+        ;
+    </div>
+
+
+</div><!--/span-->
+<div class="span9">
+
+<!-- breadcrumbs -->
+
+<!-- Include content pages -->
+<div class="division">
+    <h1><img width="30" height="15" src="/recurso/themes/abound/img/compra.png" alt="hola" /> Actualizar Orden de compra   - 02100011</H1>
+    <DIV ID="PEPA">  </DIV>
+</div>
+
+
+
+<div class="division">
+<div class="wide form">
+<form id="Ocompra-form" action="/recurso/ocompra/update/77.jsp" method="post">
+
+<div class="row">
+    <div class='botones'><input value="Crear" width="25" height="25" src="/recurso/themes/abound/img/save.png" type="image" name="yt0" /></div>
+    <div class='botones'><a href="/recurso/ocompra/aprobaroc/77.jsp?ev=60"><img src="/recurso/themes/abound/img/ok.png" alt="" /></a></div>
+    <div class='botones'><a href="/recurso/solpe/procesarsolpe/77.jsp?ev=61"><img src="/recurso/themes/abound/img/tacho1.png" alt="" /></a></div>
+
+</div>
+<div>
+
+
+
+</div>
+<div id="MyTabi">
+    <ul>
+        <li><a href="#tab_" title="tab_">Inicio</a></li>
+        <li><a href="#tab__" title="tab__">Comerciales</a></li>
+        <li><a href="#tab___" title="tab___">Adicionales</a></li>
+        <li><a href="#tab____" title="tab____">Mensajes</a></li>
+        <li><a href="#tab_____" title="tab_____">Historial</a></li>
+    </ul>
+    <div id="tab_">
+
+
+        <div class="row">
+            <label for="Ocompra_numcot">Numero</label>		<input size="8" maxlength="8" Disabled="Disabled" name="Ocompra[numcot]" id="Ocompra_numcot" type="text" value="02100011" />		<div class="errorMessage" id="Ocompra_numcot_em_" style="display:none"></div>	</div>
+
+
+        <div class="row">
+            <label for="Ocompra_codpro" class="required">Proveedor <span class="required">*</span></label>					<div style='float: left; '><input size="6" name="Ocompra[codpro]" id="Ocompra_codpro" type="text" maxlength="6" value="000001" /> </div> <div style='float: left;'><a onclick="$(&quot;#cru-frame3&quot;).attr(
+																					&quot;src&quot;,
+																					&quot;/recurso/Matchcode/recibevalor.jsp?campo=codpro&amp;clasesita=Clipro&amp;controlado=Ocompra&quot;); $(&quot;#cru-dialog3&quot;).data(&quot;hilo&quot;,&quot;Ocompra_codpro@fehdfj&quot;).dialog(&quot;open&quot;); return false" href="#"><img src="/recurso/themes/abound/img/find.gif" alt="" /></a> </div> <div style='float: left; background-color :#FFF;  font-family: verdana,tahoma,arial,sans-serif;
+								font-size: 8pt;'  id =fehdfj>PESQUERA EXALMAR S.A.A. </div>
+        </div>
+
+        <div style='float: left;'>
+            <div class="errorMessage" id="Ocompra_codpro_em_" style="display:none"></div>	</div>
+
+
+
+
+        <div class="row">
+            <label for="Ocompra_idcontacto" class="required">Contacto <span class="required">*</span></label>		<div style='float: left; '><input size="6" name="Ocompra[idcontacto]" id="Ocompra_idcontacto" type="text" value="2" /> </div> <div style='float: left;'><a onclick="$(&quot;#cru-frame3&quot;).attr(
+																					&quot;src&quot;,
+																					&quot;/recurso/Matchcode/recibevalor.jsp?campo=idcontacto&amp;clasesita=Contactos&amp;controlado=Ocompra&quot;); $(&quot;#cru-dialog3&quot;).data(&quot;hilo&quot;,&quot;Ocompra_idcontacto@fehdfjzx&quot;).dialog(&quot;open&quot;); return false" href="#"><img src="/recurso/themes/abound/img/find.gif" alt="" /></a> </div> <div style='float: left; background-color :#FFF;  font-family: verdana,tahoma,arial,sans-serif;
+								font-size: 8pt;'  id =fehdfjzx>SERGIO MALPARTIDA </div>
+            <div class="errorMessage" id="Ocompra_idcontacto_em_" style="display:none"></div>	</div>
+
+        <div class="row">
+            <label for="Ocompra_codestado">Estado</label>		<input disabled="disabled" size="20" type="text" value="CREADO" name="hola" id="hola" /><input name="Ocompra[codestado]" id="Ocompra_codestado" type="hidden" value="01" />
+        </div>
+
+
+        <div class="row">
+            <label for="Ocompra_texto">Comentario</label>		<input size="40" maxlength="40" name="Ocompra[texto]" id="Ocompra_texto" type="text" value="wewew" />		<div class="errorMessage" id="Ocompra_texto_em_" style="display:none"></div>	</div>
+
+
+
+        <div class="row">
+            <label for="Ocompra_tipologia" class="required">Tipo <span class="required">*</span></label>		<input size="1" maxlength="1" name="Ocompra[tipologia]" id="Ocompra_tipologia" type="text" value="S" />		<div class="errorMessage" id="Ocompra_tipologia_em_" style="display:none"></div>	</div>
+
+        <div class="row">
+            <label for="Ocompra_moneda" class="required">Moneda <span class="required">*</span></label>		<select name="Ocompra[moneda]" id="Ocompra_moneda">
+            <option value="">--Seleccione moneda--</option>
+            <option value=""></option>
+            <option value="SOL">NUEVOS SOL</option>
+            <option value="USD" selected="selected">DOLAR AMER</option>
+        </select>
+            <div class="errorMessage" id="Ocompra_moneda_em_" style="display:none"></div>	</div>
+
+        <div class="row">
+            <label for="Ocompra_orcli">Cotizac Prov</label>		<input size="12" maxlength="12" name="Ocompra[orcli]" id="Ocompra_orcli" type="text" value="ewewe" />		<div class="errorMessage" id="Ocompra_orcli_em_" style="display:none"></div>	</div>
+    </div>
+    <div id="tab__">
+
+
+
+
+        <div class="row">
+            <label for="Ocompra_descuento">Desc (%)</label>				<input size="4" maxlength="4" name="Ocompra[descuento]" id="Ocompra_descuento" type="text" value="0" />		<div class="errorMessage" id="Ocompra_descuento_em_" style="display:none"></div>	</div>
+
+        <div class="row">
+            <label for="Ocompra_codtipofac" class="required">F. pago <span class="required">*</span></label>		<select name="Ocompra[codtipofac]" id="Ocompra_codtipofac">
+            <option value="">--Seleccione modalidad--</option>
+            <option value=""></option>
+            <option value="01">FACTURA A 15 DIAS</option>
+            <option value="02" selected="selected">FACTURA 30 DIAS</option>
+        </select>
+            <div class="errorMessage" id="Ocompra_codtipofac_em_" style="display:none"></div>	</div>
+
+        <div class="row">
+
+
+            <label for="Ocompra_codsociedad" class="required">Sociedad <span class="required">*</span></label>		<select name="Ocompra[codsociedad]" id="Ocompra_codsociedad">
+            <option value="">--Seleccione un emisor--</option>
+            <option value=""></option>
+            <option value="M">CUARTO SOCIO</option>
+            <option value="C">GESTORES SAA</option>
+            <option value="A" selected="selected">PESQUERA EXALMAR SAA</option>
+            <option value="B">TERCER SOCIO</option>
+        </select>		<div class="errorMessage" id="Ocompra_codsociedad_em_" style="display:none"></div>	</div>
+
+        <div class="row">
+            <label for="Ocompra_codgrupoventas" class="required">Gr. Compras <span class="required">*</span></label>		<select name="Ocompra[codgrupoventas]" id="Ocompra_codgrupoventas">
+            <option value="">--Seleccione grupo ventas--</option>
+            <option value=""></option>
+            <option value="001" selected="selected">VENTAS-LIMA</option>
+            <option value="002">VENTAS-CHIMBOTE</option>
+        </select>		<div class="errorMessage" id="Ocompra_codgrupoventas_em_" style="display:none"></div>	</div>
+
+        <div class="row">
+            <label for="Ocompra_codtipocotizacion">Tipo</label>		<input size="1" maxlength="1" name="Ocompra[codtipocotizacion]" id="Ocompra_codtipocotizacion" type="text" value="T" />		<div class="errorMessage" id="Ocompra_codtipocotizacion_em_" style="display:none"></div>	</div>
+
+
+
+
+
+        <div class="row">
+            <label for="Ocompra_validez">Validez</label>		<input size="2" maxlength="2" name="Ocompra[validez]" id="Ocompra_validez" type="text" value="0" />		<div class="errorMessage" id="Ocompra_validez_em_" style="display:none"></div>	</div>
+
+
+
+        <div class="row">
+            <label for="Ocompra_codobjeto">Refer</label>		<input size="3" maxlength="3" name="Ocompra[codobjeto]" id="Ocompra_codobjeto" type="text" value="" />		<div class="errorMessage" id="Ocompra_codobjeto_em_" style="display:none"></div>	</div></div>
+    <div id="tab___"><div class="row">
+        <label for="Ocompra_fechapresentacion">Fec Pre</label>		<input style="width:60px;vertical-align:top" id="Ocompra_fechapresentacion" name="Ocompra[fechapresentacion]" type="text" />
+        <div class="errorMessage" id="Ocompra_fechapresentacion_em_" style="display:none"></div>	</div>
+
+        <div class="row">
+            <label for="Ocompra_fechanominal" class="required">Fec Oc <span class="required">*</span></label>			<input style="width:60px;vertical-align:top" id="Ocompra_fechanominal" name="Ocompra[fechanominal]" type="text" value="2014-11-26" />
+            <div class="errorMessage" id="Ocompra_fechanominal_em_" style="display:none"></div>	</div>
+
+        <div class="row">
+            <label for="Ocompra_tenorsup" class="required">Tenorsup <span class="required">*</span></label>		<input size="1" maxlength="1" name="Ocompra[tenorsup]" id="Ocompra_tenorsup" type="text" value="A" />		<div class="errorMessage" id="Ocompra_tenorsup_em_" style="display:none"></div>	</div>
+
+        <div class="row">
+            <label for="Ocompra_tenorinf" class="required">Tenorinf <span class="required">*</span></label>		<input size="1" maxlength="1" name="Ocompra[tenorinf]" id="Ocompra_tenorinf" type="text" value="A" />		<div class="errorMessage" id="Ocompra_tenorinf_em_" style="display:none"></div>	</div>
+
+        <div class="row">
+            <label for="Ocompra_textolargo">Comentario</label>		<textarea rows="6" cols="50" name="Ocompra[textolargo]" id="Ocompra_textolargo">DSDSDS</textarea>		<div class="errorMessage" id="Ocompra_textolargo_em_" style="display:none"></div>	</div></div>
+    <div id="tab____">
+
+        <div id="detallex-grid" class="grid-view">
+
+            <table class="items">
+                <thead>
+                <tr>
+                    <th id="detallex-grid_c0"><a class="sort-link" href="/recurso/ocompra/update/77.jsp?Mensajes_sort=cuando">Cuando</a></th><th id="detallex-grid_c1"><a class="sort-link" href="/recurso/ocompra/update/77.jsp?Mensajes_sort=usuario">Usuario</a></th><th id="detallex-grid_c2"><a class="sort-link" href="/recurso/ocompra/update/77.jsp?Mensajes_sort=nombrefichero">Nombrefichero</a></th><th id="detallex-grid_c3"><a class="sort-link" href="/recurso/ocompra/update/77.jsp?Mensajes_sort=enviadoel">Enviadoel</a></th></tr>
+                </thead>
+                <tbody>
+                <tr><td colspan="4" class="empty"><span class="empty">No se encontraron resultados.</span></td></tr>
+                </tbody>
+            </table>
+            <div class="keys" style="display:none" title="/recurso/ocompra/update/77.jsp"></div>
+        </div></div>
+    <div id="tab_____">
+        <div class="row">
+
+            <select name="selector_item" id="selector_item">
+                <option value="">Seleccione un item</option>
+                <option value="113">RODAMIENTO 63022RS</option>
+                <option value="114">BROCA SSH 3&quot;-AP ACERO</option>
+            </select>
+            <input name="Ocompra[idguia]" id="Ocompra_idguia" type="hidden" value="77" />
+        </div>
+        <div id="division_entregas">
+
+
+        </div>
+
+    </div>
+</div>
+<div id="detalle-grid" class="grid-view">
+    <div class="summary"></div>
+    <table class="items">
+        <thead>
+        <tr>
+            <th class="checkbox-column" id="detalle-grid_c0"><input type="checkbox" value="1" name="detalle-grid_c0_all" id="detalle-grid_c0_all" /></th><th id="detalle-grid_c1">st</th><th id="detalle-grid_c2"><a class="sort-link" href="/recurso/ocompra/update/77.jsp?Docomprat_sort=item">Item</a></th><th id="detalle-grid_c3"><a class="sort-link" href="/recurso/ocompra/update/77.jsp?Docomprat_sort=cant">Cant</a></th><th id="detalle-grid_c4"><a class="sort-link" href="/recurso/ocompra/update/77.jsp?Docomprat_sort=um">Um</a></th><th id="detalle-grid_c5"><a class="sort-link" href="/recurso/ocompra/update/77.jsp?Docomprat_sort=codart">Codart</a></th><th id="detalle-grid_c6"><a class="sort-link" href="/recurso/ocompra/update/77.jsp?Docomprat_sort=descri">Descri</a></th><th id="detalle-grid_c7">t</th><th id="detalle-grid_c8"><a class="sort-link" href="/recurso/ocompra/update/77.jsp?Docomprat_sort=disp">Disp</a></th><th id="detalle-grid_c9"><a class="sort-link" href="/recurso/ocompra/update/77.jsp?Docomprat_sort=punit">Punit</a></th><th id="detalle-grid_c10"><a class="sort-link" href="/recurso/ocompra/update/77.jsp?Docomprat_sort=codentro">Codentro</a></th><th id="detalle-grid_c11"><a class="sort-link" href="/recurso/ocompra/update/77.jsp?Docomprat_sort=codigoalma">Codigoalma</a></th><th id="detalle-grid_c12">Estado</th><th id="detalle-grid_c13">P. to</th><th class="button-column" id="detalle-grid_c14">&nbsp;</th></tr>
+        </thead>
+        <tbody>
+        <tr class="odd">
+            <td class="checkbox-column"><input value="352" id="detalle-grid_c0_0" type="checkbox" name="cajita[]" /></td><td><img src="/recurso/themes/abound/img/02201.png" alt="" /></td><td>001</td><td>2</td><td>001</td><td>14000005</td><td>RODAMIENTO 63022RS</td><td><img src="/recurso/themes/abound/img/texto.png" alt="hola" /></td><td></td><td>12.36</td><td>1504</td><td>002</td><td>CREADO</td><td>24.72</td><td class="button-column"> <a class="update" title="Actualizar Item" href="/recurso/Ocompra/Modificadetalle/352.jsp?asDialog=1&amp;gridId=detalle-grid"><img src="/recurso/themes/abound/img/update.png" alt="Actualizar Item" /></a> <a class="delete" title="Borrary" href="/recurso/Ocompra/borraitem.jsp?identi=352&amp;idcabecera=77" id="yt1"><img src="/recurso/themes/abound/img/tacho.jpg" alt="Borrary" /></a></td></tr>
+        <tr class="even">
+            <td class="checkbox-column"><input value="353" id="detalle-grid_c0_1" type="checkbox" name="cajita[]" /></td><td><img src="/recurso/themes/abound/img/02201.png" alt="" /></td><td>002</td><td>34</td><td>001</td><td>14000026</td><td>BROCA SSH 3&quot;-AP ACERO</td><td></td><td></td><td>12</td><td>1504</td><td>002</td><td>CREADO</td><td>408</td><td class="button-column"> <a class="update" title="Actualizar Item" href="/recurso/Ocompra/Modificadetalle/353.jsp?asDialog=1&amp;gridId=detalle-grid"><img src="/recurso/themes/abound/img/update.png" alt="Actualizar Item" /></a> <a class="delete" title="Borrary" href="/recurso/Ocompra/borraitem.jsp?identi=353&amp;idcabecera=77" id="yt2"><img src="/recurso/themes/abound/img/tacho.jpg" alt="Borrary" /></a></td></tr>
+        </tbody>
+    </table>
+    <div class="keys" style="display:none" title="/recurso/ocompra/update/77.jsp"><span>352</span><span>353</span></div>
+</div>
+<div class="row">
+</div>
+<DIV style="float:right; width:350px;">
+
+    <div id="resumen-grid" class="grid-view">
+        <div class="summary"></div>
+        <table class="items">
+            <thead>
+            <tr>
+                <th id="resumen-grid_c0"><a class="sort-link" href="/recurso/ocompra/update/77.jsp?VwOcosubtotal_sort=subtotal">Sub</a></th><th id="resumen-grid_c1"><a class="sort-link" href="/recurso/ocompra/update/77.jsp?VwOcosubtotal_sort=destotal">Destotal</a></th><th id="resumen-grid_c2"><a class="sort-link" href="/recurso/ocompra/update/77.jsp?VwOcosubtotal_sort=subtotaldes">Subtotaldes</a></th><th id="resumen-grid_c3"><a class="sort-link" href="/recurso/ocompra/update/77.jsp?VwOcosubtotal_sort=impuesto">Impuesto</a></th><th id="resumen-grid_c4"><a class="sort-link" href="/recurso/ocompra/update/77.jsp?VwOcosubtotal_sort=total">Total</a></th></tr>
+            </thead>
+            <tbody>
+            <tr class="odd">
+                <td>$432.72</td><td>$0.00</td><td>$ 432.72</td><td>$ 77.89</td><td>$ 510.61</td></tr>
+            </tbody>
+        </table>
+        <div class="keys" style="display:none" title="/recurso/ocompra/update/77.jsp"><span></span></div>
+    </div></division>
+
+
+
+
+</div><!-- form -->
+
+
+</div>
+
+
+<input type="submit" name="yt3" value="   -  f  " id="yt3" />
+
+<div class="botones">
+    <a onclick=" $(&#039;#cru-detalle&#039;).attr(&#039;src&#039;,&#039;/recurso/ocompra/creadetalle.jsp?idcabeza=77&amp;cest=01&amp;asDialog=1&amp;gridId=detalle-grid &#039;);$(&#039;#cru-dialogdetalle&#039;).dialog(&#039;open&#039;);" href="#"><img height="25" width="25" src="/recurso/themes/abound/img/mas.png" alt="" /></a>                            </div>
+
+
+
+
+<div class="botones">
+    <a onclick=" $(&#039;#cru-detalle&#039;).attr(&#039;src&#039;,&#039;/recurso/ocompra/agregarsolpe.jsp?idcabeza=77&amp;cest=01&amp;asDialog=1 &#039;);$(&#039;#cru-dialogdetalle&#039;).dialog(&#039;open&#039;);" class="botoncito" href="#"><img height="25" width="25" src="/recurso/themes/abound/img/link-add.png" alt="" /></a>
+</div>
+
+<div class="botones">
+    <a onclick=" $(&#039;#cru-detalle&#039;).attr(&#039;src&#039;,&#039;/recurso/ocompra/agregarsolpetotal.jsp?idcabeza=77&amp;cest=01&amp;asDialog=1 &#039;);$(&#039;#cru-dialogdetalle&#039;).dialog(&#039;open&#039;);" class="botoncito" href="#"><img height="25" width="25" src="/recurso/themes/abound/img/add-solpe.png" alt="" /></a>
+
+
+
+</div>
+
+<div class='botones'>
+    <input value="Crear" width="25" height="25" src="/recurso/themes/abound/img/save.png" type="image" name="yt4" />    </div>
+
+
+
+
+
+
+
+</form>
+
+
+
+
+
+
+<div>
+
+
+</div>
+
+
+<div id="cru-dialogdetalle">
+    <iframe id="cru-detalle" frameborder="0"  width="100%" height="100%" ></iframe>
+</div>
+
+
+
+<script>
+    function reloadGrid(data) {
+        $.fn.yiiGridView.update('resumen-grid');
+        //
+        //
+        $.fn.yiiGridView.update('detalle-grid');
+        alert('Esta accion modificara los datos del documento '+data+ ' ');
+    }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="cru-dialog3">
+    <iframe id="cru-frame3" width="100%" height="100%"></iframe>
+</div>
+
+
+</div><!--/span-->
+</div><!--/row-->
+
+
+</div>
+</section>
+
+<!-- Require the footer -->
+<footer>
+    <div class="subnav navbar navbar-fixed-bottom">
+        <div class="navbar-inner">
+            <div class="container">
+                Desarrollado por  :  <a href="#" target="_new"><img width="20" height="20" src="/recurso/themes/abound/img/foquito.png" alt="hola" />   Hipogea Soluciones  </a>. Reservados todos los derechos.<br /></a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<script type="text/javascript" src="/recurso/assets/1463cf7c/jui/js/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/recurso/assets/1463cf7c/jui/js/jquery-ui-i18n.min.js"></script>
+<script type="text/javascript" src="/recurso/assets/db022ba7/gridview/jquery.yiigridview.js"></script>
+<script type="text/javascript">
+    /*<![CDATA[*/
+    jQuery(function($) {
+        jQuery('body').on('change','#Ocompra_codpro',function(){jQuery.ajax({'type':'POST','url':'/recurso/Matchcode/relaciona.jsp?campo=codpro&ordencampo=1&clasesita=Clipro&contr=Ocompra','cache':false,'data':jQuery(this).parents("form").serialize(),'success':function(html){jQuery("#fehdfj").html(html)}});return false;});
+        jQuery('body').on('change','#Ocompra_idcontacto',function(){jQuery.ajax({'type':'POST','url':'/recurso/Matchcode/relaciona.jsp?campo=idcontacto&ordencampo=1&clasesita=Contactos&contr=Ocompra','cache':false,'data':jQuery(this).parents("form").serialize(),'success':function(html){jQuery("#fehdfjzx").html(html)}});return false;});
+        jQuery('body').on('change','#Ocompra_descuento',function(){jQuery.ajax({'type':'POST','url':'/recurso/Coti/Nada.jsp','success':reloadGrid,'cache':false,'data':jQuery(this).parents("form").serialize()});return false;});
+        jQuery('#Ocompra_fechapresentacion').datepicker(jQuery.extend({showMonthAfterYear:false},jQuery.datepicker.regional['es'],{'showAnim':'fold','showOn':'both','buttonText':'...','dateFormat':'yy-mm-dd'}));
+        jQuery('#Ocompra_fechanominal').datepicker(jQuery.extend({showMonthAfterYear:false},jQuery.datepicker.regional['es'],{'showAnim':'fold','showOn':'both','buttonText':'...','dateFormat':'yy-mm-dd'}));
+        jQuery('#detallex-grid').yiiGridView({'ajaxUpdate':['detallex-grid'],'ajaxVar':'ajax','pagerClass':'pager','loadingClass':'grid-view-loading','filterClass':'filters','tableClass':'items','selectableRows':1,'enableHistory':false,'updateSelector':'{page}, {sort}','filterSelector':'{filter}','pageVar':'Mensajes_page'});
+        jQuery('body').on('change','#selector_item',function(){jQuery.ajax({'type':'POST','url':'/recurso/Ocompra/cargaentregas.jsp','cache':false,'data':jQuery(this).parents("form").serialize(),'success':function(html){jQuery("#division_entregas").html(html)}});return false;});
+        jQuery('#MyTabi').tabs({'collapsible':false});
+        jQuery(document).on('click','#detalle-grid_c0_all',function() {
+            var checked=this.checked;
+            jQuery("input[name='cajita\[\]']:enabled").each(function() {this.checked=checked;});
+        });
+        jQuery(document).on('click', "input[name='cajita\[\]']", function() {
+            jQuery('#detalle-grid_c0_all').prop('checked', jQuery("input[name='cajita\[\]']").length==jQuery("input[name='cajita\[\]']:checked").length);
+        });
+        jQuery(document).on('click','#detalle-grid a.update',function(){
+            $("#cru-detalle").attr("src",$(this).attr("href"));
+            $("#cru-dialogdetalle").dialog("open");
+            return false;
+        });
+        jQuery(document).on('click','#detalle-grid a.delete',function() {
+            if(!confirm('¿Está seguro que desea borrar este elemento?')) return false;
+            var th = this,
+                    afterDelete = function(){};
+            jQuery('#detalle-grid').yiiGridView('update', {
+                type: 'POST',
+                url: jQuery(this).attr('href'),
+                success: function(data) {
+                    jQuery('#detalle-grid').yiiGridView('update');
+                    afterDelete(th, true, data);
+                },
+                error: function(XHR) {
+                    return afterDelete(th, false, XHR);
+                }
+            });
+            return false;
+        });
+        jQuery('#detalle-grid').yiiGridView({'ajaxUpdate':['detalle-grid'],'ajaxVar':'ajax','pagerClass':'pager','loadingClass':'grid-view-loading','filterClass':'filters','tableClass':'items','selectableRows':1,'enableHistory':false,'updateSelector':'{page}, {sort}','filterSelector':'{filter}','pageVar':'Docomprat_page'});
+        jQuery('body').on('click','#yt1',function(){jQuery.ajax({'type':'GET','success':function() { $.fn.yiiGridView.update('detalle-grid'); },'url':$(this).attr("href"),'cache':false,'data':jQuery(this).parents("form").serialize()});return false;});
+        jQuery('body').on('click','#yt2',function(){jQuery.ajax({'type':'GET','success':function() { $.fn.yiiGridView.update('detalle-grid'); },'url':$(this).attr("href"),'cache':false,'data':jQuery(this).parents("form").serialize()});return false;});
+        jQuery('#resumen-grid').yiiGridView({'ajaxUpdate':['resumen-grid'],'ajaxVar':'ajax','pagerClass':'pager','loadingClass':'grid-view-loading','filterClass':'filters','tableClass':'items','selectableRows':1,'enableHistory':false,'updateSelector':'{page}, {sort}','filterSelector':'{filter}','pageVar':'VwOcosubtotal_page'});
+        jQuery('body').on('click','#yt3',function(){if(confirm('Esta seguro de borrar los items seleccionados ?')) {jQuery.ajax({'success':reloadGrid,'type':'POST','url':'/recurso/Ocompra/borraitems.jsp','cache':false,'data':jQuery(this).parents("form").serialize()});return false;} else return false;});
+        jQuery('#Ocompra-form').yiiactiveform({'validateOnSubmit':true,'validateOnChange':true,'attributes':[{'id':'Ocompra_numcot','inputID':'Ocompra_numcot','errorID':'Ocompra_numcot_em_','model':'Ocompra','name':'numcot','enableAjaxValidation':true,'status':1},{'id':'Ocompra_codpro','inputID':'Ocompra_codpro','errorID':'Ocompra_codpro_em_','model':'Ocompra','name':'codpro','enableAjaxValidation':true,'status':1},{'id':'Ocompra_idcontacto','inputID':'Ocompra_idcontacto','errorID':'Ocompra_idcontacto_em_','model':'Ocompra','name':'idcontacto','enableAjaxValidation':true,'status':1},{'id':'Ocompra_texto','inputID':'Ocompra_texto','errorID':'Ocompra_texto_em_','model':'Ocompra','name':'texto','enableAjaxValidation':true,'status':1},{'id':'Ocompra_tipologia','inputID':'Ocompra_tipologia','errorID':'Ocompra_tipologia_em_','model':'Ocompra','name':'tipologia','enableAjaxValidation':true,'status':1},{'id':'Ocompra_moneda','inputID':'Ocompra_moneda','errorID':'Ocompra_moneda_em_','model':'Ocompra','name':'moneda','enableAjaxValidation':true,'status':1},{'id':'Ocompra_orcli','inputID':'Ocompra_orcli','errorID':'Ocompra_orcli_em_','model':'Ocompra','name':'orcli','enableAjaxValidation':true,'status':1},{'id':'Ocompra_descuento','inputID':'Ocompra_descuento','errorID':'Ocompra_descuento_em_','model':'Ocompra','name':'descuento','enableAjaxValidation':true,'status':1},{'id':'Ocompra_codtipofac','inputID':'Ocompra_codtipofac','errorID':'Ocompra_codtipofac_em_','model':'Ocompra','name':'codtipofac','enableAjaxValidation':true,'status':1},{'id':'Ocompra_codsociedad','inputID':'Ocompra_codsociedad','errorID':'Ocompra_codsociedad_em_','model':'Ocompra','name':'codsociedad','enableAjaxValidation':true,'status':1},{'id':'Ocompra_codgrupoventas','inputID':'Ocompra_codgrupoventas','errorID':'Ocompra_codgrupoventas_em_','model':'Ocompra','name':'codgrupoventas','enableAjaxValidation':true,'status':1},{'id':'Ocompra_codtipocotizacion','inputID':'Ocompra_codtipocotizacion','errorID':'Ocompra_codtipocotizacion_em_','model':'Ocompra','name':'codtipocotizacion','enableAjaxValidation':true,'status':1},{'id':'Ocompra_validez','inputID':'Ocompra_validez','errorID':'Ocompra_validez_em_','model':'Ocompra','name':'validez','enableAjaxValidation':true,'status':1},{'id':'Ocompra_codobjeto','inputID':'Ocompra_codobjeto','errorID':'Ocompra_codobjeto_em_','model':'Ocompra','name':'codobjeto','enableAjaxValidation':true,'status':1},{'id':'Ocompra_fechapresentacion','inputID':'Ocompra_fechapresentacion','errorID':'Ocompra_fechapresentacion_em_','model':'Ocompra','name':'fechapresentacion','enableAjaxValidation':true,'status':1},{'id':'Ocompra_fechanominal','inputID':'Ocompra_fechanominal','errorID':'Ocompra_fechanominal_em_','model':'Ocompra','name':'fechanominal','enableAjaxValidation':true,'status':1},{'id':'Ocompra_tenorsup','inputID':'Ocompra_tenorsup','errorID':'Ocompra_tenorsup_em_','model':'Ocompra','name':'tenorsup','enableAjaxValidation':true,'status':1},{'id':'Ocompra_tenorinf','inputID':'Ocompra_tenorinf','errorID':'Ocompra_tenorinf_em_','model':'Ocompra','name':'tenorinf','enableAjaxValidation':true,'status':1},{'id':'Ocompra_textolargo','inputID':'Ocompra_textolargo','errorID':'Ocompra_textolargo_em_','model':'Ocompra','name':'textolargo','enableAjaxValidation':true,'status':1}],'errorCss':'error'});
+        jQuery('#cru-dialogdetalle').dialog({'title':'Crear item','autoOpen':false,'modal':true,'width':500,'height':500,'show':'Transform'});
+        jQuery('#cru-dialog3').dialog({'title':'Explorador','autoOpen':false,'modal':true,'width':850,'height':500});
+        jQuery(document).on('click','#favoritos-grid a.delete',function() {
+            if(!confirm('¿Está seguro que desea borrar este elemento?')) return false;
+            var th = this,
+                    afterDelete = function(){};
+            jQuery('#favoritos-grid').yiiGridView('update', {
+                type: 'POST',
+                url: jQuery(this).attr('href'),
+                success: function(data) {
+                    jQuery('#favoritos-grid').yiiGridView('update');
+                    afterDelete(th, true, data);
+                },
+                error: function(XHR) {
+                    return afterDelete(th, false, XHR);
+                }
+            });
+            return false;
+        });
+        jQuery('#favoritos-grid').yiiGridView({'ajaxUpdate':['favoritos-grid'],'ajaxVar':'ajax','pagerClass':'pager','loadingClass':'grid-view-loading','filterClass':'filters','tableClass':'items','selectableRows':1,'enableHistory':false,'updateSelector':'{page}, {sort}','filterSelector':'{filter}'});
+        jQuery('body').on('click','#yt5',function(){jQuery.ajax({'type':'GET','success':function(data) { $.fn.yiiGridView.update("favoritos-grid")},'url':$(this).attr("href"),'cache':false,'data':jQuery(this).parents("form").serialize()});return false;});
+        jQuery('body').on('click','#yt6',function(){jQuery.ajax({'type':'GET','success':function(data) { $.fn.yiiGridView.update("favoritos-grid")},'url':$(this).attr("href"),'cache':false,'data':jQuery(this).parents("form").serialize()});return false;});
+        jQuery('#cru-dialoggeneral').dialog({'title':'--','autoOpen':false,'modal':true,'width':400,'height':300});
+    });
+    /*]]>*/
+</script>
+</body>
+</html>
+
+
+<div id="cru-dialoggeneral">
+    <iframe id="cru-framegeneral" width="100%" height="100%"></iframe>
+</div>

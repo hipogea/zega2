@@ -1,0 +1,244 @@
+<?php
+/* @var $this ControlActivosController */
+/* @var $model ControlActivos */
+/* @var $form CActiveForm */
+?>
+<div style="float: left; clear right;">	
+<div class="wide form">
+<h1> Procesar solicitud de Activo    <?php //echo $modelin->Codigoaf ;  ?> </h1>
+<?php $form=$this->beginWidget('CActiveForm', array(
+	'id'=>'control-activos-form',
+	'enableAjaxValidation'=>false,
+)); ?>
+<fieldset>
+  <div style="float: left; width:700px; padding:3px;">	
+	<LEGEND><b>Solicitud </b></LEGEND>
+	<?php echo $form->errorSummary($model); ?>
+	<div style="float: left; width:320px; padding:10px;">	
+		<fieldset>
+		
+		<div class="row">
+		<?php echo $form->labelEx($model,'numformato'); ?>
+		<?php echo $form->textField($model,'numformato',array('size'=>17,'maxlength'=>17,'disabled'=>'disabled')); ?>		<?php echo $form->error($model,'numformato'); ?>
+	</div>
+	<div class="row">
+		<?php echo $form->labelEx($model,'tipo'); ?>
+	<?php  $datos = array('B'=> 'Solicitud de baja ',
+	'T'=> 'Solicitud de traslado',
+	'V'=> 'Solicitud de venta'
+	);
+		  echo $form->DropDownList($model,'tipo',$datos, array('empty'=>'--Indique el tipo--')  )  ;	?>
+	<?php echo $form->error($model,'tipo'); ?>
+	</div>
+	<div class="row">
+		
+		<?php IF(!$model->isNewRecord) { 
+		      
+			  echo $form->labelEx($model,'codestado'); 
+			?>
+		    
+			<?php  echo CHtml::textField('hola',
+			  Estado::model()->find('codestado=:miestado and codocu=:midocumento',array(':midocumento'=>'001',':miestado'=>$model->codestado))->estado,
+			  array('id'=>'pepin','disabled'=>'disabled','size'=>20));
+			 ?>
+			  <?php echo CHtml::ajaxLink('Finalizar',
+									$this->createUrl('/controlactivos/cambiaestado',array('id'=>$model->idformato)	),
+									array(
+											'replace'=>'#pepin',
+			  
+										 )
+			  
+									) ;
+			  }
+		?>
+		
+	</div>
+    
+	
+	
+			<div class="row">
+			<?php echo $form->hiddenField($model,'idactivo',array(''=>$modelin->idinventario)); ?>
+		<?php echo $form->labelEx($model,'activo'); ?>
+		<?php echo CHTml::textField('ieuereu',$modelin->codigoaf,array('disabled'=>'disabled')); ?>
+		<?php echo CHTml::textField('ieureu',$modelin->descripcion,array('disabled'=>'disabled')); ?>
+		<?php echo CHTml::textField('ieur343eu',$modelin->marca,array('disabled'=>'disabled')); ?>
+		<?php echo CHTml::textField('ieur343eu',$modelin->modelo,array('disabled'=>'disabled')); ?>
+		<?php echo CHTml::image(Yii::app()->params['rutafotosinventario_'].$modelin->codigosap.'.JPG','',ARRAY('height'=>90,'width'=>90)); ?>
+		<?php echo $form->error($model,'ccanterior'); ?>
+			</div>
+			<div style='float: left; background-color :#CEF6F5; '>	
+			<div id="<?php echo ucwords(strtolower(trim($this->id))).'_idactivo_99'; ?>" >
+					 <?php echo !$model->isNewRecord?$model->inventario->descripcion:'';  ?>
+			</div>
+			</div>
+			<div style='float: left;'>
+					<?php echo $form->error($model,'idactivo'); ?>
+			</div>
+			
+
+	
+
+	
+
+	</fieldset>
+    </div>
+	
+	<div style="float: left; width:320px;  clear right; padding:10px;">	
+    <fieldset>
+	<div class="row">
+		<?php echo $form->labelEx($model,'fecha'); ?>
+		<?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
+				'model'=>$model,
+				'attribute'=>'fecha',
+				'value'=>$model->fecha,
+				'language'=>'es',
+					// additional javascript options for the date picker plugin
+				'options'=>array(
+				'showAnim'=>'fold',
+				'showButtonPanel'=>true,
+				'autoSize'=>true,
+				'dateFormat'=>'yy-mm-dd',
+					'defaultDate'=>$model->fecha)));
+		?>
+		<?php echo $form->error($model,'fecha'); ?>
+	</div>
+
+	
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'ccanterior'); ?>
+		<?php echo $form->textField($model,'ccanterior',array('size'=>8,'maxlength'=>8)); ?>
+		<?php echo $form->error($model,'ccanterior'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'ccactual'); ?>
+		<?php echo $form->textField($model,'ccactual',array('size'=>8,'maxlength'=>8)); ?>
+		<?php echo $form->error($model,'ccactual'); ?>
+	</div>
+	</fieldset>
+     </div>
+	 
+	 
+	 <div style="float: left; width:320px; padding:10px; ">
+    <fieldset>
+	<LEGEND><b>Ubicaciones </b></LEGEND>
+	 <div class="row">
+		<?php echo $form->labelEx($model,'codepanterior'); ?>
+		<?php //echo $form->textField($model,'codep',array('size'=>3,'maxlength'=>3)); ?>
+		<?php  $datos1 = CHtml::listData(Embarcaciones::model()->findAll(array('order'=>'nomep')),'codep','nomep');
+		  echo $form->DropDownList($model,'codepanterior',$datos1, array('empty'=>'--Seleccione --',
+													   'options'=>array(
+													          $modelin->codep=>array('selected'=>true)
+																		)
+																		)  )  ;
+		?>
+		<?php echo $form->error($model,'codepanterior'); ?>
+	</div>
+	
+    
+	<div class="row">
+		<?php echo $form->labelEx($model,'codep'); ?>
+		<?php //echo $form->textField($model,'codep',array('size'=>3,'maxlength'=>3)); ?>
+		<?php  $datos1 = CHtml::listData(Embarcaciones::model()->findAll(array('order'=>'nomep')),'codep','nomep');
+		  echo $form->DropDownList($model,'codep',$datos1, array('empty'=>'--Seleccione --')  )  ;
+		?>
+		<?php echo $form->error($model,'codep'); ?>
+	</div>
+	
+	<div class="row">
+		<?php echo $form->labelEx($model,'comentario'); ?>
+		<?php echo $form->textArea($model,'comentario',array('rows'=>6, 'cols'=>50)); ?>
+		<?php echo $form->error($model,'comentario'); ?>
+	</div>
+
+	
+
+
+	
+
+     </fieldset >
+     </div>
+	 
+	 
+	 
+	 <div style="float: left; width:320px;  clear right; padding:10px;">
+    <fieldset >
+	<LEGEND><b>Datos solicitante</b></LEGEND>
+	<div class="row">
+		<?php echo $form->labelEx($model,'codcentro'); ?>
+		<?php //echo $form->textField($model,'codep',array('size'=>3,'maxlength'= >3)); ?>
+		<?php  $datos1 = CHtml::listData(Centros::model()->findAll(" c_planta='1' ",array('order'=>'nomcen')),'codcen','nomcen');
+		  echo $form->DropDownList($model,'codcentro',$datos1, array('empty'=>'--Seleccione--')  )  ;
+		?>
+		<?php echo $form->error($model,'codcentro'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'solicitante'); ?>
+		<?php //echo $form->textField($model,'codep',array('size'=>3,'maxlength'= >3)); ?>
+		<?php  $datos1 = CHtml::listData(VwTrabajadores::model()->findAll(array('order'=>'nombrecompleto')),'codigotra','nombrecompleto');
+		  echo $form->DropDownList($model,'solicitante',$datos1, array('empty'=>'--Seleccione--')  )  ;
+		?>
+	
+			
+		<?php echo $form->error($model,'solicitante'); ?>
+	  </div>
+    </fieldset>
+      </div>
+	 
+	 
+	 
+	  <div style="float: left; width:320px; padding:10px;">
+    <fieldset>
+	<LEGEND><b>Referencia</b></LEGEND>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'documento'); ?>
+		<?php  $datos = CHtml::listData(Documentos::model()->findAll(" clase='D'",array('order'=>'desdocu')),'coddocu','desdocu');
+		  echo $form->DropDownList($model,'documento',$datos, array('empty'=>'--Seleccione un documento--')  )  ;
+		?>
+		<?php echo $form->error($model,'documento'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'numeroref'); ?>
+		<?php echo $form->textField($model,'numeroref',array('size'=>25,'maxlength'=>25)); ?>
+		<?php echo $form->error($model,'numeroref'); ?>
+	</div>
+
+	
+     </fieldset>
+	</div>
+	
+	<div class="row buttons">
+		<?php echo CHtml::submitButton($model->isNewRecord ? 'Crear' : 'Grabar modificaciones'); ?>
+	</div>
+	</fieldset>
+<?php $this->endWidget(); ?>
+</div>
+</div><!-- form -->
+
+
+
+<?php
+//--------------------- begin new code --------------------------
+   // add the (closed) dialog for the iframe
+    $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
+    'id'=>'cru-dialog3',
+    'options'=>array(
+        'title'=>'Explorador',
+        'autoOpen'=>false,
+        'modal'=>true,
+        'width'=>600,
+        'height'=>500,
+    ),
+    ));
+?>
+<iframe id="cru-frame3" width="100%" height="100%"></iframe>
+
+<?php
+ 
+$this->endWidget();
+//--------------------- end new code --------------------------
+?>

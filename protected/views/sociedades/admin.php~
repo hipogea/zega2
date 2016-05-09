@@ -1,0 +1,40 @@
+<?php
+/* @var $this SociedadesController */
+/* @var $model Sociedades */
+
+$this->breadcrumbs=array(
+	'Sociedades'=>array('index'),
+	'Manage',
+);
+
+$this->menu=array(
+	//array('label'=>'List Sociedades', 'url'=>array('index')),
+	array('label'=>'Crear Sociedad', 'url'=>array('create')),
+);
+
+?>
+
+<h1>Sociedades</h1>
+
+
+
+<?php $this->widget('zii.widgets.grid.CGridView', array(
+	'id'=>'sociedades-grid',
+	'dataProvider'=>$model->search(),
+	'filter'=>$model,
+	'columns'=>array(
+		'socio',
+		'dsocio',
+		'rucsoc',
+		'creadopor',
+		'creadoel',
+		'modificadopor',
+		/*
+		'modificadoel',
+		'estado',
+		*/
+		array(
+			'class'=>'CButtonColumn',
+		),
+	),
+)); ?>

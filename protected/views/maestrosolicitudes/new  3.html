@@ -1,0 +1,323 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="language" content="en" />
+ 
+	<!-- blueprint CSS framework -->
+	<link rel="stylesheet" type="text/css" href="/recurso/themes/super/css/screen.css" media="screen, projection" />
+	<link rel="stylesheet" type="text/css" href="/recurso/themes/super/css/print.css" media="print" />
+	<!--[if lt IE 8]>
+	<link rel="stylesheet" type="text/css" href="/recurso/themes/super/css/ie.css" media="screen, projection" />
+	<![endif]-->
+ 
+	<link rel="stylesheet" type="text/css" href="/recurso/themes/super/css/main.css" />
+	<link rel="stylesheet" type="text/css" href="/recurso/themes/super/css/form.css" />
+ 
+	<script type="text/javascript" src="/recurso/assets/6fd90d14/jquery.js"></script>
+<title> - Create MAESTROSOLICITUDES</title>
+</head>
+ 
+<body>
+ 
+<div class="container" id="page">
+ 
+	<div id="header">
+		<div id="logo"></div>
+		<div id="logo">	
+		</div>
+	</div><!-- header -->
+ 
+	<div id="mainmenu">
+				<ul id="yw2">
+<li><a href="/recurso/index.php">Inicio</a></li>
+<li><a href="/recurso/index.php?r=partes">Motorista</a></li>
+<li><a href="/recurso/index.php?r=inventario/admin">inventario AF</a></li>
+<li><a href="/recurso/index.php?r=archivador/admin">Descargas</a></li>
+<li><a href="/recurso/index.php?r=vwguia/admin">Movimientos</a></li>
+<li><a href="/recurso/index.php?r=temporadas/admin">Pesca</a></li>
+<li><a href="/recurso/index.php?r=cruge/ui/usermanagementadmin">Administrar Usuarios</a></li>
+<li><a href="/recurso/index.php?r=cruge/ui/logout">Cerrar sesion (admin)</a></li>
+</ul>		
+		
+		
+		
+	</div><!-- mainmenu -->
+ 
+	
+	<div class="span-19">
+	<div id="content">
+		
+<h1>Crear solicitud de apertura </h1>
+ 
+ 
+ 
+ 
+<div class="wide form">
+ 
+<form id="maestrosolicitudes-form" action="/recurso/index.php?r=mAESTROSOLICITUDES/create" method="post">
+	<p class="note">Campos con <span class="required">*</span> Son obligatorios.</p>
+ 
+	
+	<div class="row">
+		<label for="Maestrosolicitudes_descripcioncorta">Que cosa es</label>		<input size="20" maxlength="20" name="Maestrosolicitudes[descripcioncorta]" id="Maestrosolicitudes_descripcioncorta" type="text" />		<div class="tooltip">
+			Controller ID is case-sensitive. CRUD controllers are often named after
+			the model class name that they are dealing with. Below are some examples:
+			<ul>
+				<li><code>post</code> generates <code>PostController.php</code></li>
+				<li><code>postTag</code> generates <code>PostTagController.php</code></li>
+				<li><code>admin/user</code> generates <code>admin/UserController.php</code>.
+					If the application has an <code>admin</code> module enabled,
+					it will generate <code>UserController</code> (and other CRUD code)
+					within the module instead.
+				</li>
+			</ul>
+		</div>
+			</div>
+ 
+	<div class="row">
+		<label for="Maestrosolicitudes_marca">Marca o Fabricante</label>		<input size="30" maxlength="30" name="Maestrosolicitudes[marca]" id="Maestrosolicitudes_marca" type="text" />			</div>
+ 
+	<div class="row">
+		<label for="Maestrosolicitudes_modelo">Modelo</label>		<input size="25" maxlength="25" name="Maestrosolicitudes[modelo]" id="Maestrosolicitudes_modelo" type="text" />			</div>
+ 
+	<div class="row">
+		<label for="Maestrosolicitudes_numeroparte">Numero de Parte</label>		<input size="25" maxlength="25" name="Maestrosolicitudes[numeroparte]" id="Maestrosolicitudes_numeroparte" type="text" />			</div>
+ 
+	<div class="row">
+		<label for="Maestrosolicitudes_descripcion">Descripcion</label>		<input size="40" maxlength="40" name="Maestrosolicitudes[descripcion]" id="Maestrosolicitudes_descripcion" type="text" />			</div>
+ 
+	<div class="row">
+		<label for="Maestrosolicitudes_um">Um</label>		<input size="3" maxlength="3" name="Maestrosolicitudes[um]" id="Maestrosolicitudes_um" type="text" />			</div>
+ 
+	<div class="row">
+		<label for="Maestrosolicitudes_codclase">Clase</label>	       <select name="Maestrosolicitudes[codclase]" id="Maestrosolicitudes_codclase">
+<option value="">--Seleccione una clase--</option>
+<option value="0003">Activos                            </option>
+<option value="0009">Componente mantenimiento           </option>
+<option value="0016">Embalaje                           </option>
+<option value="0010">Envases                            </option>
+<option value="0015">Herramientas                       </option>
+<option value="0011">Mat.embalaje en préstamo           </option>
+<option value="0013">Materia prima                      </option>
+<option value="0012">Material de proceso                </option>
+<option value="0014">Materiales no valorados            </option>
+<option value="0008">Materias aux./combustible          </option>
+<option value="0006">Medios aux.fabricación             </option>
+<option value="0004">Piezas de recambio                 </option>
+<option value="0007">Producto semielaborado             </option>
+<option value="0005">Producto terminado                 </option>
+<option value="0001">Residuos                           </option>
+<option value="0002">Servicio                           </option>
+</select>			</div>
+ 
+	<div class="row">
+		<label for="Maestrosolicitudes_codgrupo">Grupo</label>	     <select name="Maestrosolicitudes[codgrupo]" id="Maestrosolicitudes_codgrupo">
+<option value="">--Seleccione un grupo--</option>
+<option value="105">ABSOR PAD Y PAPELES DE EMPAQUES         </option>
+<option value="045">ACCESORIOS DE COSEDORA                  </option>
+<option value="013">ADHERENTE AGRICOLA                      </option>
+<option value="014">ADITIVOS PARA CALDEROS                  </option>
+<option value="015">ADITIVOS PARA COMBUSTIBLE               </option>
+<option value="016">ADITIVOS PARA REFRIGERACION             </option>
+<option value="017">AGUA DULCE                              </option>
+<option value="018">AISLANTES TERMICOS                      </option>
+<option value="019">ALAMBRES DE Fe, GALVANIZADO Y ACERO     </option>
+<option value="020">ALMOHADILLAS                            </option>
+<option value="021">ANTIOXIDANTE                            </option>
+<option value="022">APAREJOS Y MANIOBRAS                    </option>
+<option value="023">ATRAQUE Y FONDEO                        </option>
+<option value="024">ATRAYENTE AGRICOLA                      </option>
+<option value="025">BACTERICIDAS                            </option>
+<option value="026">BALANZAS Y ACCESORIOS                   </option>
+<option value="027">BANDEJAS                                </option>
+<option value="028">BOCINAS METALICAS                       </option>
+<option value="029">BOLSAS                                  </option>
+<option value="030">BOMBA DOSIFICADORA DE A/O Y ACCESORIOS  </option>
+<option value="031">BOMBAS E IMPULSORES Y ACCESORIOS        </option>
+<option value="032">CABLES DE ACERO                         </option>
+<option value="033">CABOS                                   </option>
+<option value="034">CADENAS DE SUJECCION                    </option>
+<option value="035">CAJAS                                   </option>
+<option value="036">CALDEROS Y ACCESORIOS                   </option>
+<option value="038">CENTRIFUGAS Y ACCESORIOS                </option>
+<option value="039">CHATARRA                                </option>
+<option value="040">CHUMACERAS                              </option>
+<option value="041">COCINADORES Y ACCESORIOS                </option>
+<option value="042">COMBUSTIBLES Y DERIVADOS                </option>
+<option value="043">COMPRESORAS INDUSTRIALES Y ACCESORIOS   </option>
+<option value="044">CONTROLADORES BIOLOGICOS / ACCESORIOS.  </option>
+<option value="046">DETERGENTE POTASICO                     </option>
+<option value="047">ELECTROBOMBAS Y ACCESORIOS              </option>
+<option value="048">ELECTRONICA Y NAVEGACION                </option>
+<option value="049">ELEMENTOS DE SUJECION                   </option>
+<option value="051">EMPAQUETADURAS DE PLANCHA Y TELA        </option>
+<option value="050">EMPAQUETADURAS DE SOGA                  </option>
+<option value="052">ENZIMAS                                 </option>
+<option value="053">EQUIPO DE FUMIGACION Y ACCESORIOS       </option>
+<option value="057">EQUIPOS DE ISAJE                        </option>
+<option value="054">EQUIPOS DE LABORATORIO Y ACCESORIOS     </option>
+<option value="055">EQUIPOS DE REFRIGERACION INDUSTRIAL Y AC</option>
+<option value="058">ESPARRAGO                               </option>
+<option value="059">ESQUINEROS                              </option>
+<option value="060">ETIQUETAS                               </option>
+<option value="061">FAJAS                                   </option>
+<option value="062">FERTILIZANTE                            </option>
+<option value="063">FILTROS COMBUSTIBLES                    </option>
+<option value="064">FILTROS DE AGUA                         </option>
+<option value="065">FILTROS DE AIRE                         </option>
+<option value="067">FILTROS DE SISTEMA DE REFRIGERACION     </option>
+<option value="066">FILTROS LUBRICANTES                     </option>
+<option value="068">FUNGICIDAS                              </option>
+<option value="069">GENERADORES PARA UVA                    </option>
+<option value="070">GRAPAS                                  </option>
+<option value="150">GRUPO PRUEBA VARIOS                     </option>
+<option value="149">GRUPOS DE ARTICULOS A DEFINIR           </option>
+<option value="071">GUANO ORIGEN ANIMAL                     </option>
+<option value="072">HABITABILIDAD                           </option>
+<option value="073">HARINA DE PESCADO                       </option>
+<option value="075">HERBICIDA                               </option>
+<option value="076">HERRAMIEN MECAN. AGRICOLAS CARPINTERIA P</option>
+<option value="077">HILOS                                   </option>
+<option value="078">HOJA DE EMPAQUE                         </option>
+<option value="151">HOLANTAO                                </option>
+<option value="079">HORMONAS                                </option>
+<option value="080">INSECTICIDA                             </option>
+<option value="081">INSTRUMENTOS DE CONTROL Y MEDICION      </option>
+<option value="082">INSTRUMENTOS MEDICOS Y MEDICAMENTOS     </option>
+<option value="083">INSUMOS QUIMICOS                        </option>
+<option value="084">LIGAS                                   </option>
+<option value="086">LUBRICANTES Y GRASAS                    </option>
+<option value="087">MADERAS (TRIPLAY)                       </option>
+<option value="088">MALLAS DE FIERRO, GALVANIZADO, ACERO.   </option>
+<option value="089">MANDARINA                               </option>
+<option value="090">MANGUERAS Y ACCESORIOS                  </option>
+<option value="091">MANTAS                                  </option>
+<option value="092">MAQUINARIA PESADA(TRACTORES, MONTACARGA,</option>
+<option value="115">MATERIAL PLASTICO Y VIDRIOS (MALLAS PVC)</option>
+<option value="095">MATERIALES CASCO                        </option>
+<option value="093">MATERIALES DE CONSTRUCCION              </option>
+<option value="094">MATERIALES ELECTRICOS                   </option>
+<option value="096">METALES Y ALEACIONES EN BRUTO           </option>
+<option value="106">MOLINOS Y ACCESORIOS                    </option>
+<option value="097">MOTOR CAT Y ACCESORIOS                  </option>
+<option value="100">MOTOR JHON DEERE Y ACCESORIOS           </option>
+<option value="101">MOTOR LISTER Y ACCESORIOS               </option>
+<option value="102">MOTOR MAN Y ACCESORIOS                  </option>
+<option value="098">MOTOR MOTOR DETROIT DIESEL (GENERAL MOTO</option>
+<option value="103">MOTOR PERKINS Y ACCESORIOS              </option>
+<option value="139">MOTOR VOLVO Y ACCESORIOS                </option>
+<option value="099">MOTORES ELECTRICOS Y REDUCTORES  Y ACCES</option>
+<option value="104">MUEBLES DE OFICINA                      </option>
+<option value="107">PARIHUELAS                              </option>
+<option value="108">PEGAMENTOS                              </option>
+<option value="109">PESCADO                                 </option>
+<option value="110">PESTICIDAS                              </option>
+<option value="111">PINTURAS, SOLVENTES Y DISOLVENTES       </option>
+<option value="112">PLANCHAS METALICAS                      </option>
+<option value="114">PLANTACIONES (VID, CITRICOS, FRUTALES, E</option>
+<option value="113">PLANTAS EVAPORADORAS Y ACCESORIOS       </option>
+<option value="037">PLATAFORMA,SEPARADORES/CARTON-PLASTICO  </option>
+<option value="116">POLEAS Y ACCESORIOS                     </option>
+<option value="117">PRENSAS Y ACCESORIOS                    </option>
+<option value="118">PRESERVANTES                            </option>
+<option value="085">PRODUCTOS PARA LIMPIEZA Y DESINFECCION  </option>
+<option value="119">PROTECCION PERSONAL, INDUMENTARIA       </option>
+<option value="120">REACTIVOS PARA LABORATORIO              </option>
+<option value="121">REDES Y ACCESORIOS DE PESCA             </option>
+<option value="122">REFRIGERANTES                           </option>
+<option value="123">RETENES Y SEGUROS SEEGER                </option>
+<option value="124">RODAJES                                 </option>
+<option value="125">RODENTICIDAS                            </option>
+<option value="126">SACOS                                   </option>
+<option value="127">SECADORES Y ACCESORIOS                  </option>
+<option value="128">SEGURIDAD, SALVATAJE Y SEÑALIZACION     </option>
+<option value="129">SELLO MECANICO                          </option>
+<option value="130">SEMILLAS                                </option>
+<option value="131">SEPARADORAS Y ACCESORIOS                </option>
+<option value="133">SISTEMA DE COMUNICACIÓN (RADIOS, ANTENAS</option>
+<option value="132">SISTEMA DE RIEGO Y ACCESORIOS           </option>
+<option value="134">SODA CAUSTICA INDUSTRIAL                </option>
+<option value="135">SOLDADURA, EQUIPOS Y ACCESORIOS         </option>
+<option value="056">SUMINISTROS PARA EQUIPOS DE COMPUTO Y FO</option>
+<option value="136">TEKNOPOR                                </option>
+<option value="137">TRANSMISION HIDRAULICA                  </option>
+<option value="138">TRANSMISION MECANICA                    </option>
+<option value="074">TRANSPORTADORES HELICOIDALES Y FAJAS TRA</option>
+<option value="141">TUBERIA DE PVC Y ACCESORIOS             </option>
+<option value="140">TUBERIAS DE COBRE Y ACCESORIOS          </option>
+<option value="142">TUBERIAS METALICAS Y ACCESORIOS         </option>
+<option value="143">UTILES DE ESCRITORIO                    </option>
+<option value="144">UVA                                     </option>
+<option value="145">VALVULAS                                </option>
+<option value="146">VEHICULOS Y ACCESORIOS                  </option>
+<option value="147">ZINES                                   </option>
+<option value="148">ZUNCHOS                                 </option>
+</select>			</div>
+ 
+	
+ 
+	<div class="row">
+		<label for="Maestrosolicitudes_textolargo">Informacion adicional</label>		<textarea rows="6" cols="50" name="Maestrosolicitudes[textolargo]" id="Maestrosolicitudes_textolargo"></textarea>			</div>
+ 
+	<div class="row">
+		<label for="Maestrosolicitudes_codigoestado">Estado</label>		<input size="2" maxlength="2" name="Maestrosolicitudes[codigoestado]" id="Maestrosolicitudes_codigoestado" type="text" />			</div>
+ 
+	<div class="row">
+		<label for="Maestrosolicitudes_codigodoc">Documento</label>		<input size="3" maxlength="3" name="Maestrosolicitudes[codigodoc]" id="Maestrosolicitudes_codigodoc" type="text" />			</div>
+ 
+	<div class="row">
+		<label for="Maestrosolicitudes_codigocreado">Codigocreado</label>		<input size="12" maxlength="12" Disabled="Disabled" name="Maestrosolicitudes[codigocreado]" id="Maestrosolicitudes_codigocreado" type="text" />			</div>
+ 
+	<div class="row">
+		<label for="Maestrosolicitudes_descripcionfinal">Descripcion propuesta</label>		<input size="40" maxlength="40" Disabled="Disabled" name="Maestrosolicitudes[descripcionfinal]" id="Maestrosolicitudes_descripcionfinal" type="text" />			</div>
+ 
+	<div class="row buttons">
+		<input type="submit" name="yt0" value="Create" />	</div>
+ 
+</form>
+</div><!-- form -->	</div><!-- content -->
+</div>
+<div class="span-5 last">
+	<div id="sidebar">
+	<div class="portlet" id="yw0">
+<div class="portlet-decoration">
+<div class="portlet-title">Acciones</div>
+</div>
+<div class="portlet-content">
+<ul class="operations" id="yw1">
+<li><a href="/recurso/index.php?r=mAESTROSOLICITUDES/admin">Ver  solicitudes</a></li>
+</ul></div>
+</div>	</div><!-- sidebar -->
+</div>
+ 
+	
+	<div class="clear"></div>
+ 
+	<div id="footer">
+		Copyright &copy; 2013	</div><!-- footer -->
+ 
+</div><!-- page -->
+ 
+<script type="text/javascript"> 
+/*<![CDATA[*/
+jQuery(function($) {
+ 
+$('#Maestrosolicitudes_marca').change(function(){
+	$(this).data('changed',$(this).val()!='');
+});
+$('#Maestrosolicitudes_descripcioncorta').bind('keyup change', function(){
+	var controller=$('#Maestrosolicitudes_marca');
+	if(!controller.data('changed')) {
+		var id=new String($(this).val().match(/\w*$/));
+		if(id.length>0)
+			id=id.substring(0,1).toLowerCase()+id.substring(1);
+		controller.val(id);
+	}
+});
+ 
+});
+/*]]>*/
+</script>
+</body>
+</html>
