@@ -574,7 +574,7 @@ $solpe=Solpe::model()->findByPk($id);
  $cadena='<div class="titulo"> <h1>SOLICITUD - '.$solpe->numero.'</h1>  </div>';
  $cadena=$cadena.'<div class="textocabecera">'.$solpe->textocabecera.'</div>';
     $cadena=$cadena.'<div class="fecha"> Fecha : '.$solpe->fechadoc.'</div>';
-     $cadena=$cadena.'<div class="usuario">Usuario : '.$solpe->creadopor.'</div>';
+    // $cadena=$cadena.'<div class="usuario">Usuario : '.$solpe->creadopor.'</div>';
      //$cadena=$cadena.'<div class="ceco"> Imputacion : '.$solpe->creadopor.'</div>'; 
     $cadena=$cadena.'<div class="detalle">';
 $cadena=$cadena.'<div id="content">';
@@ -640,7 +640,10 @@ for ($i=0; $i < count($detalle); $i++) {
 
 
 $mpdf=Yii::app()->ePdf->mpdf();
-			$hojaestilo=file_get_contents('themes/abound/css'.DIRECTORY_SEPARATOR.'estilosolpe.css');
+	$ruta=Yii::app()->getTheme()->basePath.DIRECTORY_SEPARATOR.'css'.DIRECTORY_SEPARATOR.'reportes'.DIRECTORY_SEPARATOR . 'estilosolpe.css' ;
+		//	$hojaestilo=file_get_contents('themes/abound/css'.DIRECTORY_SEPARATOR.'estilosolpe.css');
+	if(is_file($ruta))
+	$hojaestilo=file_get_contents ($ruta);
 				$mpdf->SetDisplayMode('fullpage');				
 				$mpdf->WriteHTML($hojaestilo,1);
 				$mpdf->WriteHTML($cadena,2);
@@ -1479,7 +1482,7 @@ public function actionprocesarsolpe($id)
 		if($modelocabeza->estado=='10' OR $modelocabeza->estado=='99' or ($modelocabeza->desolpe_solpe->iduser==yii::app()->end())) {
 		$model=new Desolpe;
 		$model->valorespordefecto();
-		$this->performAjaxValidation($model);
+		//$this->performAjaxValidation($model);
 		if(isset($_POST['Desolpe']))
 		{
 			  $model->attributes=$_POST['Desolpe'];

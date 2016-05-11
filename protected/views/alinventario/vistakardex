@@ -1,0 +1,73 @@
+<?php
+/* @var $this AlkardexController */
+/* @var $model Alkardex */
+
+$this->breadcrumbs=array(
+	'Alkardexes'=>array('index'),
+	'Manage',
+);
+
+$this->menu=array(
+	//array('label'=>'Do', 'url'=>array('index')),
+	//array('label'=>'Create Alkardex', 'url'=>array('create')),
+);
+
+Yii::app()->clientScript->registerScript('search', "
+$('.search-button').click(function(){
+	$('.search-form').toggle();
+	return false;
+});
+$('.search-form form').submit(function(){
+	$('#alkardex-grid').yiiGridView('update', {
+		data: $(this).serialize()
+	});
+	return false;
+});
+");
+?>
+<span class="summary-icon2">
+           <img src="<?php echo Yii::app()->theme->baseUrl ;?>/img/kardex.png" width="25" height="25" alt="">
+</span>
+<h1>Documentos de Material</h1>
+
+
+
+<div class="wide form">
+<?php echo CHtml::link('Filtro','#',array('class'=>'search-button')); ?>
+</div>
+
+<div class="search-form" style="display:none">
+<?php $this->renderPartial('_search',array(
+	'model'=>$model,
+)); ?>
+</div><!-- search-form -->
+
+<div class="division">
+<?php $this->widget('zii.widgets.grid.CGridView', array(
+	'id'=>'alkardex-grid',
+	'dataProvider'=>$model->search(),
+	//'filter'=>$model,
+	'columns'=>array(
+		'numkardex',
+        'codart',
+        array('name'=>'.','header'=>'.','type'=>'raw','value'=>'($data->cant <0)?CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."salida.png","hola"):CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."entrada.png","hola")'),
+
+        array('name'=>'desum','htmlOptions' => array('width' => 10) ),
+        'cant',
+        array('name'=>'descripcion',
+            'htmlOptions' => array('width' => 250)
+        ),
+		'fecha',
+		//'numdoc',
+		'movimiento',
+		'codmov',
+		'codcentro',		
+		'alemi',
+        array('name'=>'numvale','header'=>'Vale','type'=>'raw','value'=>'CHtml::link($data->numvale,Yii::app()->createurl(\'/almacendocs/update\', array(\'id\'=> $data->hidvale ) ))'),
+       // array('name'=>'c_numgui','type'=>'raw','value'=>'CHtml::link($data->c_numgui, ($data->c_salida==\'1\')?Yii::app()->createurl(\'/guia/update\', array(\'id\'=> $data->id ) ) :  Yii::app()->createurl(\'/ne/update\', array(\'id\'=> $data->id ) )          )'),
+        array('name'=>'numdocref','header'=>'Referencia','type'=>'raw','value'=>'$data->numdocref'),
+
+
+    ),
+)); ?>
+</div>

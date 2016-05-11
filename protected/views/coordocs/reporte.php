@@ -20,7 +20,7 @@ $cadenaestilo='position: fixed;  top: '.$modelo->ygeneral.'px; left:'.$modelo->x
 //echo  $this->cabecera($filamuestracabecera,$proveedorestilo);
 echo $cadenacabecera;
 
-						   //'columnas'=>$this->makeColumnas($filamuestrahijo,$proveedordatos),
+					   //'columnas'=>$this->makeColumnas($filamuestrahijo,$proveedordatos),
 ?>
 
 
@@ -30,16 +30,16 @@ echo $cadenacabecera;
 </div>
 
 <div style="position:absolute; width:80%; left:<?php echo $modelo->x_grilla; ?>px; top:<?php echo $modelo->y_grilla; ?>px">
-
+<?php // echo $hojaestilo; yii::app()->end(); ?>
   <?php  $this->widget('zii.widgets.grid.CGridView', array(
     'id'=>'detalle-grid',
-    //'hideHeader'=>'false',
+    'hideHeader'=>($modelo->tienecabecera=='1')?FALSE:TRUE,
     'dataProvider'=>$proveedordatos,
       'enablePagination'=>'false',
 
     //'filter'=>$modelo,
     'summaryText'=>'',
-   // 'cssFile' => 'themes/abound/css'.DIRECTORY_SEPARATOR.'estiloguia.css',
+   'cssFile' => $hojaestilo,
     'columns'=>$columnas,
     ));
 
@@ -48,6 +48,9 @@ echo $cadenacabecera;
 
 </div>
 
-<?php  // yii::app()->end();?>
+<?php
+//Cerrar el margen absoluto
+//echo CHtml::closeTag("div");
+?>
 
 

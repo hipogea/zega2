@@ -45,122 +45,112 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="_form_ajuste.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/protected/views/alinventario/_form_ajuste.php">
+      <file leaf-file-name="jquery-ui.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/themes/temita/css/jquery-ui.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1360" max-vertical-offset="2754">
-              <caret line="95" column="51" selection-start-line="95" selection-start-column="51" selection-end-line="95" selection-end-column="51" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AlinventarioController.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/protected/controllers/AlinventarioController.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="15329" max-vertical-offset="16796">
-              <caret line="921" column="46" selection-start-line="921" selection-start-column="46" selection-end-line="921" selection-end-column="46" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="1265" max-vertical-offset="2091">
+              <caret line="89" column="20" selection-start-line="89" selection-start-column="20" selection-end-line="89" selection-end-column="20" />
               <folding>
-                <marker date="1462782178969" expanded="true" signature="6353:6572" placeholder="SELECT *from.._prefixmaestrocomponentes where..." />
-                <marker date="1462782178969" expanded="true" signature="6682:6862" placeholder="INSERT INTO ..." />
-                <marker date="1462782178969" expanded="true" signature="7349:7586" placeholder="SELECT *from.._prefixmaestrocomponentes where..." />
-                <marker date="1462782178969" expanded="true" signature="7719:7961" placeholder="INSERT INTO ..." />
-                <marker date="1462782178969" expanded="true" signature="8500:8682" placeholder="SELECT *from.._prefixmaestrocomponentes where..." />
-                <marker date="1462782178969" expanded="true" signature="8792:8949" placeholder="INSERT INTO ..." />
-                <marker date="1462782178969" expanded="true" signature="9674:9858" placeholder="SELECT *from.._prefixmaestrocomponentes where..." />
-                <marker date="1462782178969" expanded="true" signature="15637:15659" placeholder="delete from ..." />
-                <marker date="1462782178969" expanded="true" signature="16417:16637" placeholder="INSERT INTO ..." />
-                <marker date="1462782178969" expanded="true" signature="18100:18177" placeholder="select count..Yii_app_params_prefijo_pareto..." />
-                <marker date="1462782178969" expanded="true" signature="18351:18481" placeholder="select ranki..Yii_app_params_prefijo_pareto..." />
-                <marker date="1462782178969" expanded="true" signature="21875:21959" placeholder="select sum(s..Vw_alinventario_resumen..." />
-                <marker date="1462782178969" expanded="true" signature="22026:22086" placeholder="select sum(s..Vw_alinventario_resumen..." />
-                <marker date="1462782178969" expanded="true" signature="22217:22342" placeholder="select disti..Vw_alinventario_resumen..." />
-                <marker date="1462782178969" expanded="true" signature="22407:22566" placeholder="select sum(s..Vw_alinventario_resumen..." />
+                <element signature="e#10242#10327#2" expanded="true" />
+                <element signature="e#10862#13211#2" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Inventariofisico.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/protected/models/Inventariofisico.php">
+      <file leaf-file-name="SolpeController.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/protected/controllers/SolpeController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="3189" max-vertical-offset="4369">
-              <caret line="208" column="46" selection-start-line="208" selection-start-column="46" selection-end-line="208" selection-end-column="46" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="25121" max-vertical-offset="30430">
+              <caret line="1508" column="41" selection-start-line="1508" selection-start-column="41" selection-end-line="1508" selection-end-column="41" />
+              <folding>
+                <marker date="1462912686358" expanded="true" signature="2142:2260" placeholder="select *from..." />
+                <marker date="1462912686358" expanded="true" signature="33877:33959" placeholder="SELECT id FR..Yii_app_params_prefijo_opcionesdocumentos..." />
+                <marker date="1462912686358" expanded="true" signature="34096:34249" placeholder="INSERT INTO ..." />
+                <marker date="1462912686358" expanded="true" signature="34527:34609" placeholder="SELECT id FR..Yii_app_params_prefijo_opcionesdocumentos..." />
+                <marker date="1462912686358" expanded="true" signature="34752:34906" placeholder="INSERT INTO ..." />
+                <marker date="1462912686358" expanded="true" signature="37192:37285" placeholder="select count..Yii_app_params_prefijo_desolpe..." />
+                <marker date="1462912686358" expanded="true" signature="38417:38484" placeholder="delete from ..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CoordocsController.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/protected/controllers/CoordocsController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-31.846153" vertical-offset="5088" max-vertical-offset="12019">
+              <caret line="348" column="10" selection-start-line="348" selection-start-column="10" selection-end-line="348" selection-end-column="10" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="vw_conteo.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/protected/views/alinventario/vw_conteo.php">
+      <file leaf-file-name="vw_detalle.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/protected/views/ocompra/vw_detalle.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-6.5384617" vertical-offset="0" max-vertical-offset="1173">
-              <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+            <state vertical-scroll-proportion="0.38846153" vertical-offset="614" max-vertical-offset="2040">
+              <caret line="48" column="240" selection-start-line="48" selection-start-column="240" selection-end-line="48" selection-end-column="240" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="create.php" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/protected/views/alreserva/create.php">
+      <file leaf-file-name="Ocompra.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/protected/models/Ocompra.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.25515947" vertical-offset="0" max-vertical-offset="533">
-              <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+            <state vertical-scroll-proportion="-2.9636364" vertical-offset="2302" max-vertical-offset="11475">
+              <caret line="145" column="27" selection-start-line="145" selection-start-column="13" selection-end-line="145" selection-end-column="27" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="vw_detalle_grilla.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/protected/views/solpe/vw_detalle_grilla.php">
+      <file leaf-file-name="reporte.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/protected/views/coordocs/reporte.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="627" max-vertical-offset="2397">
-              <caret line="58" column="10" selection-start-line="52" selection-start-column="8" selection-end-line="58" selection-end-column="10" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="230" max-vertical-offset="1054">
+              <caret line="37" column="34" selection-start-line="37" selection-start-column="34" selection-end-line="37" selection-end-column="34" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="column2.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/themes/temita/views/layouts/column2.php">
+      <file leaf-file-name="Solpe.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/protected/models/Solpe.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="749" max-vertical-offset="4301">
+            <state vertical-scroll-proportion="0.0" vertical-offset="4869" max-vertical-offset="6494">
+              <caret line="299" column="49" selection-start-line="299" selection-start-column="49" selection-end-line="299" selection-end-column="49" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="tab_materiales.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/protected/views/configuracion/tab_materiales.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="323" max-vertical-offset="527">
+              <caret line="19" column="60" selection-start-line="19" selection-start-column="38" selection-end-line="19" selection-end-column="60" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Settings.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/protected/models/Settings.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1819">
               <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="reservas.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/protected/views/alinventario/reservas.php">
+      <file leaf-file-name="Configuraciongeneral.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/protected/models/Configuraciongeneral.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="393" max-vertical-offset="1156">
-              <caret line="26" column="39" selection-start-line="26" selection-start-column="39" selection-end-line="26" selection-end-column="39" />
-              <folding>
-                <marker date="1460728975798" expanded="true" signature="973:1023" placeholder="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="detalleinventario.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/protected/views/alinventario/detalleinventario.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="446" max-vertical-offset="1462">
-              <caret line="124" column="55" selection-start-line="124" selection-start-column="55" selection-end-line="124" selection-end-column="55" />
-              <folding>
-                <element signature="e#272#1240#0#PHP" expanded="false" />
-                <element signature="e#1245#1477#0#PHP" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Alkardex.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/protected/models/Alkardex.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="6348" max-vertical-offset="23188">
-              <caret line="384" column="100" selection-start-line="383" selection-start-column="12" selection-end-line="384" selection-end-column="100" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="1366" max-vertical-offset="3349">
+              <caret line="105" column="64" selection-start-line="105" selection-start-column="64" selection-end-line="105" selection-end-column="64" />
               <folding />
             </state>
           </provider>
@@ -168,39 +158,12 @@
       </file>
     </leaf>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/themes/temita/css/flash.css" />
-        <option value="$PROJECT_DIR$/protected/components/MensajesCompo.php" />
-        <option value="$PROJECT_DIR$/protected/extensions/flashes/views/divs.php" />
-        <option value="$PROJECT_DIR$/protected/extensions/flashes/views/varias.php" />
-        <option value="$PROJECT_DIR$/../framework/web/auth/CWebUser.php" />
-        <option value="$PROJECT_DIR$/themes/temita/css/bootstrap.min.css" />
-        <option value="$PROJECT_DIR$/protected/extensions/flashes/assets/css/flash.css" />
-        <option value="$PROJECT_DIR$/protected/extensions/flashes/views/uno.php" />
-        <option value="$PROJECT_DIR$/protected/models/dialog.php" />
-        <option value="$PROJECT_DIR$/protected/views/site/dialog.php" />
-        <option value="$PROJECT_DIR$/themes/temita/views/layouts/main.php" />
-        <option value="$PROJECT_DIR$/themes/temita/views/layouts/column2.php" />
-        <option value="$PROJECT_DIR$/protected/models/Alinventario.php" />
-        <option value="$PROJECT_DIR$/protected/controllers/GuiaController.php" />
-        <option value="$PROJECT_DIR$/protected/views/ingfactura/vw_detalle.php" />
-        <option value="$PROJECT_DIR$/protected/models/Alentregas.php" />
-        <option value="$PROJECT_DIR$/protected/views/ingfactura/_form_detalle.php" />
-        <option value="$PROJECT_DIR$/protected/views/ingfactura/admin.php" />
-        <option value="$PROJECT_DIR$/protected/views/ingfactura/_form.php" />
-        <option value="$PROJECT_DIR$/protected/models/Docompra.php" />
-        <option value="$PROJECT_DIR$/protected/components/MiFactoria.php" />
-        <option value="$PROJECT_DIR$/protected/models/Tempdetingfactura.php" />
-        <option value="$PROJECT_DIR$/protected/models/Detingfactura.php" />
-        <option value="$PROJECT_DIR$/protected/controllers/IngfacturaController.php" />
-        <option value="$PROJECT_DIR$/protected/models/Ingfactura.php" />
-        <option value="$PROJECT_DIR$/protected/models/Alkardex.php" />
-        <option value="$PROJECT_DIR$/protected/components/ControladorBase.php" />
-        <option value="$PROJECT_DIR$/protected/controllers/SolpeController.php" />
-        <option value="$PROJECT_DIR$/protected/extensions/flashes/flashes.php" />
-        <option value="$PROJECT_DIR$/protected/controllers/AlmacendocsController.php" />
         <option value="$PROJECT_DIR$/protected/models/Almacendocs.php" />
         <option value="$PROJECT_DIR$/protected/models/Almacenmovimientos.php" />
         <option value="$PROJECT_DIR$/protected/views/almacenmovimientos/_form.php" />
@@ -211,17 +174,47 @@
         <option value="$PROJECT_DIR$/protected/modules/contabilidad/models/Opcontables.php" />
         <option value="$PROJECT_DIR$/protected/modules/contabilidad/views/opcontables/_form.php" />
         <option value="$PROJECT_DIR$/protected/modules/contabilidad/controllers/CuentasController.php" />
-        <option value="$PROJECT_DIR$/protected/extensions/explorador/views/vw_Cuentas.php" />
         <option value="$PROJECT_DIR$/protected/controllers/EjemplosController.php" />
         <option value="$PROJECT_DIR$/protected/components/PeriodosCompo.php" />
         <option value="$PROJECT_DIR$/protected/views/alinventario/_form_conteo.php" />
         <option value="$PROJECT_DIR$/protected/modules/contabilidad/models/Detercuentas.php" />
         <option value="$PROJECT_DIR$/protected/modules/contabilidad/components/LibrodiarioCompo.php" />
         <option value="$PROJECT_DIR$/protected/views/alinventario/_form_ajuste.php" />
-        <option value="$PROJECT_DIR$/protected/controllers/AlinventarioController.php" />
         <option value="$PROJECT_DIR$/protected/models/Inventariofisico.php" />
         <option value="$PROJECT_DIR$/protected/views/alinventario/vw_conteo.php" />
         <option value="$PROJECT_DIR$/protected/views/alreserva/create.php" />
+        <option value="$PROJECT_DIR$/protected/controllers/SiteController.php" />
+        <option value="$PROJECT_DIR$/protected/views/ocompra/_form1.php" />
+        <option value="$PROJECT_DIR$/protected/views/almacenes/_form.php" />
+        <option value="$PROJECT_DIR$/protected/controllers/AlinventarioController.php" />
+        <option value="$PROJECT_DIR$/protected/models/Alinventario.php" />
+        <option value="$PROJECT_DIR$/protected/models/Alkardex.php" />
+        <option value="$PROJECT_DIR$/themes/temita/views/layouts/iframe.php" />
+        <option value="$PROJECT_DIR$/protected/views/ocompra/_search.php" />
+        <option value="$PROJECT_DIR$/themes/temita/css/bootstrap-responsive.min.css" />
+        <option value="$PROJECT_DIR$/protected/extensions/explorador/views/vw_Catvaloracion.php" />
+        <option value="$PROJECT_DIR$/protected/extensions/explorador/views/vw_Clipro.php" />
+        <option value="$PROJECT_DIR$/protected/extensions/explorador/views/vw_Cuentas.php" />
+        <option value="$PROJECT_DIR$/protected/extensions/explorador/views/vw_Direcciones.php" />
+        <option value="$PROJECT_DIR$/protected/extensions/explorador/views/vw_Documentos.php" />
+        <option value="$PROJECT_DIR$/protected/extensions/explorador/views/vw_Lugares.php" />
+        <option value="$PROJECT_DIR$/protected/extensions/explorador/views/vw_Maestrocompo.php" />
+        <option value="$PROJECT_DIR$/protected/extensions/explorador/views/vw_Maestroservicios.php" />
+        <option value="$PROJECT_DIR$/protected/extensions/explorador/views/vw_Masterequipo.php" />
+        <option value="$PROJECT_DIR$/protected/extensions/explorador/views/vw_VwSolpeparacomprar.php" />
+        <option value="$PROJECT_DIR$/protected/extensions/explorador/views/vw_multi_Catvaloracion.php" />
+        <option value="$PROJECT_DIR$/protected/extensions/explorador/views/vw_multi_Maestrocompo.php" />
+        <option value="$PROJECT_DIR$/protected/extensions/explorador/views/vw_Opcontables.php" />
+        <option value="$PROJECT_DIR$/protected/extensions/explorador/views/vw_multi_Clipro.php" />
+        <option value="$PROJECT_DIR$/protected/extensions/explorador/views/vw_multi_Inventario.php" />
+        <option value="$PROJECT_DIR$/themes/temita/css/jquery-ui.css" />
+        <option value="$PROJECT_DIR$/protected/controllers/SolpeController.php" />
+        <option value="$PROJECT_DIR$/protected/models/Solpe.php" />
+        <option value="$PROJECT_DIR$/protected/views/configuracion/tab_materiales.php" />
+        <option value="$PROJECT_DIR$/protected/models/Configuraciongeneral.php" />
+        <option value="$PROJECT_DIR$/protected/controllers/CoordocsController.php" />
+        <option value="$PROJECT_DIR$/protected/views/coordocs/reporte.php" />
+        <option value="$PROJECT_DIR$/protected/views/ocompra/vw_detalle.php" />
       </list>
     </option>
   </component>
@@ -271,6 +264,10 @@
     <property name="DefaultHtmlFileTemplate" value="Html5" />
     <property name="dynamic.classpath" value="false" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
+    <property name="recentsLimit" value="5" />
+    <property name="options.lastSelected" value="vcs.Git" />
+    <property name="options.splitter.main.proportions" value="0.3" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -281,7 +278,12 @@
       <recent name="D:\wamp\www\recurso\protected\extensions\flashes\assets\img" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="PHP Script.Alkardex.php">
+    <configuration default="false" name="Alkardex.php" type="PhpLocalRunConfigurationType" factoryName="PHP Console" temporary="true" path="$PROJECT_DIR$/protected/models/Alkardex.php">
+      <RunnerSettings RunnerId="PhpScriptDebugRunner" />
+      <ConfigurationWrapper RunnerId="PhpScriptDebugRunner" />
+      <method />
+    </configuration>
     <configuration default="true" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
       <TestRunner />
       <method />
@@ -313,7 +315,14 @@
       <envs />
       <method />
     </configuration>
-    <list size="0" />
+    <list size="1">
+      <item index="0" class="java.lang.String" itemvalue="PHP Script.Alkardex.php" />
+    </list>
+    <recent_temporary>
+      <list size="1">
+        <item index="0" class="java.lang.String" itemvalue="PHP Script.Alkardex.php" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
   <component name="StructureViewFactory">
@@ -329,7 +338,21 @@
       <option name="number" value="Default" />
       <updated>1433924089428</updated>
     </task>
-    <servers />
+    <servers>
+      <GitHub shared="false" url="github.com">
+        <commitMessageFormat>{id} {summary}</commitMessageFormat>
+        <password />
+        <token />
+        <option name="loginAnonymously" value="false" />
+        <option name="repoAuthor" value="hipogea" />
+        <option name="repoName" value="zega1" />
+        <option name="shouldFormatCommitMessage" value="true" />
+        <option name="useHttpAuthentication" value="false" />
+        <option name="useProxy" value="false" />
+        <option name="user" value="" />
+        <username />
+      </GitHub>
+    </servers>
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="0" />
@@ -339,25 +362,51 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.06505295" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.108169444" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.13313162" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.408472" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.028744327" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Framework" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23298033" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.13993949" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22163388" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.003407155" sideWeight="0.5" order="9" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.003407155" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.003407155" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.07155026" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.09199318" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Command Line Tools Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32879046" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
     </layout>
+    <layout-to-restore>
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.003407155" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.09199318" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.06505295" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.028744327" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Framework" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23298033" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.003407155" sideWeight="0.5" order="9" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28441754" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22163388" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Command Line Tools Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32879046" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
+    </layout-to-restore>
   </component>
   <component name="Vcs.Log.UiProperties">
     <option name="RECENTLY_FILTERED_USER_GROUPS">
@@ -382,391 +431,382 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/protected/extensions/blockui/JuiBlockUI.php">
+    <entry file="file://$PROJECT_DIR$/protected/views/almacenes/_form.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-108.19231" vertical-offset="145" max-vertical-offset="3757">
-          <caret line="181" column="61" selection-start-line="181" selection-start-column="61" selection-end-line="181" selection-end-column="61" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/protected/extensions/flashes/flashes.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="380" max-vertical-offset="1156">
-          <caret line="42" column="52" selection-start-line="42" selection-start-column="52" selection-end-line="42" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/protected/controllers/AlmacendocsController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2125" max-vertical-offset="136289">
-          <caret line="125" column="0" selection-start-line="125" selection-start-column="0" selection-end-line="125" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/protected/models/Almacendocs.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="16883" max-vertical-offset="17476">
-          <caret line="1016" column="0" selection-start-line="1016" selection-start-column="0" selection-end-line="1016" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/protected/models/Almacenmovimientos.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.1538463" vertical-offset="555" max-vertical-offset="2244">
-          <caret line="39" column="21" selection-start-line="39" selection-start-column="21" selection-end-line="39" selection-end-column="21" />
+        <state vertical-scroll-proportion="-6.4615383" vertical-offset="325" max-vertical-offset="2958">
+          <caret line="29" column="52" selection-start-line="29" selection-start-column="52" selection-end-line="29" selection-end-column="52" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/protected/models/Almacenes.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.7636364" vertical-offset="3006" max-vertical-offset="3587">
-          <caret line="189" column="21" selection-start-line="189" selection-start-column="21" selection-end-line="189" selection-end-column="21" />
+        <state vertical-scroll-proportion="-9.807693" vertical-offset="0" max-vertical-offset="3587">
+          <caret line="15" column="31" selection-start-line="15" selection-start-column="31" selection-end-line="15" selection-end-column="31" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/protected/views/alinventario/inventario.php">
+    <entry file="file://$PROJECT_DIR$/protected/extensions/AskToSaveWork.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.9230769" vertical-offset="0" max-vertical-offset="969">
-          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="68" max-vertical-offset="1003">
+          <caret line="4" column="21" selection-start-line="4" selection-start-column="21" selection-end-line="4" selection-end-column="21" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/protected/views/alinventario/_form.php">
+    <entry file="file://$PROJECT_DIR$/index.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-9.153846" vertical-offset="0" max-vertical-offset="4556">
-          <caret line="14" column="26" selection-start-line="14" selection-start-column="26" selection-end-line="14" selection-end-column="26" />
+        <state vertical-scroll-proportion="-6.5384617" vertical-offset="0" max-vertical-offset="323">
+          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/protected/modules/cruge/components/CrugeUtil.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-8.769231" vertical-offset="1115" max-vertical-offset="2363">
+          <caret line="79" column="5" selection-start-line="79" selection-start-column="5" selection-end-line="79" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/protected/modules/cruge/components/CrugeUser.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-30.076923" vertical-offset="0" max-vertical-offset="2720">
+          <caret line="46" column="0" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/protected/modules/cruge/components/CrugeWebUser.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-6.6538463" vertical-offset="4298" max-vertical-offset="8058">
+          <caret line="263" column="23" selection-start-line="263" selection-start-column="23" selection-end-line="263" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/protected/modules/cruge/components/CrugeUserManager.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-5.4615383" vertical-offset="6760" max-vertical-offset="19958">
+          <caret line="406" column="66" selection-start-line="406" selection-start-column="14" selection-end-line="406" selection-end-column="66" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/protected/modules/cruge/components/CrugeFactory.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-6.6538463" vertical-offset="643" max-vertical-offset="9248">
+          <caret line="48" column="20" selection-start-line="48" selection-start-column="20" selection-end-line="48" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/protected/modules/cruge/models/data/CrugeSession.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="13.269231" vertical-offset="345" max-vertical-offset="4709">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/protected/models/Bloqueos.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="96.46154" vertical-offset="2508" max-vertical-offset="5168">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/protected/models/Almacendocs.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="15931" max-vertical-offset="17476">
+          <caret line="958" column="10" selection-start-line="945" selection-start-column="8" selection-end-line="958" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/protected/components/MensajesCompo.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="809" max-vertical-offset="2040">
+          <caret line="53" column="44" selection-start-line="53" selection-start-column="20" selection-end-line="53" selection-end-column="44" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/protected/controllers/GuiaController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.269231" vertical-offset="13760" max-vertical-offset="25041">
-          <caret line="819" column="76" selection-start-line="819" selection-start-column="16" selection-end-line="819" selection-end-column="76" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="5260" max-vertical-offset="25041">
+          <caret line="319" column="16" selection-start-line="319" selection-start-column="16" selection-end-line="319" selection-end-column="70" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/protected/controllers/IngfacturaController.php">
+    <entry file="file://$PROJECT_DIR$/protected/extensions/flashes/flashes.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.9818182" vertical-offset="7839" max-vertical-offset="8313">
-          <caret line="474" column="11" selection-start-line="438" selection-start-column="8" selection-end-line="474" selection-end-column="11" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="342" max-vertical-offset="1156">
+          <caret line="30" column="44" selection-start-line="30" selection-start-column="43" selection-end-line="30" selection-end-column="44" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/protected/views/almacendocs/n_form.php">
+    <entry file="file://$PROJECT_DIR$/protected/controllers/profile.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.88461536" vertical-offset="351" max-vertical-offset="6953">
-          <caret line="22" column="4" selection-start-line="22" selection-start-column="4" selection-end-line="76" selection-end-column="10" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="1050" max-vertical-offset="1275">
+          <caret line="5" column="27" selection-start-line="5" selection-start-column="27" selection-end-line="5" selection-end-column="27" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/protected/extensions/toolbar/Barra.php">
+    <entry file="file://$PROJECT_DIR$/protected/extensions/bootstrap/theme/views/site/contact.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.0384614" vertical-offset="967" max-vertical-offset="3315">
-          <caret line="60" column="18" selection-start-line="60" selection-start-column="18" selection-end-line="60" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/protected/views/guia/_form.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-102.80769" vertical-offset="183" max-vertical-offset="3672">
-          <caret line="168" column="0" selection-start-line="168" selection-start-column="0" selection-end-line="168" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/protected/views/guia/tab_principal.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-14.461538" vertical-offset="2888" max-vertical-offset="6069">
-          <caret line="192" column="15" selection-start-line="176" selection-start-column="11" selection-end-line="192" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/protected/views/alinventario/vw_lotes.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="504">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/protected/views/solpe/_form.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="2.7692308" vertical-offset="72" max-vertical-offset="952">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/protected/views/ocompra/tab_dos.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.5384617" vertical-offset="0" max-vertical-offset="2091">
-          <caret line="10" column="12" selection-start-line="7" selection-start-column="8" selection-end-line="20" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/protected/views/guia/vw_detalle_grilla.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.3846154" vertical-offset="661" max-vertical-offset="1139">
-          <caret line="76" column="10" selection-start-line="41" selection-start-column="8" selection-end-line="76" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/protected/views/solpe/_form_detalle.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="52.692307" vertical-offset="1370" max-vertical-offset="5831">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/protected/views/guia/_form_detalle.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-100.03846" vertical-offset="731" max-vertical-offset="3927">
-          <caret line="205" column="10" selection-start-line="203" selection-start-column="4" selection-end-line="205" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/protected/views/guia/_form_activo.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="60.192307" vertical-offset="1565" max-vertical-offset="3570">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/protected/views/almacenmovimientos/_form.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2941" max-vertical-offset="3349">
-          <caret line="173" column="10" selection-start-line="173" selection-start-column="10" selection-end-line="173" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/protected/modules/contabilidad/controllers/OpcontablesController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="98.15385" vertical-offset="2552" max-vertical-offset="3043">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/protected/modules/contabilidad/controllers/ValoracionController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="98.15385" vertical-offset="2552" max-vertical-offset="3043">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/protected/modules/contabilidad/views/opcontables/_form.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="55" max-vertical-offset="1054">
-          <caret line="40" column="52" selection-start-line="40" selection-start-column="52" selection-end-line="40" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/protected/modules/contabilidad/controllers/DetercuentasController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="8.5" vertical-offset="3128" max-vertical-offset="4063">
-          <caret line="171" column="34" selection-start-line="171" selection-start-column="34" selection-end-line="171" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/protected/modules/contabilidad/models/Cuentas.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2142">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/protected/modules/contabilidad/controllers/CuentasController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="309" max-vertical-offset="3196">
-          <caret line="32" column="14" selection-start-line="32" selection-start-column="14" selection-end-line="32" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/protected/extensions/explorador/views/vw_Cuentas.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="204" max-vertical-offset="833">
-          <caret line="20" column="41" selection-start-line="20" selection-start-column="41" selection-end-line="20" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/protected/modules/contabilidad/models/Opcontables.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="394" max-vertical-offset="1819">
-          <caret line="32" column="49" selection-start-line="32" selection-start-column="49" selection-end-line="32" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/protected/models/Guia.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-10.807693" vertical-offset="569" max-vertical-offset="8517">
-          <caret line="50" column="12" selection-start-line="49" selection-start-column="12" selection-end-line="50" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/protected/components/PeriodosCompo.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="328" max-vertical-offset="1955">
-          <caret line="94" column="1" selection-start-line="94" selection-start-column="1" selection-end-line="94" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/protected/components/TipocambioCompo.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="35.46154" vertical-offset="922" max-vertical-offset="2890">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/protected/modules/contabilidad/views/detercuentas/_form.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-16.115385" vertical-offset="397" max-vertical-offset="2669">
-          <caret line="48" column="10" selection-start-line="29" selection-start-column="4" selection-end-line="48" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/protected/controllers/EjemplosController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="6416" max-vertical-offset="24684">
-          <caret line="387" column="33" selection-start-line="387" selection-start-column="33" selection-end-line="387" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/protected/models/Maestrocompo.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="86.65385" vertical-offset="2253" max-vertical-offset="10812">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/protected/models/Maestrodetalle.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="20.73077" vertical-offset="539" max-vertical-offset="3774">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/protected/modules/contabilidad/models/Detercuentas.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1949" max-vertical-offset="2482">
-          <caret line="128" column="34" selection-start-line="128" selection-start-column="34" selection-end-line="128" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/protected/models/Alinventario.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.9230769" vertical-offset="13429" max-vertical-offset="24531">
-          <caret line="787" column="26" selection-start-line="787" selection-start-column="21" selection-end-line="787" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/protected/modules/contabilidad/components/LibrodiarioCompo.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="633" max-vertical-offset="1411">
-          <caret line="52" column="93" selection-start-line="52" selection-start-column="20" selection-end-line="52" selection-end-column="93" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/protected/views/alinventario/_form_conteo.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2346" max-vertical-offset="3298">
-          <caret line="138" column="4" selection-start-line="138" selection-start-column="4" selection-end-line="158" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/protected/views/alinventario/_form_ajuste.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1360" max-vertical-offset="2754">
-          <caret line="95" column="51" selection-start-line="95" selection-start-column="51" selection-end-line="95" selection-end-column="51" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/protected/controllers/AlinventarioController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="15329" max-vertical-offset="16796">
-          <caret line="921" column="46" selection-start-line="921" selection-start-column="46" selection-end-line="921" selection-end-column="46" />
-          <folding>
-            <marker date="1462782178969" expanded="true" signature="6353:6572" placeholder="SELECT *from.._prefixmaestrocomponentes where..." />
-            <marker date="1462782178969" expanded="true" signature="6682:6862" placeholder="INSERT INTO ..." />
-            <marker date="1462782178969" expanded="true" signature="7349:7586" placeholder="SELECT *from.._prefixmaestrocomponentes where..." />
-            <marker date="1462782178969" expanded="true" signature="7719:7961" placeholder="INSERT INTO ..." />
-            <marker date="1462782178969" expanded="true" signature="8500:8682" placeholder="SELECT *from.._prefixmaestrocomponentes where..." />
-            <marker date="1462782178969" expanded="true" signature="8792:8949" placeholder="INSERT INTO ..." />
-            <marker date="1462782178969" expanded="true" signature="9674:9858" placeholder="SELECT *from.._prefixmaestrocomponentes where..." />
-            <marker date="1462782178969" expanded="true" signature="15637:15659" placeholder="delete from ..." />
-            <marker date="1462782178969" expanded="true" signature="16417:16637" placeholder="INSERT INTO ..." />
-            <marker date="1462782178969" expanded="true" signature="18100:18177" placeholder="select count..Yii_app_params_prefijo_pareto..." />
-            <marker date="1462782178969" expanded="true" signature="18351:18481" placeholder="select ranki..Yii_app_params_prefijo_pareto..." />
-            <marker date="1462782178969" expanded="true" signature="21875:21959" placeholder="select sum(s..Vw_alinventario_resumen..." />
-            <marker date="1462782178969" expanded="true" signature="22026:22086" placeholder="select sum(s..Vw_alinventario_resumen..." />
-            <marker date="1462782178969" expanded="true" signature="22217:22342" placeholder="select disti..Vw_alinventario_resumen..." />
-            <marker date="1462782178969" expanded="true" signature="22407:22566" placeholder="select sum(s..Vw_alinventario_resumen..." />
-          </folding>
+        <state vertical-scroll-proportion="0.0" vertical-offset="363" max-vertical-offset="2346">
+          <caret line="26" column="27" selection-start-line="26" selection-start-column="27" selection-end-line="26" selection-end-column="27" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/protected/models/Alkardex.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="6348" max-vertical-offset="23188">
-          <caret line="384" column="100" selection-start-line="383" selection-start-column="12" selection-end-line="384" selection-end-column="100" />
-          <folding />
+        <state vertical-scroll-proportion="0.0" vertical-offset="4541" max-vertical-offset="23511">
+          <caret line="275" column="45" selection-start-line="275" selection-start-column="45" selection-end-line="275" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/protected/controllers/AlinventarioController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="15435" max-vertical-offset="17663">
+          <caret line="972" column="0" selection-start-line="972" selection-start-column="0" selection-end-line="972" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/protected/models/Alinventario.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="11601" max-vertical-offset="25551">
+          <caret line="697" column="24" selection-start-line="697" selection-start-column="24" selection-end-line="697" selection-end-column="24" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/protected/models/Inventariofisico.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="3189" max-vertical-offset="4369">
-          <caret line="208" column="46" selection-start-line="208" selection-start-column="46" selection-end-line="208" selection-end-column="46" />
+        <state vertical-scroll-proportion="-14.730769" vertical-offset="2966" max-vertical-offset="4369">
+          <caret line="197" column="73" selection-start-line="197" selection-start-column="73" selection-end-line="197" selection-end-column="73" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/themes/temita/views/layouts/iframe.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="323" max-vertical-offset="1122">
+          <caret line="19" column="7" selection-start-line="19" selection-start-column="7" selection-end-line="19" selection-end-column="7" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/themes/temita/views/layouts/column2.php">
+    <entry file="file://$PROJECT_DIR$/protected/views/ocompra/admin.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="749" max-vertical-offset="4301">
+        <state vertical-scroll-proportion="32.76923" vertical-offset="852" max-vertical-offset="1649">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/protected/views/ocompra/_search.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="3768" max-vertical-offset="4301">
+          <caret line="235" column="21" selection-start-line="235" selection-start-column="21" selection-end-line="235" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/protected/extensions/explorador/views/vw_Almacenes.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="5.6538463" vertical-offset="147" max-vertical-offset="680">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/protected/extensions/explorador/views/vw_Catvaloracion.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.576923" vertical-offset="0" max-vertical-offset="799">
+          <caret line="7" column="4" selection-start-line="7" selection-start-column="4" selection-end-line="7" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/protected/extensions/explorador/views/vw_Clipro.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.576923" vertical-offset="0" max-vertical-offset="799">
+          <caret line="7" column="4" selection-start-line="7" selection-start-column="4" selection-end-line="7" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/protected/extensions/explorador/views/vw_Cuentas.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.576923" vertical-offset="0" max-vertical-offset="833">
+          <caret line="7" column="4" selection-start-line="7" selection-start-column="4" selection-end-line="7" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/protected/extensions/explorador/views/vw_Direcciones.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.65384614" vertical-offset="0" max-vertical-offset="782">
+          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/protected/extensions/explorador/views/vw_Documentos.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="782">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/protected/extensions/explorador/views/vw_Lugares.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="816">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/protected/extensions/explorador/views/vw_Maestrocompo.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-5.230769" vertical-offset="0" max-vertical-offset="1105">
+          <caret line="8" column="4" selection-start-line="8" selection-start-column="4" selection-end-line="8" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/protected/extensions/explorador/views/vw_Maestroservicios.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-5.230769" vertical-offset="0" max-vertical-offset="1054">
+          <caret line="8" column="4" selection-start-line="8" selection-start-column="4" selection-end-line="8" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/protected/extensions/explorador/views/vw_Masterequipo.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.65384614" vertical-offset="0" max-vertical-offset="782">
+          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/protected/extensions/explorador/views/vw_VwSolpeparacomprar.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.53846157" vertical-offset="26" max-vertical-offset="1105">
+          <caret line="18" column="22" selection-start-line="18" selection-start-column="4" selection-end-line="18" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/protected/extensions/explorador/views/vw_Opcontables.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5557692" vertical-offset="0" max-vertical-offset="816">
+          <caret line="17" column="22" selection-start-line="17" selection-start-column="22" selection-end-line="17" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/themes/temita/css/bootstrap-responsive.min.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3288201" vertical-offset="0" max-vertical-offset="517">
+          <caret line="10" column="104" selection-start-line="10" selection-start-column="104" selection-end-line="10" selection-end-column="104" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/protected/extensions/explorador/views/vw_multi_Catvaloracion.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.60600376" vertical-offset="0" max-vertical-offset="833">
+          <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/protected/extensions/explorador/views/vw_multi_Clipro.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5884615" vertical-offset="0" max-vertical-offset="816">
+          <caret line="18" column="22" selection-start-line="18" selection-start-column="22" selection-end-line="18" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/protected/extensions/explorador/views/vw_multi_Inventario.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.2596154" vertical-offset="307" max-vertical-offset="1309">
+          <caret line="26" column="22" selection-start-line="26" selection-start-column="22" selection-end-line="26" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/protected/extensions/explorador/views/vw_multi_Maestrocompo.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3902439" vertical-offset="13" max-vertical-offset="833">
+          <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/themes/temita/css/jquery-ui.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1265" max-vertical-offset="2091">
+          <caret line="89" column="20" selection-start-line="89" selection-start-column="20" selection-end-line="89" selection-end-column="20" />
+          <folding>
+            <element signature="e#10242#10327#2" expanded="true" />
+            <element signature="e#10862#13211#2" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/protected/controllers/SolpeController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="25121" max-vertical-offset="30430">
+          <caret line="1508" column="41" selection-start-line="1508" selection-start-column="41" selection-end-line="1508" selection-end-column="41" />
+          <folding>
+            <marker date="1462912686358" expanded="true" signature="2142:2260" placeholder="select *from..." />
+            <marker date="1462912686358" expanded="true" signature="33877:33959" placeholder="SELECT id FR..Yii_app_params_prefijo_opcionesdocumentos..." />
+            <marker date="1462912686358" expanded="true" signature="34096:34249" placeholder="INSERT INTO ..." />
+            <marker date="1462912686358" expanded="true" signature="34527:34609" placeholder="SELECT id FR..Yii_app_params_prefijo_opcionesdocumentos..." />
+            <marker date="1462912686358" expanded="true" signature="34752:34906" placeholder="INSERT INTO ..." />
+            <marker date="1462912686358" expanded="true" signature="37192:37285" placeholder="select count..Yii_app_params_prefijo_desolpe..." />
+            <marker date="1462912686358" expanded="true" signature="38417:38484" placeholder="delete from ..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/protected/models/Solpe.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="4869" max-vertical-offset="6494">
+          <caret line="299" column="49" selection-start-line="299" selection-start-column="49" selection-end-line="299" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/protected/views/configuracion/tab_materiales.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="323" max-vertical-offset="527">
+          <caret line="19" column="60" selection-start-line="19" selection-start-column="38" selection-end-line="19" selection-end-column="60" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/protected/models/Settings.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1819">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/protected/views/alinventario/reservas.php">
+    <entry file="file://$PROJECT_DIR$/protected/models/Configuraciongeneral.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="393" max-vertical-offset="1156">
-          <caret line="26" column="39" selection-start-line="26" selection-start-column="39" selection-end-line="26" selection-end-column="39" />
-          <folding>
-            <marker date="1460728975798" expanded="true" signature="973:1023" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/protected/views/alinventario/detalleinventario.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="446" max-vertical-offset="1462">
-          <caret line="124" column="55" selection-start-line="124" selection-start-column="55" selection-end-line="124" selection-end-column="55" />
-          <folding>
-            <element signature="e#272#1240#0#PHP" expanded="false" />
-            <element signature="e#1245#1477#0#PHP" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/protected/views/solpe/vw_detalle_grilla.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="627" max-vertical-offset="2397">
-          <caret line="58" column="10" selection-start-line="52" selection-start-column="8" selection-end-line="58" selection-end-column="10" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="1366" max-vertical-offset="3349">
+          <caret line="105" column="64" selection-start-line="105" selection-start-column="64" selection-end-line="105" selection-end-column="64" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/protected/views/alinventario/vw_conteo.php">
+    <entry file="file://$PROJECT_DIR$/protected/views/coordocs/reporte.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.5384617" vertical-offset="0" max-vertical-offset="1173">
-          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="230" max-vertical-offset="1054">
+          <caret line="37" column="34" selection-start-line="37" selection-start-column="34" selection-end-line="37" selection-end-column="34" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/protected/views/alreserva/create.php">
+    <entry file="file://$PROJECT_DIR$/protected/controllers/CoordocsController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.25515947" vertical-offset="0" max-vertical-offset="533">
-          <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+        <state vertical-scroll-proportion="-31.846153" vertical-offset="5088" max-vertical-offset="12019">
+          <caret line="348" column="10" selection-start-line="348" selection-start-column="10" selection-end-line="348" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/protected/models/Ocompra.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-2.9636364" vertical-offset="2302" max-vertical-offset="11475">
+          <caret line="145" column="27" selection-start-line="145" selection-start-column="13" selection-end-line="145" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/protected/views/ocompra/vw_detalle.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.38846153" vertical-offset="614" max-vertical-offset="2040">
+          <caret line="48" column="240" selection-start-line="48" selection-start-column="240" selection-end-line="48" selection-end-column="240" />
           <folding />
         </state>
       </provider>

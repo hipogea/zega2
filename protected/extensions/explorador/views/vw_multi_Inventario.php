@@ -4,7 +4,7 @@
     'enableAjaxValidation'=>true,
 	'method'=>'GET',
 )); ?>
-<div class="row">
+<div>
 	<div class='botones'>
 		<?php echo CHtml::imageButton(Yii::app()->getTheme()->baseUrl.'/img/seleccionar.png',array('width'=>25,'height'=>25,'value'=>'Buscar','onClick'=>'Loading.show();Loading.hide();'));?>
 	</div>
@@ -24,6 +24,7 @@
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'inventario-grid',
 	'dataProvider'=>$model->searchlimpio(),
+	'summaryText'=>'',
 	//'dataProvider'=>VwInventario::model()->search(),
    // 'cssFile' => ''.Yii::app()->getTheme()->baseUrl.'/css/style-grid-busqueda.css',  // your version of css file
     	'cssFile' => Yii::app()->getTheme()->baseUrl.'/css/grilla_naranja.css', 

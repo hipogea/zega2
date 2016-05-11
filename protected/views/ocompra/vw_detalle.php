@@ -44,9 +44,9 @@ $descuento=$model->descuento+0;
 
 		//'disp',
 		'punit',
-		array('name'=>'Bruto','header'=>'Bruto','value'=>'Mifactoria::decimal($data->cant*($data->punit),2)','footer'=>Chtml::openTag("span", array("class"=>"label label-info")).MiFactoria::decimal($mod::getTotal($proveedor)["bruto"],2).CHTml::CloseTag("span")),
-		array('name'=>'Descuento','visible'=>($descuento > 0)?true:false,'header'=>'Dcto','value'=>'Mifactoria::decimal($data->cant * ($data->punit - $data->punitdes),2)','footer'=>Chtml::openTag("span", array("class"=>"label label-info")).MiFactoria::decimal($mod::getTotal($proveedor)["descuento"],2).CHTml::CloseTag("span")),
-		array('name'=>'potal','value'=>'Mifactoria::decimal(($data->punit*(1-$data->ocompra->descuento/100))*$data->cant,2)','footer'=>Chtml::openTag("span", array("class"=>"label label-info")).MiFactoria::decimal($mod::getTotal($proveedor)["total"],2).CHTml::CloseTag("span")),
+		array('name'=>'Bruto','header'=>'Bruto','value'=>'Mifactoria::decimal($data->cant*($data->punit),2)','footer'=>Chtml::openTag("span", array("class"=>"label label-info")).MiFactoria::decimal($mod::getTotal($proveedor)["total"],2).CHTml::CloseTag("span")),
+		//array('name'=>'Descuento','visible'=>($descuento > 0)?true:false,'header'=>'Dcto','value'=>'Mifactoria::decimal($data->cant * ($data->punit - $data->punitdes),2)','footer'=>Chtml::openTag("span", array("class"=>"label label-info")).MiFactoria::decimal($mod::getTotal($proveedor)["descuento"],2).CHTml::CloseTag("span")),
+		//array('name'=>'potal','value'=>'Mifactoria::decimal(($data->punit*(1-$data->ocompra->descuento/100))*$data->cant,2)','footer'=>Chtml::openTag("span", array("class"=>"label label-info")).MiFactoria::decimal($mod::getTotal($proveedor)["total"],2).CHTml::CloseTag("span")),
 		//array('name'=>'stockreservado','value'=>'MiFactoria::decimal($data->stockreservado)','footer'=>Chtml::openTag("span", array("class"=>"label label-info")).MiFactoria::decimal(VwStockPorTipos::getTotal($prove)["reservado"],2).CHTml::CloseTag("span")),
 		//array('name'=>'stocktransito','value'=>'MiFactoria::decimal($data->stocktransito)','footer'=>Chtml::openTag("span", array("class"=>"label label-info")).MiFactoria::decimal(VwStockPorTipos::getTotal($prove)["transito"],2).CHTml::CloseTag("span")),
 

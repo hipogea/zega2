@@ -272,6 +272,18 @@ class Alkardex extends ModeloGeneral
 				$this->alkardex_alinventario->actualiza_stock($this->codmov, abs($this->cantidadbase()), null);
 				$codop='101'; //Comsumo par aventyas
 				break;
+
+			case "67": //AJUSTE POR faltantes
+				$this->alkardex_alinventario->actualiza_stock($this->codmov, abs($this->cantidadbase()), $this->punitbase(), $this->id);
+				break;
+
+
+			case "75": //AJUSTE POR SOBRANTES
+				$this->alkardex_alinventario->actualiza_stock($this->codmov, abs($this->cantidadbase()), $this->punitbase(), $this->id);
+				break;
+
+
+
 			case "81":
 				$this->preciounit = $this->getMonto();
 				$this->InsertaAtencionReserva();
@@ -383,6 +395,10 @@ class Alkardex extends ModeloGeneral
 		if(!is_null($codop)){
 			yii::app()->librodiario->asiento($this->id,$this->coddoc,$codop,$this->maestrodetalle->catval,$this->fecha,
 				$this->numdocref,$this->alkardex_almacenmovimientos->movimiento,$this->montomovido);
+		} ELSE{
+			///EN ESTE CASO EL KARDEX NO HACE RNADA PARA LE CASO DE LOS AJUSTES DE INVENTARIO LOS ASINTOS DEL LIBRO LO HACEN
+			//DESDE OTRA INTERFAZ PORQUE , LAS CUENTAS SON  DISTINTAS PARA CADA CASO Y LE CONTADOR DECIDE PCOMO AJUSTA
+
 		}
 
 	}
@@ -1191,6 +1207,9 @@ class Alkardex extends ModeloGeneral
 
 	}
 
+	/**
+	 * @param null $codmovimiento
+     */
 	public function Actualizacantidadinventario($codmovimiento = null)
 	{
 

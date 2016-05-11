@@ -16,5 +16,11 @@
 	<?php echo $form->error($model,'materiales_contabilidad'); ?>
 </div>
 
+<div class="row">
+	<?php echo $form->labelEx($model,'materiales_verpresolpe') ?>
+	<?php echo $form->checkbox($model,'materiales_verpresolpe'); ?>
+	<?php echo $form->error($model,'materiales_verpresolpe'); ?>
+</div>
+
 
 <BR>

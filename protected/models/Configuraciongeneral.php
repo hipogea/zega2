@@ -49,6 +49,7 @@ public $documentos_tolerecepfacturaendias=null;
 	public $materiales_rutaimagenesmateriales;
 	public $materiales_codigoservicio;
 	public $materiales_contabilidad;
+public $materiales_verpresolpe;
 
 	/*****correo***/
 	public $email_adminemail;
@@ -104,7 +105,7 @@ public $documentos_tolerecepfacturaendias=null;
 					email_cuentahost',
 				'required','message'=>'Este dato es obligatorio'
 			),
-			array('inventario_mascaraubicaciones,materiales_contabilidad,documentos_selloagua,documentos_controlrecepcion,transporte_lugares','safe'),
+			array('inventario_mascaraubicaciones,materiales_contabilidad,materiales_verpresolpe,documentos_selloagua,documentos_controlrecepcion,transporte_lugares','safe'),
 			array(
 				// array('transporte_tiempopermitidohastaentrega','numerical', 'integerOnly'=>true, 'min'=>0, 'max'=>100),
 				'transporte_tiempopermitidohastaentrega', 'numerical', 'integerOnly'=>true,
@@ -152,6 +153,7 @@ public $documentos_tolerecepfacturaendias=null;
 	'materiales_rutaimagenesmateriales'=>'Direc imagenes materiales',
 			'materiales_codigoservicio'=>'Codigo servicio',
 			'materiales_contabilidad'=>'Int. Contable',
+			'materiales_verpresolpe'=>'Ver precios Solicitud',
 	'email_adminemail'=>'Email del webmaster',
 	'email_usamaildeusuario'=>'Usar mail de usuario al enviar',
 	'email_rutaficherosdeplantillas'=>'Directorio plantillas mensajes',

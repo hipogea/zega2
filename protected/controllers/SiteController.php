@@ -43,6 +43,7 @@ class SiteController extends Controller
 			               $this->Loginventario(); //Registra el log de inventario
 			 Bloqueos::clearbloqueos();
 			  MiFactoria::InsertaCumple(); //INSERTA CUMPLEAÑOS en lel tablon
+
 			               //
 			               //
 			               yii::app()->maletin->flush(); //Limpia el maletin del usuario

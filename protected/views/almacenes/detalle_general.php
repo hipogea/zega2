@@ -11,11 +11,8 @@ $this->widget('zii.widgets.jui.CJuiTabs', array(
 			'Supervision del stock '=>array('id'=>'tab___',
 				'content'=>$this->renderPartial('tab_supervision', array('model'=>$model,'codal'=>$codal,'codcen'=>$codcen),TRUE)
 			),
-			'Traspasos Pend '=>array('id'=>'tab___tr',
+			'Evolucion '=>array('id'=>'tab___tr',
 				'content'=>$this->renderPartial('tab_traspasos_pend', array('model'=>$model,'codal'=>$codal,'codcen'=>$codcen),TRUE)
-			),
-			'Evolucion del Stock '=>array('id'=>'tab___trx',
-				'content'=>$this->renderPartial('tab_evolucion', array('model'=>$model,'codal'=>$codal,'codcen'=>$codcen),TRUE)
 			),
 		/*	'Solicitudes Pend '=>array('id'=>'tab___',
 				'content'=>$this->renderPartial('tab_solicitudes_pend', array('model'=>$model,'codal'=>$codal,'codcen'=>$codcen),TRUE)
@@ -25,4 +22,3 @@ $this->widget('zii.widgets.jui.CJuiTabs', array(
 		'id'=>'MyTabi',)
 );
 ?>
-

@@ -297,7 +297,7 @@ public $maximovalor;
 public function beforeSave() {
     $prefix="public_";
 							if ($this->isNewRecord) {
-
+								$this->idreporte=
 								$mij=null;
 											//$command = Yii::app()->db->createCommand(" select nextval('sq_guias') "); 											
 											//$this->n_guia= $command->queryScalar();

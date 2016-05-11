@@ -133,4 +133,23 @@ class Direcciones extends ModeloGeneral
 			'criteria'=>$criteria,
 		));
 	}
+
+    public function beforeSave() {
+       $modeloub= Ubigeos::buscaporcodigos($this->coddepa,$this->codprov,$this->coddist);
+        if(!is_null($modeloub)){
+            $this->setattributes(
+                array(
+                    'c_distrito'=>$modeloub->distrito,
+                    'c_prov'=>$modeloub->provincia,
+                    'c_departam'=>$modeloub->departamento,
+                )
+            );
+        }
+
+        unset( $modeloub);
+
+
+        return parent::beforeSave();
+    }
+
 }

@@ -6,7 +6,7 @@
 	'method'=>'GET',
 )); ?>
 
-	<div class="row">
+	<div>
 		<div class='botones'>
 			<?php echo CHtml::imageButton(Yii::app()->getTheme()->baseUrl.'/img/pin.png',array('width'=>25,'height'=>25,'value'=>'','onClick'=>'Loading.show();Loading.hide();'));?>
 		</div>

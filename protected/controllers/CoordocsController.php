@@ -340,11 +340,13 @@ return array_values($arraycolumnas);
 
 
 	public function actionhacereporte($id,$idfiltrodocu,$file=0){ //id del reporte y el ID del modelo a reportar
+
 		$this->layout="";
 		$id=MiFactoria::cleanInput((int)$id);
 		$idfiltrodocu=MiFactoria::cleanInput((int)$idfiltrodocu);
 		$modelo=$this->loadModel($id);
 		$nombremodelo=$modelo->modelo;
+		//VAR_DUMP($modelo->tienecabecera);DIE();
 		///////////////////////////////////////////////////////
 		///sancao el numero de paginas
 		$criterio=New CDbCriteria;

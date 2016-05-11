@@ -29,6 +29,10 @@ if((integer)$model->nitems > 0 )
 		<?php echo $form->textField($model,'codalm',array('size'=>3,'maxlength'=>3,'disabled'=>(!$model->isNewRecord)?'disabled':'')); ?>
 		<?php echo $form->error($model,'codalm'); ?>
 	</div>
+	<?php $this->widget('ext.AskToSaveWork', array('watchElement'=>'#Product_name','message'=>Yii::t('messages', "You haven't save your product yet!")))?>
+	<div id="Product_name">
+
+	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'nomal'); ?>

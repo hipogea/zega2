@@ -916,6 +916,7 @@ public function actionBusqueda()
 		if ($model===null)
 			throw new CHttpException(404,'No se encontro ningun documento para estos datos');
 		if(yii::app()->hasModule('contabilidad')){
+			$transaccion=$model->dbConnection->beginTransaction();
 			if($model->codestado=='20'){
 				throw new CHttpException(500,'Esta difrencia ya esta ajustada contablemente ');
 			}else{
@@ -924,6 +925,7 @@ public function actionBusqueda()
 				{
 					$model->attributes=$_POST['Inventariofisico'];
 					$model->codestado='20';
+
 					if($model->save()) {
 						MiFactoria::Mensaje('success','Se realizo el ajuste con exito');
 					}else{
@@ -938,12 +940,15 @@ public function actionBusqueda()
 				//verioficando la operacion contable
 				if($model->diferencia >0 ){  ///SOBRANTES
 					$operacion='301';
+					$movimiento='75';
 				}
 				if($model->diferencia ==0 ){
 					throw new CHttpException(404,'El ajuste no aplica, no existen diferencias');
 				}
 				if($model->diferencia <0 ){ //FALTANTES
 					$operacion='300';
+					$movimiento='67';
+
 				}
 
 
@@ -953,14 +958,60 @@ public function actionBusqueda()
 				$this->render('_form_ajuste',array(
 					'model'=>$model, 'modelocabeza'=>$modeloinv,
 				));
-			}
 
+				///AHORA NOS TOCA REGISTRAR EL KARDEX DEL MATERIAL
+
+				//Obteniendo el ID del val primero
+					$vale=Alinventario::creavaleajuste($movimiento,$model->inventario->codalm,$model->inventario->codcen)->id;
+				$signo=Almacenmovimientos::model()->findByPk($movimiento)->signo;
+				//CREADNO EL KARDEX
+				$nuevokardex=New Alkardex();
+				$nuevokardex->SetAttributes(
+					array(
+						'codart'=>$model->inventario->codart,
+						'codmov'=>$movimiento,
+						'cant'=>$signo*abs($model->diferencia), //obenener le signo correcto
+						'alemi'=>$model->inventario->codalm,
+						'fecha'=>date('Y-m-d H:i:s'),
+						//'coddoc'=>'400',
+						//'numdoc'=>$this->numdoc,
+						'um'=>$model->inventario->maestro->um,
+						'codocuref'=>'400',
+						//'numdocref'=>Alreserva::model()->findByPk($valor)->desolpe->desolpe_solpe->numero,
+						'codcentro'=>$model->inventario->codcen,
+						'hidvale'=>$vale,
+						'fechadoc'=>date('Y-m-d H:i:s'),
+						//'idref'=>Alreserva::model()->findByPk($valor)->desolpe->id,
+						//'lote'=>$this->lote,
+						'preciounit'=>$model->monto,
+						'codmoneda'=>$model->inventario->almacen->codmon,
+
+					)
+				);
+				//$nuevokardex->save();
+				if(!$nuevokardex->save()){
+					//echo yii::app()->mensajes->getErroresItem($nuevokardex->geterrors());die();
+					MiFactoria::Mensaje('error',yii::app()->mensajes->getErroresItem($nuevokardex->geterrors()));
+				}
+
+
+
+			}
+			if(yii::app()->user->hasFlash('error')){
+				$transaccion->rollback();
+
+			}else{
+				$transaccion->commit();
+			}
 		}else{
 			throw new CHttpException(404,'No se puede realizar esta operacion el modulo de contabilidad no esta activo ');
 		}
 
 
 	}
+
+
+
 
 
 

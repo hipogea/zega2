@@ -10,13 +10,14 @@
     ?>
     <?php
     $cs->registerCssFile($baseUrl.'/css/bootstrap.min.css');
+    //->registerCssFile($baseUrl.'/css/ma.css');
     $cs->registerCssFile($baseUrl.'/css/bootstrap-responsive.min.css');
     $cs->registerCssFile($baseUrl.'/css/abound.css');
     $cs->registerCssFile($baseUrl.'/css/miestilo.css'); ///sas
     $cs->registerScriptFile($baseUrl.'/js/plugins/blockuiplugin.js',CClientScript::POS_HEAD);
     ?>
 </head>
-<body>
+<body >
 <?php  echo CHtml::script("
 $(document).ajaxStart(function () {
  $.blockUI(

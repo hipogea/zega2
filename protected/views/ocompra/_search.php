@@ -238,7 +238,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
 	),
 ));
 ?>
-<iframe id="cru-frame3" width="100%" height="100%"></iframe>
+<iframe id="cru-frame3" width="100%" height="100%" style="overflow-y:hidden;overflow-x:hidden;"></iframe>
 <?php
 
 $this->endWidget();

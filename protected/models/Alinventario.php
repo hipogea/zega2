@@ -690,6 +690,7 @@ public function getstockTotalmaterial($codmaterial,$adatos=null){
 								  $regkardex=Alkardex::model()->findByPK($idkardex);
 								  VAR_DUMP($regkardex->attributes);
 								   var_dump($this->attributes);
+								   var_dump($this->lotesfifo);
 								   MiFactoria::Mensaje ( 'error' , __CLASS__ . '=>' . __FUNCTION__ . '    '.__LINE__.'  Se verifico que no hay consistencias con los lotes de este registro de inventario ');
 								   $retorno=true;
 							   }
@@ -1424,6 +1425,65 @@ var_dump($this->attributes);*/
 			$this->adderror('fechaini','Fecha inicial mayor o igual que la fecha final');
 
 	}
+
+
+
+	/*Esta funcion verifica si el usuariop ha creado
+        un vale de ajuste de nivietario durante la sesion de susuario
+        */
+
+	private static function getvaleajuste($movimiento,$fechainisesion){
+		$criterio=New CDBcriteria();
+		$criterio->addCondition("iduser=:iduser");
+		$criterio->addCondition("codmovimiento=:codmov");
+		$criterio->addCondition("fechacre >=:fechacre");
+		$criterio->params=array(
+			":iduser"=>yii::app()->user->id,
+			":codmov"=>$movimiento,
+			":fechacre"=>$fechainisesion
+		);
+		return Almacendocs::model()->find($criterio);
+	}
+
+	/*Esta funcion crea
+        un vale de ajuste de nivietario durante la sesion de susuario
+        */
+	public static function  creavaleajuste($codmov,$codalm,$codcen){
+		$usuario=yii::app()->user->um->loadUserById(yii::app()->user->id);
+		$sesion=yii::app()->user->um->findSession($usuario);
+		$inicio=date("Y-m-d H:i:s",$sesion->created+0);
+		$final=date("Y-m-d H:i:s",$sesion->expire+0);
+		$registro=self::getvaleajuste($codmov,$inicio);
+		if(is_null($registro)){  ///Si no se ha creado todavia
+			//$registro=New Almacendocs();
+			$registro=New Almacendocs('clonar');
+			$registro->setAttributes(
+				array(
+					'fechavale'=>date("Y-m-d"),
+					'codmovimiento'=>$codmov,
+					'codalmacen'=>$codalm,
+					'codcentro'=>$codcen,
+					'codocu'=>'400',
+					'fechacont'=>date("Y-m-d"),
+					'idref'=>null,
+					//'cestadovale'
+					'fechacre'=>date("Y-m-d H:i:s"),
+					//'numdocref'=>$this->codart.'-'.$this->codalm,	)
+			));
+			if(!$registro->save())
+			{
+				MiFactoria::Mensaje('error',yii::app()->mensajes->getErroresItem($registro->geterrors()));
+				return null;
+			}else{
+				return $registro;
+			}
+
+		}else{
+			return $registro;
+		}
+
+	}
+
 
 
 
