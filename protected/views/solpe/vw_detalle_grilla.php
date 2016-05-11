@@ -35,7 +35,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 		array('name'=>'cant','header'=>'Cant'),
 		array('name'=>'desolpe_um.desum','header'=>'Um','htmlOptions'=>array('width'=>5)),
 		//array('name'=>'codart','header'=>'Cod.','htmlOptions'=>array('width'=>5)),
-		array('name'=>'codart','value'=>'($data->codart==yii::app()->settings->get("materiales","materiales_codigoservicio"))?"":$data->codart','htmlOptions'=>array('width'=>5)),
+		array('name'=>'codart', 'type'=>'raw','value'=>'($data->codart==yii::app()->settings->get("materiales","materiales_codigoservicio"))?"":CHtml::link($data->codart,yii::app()->createUrl("/maestrocompo/ver/",array("id"=>$data->codart)) ,array("target"=>"_blank")  )','htmlOptions'=>array('width'=>5)),
 
 		//'c_edgui',	
 		array('name'=>'txtmaterial','header'=>'Descripcion','htmlOptions'=>array('width'=>600)),

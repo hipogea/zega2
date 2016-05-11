@@ -24,10 +24,10 @@ $('.search-form form').submit(function(){
 });
 ");
 ?>
-<div class="ventana">
 
 
-<h1>Solicitudes de materiales</h1>
+
+<?php MiFactoria::titulo('Solicitudes de recursos','clipboard_sign'); ?>
 
 
 
@@ -74,7 +74,7 @@ $('.search-form form').submit(function(){
 		'centro',
 		'usuario',
 		'est',
-		
+
 	),
 )); ?>
 
@@ -84,7 +84,7 @@ $('.search-form form').submit(function(){
 <?PHP
     //Capture your CGridView widget on a variable
     //$gridWidget=$this->widget('bootstrap.widgets.TbGridView', array( . . .
-    $this->renderExportGridButton($gridWidget,'Exportar',array('class'=>''));
+    $this->renderExportGridButton($gridWidget,'Exportar',array('class'=>'btn btn-info pull-right'));
 ?>
 
 <?php
@@ -104,9 +104,8 @@ $('.search-form form').submit(function(){
 ?>
 <iframe id="cru-detalle" frameborder="0"  width="100%" height="100%" ></iframe>
 <?php
- 
+
 $this->endWidget();
 //--------------------- end new code --------------------------
 ?>
 
-	</div>

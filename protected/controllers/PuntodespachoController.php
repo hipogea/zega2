@@ -70,6 +70,7 @@ class PuntodespachoController extends Controller
 		if(isset($_POST['Puntodespacho']))
 		{
 			$model->attributes=$_POST['Puntodespacho'];
+			//VAR_DUMP($model->attributes);DIE();
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}

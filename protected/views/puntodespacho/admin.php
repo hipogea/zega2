@@ -8,8 +8,8 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'List Puntodespacho', 'url'=>array('index')),
-	array('label'=>'Create Puntodespacho', 'url'=>array('create')),
+	//array('label'=>'List Puntodespacho', 'url'=>array('index')),
+	array('label'=>'Crear Punto despacho', 'url'=>array('create')),
 );
 
 Yii::app()->clientScript->registerScript('search', "
@@ -26,14 +26,13 @@ $('.search-form form').submit(function(){
 ");
 ?>
 
-<h1>Manage Puntodespachos</h1>
 
-<p>
-You may optionally enter a comparison operator (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b>
-or <b>=</b>) at the beginning of each of your search values to specify how the comparison should be done.
-</p>
+<?php MiFactoria::titulo('Puntos de expedicion','camion');?>
 
-<?php echo CHtml::link('Advanced Search','#',array('class'=>'search-button')); ?>
+
+
+
+<?php echo CHtml::link('Filtrar','#',array('class'=>'search-button')); ?>
 <div class="search-form" style="display:none">
 <?php $this->renderPartial('_search',array(
 	'model'=>$model,
@@ -42,8 +41,9 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'puntodespacho-grid',
+	'itemsCssClass'=>'table table-striped table-bordered table-hover',
 	'dataProvider'=>$model->search(),
-	'filter'=>$model,
+	//'filter'=>$model,
 	'columns'=>array(
 		'id',
 		'hcodcanal',

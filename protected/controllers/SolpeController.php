@@ -1599,7 +1599,7 @@ public function actionprocesarsolpe($id)
 	 */
 	public function actionAdmin()
 	{
-		MiFactoria::Mensaje('error','Este es un primer error');
+		//MiFactoria::Mensaje('error','Este es un primer error');
 		/*MiFactoria::Mensaje('notice','Adverrtencia n 1 ');
 		MiFactoria::Mensaje('error','Un segudno error ');
 		MiFactoria::Mensaje('success','Un mensaje  de xisto ');
@@ -1610,26 +1610,18 @@ public function actionprocesarsolpe($id)
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['VwSolpe']))
 			$model->attributes=$_GET['VwSolpe'];
+		//var_dump($model->attributes);die();
+		if ($this->isExportRequest()) { //<==== [[ADD THIS BLOCK BEFORE RENDER]]
+			//ECHO "SALIO";DIE();
 
-        if ($this->isExportRequest()) { //<==== [[ADD THIS BLOCK BEFORE RENDER]]
-            //set_time_limit(0); //Uncomment to export lage datasets
-            //Add to the csv a single line of text
-          //  $this->exportCSV(array('POSTS WITH FILTER:'), null, false);
-            //Add to the csv a single model data with 3 empty rows after the data
-           // $this->exportCSV($model, array_keys($model->attributeLabels()), false, 3);
-            //Add to the csv a lot of models from a CDataProvider
-
-            $this->exportCSV($model->search(), array('numsolpe','item','cant','desum','codart','txtmaterial','fechacrea','fechaent','codal','centro','usuario','est'));
-        }
-
-
-
-
-
-
-		$this->render('admin',array(
-			'model'=>$model,
-		));
+			$this->exportCSV($model->search(),array_keys($model->attributes) );
+		} else {
+			$this->render('admin',array(
+				'model'=>$model,
+			));
+			/*echo "no pasa nada ";
+			Yii::app()->end();*/
+		}
 	}
 
 

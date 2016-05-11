@@ -13,6 +13,6 @@ $this->menu=array(
 );
 ?>
 
-<h1>Create Canales</h1>
+<?php MiFactoria::titulo('Crear canal de transporte','camion');?>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

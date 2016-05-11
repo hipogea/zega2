@@ -11,9 +11,28 @@
 	'method'=>'get',
 )); ?>
 	<div class="row">
-	   <div class='botones'>
-		   <?php echo CHtml::imageButton(Yii::app()->getTheme()->baseUrl.'/img/bino.png',array('value'=>'Buscar','onClick'=>'Loading.show();Loading.hide();'));?>
-	   </div>
+		<?php $botones=array(
+		'search'=>array(
+		'type'=>'A',
+		'ruta'=>array(),
+		'visiblex'=>array('10'),
+		),
+		'clear'=>array(
+		'type'=>'E',
+		'ruta'=>array(),
+		'visiblex'=>array('10'),
+		),
+		);
+		$this->widget('ext.toolbar.Barra',
+		array(
+		//'botones'=>MiFactoria::opcionestoolbar($model->id,$this->documento,$model->codestado),
+		'botones'=>$botones,
+		'size'=>24,
+		'extension'=>'png',
+		'status'=>'10',
+
+		)
+		); ?>
 	</div>
 	<DIV class="panelizquierdo">
 
@@ -58,27 +77,54 @@
 
 			*/	?>
 	</div>
-	    <div class="row">
-		<?php echo $form->labelEx($model,'codart'); ?>
-		<?php
-				$this->widget('ext.matchcode.MatchCode',array(		
-												'nombrecampo'=>'codart',												
-												'ordencampo'=>1,
-												'controlador'=>'VwSolpe',
-												'relaciones'=>$model->relations(),
-												'tamano'=>8,
-												'model'=>$model,
-												'form'=>$form,
-												'nombredialogo'=>'cru-dialog3',
-												'nombreframe'=>'cru-frame3',
-												'nombrearea'=>'fehdfj',
-													)
-													
-								);
 
-						
-			   ?>
-	</div>
+		<div class="row">
+			<?php echo $form->labelEx($model,'codart'); ?>
+			<?php
+			$this->widget('ext.matchcode1.Seleccionavarios',array(
+					'nombrecampo'=>'codart',
+					//'ordencampo'=>1,
+					'controlador'=>'VwSolpe',
+					'relaciones'=>$model->relations(),
+					'tamano'=>10,
+					'model'=>$model,
+					'nombremodelo'=>'Maestrocompo',
+					'form'=>$form,
+					'nombredialogo'=>'cru-dialog3',
+					'nombreframe'=>'cru-frame3',
+					//'nombrearea'=>'fehdfj',
+				)
+
+			);
+
+
+			?>
+		</div>
+
+		<div class="row">
+			<?php echo $form->labelEx($model,'imputacion'); ?>
+			<?php
+			$this->widget('ext.matchcode1.Seleccionavarios',array(
+					'nombrecampo'=>'imputacion',
+					//'ordencampo'=>1,
+					'controlador'=>'VwSolpe',
+					'relaciones'=>$model->relations(),
+					'tamano'=>14,
+					'model'=>$model,
+					'nombremodelo'=>'Cc',
+					'form'=>$form,
+					'nombredialogo'=>'cru-dialog3',
+					'nombreframe'=>'cru-frame3',
+					//'nombrearea'=>'fehdfj',
+				)
+
+			);
+
+
+			?>
+		</div>
+
+
 
 	
 	

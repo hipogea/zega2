@@ -18,7 +18,7 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'codcanal'); ?>
-		<?php echo $form->textField($model,'codcanal',array('size'=>3,'maxlength'=>3)); ?>
+		<?php echo $form->textField($model,'codcanal',array('size'=>3,'maxlength'=>3,'disabled'=>($model->isNewRecord)?'':'disabled')); ?>
 		<?php echo $form->error($model,'codcanal'); ?>
 	</div>
 

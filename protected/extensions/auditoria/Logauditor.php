@@ -27,6 +27,7 @@ class Logauditor extends CWidget
 
     /*echo " LA CLVE ES   :  ".$this->clave."   ".gettype($this->clave);
 		yii::app()->end();*/
+		//var_dump($this->modeloapintar);var_dump($this->clave);die();
 
 	}
 	

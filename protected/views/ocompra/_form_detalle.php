@@ -8,7 +8,7 @@ $this->widget('zii.widgets.jui.CJuiTabs', array(
 
 
 			'Auditoria'=>array('id'=>'tab___._..__',
-				'content'=>$this->renderPartial('tab_auditoria', array('form'=>$form,'model'=>$model),TRUE)
+				'content'=>$this->renderPartial('//site/tab_auditoria', array('form'=>$form,'model'=>$model),TRUE)
 			),
 
 

@@ -28,7 +28,7 @@ $this->widget('zii.widgets.jui.CJuiTabs', array(
 			) ,
 
 			'Auditoria'=>array('id'=>'tab_auditoria',
-				'content'=>$this->renderpartial("auditoria",array('modeloapintar'=>'Desolpe','model'=>$model ), true),
+				'content'=>$this->renderpartial("//site/tab_auditoria",array('model'=>$model ), true),
 
 			) ,
 

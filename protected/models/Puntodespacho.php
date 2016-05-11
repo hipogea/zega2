@@ -44,6 +44,7 @@ class Puntodespacho extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('hcodcanal, nombrepunto, pesaje, codcen, maxhorasespera', 'required'),
+			array('hcodcanal, nombrepunto, pesaje, codcen, maxhorasespera', 'safe'),
 			array('maxhorasespera', 'numerical', 'integerOnly'=>true),
 			array('hcodcanal', 'length', 'max'=>3),
 			array('nombrepunto', 'length', 'max'=>40),

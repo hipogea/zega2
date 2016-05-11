@@ -222,7 +222,7 @@
 
             </div>
 
-
+            <?php  echo $form->errorSummary($model); ?>
 
 
    
@@ -252,7 +252,7 @@
                         ),
 
                         'Auditoria'=>array('id'=>'tab____..__',
-                            'content'=>$this->renderPartial('tab_auditoria', array('form'=>$form,'model'=>$model),TRUE)
+                            'content'=>$this->renderPartial('//site/tab_auditoria', array('form'=>$form,'model'=>$model),TRUE)
                         ),
 
 

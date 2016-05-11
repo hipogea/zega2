@@ -36,7 +36,14 @@ class Docompra extends ModeloGeneral
 		//var_dump($this->estadosnototalizables);yii::app()->end();
 	}
 
-
+	public function behaviors()
+	{
+		return array(
+			// Classname => path to Class
+			'ActiveRecordLogableBehavior'=>
+				'application.behaviors.ActiveRecordLogableBehavior',
+		);
+	}
 
 	/**
 	 * @return array validation rules for model attributes.
@@ -139,14 +146,7 @@ class Docompra extends ModeloGeneral
 		);
 	}
 
-	public function behaviors()
-	{
-		return array(
-			// Classname => path to Class
-			'ActiveRecordLogableBehavior'=>
-				'application.behaviors.ActiveRecordLogableBehavior',
-		);
-	}
+
 
 
 

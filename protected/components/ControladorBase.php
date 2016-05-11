@@ -586,8 +586,48 @@ public function detectaerrores(){
 		}
 	}
 
+/*Funcio que te dice si el objeto $modelo corresponde a una tabla en buffer o a una tabla en
+  persistente */
+PUBLIC FUNCTION establafija($modelo){
+	$clasesita=get_class($modelo);
+	if(in_array(trim($clasesita),array_values($this->modeloshijos))){
+		return true;}else{
+		return false;
+	}
+
+}
+	PUBLIC FUNCTION establapadre($modelo){
+		$clasesita=get_class($modelo);
+		if($this->modelopadre==$clasesita){
+			return true;}else{
+			return false;
+		}
+
+	}
+
+public function sacaclave($model)
+{
+
+	if ($this->establafija($model)) {
+		$clave = $model->getPrimaryKey();
+
+	}
+          else {
+
+			  if($this->establapadre($model))
+				  return $model->getPrimaryKey();
+
+				$campo = $model->getTableSchema()->primaryKey ;
+			  //var_dump($model);die();
+					if (!is_array($campo))
+					$clave = $model->{$campo};
+						else {
+								throw new CHttpException(500, 'Hubo un error, el campo clave del modelo  ' . $nombremodelo . ' Es un campo combinado');
+								}
+				}
 
 
-
+	return $clave;
+}
 
 }

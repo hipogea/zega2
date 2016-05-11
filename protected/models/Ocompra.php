@@ -56,8 +56,11 @@ class Ocompra extends ModeloGeneral
 		// will receive user inputs.
 		return array(
 			
-				array('codpro','required','message'=>'LLena el cliente'),
+				//array('codpro','required','message'=>'LLena el cliente'),
 			array('moneda','exist','allowEmpty' => false, 'attributeName' => 'codmoneda', 'className' => 'Monedas','message'=>'Esta moneda no es valida'),
+			array('codresponsable','exist','allowEmpty' => false, 'attributeName' => 'codigotra', 'className' => 'Trabajadores','message'=>'Este trabajador no existe'),
+			array('codpro','exist','allowEmpty' => false, 'attributeName' => 'codpro','className' => 'Clipro','message'=>'Este proveedor no existe'),
+
 			array('direcentrega','required','message'=>'Coloque una direccion de entrega'),
 			array('tenorsup,tenorinf','chktenores','on'=>'update'),
 			//array('tenorinf','required','message'=>'Coloque una direccion de entrega'),
@@ -117,6 +120,7 @@ class Ocompra extends ModeloGeneral
 		return array(
 			//'codpro0' => array(self::BELONGS_TO, 'Contactos', 'codpro'),
 			'estado' => array(self::BELONGS_TO, 'Estado', array('codestado'=>'codestado','coddocu'=>'codocu')),
+
 			//'peticion_estado' => array(self::BELONGS_TO, 'Estado', 'codestado'),
 			'codgrupoventas0' => array(self::BELONGS_TO, 'Grupoventas', 'codgrupoventas'),
 			'sociedades' => array(self::BELONGS_TO, 'Sociedades', 'codsociedad'),

@@ -16,6 +16,6 @@ $this->menu=array(
 );
 ?>
 
-<h1>Update Canales <?php echo $model->codcanal; ?></h1>
+<?php MiFactoria::titulo('Actualizar canal de transporte','camion');?>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
