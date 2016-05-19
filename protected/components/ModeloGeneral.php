@@ -213,6 +213,8 @@ public function etiquetascampos (){
 			$params=$criteria->params;
 		}
 		/*var_dump($condition);
+		var_dump($params);
+		var_dump($criteria);
 		yii::app()->end();*/
 		if(is_null($ancho))
           $ancho=$this->getSizeColumn($attribute);
@@ -225,34 +227,33 @@ public function etiquetascampos (){
 			->where($condition,$params)->queryScalar();
 		//->where("codmovimiento='456'")->queryScalar();
 		/*var_dump($condition);
-		var_dump($params);*/
-		/*var_dump($valor);/*
-		yii::app()->end();
-*/
+		var_dump($params);
+		ECHO "VALOR."; var_dump($valor);*/
+
 		/*var_dump($valor);
 		yii::app()->end();*/
 		   IF ($valor!=false)
 		   {
-			   $valor=str_pad(trim($valor+1),$ancho-strlen($prefijo),"0",STR_PAD_LEFT);
 
+			    //$valor=str_pad(trim($valor+1),$ancho-strlen($prefijo),"0",STR_PAD_LEFT);
+					$valor=trim(($valor+1)."");
 		   }ELSE {
-			   $valor=$prefijo.str_pad($valor,$ancho-strlen($prefijo),"0",STR_PAD_LEFT);
-			   /*var_dump($valor);
-			   yii::app()->end();*/
-			  // $valor=trim($valor+1);
+			  $valor=$prefijo.str_pad($valor,$ancho-strlen($prefijo),"0",STR_PAD_LEFT);
+
 		   }
+		//$valor=$prefijo.str_pad($valor,$ancho-strlen($prefijo),"0",STR_PAD_LEFT);
 		/*var_dump($valor+0);
 		var_dump(($prefijo.str_pad("",$ancho-strlen($prefijo),"9",STR_PAD_LEFT)+0));
 		yii::app()->end();*/
            //Return $valor;
 		$valmax=$prefijo.str_pad("",$ancho-strlen($prefijo),"9",STR_PAD_LEFT)+0;
-		var_dump($valor);
-		var_dump($valmax);/*
-		yii::app()->end();*/
+		//var_dump($valor);
+		//var_dump($valmax);/*
+		//yii::app()->end();*/
 
 
 		   if(($valor+0) > ($valmax+0)) {
-				var_dump((integer)$valor); var_dump((integer)$valmax);DIE();
+				//var_dump((integer)$valor); var_dump((integer)$valmax);DIE();
 			   throw new CHttpException(500, __CLASS__ . '   ' . __FUNCTION__ . '   ' . __LINE__ .
 				   ' El valor del numero correlativo de este documento ' . (integer)$valor . ' ya se saturo y excede el ancho de la columna  '.$valmax);
 		   }

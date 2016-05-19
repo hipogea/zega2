@@ -8,6 +8,7 @@
 <div class="division">
 
 		<?php
+
 		$botones=array(
 
 
@@ -40,10 +41,10 @@
 				'visiblex'=>array('20'),
 
 			),
-			'calc'=>array(
+			'config'=>array(
 				'type'=>'C',
-				'ruta'=>array($this->id.'/creadetalle',array(
-					'idcabeza'=>$model->id,"cest"=>'01',
+				'ruta'=>array('maestrocompo/editadetalle',array(
+					'almacen'=>$model->codalm,'centro'=>$model->codcen,'codigo'=>$model->codart,
 					//"id"=>$model->n_direc,
 					"asDialog"=>1,
 					"gridId"=>'detalle-grid',

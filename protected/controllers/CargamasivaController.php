@@ -91,7 +91,12 @@ public function actionModificadetalle($id)
 		if(isset($_POST['Cargamasiva']['modelo']))
 		$valormodelo=MiFactoria::cleanInput($_POST['Cargamasiva']['modelo']);
 		 $modelInventariox=new $valormodelo;
-			 $datosx = $modelInventariox->getScenarios();
+		   if( method_exists($modelInventariox ,'getScenarios')){
+			   $datosx = $modelInventariox->getScenarios();
+		   } else{
+			   $datosx=array('insert','update');
+		   }
+
 			 unset($modelInventariox);
 			 /*print_r($datosx);
 			 yii::app()->end();*/
@@ -261,9 +266,11 @@ public function actionModificadetalle($id)
 																		));
 																yii::app()->end();
 								} else  {
-										echo "NO se ha enviado ningun form";						
-										}
-											$this->render('cargainventario',array(
+								echo "NO se ha enviado ningun form";
+				                }
+			if (!empty($_GET['asDialog']))
+				$this->layout = '//layouts/iframe';
+			$this->render('cargainventario',array(
 												'model'=>$carga,
 															));
     }

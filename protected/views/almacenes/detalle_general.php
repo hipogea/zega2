@@ -1,3 +1,18 @@
+
+
+<?php
+$mode=new Alinventario();
+?>
+
+
+<div class="division">
+	Numero de items en inventario   :               <span class="label badge-warning" > <?php echo $mode->getnumeroitems($model->codcen,$model->codalm);?>
+		</span>
+
+	<br>
+
+
+
 <?php
 $this->widget('zii.widgets.jui.CJuiTabs', array(
 		'theme' => 'default',
@@ -22,3 +37,5 @@ $this->widget('zii.widgets.jui.CJuiTabs', array(
 		'id'=>'MyTabi',)
 );
 ?>
+
+</div>

@@ -841,6 +841,7 @@ private function pasadatosacompra($desolp,$docomp,$idguia){
             'codigoalma'=>$desolp->codal,
             'codart'=>$desolp->codart,
             'descri'=>$desolp->txtmaterial,
+            'detalle'=>$desolp->textodetalle,
             //'tipoimputacion'=>$desolp->tipimputacion,
             //'tipoitem'=>$desolp->tipsolpe,
             'cant'=>$desolp->cant-(is_null($desolp->cantatendida)?0:$desolp->cantatendida),

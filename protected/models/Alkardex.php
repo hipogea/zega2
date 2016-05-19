@@ -393,8 +393,17 @@ class Alkardex extends ModeloGeneral
 		/*INSERTA LOS ASIENTOS CONTABLES COMPROMETIDOS EN ESTA TRANSACCION*/
 		if(Yii::app()->hasModule('contabilidad'))
 		if(!is_null($codop)){
-			yii::app()->librodiario->asiento($this->id,$this->coddoc,$codop,$this->maestrodetalle->catval,$this->fecha,
+			//var_dump($this->maestrodetalle->catval);die();
+			if(in_array($this->codmov,array('68','86'))){ //Si e servicio hay que encontrar la categoria de valor por el maste  de serviucios
+						$grupo=Maestroservicios::model()->findByPk(Desolpe::model()->findByPk(Docompra::model()->
+						findByPk($this->idref)->iddesolpe)->codservicio)->catval;
+
+			}else{ //Si es una mateiral es automatico
+				$grupo=$this->maestrodetalle->catval;
+			}
+			yii::app()->librodiario->asiento($this->id,$this->coddoc,$codop,$grupo,$this->fecha,
 				$this->numdocref,$this->alkardex_almacenmovimientos->movimiento,$this->montomovido);
+
 		} ELSE{
 			///EN ESTE CASO EL KARDEX NO HACE RNADA PARA LE CASO DE LOS AJUSTES DE INVENTARIO LOS ASINTOS DEL LIBRO LO HACEN
 			//DESDE OTRA INTERFAZ PORQUE , LAS CUENTAS SON  DISTINTAS PARA CADA CASO Y LE CONTADOR DECIDE PCOMO AJUSTA

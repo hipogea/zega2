@@ -42,8 +42,7 @@ class Paraqueva extends CActiveRecord
 			//array('cmotivo', 'required'),
 			array('cmotivo', 'length', 'max'=>2),
 			array('motivo', 'length', 'max'=>30),
-			array('creadopor, modificadopor', 'length', 'max'=>25),
-			array('creadoel, modificadoel', 'length', 'max'=>20),
+
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('cmotivo, motivo', 'safe', 'on'=>'search'),

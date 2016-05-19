@@ -17,7 +17,7 @@
  * The followings are the available model relations:
  * @property Alinventario $hidinventario0
  */
-class Inventariofisico extends CActiveRecord
+class Inventariofisico extends ModeloGeneral
 {
 	/**
 	 * @return string the associated database table name
@@ -27,6 +27,7 @@ class Inventariofisico extends CActiveRecord
 		return '{{inventariofisico}}';
 	}
 
+
 	/**
 	 * @return array validation rules for model attributes.
 	 */
@@ -34,19 +35,30 @@ class Inventariofisico extends CActiveRecord
 	{
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
+		$mascaraubic=yii::app()->settings->get('inventario','inventario_mascaraubicaciones');
 		return array(
-			array('iduser', 'numerical', 'integerOnly'=>true),
-			array('fecha,cant', 'required', 'message'=>'Estos valores son obligatorios'),
-			array('cant, diferencia', 'numerical'),
-			array('hidinventario', 'length', 'max'=>20),
-			array('numero', 'length', 'max'=>10),
-			array('codestado', 'length', 'max'=>2),
-			array('fecha', 'checkfecha'),
-			array('cant', 'checkcant'),
-			array('fecha,cant,cantstock,montocontable,monto, hidinventario,diferencia comentario', 'safe'),
+			array('iduser', 'numerical', 'integerOnly'=>true,'on'=>'insert,update,padre,ajuste'),
+			array('fecha,cant', 'required', 'message'=>'Estos valores son obligatorios','on'=>'insert,update'),
+			array('cant, diferencia', 'numerical','on'=>'insert,update,padre,ajuste'),
+			array('hidinventario', 'length', 'max'=>20,'on'=>'insert,update,padre,ajuste'),
+			array('numero', 'length', 'max'=>10,'on'=>'insert,update,padre,ajuste'),
+			array('codestado', 'length', 'max'=>2,'on'=>'insert,update,padre,ajuste'),
+			array('fecha', 'checkfecha','on'=>'insert,update,ajuste'),
+			array('cant', 'checkcant','on'=>'insert,update,ajuste'),
+			array('fecha,cant,cantstock,montocontable,monto, hidinventario,diferencia comentario', 'safe','on'=>'insert,update,padre,ajuste'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, hidinventario, fecha, numero, iduser, cant, diferencia, codestado, comentario', 'safe', 'on'=>'search'),
+
+			//Escenario par al ainsericion automatica
+			array('hidinventario,hidpadre,cant,cantstock,fechacre,diferencia', 'safe','on'=>'padre'),
+
+			//Escenario par CArga masiva
+			array('id,cant,ubicacion', 'required','on'=>'cargamasiva'),
+			array('id,cant,ubicacion', 'safe','on'=>'cargamasiva'),
+			array('cant', 'safe','on'=>'cargamasiva'),
+			array('ubicacion', 'match','allowEmpty'=>true, 'pattern'=>$mascaraubic,'message'=>'Ubicacion Incorrecta, debe de ser de la forma :'.$mascaraubic,'on'=>'cargamasiva'),
+
 
 
 			//escenario para el ajuste
@@ -139,6 +151,20 @@ class Inventariofisico extends CActiveRecord
 		));
 	}
 
+	public function search_por_padre($id)
+	{
+
+
+		$criteria=new CDbCriteria;
+
+
+		$criteria->addCondition('hidpadre=:id');
+		$criteria->params=array(":id"=>$id);
+
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
+	}
 
 	/**
 	 * Returns the static model of the specified AR class.

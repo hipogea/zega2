@@ -32,9 +32,9 @@ class Estado extends CActiveRecord
 			array('ordenn, eseditable, esanulable', 'numerical', 'integerOnly'=>true),
 			array('codestado', 'length', 'max'=>2),
 			array('codocu', 'length', 'max'=>3),
-			array('nocalculable', 'safe'),
-			array('estado, creadopor, modificadopor', 'length', 'max'=>25),
-			array('creadoel, modificadoel', 'length', 'max'=>20),
+			array('nocalculable,estado', 'safe'),
+			//array('estado, creadopor, modificadopor', 'length', 'max'=>25),
+			//array('creadoel, modificadoel', 'length', 'max'=>20),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('codestado, codocu, estado, ordenn, eseditable, esanulable', 'safe', 'on'=>'search'),

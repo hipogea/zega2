@@ -136,9 +136,10 @@
 						'content'=>$this->renderPartial('tab_mensajes', array('model'=>$model),TRUE)
 					),
 
-					'Auditoria'=>array('id'=>'tab_._',
-						'content'=>$this->renderPartial('tab_auditoria', array('model'=>$model),TRUE)
+					'Auditoria'=>array('id'=>'tab___._..__',
+						'content'=>$this->renderPartial('//site/tab_auditoria', array('model'=>$model),TRUE)
 					),
+
 
 
 

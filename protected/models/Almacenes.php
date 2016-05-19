@@ -183,9 +183,9 @@ public  function llenaopciones(){
 		$codal=MiFactoria::cleanInput($codal);
 		//var_dump($codal);
 		$data= Yii::app()->db->createCommand()
-			->select('codmov')
-			->from('{{almacentransacciones}} a')
-			->where("a.codal=:vcodal and activo='1' and  esreal='1' ",array(":vcodal"=>$codal))->queryColumn();
+			->select('a.codmov')
+			->from('{{almacentransacciones}} a, {{almacenmovimientos}} b ')
+			->where(   " a.codmov=b.codmov AND     a.codal=:vcodal and a.activo='1' and  b.esreal='1' ",array(":vcodal"=>$codal))->queryColumn();
 		//var_dump($data);die();
 		return $data;
 	}

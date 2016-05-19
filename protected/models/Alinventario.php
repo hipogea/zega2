@@ -41,6 +41,7 @@ class Alinventario extends ModeloGeneral
 
 	//public $mensajes=array(); //guarada los mensajes de las operaciones relaizadas en epscial las advertencias y lso errores
 	public $pttotal;
+	public $cant;
 	public $cantidadmovida; //almacena en el Active record la cantidad movida (Convertida a unidad de medida base del material)  de cualquier transaccion,
 	public $montomovido; //ALMACENA EL MONTO INVOLUCRADO EN LA TX , ///sin eimportar la Unidad de medida o el control del precio d S O V DE L AMATEIRAL
 	protected $controldeprecio=NULL;
@@ -292,6 +293,35 @@ public function getstockTotalmaterial($codmaterial,$adatos=null){
 		return ($valor!=false)?$valor:0;
 
 	}
+
+	///deveuek vel numero de items
+	public  function getnumeroitems($codcen=null,$codal=null){
+		$criteri=New CDBcriteria();
+		$criteri->addCondition(" ( ".$this->getcadenacampos().") >0 ");
+		if(!is_null($codcen) and !is_null($codal)){
+			$criteri->addCondition(" codcen=:codcen and codalm=:codalm  ");
+			$criteri->params=array(":codcen"=>MiFactoria::cleanInput($codcen),":codalm"=>MiFactoria::cleanInput($codal));
+		}
+		if(is_null($codcen) and !is_null($codal)){
+			$criteri->addCondition(" codalm=:codalm  ");
+			$criteri->params=array(":codalm"=>MiFactoria::cleanInput($codal));
+		}
+		if(!is_null($codcen) and is_null($codal)){
+			$criteri->addCondition(" codcen=:codcen  ");
+			$criteri->params=array(":codcen"=>MiFactoria::cleanInput($codcen));
+		}
+
+
+		$valor=Yii::app()->db->createCommand()
+			->select(' count(id) ')
+			->from('{{alinventario}} a')
+			->where($criteri->condition,$criteri->params)
+			//->group('a.codalm,  a.codcen')
+			->queryScalar();
+		return ($valor!=false)?$valor:0;
+	}
+
+
 
 
 	public function pronostico(){
@@ -716,6 +746,8 @@ public function getstockTotalmaterial($codmaterial,$adatos=null){
 
 	public function afterFind() {
 
+			$this->cant=$this->getstockregistro();
+
 
 		return parent::afterfind();
 	}
@@ -969,10 +1001,40 @@ public function getstockTotalmaterial($codmaterial,$adatos=null){
 		));
 	}
 
-	public function getcadenacampos(){
+
+	public function search_por_almacen($alma)
+	{
+		$alma=MiFactoria::cleanInput($alma);
+		$criteria=new CDBCriteria();
+		$criteria->addCondition("codalm=:codalm");
+		$criteria->params=array(":codalm"=>$alma);
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
+	}
+
+	public function search_por_almacen_con_stock($alma)
+	{
+		$alma=MiFactoria::cleanInput($alma);
+		$criteria=new CDBCriteria();
+		//$criteria->addCondition("codalm=:codalm");
+		$criteria->addCondition("(".$this->getcadenacampos('t').") > 0 and codalm=:codalm");
+		$criteria->params=array(":codalm"=>$alma);
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
+	}
+
+
+
+	public function getcadenacampos($letra=null){
 		$cadenacampos="";
+		if(is_null($letra))
+			$letra='a';
+		else
+			$letra=substr(MiFactoria::cleanInput($letra),0,1);
 		foreach($this->camposstock as $clave=>$valor){
-			$cadenacampos.="+a.".$valor;
+			$cadenacampos.="+".$letra.".".$valor;
 
 		}
 		return substr($cadenacampos,1);

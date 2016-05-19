@@ -58,7 +58,7 @@ $('.search-form form').submit(function(){
 		'item',
 		'cant',
 		'desum',
-		array('name'=>'codart','type'=>'raw','value'=>'($data->tipsolpe=="M")?CHtml::link($data->codart,Yii::app()->createurl(\'/maestrocompo/update\', array(\'id\'=> $data->codart ) ) ):""'),
+		array('name'=>'codart','type'=>'raw','value'=>'($data->tipsolpe=="M")?CHtml::link($data->codart,Yii::app()->createurl(\'/maestrocompo/ver\', array(\'id\'=> $data->codart ) ),array("target"=>"_blank") ):""'),
 			'imputacion',
 		array('name'=>'txtmaterial','type'=>'raw','value'=>'$data->txtmaterial','htmlOptions'=>array('width'=>'300')),
 			array(

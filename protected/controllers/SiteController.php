@@ -41,6 +41,7 @@ class SiteController extends Controller
 		            }else {
 
 			               $this->Loginventario(); //Registra el log de inventario
+
 			 Bloqueos::clearbloqueos();
 			  MiFactoria::InsertaCumple(); //INSERTA CUMPLEAÑOS en lel tablon
 
@@ -382,6 +383,20 @@ class SiteController extends Controller
 	{
 
 		$this->redirect(Yii::app()->homeUrl);
+	}
+
+
+	public function actionayuda(){
+		$this->layout = '//layouts/columnhelp';
+		$this->render('ayuda');
+	}
+	public function actioncargaayuda(){
+		$this->layout = '//layouts/columnhelp';
+		//VAR_DUMP($_GET['topico']);
+
+		$topico=MiFactoria::cleanInput($_GET['topico']);
+		//VAR_DUMP('//site/topicos/'.$topico);DIE();
+		echo $this->renderpartial('//site/topicos/'.$topico,true,true);
 	}
 
 

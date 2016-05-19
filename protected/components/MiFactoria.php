@@ -851,6 +851,7 @@ const CAMPO_COLECTOR='mf_colector';
                       $retorno=false;
               }
           } else {
+
               $retorno=false;
           }
 

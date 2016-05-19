@@ -16,6 +16,18 @@ class AlmacenesController extends Controller
 		return array('accessControl',array('CrugeAccessControlFilter'));
 	}
 
+
+	public function behaviors() {
+		return array(
+
+			'exportableGrid' => array(
+				'class' => 'application.components.ExportableGridBehavior',
+				'exportParam'=>'exportacion',
+				'filename' => 'Inventario.csv',
+				'csvDelimiter' =>(Yii::app()->user->isGuest)?",":Yii::app()->user->getField('delimitador') , //i.e. Excel friendly csv delimiter
+			));
+	}
+
 	/**
 	 * Specifies the access control rules.
 	 * This method is used by the 'accessControl' filter.
@@ -27,7 +39,7 @@ class AlmacenesController extends Controller
 		return array(
 
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('admin','delete','create','detalle','update','creade','view','cambiaestatusmov','cambiaestatusmovan'),
+				'actions'=>array('descargainventario','admin','delete','create','detalle','update','creade','view','cambiaestatusmov','cambiaestatusmovan'),
 				'users'=>array('@'),
 			),
 
@@ -208,5 +220,26 @@ if(isset($_POST['Almacenes']))
 			$registro->activo=null;
 			$registro->save();
 		}
+	}
+
+	public function actiondescargainventario(){
+		$almacen=MiFactoria::cleanInput($_GET['codal']);
+		$model=New Alinventario();
+		//var_dump($almacen);die();
+		//var_dump($model->search_por_almacen_con_stock($almacen)->getdata());die();
+		$camposaexportar=array(
+			'id',
+			'codcen',
+			'codalm',
+			'codart',
+			'maestro.maestro_ums.desum',
+			'maestro.descripcion',
+			'ubicacion',
+			'cant'
+
+		);
+		$camposaexportar1=array_merge($camposaexportar,array_values($model->camposstock));
+
+		$this->exportCSV($model->search_por_almacen_con_stock($almacen),$camposaexportar1);
 	}
 }

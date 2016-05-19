@@ -76,7 +76,7 @@ class Almacendocs extends ModeloGeneral
 			array('fechacont', 'required', 'message'=>'La fecha de contabilizacion es obligatoria'),
 			array('fechacont', 'checkfechacont', 'message'=>'La fecha de contabilizacion es obligatoria'),
 			//array('fechacont','checkcentroalmacen'),
-			array('codalmacen','required', 'message'=>'Indique el almacen'),
+			array('codalmacen','chkalmacen'),
 			array('codcentro','required', 'message'=>'Indique elcentro'),
 
 			//array('creadopor, modificadopor, creadoel, modificadoel', 'length', 'max'=>25),
@@ -405,8 +405,17 @@ class Almacendocs extends ModeloGeneral
     }
 
 	public function checkcentroalmacen($attribute,$params) {
-		if(!MiFactoria::Validacentro($this->codcentro,$this->codalmacen))
-			$this->adderror('codcentro','Verificar el centro ya el almacen no son consistentes');
+		if(!MiFactoria::Validacentro($this->codcentro,$this->codalmacen)){
+			if($this->codmovimiento=='68') //si es un servicio{
+			{
+				$this->codalmacen=$this->codcentro->almacenes[0]->codalm;
+			}else{
+				$this->adderror('codcentro','Verificar el centro ya el almacen no son consistentes');
+			}
+
+		}
+
+
 		//verificando el estado
 		//$ordencompra->codestado
 	}
@@ -1019,5 +1028,14 @@ public $maximovalor;
 
 	}
 
+
+	public function chkalmacen($attribute,$params){
+		if($this->codmovimiento=='68'){
+
+		}else{
+			if($this->codalmacen===null or empty($this->codalmacen))
+				$this->adderror('codalmacen','Indique el almacen');
+		}
+	}
 
 }

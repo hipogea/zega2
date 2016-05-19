@@ -590,9 +590,11 @@ public function detectaerrores(){
   persistente */
 PUBLIC FUNCTION establafija($modelo){
 	$clasesita=get_class($modelo);
+	//var_dump($this->modeloshijos);
 	if(in_array(trim($clasesita),array_values($this->modeloshijos))){
-		return true;}else{
-		return false;
+		//echo "adad";
+		return false;}else{
+		return true;
 	}
 
 }
@@ -617,17 +619,42 @@ public function sacaclave($model)
 			  if($this->establapadre($model))
 				  return $model->getPrimaryKey();
 
-				$campo = $model->getTableSchema()->primaryKey ;
+				$modelooriginal=array_flip($this->modeloshijos)[get_class($model)];
+			  $ob=new $modelooriginal;
+			  $campo = $ob->getTableSchema()->primaryKey ;unset($modelooriginal);
 			  //var_dump($model);die();
 					if (!is_array($campo))
 					$clave = $model->{$campo};
 						else {
-								throw new CHttpException(500, 'Hubo un error, el campo clave del modelo  ' . $nombremodelo . ' Es un campo combinado');
+								throw new CHttpException(500, 'Hubo un error, el campo clave del modelo  ' . get_class($model) . ' Es un campo combinado');
 								}
 				}
 
 
 	return $clave;
 }
+
+
+
+	public function sacanombremodelo($model)
+	{
+
+		if ($this->establafija($model)) {
+			return get_class($model);
+
+		}
+		else {
+
+			if($this->establapadre($model))
+				return get_class($model);
+
+				$hijosalreves=array_flip($this->modeloshijos);
+			//var_dump($hijosalreves);
+			  return $hijosalreves[get_class($model)];
+		}
+
+
+		return $clave;
+	}
 
 }

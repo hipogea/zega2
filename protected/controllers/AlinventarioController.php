@@ -411,16 +411,11 @@ print_r($_SESSION['sesion_Maestrocompo']);
 	 */
 	public function actionAdmin()
 	{
-
-
 		$model=new VwAlinventario('search');
 		$model->unsetAttributes();  // clear any default values
-	
 		if(isset($_GET['VwAlinventario'])){
 			$model->attributes=$_GET['VwAlinventario'];
-
 		}
-
 		if ($this->isExportRequest()) { //<==== [[ADD THIS BLOCK BEFORE RENDER]]
 			//ECHO "SALIO";DIE();
 			$this->exportCSV($model->search(), array(

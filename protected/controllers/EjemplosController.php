@@ -386,6 +386,14 @@ $mo=New Alinventario();
 
 
 	public function actionPio() {
+		$valores=Yii::app()->db->createCommand()
+			->select(' * ')
+			->from('{{alinventario}} a')
+			->where(" a.codalm= '140' and cantlibre >0  ")
+			//->group('a.codalm,  a.codcen')
+			->queryAll();
+		var_dump($valores);die();
+
 
 		var_dump(yii::app()->periodo->estadentroperiodo('2016-07-01',false));die();
 		$cad=array("dedalo_eotoeote","amidatdes_eo945894594","cox_35893583jjj");

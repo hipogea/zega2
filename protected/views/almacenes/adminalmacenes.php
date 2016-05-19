@@ -19,6 +19,7 @@ $this->menu=array(
 		'codcen',
 		'codtipo',
 		'destipo',
+		'codmon',
 		array('name'=>'stocklibre','value'=>'MiFactoria::decimal($data->stocklibre)','footer'=>Chtml::openTag("span", array("class"=>"label label-info")).MiFactoria::decimal(VwStockPorTipos::getTotal($prove)["libre"],2).CHTml::CloseTag("span")),
 		//array('name'=>'despro','type'=>'raw','value'=>'CHTml::OpenTag("span",array("style"=>"color:#6B1A80;font-weight:bold;")).$data->despro.CHTml::CloseTag("span")'),
 		array('name'=>'stockreservado','value'=>'MiFactoria::decimal($data->stockreservado)','footer'=>Chtml::openTag("span", array("class"=>"label label-info")).MiFactoria::decimal(VwStockPorTipos::getTotal($prove)["reservado"],2).CHTml::CloseTag("span")),
@@ -33,9 +34,6 @@ $this->menu=array(
 		'estructura',
 		'id',
 		*/
-		array(
-			'class'=>'CButtonColumn',
-			'template'=>'{view}{update}',
-		),
+
 	),
 )); ?>

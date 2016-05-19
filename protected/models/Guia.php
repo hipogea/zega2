@@ -70,15 +70,15 @@ class Guia extends ModeloGeneral
 			array('c_coclig, c_codtra', 'length', 'max'=>6),
 			array('c_estgui', 'length', 'max'=>2),
 			array('c_rsguia, c_dirsoc, c_estado, c_salida', 'length', 'max'=>1),
-			array('c_trans, creadoel, modificadoel', 'length', 'max'=>20),
+			array('c_trans', 'length', 'max'=>20),
 			array('c_trans', 'required','message'=>'LLena el nombre del transportista'),
 			array('c_trans', 'match','pattern'=>'/[A-Z]/','message'=>'Nombre incorrecto'),
 			array('c_motivo, c_serie, codcentro, codobjeto, codocu', 'length', 'max'=>3),
 			array('c_placa', 'length', 'max'=>15),
 			array('c_licon', 'length', 'max'=>10),		
 			array('c_licon', 'required', 'message'=>'Debes de llenar el brevete'),					
-			array('c_creado, c_modificado', 'length', 'max'=>40),
-			array('creadopor, modificadopor', 'length', 'max'=>25),
+			//array('c_creado, c_modificado', 'length', 'max'=>40),
+		//	array('creadopor, modificadopor', 'length', 'max'=>25),
 			array('cod_cen', 'required', 'message'=>'Llena el centro emisor'),
 			array('d_fecgui, d_fectra, c_desgui, c_texto, n_direcformaldes, d_fecentrega', 'safe'),
 			array('c_numgui', 'match', 'pattern'=>'/[0-9]{8}/', 'on'=>''),
@@ -106,7 +106,7 @@ class Guia extends ModeloGeneral
 
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('c_numgui, c_coclig, d_fecgui, c_estgui, c_rsguia, c_codtra, c_trans, c_motivo, c_placa, c_licon, d_fectra, c_desgui, n_direc, c_texto, c_dirsoc, c_serie, n_direcformaldes, n_directran, c_creado,  c_estado, n_dirsoc, c_modificado, n_agencia, creadopor, creadoel, modificadopor, modificadoel, codcentro, codobjeto, d_fecentrega, c_salida, codocu, cod_cen', 'safe', 'on'=>'search'),
+			array('c_numgui, c_coclig, d_fecgui, c_estgui, c_rsguia, c_codtra, c_trans, c_motivo, c_placa, c_licon, d_fectra, c_desgui, n_direc, c_texto, c_dirsoc, c_serie, n_direcformaldes, n_directran, c_creado,  c_estado, n_dirsoc, c_modificado, n_agencia, modificadopor, modificadoel, codcentro, codobjeto, d_fecentrega, c_salida, codocu, cod_cen', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -345,7 +345,7 @@ class Guia extends ModeloGeneral
 			'c_modificado' => 'Modificado',
 			//n_agencia' => 'N Agencia',
 			'creadopor' => 'Creado por',
-			'creadoel' => 'Creado el',
+			//'creadoel' => 'Creado el',
 			'modificadopor' => 'Modificado por',
 			'modificadoel' => 'Modificado el',
 			//'codcentro' => 'Codcentro',
