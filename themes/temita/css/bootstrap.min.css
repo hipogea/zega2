@@ -655,7 +655,7 @@ div.form textarea.error,
 div.form select.error
 {
     background: #FEE;
-    border-color: #C00;
+    border-color: rgb(237, 183, 183);
 }
 
 div.form div.success input,
@@ -696,7 +696,7 @@ div.form .errorSummary
 
 div.form .errorMessage
 {
-    color: red;
+    color: rgba(255, 0, 45, 0.68);
     font-size: 0.9em;
 }
 

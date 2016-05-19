@@ -1,0 +1,149 @@
+
+
+a:link, a:active, a:visited { text-decoration: underline; color:#232650; font-weight: normal; }
+a:hover { text-decoration: none; color:#232650; font-weight: normal; }
+p, dt{font-size:1em; margin-left:10px; text-align:justify;}
+dd{text-align:justify; margin-bottom:10px;}
+h1{font-size:1.2em; font-weight:bold;  width:90%;}
+h2{font-size:1.2em; font-weight:bold; color:#3e3e3e; border-bottom:#3e3e3e 1px solid; width:90%; margin-top:30px;}
+h3, h4{font-size:1em; font-weight:bold;}
+pre{margin-left:20px; border-left:#232650 2px solid; padding:4px 0px 4px 10px; background:#F8FBFC;}
+li p{margin-bottom:10px; margin-left:0px; margin-top:10px;}
+.by{font-size:0.75em; margin-top:-10px;}
+img{border:#232650 1px solid;}
+span[lang="en"], span[lang="la"]{font-style: italic;}
+code{font-size:1.1em;}
+pre code{font-size:100%;}
+
+
+#cabecera{background:#2e3a6a; width:778px;}
+#logo{float:left; width:130px; border:none; margin:0px}
+#logomosaic{border:none; float:right; margin-right:55px;}
+#navegador{float:right; margin-top:-24px; margin-right:10px; font-size:90%;}
+#navegador img{vertical-align:middle; border:none;}
+#accesibilidad{font-size:0.9em; margin:0px;}
+#titulo{float:right; width:511px; color:#FFF; padding:5px 0px 5px 10px; font-size:1.1em; font-weight:bold; border-left:#FFF 1px solid;}
+#subtitulo{float:right; width:407px; background:#FFF; padding:5px 230px 5px 10px; font-size:1em; color:#2e2a69; font-weight:bold; border-bottom:#2e3a6a 1px solid; border-left:#FFF 1px solid;}
+#cierre{clear:both;}
+.no_borde{border:none;}
+
+
+#main{width:90%; clear:both; padding:3%;}
+.index{list-style:none}
+.index li{margin-bottom:0px;}
+.especial{margin-left:28px;}
+#peu{padding:2px 10px 2px 0px; margin:0px; font-size:90%; background:#232650; color:#FFF; border-top:#232650 1px solid; text-align:right;}
+#peu img{border:none; vertical-align:middle;}
+
+/* Tipos de Textos*/
+.text-clau{background:#eeeded; border:#232650 1px solid; border-left:#232650 29px solid; margin:20px auto 20px auto; width:77%;  padding:5px;}
+.text-clau p{margin-top:0px; margin-bottom:0px;}
+.exemple{border-top:#232650 1px solid; border-bottom:#232650 1px solid; margin:20px auto 20px auto; padding:1px 10px 0px 0px; width:80%;}
+.exemple h3{font-weight:bold; width:100%; background:#eeeded; padding:2px 0px 2px 10px; margin-top:0px; margin-bottom:0px;}
+.exemple p, .vegeu_tambe p, .note p, blockquote p{margin-top:5px; margin-bottom:0px; margin-left:10px;}
+.vegeu_tambe{border-top:#232650 1px solid; border-bottom:#232650 1px solid; margin:20px auto 20px auto; padding:1px 10px 0px 0px; width:80%; font-size:0.75em}
+.vegeu_tambe code{font-size:120%;}
+.vegeu_tambe h3{font-weight:bold; width:100%; background:#eeeded; padding:0px 0px 0px 10px; margin-top:0px; margin-bottom:0px;}
+.note{border-top:#232650 1px solid; border-bottom:#232650 1px solid; margin:20px auto 20px auto; padding:1px 10px 0px 0px; width:80%;}
+.note h3{font-weight:bold; width:100%; background:#ffecd0; padding:2px 0px 2px 10px; margin-top:0px; margin-bottom:0px;}
+.font{font-size:0.75em; margin-top:-10px; margin-left:25px;}
+blockquote{margin:20px auto 20px auto; width:80%; padding:2px 12px 2px 2px;}
+.imagen{margin:20px auto 20px auto; text-align:center;}
+.imagen p{font-size:0.75em; margin:0px auto 0px auto; width:400px; text-align:center}
+.imagen .font{font-size:0.75em; margin:0px; text-align:center; width:400px;}
+.imagen_izq{float:left; margin:0px 10px 0px 10px;}
+.versaleta{text-transform:uppercase; font-size:80%;}
+.imagen_autor{float:left; width:15%;}
+.autor{float:right; width:75%; margin-top:-17px;}
+.imagen_autor p{font-size:0.75em; margin:0px; width:160px; text-align:left;}
+#autor_especial{border:#232650 solid 1px; padding:5px; font-size:0.85em; height:150px; width:150px;}
+.titulo_autor{clear:both; padding-top:20px;}
+#cierre_autor{clear:both;}
+#cierre_autor2{clear:both;}
+#logo_cc {float:left; margin:0px 5px 10px 12px; border:0px; height:25px; width:25px;}
+#logo_text{font-size:0.7em; line-height:1.2em; color:#000;}
+#logo_text a{color:#000;}
+
+/* Listados */
+.lletres{list-style:lower-alpha;}
+.guions{ list-style-type:none}
+ol ul{list-style:disc;}
+
+/* Tablas */
+table{margin:20px auto 20px auto; width:90%;}
+th{background:#232650; color:#FFFFFF;}
+.destacat{background:#DADADA; font-weight:bold;}
+td{vertical-align:top; background:#eeeded; padding:2px 6px 2px 6px;}
+tfoot th{background:#fff; font-size:0.75em; color:#232650; text-align:left; font-weight:normal;}
+.vacia{background:#FFF;}
+th a:link, th a:active, th a:visited { text-decoration: underline; color:#FFF; font-weight: bold; }
+th a:hover { text-decoration: none; color:#FFF; font-weight: bold; }
+table td p{padding:0px; margin:0px;}
+
+#borderShorthandExample {
+    border: 2px outset rgb(160,0,0);
+    padding: .857em;
+    background-color: rgb(255,224,224)
+}
+
+
+#table_exemple {background-color:#B7C5D4;width:100%;margin:0 0 1em;border-spacing:1px; color:#000}
+#table_exemple td {padding:0 6px;vertical-align:top;background-color:#fff; color:#000}
+#table_exemple td.top {vertical-align:top;width:1%;text-align:right;}
+#table_exemple th {background:#B7C5D4;text-align: left; color:#000}
+#table_exemple .r1 { background-color: #ffffff; }
+#table_exemple .r2 { background-color: #dddddd; }
+#table_exemple caption	{ font-style:italic; color:#999; }
+
+.marco-ayuda{
+    background-color: rgba(239, 239, 26, 0.10);
+    border-radius:3px;
+    -moz-border-radius:3px; /* Firefox */
+    -webkit-border-radius:3px; /* Safari y Chrome */
+    border:1px solid #79B4DC;
+    margin :15px;
+    padding: 15px;
+
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    font-stretch: normal;
+    font-size: 1.2em;
+    line-height: 1.2em;
+    color: rgba(54, 68, 171, 0.85);
+    font-family: Arial, Helvetica, sans-serif;
+
+}
+
+.subtitulo {
+    font-size: 1.2em;
+    font-weight: bold;
+    width: 90%;
+    display: block;
+    font-size: 1.2em;
+    -webkit-margin-before: 0.67em;
+    -webkit-margin-after: 0.67em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    font-weight: bold;
+}
+
+.margenimg-left {
+    border:1px solid #ccc;
+    display:block;
+    background-color: white;
+    float:left;
+    padding: 15px;
+    margin-right:5px;
+
+}
+.margenimg-right {
+    border:1px solid #ccc;
+    display:block;
+    background-color: white;
+    float:right;
+    clear:right;
+    padding: 15px;
+    margin-left:5px;
+
+}
