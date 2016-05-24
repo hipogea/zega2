@@ -101,7 +101,21 @@
             </div>
         <div class="panelizquierdo">
 
-    <div class="row">
+            <div class="row">
+                <?php echo $form->labelEx($modelodetalle,'repautomatica'); ?>
+                <?php echo $form->checkbox($modelodetalle,'repautomatica',array('disabled'=>(yii::app()->settings->get('inventario','inventario_auto')=='1')?'':'disabled')); ?>
+                <?php echo $form->error($modelodetalle,'repautomatica'); ?>
+            </div>
+            <div class="row">
+                <?php echo $form->labelEx($modelodetalle,'cantsol'); ?>
+                <?php echo $form->textField($modelodetalle,'cantsol',array('size'=>6,'disabled'=>(yii::app()->settings->get('inventario','inventario_auto')=='1')?'':'disabled')); ?>
+                <?php echo $form->error($modelodetalle,'cantsol'); ?>
+            </div>
+
+
+
+
+            <div class="row">
         <?php echo $form->labelEx($modelodetalle,'punitv'); ?>
         <?php echo $form->textField($modelodetalle,'punitv',array('size'=>10,'maxlength'=>10,'disabled'=>$habilitado)); ?>
         <?php echo $form->error($modelodetalle,'punitv'); ?>

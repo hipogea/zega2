@@ -1,7 +1,7 @@
 <?php
 
  $this->widget('zii.widgets.grid.CGridView', array(
-	'id'=>'conteo-grid',
+	'id'=>'detalle-gridx',
 	'dataProvider'=>Inventariofisico::model()->search_por_inventario($model->id),
 	// 'dataProvider'=>VwKardex::model()->search(),
 	 'itemsCssClass'=>'table table-striped table-bordered table-hover',

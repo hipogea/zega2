@@ -9,6 +9,12 @@
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'almacenmovimientos-form',
 	'enableAjaxValidation'=>false,
+	'enableClientValidation'=>false,
+	'clientOptions' => array(
+		'validateOnSubmit'=>true,
+		'validateOnChange'=>true
+	),
+
 )); ?>
 <div class="bloque">
 	<?php
@@ -50,7 +56,7 @@
 		$this->widget('ext.matchcode.MatchCode',array(
 				'nombrecampo'=>'cuentadebe',
 				'ordencampo'=>1,
-				'controlador'=>$this->id,
+				'controlador'=>get_class($model),
 				'relaciones'=>$model->relations(),
 				'tamano'=>20,
 				'model'=>$model,

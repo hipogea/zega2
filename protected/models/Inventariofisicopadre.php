@@ -1,26 +1,5 @@
 <?php
 
-/**
- * This is the model class for table "{{inventariofisicopadre}}".
- *
- * The followings are the available columns in table '{{inventariofisicopadre}}':
- * @property integer $id
- * @property string $ano
- * @property string $mes
- * @property string $esciego
- * @property string $descripcion
- * @property string $numero
- * @property string $codocu
- * @property string $fechaprog
- * @property string $fechacre
- * @property string $codresponsable
- * @property string $codestado
- * @property string $codcen
- * @property string $codal
- *
- * The followings are the available model relations:
- * @property Inventariofisico[] $inventariofisicos
- */
 class Inventariofisicopadre extends ModeloGeneral
 {
 	/**
@@ -34,6 +13,16 @@ class Inventariofisicopadre extends ModeloGeneral
 		$this->documento='400';
 
 	}
+
+	public function behaviors()
+	{
+		return array(
+			// Classname => path to Class
+			'ActiveRecordLogableBehavior'=>
+				'application.behaviors.ActiveRecordLogableBehavior',
+		);
+	}
+
 	/**
 	 * @return array validation rules for model attributes.
 	 */
@@ -54,6 +43,7 @@ class Inventariofisicopadre extends ModeloGeneral
 			array('codocu, codal', 'length', 'max'=>3),
 			array('codresponsable, codcen', 'length', 'max'=>4),
 			array('fechaprog, fechacre,fechafin,esciego,codresponsable,hidcarga,codcen,codal', 'safe'),
+			array('codestado', 'safe','on'=>'estado'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, ano, mes, esciego, descripcion, numero, codocu, fechaprog, fechacre, codresponsable, codestado, codcen, codal', 'safe', 'on'=>'search'),
@@ -69,13 +59,17 @@ class Inventariofisicopadre extends ModeloGeneral
 		// class name for the relations automatically generated below.
 		return array(
 			'inventariofisicos' => array(self::HAS_MANY, 'Inventariofisico', 'hidpadre'),
+			'carga'=>array(self::BELONGS_TO, 'Cargamasiva', 'hidcarga'),
 			'numeroitems' => array(self::STAT, 'Inventariofisico', 'hidpadre'),
+			'ajustespendientes'=>array(self::STAT, 'Inventariofisico', 'hidpadre','condition'=>"codestado = '10' and abs(diferencia) >0 "),//el campo foraneo
+			//'ajustes'=>array(self::HAS_MANY, 'Inventariofisico', 'hidpadre','condition'=>"codestado = '20'"),//el campo foraneo
 			//'cantcompras'=>array(self::STAT, 'Desolpecompra', 'iddesolpe','select'=>'sum(t.cant)','condition'=>"codestado <> '30'"),//el campo foraneo
 
 			'estado' => array(self::BELONGS_TO, 'Estado', array('codestado'=>'codestado','codocu'=>'codocu')),
 			'centro' => array(self::BELONGS_TO, 'Centros', 'codcen'),
 			'almacen' => array(self::BELONGS_TO, 'Almacenes', 'codal'),
 			'trabajadores' => array(self::BELONGS_TO, 'VwTrabajadores', 'codresponsable'),
+			'cargasfisicas'=> array(self::HAS_MANY, 'Cargainventariofisico', 'hidpadre'),
 		);
 	}
 
@@ -166,5 +160,38 @@ class Inventariofisicopadre extends ModeloGeneral
 
 
 		return parent::beforeSave();
+	}
+
+	public function idcargas(){
+		$ar=array();
+		foreach($this->cargasfisicas as $fila){
+			$ar[]=$fila->idinicio;
+		}
+		return $ar;
+	}
+
+	public function findInventarioabierto($codcen,$codal){
+		$codcen=MiFactoria::cleanInput($codcen);
+		$codal=MiFactoria::cleanInput($codal);
+		$crit=New CDBCriteria();
+		$crit->addCondition("codcen=:centro and codal=:almacen and codestado='10' ");
+		$crit->params=array(":centro"=>$codcen,":almacen"=>$codal);
+
+		$conteosactivos=self::model()->findAll($crit);
+		if( count($conteosactivos) >0 ){
+			return $conteosactivos[0];
+		}else{
+			return null;
+		}
+
+	}
+
+
+
+	public function actualizaubicaciones(){
+		$nfilas= Yii::app()->db->createCommand(
+			" update {{alinventario}} a, {{inventariofisico x}} set a.ubicacion=x.ubicacion
+            where x.hidinventario=a.id and x.hidpadre='".$this->id."' and x.ubicacion <> a.ubicacion " )->execute();
+		return $nfilas;
 	}
 }

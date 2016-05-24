@@ -44,7 +44,8 @@ class Alinventario extends ModeloGeneral
 	public $cant;
 	public $cantidadmovida; //almacena en el Active record la cantidad movida (Convertida a unidad de medida base del material)  de cualquier transaccion,
 	public $montomovido; //ALMACENA EL MONTO INVOLUCRADO EN LA TX , ///sin eimportar la Unidad de medida o el control del precio d S O V DE L AMATEIRAL
-	protected $controldeprecio=NULL;
+	protected $_controldeprecio=NULL;
+	protected $_detallematerial=array();
 	public $fechaini=null;
 	public $fechafin=null;
 
@@ -439,14 +440,82 @@ public function getstockTotalmaterial($codmaterial,$adatos=null){
 	}
 
 
-	protected  function getControlPrecio() {
+	public function getControlPrecio() {
 		if(!$this->isnewRecord){
-			return $this->alinventario_maestrodetalle->{self::NOMBRE_CAMPO_CONTROL_PRECIO};
+			IF($this->_controldeprecio===NULL){
+
+			}ELSE{
+				return $this->detallesmaterial()['controlprecio'];
+			}
 
 		}	else 	{
 			return self::FLAG_PRECIO_PROMEDIO_VARIABLE;
 		}
 	}
+
+	public function detallesmaterial(){
+
+			if(count($this->_detallematerial)==0){
+				$maestrodetalle=$this->alinventario_maestrodetalle;
+				$this->_detallematerial['reposicion']=$maestrodetalle->cantreposic;
+				$this->_detallematerial['economica']=$maestrodetalle->canteconomica;
+				$this->_detallematerial['reorden']=$maestrodetalle->cantreorden;
+				$this->_detallematerial['cantsol']=$maestrodetalle->cantsol;
+				$this->_detallematerial['repautomatica']=$maestrodetalle->repautomatica;
+				$this->_detallematerial['supervisionautomatica']=$maestrodetalle->supervisionautomatica;
+				$this->_detallematerial['controlprecio']=$maestrodetalle->controlprecio;
+				$this->_detallematerial['catval']=$maestrodetalle->catval;
+				$this->_detallematerial['bloqueo']=$maestrodetalle->bloqueo;
+				$this->_detallematerial['leadtime']=$maestrodetalle->leadtime;
+
+			}
+		    return $this->_detallematerial;
+	}
+
+
+	public  function essupervision() {
+		if(!$this->isnewRecord){
+			return ($this->detallesmaterial()['supervisionautomatica']=='1')?true:false;
+
+		}	else 	{
+			return false;
+		}
+	}
+
+	public  function esauto() {
+		if(!$this->isnewRecord){
+			if(yii::app()->settings->get('inventario','inventario_auto')=='1'){
+				return ($this->detallesmaterial()['repautomatica']=='1')?true:false;
+			}else{
+				return false;
+			}
+
+
+		}	else 	{
+			return false;
+		}
+	}
+
+	public function reposicionauto(){
+		if($this->esauto()){
+			if($this->almacen->reposicionsololibre=='1'){ //solo tomar encuenta el stock libre , no el reservado ni el de transito
+				$stock=$this->{self::CAMPO_STOCK_LIBRE};
+			}else{
+				$stock=$this->getstockregistro();
+			}
+			//VERIFICANDO QUE EL STOCK ESTE DEBAJO DEL REORDEN, PERO TOMANDO EN CUENTA LA
+			//CATIDAD DE SOLICITUD ECONOMICA, ES DECIR
+			$valorref=$this->detallesmaterial()['reorden'] - $this->detallesmaterial()['cantsol'];
+			$valorref=($valorref<0)?0:$valorref; //no permitir valores anegativos
+			IF($stock <  $valorref or $valorref=0){ //En estos casso reponer stock, solcitando una solpe automatica de repsicon de mateiales
+				$numero=Solpe::Solicitudautomatica($this);
+				MiFactoria::Mensaje('notice','Se ha creado la solicitud automatica para reposicion de stock '.$numero);
+			}
+
+		}
+	}
+
+
 
 	public static function create()
 	{
@@ -676,6 +745,8 @@ public function getstockTotalmaterial($codmaterial,$adatos=null){
 		 	if($this->verificaconsistencia_stock($campo,$cant))
 		     {
 				 $this->{$campo}+= $signo*$cant;
+				 //REPOSICION DE STOCKS
+				 $this->reposicionauto();
 				 $retorno=true;
 		     } else {
 				MiFactoria::Mensaje ( 'error' , __CLASS__ . '=>' . __FUNCTION__ . '  INCONSISTENCIA DE STOCK, CANTIDAD A SACRA MAYOR QUE EL STOCK ' );
@@ -702,7 +773,7 @@ public function getstockTotalmaterial($codmaterial,$adatos=null){
 		 $retorno=false;
 		}
     if(!$this->tratalotes($cant,$codmov,$idkardex)){echo "erro ala tratar lotes ";die();}
-	 if($modelomov->actualizaprecio=='1' or  (IN_ARRAY($this->alinventario_maestrodetalle->controlprecio, ARRAY('F', 'L')) ) )
+	 if($modelomov->actualizaprecio=='1' or  (IN_ARRAY($this->detallesmaterial()['controlprecio'], ARRAY('F', 'L')) ) )
 	 {
 		 $this->actualizaprecio($cant*$signo,$punitnuevo,$idkardex);
 	 }
@@ -715,12 +786,12 @@ public function getstockTotalmaterial($codmaterial,$adatos=null){
 							          //echo " fallo al grabar <br>";
 			  		                } else {
 							     $retorno=true;
-							  if(IN_ARRAY($this->alinventario_maestrodetalle->controlprecio, ARRAY('F', 'L')) )
+							  if(IN_ARRAY($this->detallesmaterial()['controlprecio'], ARRAY('F', 'L')) )
 							   if(!$this->verificaconsistencialotes()){
 								  $regkardex=Alkardex::model()->findByPK($idkardex);
-								  VAR_DUMP($regkardex->attributes);
-								   var_dump($this->attributes);
-								   var_dump($this->lotesfifo);
+								 // VAR_DUMP($regkardex->attributes);
+								  // var_dump($this->attributes);
+								 //  var_dump($this->lotesfifo);
 								   MiFactoria::Mensaje ( 'error' , __CLASS__ . '=>' . __FUNCTION__ . '    '.__LINE__.'  Se verifico que no hay consistencias con los lotes de este registro de inventario ');
 								   $retorno=true;
 							   }
@@ -1069,7 +1140,7 @@ public function getstockTotalmaterial($codmaterial,$adatos=null){
 
 public function valorizalotefifo($canti){
 	$sumacant=0;
-	$sumamonto=0;
+	$sumadetalle=0;
 	foreach($this->lotefifo as $fila){
 		$sumacant.=$fila->cant;
 		if($sumacant < $canti){$sumamonto.=$fila->cant*$fila->punit;$fila->codestado='30';$fila->save();}

@@ -9,6 +9,11 @@ const ESTADO_VALE_CREADO='20';
 CONST CODIGO_MOVIMIENTO_INGRESO_ACTIVIDAD='68';
 CONST CODIGO_MOVIMIENTO_ANULAR_INGRESO_ACTIVIDAD='86';
 CONST CODIGO_MOVIMIENTO_INICIA_TRASPASO='77';
+CONST CODIGO_MOVIMIENTO_AJUSTE_FALTANTES='67';
+CONST CODIGO_MOVIMIENTO_ANULA_AJUSTE_FALTANTES='18';
+CONST CODIGO_MOVIMIENTO_AJUSTE_SOBRANTES='75';
+CONST CODIGO_MOVIMIENTO_ANULA_AJUSTE_SOBRANTES='19';
+
 
 class Almacendocs extends ModeloGeneral
 {
@@ -410,7 +415,10 @@ class Almacendocs extends ModeloGeneral
 			{
 				$this->codalmacen=$this->codcentro->almacenes[0]->codalm;
 			}else{
-				$this->adderror('codcentro','Verificar el centro ya el almacen no son consistentes');
+				if($this->almacenes->bloqueado=='1' and !in_array($this->codmovimiento,array('68','86')) )
+					$this->adderror('codalmacen','En este almacen el inventario se encuentra bloqueado por conteo, no puede efectuar movimientos de materiales');
+
+				$this->adderror('codcentro','Verificar el centro y el almacen no son consistentes');
 			}
 
 		}
@@ -844,7 +852,10 @@ public $maximovalor;
 	public function beforeSave() {
 							if ($this->isNewRecord) {
 
-								if(in_array($this->codmovimiento,array( CODIGO_MOVIMIENTO_ANULA_SALIDA_AUTOMATICA_RQ, CODIGO_MOVIMIENTO_SALIDA_AUTOMATICA_RQ))){
+								if(in_array($this->codmovimiento,array( CODIGO_MOVIMIENTO_ANULA_SALIDA_AUTOMATICA_RQ, CODIGO_MOVIMIENTO_SALIDA_AUTOMATICA_RQ,
+									CODIGO_MOVIMIENTO_AJUSTE_FALTANTES,CODIGO_MOVIMIENTO_ANULA_AJUSTE_FALTANTES,
+									CODIGO_MOVIMIENTO_AJUSTE_SOBRANTES,CODIGO_MOVIMIENTO_ANULA_AJUSTE_SOBRANTES,
+									))){
 								$this->numvale = Numeromaximo::numero ( $this , 'correlativo' , 'maximovalor' , 8 , 'codcentro' );
 								$this->fechacre = date ( "Y-m-d H:i:s" );
 									$this->cestadovale=ESTADO_EFECTUADO;

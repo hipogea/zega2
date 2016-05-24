@@ -374,4 +374,110 @@ public function beforeSave() {
 			'criteria'=>$criteria,
 		));
 	}
+
+	public static function solpeautomatica($obinventario){
+		if ( ! isset( Yii::app ()->session[ 'idsolpe' ] ) )  //Si no existe la sesion
+		{
+			//creando una solpe NUEVA
+			$solpe = New Solpe;
+			$solpe->escompra = '1';
+			$solpe->textocabecera = "Documento automático";
+			//$solpe->estado='01';
+			$solpe->save ();
+			$solpe->refresh ();
+			Yii::app ()->session[ 'idsolpe' ] = $solpe->id;
+			///para que agarre el estado '01'
+			$solpe->textocabecera = 'Item automatico.,,,,,';
+			$solpe->save ();
+			/////
+			$identidad = $solpe->id;
+
+		} else {
+
+			//sI YA XISTE LA SOLPE HAYA QUER VERIFICAR SU ESTADO
+			//SI ESTA CREADO AGREGAR, SI YA ESTA APROBADO O ANULADO, ES MEJOR CREAR OTRA
+			$solpe = Solpe::model ()->findByPk ( Yii::app ()->session[ 'idsolpe' ] );
+			if ( ! is_null ( $solpe ) )
+			{
+				// $solpe->textocabecera='Item automatico';
+				if ( ! ( $solpe->estado == '10' ) )
+				{
+					//SI ESTA CREADO AGREGAR ITEMS A ESTA SOLPE, SI YA ESTA APROBADO O ANULADO, ES MEJOR CREAR UAN NUEVA SOLPE
+					$solpe2 = New Solpe('automatica');
+					//$solpe2->estado='01';
+					$solpe2->textocabecera = 'Item automaticosolpes';
+					$solpe2->iduser=yii::app()->settings->get('genera','general_userauto');
+					if(!$solpe2->save ())
+						MiFactoria::Mensaje('error','No se pudo crear la Solicitud automatica del material '.$obinventario->codart.'-'.$obinventario->codalm.'-'.$obinventario->codcen.'  Errores :   '.yii::app()->mensajes->getErroresItem($solpe2->geterrors())." <br>");
+
+					$solpe2->refresh ();
+					//var_dump($solpe2->attributes);yii::app()->end();
+					$solpe3 = Solpe::model ()->findByPk ( $solpe2->id );
+					$solpe3->setScenario ( 'automatica' );
+					$solpe3->escompra = '1';
+					if ( $solpe3->save () )
+						//echo "graba ";
+						unset( Yii::app ()->session[ 'idsolpe' ] );
+					Yii::app ()->session[ 'idsolpe' ] = $solpe2->id;
+					$identidad = $solpe2->id;
+					unset($solpe3);unset($solpe2);
+					//echo "NUEVA SOLPE ".$solpe2->numero." ----".$solpe2->id."  ";
+					//Yii::app()->end();
+				} else {
+
+					$identidad = $solpe->id;
+				}
+			} ELSE {
+				/*ECHO "ERROR COMPARITO LA SOLPE " . Yii::app ()->session[ 'idsolpe' ] . "  NO EXISTE";
+                Yii::app ()->end ();*/
+				MiFactoria::Mensaje('error', " ERROR : LA SOLPE " . Yii::app ()->session[ 'idsolpe' ] . "  NO EXISTE <br>");
+			}
+
+
+			/*$alreserva->estadoreserva='20';
+			$alreserva->save();
+			$detalle = Desolpe::Model ()->findByPk ( $alreserva->hidesolpe );*/
+
+
+			$detallesolpe = new Desolpe;
+			$detallesolpe->setscenario ( 'auto' );
+
+			$detallesolpe->hidsolpe = $identidad; ////IMPORTANTE , DEBE COGER LA SOLPE QUE NO ESTA APROBADA
+			$detallesolpe->tipimputacion ='K';
+			$detallesolpe->centro = $obinventario->codcen;
+			$detallesolpe->codal = $obinventario->codalm;
+			$detallesolpe->txtmaterial =$obinventario->maestro->descripcion;
+			//$detallesolpe->textodetalle = $obinventario->textodetalle;
+			// $detallesolpe->txtmaterial=$detalle->txtmaterial;
+			$detallesolpe->fechacrea = date("Y-m-d H:i:s");
+			$fechalead=date("Y-m-d",time()+(($obinventario->detallesmaterial()['leadtime'] >0)?$obinventario->detallesmaterial()['leadtime']:0)*24*60*60);
+			$detallesolpe->fechaent = $fechalead;
+			//$detallesolpe->fechalib = $detalle->fechalib;
+			$detallesolpe->imputacion = NULL;
+			//$detallesolpe->estadolib = $detalle->estadolib;
+
+			$detallesolpe->solicitanet = 'Auto';
+			$detallesolpe->est = '10';  ///esto es clave , solo se pueden garegar detalles que se van a aa parobar
+			//es decir nos e puede insertar un detalle en una solpe APROBADA
+
+			$detallesolpe->um = $obinventario->maestro->um;
+			$detallesolpe->tipsolpe = 'M';
+			$detallesolpe->cant = $obinventario->detallesmaterial()['cantsol'];
+			$detallesolpe->codart = $obinventario->codart;
+			$detallesolpe->iduser=yii::app()->settings->get('genera','general_userauto');
+			//$detallesolpe->idreserva = $id;
+			if($detallesolpe->save ()){
+				MiFactoria::Mensaje('notice','Se creo  la Solicitud automatica del material '.$obinventario->codart.'-'.$obinventario->codalm.'-'.$obinventario->codcen." <br>");
+
+			}else{
+				MiFactoria::Mensaje('error','No se pudo crear la Solicitud automatica del material '.$obinventario->codart.'-'.$obinventario->codalm.'-'.$obinventario->codcen.'  Errores :   '.yii::app()->mensajes->getErroresItem($detallesolpe->geterrors())." <br>");
+
+			}
+			//$mensaje.="OK: Se genero la solicitud de compra ".$detallesolpe->desolpe_solpe->numero."  item ".$detallesolpe->item."  con exito <br>";
+
+
+		}
+		return Solpe::model()->findByPk($identidad)->numero;
+	}
+
 }

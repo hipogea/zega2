@@ -140,7 +140,7 @@ class Montoinventario extends CActiveRecord
 	 *   $numero :  cantidad de puntos en la escala.  sean Dias , Meses o Años
 	 *    $fecha: Fecha desde la que se quiere analizar la historia,  null= fecha actual
 	 *****************************************************/
-	public static function getStockHistorico($escala,$numeropuntos,$fecha=null){
+	public static function getStockHistorico($escala,$numeropuntos,$fecha=null,$codal=null){
 		if(is_null($fecha))
 			$fecha=date('Y-m-d');
 
@@ -170,11 +170,21 @@ class Montoinventario extends CActiveRecord
 			default:
 				throw new CHttpException(500,__CLASS__.'  '.__FUNCTION__.'  '.__LINE__.' '.'No se paso el parametro correcto');
 		}
+          $crit=New CDBCriteria();
+		  $crit->addcondition("fecha >=:vfecha ");
+		$crit->params=array(":vfecha"=>$finicio);
+		if(!is_null($codal)){
+			$crit->addcondition("codal=:vcodal ");
+			$crit->params[":vcodal"]=$codal;
+		}
+
+
+
 
 		return Yii::app()->db->createCommand()
 			->select($listacampos)
 			->from('{{montoinventario}}')
-			->where("fecha >=:vfecha",array(':vfecha'=>$finicio))
+			->where($crit->condition,$crit->params)
 			->group(substr($listacampos,0,strpos($listacampos,$camposcalculados)))
 			->order('  fecha ASC ')
 			->queryAll();
@@ -182,8 +192,8 @@ class Montoinventario extends CActiveRecord
 	}
 
 	/*********se encarga de areglar las oordenasda de l historico  para llevarlas a un grafiuco*/
-	public static function datosgrafo($escala,$numeropuntos,$fecha=null){
-		$arreglo=self::getStockHistorico($escala,$numeropuntos,$fecha=null);
+	public static function datosgrafo($escala,$numeropuntos,$fecha=null,$codal=null){
+		$arreglo=self::getStockHistorico($escala,$numeropuntos,$fecha=null,$codal);
 		$series=array();
 		foreach($arreglo as $fila){
 			//$rango[$fila[$escala]][]=$fila['codal'].'';

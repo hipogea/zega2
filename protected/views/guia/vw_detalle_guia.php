@@ -50,7 +50,7 @@ $this->endWidget();
 				),
 				'dialog'=>'cru-dialogdetalle',
 				'frame'=>'cru-detalle',
-				'visiblex'=>array($this->editable($model->{$this->campoestado}),ESTADO_CREADO),
+				'visiblex'=>array($this->editable($model->{$this->campoestado}),ESTADO_CREADO,ESTADO_PREVIO),
 
 			),
 			
@@ -68,7 +68,7 @@ $this->endWidget();
 				),
 				'dialog'=>'cru-dialogdetalle',
 				'frame'=>'cru-detalle',
-				'visiblex'=>array($this->editable($model->{$this->campoestado}),ESTADO_CREADO),
+				'visiblex'=>array($this->editable($model->{$this->campoestado}),ESTADO_CREADO,ESTADO_PREVIO),
 
 			),
 
@@ -91,7 +91,7 @@ $this->endWidget();
                                							 }
                                					',
 				),
-				'visiblex'=>array($this->editable($model->{$this->campoestado}),ESTADO_CREADO,ESTADO_AUTORIZADO,ESTADO_ANULADO,ESTADO_CONFIRMADO,ESTADO_FACTURADO),
+				'visiblex'=>array($this->editable($model->{$this->campoestado}),ESTADO_CREADO,ESTADO_AUTORIZADO,ESTADO_ANULADO,ESTADO_CONFIRMADO,ESTADO_FACTURADO,ESTADO_PREVIO),
 
 			),
 
@@ -107,18 +107,18 @@ $this->endWidget();
 				),
 				'dialog'=>'cru-dialogdetalle',
 				'frame'=>'cru-detalle',
-				'visiblex'=>array($this->editable($model->{$this->campoestado}),ESTADO_CREADO),
+				'visiblex'=>array($this->editable($model->{$this->campoestado}),ESTADO_CREADO,ESTADO_PREVIO),
 			),
 			'pack2'=>array(
 				'type'=>'B',
 				'ruta'=>array($this->id.'/procesardocumento',array('id'=>$model->id,'ev'=>35)),
-				'visiblex'=>array($this->editable($model->{$this->campoestado}),ESTADO_CREADO),
+				'visiblex'=>array($this->editable($model->{$this->campoestado}),ESTADO_CREADO,ESTADO_PREVIO),
 
 			),
 			'adddoc'=>array(
 				'type'=>'B',
 				'ruta'=>array($this->id.'/procesardocumento',array('id'=>$model->id,'ev'=>64)),
-				'visiblex'=>array($this->editable($model->{$this->campoestado}),ESTADO_AUTORIZADO),
+				'visiblex'=>array($this->editable($model->{$this->campoestado}),ESTADO_AUTORIZADO,ESTADO_PREVIO),
 
 			),
 

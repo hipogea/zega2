@@ -101,7 +101,7 @@ echo $form->DropDownList($model,'um',$datos, array('empty'=>'--Unidad de medida-
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'codmon'); ?>
-		<?php  $datos1 = CHtml::listData(Monedas::model()->findAll(array('order'=>'desmon')),'codmoneda','desmon');
+		<?php  $datos1 = CHtml::listData(Monedas::model()->findAll('habilitado="1"',array('order'=>'desmon')),'codmoneda','desmon');
 		  echo $form->DropDownList($model,'codmon',$datos1, array('empty'=>'--Seleccione moneda--'))    ;
 		?>
 		<?php echo $form->error($model,'codmon'); ?>

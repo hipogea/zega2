@@ -141,8 +141,14 @@ if((integer)$model->nitems > 0 )
 	</div>
 
 	<div class="row">
+		<?php echo $form->labelEx($model,'bloqueado'); ?>
+		<?php echo $form->checkBox($model,'bloqueado',ARRAY('disabled'=>'disabled')); ?>
+
+	</div>
+
+	<div class="row">
 		<?php echo $form->labelEx($model,'codmon'); ?>
-		<?php $datos=CHTml::listdata(Monedas::model()->FindAll(array("order"=>"desmon ASC")),'codmoneda','desmon'); ?>
+		<?php $datos=CHTml::listdata(Monedas::model()->FindAll("habilitado='1'",array("order"=>"desmon ASC")),'codmoneda','desmon'); ?>
 		<?php echo $form->DropdownList($model,'codmon',$datos,array('empty'=>'--Seleccione moneda--','disabled'=>$habilitado)); ?>
 		<?php echo $form->error($model,'codmon'); ?>
 	</div>

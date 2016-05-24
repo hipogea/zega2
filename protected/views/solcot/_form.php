@@ -195,8 +195,9 @@
 
 
 				<?php echo $form->labelEx($model,'codmon'); ?>
-				<?php  $datos1 = CHtml::listData(TMoneda::model()->findAll(),'codmoneda','desmon');
-				echo $form->DropDownList($model,'codmon',$datos1, array('empty'=>'--Seleccione moneda--' ) ) ;
+				<?php $datos1=CHTml::listdata(Monedas::model()->FindAll("habilitado='1'",array("order"=>"desmon ASC")),'codmoneda','desmon'); ?>
+
+				<?php echo $form->DropDownList($model,'codmon',$datos1, array('empty'=>'--Seleccione moneda--' ) ) ;
 				?>
 
 				<?php echo $form->error($model,'codmon'); ?>

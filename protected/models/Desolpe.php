@@ -66,10 +66,8 @@ class Desolpe extends ModeloGeneral
 			array('est','safe','on'=>'aprobacion'),
 			//array('tipimputacion', 'required', 'message'=>'Debe de indicar el tipo de imputacion', 'on'=>'insert,update'),
 			array('codart,id,centro,tipimputacion,codal,txtmaterial,tipsolpe,cant,um,punitplan','safe','on'=> 'ingresodesolpe'),
-
-
+			array('codart,fechacre,fechaent,id,iduser,centro,codal,txtmaterial,tipsolpe,cant,um,punitplan','safe','on'=> 'auto'),
 			array('imputacion','exist','allowEmpty' => false, 'attributeName' => 'codc', 'className' => 'Cc','message'=>'Este colector no existe', 'on'=>'insert,update'),
-
 			array('cant', 'required', 'message'=>'Debes de indicar la cantidad', 'on'=>'insert,update'),
 			array('cant', 'numerical', 'message'=>'Debes de indicar la cantidad en numeros', 'on'=>'insert,update'),
 			array('um', 'required', 'message'=>'Debes de indicar la unidad de medida', 'on'=>'insert,update'),
@@ -459,12 +457,20 @@ public function checkvalores1($attribute,$params) {
 
 	public function beforeSave() {
 							if ($this->isNewRecord) {
+								if(!yii::app()->settings->get('genera','general_userauto')==$this->iduser){
+									$this->iduser=Yii::app()->user->id;
+									$this->usuario=Yii::app()->user->name;
+								}else{
+									$this->usuario=Yii::app()->user->um->loadUserById($this->iduser)->username;
+								}
+
+
 								if($this->tipsolpe=='S')
 									$this->codart=yii::app()->settings->get('materiales','materiales_codigoservicio');
 								
-											$this->iduser=Yii::app()->user->id;
+											//$this->iduser=Yii::app()->user->id;
 											//$command = Yii::app()->db->createCommand(" select nextval('sq_guias') ");
-											$this->usuario=Yii::app()->user->name;
+											//$this->usuario=Yii::app()->user->name;
 											$this->fechacrea=date("Y-m-d H:i:s");											
 											//$this->n_guia= $command->queryScalar();
 												$this->codocu='350';

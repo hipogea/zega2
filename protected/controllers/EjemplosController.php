@@ -386,6 +386,17 @@ $mo=New Alinventario();
 
 
 	public function actionPio() {
+		$inventario=Alinventario::model()->findByPk(37);
+		$regis=Solpe::solpeautomatica($inventario);
+		var_dump($regis);die();
+
+
+
+
+		VAR_DUMP(yii::app()->tipocambio->getcambio(
+			'PEN',
+			'PEN'
+		)); DIE();
 		$valores=Yii::app()->db->createCommand()
 			->select(' * ')
 			->from('{{alinventario}} a')

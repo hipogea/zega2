@@ -35,7 +35,7 @@ class Maestrocompo extends ModeloGeneral
 		// will receive user inputs.
 		return array(
 			//eSCENARIO BASICO
-			array('descripcion,codtipo,marca,modelo,nparte,um,esrotativo','safe','on'=>'BATCH_BASICO_INS,BATCH_BASICO_UPD'),
+			array('descripcion,codigo,codtipo,marca,modelo,nparte,um,esrotativo','safe','on'=>'BATCH_BASICO_INS,BATCH_BASICO_UPD'),
 			array('descripcion,codtipo,um','required','on'=>'BATCH_BASICO_INS,BATCH_BASICO_UPD'),
 			array('um','checkvalores','on'=>'BATCH_BASICO_UPD'),
 			array('um','exist','allowEmpty' => false, 'attributeName' => 'um', 'className' => 'Ums','message'=>'Esta um no es valida','on'=>'BATCH_BASICO_INS,BATCH_BASICO_UPD'),
@@ -293,7 +293,9 @@ public function Sepuedecambiarum() {
 
 	public function esmateriallibre(){
         $inventario=new Alinventario();
+
 		if(!$this->isNewRecord){
+
 		if($inventario->getStockMatTotal($this->codigo)[0]['stock_total']==0 and   ///si hay stock en algun lado, de cualquier tipo
 		$this->tienecompras==0 and ///si se ha incluido en las compras
 		$this->tienecomprasd==0 and  ///si alguien en este momento esta haciendonuna OC, copne ste material
@@ -332,6 +334,7 @@ public function Sepuedecambiarum() {
 	public function esmateriallibrealmacen($centro,$almacen){
 		$retorno=false;
 		$registro=Maestrodetalle::model()->findByPk(array('codart'=>$this->codigo,'codcentro'=>$centro,'codal'=>$almacen));
+		//var_dump($registro->inventario->getStockTotalAlmacen($this->codigo,0));die();
 		IF(!IS_NULL($registro)){
 			if($registro->inventario->getStockTotalAlmacen($this->codigo,0)==0 and
 				count($registro->kardexhijos)==0 )

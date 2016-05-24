@@ -29,7 +29,8 @@ class MatchCode extends CWidget
 	public $comopintar;
 	public $nombrearea=''; //nombre del Id del DIV donde se pintaran los resultados de la busqueda
 	public $modosimple=false;
-	public $nombrecamporemoto=false;
+	public $nombrecamporemoto=false;//ES el nombre del campo remoto que permnite filtrar  en el modelo remoto ,
+	// no ncesriamente es la calve principal, basta que sea indince unico
 	//public $campo2=null;
 
 
@@ -201,7 +202,7 @@ class MatchCode extends CWidget
 																					"'.Yii::app()->createurl('/Matchcode/recibevalor', 
 																												array("campo"=> $this->nombrecampo, "clasesita"=> $this->nombreclase, "controlado"=> $this->controlador ) 
 																											)
-																					.'"); $("#'.$this->nombredialogo.'").data("hilo","'.$this->controlador.'_'.$this->nombrecampo.'@'.$this->nombrearea.'").dialog("open"); return false',
+																					.'"); $("#'.$this->nombredialogo.'").data("hilo","'.get_class($this->model).'_'.$this->nombrecampo.'@'.$this->nombrearea.'").dialog("open"); return false',
 												)
 											);	
 			 				echo " </div>";

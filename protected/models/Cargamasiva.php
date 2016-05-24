@@ -54,8 +54,10 @@ class Cargamasiva extends ModeloGeneral
 		return array(
 	
 		'detalle'=>array(self::HAS_MANY, 'Cargamasivadet', 'hidcarga', 'order'=>'orden ASC'),
-		'numeroerrores'=>array(self::STAT, 'Logcargamasiva', 'hidcarga', 'select'=> 'COUNT(id)', 'condition'=>"level='0'",),
-		'numeroitems'=>array(self::STAT, 'Cargamasivadet', 'hidcarga'),//el campo foraneo
+		'numeroerrores'=>array(self::STAT, 'Logcargamasiva', 'hidcarga', 'select'=> 'COUNT(id)', 'condition'=>"level='0' and iduser=".yii::app()->user->id),
+			'numeroexitos'=>array(self::STAT, 'Logcargamasiva', 'hidcarga', 'select'=> 'COUNT(id)', 'condition'=>"level='1' and iduser=".yii::app()->user->id),
+		'numeroitems'=>array(self::STAT, 'Cargamasivadet', 'hidcarga', 'order'=>'orden ASC'),//el campo foraneo
+			'logcarga'=>array(self::HAS_MANY, 'Logcargamasiva', 'hidcarga', 'condition'=>"level='1' and iduser=".yii::app()->user->id),
 		);
 	}
 

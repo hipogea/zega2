@@ -4,12 +4,12 @@ const ESTADO_CREADO='10';
 const ESTADO_AUTORIZADO='20';
 const ESTADO_ANULADO='30';
 const CODIGO_DOC_DESOLPE='350';
-
+const CODIGO_DOC_SOLPE='340';
 
 class SolpeController extends Controller
 {
 
-	const CODIGO_DOC_SOLPE='340';
+
 	const DOCUMENTO_RESERVA='450';
 	const DOCUMENTO_RQ='800';
 	const ESTADO_RESERVA_CREADO='10';
@@ -197,7 +197,7 @@ const ESTADO_DESOLPE_RESERVADO='60';
 				$arrayvalores[$autoId]='Desolpe';
 
 			}
-			yii::app()->maletin->ponervalores($arrayvalores,self::CODIGO_DOC_DESOLPE);
+			yii::app()->maletin->ponervalores($arrayvalores,CODIGO_DOC_DESOLPE);
 		}
 
       /*  if(!isset( $_SESSION['350']))
@@ -1772,6 +1772,8 @@ public function actionprocesarsolpe($id)
 		if($mensajeerror=="")
 			Echo " Se ha enviado las peticiones de oferta correspondientes";
 			}
+
+
 
 
 }

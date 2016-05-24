@@ -120,7 +120,7 @@ public function actionModificadetalle($id)
 		public function actionimport($id)
 		{
 			$nombreprimercampo=null;
-			 MiFactoria::limpialogcarga();
+			MiFactoria::limpialogcarga();
 			$carga=Cargamasiva::model()->findByPk($id);
 			$carga->setScenario('search');
 			//verificando que haya llenado bien los campos de longitud y orden 
@@ -190,7 +190,7 @@ public function actionModificadetalle($id)
 																			//Si el numero de  campos leidos = numero de campos de la carga
 																			 if (count($data) != $carga->numeroitems) {
 																				  MiFactoria::registralogcarga($row-1,$carga->id,'El numero de campos del objeto Carga y el archivo no coinciden.','todos',0);
-																				throw new CHttpException(500,'El numero de campos del objeto Carga ('.$carga->numeroitems.') y el archivo ('.count($data).') no coinciden.');
+																				throw new CHttpException(500,'El numero de filas del objeto Carga ('.$carga->numeroitems.') y el archivo ('.count($data).') no coinciden.');
 																			 }
 																			 //verificando que los datos ean ocnsistentes
 																			  foreach ($data as $i=>$valorx) 
@@ -278,6 +278,7 @@ public function actionModificadetalle($id)
 	
 	public function actionCarga($id) {
 		$carga=$this->loadModel($id);
+		MiFactoria::limpialogcarga(); //limpia le log de la carga msdiva
 		$cadena="\$model= new ".$carga->modelo.";";
 			eval($cadena);
 			$model->setScenario($carga->escenario);  
@@ -290,7 +291,7 @@ public function actionModificadetalle($id)
 																				$handle = fopen("$carga->ruta", "r");																																							
 																				$row = 1;
 																				$filas=$carga->detalle;	
-																		while (($data = fgetcsv($handle, 1000, ";")) !== FALSE)
+																		while (($data = fgetcsv($handle, 1000, Yii::app()->user->getField('delimitador'))) !== FALSE)
 																		{
 																			if($row>1){
 																				$cadena="\$model= new ".$carga->modelo.";"; //obteenmos el obejto
@@ -315,7 +316,7 @@ public function actionModificadetalle($id)
 																											$cadena=" \$model= ".$carga->modelo."::Model()->findByPk(\$valoresclave); ";
 
 																										}else{
-																											$cadena=" \$model= ".$carga->modelo."::Model()->findByPk('".$filas[0]->nombrecampo."=:param ', array(':param'=>'".$data[0]."')); ";
+																											$cadena=" \$model= ".$carga->modelo."::Model()->find('".$filas[0]->nombrecampo."=:param ', array(':param'=>'".$data[0]."')); ";
 
 																										}
 
@@ -324,6 +325,7 @@ public function actionModificadetalle($id)
 																										/*var_dump($carga->insercion);
 																										yii::app()->end();*/
 																								//echo $cadena;die();
+																				//echo "cadena  ".$cadena."<br>";die();
 																										eval($cadena);
 																										if(is_null($model))	throw new CHttpException(500,__CLASS__.' - '.__FUNCTION__.' - '.__LINE__.'  Error en la linea : '.($row-1).' del archivo de carga,   Revise el valor de la primera columna ');
 																										
@@ -331,7 +333,7 @@ public function actionModificadetalle($id)
 																			//Si el numero de  campos leidos = numero de campos de la carga
 																			 if (count($data) != $carga->numeroitems) {
 																				  //MiFactoria::registralogcarga($row-1,$carga->id,'El numero de campos del objeto Carga y el archivo no coinciden.','todos',0);
-																				throw new CHttpException(500,'El numero de campos del objeto Carga ('.$carga->numeroitems.') y el archivo ('.count($data).') no coinciden.');
+																				throw new CHttpException(500,'El numero de campos del objeto Carga ('.$carga->numeroitems.') y el archivo ('.count($data).') no coinciden. Por favor revise el caracter delimitador en las propiedades de su cuenta de usuario');
 																			 }
 																			 //verificando que los datos ean ocnsistentes
 																			  foreach ($data as $i=>$valorx) {
@@ -390,37 +392,11 @@ public function actionModificadetalle($id)
 																									
 																			$row++;
 																		}
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
 			 
 		} else {
 			throw new CHttpException(500,'NO ha enviado el formulario de datos');
 			
 		}
-		
-		
 	}
 	
 	

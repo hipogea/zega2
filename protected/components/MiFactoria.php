@@ -270,6 +270,11 @@ public static function Insertamensaje($id,$codocu,$tipo,$nombrefichero=null){
         $modelito->save();
     }
 
+    public static function linkregreso(){
+       return CHtml::link("Volver","javascript:history.back()");
+
+    }
+
 
  /*   public static function ClearBuffer($arraymodeloshijos,$arraycamposlink,$id)
 {

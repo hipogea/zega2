@@ -17,7 +17,7 @@ class Embarcaciones extends ModeloGeneral
 	 */
 	public function tableName()
 	{
-		 return Yii::app()->params['prefijo'].'embarcaciones';
+		 return '{{embarcaciones}}';
 	}
 
 	/**
@@ -35,12 +35,12 @@ class Embarcaciones extends ModeloGeneral
 			//array('codep', 'numerical', 'integerOnly'=>true),
 			array('cbodega', 'numerical', 'integerOnly'=>true),
 			array('codep', 'length', 'max'=>3),
-			array('nomep, creadopor, modificadopor', 'length', 'max'=>25),
+			array('nomep', 'length', 'max'=>25),
 			array('matricula', 'length', 'max'=>15),
 			array('activa', 'length', 'max'=>1),
 			array('codsap', 'length', 'max'=>5),
-			array('creadoel, modificadoel', 'length', 'max'=>20),
-			array('codcentro', 'length', 'max'=>4),
+			//array('creadoel, modificadoel', 'length', 'max'=>20),
+			//array('codcentro', 'length', 'max'=>4),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('codep, nomep, matricula, cbodega, activa, codsap', 'safe', 'on'=>'search'),

@@ -111,7 +111,7 @@ class AlinventarioController extends Controller
 		return array(
 
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('ajuste','editaconteofisico','conteofisico','updateubicacion','muestrakardex','admin','pintareservas','create','supervision','import','pronostica','pareto','adminpareto','repinventario','prueba','buclecarga','update','cargarmat','busqueda','cargaalmacenes','cargaalmacenes1'),
+				'actions'=>array('revertirajuste','ajuste','editaconteofisico','conteofisico','updateubicacion','muestrakardex','admin','pintareservas','create','supervision','import','pronostica','pareto','adminpareto','repinventario','prueba','buclecarga','update','cargarmat','busqueda','cargaalmacenes','cargaalmacenes1'),
 				'users'=>array('@'),
 			),
 
@@ -841,6 +841,7 @@ public function actionBusqueda()
 
 	public function actionconteofisico($id){
 		$id=(integer)MiFactoria::cleanInput($id);
+		$hidpadre=(integer)MiFactoria::cleanInput($_GET['hidpadre']);
 		$modeloinv=$this->loadModel($id);
 		if ($modeloinv===null)
 			throw new CHttpException(404,'No se encontro ningun documento para estos datos');
@@ -855,7 +856,7 @@ public function actionBusqueda()
 					//Close the dialog, reset the iframe and update the grid
 					echo CHtml::script("window.parent.$('#cru-dialogdetalle').dialog('close');
 													                    window.parent.$('#cru-detalle').attr('src','');
-																		window.parent.$.fn.yiiGridView.update('conteo-grid');
+																		window.parent.$.fn.yiiGridView.update('detalle-gridx');
 																		");
 					Yii::app()->end();
 				}else{
@@ -876,7 +877,7 @@ public function actionBusqueda()
 		$id=(integer)MiFactoria::cleanInput($id);
 		$model=Inventariofisico::model()->findByPk($id);
 		if ($model===null)
-			throw new CHttpException(404,'No se encontro ningun documento para estos datos');
+			throw new CHttpException(404,'No se encontro ningun documento para estos datos'.$id);
 		$model->setScenario('insert');
 		if(isset($_POST['Inventariofisico']))
 		{
@@ -910,94 +911,93 @@ public function actionBusqueda()
 		$model=Inventariofisico::model()->findByPk($id);
 		if ($model===null)
 			throw new CHttpException(404,'No se encontro ningun documento para estos datos');
+		$modeloinv=$model->inventario;
+		//verioficando la operacion contable
+		if($model->diferencia >0 ){  ///SOBRANTES
+			$operacion='301';
+			$movimiento='75';
+		}
+		if($model->diferencia ==0 ){
+			throw new CHttpException(404,'El ajuste no aplica, no existen diferencias');
+		}
+		if($model->diferencia <0 ){ //FALTANTES
+			$operacion='300';
+			$movimiento='67';
+		}
 		if(yii::app()->hasModule('contabilidad')){
 			$transaccion=$model->dbConnection->beginTransaction();
 			if($model->codestado=='20'){
-				throw new CHttpException(500,'Esta difrencia ya esta ajustada contablemente ');
+				throw new CHttpException(500,'Esta diferencia ya esta ajustada contablemente ');
+				//Si no se trata de una reversa
 			}else{
 				$model->setScenario('ajuste');
 				if(isset($_POST['Inventariofisico']))
 				{
 					$model->attributes=$_POST['Inventariofisico'];
 					$model->codestado='20';
-
 					if($model->save()) {
-						MiFactoria::Mensaje('success','Se realizo el ajuste con exito');
+						///AHORA NOS TOCA REGISTRAR EL KARDEX DEL MATERIAL
+						//Obteniendo el ID del val primero
+						$vale=Alinventario::creavaleajuste($movimiento,$model->inventario->codalm,$model->inventario->codcen)->id;
+						$signo=Almacenmovimientos::model()->findByPk($movimiento)->signo;
+						//CREADNO EL KARDEX
+						$nuevokardex=New Alkardex();
+						$nuevokardex->SetAttributes(
+							array(
+								'codart'=>$model->inventario->codart,
+								'codmov'=>$movimiento,
+								'cant'=>$signo*abs($model->diferencia), //obenener le signo correcto
+								'alemi'=>$model->inventario->codalm,
+								'fecha'=>date('Y-m-d H:i:s'),
+								'um'=>$model->inventario->maestro->um,
+								'codocuref'=>'400',
+							'codcentro'=>$model->inventario->codcen,
+								'hidvale'=>$vale,
+								'fechadoc'=>date('Y-m-d H:i:s'),
+								'preciounit'=>$model->monto,
+								'codmoneda'=>$model->inventario->almacen->codmon,
+							)
+						);
+						//$nuevokardex->save();
+						if(!$nuevokardex->save()){
+							//echo yii::app()->mensajes->getErroresItem($nuevokardex->geterrors());die();
+							MiFactoria::Mensaje('error',yii::app()->mensajes->getErroresItem($nuevokardex->geterrors()));
+						}
+						if(yii::app()->user->hasFlash('error')){
+							$transaccion->rollback();
+						}else{
+							$transaccion->commit();
+							MiFactoria::Mensaje('success','Se realizo el ajuste ocn exito');
+						}
+
+
+						echo CHtml::script("window.parent.$('#cru-dialogdetalle').dialog('close');
+													                    window.parent.$('#cru-detalle').attr('src','');
+																		window.parent.$.fn.yiiGridView.update('detalle-gridx');
+																		");
+
+
+
+						Yii::app()->end();
+
+
+						//MiFactoria::Mensaje('success','Se realizo el ajuste con exito');
 					}else{
 						print_r($model->geterrors());die();
 					}
-					//$this->redirect(array('view','id'=>$model->n_guia));
+				} else{
+					//colocando las cuentas predeterminadas
+					$model->cuentadebe=Detercuentas::getCuenta($model->inventario->maestrodetalle->catval,$operacion,'D');
+					$model->cuentahaber=Detercuentas::getCuenta($model->inventario->maestrodetalle->catval,$operacion,'H');
+					if (!empty($_GET['asDialog']))
+						$this->layout = '//layouts/iframe';
+					$this->render('_form_ajuste',array(
+						'model'=>$model, 'modelocabeza'=>$modeloinv,
+					));
 				}
-
-				if (!empty($_GET['asDialog']))
-					$this->layout = '//layouts/iframe';
-				$modeloinv=$model->inventario;
-				//verioficando la operacion contable
-				if($model->diferencia >0 ){  ///SOBRANTES
-					$operacion='301';
-					$movimiento='75';
-				}
-				if($model->diferencia ==0 ){
-					throw new CHttpException(404,'El ajuste no aplica, no existen diferencias');
-				}
-				if($model->diferencia <0 ){ //FALTANTES
-					$operacion='300';
-					$movimiento='67';
-
-				}
-
-
-				//colocando las cuentas predeterminadas
-				$model->cuentadebe=Detercuentas::getCuenta($model->inventario->maestrodetalle->catval,$operacion,'D');
-				$model->cuentahaber=Detercuentas::getCuenta($model->inventario->maestrodetalle->catval,$operacion,'H');
-				$this->render('_form_ajuste',array(
-					'model'=>$model, 'modelocabeza'=>$modeloinv,
-				));
-
-				///AHORA NOS TOCA REGISTRAR EL KARDEX DEL MATERIAL
-
-				//Obteniendo el ID del val primero
-					$vale=Alinventario::creavaleajuste($movimiento,$model->inventario->codalm,$model->inventario->codcen)->id;
-				$signo=Almacenmovimientos::model()->findByPk($movimiento)->signo;
-				//CREADNO EL KARDEX
-				$nuevokardex=New Alkardex();
-				$nuevokardex->SetAttributes(
-					array(
-						'codart'=>$model->inventario->codart,
-						'codmov'=>$movimiento,
-						'cant'=>$signo*abs($model->diferencia), //obenener le signo correcto
-						'alemi'=>$model->inventario->codalm,
-						'fecha'=>date('Y-m-d H:i:s'),
-						//'coddoc'=>'400',
-						//'numdoc'=>$this->numdoc,
-						'um'=>$model->inventario->maestro->um,
-						'codocuref'=>'400',
-						//'numdocref'=>Alreserva::model()->findByPk($valor)->desolpe->desolpe_solpe->numero,
-						'codcentro'=>$model->inventario->codcen,
-						'hidvale'=>$vale,
-						'fechadoc'=>date('Y-m-d H:i:s'),
-						//'idref'=>Alreserva::model()->findByPk($valor)->desolpe->id,
-						//'lote'=>$this->lote,
-						'preciounit'=>$model->monto,
-						'codmoneda'=>$model->inventario->almacen->codmon,
-
-					)
-				);
-				//$nuevokardex->save();
-				if(!$nuevokardex->save()){
-					//echo yii::app()->mensajes->getErroresItem($nuevokardex->geterrors());die();
-					MiFactoria::Mensaje('error',yii::app()->mensajes->getErroresItem($nuevokardex->geterrors()));
-				}
-
-
 
 			}
-			if(yii::app()->user->hasFlash('error')){
-				$transaccion->rollback();
 
-			}else{
-				$transaccion->commit();
-			}
 		}else{
 			throw new CHttpException(404,'No se puede realizar esta operacion el modulo de contabilidad no esta activo ');
 		}
@@ -1005,7 +1005,90 @@ public function actionBusqueda()
 
 	}
 
+	public function actionrevertirajuste($id){
+		$id=(integer)MiFactoria::cleanInput($id);
+		$model=Inventariofisico::model()->findByPk($id);
+		if ($model===null)
+			throw new CHttpException(404,'No se encontro ningun documento para estos datos');
+		$modeloinv=$model->inventario;
+		//verioficando la operacion contable
+		if($model->diferencia >0 ){  ///SOBRANTES
+			$operacion='301';
+			$movimiento='19'; //opuesto a 75
+		}
+		if($model->diferencia ==0 ){
+			throw new CHttpException(404,'El ajuste no aplica, no existen diferencias');
+		}
+		if($model->diferencia <0 ){ //FALTANTES
+			$operacion='300';
+			$movimiento='18'; //opesto a 67
+		}
+		if(yii::app()->hasModule('contabilidad')){
+			if($model->conteopadre->codestado=='10') {
+				$transaccion = $model->dbConnection->beginTransaction();
+				if ($model->codestado <> '20') {
+					throw new CHttpException(500, 'Este conteo no puede ser revertido ');
+					//Si no se trata de una reversa
 
+
+				} else {
+					$model->setScenario('ajuste');
+					$model->codestado = '10';
+					if ($model->save()) {
+						///AHORA NOS TOCA REGISTRAR EL KARDEX DEL MATERIAL
+						//Obteniendo el ID del val primero
+						$vale = Alinventario::creavaleajuste($movimiento, $model->inventario->codalm, $model->inventario->codcen)->id;
+						$signo = Almacenmovimientos::model()->findByPk($movimiento)->signo;
+						//CREADNO EL KARDEX
+						$nuevokardex = New Alkardex();
+						$nuevokardex->SetAttributes(
+							array(
+								'codart' => $model->inventario->codart,
+								'codmov' => $movimiento,
+								'cant' => $signo * abs($model->diferencia), //obenener le signo correcto
+								'alemi' => $model->inventario->codalm,
+								'fecha' => date('Y-m-d H:i:s'),
+								'um' => $model->inventario->maestro->um,
+								'codocuref' => '400',
+								'codcentro' => $model->inventario->codcen,
+								'hidvale' => $vale,
+								'fechadoc' => date('Y-m-d H:i:s'),
+								'preciounit' => $model->monto,
+								'codmoneda' => $model->inventario->almacen->codmon,
+							)
+						);
+						//$nuevokardex->save();
+						if (!$nuevokardex->save()) {
+							//echo yii::app()->mensajes->getErroresItem($nuevokardex->geterrors());die();
+							MiFactoria::Mensaje('error', yii::app()->mensajes->getErroresItem($nuevokardex->geterrors()));
+						}
+						//MiFactoria::Mensaje('success','Se realizo el ajuste con exito');
+					} else {
+						print_r($model->geterrors());
+						die();
+					}
+
+					//ya no se neceista colocar la cuentas ya las tiene
+					//$model->cuentadebe=Detercuentas::getCuenta($model->inventario->maestrodetalle->catval,$operacion,'D');
+					//$model->cuentahaber=Detercuentas::getCuenta($model->inventario->maestrodetalle->catval,$operacion,'H');
+
+				}
+				if (yii::app()->user->hasFlash('error')) {
+					$transaccion->rollback();
+				} else {
+					$transaccion->commit();
+					MiFactoria::Mensaje('success', 'Se realizo el ajuste ocn exito');
+				}
+
+			}else{
+				throw new CHttpException(500,'No se puede realizar esta operacion , el conteo está cerradp o anulado ');
+			}
+		}else{
+			throw new CHttpException(404,'No se puede realizar esta operacion el modulo de contabilidad no esta activo ');
+		}
+
+
+	}
 
 
 

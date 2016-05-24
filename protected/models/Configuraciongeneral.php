@@ -13,7 +13,7 @@ class Configuraciongeneral extends CFormModel
 	public $general_rutatemaimagenes;
 	public $general_horaspasadastipocambio;
 	public $general_porcexcesocaja; ///porcenytaje de exceso para la caja chica
-
+	public $general_userauto; ///porcenytaje de exceso para la caja chica
 
 	/*****documentos***/
 	public $documentos_numeromaxbloqueos;
@@ -32,6 +32,8 @@ public $documentos_tolerecepfacturaendias=null;
 	/*****inventario***/
 	public $inventario_periodocontrol;
 	public $inventario_mascaraubicaciones;
+	public $inventario_bloqueado;
+	public $inventario_auto;//reposiciones automarticas en el modelo deterministico
 	//public $adminnoticias;
 
 	/*****compras***/
@@ -81,6 +83,7 @@ public $materiales_verpresolpe;
 				   general_rutatemaimagenes,
 				   general_horaspasadastipocambio,
 				   general_porcexcesocaja,
+				   general_userauto,
 					documentos_numeromaxbloqueos,
 					documentos_docmascara,
 					documentos_archivo_sello_agua,
@@ -105,7 +108,7 @@ public $materiales_verpresolpe;
 					email_cuentahost',
 				'required','message'=>'Este dato es obligatorio'
 			),
-			array('inventario_mascaraubicaciones,materiales_contabilidad,materiales_verpresolpe,documentos_selloagua,documentos_controlrecepcion,transporte_lugares','safe'),
+			array('general_userauto,inventario_auto,inventario_bloqueado,inventario_mascaraubicaciones,materiales_contabilidad,materiales_verpresolpe,documentos_selloagua,documentos_controlrecepcion,transporte_lugares','safe'),
 			array(
 				// array('transporte_tiempopermitidohastaentrega','numerical', 'integerOnly'=>true, 'min'=>0, 'max'=>100),
 				'transporte_tiempopermitidohastaentrega', 'numerical', 'integerOnly'=>true,
@@ -134,6 +137,7 @@ public $materiales_verpresolpe;
 
 			'general_monedadef'=>'Moneda base',
 			'general_porcexcesocaja'=>'Exceso cajachica (%)',
+			'general_userauto'=>'Uusario para operaciones automaticas',
 	'documentos_numeromaxbloqueos'=>'Cant Max Documentos abiertos por usuario',
 			'documentos_selloagua'=>'Sello de agua',
 			'documentos_archivo_sello_agua'=>'Archivo sello agua',
@@ -143,6 +147,7 @@ public $materiales_verpresolpe;
            ' transporte_lugares'=>'Exigir lugares para direccion',
 	'inventario_periodocontrol'=>'Periodo Dias control de inventario',
 			'inventario_mascaraubicaciones'=>'Mascara ubicaciones',
+			'inventario_auto'=>'Reposic stock Automa.',
 	//public $adminnoticias;
 	'compras_restringircantidades'=>'Restringir cant en compras',
 	'af_afmascara'=>'Mascara cod AF',
@@ -162,6 +167,7 @@ public $materiales_verpresolpe;
 			'email_servemail'=>'Servidor de correo',
 			'email_cuentahost'=>'Cuenta de correo motor',
 			'email_passwordhost'=>'Password de la cuenta',
+			'inventario_bloqueado'=>'Bloquear en Conteo'
 
 
 

@@ -66,7 +66,19 @@
 
 			),
 
+			'refresh'=>array(
+				'type'=>'F',
+				'ruta'=>array(),
+				'visiblex'=>array('10'),
 
+			),
+
+			'pack1'=>array(
+				'type'=>'B',
+				'ruta'=>array($this->id.'/cierraconteo',array('id'=>$model->id)),
+				'visiblex'=>array('10'),
+
+			),
 
 
 		);
@@ -104,6 +116,10 @@
 						'content'=>$this->renderPartial('//site/tab_auditoria', array('model'=>$model),TRUE)
 					),
 
+					'Listado'=>array('id'=>'tab_._k',
+						'content'=>$this->renderPartial('tab_listado', array('modelhijo'=>$modelhijo,'model'=>$model),TRUE)
+					),
+
 
 
 				),
@@ -115,10 +131,6 @@
 
 
 
-	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
-	</div>
-
 <?php $this->endWidget(); ?>
 
 </div><!-- form -->
@@ -126,46 +138,7 @@
 </div>
 
 <?PHP
-  IF(!$model->IsNewRecord){
-	  $proveedor=Inventariofisico::model()->search_por_padre($model->id);
-	  $this->widget('zii.widgets.grid.CGridView', array(
-		  'id'=>'detalle-grid',
-		  'dataProvider'=>$proveedor,
-		  //'filter'=>$model,
-		  //'cssFile'=>Yii::app()->getTheme()->baseUrl.'/css/style-grid.css',  // your version of css file
-		  'itemsCssClass'=>'table table-striped table-bordered table-hover',
-		  //'summaryText'=>'->',
-		  'columns'=>array(
 
-
-			  array(
-				  'class'=>'CCheckBoxColumn',
-				  'selectableRows' => 20,
-				  'value'=>'$data->id',
-				  'checkBoxHtmlOptions' => array(
-					  'name' => 'cajita[]',
-					  //'enabled'=>'(($data->coddocu=="001") and ($data->codpro <> "R00001"))?"false":"true"',
-					  //'disabled'=>'true',
-
-				  ),
-				  // 'id'=>'cajita' // the columnID for getChecked
-			  ),
-
-			  array('name'=>'codart','value'=>'$data->inventario->codart', 'htmlOptions'=>array('width'=>5)),
-			  array('name'=>'descripcion','value'=>'$data->inventario->maestro->descripcion', 'htmlOptions'=>array('width'=>25)),
-			  array('name'=>'um','value'=>'$data->inventario->maestro->maestro_ums->desum', 'htmlOptions'=>array('width'=>3)),
-			  array('name'=>'ubicacion','value'=>'$data->inventario->ubicacion', 'htmlOptions'=>array('width'=>25)),
-			  array('name'=>'cant','value'=>'$data->cant', 'htmlOptions'=>array('width'=>4)),
-			  array('name'=>'cantstock','value'=>'$data->cantstock', 'htmlOptions'=>array('width'=>4)),
-			  array('name'=>'diferencia','value'=>'$data->diferencia', 'htmlOptions'=>array('width'=>4)),
-
-
-
-	  )));
-
-
-
-  }
 
 
 

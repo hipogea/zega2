@@ -22,6 +22,12 @@ class InventariofisicopadreController extends Controller
 
 			'exportableGrid' => array(
 				'class' => 'application.components.ExportableGridBehavior',
+				'filename' => 'conteo.csv',
+				'csvDelimiter' =>(Yii::app()->user->isGuest)?",":Yii::app()->user->getField('delimitador') , //i.e. Excel friendly csv delimiter
+			),
+
+			'exportableGrid' => array(
+				'class' => 'application.components.ExportableGridBehavior',
 				'exportParam'=>'exportacion',
 				'filename' => 'Inventario.csv',
 				'csvDelimiter' =>(Yii::app()->user->isGuest)?",":Yii::app()->user->getField('delimitador') , //i.e. Excel friendly csv delimiter
@@ -44,7 +50,7 @@ class InventariofisicopadreController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('descargainventario','generadetalle','create','update'),
+				'actions'=>array('cierraconteo','descargainventario','generadetalle','create','update'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -74,18 +80,36 @@ class InventariofisicopadreController extends Controller
 	 */
 	public function actionCreate()
 	{
+
+
+
+
 		$model=new Inventariofisicopadre;
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
 
 		if(isset($_POST['Inventariofisicopadre']))
 		{
 			$model->attributes=$_POST['Inventariofisicopadre'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
-		}
+			if(!is_null($model->findInventarioabierto($model->codcen,$model->codal))){//verificanosd primero si se han cerrado los otros inventarios
+				MiFactoria::Mensaje('error','Ya existe un conteo abierto, cierrelo e intente nuevamente ');
+				$this->render('create',array(
+					'model'=>$model,
+				));
+				yii:app()->end();
+			}
 
+			if($model->save()){
+				MiFactoria::Mensaje('success','Se ha creado el conteo');
+				if(yii::app()->settings->get('inventario','inventario_bloqueado')=='1'){
+					$registro=$model->almacen;
+					$registro->setScenario('bloqueo');
+					$registro->bloqueado='1';$registro->save();unset($registro);
+					MiFactoria::Mensaje('notice','El conteo mantendrá bloqueado el inventario deeste almacen, no podrá efectuar movimietos de materiales
+					durante el mismo hasta su cierre o anulación');
+				}
+				$this->redirect(array('update','id'=>$model->id));
+			}
+		}
 		$this->render('create',array(
 			'model'=>$model,
 		));
@@ -99,9 +123,50 @@ class InventariofisicopadreController extends Controller
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
+		if(!isset($_POST['ajax'])){
+
+
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
+		if(!is_null($model->carga->numeroexitos > 0)){
+			$inicio=$model->carga->logcarga[0]->id;
+			if(!in_array($inicio,$model->idcargas()))
+			$this->insertadetallecarga($model->id,$model->carga->numeroexitos,$inicio);
+
+		}
+
+		////para filtrar datos del listado
+		$modelhijo=new Inventariofisico('search_por_padre');
+		$modelhijo->unsetAttributes();  // clear any default values
+		if(isset($_GET['Inventariofisico'])){
+			$modelhijo->attributes=$_GET['Inventariofisico'];
+			//var_dump($modelhijo->attributes);die();
+		}
+
+
+		///paral a funcion exportar
+		$camposaexportar=array(
+			'id',
+			'cant',
+			'ubicacion',
+			'inventario.codart',
+			'inventario.maestro.maestro_ums.desum',
+			'inventario.maestro.descripcion',
+			'inventario.ubicacion',
+			'ubicacion',
+			'diferencia',
+
+		);
+		if($model->esciego=='1')
+			$camposaexportar[]='cantstock';
+		//$camposaexportar1=array_merge($camposaexportar,array_values($model->camposstock));
+		//Inventariofisico::model()->search_por_padre($model->id);
+		//var_dump($model->search());die();
+		$this->exportCSV($modelhijo->search_por_padre($id),$camposaexportar);
+
+
+
 
 		if(isset($_POST['Inventariofisicopadre']))
 		{
@@ -111,10 +176,10 @@ class InventariofisicopadreController extends Controller
 		}
 
 		$this->render('update',array(
-			'model'=>$model,
+			'model'=>$model,'modelhijo'=>$modelhijo
 		));
+	} //finde l ajax
 	}
-
 	/**
 	 * Deletes a particular model.
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
@@ -212,6 +277,7 @@ class InventariofisicopadreController extends Controller
 		unset($inventario);
 		$padre=$this->loadModel($id);
 		$alma=$padre->codal;$centro=$padre->codcen;
+		$fechaprog=$padre->fechaprog;
 		unset($padre);
 		$idhijos=Yii::app()->db->createCommand()
 			->select('hidinventario')
@@ -241,6 +307,7 @@ class InventariofisicopadreController extends Controller
 					'cant'=>0,  ///CANTIDAD CEOR PORQUE AUN NOS E HA CONTYADO  OJO
 					'cantstock'=>$fila['stock_total']+0,
 					'fechacre'=>date("Y-m-d H:i:s"),
+					'fecha'=>$fechaprog,
 					'diferencia'=>0, ///DIREFENCIA
 
 					));
@@ -260,15 +327,64 @@ class InventariofisicopadreController extends Controller
 		//var_dump($model->search_por_almacen_con_stock($almacen)->getdata());die();
 		$camposaexportar=array(
 			'id',
-			'cantstock',
+			'cant',
 			'ubicacion',
 			'inventario.codart',
 			'inventario.maestro.maestro_ums.desum',
 			'inventario.maestro.descripcion',
+			'inventario.ubicacion',
 
 		);
+		if($mm->esciego=='1')
+			$camposaexportar[]='cantstock';
 		//$camposaexportar1=array_merge($camposaexportar,array_values($model->camposstock));
 		//Inventariofisico::model()->search_por_padre($model->id);
+		//var_dump($model->search());die();
 		$this->exportCSV($model->search_por_padre($id),$camposaexportar);
 	}
+
+
+
+	private function insertadetallecarga($id,$nregistros,$inicio){
+		$mn=New Cargainventariofisico();
+		$mn->setAttributes(array(
+			'hidpadre'=>$id,
+			'fecha'=>date("Y-m-d H:i:s"),
+			'iduser'=>yii::app()->user->id,
+			'nregistros'=>$nregistros,
+			'idinicio'=>$inicio
+		));
+		$mn->save(); unset($mn);
+	}
+
+  public function actioncierraconteo($id){
+	  //para cerrar conteo debemos primero aegurarnos que se han ajustado todas las diferencias
+		$modelo=$this->loadModel($id);
+	  if(in_array($modelo->codestado,array('50','20'))){ //ANUALDO O CERRADO
+		  MiFactoria::Mensaje('error','El status del registro no es válido para efectuar el cierre '.MiFactoria::linkregreso());
+	  } ELSE {
+		  ///El conteo no dee de tener ajustes pendientes
+		  if($modelo->ajustespendientes >0){
+			  MiFactoria::Mensaje('error','No se puede cerrar el conteo, aun existen ajustes pendientes '.MiFactoria::linkregreso());
+		  }else{
+			  $modelo->setScenario('estado');
+			   $modelo->codestado='20';
+			  $transaccion=$modelo->dbConnection->beginTransaction();
+			  //ahora liebral os almacenews
+			  if(yii::app()->settings->get('inventario','inventario_bloqueado')=='1'){
+				  $registro=$modelo->almacen;
+				  $registro->setScenario('bloqueo');
+				  $registro->bloqueado=null ;$registro->save();unset($registro);
+				  MiFactoria::Mensaje('notice','El cierre del conteo ha desbloqueado los movimientos del almacen '.MiFactoria::linkregreso());
+
+			  }
+			  $cantidad=$modelo->actualizaubicaciones();
+			  $modelo->save();
+			  $transaccion->commit();
+			  MiFactoria::Mensaje('success','Se ha efectuado el cierre del conteo, se actualizaron ('.$cantidad.')  Ubicaciones ');
+		  }
+	  }
+	  $this->render('view',array('model'=>$modelo));
+  }
+
 }

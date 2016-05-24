@@ -277,11 +277,16 @@ class Alkardex extends ModeloGeneral
 				$this->alkardex_alinventario->actualiza_stock($this->codmov, abs($this->cantidadbase()), $this->punitbase(), $this->id);
 				break;
 
-
+			case "18": //ANULAR AJUSTE POR faltantes
+				$this->alkardex_alinventario->actualiza_stock($this->codmov, abs($this->cantidadbase()), $this->punitbase(), $this->id);
+				break;
 			case "75": //AJUSTE POR SOBRANTES
 				$this->alkardex_alinventario->actualiza_stock($this->codmov, abs($this->cantidadbase()), $this->punitbase(), $this->id);
 				break;
 
+			case "19": //ANULAR AJUSTE POR SOBRANTES
+				$this->alkardex_alinventario->actualiza_stock($this->codmov, abs($this->cantidadbase()), $this->punitbase(), $this->id);
+				break;
 
 
 			case "81":

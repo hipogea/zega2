@@ -44,18 +44,21 @@ class Maestrodetalle extends ModeloGeneral
 			array('codcentro','exist','allowEmpty' => false, 'attributeName' => 'codcen', 'className' => 'Centros','message'=>'Este centro no existe','on'=>'BATCH_UPD'),
 			array('catval','exist','allowEmpty' => false, 'attributeName' => 'codcatval', 'className' => 'Catvaloracion','message'=>'Este grupo de valor no existe','on'=>'BATCH_UPD'),
 			array('canteconomica, cantreposic, cantreorden', 'numerical','on'=>'BATCH_UPD'),
-			array('canteconomica, cantreposic, cantreorden', 'checkvalores','on'=>'BATCH_UPD'),
-			array('supervisionautomatica,codart,codcentro, codal,controlprecio,catval,canteconomica, cantreposic, cantreorden,leadtime', 'safe','on'=>'BATCH_UPD'),
+			array('canteconomica, cantreposic, cantreorden', 'checkauto','on'=>'BATCH_UPD'),
+			array('cantsol,repautomatica,supervisionautomatica,codart,codcentro, codal,controlprecio,catval,canteconomica, cantreposic, cantreorden,leadtime', 'safe','on'=>'BATCH_UPD'),
 
 
+			array('canteconomica, cantreposic, cantreorden', 'checkauto','on'=>'BATCH_UPD_SUPERVISION'),
+			array('cantsol,repautomatica,codart,codcentro, codal,supervisionautomatica,canteconomica, cantreposic, cantreorden', 'safe','on'=>'BATCH_UPD_SUPERVISION'),
 
 			array('codart,controlprecio', 'required','on'=>'insert,update'),
 			array('codart','exist','allowEmpty' => false, 'attributeName' => 'codigo', 'className' => 'Maestrocompo','message'=>'Este material no existe','on'=>'insert,update'),
-			array('codart, codcentro, codal,controlprecio, catval,supervisionautomatica', 'safe','on'=>'insert,update'),
+			array('cantsol,repautomatica,codart, codcentro, codal,controlprecio, catval,supervisionautomatica', 'safe','on'=>'insert,update'),
 			array('controlprecio', 'checkcontrolprecio','on'=>'insert,update'),
 			array('leadtime', 'numerical', 'integerOnly'=>true,'on'=>'insert,update'),
 			array('canteconomica, cantreposic, cantreorden', 'numerical','on'=>'insert,update'),
-			array('canteconomica, cantreposic, cantreorden', 'checkvalores','on'=>'update'),
+			array('canteconomica, cantreposic, cantreorden', 'checkauto','on'=>'update'),
+			array('catval,controlprecio', 'required','on'=>'update'),
 			array('codart', 'length', 'max'=>8,'on'=>'insert,update'),
 			array('codcentro', 'length', 'max'=>4,'on'=>'insert,update'),
 			array('codal, codgrupoventas', 'length', 'max'=>3,'on'=>'insert,update'),
@@ -212,6 +215,47 @@ public function tienecompras(){
 			}
 		}
 		return $retorno;
+	}
+
+//Chequea las reposiciones automaticas
+	public function checkauto($attribute,$params) {
+		if(yii::app()->settings->get('inventario','inventario_auto')=='1'){
+			if($this->repautomatica=='1'){
+							//Aqui si deben de estar activo el check de superevision autoamtica ademas debe de validarse los valores
+							if(!$this->supervisionautomatica=='1'){
+										$this->adderror('supervisionautomatica','Debe de activar la opcion de supervision');
+								}else{
+									if(!(($this->canteconomica > $this->cantreorden) and
+									( $this->cantreorden > $this->cantreposic )))
+									$this->adderror('cantreorden','Revise las cantidades, Cantidad ecónomica es mayor que reorden y a su vez mayor que reposicion');
+									}
+									//ahora si la cantidad ecomonica de pedido debe de estar llena
+									if(!$this->cantsol >0)
+										$this->adderror('cantsol','Para reposiciones automaticas debe indicar al sistema la cantidad de pedido en unidad de medidas base');
+
+
+			    			}else{
+								//ok
+											if($this->supervisionautomatica=='1')
+													if(!(($this->canteconomica > $this->cantreorden) and
+														( $this->cantreorden > $this->cantreposic )))
+														$this->adderror('cantreorden','Revise las cantidades, Cantidad ecónomica es mayor que reorden y a su vez mayor que reposicion');
+
+
+
+								}
+			}else{
+						if($this->repautomatica=='1') {
+							$this->adderror('repautoamtica','La opcion general del sistema no permite reposiciones autoamticas, habiite esta opcion en la configuracion general');
+						}else{
+							if($this->supervisionautomatica=='1')
+							if(!(($this->canteconomica > $this->cantreorden) and
+								( $this->cantreorden > $this->cantreposic )))
+								$this->adderror('cantreorden','Revise las cantidades, Cantidad ecónomica es mayor que reorden y a su vez mayor que reposicion');
+						}
+
+			}
+
 	}
 
 }

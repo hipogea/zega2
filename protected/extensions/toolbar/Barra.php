@@ -127,6 +127,12 @@ class Barra extends CWidget
 
 						);
 						break;
+					case "F":
+						echo CHtml::link ( Chtml::image ( $rutaimagenes , '' , $arrayestilolink
+						) ,
+							yii::app()->request->url
+						);
+						break;
 				}
 
 				/*

@@ -39,7 +39,7 @@ class AlmacenesController extends Controller
 		return array(
 
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('descargainventario','admin','delete','create','detalle','update','creade','view','cambiaestatusmov','cambiaestatusmovan'),
+				'actions'=>array('graficar','descargainventario','admin','delete','create','detalle','update','creade','view','cambiaestatusmov','cambiaestatusmovan'),
 				'users'=>array('@'),
 			),
 
@@ -70,6 +70,7 @@ class AlmacenesController extends Controller
 		$palma=MiFactoria::cleanInput($codalmacen);
 		$pcentro=MiFactoria::cleanInput($codcentro);
 		$model=Almacenes::Model()->find("codalm=:vcodal AND codcen=:vcentro",array(":vcodal"=>$palma,":vcentro"=>$pcentro));
+		$model->setScenario('grafico');
 		if(Is_null($model))
 			throw new CHttpException(500,'No se ha encontrado el almacen indicado');
 		$this->render('detalle',array(
@@ -241,5 +242,20 @@ if(isset($_POST['Almacenes']))
 		$camposaexportar1=array_merge($camposaexportar,array_values($model->camposstock));
 
 		$this->exportCSV($model->search_por_almacen_con_stock($almacen),$camposaexportar1);
+	}
+
+	public function actiongraficar(){
+		if(yii::app()->request->isAjaxRequest){
+			$codal=$_POST['Almacenes']['codalm'];
+			$numeropuntos=$_POST['Almacenes']['numeropuntos'];
+			$periodo=$_POST['Almacenes']['periodo'];
+
+
+        $datos=Montoinventario::datosgrafo($periodo,$numeropuntos,null,$codal);
+        echo $this->renderpartial('//alinventario/grafo',array('datos'=>$datos),true,true);
+        yii::app()->end();
+
+
+		}
 	}
 }

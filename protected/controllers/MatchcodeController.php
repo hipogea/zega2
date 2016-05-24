@@ -42,35 +42,15 @@ class MatchcodeController extends Controller
 			$ordencampo=$this->cleanInput($_GET['ordencampo']);
 			$campito=$this->cleanInput($_GET['campo']);
 			$vvalore=$this->cleanInput($_GET[$_GET['contr']][$campito]);
+		//$_GET['contr']var_dump($vvalore);var_dump($vvalore);
 		$cremoto=$this->cleanInput($_GET['camporemoto']);
-			//$clasi=$_POST['clasesita'];
-
-
-		//$vvalore=$_POST[$_POST['contr']][$campito];
 		$clasi=$_GET['clasesita'];
-
-
-			//$contro=$_GET['contr'];
-			//echo $vvalore;
-			//echo $_POST[$_GET['contr']][$campito];
-			//echo $_POST['Guia']['c_rsguia'];
-			//$controlador=$_POST['pcontr'];
-			//$campo=$_POST['pcampo'];
-
-			/* echo "LA CLASE  ".$clasi."<br>";
-		echo $campito."<br>";
-		echo $vvalore."<br>";
-		echo $ordencampo."<br>";*/
-			// echo $campo;
-			 //echo $_POST[$controlador][$campo];
-			//echo $_POST[$contro][$campito];
-			//echo $vvalore;
 		if($cremoto==""){
 			$rr= $clasi::model()->findByPK($vvalore);
 			if(!is_null($rr)){
 				echo $rr->{$rr->attributeNames()[$ordencampo]};
 			}else{
-				echo "--Valoree no encontrado ";
+				echo "--Valor no encontrado ";
 			}
 		}else{
 			$mokix =new $clasi;
@@ -79,24 +59,16 @@ class MatchcodeController extends Controller
 					return strtolower($valor);
 			};
 			$columnas=array_map($func,$mokix->getTableSchema()->getColumnNames());
-			//print_r($columnas);yii::app()->end();
 			if(!in_array(strtolower($cremoto),$columnas) )
 				throw new CHttpException(500,__CLASS__.'   '.__FUNCTION__.'  '.__LINE__.' No se encontro ninguna columna remota con el nombre :  '.$cremoto.', por favor revise la propiedad ');
-
-			//$moki=$nombreclase::model()->find(":vcampo=:vvalor",array(":vcampo"=>$this->nombrecamporemoto,":vvalor"=>trim($valorcampo)));
 			$moki=$clasi::model()->find("".$cremoto."='".trim($vvalore)."'");
-			//var_dump($moki);var_dump($vvalore);yii::app()->end();
-		//var_dump($moki->attributeNames());yii::app()->end();
-				if(!is_null($moki)){
+			if(!is_null($moki)){
 					echo $moki->{$moki->attributeNames()[$ordencampo]};
 				}else{
-					echo "--Valorff no encontrado ";
+					echo "--Valor no encontrado ";
 				}
-
 		}
 
-			 // Yii::app()->explorador->buscavalor($campito,$vvalore,$ordencampo,$clasi);
-			 //Fotos::buscavalor($campito,$vvalore,$ordencampo,$relaciones);
 	}
 
 public function actionRelaciona1()

@@ -58,3 +58,10 @@ $this->menu=array(
   <?php MiFactoria::titulo("Almacen  ". $model->codalm." : ".$model->nomal,'Explain'); ?></h1>
 
 <?php echo $this->renderPartial('detalle_general', array('model'=>$model)); ?>
+
+
+<div id="zonagrafo">
+
+
+
+</div>

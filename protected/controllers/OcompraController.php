@@ -1902,21 +1902,10 @@ public function actionborraitems()
 	{
 		$model=new VwOcomprasimple('search');
         $model->unsetAttributes();  // clear any default values
-
-		 //$this->performAjaxValifdation($model);
 		if(isset($_GET['VwOcomprasimple'])) {
-			//EN EL CASO DE QUE SEA UNA BUSQUEDA MEDIANTE EL FOMRUALARIO
-			//if ($model->validate()) {
 			$model->attributes=$_GET['VwOcomprasimple'];
-			//$model->validate();
 			$proveedor=$model->search();
-			 //  } else {
-			  // echo "que carajo";
-			  // }
 		}
-
-
-
 		$this->render('admin',array(
 			'model'=>$model,'proveedor'=>$proveedor,
 		));

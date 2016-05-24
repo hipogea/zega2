@@ -3,6 +3,10 @@
 class Almacenes extends CActiveRecord
 {
 
+	public $periodo;
+	public $numeropuntos;
+
+
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
@@ -49,11 +53,9 @@ class Almacenes extends CActiveRecord
 			array('codcen', 'required'),
 			array('codsoc', 'length', 'max'=>1),
 			array('estructura', 'length', 'max'=>15),
-			array('desalm,verprecios,novalorado,codmon,agregarauto', 'safe'),
+			array('desalm,bloqueado,verprecios,novalorado,codmon,agregarauto', 'safe'),
+			array('numeropuntos,codalm,periodo', 'safe','on'=>'grafico'),
 			array('codalm, nomal, desalm, tipo, codcen,codmon,  codsoc, tipovaloracion, estructura,tolstockres,fecharefpronostico', 'safe', 'on'=>'insert,update'),
-
-			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
 			array('codalm, nomal, desalm, tipo, codcen, codsoc, tipovaloracion, estructura, id', 'safe', 'on'=>'search'),
 		);
 	}
