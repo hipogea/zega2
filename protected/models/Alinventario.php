@@ -443,9 +443,9 @@ public function getstockTotalmaterial($codmaterial,$adatos=null){
 	public function getControlPrecio() {
 		if(!$this->isnewRecord){
 			IF($this->_controldeprecio===NULL){
-
-			}ELSE{
 				return $this->detallesmaterial()['controlprecio'];
+			}ELSE{
+				$this->_controldeprecio;
 			}
 
 		}	else 	{
@@ -657,11 +657,7 @@ public function getstockTotalmaterial($codmaterial,$adatos=null){
 					// Se calcula la difrencia unitaria de precio
 					$this->{self::NOMBRE_CAMPO_PRECIO_DIFERENCIA_UNITARIA}=round(($punitnuevo-$this->{self::NOMBRE_CAMPO_PRECIO_ESTANDAR})/$cant,4);
 					//MiFactoria::Mensaje('notice',__CLASS__.' => '.__FUNCTION__." ok, SE ACUMULO UNA DIFERENCIA DE PRECIO " );
-
 				}
-
-
-
 			} else { //aqui si hay chicha
 				if($this->getControlPrecio()==self::FLAG_PRECIO_PROMEDIO_VARIABLE ) {
 					//valor ponderado
@@ -673,11 +669,12 @@ public function getstockTotalmaterial($codmaterial,$adatos=null){
 					// Se calcula la difrencia unitaria de precio  OJO NO ES PONDERADO
 					$this->{self::NOMBRE_CAMPO_PRECIO_DIFERENCIA_UNITARIA}=round(($punitnuevo-$this->{self::NOMBRE_CAMPO_PRECIO_ESTANDAR})/$cantidadafectada,3);
 				}
-
 			}
 
 		/*  Si se trata de un lifo o FIFO*/
+		//var_dump($this->getControlPrecio());die();
 		if(in_array($this->getControlPrecio(),array(self::FLAG_PRECIO_FIFO,self::FLAG_PRECIO_LIFO) )) {
+			//echo "sale "; die();
 			$this->{self::NOMBRE_CAMPO_PRECIO_UNITARIO}=$this->refrescapreciolote();
 		}
 
@@ -775,6 +772,7 @@ public function getstockTotalmaterial($codmaterial,$adatos=null){
     if(!$this->tratalotes($cant,$codmov,$idkardex)){echo "erro ala tratar lotes ";die();}
 	 if($modelomov->actualizaprecio=='1' or  (IN_ARRAY($this->detallesmaterial()['controlprecio'], ARRAY('F', 'L')) ) )
 	 {
+		// echo "salio";die();
 		 $this->actualizaprecio($cant*$signo,$punitnuevo,$idkardex);
 	 }
 	 if($retorno) {
@@ -898,6 +896,8 @@ public function getstockTotalmaterial($codmaterial,$adatos=null){
 		return array(
 			'maestro' => array(self::BELONGS_TO, 'Maestrocompo', 'codart'),
 			'maestrodetalle'=>array(self::BELONGS_TO, 'Maestrodetalle', array('codart'=>'codart','codalm'=>'codal','codcen'=>'codcentro')),
+			'desolpe'=>array(self::BELONGS_TO, 'Desolpe', array('codart'=>'codart','codalm'=>'codal','codcen'=>'centro')),
+
 			//'dlote'=>array(self::HAS_MANY, 'Lotes',
 			'almacen' => array(self::BELONGS_TO, 'Almacenes', array('codalm'=>'codalm','codcen'=>'codcen')),
 			'loteslifo' => array(self::HAS_MANY, 'Lotes', 'hidinventario','order'=>'id DESC', 'condition'=>'cant > 0 '),
@@ -1311,9 +1311,14 @@ public function refrescapreciolote(){
 				$registro->lote->setScenario('reconstruye');
 					$registro->lote->cant+=$registro->cant;
 				    $registro->delete();
-					IF(!$registro->lote->save())
+					IF(!$registro->lote->save()){
+						//echo "fallo;";die();
 						MiFactoria::Mensaje('error',$this->identidada().'   '.yii::app()->mensajes->getErroresItem($registro->lote->geterrors()));
-			}
+
+					}else{
+					//	echo " graboi";die();
+					}
+						}
 		}else{
 			MiFactoria::Mensaje('error',$this->identidada().'  El valor del id kardex '.$hidkardex.'  No tiene registro');
 		}
@@ -1423,7 +1428,8 @@ private function verificaconsistencialotes(){
 	$retorno=true;
 	/*var_dump($this->oldAttributes);
 var_dump($this->attributes);*/
-	//VAR_DUMP($this->lotesfifo);die();
+	//var_dump($this->loteslifo);die();
+	//VAR_DUMP($this->totallote);VAR_DUMP($this->getstockregistro());die();
 	if($this->totallote > 0){
 		$diferenciacantidad=abs($this->totallote-$this->getstockregistro());
 		if($diferenciacantidad/$this->getstockregistro() > $this->almacen->tolstockres){
@@ -1457,9 +1463,12 @@ var_dump($this->attributes);*/
 				$signo = $modelomov->signo;
 				//$lotes = $this->lotesporcampo($campo);
 				if ($signo > 0) {
+					/*var_dump($modelomov);
+					var_dump($modelomov->anticodmov);
+					var_dump(Almacenmovimientos::model()->findByPk($modelomov->anticodmov));die();*/
 					if (Almacenmovimientos::model()->findByPk($modelomov->anticodmov)->esconsumo == '1') {
 						$this->reconstruyelote($idkardex);
-   //echo " op  bmbmb";die();
+
 					} else {
 						IF($modelomov->idevento=='71'){ //Si es un movimiento de anulacion
 							$this->reconstruyelote($idkardex);
@@ -1628,4 +1637,70 @@ var_dump($this->attributes);*/
 	private function identidada(){
 		return '[ Objeto :'.__CLASS__.'] [ Funcion :'.__FUNCTION__.']  [ Linea :  '.__LINE__.']      Material : '.$this->codart.'- Almacen : '.$this->codalm.'  ';
 	}
+
+
+	public function rotacionmaterial($fec,$fec2){
+		//ubicamos la frecuencia
+		$criteria=New CDBCriteria();
+		if(preg_match('/^\d{4}-\d{2}-\d{2}$/',$fechaini)>0 and
+			preg_match('/^\d{4}-\d{2}-\d{2}$/',$fechafin)>0 ) {
+			$criteria->params = array(":codart" => $this->codart, ":codalm" => $this->codalm, ":codcen" => $this->codcen);
+			$criteria->addBetweenCondition("a.fecha", $fec, $fec2);
+			$criteria->addCondition(" a.codart=:codart and a.alemi=:codalm  AND a.codcentro=:codcen  AND
+		                        d.codmov=a.codmov  and d.esconsumo='1' ");
+			$rela = Yii::app()->db->createCommand()
+				->select(' sum(abs(a.cantbase)) as montorotacion')
+				->from('{{alkardex}} a, {{almacenmovimientos}} d ')
+				->where($criteria->condition, $criteria->params)
+				->queryAll();
+
+			$relax = Yii::app()->db->createCommand()
+				->select(' avg(abs(a.saldo)) as promediorotacion')
+				->from('{{alkardex}} a,  {{almacenmovimientos}} d ')
+				->where($criteria->condition, $criteria->params)
+				->queryAll();
+
+			// var_dump($rela);var_dump($relax);
+
+			$numero = (is_null($rela[0]['montorotacion'])) ? 0 : (0 + $rela[0]['montorotacion']);
+			$denominador = (is_null($relax[0]['promediorotacion'])) ? 0 : (0 + $relax[0]['promediorotacion']);
+			if ($denominador == 0)
+				return 0;
+			return $numero / $denominador;
+		} else{
+			return 0;
+		}
+	}
+
+	public function rotacionalmacen($fec,$fec2){
+		//ubicamos la frecuencia
+		$criteria=New CDBCriteria();
+		if(preg_match('/^\d{4}-\d{2}-\d{2}$/',$fec)>0 and
+			preg_match('/^\d{4}-\d{2}-\d{2}$/',$fec2)>0 ) {
+			$criteria->params = array(":codalm" => $this->codalm, ":codcen" => $this->codcen);
+			$criteria->addBetweenCondition("a.fecha", $fec, $fec2);
+			$criteria->addCondition("  a.alemi=:codalm  AND a.codcentro=:codcen  AND
+		                        d.codmov=a.codmov  and d.esconsumo='1' ");
+			$rela = Yii::app()->db->createCommand()
+				->select(' sum(abs(a.montomovido)) as montorotacion  ')
+				->from('{{alkardex}} a, {{almacenmovimientos}} d ')
+				->where($criteria->condition, $criteria->params)
+				->queryAll();
+
+			$relax = $this->getStockValAlmacen();
+
+			// var_dump($rela);var_dump($relax);
+
+			$numero = (is_null($rela[0]['montorotacion'])) ? 0 : (0 + $rela[0]['montorotacion']);
+			$denominador = (is_null($relax)) ? 0 : (0 + $relax);
+			if ($denominador == 0)
+				return 0;
+			return $numero / $denominador;
+
+		}else{
+			return 0;
+		}
+	}
+
+
 }

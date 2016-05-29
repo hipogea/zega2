@@ -111,7 +111,7 @@ class AlinventarioController extends Controller
 		return array(
 
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('revertirajuste','ajuste','editaconteofisico','conteofisico','updateubicacion','muestrakardex','admin','pintareservas','create','supervision','import','pronostica','pareto','adminpareto','repinventario','prueba','buclecarga','update','cargarmat','busqueda','cargaalmacenes','cargaalmacenes1'),
+				'actions'=>array('pintarotacion','revertirajuste','ajuste','editaconteofisico','conteofisico','updateubicacion','muestrakardex','admin','pintareservas','create','supervision','import','pronostica','pareto','adminpareto','repinventario','prueba','buclecarga','update','cargarmat','busqueda','cargaalmacenes','cargaalmacenes1'),
 				'users'=>array('@'),
 			),
 
@@ -1107,5 +1107,21 @@ public function actionBusqueda()
 		}
 
 	}*/
+
+	public function actionpintarotacion(){
+		if(yii::app()->request->isAjaxRequest){
+			$id=MiFactoria::cleanInput($_GET['id']);
+			$model=$this->loadModel($id);
+			$fechaini=$_GET['fechaini'];
+			$fechafin=$_GET['fechafin'];
+			if(preg_match('/^\d{4}-\d{2}-\d{2}$/',$fechaini)>0 and
+				preg_match('/^\d{4}-\d{2}-\d{2}$/',$fechafin)>0 )
+			{
+				echo "rotacion   ".$model->rotacionmaterial($fechaini,$fechafin);
+			}
+		}
+
+
+	}
 
 }

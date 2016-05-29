@@ -1,34 +1,7 @@
 <?php
 
-/**
- * This is the model class for table "{{ot}}".
- *
- * The followings are the available columns in table '{{ot}}':
- * @property string $id
- * @property string $numero
- * @property string $fechacre
- * @property string $fechafinprog
- * @property string $codpro
- * @property integer $idobjeto
- * @property string $codresponsable
- * @property string $textocorto
- * @property string $textolargo
- * @property string $grupoplan
- * @property string $codcen
- * @property integer $iduser
- * @property string $codocu
- * @property string $codestado
- * @property string $clase
- * @property string $hidoferta
- *
- * The followings are the available model relations:
- * @property Detot[] $detots
- * @property Dpeticion $hidoferta0
- * @property Clipro $codpro0
- * @property ObjetosCliente $idobjeto0
- * @property Trabajadores $codresponsable0
- */
-class Ot extends CActiveRecord
+
+class Ot extends  ModeloGeneral
 {
 	/**
 	 * @return string the associated database table name
@@ -72,7 +45,7 @@ class Ot extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'detots' => array(self::HAS_MANY, 'Detot', 'hidorden'),
-			'hidoferta0' => array(self::BELONGS_TO, 'Dpeticion', 'hidoferta'),
+		//	'hidoferta0' => array(self::BELONGS_TO, 'Dpeticion', 'hidoferta'),
 			'codpro0' => array(self::BELONGS_TO, 'Clipro', 'codpro'),
 			'idobjeto0' => array(self::BELONGS_TO, 'ObjetosCliente', 'idobjeto'),
 			'codresponsable0' => array(self::BELONGS_TO, 'Trabajadores', 'codresponsable'),

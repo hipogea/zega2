@@ -14,14 +14,8 @@
 	<div style="overflow:auto">
 	<div class="division">
 
-	  <div style="width:200px;height:210px, padding:15px; margin:5px; float:left;">
+	  <div style="width:300px;height:210px, padding:15px; margin:5px; float:left;">
 
-
-		<?php
-
-               Numeromaximo::Pintaimagen("/materiales/".$data->codart.".JPG","/materiales/NODISPONIBLE.JPG",100,100);
-
-			  ?>
 
 
 		  <div class="division">
@@ -65,14 +59,103 @@
 	) );
 			   } else  {
 
-				  echo "Este material no tiene supervision de Stocks, Consulte con el administrador de datos de material para activar esta opcion";
+				  echo "Este material no tiene supervision de Stocks,puede habilitar esta opcion   ";
+				  echo CHTml::link("  Aquí  ",yii::app()->createUrl("maestrocompo/editarmaterial/".$model->codart),array('target'=>'_blank'));
 			  }
 
           ?>
+          <?PHP  MiFactoria::titulo('Rotacion  : ','arrow_refresh');?>
+			  <div style="display:block; width:160px;padding:5px; margin:5px; float:left;">
 
+                   <div >
+
+					  <?php echo $form->labelEx($model,'fechaini'); ?>
+					  <?php
+
+					  $this->widget('zii.widgets.jui.CJuiDatePicker', array(
+						  //'name'=>'my_date',
+						  'model'=>$model,
+						  'attribute'=>'fechaini',
+						  'language'=>Yii::app()->language=='es' ? 'es' : null,
+						  'options'=>array(
+							  'showAnim'=>'fold', // 'show' (the default), 'slideDown', 'fadeIn', 'fold'
+							  'showOn'=>'button', // 'focus', 'button', 'both'
+							  'buttonImage'=>Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'calendar_1.png',
+							  'buttonImageOnly'=>true,
+							  'dateFormat'=>'yy-mm-dd',
+						  ),
+						  'htmlOptions'=>array(
+							  'style'=>'width:100px;vertical-align:top',
+							  'readonly'=>'readonly',
+						  ),
+					  ));
+
+
+
+					  ?>
+					  <?php echo $form->error($model,'fechaini'); ?>
+				  </div>
+				    <div >
+					  <?php echo $form->labelEx($model,'fechafin'); ?>
+					  <?php
+
+					  $this->widget('zii.widgets.jui.CJuiDatePicker', array(
+						  //'name'=>'my_date',
+						  'model'=>$model,
+						  'attribute'=>'fechafin',
+						  'language'=>Yii::app()->language=='es' ? 'es' : null,
+						  'options'=>array(
+							  'showAnim'=>'fold', // 'show' (the default), 'slideDown', 'fadeIn', 'fold'
+							  'showOn'=>'button', // 'focus', 'button', 'both'
+							  'buttonImage'=>Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'calendar_1.png',
+							  'buttonImageOnly'=>true,
+							  'dateFormat'=>'yy-mm-dd',
+						  ),
+						  'htmlOptions'=>array(
+							  'style'=>'width:100px;vertical-align:top',
+							  'readonly'=>'readonly',
+						  ),
+					  ));
+
+
+
+					  ?>
+					  <?php echo $form->error($model,'fechafin'); ?>
+
+
+				  </div>
+
+
+			  </div>
+
+			  <div style="display:block; width:50px;padding:5px; margin:5px; float:right;" >
+				  <?php  echo Chtml::ajaxLink(
+					  Chtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."package.png"),
+					  CController::createUrl($this->id.'/pintarotacion'), array(
+					  'type' => 'GET',
+					  'url' => CController::createUrl($this->id.'/pintarotacion'), //  la acci?n que va a cargar el segundo div
+					  "data"=>array(
+						  "id"=>$model->id,
+						  "fechaini"=>"js:Alinventario_fechaini.value",
+						  "fechafin"=>"js:Alinventario_fechafin.value",
+					  ),
+					  "update" => "#zonarotacion",
+				  ),
+					  array('onClick'=>'Loading.show();Loading.hide(); return false;')
+				  );?>
+
+				  <br>
+				  <div id="zonarotacion">
+
+				  </div>
+
+			  </div>
+             <!--  !--->
 		  </div>
 
 		</div>
+
+
 
 
 

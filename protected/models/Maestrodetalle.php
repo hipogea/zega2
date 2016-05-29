@@ -84,7 +84,7 @@ class Maestrodetalle extends ModeloGeneral
 			'kardexhijos'=>array(self::HAS_MANY,'Alkardex',array('codart'=>'codart','codcentro'=>'codcentro','alemi'=>'codal')),
 			'inventario'=>array(self::HAS_ONE,'Alinventario',array('codart'=>'codart','codcen'=>'codcentro','codalm'=>'codal')),
 			//'categorias'=>array(self::BELONGS_TO, 'Maestrocompo', 'codart'),
-			'desolpe_alinventario'=> array(self::BELONGS_TO, 'Alinventario', array('codal'=>'codalm','centro'=>'codcen','codart'=>'codart')),
+			//'desolpe_alinventario'=> array(self::BELONGS_TO, 'Alinventario', array('codal'=>'codalm','centro'=>'codcen','codart'=>'codart')),
 
 		);
 	}
@@ -188,16 +188,20 @@ class Maestrodetalle extends ModeloGeneral
 
 public function tienecompras(){
 
+
 }
 	public function tienesolpes(){
+
 
 	}
 	public function tieneventas(){
 
 	}
-	public function tieneinventario(){
 
+	public function tieneinventario(){
+         return ($this->inventario->getstockregistro() >0)?true:false;
 	}
+
 
 	public function tienekardex(){
 
@@ -207,7 +211,8 @@ public function tienecompras(){
 		$retorno=true;
 		if(Yii::app()->hasModule('contabilidad')){
 		$registro=self::model()->findByPk(array('codart'=>$codart,'codal'=>$codal,'codcentro'=>$codcen));
-			if(!is_null($registro)){
+			//var_dump($registro->attributes);die();
+			if(is_null($registro)){
 				return false;
 			}else{
 				if(empty($registro->catval) or is_null($registro->catval))
@@ -257,5 +262,7 @@ public function tienecompras(){
 			}
 
 	}
+
+
 
 }

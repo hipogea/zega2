@@ -5,6 +5,8 @@ class Almacenes extends CActiveRecord
 
 	public $periodo;
 	public $numeropuntos;
+	public $fechaini;
+	public $fechafin;
 
 
 	public static function model($className=__CLASS__)

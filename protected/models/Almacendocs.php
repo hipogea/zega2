@@ -164,6 +164,18 @@ class Almacendocs extends ModeloGeneral
 			array('fechavale, fechacont,numero,numdocref,idref, fechacre,codalmacen,codcentro,', 'safe','on'=>self::PREFIJO_ESCENARIO.'40'),
 			/*********************************************/
 
+			/****************ESCENARIO INGRESO  CONSIGNACION *******
+			/*********************************************/
+			array('fechavale', 'required', 'message'=>'La fecha es obligatoria','on'=>self::PREFIJO_ESCENARIO.'13'),
+			array('fechacont', 'required', 'message'=>'Indique la fecha contabilizacion','on'=>self::PREFIJO_ESCENARIO.'13'),
+			array('numdocref', 'checkcompra','on'=>self::PREFIJO_ESCENARIO.'13'),
+			array('fechacont', 'chkfechacompra','on'=>self::PREFIJO_ESCENARIO.'13'),
+			array('codcentro', 'required', 'message'=>'Indique el centro','on'=>self::PREFIJO_ESCENARIO.'30'),
+			//array('numdocref', 'checkvaleingreso','on'=>self::PREFIJO_ESCENARIO.'13'),
+		//	array('numdocref', 'checkfacturacion','on'=>self::PREFIJO_ESCENARIO.'13'),
+			array('fechavale, fechacont,numero,numdocref,idref, fechacre,codalmacen,codcentro,', 'safe','on'=>self::PREFIJO_ESCENARIO.'13'),
+			/*********************************************/
+
 
 			/****************ESCENARIO REINGRESA *******
 			/*********************************************/
@@ -265,11 +277,11 @@ class Almacendocs extends ModeloGeneral
 
 			/****************ESCENARIO SALIDA PARA VENTA*******
 			/*********************************************/
-			array('numdocref', 'required', 'message'=>'La fecha es obligatoria','on'=>self::PREFIJO_ESCENARIO.'79'),
+			//array('numdocref', 'required', 'message'=>'La fecha es obligatoria','on'=>self::PREFIJO_ESCENARIO.'79'),
 			array('fechavale', 'required', 'message'=>'La fecha es obligatoria','on'=>self::PREFIJO_ESCENARIO.'79'),
 			array('fechacont', 'required', 'message'=>'Indique la fecha contabilizacion','on'=>self::PREFIJO_ESCENARIO.'79'),
 			array('codalmacen', 'required', 'message'=>'Indique el almacen','on'=>self::PREFIJO_ESCENARIO.'79'),
-			array('numdocref', 'checksolpe','on'=>self::PREFIJO_ESCENARIO.'79'),
+			//array('numdocref', 'checksolpe','on'=>self::PREFIJO_ESCENARIO.'79'),
 			array('codcentro', 'required', 'message'=>'Indique el centro','on'=>self::PREFIJO_ESCENARIO.'79'),
 			array('fechavale, fechacont,numero, fechacre,codalmacen,codcentro', 'safe','on'=>self::PREFIJO_ESCENARIO.'79'),
 
@@ -477,9 +489,14 @@ private function existevaleref() {
 
 	public function checkmovper($attribute,$params)
 	{
-		if(!strtolower($this->getScenario())=='clonar')
-		if(!Almacenes::puedemover($this->codmovimiento,$this->codalmacen))
-			$this->adderror('codal','Este movimiento no esta permitido en este almacen');
+		//&ECHO "DIE";DIE();
+		if(!(strtolower($this->getScenario())=='clonar')){
+			if(!Almacenes::puedemover($this->codmovimiento,$this->codalmacen)){
+				$this->adderror('codal','Este movimiento no esta permitido en este almacen');
+			}
+
+		}
+
 	}
 
 public function checkvaleaanular($attribute,$params) {
@@ -622,7 +639,11 @@ public function checkvaleaanular($attribute,$params) {
 					if ( ! Yii::app ()->periodo->verificaFechas ( $valeareingresar->fechacont , $this->fechacont ) ) {//si Es un vale anulado
 						$this->adderror ( 'numdocref' , 'El vale a reingresar tiene fecha posterior  :  ' . $valeareingresar->fechacont );
 					}
+						//si el vale refernciado  es de un movimeitno que tiene el ANTICODMOV==null
+					if($valeareingresar->almacenmovimientos->anticodmov===null){
+						$this->adderror ( 'numdocref' , 'Este vale es de un movimiento que no tiene movimietno de compensacion' );
 
+					}
 
 				}
 

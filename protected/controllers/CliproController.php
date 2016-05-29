@@ -223,6 +223,9 @@ public function ActionExcel()
 	{
 		$model=new ObjetosCliente;
 		// Uncomment the following line if AJAX validation is needed
+		$codpro=MiFactoria::cleanInput($_GET['codpro']);
+		$modelclipro=$this->loadModel($codpro);
+		$model->codpro=$codpro;
 		 $this->performAjaxValidation($model);
 		if(isset($_POST['ObjetosCliente']))
 		{

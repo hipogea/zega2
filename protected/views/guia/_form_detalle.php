@@ -175,7 +175,26 @@ echo $form->DropDownList($model,'c_um',$datos, array('empty'=>'--Unidad de medid
 	</div>
 
 
+	<div class="row">
+		<?php
+		if(yii::app()->settings->get('transporte','transporte_objenguia')=='1') {
 
+			?>
+			<?php echo $form->labelEx($model, 'codob'); ?>
+			<?php
+					$codpro=Guia::model()->findByPk($idcabeza)->c_coclig;
+			?>
+			<?php $datos15 = CHtml::listData( ObjetosCliente::model()->findAll(array('condition'=>"codpro=:codpro",'params'=>array(':codpro'=>$codpro),'order' => 'nombreobjeto')), 'codobjeto', 'nombreobjeto');
+			echo $form->DropDownList($model, 'codob', $datos15, array('empty' => '--Seleccione un objeto--', 'disabled' => $habilitado,
+				'options' => array(
+					isset(Yii::app()->session['codob']) ? Yii::app()->session['codob'] : $model->c_edgui => array('selected' => true)
+				)));
+			?>
+			<?php echo $form->error($model, 'codob'); ?>
+		<?php
+		         }
+		?>
+	</div>
 
 
 

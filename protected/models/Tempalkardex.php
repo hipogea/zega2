@@ -43,12 +43,12 @@ class Tempalkardex extends ModeloGeneral
 			array('textolargo,idref','safe','on'=>'EFECTUADO'),
 
 
-				array('colector','required','on'=>'50_SCN'),
+				array('colector','required','on'=>'50_SCN,60_SCN'),
 				array('preciounit','required','on'=>'98_SCN'),
 				array('codart','checkcodigo','on'=>'50_SCN,41_SCN,77_SCN,98_SCN'),
 			array('cant','checkcantidad','on'=>'10_SCN,50_SCN,41_SCN,77_SCN,79_SCN'),
 			array('cant','chkcantsolpe','on'=>'10_SCN'),
-			array('cant','chkcantpeticion','on'=>'79_SCN,97_SCN'),
+			//array('cant','chkcantpeticion','on'=>'79_SCN,97_SCN'),
 			array('cant','chkcantvaletraspaso','on'=>'78_SCN'),
 			array('cant','chkcantvalereingreso','on'=>'70_SCN'),
 			array('cant','chkcantcompra','on'=>'30_SCN,13_SCN,68_SCN'),
@@ -107,9 +107,10 @@ public function chkcantpeticion(){
 }
 
 	public function chkcantvalereingreso(){
-		$otrokardex=Alkardex::model()->findByPk($this->otrokardex);
-		$cant=$otrokardex->cant-$otrokardex->reingreso_cant;
-		if($this->cant > $cant)
+		$otrokardex=Alkardex::model()->findByPk($this->idotrokardex);
+		//var_dump($otrokardex->cant);die();
+		$cant=abs($otrokardex->cant)-$otrokardex->reingreso_cant;
+		if(abs($this->cant) > $cant)
 			$this->adderror('cant','Esta cantidad excede a lo que se ha pedido inicialmente');
 	}
 
@@ -177,6 +178,7 @@ public function chkcantpeticion(){
 	public function relations()
 	{
 		return array(
+
 			'codmov0' => array(self::BELONGS_TO, 'Almacenmovimientos', 'codmov'),
 			'unidades'=> array(self::BELONGS_TO, 'Ums', 'um'),
 			'codcentro0' => array(self::BELONGS_TO, 'Centros', 'codcentro'),
@@ -206,8 +208,8 @@ public function chkcantpeticion(){
 		if(in_array($this->alkardex_almacendocs->cestadovale,array('99','10'))){
 			$arraycant=array('10','30','50','13','41','77','78','70','79','98','97','68');
 			$arrayum=array('10','50','77','79','98');
-			$arraycodart=array('50','77','98');
-			$arraycolector=array('50','77');
+			$arraycodart=array('50','77','98','79');
+			$arraycolector=array('50','77','79');
 			$arraypreciounit=array('98');
 			$arraytextolargo=array('10','30','50','13','41','77','78','70','79','98','97');
 			$arraylote=array('10','30','50','13','41','77','78','70','79','98','97');

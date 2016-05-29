@@ -78,7 +78,7 @@ class Alkardex extends ModeloGeneral
 			if (IN_ARRAY($this->maestrodetalle->controlprecio, ARRAY('F', 'L')) ) {
 				     if($this->alkardex_almacenmovimientos->esconsumo=='1' AND !($this->codmov==CODIGO_MOVIMIENTO_SALIDA_AUTOMATICA_RQ)){ //sOLO EN LE CASO DE LA TENCION RQ NO SE CALCULA POR LOTES , SE CALULA DIRECTAMETNE DE LA COMPRA
 						 $vasriab = $this->alkardex_alinventario->costealote( abs($this->cantidadbase()),$this->maestrodetalle->controlprecio) *
-							 $conversionmoneda*gmp_sign((integer)round($this->cantidadbase(),0)) ;
+							 $conversionmoneda*gmp_sign((integer)round($this->cantidadbase(),4)) ;
 						// echo "Esta ES LA OP1         ".$vasriab; die();
 						 //$vasriab = $this->montobase();
 					 }elseIF($this->codmov==CODIGO_MOVIMIENTO_SALIDA_AUTOMATICA_RQ){
@@ -250,6 +250,9 @@ class Alkardex extends ModeloGeneral
 
 			case "40": //ANULAR INGRESO COMPRA
 				if( $this->alkardex_alentregas[0]->cantfacturada > 0  ){
+					MiFactoria::Mensaje('error',$this->identidada().'  Este item ya tiene facturacion ' );
+				}else{
+
 					$this->InsertaAlentregasCompras();
 					if(!$this->esvaleRQ())
 						$this->alkardex_alinventario->actualiza_stock($this->codmov, abs($this->cantidadbase()),  $this->punitbase(), $this->id);
@@ -257,19 +260,17 @@ class Alkardex extends ModeloGeneral
 					$this->ocuparsedelosRq(); ///Si hay RQ de compras verifica y astender
 					$codop='357'; //Ingreso compras
 					//$this->ocuparsedelosRq(); ///Si hay RQ de compras verifica y astender
-				}else{
-					MiFactoria::Mensaje('error',$this->identidada().'  Este item ya tiene facturacion ' );
 				}
 
 				break;
 
 
 			case "79":
-				$this->preciounit = $this->getMonto();
-				$this->InsertaAtencionReserva();
-				$ceco = Dpeticion::model()->findByPk($this->idref)->imputacion;
-				$this->InsertaCcGastos($ceco);
-				$this->alkardex_alinventario->actualiza_stock($this->codmov, abs($this->cantidadbase()), null);
+				//$this->preciounit = $this->getMonto();
+				$this->InsertaCcGastos($this->colector);
+				//$this->$this->alkardex_alinventario->detallesmaterial()['precioventa'];
+				$this->alkardex_alinventario->actualiza_stock($this->codmov, abs($this->cantidadbase()), null , $this->id);
+
 				$codop='101'; //Comsumo par aventyas
 				break;
 
@@ -345,7 +346,6 @@ class Alkardex extends ModeloGeneral
 				$this->alkardex_alinventario->actualiza_stock($this->codmov, abs($this->cantidadbase()),  $this->punitbase(), $this->id);
 				break;
 			case "70": //reingreso, solo vales de cosmumo
-
 				//primero que nada el reingreso usa como referencia a los kardex originales que dioerom movimieto
 				//al comsumo originalM
 				$kardorigen = Alkardex::model()->findByPk($this->idotrokardex);
@@ -358,20 +358,34 @@ class Alkardex extends ModeloGeneral
 					$movimientoopuesto = $kardorigen->alkardex_almacenmovimientos->anticodmov;
 					$campoafectadoinv = $kardorigen->alkardex_almacenmovimientos->campoafectadoinv;
 					$inven = $this->alkardex_alinventario;
-					$inven->actualiza_stock($movimientoopuesto, abs($this->cantidadbase()), $this->punitbase(),$this->id);
+					$inven->actualiza_stock($movimientoopuesto, abs($this->cantidadbase()), $this->punitbase(),$this->idotrokardex);
+
+
+					/*  NO SE DEBE DE INSERTAR NADA EN ATENCION RESERVA
+					SE SUPONE QUE  NO SE ESTA RECONSTRUYENO LA RESERVA SE ESTA REINGFERSNADO EL MATERIALE BV
+					TODO ESTO VA LA STOCK LIBRE */
 					///pero tambiend ebe insertar atencion reserva
-					$this->InsertaAtencionReserva(CODIGO_DOCUMENTO_RESERVA);
+					//$this->InsertaAtencionReserva(CODIGO_DOCUMENTO_RESERVA);
+
+
+
 					$ceco = Desolpe::model()->findByPk($kardorigen->idref)->imputacion;
 					$this->insertaCcGastos($ceco);
 					if ($campoafectadoinv == 'cantres') {
-						if (!(($inven->stockreserva_a_libre($this->cantidadbase()))
-							and $inven->save())
+						if (
+						!(
+							($inven->stockreserva_a_libre($this->cantidadbase()))
+							and $inven->save()
+						)
 						)
 							MiFactoria::Mensaje('error', $this->identidada().'  No se puede pasar del stock reservado al libre');
 					}
 					/*$ceco=CcGastos::model()->find("hidref=:vid",array(":vid"=>$this->id));
                     $this->InsertaCcGastos($ceco);*/
 
+					$codop='645';
+				}else{
+					MiFactoria::Mensaje('error', $this->identidada().'  No se puede reingresar mas de lo que se atendio');
 
 				}
 
@@ -383,12 +397,14 @@ class Alkardex extends ModeloGeneral
 				$this->alkardex_alinventario->actualiza_stock($this->codmov, abs($this->cantidadbase()), null , $this->id);
 
 				//$this->alkardex_alinventario->actualiza_stock($this->codmov, abs($this->cantidadbase()));
+				$codop='100';
 				break;
 
 			case "60": //Anula salida para ceco
 
-				$this->alkardex_alinventario->actualiza_stock($this->codmov, abs($this->cantidadbase()), null , $this->id);
+				$this->alkardex_alinventario->actualiza_stock($this->codmov, abs($this->cantidadbase()), null , $this->idotrokardex);
 				$this->InsertaCcGastos($this->colector);
+				$codop='100';
 				break;
 			default:
 				throw new CHttpException(500, __CLASS__ . '  ' . __FUNCTION__ . '  No se ha definido este codigo de movimiento ' . $this->codmov);
@@ -463,6 +479,9 @@ class Alkardex extends ModeloGeneral
 			/* echo "saliop carajo";	//$this->ultimares=" ".strtoupper(trim($this->usuario=Yii::app()->user->name))." ".date("H:i")." :".$this->ultimares;
             */
 		}
+		$this->saldo=$this->alkardex_alinventario->getstockregistro();
+		$this->umsaldo=$this->alkardex_alinventario->maestro->um;
+		$this->cantbase=$this->cantidadbase();
 
 		//if(!($this->codart==yii::app()->settings->get('materiales','materiales_codigoservicio')))
 		//$sig=$this->alkardex_almacenmovimientos->signo;
@@ -827,7 +846,7 @@ class Alkardex extends ModeloGeneral
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('textolargo,fecha,codmoneda,idotrokardex,preciounit,codmoneda,colector,montomovido', 'safe'),
+			array('textolargo,fecha,saldo,umsaldo,codmoneda,idotrokardex,preciounit,codmoneda,colector,montomovido', 'safe'),
 			array('cant', 'numerical'),
 			array('codart', 'length', 'max' => 10),
 			array('codmov, codestado, prefijo', 'length', 'max' => 2),

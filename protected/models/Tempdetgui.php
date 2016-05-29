@@ -31,7 +31,7 @@ class Tempdetgui extends ModeloGeneral
 
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
-		return array(
+		$reglas= array(
 
 			///PARA TODOS LOS ESCENARIOS
 			array('c_codep', 'required','message'=>'Sin referencia'),
@@ -81,6 +81,13 @@ class Tempdetgui extends ModeloGeneral
 
 
 		);
+
+		if(yii::app()->settings->get('transporte','transporte_objenguia')=='1'){
+			$reglas[]=array('codob','safe');
+			$reglas[]=array('codob','required','message'=>'Coloque el objeto referencia');
+		}
+
+		return $reglas;
 	}
 
 	/**

@@ -27,6 +27,14 @@
 		<?php echo $form->error($model,'desgru'); ?>
 	</div>
 
+	<div class="row">
+		<?php echo $form->labelEx($model,'codsociedad'); ?>
+		<?php  $datos1 = CHtml::listData(Sociedades::model()->findAll(array('order'=>'dsocio')),'socio','dsocio');
+		echo $form->DropDownList($model,'codsociedad',$datos1, array('empty'=>'--Seleccione sociedad--')  )  ;
+		?>
+		<?php echo $form->error($model,'codsociedad'); ?>
+	</div>
+
 
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>

@@ -380,7 +380,7 @@ public function colocaimpuestositem(){
 	}
 
 	public function chkcatval($attribute,$params){
-		if(Maestrodetalle::tienecatvaloracion($this->codart,$this->codigoalma,$this->codentro))
+		if(!Maestrodetalle::tienecatvaloracion($this->codart,$this->codigoalma,$this->codentro))
 			$this->adderror('codart','Este material no tiene grupo de valor válido, complete este valor en los datos maestros del material para este centro y almacen');
 
 	}

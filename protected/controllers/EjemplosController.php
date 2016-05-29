@@ -386,9 +386,10 @@ $mo=New Alinventario();
 
 
 	public function actionPio() {
-		$inventario=Alinventario::model()->findByPk(37);
-		$regis=Solpe::solpeautomatica($inventario);
-		var_dump($regis);die();
+		$inventario=Alinventario::model()->findByPk(71);
+
+		//$regis=Solpe::solpeautomatica($inventario);
+		var_dump($inventario->refrescapreciolote());die();
 
 
 

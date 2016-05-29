@@ -44,13 +44,13 @@ class Grupoventas extends CActiveRecord
 		return array(
 			array('codgrupo', 'required'),
 			array('codgrupo, codalm', 'length', 'max'=>3),
-			array('desgru, creadoel, modificadoel', 'length', 'max'=>20),
-			array('creadopor, modificadopor', 'length', 'max'=>25),
+			array('desgru', 'length', 'max'=>20),
+			//array('creadopor, modificadopor', 'length', 'max'=>25),
 			array('codsociedad', 'length', 'max'=>1),
 			array('desgru', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('codgrupo, codalm, nomgru, desgru, creadopor, creadoel, modificadopor, modificadoel, codsociedad', 'safe', 'on'=>'search'),
+			array('codgrupo, codalm, nomgru, desgru, codsociedad', 'safe', 'on'=>'search'),
 		);
 	}
 

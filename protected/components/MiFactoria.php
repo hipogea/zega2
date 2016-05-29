@@ -2,7 +2,9 @@
 class MiFactoria  {
     CONST DOCUMENTO_SOLPE='340';
     const DOCUMENTO_VALE='101';
-    CONST CODIGO_MATERIAL_SERVICIO='10000001';
+
+
+
 
     public static function limpialogcarga(){
         $mode=NEW Logcargamasiva();
@@ -641,8 +643,8 @@ const CAMPO_COLECTOR='mf_colector';
  									c.codmon2='".yii::app()->settings->get('general','general_monedadef')."'
  									INNER JOIN {{solpe}}  w ON  t.hidsolpe=w.id
  									LEFT JOIN {{atencionreserva}} x ON s.id=x.hidreserva
- 									WHERE ( (t.centro='".$centro."'   and t.codal='".$almacen."') and ( ( t.codart <> '".CODIGO_MATERIAL_SERVICIO."' AND   s.estadoreserva not in('30','70') AND s.codocu IN('450') and t.hidsolpe=".$idsolpe." )
- 									      or(  t.codart <> '".CODIGO_MATERIAL_SERVICIO."' AND s.estadoreserva = '40' AND   s.codocu IN('800') and t.hidsolpe=".$idsolpe."  ) )    )
+ 									WHERE ( (t.centro='".$centro."'   and t.codal='".$almacen."') and ( ( t.codart <> '".yii::app()->settings->get('materiales','materiales_codigoservicio')."' AND   s.estadoreserva not in('30','70') AND s.codocu IN('450') and t.hidsolpe=".$idsolpe." )
+ 									      or(  t.codart <> '".yii::app()->settings->get('materiales','materiales_codigoservicio')."' AND s.estadoreserva = '40' AND   s.codocu IN('800') and t.hidsolpe=".$idsolpe."  ) )    )
  									group by t.id, t.codart,t.um, s.cant,r.punit,s.codocu
  									HAVING sum(x.cant) < s.cant or sum(x.cant) is null ")->queryAll();
 
@@ -925,7 +927,7 @@ if(!$mensaje->save())
                 $registros=self::DevuelveSolPespendientes ($numdoc,$idvale);
                 break;
             case '79':
-            $registros=self::DevuelveSolPespendientes ($numdoc,$idvale);
+            $registros=array();
             break;
             case '68': ///Ingreso de Servicios
                 $id=Ocompra::model()->find("numcot=:vnumerocompra",array(":vnumerocompra"=>trim($numdoc)))->idguia;

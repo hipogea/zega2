@@ -359,7 +359,7 @@ public function beforeSave() {
 		$criteria->compare('numero',$this->numero,true);
 		$criteria->compare('tipo',$this->tipo,true);
 		$criteria->compare('textocabecera',$this->textocabecera,true);
-		$criteria->compare('creado',$this->creado,true);
+		//$criteria->compare('creado',$this->creado,true);
 		$criteria->compare('autor',$this->autor,true);
 		$criteria->compare('estado',$this->estado,true);
 

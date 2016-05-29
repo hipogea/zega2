@@ -28,6 +28,7 @@ class ControladorBase extends Controller
 			if($matricita[0]==$modpadre::HAS_MANY)
 				$this->camposlink[$matricita[1]]=$matricita[2];
 		}
+		
 		/*var_dump($this->camposlink);
 		yii::app()->end();*/
 	}
@@ -80,12 +81,10 @@ class ControladorBase extends Controller
 			  $campoenlace=$this->getFieldLink($nametablaoriginal);
 			    // echo "campo enlave ".$nametablaoriginal."=>".$nametablatemporal."<br>";
 			 // var_dump($nametablaoriginal);
-
 			  $registroshijos=MiFactoria::getRegistrosHijos($nametablaoriginal,$campoenlace,$id);
 			  //echo " canitda de registrohijos ".count($registroshijos)."<br>";
 			 foreach  ($registroshijos as $row)
 			  {
-
 				  ///Evitamos levantar items duplicados
 				$existeregistro=MiFactoria::ExisteRegistro($nametablatemporal,$row->id);
 				// echo  " exist eregistro de  ".$nametablatemporal."<br>";
@@ -97,7 +96,6 @@ class ControladorBase extends Controller
 					$modelotempdpeticion->attributes=$row->attributes;
 					  //if (get_class($modelotempdpeticion)=='Tempimpuestosdocuaplicados'){
 					  //print_r($row->attributes);echo "<br>";  print_r($modelotempdpeticion->attributes);
-
 					  //}
 					  //print_r($row->attributes);echo "<br>";  print_r($modelotempdpeticion->attributes);yii::app()->end();
 					$modelotempdpeticion->idstatus=0; ///0 : Conectado  <> -1  eliimnado  <> +1  agregado
@@ -106,7 +104,6 @@ class ControladorBase extends Controller
 						print_r($row->attributes);echo "<br>";
 						print_r($modelotempdpeticion->getErrors()); yii::app()->end();
 					}
-
 					//array_push($registrostemporales,$modelotempdpeticion);
 				   }
 			 }

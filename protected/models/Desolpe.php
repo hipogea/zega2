@@ -839,7 +839,7 @@ public function checkvalores1($attribute,$params) {
 	}
 
 public function chkcatval($attribute,$params){
- if(Maestrodetalle::tienecatvaloracion($this->codart,$this->codal,$this->centro))
+ if(!Maestrodetalle::tienecatvaloracion($this->codart,$this->codal,$this->centro))
 	 $this->adderror('codart','Este material no tiene grupo de valor válido, complete este valor en los datos maestros del material para este centro y almacen');
 
 }

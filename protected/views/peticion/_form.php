@@ -267,14 +267,30 @@
 
 
 		<?php echo $form->labelEx($model,'codmon'); ?>
-		<?php  $datos1 = CHtml::listData(TMoneda::model()->findAll(),'codmoneda','desmon');
-		echo $form->DropDownList($model,'codmon',$datos1, array('empty'=>'--Seleccione moneda--' ) ) ;
+		<?php $datos1=CHTml::listdata(Monedas::model()->FindAll("habilitado='1'",array("order"=>"desmon ASC")),'codmoneda','desmon'); ?>
+		<?php echo $form->DropDownList($model,'codmon',$datos1, array('empty'=>'--Seleccione moneda--' ) ) ;
 		?>
 
 		<?php echo $form->error($model,'codmon'); ?>
 
 
 	</div>
+
+		<div class="row">
+
+
+			<?php echo $form->labelEx($model,'codcen'); ?>
+			<?php
+			$datos = CHtml::listData(Centros::model()->findAll(array('order'=>'nomcen')),'codcen','nomcen');
+			echo $form->DropDownList($model,'codcen',$datos, array('empty'=>'--Llene el centro --'));
+
+			?>
+			<?php echo $form->error($model,'codcen'); ?>
+		</div>
+
+
+
+
 		<div class="row">
 			<?php echo $form->labelEx($model,'validez'); ?>
 			<?php echo $form->textField($model,'validez',array('size'=>3,'maxlength'=>3)); ?>
@@ -364,7 +380,7 @@
 
 
 	<?PHP
-	$this->widget('zii.widgets.jui.CJuiTabs', array(
+	/*$this->widget('zii.widgets.jui.CJuiTabs', array(
 			'tabs' => array(
 				'Detalle'=>array('id'=>'tab_general',
 					'content'=>$this->renderPartial('vw_detalle_grilla',array('model'=>$model,'idcabecera'=>$model->id),TRUE)),
@@ -375,7 +391,7 @@
 				'heightStyle'=>'auto',
 			),
 			'id'=>'MyTabe',
-		));
+		));*/
 	?>
 
 	<?php

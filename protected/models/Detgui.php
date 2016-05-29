@@ -29,7 +29,7 @@ class Detgui extends CActiveRecord
 
 
 
-		return array(
+		$reglas=array(
 			/*array('n_libre', 'numerical', 'integerOnly'=>true),
 			array('n_cangui', 'numerical'),
 			array('n_cangui', 'required','message'=>'Cantidad vacia'),
@@ -69,6 +69,13 @@ class Detgui extends CActiveRecord
 */
 
 		);
+
+
+		if(yii::app()->settings->get('transporte','transporte_objenguia')=='1'){
+			$reglas[]=array('codob'=>'safe');
+		}
+
+		return $reglas;
 	}
 
 

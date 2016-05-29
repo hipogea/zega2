@@ -16,3 +16,8 @@
     <?php echo $form->error($model,'transporte_lugares'); ?>
 </div>
 
+<div class="row">
+	<?php echo $form->labelEx($model,'transporte_objenguia') ?>
+	<?php echo $form->checkbox($model,'transporte_objenguia'); ?>
+	<?php echo $form->error($model,'transporte_objenguia'); ?>
+</div>

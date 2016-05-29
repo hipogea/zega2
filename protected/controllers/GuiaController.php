@@ -599,6 +599,7 @@ public function actioncargadespacho(){
         var_dump($_GET['cest']);var_dump($cest);yii::app()->end();*/
         if ($cest == '10' OR $cest == '99') {
 			$model = new Tempdetgui();
+			//var_dump($model->rules());die();
 			$model->setScenario('INS_NUEVO');
 			$model->valorespordefecto($this->documentohijo);
 			if (isset($_POST['Tempdetgui'])) {

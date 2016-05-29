@@ -99,4 +99,13 @@ class Ubigeos extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+
+    public static function buscaporcodigos($codepa,$codprov,$coddist){
+        $codepa=MiFactoria::cleanInput($codepa);
+        $codprov=MiFactoria::cleanInput($codprov);
+        $coddist=MiFactoria::cleanInput($coddist);
+       return self::model()->find("coddep=:vcoddep and codprov=:vcodprov and coddist=:vcoddist  ",array(":vcoddep"=>$codepa,":vcodprov"=>$codprov,":vcoddist"=>$coddist));
+
+
+     }
 }

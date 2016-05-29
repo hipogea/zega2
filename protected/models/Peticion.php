@@ -78,7 +78,7 @@ class Peticion extends ModeloGeneral implements IColectores
 			array('codocu, codmon', 'length', 'max'=>3),
 			array('codestado', 'length', 'max'=>2),
 			array('descuento', 'length', 'max'=>10),
-			array('idtemp,id,fechacreac,orcli,fpago,codmon,socio,codproadqui,direntrega,tenorsup,tenorinf,codobjeto,validez,grupocompras,idcontacto,textocorto,comentario,fecha','safe','on'=>'insert,update'),
+			array('idtemp,id,fechacreac,codcen,orcli,fpago,codmon,socio,codproadqui,direntrega,tenorsup,tenorinf,codobjeto,validez,grupocompras,idcontacto,textocorto,comentario,fecha','safe','on'=>'insert,update'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			//array('id, codpro, numero, fecha, usuario, fechacreac, comentario, textocorto, idcontacto, iduser, codocu, codestado, correlativo, prefijo, codmon, descuento', 'safe', 'on'=>'search'),

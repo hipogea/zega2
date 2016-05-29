@@ -42,6 +42,7 @@ return array(
 
 		//'backup'=> array('path' => __DIR__.'/../_backup/'  ),
 		'backup'=> array('path' =>'images/' ),
+		'ayuda'=>array(),
 		'contabilidad'=> array(),
 		'cruge'=>array(
 				'tableprefix'=>'cruge_',
