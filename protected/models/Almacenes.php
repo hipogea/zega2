@@ -204,6 +204,8 @@ public  function llenaopciones(){
 
 
 	public static function puedemover($codmov,$codalm){
+		if(in_array($codmov,array('68','86')))
+			return true;
 		return in_array($codmov,self::movimientospermitidos($codalm));
 	}
 

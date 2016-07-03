@@ -45,16 +45,8 @@ $(document).ajaxStart(function () {
 ");  ?>
 <div id="page">
     <?php
-    $claves=array_keys(Yii::app()->user->getFlashes(false));
-    $primervalor=substr($claves[0],0,strpos($claves[0],"_"));
-    foreach(Yii::app()->user->getFlashes() as $key => $message) {
-        if(strpos($key,"_")){ //sI HAYA ADICONALES
-            $key=substr($key,0,strpos($key,"_"));
-            if($primervalor==$key)
-                $message.="<br>";        }
-
-        echo '<div class="flash-' . $key . '">' . $message. "</div>\n";
-    }
+   // if(count(yii::app()->tipocambio->cambiospasados())>0){MiFactoria::mensaje('notice','El tipo de cambio no se ha actualizado');}
+    $flashMessages = Yii::app()->user->getFlashes(false);if ($flashMessages) { $this->widget('ext.flashes.Flashes', array() );   }
     ?>
     <?php echo $content; ?>
 </body>

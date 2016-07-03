@@ -31,7 +31,8 @@ class Objetosmaster extends CActiveRecord
 			array('hidobjeto', 'numerical', 'integerOnly'=>true),
 			array('hcodobmaster', 'length', 'max'=>15),
 			array('activo', 'length', 'max'=>1),
-			array('hidobjeto+hcodobmaster', 'application.extensions.uniqueMultiColumnValidator','on'=>'insert,update'),
+			array('activo,serie,identificador,textolargo', 'safe', 'on'=>'search'),
+			//array('hidobjeto+hcodobmaster', 'application.extensions.uniqueMultiColumnValidator','on'=>'insert,update'),
 
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
@@ -49,8 +50,8 @@ class Objetosmaster extends CActiveRecord
 
 			return array(
 
-				'objetos'=> array(self::BELONGS_TO, 'ObjetosCliente', 'hidobjeto'),
-				'master'=> array(self::BELONGS_TO, 'Masterequipo', 'hcodobmaster'),
+				'objetoscliente'=> array(self::BELONGS_TO, 'ObjetosCliente', 'hidobjeto'),
+				'masterequipo'=> array(self::BELONGS_TO, 'Masterequipo', 'hcodobmaster'),
 
 			);
 

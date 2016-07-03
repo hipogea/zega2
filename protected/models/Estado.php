@@ -171,7 +171,7 @@ class Estado extends CActiveRecord
 
 	}
 
-public static function cadenaarray($codocu){
+public static function listaestadosnocalculables($codocu){
 			$CADENA="  ('";
 	       FOREACH(self::estadosnocalculables($codocu) as $clave=>$valor){
 			   $CADENA.=$valor."','";

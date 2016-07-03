@@ -38,7 +38,37 @@
 
 </div>
 
+	<div class="row">
+		<?php
+		$opajax=array(
+			'type'=>'POST',
+			'url'=>Yii::app()->createUrl('/Objetoscliente/ajaxpintadescripcion'
+			),
+			'data'=>array('codigo'=>'js:Objetosmaster_hcodobmaster','identificador'=>'js:Objetosmaster_identificador'),
+			"replace"=>"#descripcionlarga",
+		) ;
 
+
+
+		?>
+		<?php echo $form->labelEx($model,'identificador'); ?>
+		<?php echo $form->textField($model,'identificador',array('ajax'=>$opajax)); ?>
+		<?php echo $form->error($model,'identificador'); ?>
+
+	</div>
+	<div class="row">
+		<?php echo $form->labelEx($model,'textolargo'); ?>
+		<?php echo CHtml::textField('descripcionlarga',''); ?>
+
+
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'textolargo'); ?>
+		<?php echo $form->textArea($model,'textolargo'); ?>
+		<?php echo $form->error($model,'textolargo'); ?>
+
+	</div>
 
 
 

@@ -25,13 +25,48 @@ class ControladorBase extends Controller
 		$matriz=$modpadre::relations();
 		foreach($matriz as $clave=>$matricita)
 		{
-			if($matricita[0]==$modpadre::HAS_MANY)
-				$this->camposlink[$matricita[1]]=$matricita[2];
+			if($matricita[0]==$modpadre::HAS_MANY){
+				if(is_array($matricita[2])){
+					$this->camposlink[$matricita[1]]=array_keys($matricita[2]);
+				}else{
+					$this->camposlink[$matricita[1]]=$matricita[2];
+				}
+
+
+			}
+
 		}
-		
-		/*var_dump($this->camposlink);
-		yii::app()->end();*/
+
+		//ahora solo con estos valores vamos al siguietne nivel
+		foreach(array_keys($this->camposlink) as $clave=>$valor){
+			$matriz=$valor::relations();
+			foreach($matriz as $clave=>$matricita)
+			{
+				if($matricita[0]==$valor::HAS_MANY and  in_array($matricita[1]  ,array_keys($this->modeloshijos)))
+					$this->camposlink[$matricita[1]]=$matricita[2];
+			}
+		}
+
+
 	}
+
+private function relacionesnietas(){
+	$modpadre=$this->modelopadre;
+	$matriz=$modpadre::relations();
+	$vv=array();
+	foreach($matriz as $clave=>$matricita)
+	{
+		if($matricita[0]==$modpadre::HAS_MANY)
+			$vv[$matricita[1]]=$matricita[2];
+	}
+	$dife=array_diff(array_keys($this->modeloshijos),array_keys($vv));
+	$ff=array();
+	foreach($dife as $clave=>$valor){
+		$ff[$valor]=$this->modeloshijos[$valor];
+
+	}
+	return $ff;
+}
 
 	public function huboerror(){
 		$hubo=false;
@@ -71,18 +106,25 @@ class ControladorBase extends Controller
 
 	public function IniciaBuffer($id)
 	{ ///Levanta la tabal temporal
-		$nametablapadre=$this->modelopadre;
+		//$nametablapadre=$this->modelopadre;
+
 		/*var_dump($this->modeloshijos);
 		yii::app()->end();*/
 		Bloqueos::clearbloqueos();
 		foreach($this->modeloshijos as $nametablaoriginal => $nametablatemporal)
 		  {
-				//echo "salio ".$nametablaoriginal."=>".$nametablatemporal."<br>";
-			  $campoenlace=$this->getFieldLink($nametablaoriginal);
-			    // echo "campo enlave ".$nametablaoriginal."=>".$nametablatemporal."<br>";
-			 // var_dump($nametablaoriginal);
-			  $registroshijos=MiFactoria::getRegistrosHijos($nametablaoriginal,$campoenlace,$id);
-			  //echo " canitda de registrohijos ".count($registroshijos)."<br>";
+				 $campoenlace=$this->getFieldLink($nametablaoriginal);
+			//  var_dump( $campoenlace);die();
+			  if(is_array($campoenlace)){
+				  $aid=array($id,$this->documento);
+				 // var_dump( $aid);die();
+			  } else{
+				  $aid=$id;
+			  }
+
+			  $registroshijos=MiFactoria::getRegistrosHijos($nametablaoriginal,$campoenlace,$aid);
+
+
 			 foreach  ($registroshijos as $row)
 			  {
 				  ///Evitamos levantar items duplicados
@@ -124,8 +166,11 @@ class ControladorBase extends Controller
 		foreach($amodeloshijos as $nametablaoriginal => $nametablatemporal)
 		{
 			//$registrosoriginales=array();
-			$campoenlace=$this->getFieldLink($nametablatemporal);
+			$campoenlace=$this->getFieldLink($nametablaoriginal);
+			if(is_array($campoenlace))
+				$id=array($id,$this->documento);
 			$registroshijos=MiFactoria::getRegistrosHijos($nametablatemporal,$campoenlace,$id);
+			//var_dump($campoenlace);var_dump($id);echo "salio";die();
 			foreach  ($registroshijos as $row) {
 				//$row->setScenario('buffer');
 				$modelooriginal=$nametablaoriginal::model()->findByPk($row->id);
@@ -134,7 +179,7 @@ class ControladorBase extends Controller
 					//$modelooriginal->setScenario('buffer');
 				}
 				$modelooriginal->attributes=$row->attributes;
-				/*	echo "Temporal    <br>";
+					/*echo "Temporal    <br>";
 					var_dump($row->attributes);
 					echo "<br><br><br>";
 					echo "Original    <br>";
@@ -148,7 +193,7 @@ class ControladorBase extends Controller
 					throw new CHttpException(500,__CLASS__.' -> NO s epudo grabar el item  '.$modelooriginal->id. 'Del mdoelo'.$nametablaoriginal.'    '.yii::app()->mensajes->getErroresItem($modelooriginal->geterrors()));
 
 				} else {
-
+					//print_r($modelooriginal->attributes);die();
 				}
 
 				//array_push($registrosoriginales,$modelooriginal);
@@ -215,20 +260,14 @@ class ControladorBase extends Controller
 		}else{
 			foreach($this->modeloshijos as $clave=>$valor ){
 				$campoenlace=$this->camposlink[$valor];
-					$criterio=New CDBCriteria();
-					$criterio->addCondition("idusertemp=".yii::app()->user->id);
-				$criterio->addCondition($campoenlace."=".$id);
-					//$criterio->addNotInCondition($campoenlace,ARRAY_VALUES($docbloqueados));
-				/*vaR_DUMP($criterio->params);
-				vaR_DUMP(ARRAY_VALUES($docbloqueados));DIE();*/
-				//$criterio->params = array(':period'=>$period)+$criterio->params;
-				//$criterio->params=array("idusertemp"=>yii::app()->user->id,":vid"=>$id);
-				$obj=new $valor;
-				$nametabla=$obj->tablename();
-				unset($obj);
-			Yii::app()->db->createCommand()
-				->delete($nametabla,$criterio->condition,$criterio->params);
-		}
+				$clase=new $valor;
+				if(is_array($campoenlace)){
+					$id=array($id,$this->documento);
+					$valor::model()->deleteAllByAttributes(array_combine($campoenlace,$id));
+				}else{
+					$valor::model()->deleteAllByAttributes(array($campoenlace=>$id));
+				}
+		                                    }
 		}
 
 		/*	*/
@@ -490,20 +529,6 @@ public function detectaerrores(){
 
 	public function hubocambiodetalle($id)
 	{
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 		$difiere=false; ///Asumismos que no ha variado
     		$nombreclasepadre=$this->modelopadre;
 		//Obtiene la matriz de relaciones del modelo padre
@@ -512,8 +537,14 @@ public function detectaerrores(){
 		{
 		      //Obteniendo dinamicamente el campo enlace para cada modelo hijo
 		     $campoenlace= $this->getFieldLink($nombreclasetemporal);
-			$registrosoriginales =MiFactoria::getRegistrosHijos($nombreclasehija,$campoenlace,$id);
-			$registrostemporales=MiFactoria::getRegistrosHijos($nombreclasetemporal,$campoenlace,$id);
+			if(is_array($campoenlace)){
+				$aid=array($id,$this->documento);
+				// var_dump( $aid);die();
+			} else{
+				$aid=$id;
+			}
+			$registrosoriginales =MiFactoria::getRegistrosHijos($nombreclasehija,$campoenlace,$aid);
+			$registrostemporales=MiFactoria::getRegistrosHijos($nombreclasetemporal,$campoenlace,$aid);
 			//if (count($registrostemporales)==0)
 				//throw new CHttpException(500,'nos e hallaron resgistros tremporal.');
 			  ///Recorriendo los registro originales
@@ -528,6 +559,8 @@ public function detectaerrores(){
 					//echo "id original ".$roworiginal->attributes['id']."   -     id temporal  ".$rowtemporal->attributes['id']."<br>";
 					if($roworiginal->attributes['id']==$rowtemporal->attributes['id'])
 					{ //Si son correspondientes
+						//var_dump($roworiginal);
+						//print_r($roworiginal->getSafeAttributeNames());echo "<br>";die();
 							foreach($roworiginal->getSafeAttributeNames() as $clave => $nombrecampo)
 						    {
 								//echo  "( ".$roworiginal->getScenario()."   ".$roworiginal->id.") El registro original  : ".$nombrecampo." ".$roworiginal->{$nombrecampo}."  es igual a   temporal? :".$nombrecampo."   :  ".$rowtemporal->{$nombrecampo}."<br>";

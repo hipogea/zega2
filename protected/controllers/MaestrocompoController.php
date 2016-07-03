@@ -758,7 +758,10 @@ public function actionModificaconversion($id)
 
 	public function loadModel($id)
 	{
+
 		$model=Maestrocompo::model()->findByPk($id);
+		if($model===null)
+			$model=Maestrocompo::model()->find("codigo=:vcodigo",array(":vcodigo"=>$id));
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
@@ -847,7 +850,7 @@ public function actionModificaconversion($id)
 			}
 	}
 
-		public function actionver($id)
+		public function actionver()
 	{
 		$maestro=$this->loadModel(MiFactoria::cleanInput($id));
 		$this->render('ver',array('model'=>$maestro));
@@ -904,7 +907,7 @@ public function actionModificaconversion($id)
 			if($model->save()) {
 				//actualizamos tambien las tablas inventario y maestrodetalle
 				//inventario
-				var_dump($model->maestro_maestrotipos->esservicio);die();
+				//var_dump($model->maestro_maestrotipos->esservicio);die();
 		if(!$model->maestro_maestrotipos->esservicio=='1'){
 
 				$centros = Centros::model()->findAll();
@@ -999,6 +1002,7 @@ public function actionModificaconversion($id)
 
 	public function actioneditarmaterial($id)
 	{
+
 		$model=$this->loadModel($id);
 		$mensa="";
 		$model->valorespordefecto();

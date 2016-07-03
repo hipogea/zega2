@@ -19,10 +19,13 @@ class Ot extends  ModeloGeneral
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('numero, fechacre, fechafinprog, codpro, idobjeto, codresponsable, textocorto, textolargo, grupoplan, codcen, iduser, codocu, codestado, clase, hidoferta', 'required'),
+			array('fechainiprog,fechainicio, codpro,
+			 idobjeto, codresponsable, textocorto, grupoplan, codcen', 'required'),
+			array('fechafinprog, fechainiprog,fechainicio, fechafin','checkfechas'),
 			array('idobjeto, iduser', 'numerical', 'integerOnly'=>true),
 			array('numero', 'length', 'max'=>12),
 			array('codpro', 'length', 'max'=>8),
+			array('fechainicio,fechafin', 'safe'),
 			array('codresponsable', 'length', 'max'=>6),
 			array('textocorto', 'length', 'max'=>40),
 			array('grupoplan, codocu', 'length', 'max'=>3),
@@ -32,7 +35,9 @@ class Ot extends  ModeloGeneral
 			array('hidoferta', 'length', 'max'=>20),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, numero, fechacre, fechafinprog, codpro, idobjeto, codresponsable, textocorto, textolargo, grupoplan, codcen, iduser, codocu, codestado, clase, hidoferta', 'safe', 'on'=>'search'),
+			array('id, numero, fechacre, fechafinprog, codpro, idobjeto,
+			 codresponsable, textocorto, textolargo, grupoplan,
+			 codcen, iduser, codocu, codestado, clase, hidoferta', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -44,11 +49,15 @@ class Ot extends  ModeloGeneral
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'detots' => array(self::HAS_MANY, 'Detot', 'hidorden'),
+			'detot' => array(self::HAS_MANY, 'Detot', 'hidorden'),
+			'tempdetot' => array(self::HAS_MANY, 'Tempdetot', 'hidorden'),
+			'desolpe' => array(self::HAS_MANY, 'Desolpe', array('hidot'=>'id','hcodoc'=>'codocu')),
+			'tempdesolpe' => array(self::HAS_MANY, 'Tempdesolpe', array('hidot'=>'id','hcodoc'=>'codocu')),
+
 		//	'hidoferta0' => array(self::BELONGS_TO, 'Dpeticion', 'hidoferta'),
-			'codpro0' => array(self::BELONGS_TO, 'Clipro', 'codpro'),
-			'idobjeto0' => array(self::BELONGS_TO, 'ObjetosCliente', 'idobjeto'),
-			'codresponsable0' => array(self::BELONGS_TO, 'Trabajadores', 'codresponsable'),
+			'clipro' => array(self::BELONGS_TO, 'Clipro', 'codpro'),
+			'objetosmaster' => array(self::BELONGS_TO, 'Objetosmaster', 'idobjeto'),
+			'trabajadores' => array(self::BELONGS_TO, 'Trabajadores', 'codresponsable'),
 		);
 	}
 
@@ -127,4 +136,53 @@ class Ot extends  ModeloGeneral
 	{
 		return parent::model($className);
 	}
+
+
+	/**************************
+	 * Checkea el objeto y le clipro si es deun determinada empresa
+	 * @param $attribute
+	 * @param $params
+	 *
+	 */
+	public function checkobjeto($attribute,$params) {
+		if(!$this->codpro==$this->objetosmaster->objetoscliente->codpro)
+					$this->adderror('idobjeto','Este equipo no pertenece a la organizacion '.$this->objetosmaster->objetoscliente->clipro->despro);
+	}
+
+
+	/**************************
+	 * Checkea las fechas de inicio y programacion no son consistentes
+	 * @param $attribute
+	 * @param $params
+	 *
+	 */
+	public function checkfechas($attribute,$params) {
+		if(!is_null($this->fechainiprog) and !is_null($this->fechafinprog))
+		if(!yii::app()->periodo->verificaFechas($this->fechainiprog,$this->fechafinprog))
+		$this->adderror('fechainiprog','La Fecha de inicio programada es mayor que la de fin programada');
+		if(!is_null($this->fechainicio) and !is_null($this->fechafin))
+		if(!yii::app()->periodo->verificaFechas($this->fechainicio,$this->fechafin))
+			$this->adderror('fechainicio','La Fecha de inicio  es mayor que la de fin');
+
+		}
+
+	public function beforeSave() {
+		if ($this->isNewRecord) {
+			$this->codestado='99';
+			$this->codocu='890';
+			$this->fechacre=date("Y-m-d H:i:s");
+		}
+		else
+		{
+			IF ($this->numero===null)
+			{
+				$this->numero=$this->correlativo('numero');
+			}
+			//var_dump($this->numero);die();
+		}
+		return parent::beforeSave();
+	}
+
+
+
 }

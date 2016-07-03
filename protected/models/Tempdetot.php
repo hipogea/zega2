@@ -21,8 +21,14 @@
  * @property integer $idusertemp
  * @property string $idtemp
  * @property integer $idstatus
+ *
+ * The followings are the available model relations:
+ * @property Ot $hidorden0
+ * @property Trabajadores $codresponsable0
+ * @property Estado $codocu0
+ * @property Estado $codestado0
  */
-class Tempdetot extends CActiveRecord
+class Tempdetot extends ModeloGeneral
 {
 	/**
 	 * @return string the associated database table name
@@ -40,14 +46,15 @@ class Tempdetot extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id, hidorden, item, textoactividad, codresponsable, fechainic, fechafinprog, fechacre, flaginterno, codocu, codestado, codmaster, idinventario, iduser, idusertemp, idstatus', 'required'),
+			//array('id, hidorden, item, textoactividad, codresponsable, fechainic, fechafinprog, fechacre, flaginterno, codocu, codestado, codmaster, idinventario, iduser, idusertemp, idstatus', 'required'),
 			array('idinventario, iduser, idusertemp, idstatus', 'numerical', 'integerOnly'=>true),
 			array('id, hidorden', 'length', 'max'=>20),
-			array('item, codocu', 'length', 'max'=>3),
+			array('item, codestado', 'length', 'max'=>3),
 			array('textoactividad', 'length', 'max'=>40),
 			array('codresponsable', 'length', 'max'=>8),
 			array('flaginterno', 'length', 'max'=>1),
-			array('codestado', 'length', 'max'=>2),
+			array('codocu', 'length', 'max'=>3),
+			array('codocu,codestado,documentohijo', 'safe'),
 			array('codmaster', 'length', 'max'=>12),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
@@ -63,6 +70,10 @@ class Tempdetot extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'ot' => array(self::BELONGS_TO, 'Ot', 'hidorden'),
+			'trabajadores' => array(self::BELONGS_TO, 'Trabajadores', 'codresponsable'),
+			'estado'=>array(self::BELONGS_TO,'Estado',array('codestado'=>'codestado','codocu'=>'codocu')),
+
 		);
 	}
 
@@ -127,6 +138,20 @@ class Tempdetot extends CActiveRecord
 		$criteria->compare('idusertemp',$this->idusertemp);
 		$criteria->compare('idtemp',$this->idtemp,true);
 		$criteria->compare('idstatus',$this->idstatus);
+
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
+	}
+
+	public function search_por_ot($id)
+	{
+		// @todo Please modify the following code to remove attributes that should not be searched.
+
+		$criteria=new CDbCriteria;
+
+		$criteria->addCondition("hidorden=".$id);
+
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

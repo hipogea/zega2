@@ -4,13 +4,9 @@
 <div class="wide form">
 
 <?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'detgui-form',
-	'enableClientValidation'=>TRUE,
-    'clientOptions' => array(
-        'validateOnSubmit'=>true,
-         'validateOnChange'=>true       
-     ),
-	'enableAjaxValidation'=>FALSE,
+	'id'=>'detalleoc-form',
+
+	'enableAjaxValidation'=>true,
 	
 
 
@@ -18,6 +14,45 @@
 )); ?>
 <?php echo $form->errorSummary($model); ?>
 
+	<div class="row">
+		<?php
+	$botones = array(
+	'save' => array(
+	'type' => 'A',
+	'ruta' => array(),
+	'visiblex' => array('10'),
+	),
+
+      'money' => array(
+	'type' => 'C',
+	'ruta' => array($this->id . '/verprecios', array(
+	'codigomaterial' =>  $model->codart,
+	//"id"=>$model->n_direc,
+	"asDialog" => 1,
+	"gridId" => 'detalle-grid',
+	)
+	),
+	'dialog' => 'cru-dialog3',
+	'frame' => 'cru-frame3',
+	'visiblex' => array('10'),
+
+	),
+
+	);
+
+		$this->widget('ext.toolbar.Barra',
+			array(
+				//'botones'=>MiFactoria::opcionestoolbar($model->id,$this->documento,$model->codestado),
+				'botones'=>$botones,
+				'size'=>24,
+				'extension'=>'png',
+				'status'=>'10',
+
+			)
+		);
+
+	?>
+</div>
 <div class="row">
 
 						<?php echo $form->labelEx($model,'tipoitem'); ?>
@@ -55,9 +90,11 @@
 		<?php echo $form->error($model,'codentro'); ?>
 	</div>
 	<div class="row">
+		<?php if(!($model->ocompra->tipologia=='W')){ ?>
 		<?php echo $form->labelEx($model,'codigoalma'); ?>
 		<?php echo $form->textField($model,'codigoalma',array('size'=>3,'maxlength'=>3, 'disabled'=>($editable)?'':'disabled')); ?>
 		<?php echo $form->error($model,'codigoalma'); ?>
+		<?php } ?>
 	</div>
 
 
@@ -71,8 +108,10 @@
 
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'codart'); ?>
+
 		<?php if($editable) { ?>
+		<?php if(!($model->ocompra->tipologia=='W')){ ?>
+				<?php echo $form->labelEx($model,'codart'); ?>
 			<?php $this->widget('ext.matchcode1.MatchCode1', array(
 				'nombrecampo' => 'codart',
 				'pintarcaja' => 1, ///indica si debe de pintar el textbox al iniciar
@@ -91,14 +130,27 @@
 			));
 			?>
 
-			<?php echo $form->error($model, 'codart'); ?>
-
+						<?php echo $form->error($model, 'codart'); ?>
+				<?PHP  } ELSE {  ?>
+				<?php echo $form->textField($model,'descri',array('size'=>40,'maxlength'=>40, 'disabled'=>($editable)?'':'disabled')); ?>
+				<?php echo $form->error($model,'descri'); ?>
+			    <?PHP  } ?>
 		<?php
 		}else{
 
-			echo CHtml::textField('DFDFDxfr65F',$model->codart,array('size'=>6,'disabled'=>'disabled'));
-			echo CHtml::textField('DFDFD456565F',$model->materiales->descripcion,array('size'=>40,'disabled'=>'disabled'));
-		}
+		 if(!($model->ocompra->tipologia=='W')) {
+		echo $form->labelEx($model,'codart');
+			 echo CHtml::textField('DFDFDxfr65F', $model->codart, array('size' => 6, 'disabled' => 'disabled'));
+			 echo CHtml::textField('DFDFD456565F', $model->materiales->descripcion, array('size' => 40, 'disabled' => 'disabled'));
+		 }else{
+			 echo $form->labelEx($model,'descri');
+		 		//echo $form->textField($model,'codart',array('size'=>10,'maxlength'=>10, 'disabled'=>'disabled'));
+			 echo $form->textField($model,'descri',array('size'=>40,'maxlength'=>40, 'disabled'=>'disabled'));
+
+		 }
+
+
+		 }
 	?>
 
 	</div>
@@ -119,6 +171,9 @@
 			)
 
 		);?>
+
+
+
 
 		<?php IF($model->isNewRecord ){ ?>
 <?php
@@ -151,8 +206,10 @@
 		<?php echo $form->labelEx($model,'punit'); ?>
 		<?php echo $form->textField($model,'punit',array('disabled'=>($editable)?'':'disabled')); ?>
 		<?php echo $form->error($model,'punit'); ?>
+		<?php echo CHtml::label($model->ocompra->moneda,'sdsds '); ?>
 		<?php $codpro=($model->isNewRecord)?Ocompra::model()->findByPk($model->hidguia)->codpro:$model->ocompra->codpro; ?>
 		<?php //var_dump($codpro);yii::app()->end(); ?>
+		<?php if(!($model->ocompra->tipologia=='W')) { ?>
 		<?php  echo Chtml::ajaxLink(
 			Chtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."package.png"),
 			CController::createUrl($this->id.'/cargaprecios'), array(
@@ -169,14 +226,13 @@
 
 		);?>
 
-
+      <?php  }  ?>
 
 	</div>
 
 	<div class="row">
 <div id="zona_precios"></div>
 </div>
-
 
 
 

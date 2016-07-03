@@ -440,10 +440,46 @@ $cadena="";
 
 
 		if($file==0){
-			$ruta='assets/'.$modelo->codocu.$idfiltrodocu.'_'.yii::app()->user->id.'.pdf';
-			$mpdf->Output($ruta,'F');
+//$ruta='assets/'.$modelo->codocu.'_'.$idfiltrodocu.'_'.yii::app()->user->id.'_'.substr(hash('md5',rand() . rand()), 0, 10).'.pdf';
+			$rutax=Yii::getPathOfAlias('webroot').DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR;
+			$rutacorta=yii::app()->getBaseUrl(false).DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.yii::app()->user->id.DIRECTORY_SEPARATOR.$modelo->codocu.DIRECTORY_SEPARATOR;
+			if(is_dir($rutax.yii::app()->user->id.DIRECTORY_SEPARATOR)){
+				//echo "weddde";die();
+				if(!is_dir($rutax.yii::app()->user->id.DIRECTORY_SEPARATOR.$modelo->codocu.DIRECTORY_SEPARATOR))
+					mkdir($rutax.yii::app()->user->id.DIRECTORY_SEPARATOR.$modelo->codocu.DIRECTORY_SEPARATOR);
+			}else{
+				//echo $rutax.yii::app()->user->id.DIRECTORY_SEPARATOR;die();
+				mkdir($rutax.yii::app()->user->id.DIRECTORY_SEPARATOR);
+				mkdir($rutax.yii::app()->user->id.DIRECTORY_SEPARATOR.$modelo->codocu.DIRECTORY_SEPARATOR);
+			}
+			//$usuario=yii::app()->user->um->LoadUserById(yii::app()->user->id);
 
-			$this->render('pdf',array('ruta'=>yii::app()->getBaseUrl(false).DIRECTORY_SEPARATOR.$ruta));
+			$nombrear=yii::app()->user->name.'.pdf';
+			$rutax.=yii::app()->user->id.DIRECTORY_SEPARATOR.$modelo->codocu.DIRECTORY_SEPARATOR.$nombrear;
+			$rutacorta.=$nombrear;
+		//	var_dump($rutax);die();
+			$mpdf->Output($rutax,'F');
+			$this->render('pdf',array('ruta'=>$rutacorta));
+		}
+		elseif($file==1){
+			$rutax=Yii::getPathOfAlias('webroot').DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR;
+			$rutacorta=yii::app()->getBaseUrl(false).DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.yii::app()->user->id.DIRECTORY_SEPARATOR.$modelo->codocu.DIRECTORY_SEPARATOR;
+			if(is_dir($rutax.yii::app()->user->id.DIRECTORY_SEPARATOR)){
+				//echo "weddde";die();
+				if(!is_dir($rutax.yii::app()->user->id.DIRECTORY_SEPARATOR.$modelo->codocu.DIRECTORY_SEPARATOR))
+					mkdir($rutax.yii::app()->user->id.DIRECTORY_SEPARATOR.$modelo->codocu.DIRECTORY_SEPARATOR);
+			}else{
+				//echo $rutax.yii::app()->user->id.DIRECTORY_SEPARATOR;die();
+				mkdir($rutax.yii::app()->user->id.DIRECTORY_SEPARATOR);
+				mkdir($rutax.yii::app()->user->id.DIRECTORY_SEPARATOR.$modelo->codocu.DIRECTORY_SEPARATOR);
+			}
+			//$usuario=yii::app()->user->um->LoadUserById(yii::app()->user->id);
+
+			$nombrear=yii::app()->user->name.'.pdf';
+			$rutax.=yii::app()->user->id.DIRECTORY_SEPARATOR.$modelo->codocu.DIRECTORY_SEPARATOR.$nombrear;
+			$rutacorta.=$nombrear;
+			//	var_dump($rutax);die();
+			$mpdf->Output($rutax,'F');
 		}
         elseif($file==2){
             $this->layout='//layouts/docus';
@@ -594,26 +630,30 @@ public function actioncargacampos(){
     public function actionUpdate($id)
     {
         $model=$this->loadModel($id);
+
         if(isset($_POST['Coordocs']))
         {
             $model->attributes=$_POST['Coordocs'];
-            if($model->save())
-                if (!empty($_GET['asDialog']))
-                {
-                    //Close the dialog, reset the iframe and update the grid
-                    echo CHtml::script("window.parent.$('#cru-dialogdetalle').dialog('close');
+			//PRINT_R($model->getSafeAttributeNames());DIE();
+            if($model->save()) {
+				//VAR_DUMP($model->tienecabecera);die();
+				if (!empty($_GET['asDialog'])) {
+					//Close the dialog, reset the iframe and update the grid
+					echo CHtml::script("window.parent.$('#cru-dialogdetalle').dialog('close');
 													                    window.parent.$('#cru-detalle').attr('src','');
 															    window.parent.$.fn.yiiGridView.update('{$_GET['gridId']}');
 																		");
-                    Yii::app()->end();
-                }
-			/*print_r($model->attributes);
-			echo  "<br><br>";
-			var_dump($model->save());
-			echo  "<br><br> errores : ";
-			print_r($model->geterrors());
-			yii::app()->end();*/
-            $this->redirect(array('view','id'=>$model->id));
+					//  Yii::app()->end();
+				}
+				/*print_r($model->attributes);
+                echo  "<br><br>";
+                var_dump($model->save());
+                echo  "<br><br> errores : ";
+                print_r($model->geterrors());
+                yii::app()->end();*/
+				//print_r($model->geterrors());die();
+				$this->redirect(array('view', 'id' => $model->id));
+			}
         }
 
         if (!empty($_GET['asDialog']))

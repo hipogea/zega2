@@ -386,6 +386,37 @@ $mo=New Alinventario();
 
 
 	public function actionPio() {
+		$reg=new Ot;
+		$reg=Ot::model()->findByPk(8);
+		var_dump($reg->desolpe);die();
+
+
+		var_dump(microtime(true));
+		var_dump(microtime());die();
+
+		$mane=array('uno','dos','tres','cuatro','cinco','seis','siete','ocho');
+		$mane2=array('uno','seis','siete','ocho');
+
+		var_dump(array_diff($mane2,$mane));die();
+		$criteria=New CDbCriteria();
+		$criteria->addCondition("codal='850'");
+		$registros=New CActiveDataProvider('Desolpe', array(
+    'criteria'=>$criteria,
+  ));
+		//var_dump($registros->model);
+		var_dump($registros->modelClass);
+		var_dump($registros->keyAttribute);
+		var_dump($registros->keys);
+		var_dump($registros->getdata());
+		var_dump($registros->itemCount);
+		var_dump($registros->id);
+		var_dump($registros->totalItemCount);
+
+
+
+
+
+
 		$inventario=Alinventario::model()->findByPk(71);
 
 		//$regis=Solpe::solpeautomatica($inventario);

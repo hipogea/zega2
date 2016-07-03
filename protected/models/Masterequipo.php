@@ -33,8 +33,8 @@ class Masterequipo extends ModeloGeneral
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('codart', 'required'),
-			array('codart','exist','allowEmpty' => false, 'attributeName' => 'codigo', 'className' => 'Maestrocompo','message'=>'Este material no existe'),
+			//array('codart', 'required'),
+			array('codart','exist','allowEmpty' => true, 'attributeName' => 'codigo', 'className' => 'Maestrocompo','message'=>'Este material no existe'),
 			array('codigopadre','exist','allowEmpty' => true, 'attributeName' => 'codigo', 'className' => 'Masterequipo','message'=>'Este codigo de equipo no existe'),
 			array('codigopadre','checkigual'),
 			array('codart','checkrotativo','on'=>'insert,update'),
@@ -201,12 +201,17 @@ class Masterequipo extends ModeloGeneral
 	  }
 
   }
-		$regmaestro=Maestrocompo::model()->findByPk($this->codart);
-		$this->descripcion=$regmaestro->descripcion;
-		$this->marca=$regmaestro->marca;
-		$this->modelo=$regmaestro->modelo;
-		$this->numeroparte=$regmaestro->nparte;
-		unset($regmaestro);
+		//var_dump($this->codart);die();
+		if(!IS_NULL($this->codart) AND STRLEN($this->codart)>0){
+			$regmaestro=Maestrocompo::model()->findByPk($this->codart);
+			$this->descripcion=$regmaestro->descripcion;
+			$this->marca=$regmaestro->marca;
+			$this->modelo=$regmaestro->modelo;
+			$this->numeroparte=$regmaestro->nparte;
+			unset($regmaestro);
+		}
+
+
 	return parent::beforeSave();
 }
 

@@ -13,6 +13,8 @@ class Ocompra extends ModeloGeneral
 {
 	CONST ROL_AUTORIZACION_COMPRAS='TAREA_AUTORIZAR_COMPRAS'; //rOL DE AUTORIZACIOND E OMPRA PARA VER EL CHECKACCESS
 
+	PUBLIC $resumen=array();
+
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -137,7 +139,9 @@ class Ocompra extends ModeloGeneral
             'ocompra_centros'=>array(self::BELONGS_TO, 'Centros', 'codcentro'),
 			//'clientes' => array(self::HAS_MANY, 'Docompra', 'idguia'),
 			'numeroitems'=>array(self::STAT, 'Docompratemp', 'hidguia'),//el campo foraneo
-			'subtotal'=>array(self::STAT, 'Docompra', 'hidguia','select'=>'sum(t.punit*t.cant)','condition'=>'estadodetalle not IN '.Estado::cadenaarray("220").'  '),//el subtotal
+			'subtotal'=>array(self::STAT, 'Docompra', 'hidguia','select'=>'sum(t.punit*t.cant)','condition'=>'estadodetalle not IN '.Estado::listaestadosnocalculables("220").'  '),//el subtotal
+			'subtotaltemp'=>array(self::STAT, 'Docompratemp', 'hidguia','select'=>'sum(t.punit*t.cant)','condition'=>'estadodetalle not IN '.Estado::listaestadosnocalculables("220").'  '),//el subtotal
+
 			'itemmaximo'=>array(self::STAT, 'Docompratemp', 'hidguia','select'=>'max(item)'),//el mayor de los items
 
 			'ocompra_docompra'=>array(self::HAS_MANY, 'Docompra', 'hidguia'),
@@ -148,9 +152,11 @@ class Ocompra extends ModeloGeneral
 			'impuestos'=>array(self::HAS_MANY, 'Impuestosdocuaplicado','iddocu'),
 
 			'valorimpuestos'=>array(self::STAT, 'Impuestosaplicados','hidocupadre','select'=>'sum(t.valor)'),
+		//	'valorimpuestostemp'=>array(self::STAT, 'Tempimpuestosaplicados','hidocupadre','select'=>'sum(t.valor)'),
 			//'peticion_estado' => array(self::BELONGS_TO, 'Estado', array('codestado'=>'codestado','codocu'=>'codocu')),
 			'cant_solicitada'=>array(self::STAT, 'Alreserva', 'hidesolpe','select'=>'sum(t.cant)','condition'=>"estadoreserva <> '30' AND codocu IN ('800') "),//el campo foraneo
 			'tempimpuestos'=>array(self::HAS_MANY,'Tempimpuestosdocuaplicados','iddocu'),
+			'sumtempimpuestos'=>array(self::STAT,'Tempimpuestosdocuaplicados','iddocu','select'=>'sum(valorimpuesto)'),
 			// 'ocompra_direcciones'=>array(self::HAS_MANY, 'Docompra', 'hidguia'),
 
 
@@ -661,14 +667,72 @@ public static  function puedeautorizar(){
 		 return $atendida;
 	 }
 
-public function total(){
-	return $this->valorimpuestos+$this->subtotal-$this->subtotal*$this->descuento/100;
+public function total($controlador){
+	return $this->valorimpuestos+$this->subtotal($controlador)-$this->subtotal($controlador)*$this->descuento/100;
 }
-	public function totaldescuento(){
-		return $this->subtotal*$this->descuento/100;
-	}
-	public function neto(){
-		return $this->subtotal*(1-$this->descuento/100);
+
+public function subtotal($controlador){
+	if(get_parent_class($controlador)=='ControladorBase'){
+		if($controlador->estasEnSesion($this->idguia)){
+           // ECHO $this->subtotaltemp;
+			return $this->subtotaltemp;
+
+		} ELSE{
+
+			return $this->subtotal;
+
+		}
+	}ELSE{
+		throw new CHttpException(500,__CLASS__.'   '.__FUNCTION__.'   '.__LINE__.' Debe des usar esta funcion , bajo un controlador derivaod de la clase CONTROLADOR BASE '.get_parent_class($controlador));
+
 	}
 
+}
+
+	public function impuestos($controlador){
+		if(get_parent_class($controlador)=='ControladorBase'){
+			if($controlador->estasEnSesion($this->idguia)){
+				// ECHO $this->subtotaltemp;
+				return $this->sumtempimpuestos*$this->neto($controlador);
+
+			} ELSE{
+
+				return $this->valorimpuestos;
+
+			}
+		}ELSE{
+			throw new CHttpException(500,__CLASS__.'   '.__FUNCTION__.'   '.__LINE__.' Debe des usar esta funcion , bajo un controlador derivaod de la clase CONTROLADOR BASE '.get_parent_class($controlador));
+
+		}
+
+	}
+
+
+	public function totaldescuento($controlador){
+		return $this->subtotal($controlador)*$this->descuento/100;
+	}
+	public function neto($controlador){
+		return $this->subtotal($controlador)*(1-$this->descuento/100);
+	}
+
+public function refrescaresumen($controlador){
+		//$arreglo=array();
+	     $this->resumen[0]['param']='Subtotal';
+		$this->resumen[0]['valor']=$this->subtotal($controlador);
+		$this->resumen[1]['param']='Descuento';
+		$this->resumen[1]['valor']=$this->totaldescuento($controlador);
+		$this->resumen[2]['param']='Neto';
+		$this->resumen[2]['valor']=$this->neto($controlador);
+		$this->resumen[3]['param']='Impuestos';
+		$this->resumen[3]['valor']=$this->impuestos($controlador);
+		$this->resumen[4]['param']='Total';
+		$this->resumen[4]['valor']=$this->total($controlador);
+
+
+         }
+   public function proveedorresumen($controlador){
+	   $this->refrescaresumen($controlador);
+	 return  new CArrayDataProvider($this->resumen,array('keyField' => 'param'));
+
+              }
 }

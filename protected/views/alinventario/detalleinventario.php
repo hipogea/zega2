@@ -89,7 +89,7 @@ $this->widget('zii.widgets.jui.CJuiTabs', array(
 						),
 
 						'lotes'=>array('id'=>'tab_lotesuu',
-							'content'=>$this->renderpartial('vw_lotes',array('model'=>$model,'form'=>$form   ), true),
+							'content'=>$this->renderpartial('vw_lotes',array('orden'=>$orden,'model'=>$model,'form'=>$form   ), true),
 						),
 						'Conteos'=>array('id'=>'tab_conteosuu',
 							'content'=>$this->renderpartial('vw_conteo',array('model'=>$model,'form'=>$form   ), true),
@@ -130,7 +130,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
 		'autoOpen'=>false,
 		'modal'=>true,
 		'width'=>800,
-		'height'=>600,
+		'height'=>300,
 	),
 ));
 ?>

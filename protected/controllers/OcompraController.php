@@ -62,9 +62,28 @@ class OcompraController extends ControladorBase
 
     public function actionEditaDocumento($id)
     {
+        //MiFactoria::Mensaje('error','dad');
+
+
         $model=MiFactoria::CargaModelo($this->modelopadre,$id);
+        if(isset($_GET['ajax'])){
+            if(count($model->detalle)>0){
+                $filiat=$model->detalle[0];
+              //echo $filiat->punitdes ;die();
+                if($filiat->punit>0){
+                    $factor=($filiat->punit-$filiat->punitdes)/$filiat->punit;
+                }else{
+                    $factor=0;
+                }
+
+                $model->descuento=$factor*100;
+                $model->refrescaresumen($this);
+            }
+
+        }
+
         if(count($model->ocompra_tenorsup)==0  or count($model->ocompra_tenorinf)==0)
-            yii::app()->user->setFlash('notice','Favor de definir los tenores para lo valores de la posicion y la sociedad');
+            MiFactoria::Mensaje('notice','Favor de definir los tenores para lo valores de la posicion y la sociedad');
 
         if($model->{$this->campoestado}==ESTADO_PREVIO)
             $model->{$this->campoestado}=ESTADO_CREADO;
@@ -73,7 +92,7 @@ class OcompraController extends ControladorBase
             $uintruso=$this->getUsersWorkingNow($id);
             if($uintruso)
             { //si esta ocupado
-                Yii::app()->user->setFlash('error', "Solo puede visualizar, este documento, esta siendo modificado por el usuario    :     <b>". Yii::app()->user->um->loadUserById($uintruso)->username." </b>");
+                MiFactoria::Mensaje('error', "Solo puede visualizar, este documento, esta siendo modificado por el usuario    :     <b>". Yii::app()->user->um->loadUserById($uintruso)->username." </b>");
                 $this->out($id);
                  $this->redirect(array('VerDocumento','id'=>$model->idguia));
             } else { // Si no lo esta renderizar sin mas
@@ -94,7 +113,7 @@ class OcompraController extends ControladorBase
                 if($this->IsRefreshUrlWithoutSubmit($id))
                 { ///Solo refreso la pagina
 
-                    Yii::app()->user->setFlash('notice', "No has confirmado los datos, solo haz refrescaod la pagina ");
+                    MiFactoria::Mensaje('notice', "No has confirmado los datos, solo has refrescado la pagina ");
                     $this->render('update',array('model'=>$model,'editable'=>true));
                     yii::app()->end();
                 } else {
@@ -102,31 +121,29 @@ class OcompraController extends ControladorBase
                     IF(isset($_POST[$this->modelopadre])) {
                         $model->attributes=$_POST[$this->modelopadre];
                         //$model->validate();
-                        //	if($this->hubocambiodetalle($id) OR  $model->hacambiado()) {
-                        if(true) {
+                        if($this->hubocambiodetalle($id) OR  $model->hacambiado()) {
+                            $transacc=Yii::app()->db->beginTransaction();
+                           
                             if($model->save()){
                                 $this->ConfirmaBuffer($id); //Levanta temporales
                                 $this->terminabloqueo($id);
-                                //$this->terminabloqueo($id); // Desbloquea
-                                //$this->grabaitems($this->tempdpeticion_a_dpeticion($id)); //Graba temporales a la tabla Dpeticion
-                               $this->ClearBuffer($id);
-                                //$this->limpiatemporaldetalle(); //Limpia temporal
+                                 $this->ClearBuffer($id);
 
 
-                                Yii::app()->user->setFlash('success', "Se grabo el documento  ".$this->SQL);
-                                //$this->render('update',array('model'=>$model));
+                            }
+                            if(!$this->detectaerrores()){
+                                $transacc->commit();
+                                MiFactoria::Mensaje('success', "Se grabo el documento  ".$this->SQL);
                                 $this->out($id);
-
                                 $this->redirect(array('VerDocumento','id'=>$model->idguia));
-                            } else {
-                                //echo CActiveForm::validate($model);
+                            }else{
+                                $transacc->rollback();
                                 $this->render('update',array('model'=>$model,'editable'=>true));
                                 yii::app()->end();
-                                /*Yii::app()->end();
-                                throw new CHttpException(500,'Hubo un error al momento de grabar la cabecera');*/
                             }
                         } else   {
-                            Yii::app()->user->setFlash('notice', "  Enviaste los datos pero no has modificado nada.... ");
+
+                            MiFactoria::Mensaje('notice', "  Enviaste los datos pero no has modificado nada.... ");
                             $this->render('update',array('model'=>$model,'editable'=>true));
                             yii::app()->end();
                         }
@@ -134,7 +151,7 @@ class OcompraController extends ControladorBase
                         // Y es posble que haya entrado despues de 2 dias, una semana asi
                         $this->terminabloqueo($id);
                         $this->SetBloqueo($id);
-                        Yii::app()->user->setFlash('notice', "NO cerraste correctamente, Ya tenías una sesion abierta en este domcuento,");
+                        MiFactoria::Mensaje('notice', "NO cerraste correctamente, Ya tenías una sesion abierta en este domcuento,");
                         $this->render('update',array('model'=>$model,'editable'=>true));
                         yii::app()->end();
 
@@ -204,6 +221,7 @@ public function actionVerDocumento($id){
                 //str_pad($somevariable,$anchocampo,"0",STR_PAD_LEFT);
                 ////con esto calculamos el numero de items
                 //echo "  El valor de  ".$idcabeza."       ".$model->n_hguia."   ";
+                $this->performAjaxValidationdetalle($model);
                 if($model->save()){
                     if (!empty($_GET['asDialog']))
                     {
@@ -211,14 +229,12 @@ public function actionVerDocumento($id){
                         echo CHtml::script("window.parent.$('#cru-dialogdetalle').dialog('close');
 													                    window.parent.$('#cru-detalle').attr('src','');
 																		window.parent.$.fn.yiiGridView.update('detalle-grid');
-																		window.parent.$.fn.yiiGridView.update('resumen-grid');
+																		window.parent.$.fn.yiiGridView.update('resumenoc-grid');
 																		");
 
                     }
-                } else {
-                    print_r($model->geterrors());
                 }
-                Yii::app()->end();
+
             }
             // if (!empty($_GET['asDialog']))
             $this->layout = '//layouts/iframe';
@@ -248,7 +264,7 @@ public function actionVerDocumento($id){
         return array(
 
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('verDetoc','firmar','aprobar','cargaprecios','enviarpdf','admin','borrarimpuesto','reporte','agregarmasivamente','cargadirecciones','borraitems','sacaitem','sacaum','salir','agregaimpuesto','agregaritemsolpe','procesardocumento','refrescadescuento','VerDocumento','EditaDocumento','creadocumento','Agregardelmaletin','borraitem','imprimirsolo','cargaentregas','agregarsolpe','agregarsolpetotal','pasaatemporal','create','imprimirsolo','imprimir','imprimir2','enviarmail',
+				'actions'=>array('verprecios','crearpdf','verDetoc','firmar','aprobar','cargaprecios','enviarpdf','admin','borrarimpuesto','reporte','agregarmasivamente','cargadirecciones','borraitems','sacaitem','sacaum','salir','agregaimpuesto','agregaritemsolpe','procesardocumento','refrescadescuento','VerDocumento','EditaDocumento','creadocumento','Agregardelmaletin','borraitem','imprimirsolo','cargaentregas','agregarsolpe','agregarsolpetotal','pasaatemporal','create','imprimirsolo','imprimir','imprimir2','enviarmail',
 					'procesaroc','hijo','Aprobaroc','Reporteoc','Anularoc','Configuraop','Revertiroc', ///acciones de proceso
 					'libmasiva','creadetalle','Verdetalle','muestraimput','update','nada','Modificadetalle'),
 				'users'=>array('@'),
@@ -800,7 +816,7 @@ $fecha1 = Yii::app()->db->createCommand(" SELECT min(fechadoc) from public_alkar
 												}
                     } else {
                         $transaccion->rollback();
-                        Yii::app()->user->setFlash('error', "No se pudo grabar el documento, hay  errores  :".$mensaje);
+                        MiFactoria::Mensaje('error', "No se pudo grabar el documento, hay  errores  :".$mensaje);
                         $this->layout = '//layouts/iframe';
 
                         $this->render('_form_detalle_solpe_total',array(
@@ -1108,7 +1124,7 @@ public function borradetalle($id /*idtemp*/) {
 
 public function borraitem($id) { //ojo es el id de la tabla temporal Docomprat
     //para borrar u item hay varias escenarios
-    $detalletemp=Docomprat::model()->findByPk($id);
+    $detalletemp=Docompratemp::model()->findByPk($id);
     if($detalletemp===null) {
         throw new CHttpException(500,'No se encontro el item id del item de la compra');
                     } else{
@@ -1143,7 +1159,7 @@ public function borraitem($id) { //ojo es el id de la tabla temporal Docomprat
                                                                          $cantidadentregada=$detalleoc->cantidadentregada; ///SUM de cantidades entregadas al alamcen
                                                                          $cantidadsolicitada=$detalleoc->cantsolpes;  ///SUM de cantidades de solpes tomadas en este item
                                                                         if(  $cantidadentregada > 0) { //si ya hay cantidad recbida x el almacen
-                                                                            Yii::app()->user->setFlash('error', 'El item '.$detalleoc->docompra_ocompra->numcot.'-'.$detalleoc->item.'  ya tiene entregas or lo tanto no se puede eliminar');
+                                                                            MiFactoria::Mensaje('error', 'El item '.$detalleoc->docompra_ocompra->numcot.'-'.$detalleoc->item.'  ya tiene entregas or lo tanto no se puede eliminar');
                                                                                 // throw new CHttpException(500,'El item '.$detalleoc->docompra_ocompra->numcot.'-'.$detalleoc->item.'  ya tiene entregas or lo tanto no se puede eliminar');
 
 
@@ -1171,7 +1187,7 @@ public function borraitem($id) { //ojo es el id de la tabla temporal Docomprat
 
                                                     if( !$detalleoc->save() ) {
                                                                         $transaccion->rollback();
-                                                                        Yii::app()->user->setFlash('error', 'Por alguna razon no se pudo grabar el status del item '.$detalleoc->docompra_ocompra->numcot.'-'.$detalleoc->item.' ');
+                                                                        MiFactoria::Mensaje('error', 'Por alguna razon no se pudo grabar el status del item '.$detalleoc->docompra_ocompra->numcot.'-'.$detalleoc->item.' ');
                                                                          }
 
 
@@ -1352,7 +1368,7 @@ public function actionImprimir2($id)
 		         							 			$mensa->codocu='210';
 		         							 			$mensa->hidocu=$id;
 		         							 				//actualizar tambien los items
-		         							 			$command = Yii::app()->db->createCommand(" UPDATE ".Yii::app()->params['prefijo']."docompra set estadodetalle='20' where hidguia=".$modelin->idguia);
+		         							 			$command = Yii::app()->db->createCommand(" UPDATE {{docompra}} set estadodetalle='20' where hidguia=".$modelin->idguia);
 														 $command->execute();
 
 
@@ -1362,18 +1378,18 @@ public function actionImprimir2($id)
 
 		         							 			if ($modelin->save() and $mensa->save()) {
 		         							 				$transaccion->commit();
-                                                            Yii::app()->user->setFlash('success', "..La Oc de compra se ha autorizado!");
+                                                            MiFactoria::Mensaje('success', "..La Oc de compra se ha autorizado!");
 		         							 				//$this->render("update");
 
 		         							 			} else {
-                                                            Yii::app()->user->setFlash('error', "..No se ha podido grabar la autorizacion!");
+                                                            MiFactoria::Mensaje('error', "..No se ha podido grabar la autorizacion!");
                                                             $transaccion->rollback();
                                                            // $this->render("update");
 		         							 				//throw new CHttpException(404,'No se pudieron grabar los datos ');
 		         							 			}
 
 		         							 }else{
-                                                 Yii::app()->user->setFlash('error', "..Este documento no se puede autorizar por que no tiene el estado adecuado");
+                                                 MiFactoria::Mensaje('error', "..Este documento no se puede autorizar por que no tiene el estado adecuado");
                                                 // $transaccion->rollback();
 
 
@@ -1702,18 +1718,21 @@ public function actionborraitems()
 
 		if(isset($_POST['Docompratemp']))		{
 			$model->attributes=$_POST['Docompratemp'];
-			if($model->save())
-					  if (!empty($_GET['asDialog']))
-												{
-													//Close the dialog, reset the iframe and update the grid
-													echo CHtml::script("window.parent.$('#cru-dialogdetalle').dialog('close');
+			if($model->save()){
+                if (!empty($_GET['asDialog']))
+                {
+                    //Close the dialog, reset the iframe and update the grid
+                    echo CHtml::script("window.parent.$('#cru-dialogdetalle').dialog('close');
 													                    window.parent.$('#cru-detalle').attr('src','');
 																		window.parent.$.fn.yiiGridView.update('detalle-grid');
+																		window.parent.$.fn.yiiGridView.update('resumenoc-grid');
 																		");
-														Yii::app()->end();
-												}
+                    Yii::app()->end();
+                }
+            }else{
+                print_r($model->geterrors());
+            }
 
-				//$this->redirect(array('view','id'=>$model->n_guia));
 		}
 
 		 if (!empty($_GET['asDialog']))
@@ -1984,80 +2003,110 @@ public function actionVerdetalle($id)
 		}
 	}
 
+    protected function performAjaxValidationdetalle($model)
+    {
+        if(isset($_POST['ajax']) && $_POST['ajax']==='detalleoc-form')
+        {
+            echo CActiveForm::validate($model);
+            Yii::app()->end();
+        }
+    }
+
 
     public function actionprocesardocumento($id)
     {
+       $id=MiFactoria::cleanInput($id);
         $idevento=(integer)$_GET['ev'];
         $modelo=$this->loadModel((int)$id);
-        $evento=VwEventos::model()->find("id=:vid",array(":vid"=>$idevento));
-        if(!is_null($evento))
-        {
+        if($this->sepuedeprocesar($id)){
+            $evento=VwEventos::model()->find("id=:vid",array(":vid"=>$idevento));
+            if(!is_null($evento))
+            {
 
-            ///Verificanod primero la consistencia del movimieto
-            if((trim($modelo->{$this->campoestado})==trim($evento->estadoinicial))){
-                $modelo->{$this->campoestado}=$evento->estadofinal;
-                $modelo->setScenario('cambiaestado');
-                $transaccion=$modelo->dbConnection->beginTransaction();
+                //verificansdo primero que haya grabado los datos
+                if($this->hubocambiodetalle($id)){
+                    MiFactoria::Mensaje('error','Debe de grabar los cambios primero');
+                }else{
 
-                if($modelo->save()) {
-                    $cadena=$this->proceso($idevento,(int)$id);
-                    if($cadena==""){
-                        $transaccion->commit();
-                        IF( Yii::app()->request->isAjaxRequest){
-                           echo  "El documento se ha aprobado " ;
-                        }else{
-                            Yii::app()->user->setFlash('success', "El documento se ha procesado cambio de estado ".$evento->einicial."  a  ".$evento->efinal );
+
+                    ///Verificanod primero la consistencia del movimieto
+                    if((trim($modelo->{$this->campoestado})==trim($evento->estadoinicial))){
+                        $modelo->{$this->campoestado}=$evento->estadofinal;
+                        $modelo->setScenario('cambiaestado');
+                        $transaccion=$modelo->dbConnection->beginTransaction();
+
+                        if($modelo->save()) {
+                            $cadena=$this->proceso($idevento,(int)$id);
+                            if(!$this->detectaerrores()){
+                                $transaccion->commit();
+                                IF( Yii::app()->request->isAjaxRequest){
+                                    echo  "El documento se ha aprobado " ;
+                                }else{
+                                    MiFactoria::Mensaje('success', "El documento se ha procesado cambio de estado ".$evento->einicial."  a  ".$evento->efinal );
+                                }
+
+                            } else {
+                                $transaccion->rollback();
+                                IF( Yii::app()->request->isAjaxRequest){
+                                    echo  " No se pudo procesar el documento Error: ".$cadena ;
+                                }else{
+                                    $this->out($id);
+                                    MiFactoria::Mensaje('error', " No se pudo procesar el documento Error: ".$cadena);
+
+                                }
+                                //$this->render('editadocumento',array('model'=>$modelo));
+                                //yii::app()->end();
+                            }
+
+                        } else {
+                            $transaccion->rollback();
+                            // MiFactoria::Mensaje('error', " No se pudo procesar el documento Error: ".$cadena);
+                            IF( Yii::app()->request->isAjaxRequest){
+                                echo  " No se pudo procesar el documento Error: ".Yii::app()->mensajes->getErroresItem($modelo->geterrors()) ;
+                            }else{ $this->out($id);
+                                MiFactoria::Mensaje('error', " No se pudo procesar el documento Error: ".Yii::app()->mensajes->getErroresItem($modelo->geterrors()));
+
+                            }
+
+
                         }
 
                     } else {
-                        $transaccion->rollback();
+                        $this->out($id);
                         IF( Yii::app()->request->isAjaxRequest){
-                            echo  " No se pudo procesar el documento Error: ".$cadena ;
-                        }else{
-                            $this->out($id);
-                            Yii::app()->user->setFlash('error', " No se pudo procesar el documento Error: ".$cadena);
-
+                            echo " El documento ".$evento->desdocu."   no tiene el status ".$evento->einicial."  No se puede cambiar a ".$evento->efinal;
+                        }else{ $this->out($id);
+                            MiFactoria::Mensaje('error', " El documento ".$evento->desdocu."   no tiene el status ".$evento->einicial."  No se puede cambiar a ".$evento->efinal);
                         }
-                        //$this->render('editadocumento',array('model'=>$modelo));
-                        //yii::app()->end();
+                        //  echo $modelo->{$this->campoestado}."sfxaqwfsfs  ".$evento->estadoinicial;yii::app()->end();
                     }
-
-                } else {
-                    $transaccion->rollback();
-                   // Yii::app()->user->setFlash('error', " No se pudo procesar el documento Error: ".$cadena);
-                    IF( Yii::app()->request->isAjaxRequest){
-                        echo  " No se pudo procesar el documento Error: ".Yii::app()->mensajes->getErroresItem($modelo->geterrors()) ;
-                    }else{ $this->out($id);
-                        Yii::app()->user->setFlash('error', " No se pudo procesar el documento Error: ".Yii::app()->mensajes->getErroresItem($modelo->geterrors()));
-
-                    }
-
-
                 }
+
 
             } else {
-                $this->out($id);
-                IF( Yii::app()->request->isAjaxRequest){
-                    echo " El documento ".$evento->desdocu."   no tiene el status ".$evento->einicial."  No se puede cambiar a ".$evento->efinal;
-                }else{ $this->out($id);
-                    Yii::app()->user->setFlash('error', " El documento ".$evento->desdocu."   no tiene el status ".$evento->einicial."  No se puede cambiar a ".$evento->efinal);
+                throw new CHttpException(500,__CLASS__.'   '.__FUNCTION__.'  No se econtro ningun evento con el id {$id}'.$id);
+            }
+            //$this->render('update',array('model'=>$modelo));
+            IF(! Yii::app()->request->isAjaxRequest)
+            {
+                if(!$this->detectaerrores()){
+                    $this->out($id);
+                    $this->redirect(array('verdocumento','id'=>$modelo->idguia));
+                }else{
+                    $this->redirect(array('editadocumento','id'=>$modelo->idguia));
+                    yii::app()->end();
                 }
-              //  echo $modelo->{$this->campoestado}."sfxaqwfsfs  ".$evento->estadoinicial;yii::app()->end();
-                 }
 
 
-
-        } else {
-            throw new CHttpException(500,__CLASS__.'   '.__FUNCTION__.'  No se econtro ningun evento con el id {$id}'.$id);
+            }
+        }else{
+            MiFactoria::Mensaje('error','Para autorizar esta orden, confirme ls cambios primero');
+            $this->redirect(array('editadocumento','id'=>$modelo->idguia));
+            yii::app()->end();
         }
-        //$this->render('update',array('model'=>$modelo));
-       IF(! Yii::app()->request->isAjaxRequest)
-       {
-           $this->out($id);
-           $this->redirect(array('verdocumento','id'=>$modelo->idguia));
-       }
 
-         echo "el id es ".$id;
+
+
     }
 
 
@@ -2068,6 +2117,7 @@ public function actionVerdetalle($id)
         $compra=Ocompra::model()->findByPk($id);
         switch ($idevento) {
             case 65: ///APROB
+                $this->insertamensaje($id,'O',NULL);
                 if(Ocompra::puedeautorizar()) {
                     $filas=$compra->detallefirme;
                     if(count($filas)>0){
@@ -2075,7 +2125,7 @@ public function actionVerdetalle($id)
                             // $filafirme=Docompra::model()->findByPk($row->id);//solo si
                             //Solo si no esta anulado
                             $row->setScenario('cambiaestado');
-                            if( in_array($row->estadodetalle,Estado::estadosnocalculablesdetalle($compra->coddocu)))
+                            if( !in_array($row->estadodetalle,Estado::estadosnocalculablesdetalle($compra->coddocu)))
                                 $row->estadodetalle=ESTADO_DOCOMPRA_APROBADO;
                             if(!$row->save())
                                 $mensaje.=" Ocurrió un error  en el item ".$row->item." al guardar los datos del estado detalle  <br>";
@@ -2094,6 +2144,7 @@ public function actionVerdetalle($id)
 
                 ///AQUI YA NNOS ETRABAJA CON EL BUFFER SE TRABAJADA CON LA TABAL ORIIGNAL
                 $filas=$compra->detallefirme;
+                $this->insertamensaje($id,'U',NULL);
                 foreach($filas as $row ) {
                     //$filafirme=Docompra::model()->findByPk($row->id);
                    if ( $row->cantidadentregada > 0) {
@@ -2101,7 +2152,7 @@ public function actionVerdetalle($id)
                    } else { //si no tiene atenciones entonces normal no mas Revertimos
 
                        $row->setScenario('cambiaestado');
-                       if( in_array($row->estadodetalle,Estado::estadosnocalculablesdetalle($compra->coddocu)))
+                       if( !in_array($row->estadodetalle,Estado::estadosnocalculablesdetalle($compra->coddocu)))
                            $row->estadodetalle=ESTADO_DOCOMPRA_CREADO;
                        $mensaje .= ($row->save()) ? "" : " No se pudo revertir  el item " . $row->item . "<br>";
                        /*print_r($row->geterrors());
@@ -2173,7 +2224,7 @@ public function actionVerdetalle($id)
                     Yii::app()->end();
                 }
             } else{
-                     yii::app()->user->setFlash('error',yii::app()->impuestos->insertaplantilla($modelocabeza->idguia,$modelocabeza->coddocu,$_POST['Tempimpuestosdocuaplicados']['codimpuesto']));
+                     MiFactoria::Mensaje('error',yii::app()->impuestos->insertaplantilla($modelocabeza->idguia,$modelocabeza->coddocu,$_POST['Tempimpuestosdocuaplicados']['codimpuesto']));
                  }
              }
             if (!empty($_GET['asDialog']))
@@ -2185,27 +2236,61 @@ public function actionVerdetalle($id)
     }
 
 public function actionReporte($id){
-    $this->redirect($this->createUrl("coordocs/hacereporte/",array("id"=>8,"idfiltrodocu"=>$id,"file"=>1)));
+    $id=(integer)MiFactoria::cleanInput($id);
+    $model=$this->loadModel($id);
+    if($this->sepuedeprocesar($id)){
+        $this->insertamensaje($id,'V',NULL);
+        $this->redirect($this->createUrl("coordocs/hacereporte/",array("id"=>$model->idreporte,"idfiltrodocu"=>$id,"file"=>0)));
+    }else{
+        echo "Confirme los cambios primero";
+    }
+
 }
+
+
+    public function actioncrearpdf($id){
+        $id=(integer)MiFactoria::cleanInput($id);
+        $model=$this->loadModel($id);
+        if($this->sepuedeprocesar($id)){
+           // $this->insertamensaje($id,'C',NULL);
+            echo "Se ha generado el PDF";
+            $this->redirect($this->createUrl("coordocs/hacereporte/",array("id"=>$model->idreporte,"idfiltrodocu"=>$id,"file"=>1)));
+
+        }else{
+            echo "Confirme los cambios primero";
+        }
+    }
+
+
 
     public function actionenviarpdf($id){
         $model=$this->loadModel((int)MiFactoria::cleanInput($id));
-        if(is_file(Yii::getPathOfAlias('webroot').'/assets/'.$this->documento.$id.'_'.yii::app()->user->id.'.pdf'))
-        {
-        $mensajeerror= yii::app()->correo->correo_adjunto(
-                                                Contactos::getListMailContacto($model->idcontacto,$this->documento),
-                                                Yii::app()->user->email,
-                                                Yii::app()->params['compras_titulomensaje'],
-                                                'Este es un correo automatico',
-                                                Yii::getPathOfAlias('webroot').'/assets/'.$this->documento.$id.'_'.yii::app()->user->id.'.pdf'
-                                                );
-            if($mensajeerror=="")
-                $this->insertamensaje();
+       if( $this->sepuedeprocesar($id)){
+           $nombrefichero=Yii::getPathOfAlias('webroot').'/assets/'.yii::app()->user->id.DIRECTORY_SEPARATOR.$this->documento.DIRECTORY_SEPARATOR.yii::app()->user->name.'.pdf';
+          // $this->redirect($this->createUrl("coordocs/hacereporte/",array("id"=>$model->idreporte,"idfiltrodocu"=>$id,"file"=>0)));
+           if(is_file($nombrefichero) and (time()-filemtime( $nombrefichero ))< 60  )
+           {
+               //echo date("Y-m-d H:i:s",filemtime ( $nombrefichero ));die();
+               $mensajeerror= yii::app()->correo->correo_adjunto(
+                   Contactos::getListMailContacto($model->idcontacto,$this->documento),
+                   Yii::app()->user->email,
+                   Yii::app()->params['compras_titulomensaje'],
+                   'Este es un correo automatico',
+                   $nombrefichero
+               );
+               $this->insertamensaje($id,'M',Contactos::getListMailContacto($model->idcontacto,$this->documento));
+                if($mensajeerror==""){
+                    ECHO "Se ha enviado el correo  a los siguientes destinatarios :  ". Contactos::getListMailContacto($model->idcontacto,$this->documento);
+                }else{
+                    ECHO "No se pudo enviar el correo ".$mensajeerror;
+                }
+           }else{
+               Echo "No se encontro el archivo para enviar, por favor genere el archivo" ;
+           }
+       }else{
+           Echo "Confirme los cambios antes de procesar " ;
+       }
 
-
-        }else{
-           Echo "No se encontro el archivo para enviar" ;
-        }
     }
 
 
@@ -2218,7 +2303,7 @@ public function actionReporte($id){
        $codigocen = (string)MiFactoria::cleanInput($_POST['codentro']);
        $codigoalma = (string)MiFactoria::cleanInput($_POST['codigoalma']);
 
-       // var_dump($codigo); var_dump($codigopro); var_dump($codigocen);die();
+       //var_dump($codigo); var_dump($codigopro); var_dump($codigocen);die();
     // var_dump(Ocompra::historicoprecios($codigo,$codigopro,$codigocen,$limit=null));
         echo   $this->renderpartial('precios',array('codigom'=>$codigo,'codprov'=>$codigopro,'codentro'=>$codigocen,'codigoalma'=>$codigoalma),true,true);
 
@@ -2266,6 +2351,60 @@ public function actionReporte($id){
             'model'=>$model,'proveedor'=>$proveedor,
         ));
     }
+
+public function insertamensaje($id,$tipo,$nombrefichero=null){
+    $mensa=New Mensajes();
+    $mensa->usuario=Yii::app()->user->name;
+    $mensa->cuando= date("Y-m-d H:i:s");
+    if(!is_null($nombrefichero)){
+        $mensa->nombrefichero= substr($nombrefichero,0,20);
+    }else{
+        $mensa->nombrefichero= null;
+    }
+    $mensa->codocu=$this->documento;
+    $mensa->hidocu=$id;
+    $mensa->tipo=$tipo;
+   IF(!$mensa->save())
+       ECHO "FALLO CARAY".yii::app()->mensajes->getErroresItem($mensa->geterrors());
+}
+
+ public function sepuedeprocesar($id){
+    if($this->estasEnSesion($id)){
+        if($this->hubocambiodetalle($id)){
+            return false;
+        }else{
+            return true;
+        }
+    }else{
+     return true;
+    }
+}
+
+
+  public function actionverprecios($codigomaterial){
+      $codigomaterial=$_GET['codigomaterial'];
+     // var_dump($codigomaterial);die();
+      $codigomaterial=MiFactoria::cleanInput($codigomaterial);
+      $registro=Maestrocompo::model()->findByPk($codigomaterial);
+      if(!is_null($registro)){
+          $model=new VwOcomprasimple('search');
+          $model->unsetAttributes();  // clear any default values
+          if(isset($_GET['VwOcomprasimple'])) {
+              $model->attributes=$_GET['VwOcomprasimple'];
+
+          }
+          $proveedor=$model->search_por_material($codigomaterial);
+          $this->layout = '//layouts/iframe';
+          $this->render('verprecios',array(
+              'model'=>$model,'proveedor'=>$proveedor,
+          ));
+
+      }else{
+          throw new CHttpException(500,'No se encontro nimgun material con codigo  '.$codigomaterial);
+
+      }
+
+        }
 
 
 }

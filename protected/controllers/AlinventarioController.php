@@ -111,7 +111,7 @@ class AlinventarioController extends Controller
 		return array(
 
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('pintarotacion','revertirajuste','ajuste','editaconteofisico','conteofisico','updateubicacion','muestrakardex','admin','pintareservas','create','supervision','import','pronostica','pareto','adminpareto','repinventario','prueba','buclecarga','update','cargarmat','busqueda','cargaalmacenes','cargaalmacenes1'),
+				'actions'=>array('ordenlotesube1','ordenlotebaja1','colocaloteultimo','colocaloteprimero','editalote','pintarotacion','revertirajuste','ajuste','editaconteofisico','conteofisico','updateubicacion','muestrakardex','admin','pintareservas','create','supervision','import','pronostica','pareto','adminpareto','repinventario','prueba','buclecarga','update','cargarmat','busqueda','cargaalmacenes','cargaalmacenes1'),
 				'users'=>array('@'),
 			),
 
@@ -236,11 +236,7 @@ print_r($_SESSION['sesion_Maestrocompo']);
 
   
 	public function actioncargarmat() {
-
 					$modelito=new cargainForm;
-
-
-
 		// collect user input data
 		if(isset($_POST['cargainForm']))
 		{
@@ -248,14 +244,14 @@ print_r($_SESSION['sesion_Maestrocompo']);
 			$modelito->attributes=$_POST['cargainForm'];
 			// validate user input and redirect to the previous page if valid
             //obtenemos la matriz de datos del maestro de materiales que no esta ampliado en ese centro y almacen
-            $prefix="public_";
+           // $prefix="public_";
 
-			$matriz2=Yii::app()->db->createCommand(" SELECT *from ".$prefix."maestrocomponentes where codigo not in (
-                   select codart from ".$prefix."alinventario where codalm='".$modelito->almacen."'  and codcen='".$modelito->centro."'
+			$matriz2=Yii::app()->db->createCommand(" SELECT *from {{maestrocomponentes}} where codigo not in (
+                   select codart from {{alinventario}} where codalm='".$modelito->almacen."'  and codcen='".$modelito->centro."'
                  ) ")->queryAll();
 
 			for ($i=0; $i < count($matriz2); $i++) { //recorremos y lo vamos insertando
-				$cadena="INSERT INTO ".$prefix."alinventario ( CODCEN,CODALM,CODART, CANTLIBRE,CANTTRAN,CANTRES) VALUES ('".$modelito->centro."','".$modelito->almacen."','".$matriz2[$i]['codigo']."',0,0,0)";
+				$cadena="INSERT INTO {{alinventario}} ( CODCEN,CODALM,CODART, CANTLIBRE,CANTTRAN,CANTRES) VALUES ('".$modelito->centro."','".$modelito->almacen."','".$matriz2[$i]['codigo']."',0,0,0)";
 				$command = Yii::app()->db->createCommand($cadena);
 				$command->execute();
 				/* $cadena2="select codart from ".$prefix."alinventario where codalm='".$modelito->almacen."'  and codcen='".$modelito->centro."'";
@@ -266,12 +262,12 @@ print_r($_SESSION['sesion_Maestrocompo']);
 			}
 
 
-             $matriz=Yii::app()->db->createCommand(" SELECT *from ".$prefix."maestrocomponentes where codigo not in (
-                    SELECT codart from ".$prefix."maestrodetalle where codcentro='".trim($modelito->centro)."' and  codal ='".trim($modelito->almacen)."'
+             $matriz=Yii::app()->db->createCommand(" SELECT *from {{maestrocomponentes}} where codigo not in (
+                    SELECT codart from {{maestrodetalle}} where codcentro='".trim($modelito->centro)."' and  codal ='".trim($modelito->almacen)."'
                  ) ")->queryAll();
 
             for ($i=0; $i < count($matriz); $i++) { //recorremos y lo vamos insertando
-                   $cadena="INSERT INTO ".$prefix."maestrodetalle ( CODCENTRO,CODAL, CODART,CODGRUPOVENTAS,CANALDIST,CANTECONOMICA,CANTREPOSIC,CANTREORDEN,LEADTIME) VALUES ('".$modelito->centro."','".$modelito->almacen."','".$matriz[$i]['codigo']."', '001','02',0,0,0,0)";
+                   $cadena="INSERT INTO {{maestrodetalle}} ( CODCENTRO,CODAL, CODART,CODGRUPOVENTAS,CANALDIST,CANTECONOMICA,CANTREPOSIC,CANTREORDEN,LEADTIME) VALUES ('".$modelito->centro."','".$modelito->almacen."','".$matriz[$i]['codigo']."', '001','02',0,0,0,0)";
                         $command = Yii::app()->db->createCommand($cadena);
 				        $command->execute();
                       /* $cadena2="select codart from ".$prefix."alinventario where codalm='".$modelito->almacen."'  and codcen='".$modelito->centro."'";
@@ -283,8 +279,8 @@ print_r($_SESSION['sesion_Maestrocompo']);
 
 
 
-			$matriz3=Yii::app()->db->createCommand(" SELECT *from ".$prefix."maestrocomponentes where codigo not in (
-                    SELECT hcodart from ".$prefix."maestrodetallecentros where codcen='".trim($modelito->centro)."' ) ")->queryAll();
+			$matriz3=Yii::app()->db->createCommand(" SELECT *from {{maestrocomponentes}} where codigo not in (
+                    SELECT hcodart from {{maestrodetallecentros}} where codcen='".trim($modelito->centro)."' ) ")->queryAll();
 
 			for ($i=0; $i < count($matriz3); $i++) { //recorremos y lo vamos insertando
 				$cadena="INSERT INTO ".$prefix."maestrodetallecentros
@@ -298,7 +294,20 @@ print_r($_SESSION['sesion_Maestrocompo']);
 
                      }*/
 			}
+			if(yii::app()->settings->get('materiales','materiales_contabilidad')=='1')
+			{
+				$crit=New CDBCriteria;
+				$crit->addCondition("catval=:catval and codal=:codal  and codcentro=:codcentro");
+				$crit->params= array(":catval"=>null,":codcentro"=>$modelito->centro,":codal"=>$modelito->almacen);
+				$data= Yii::app()->db->createCommand()
+					->select('codart')
+					->from('{{maestrodetalle}}')
+					->where($crit->condition,$crit->params)
+					->queryAll();
+				$faltan=count($data);
+				MiFactoria::Mensaje('notice',' En este almacen  '.$faltan.' registros de materiales que no tienen datos de valoracion contable');
 
+			}
 
 				  $this->render("vw_procesado");
 		}
@@ -965,25 +974,39 @@ public function actionBusqueda()
 						}
 						if(yii::app()->user->hasFlash('error')){
 							$transaccion->rollback();
+							if (!empty($_GET['asDialog']))
+								$this->layout = '//layouts/iframe';
+							$this->render('_form_ajuste',array(
+								'model'=>$model, 'modelocabeza'=>$modeloinv,
+							));
+
 						}else{
 							$transaccion->commit();
 							MiFactoria::Mensaje('success','Se realizo el ajuste ocn exito');
-						}
-
-
-						echo CHtml::script("window.parent.$('#cru-dialogdetalle').dialog('close');
+							echo CHtml::script("window.parent.$('#cru-dialogdetalle').dialog('close');
 													                    window.parent.$('#cru-detalle').attr('src','');
 																		window.parent.$.fn.yiiGridView.update('detalle-gridx');
 																		");
 
 
 
-						Yii::app()->end();
+							Yii::app()->end();
+						}
+
+
+
 
 
 						//MiFactoria::Mensaje('success','Se realizo el ajuste con exito');
 					}else{
-						print_r($model->geterrors());die();
+
+						MiFactoria::Mensaje('error',yii::app()->mensajes->getErroresItem($model->geterrors()));
+						$transaccion->rollback();
+						if (!empty($_GET['asDialog']))
+							$this->layout = '//layouts/iframe';
+						$this->render('_form_ajuste',array(
+							'model'=>$model, 'modelocabeza'=>$modeloinv,
+						));
 					}
 				} else{
 					//colocando las cuentas predeterminadas
@@ -1123,5 +1146,238 @@ public function actionBusqueda()
 
 
 	}
+
+	private function cargalote($idlote){
+		$idlote=(integer)MiFactoria::cleanInput($idlote);
+		$reglote=Lotes::model()->findByPk($idlote);
+		if(is_null($reglote))
+			throw new CHttpException(404,'No se encotro el registro del lote para este id '.$idlote);
+		return $reglote;
+	}
+
+	public function actionordenlotesube1($idlote){
+		$idlote=$_GET['idlote'];
+		$lote=$this->cargalote($idlote);
+		//si este registro tiene un solo lote activo
+		$numerolotes=$lote->inventario->numerolotes;
+		if( $numerolotes > 1) {
+			if ((IN_ARRAY($lote->inventario->detallesmaterial()['controlprecio'], ARRAY('F', 'L')))) {
+				if ($lote->inventario->detallesmaterial()['controlprecio'] == 'L')
+					$registroshijos = $lote->inventario->loteslifo;
+				if ($lote->inventario->detallesmaterial()['controlprecio'] == 'F')
+				$registroshijos = $lote->inventario->lotesfifo;
+
+				$transaction = Yii::app()->db->beginTransaction();
+				$lotepuntero = $registroshijos[0];
+				//$lotecolero=$lote->inventario->loteslifo[$numerolotes-1];
+				if ($lotepuntero->orden <> $lote->orden) { //si no esta untero entondces subirlo , o intercambiar le orden hacia ariba
+					echo "www2;";
+					foreach ($registroshijos as $clave=>$fila) {
+						if ($fila->orden == $lote->orden) //esta es la ubicaciaon		{
+						{
+							$loteanterior = $registroshijos[$clave - 1];
+							var_dump($registroshijos);
+							var_dump($loteanterior);
+							$lote->setScenario('orden');
+							$loteanterior->setScenario('orden');
+							$lote->orden = $loteanterior->orden;
+							$loteanterior->orden = $fila->orden;
+							$loteanterior->save();
+							$lote->save();
+							BREAK;
+						}
+
+					}
+				}
+				$transaction->commit();
+			}
+		}
+		}
+
+
+	public function actionordenlotebaja1($idlote){
+		$idlote=$_GET['idlote'];
+		$lote=$this->cargalote($idlote);
+		//si este registro tiene un solo lote activo
+		$numerolotes=$lote->inventario->numerolotes;
+		if( $numerolotes > 1) {
+
+			if ((IN_ARRAY($lote->inventario->detallesmaterial()['controlprecio'], ARRAY('F', 'L')))) {
+				if ($lote->inventario->detallesmaterial()['controlprecio'] == 'L')
+					$registroshijos = $lote->inventario->loteslifo;
+				if ($lote->inventario->detallesmaterial()['controlprecio'] == 'F')
+					$registroshijos = $lote->inventario->lotesfifo;
+				$transaction = Yii::app()->db->beginTransaction();
+				$lotecolero = $registroshijos[$numerolotes-1];
+			//	var_dump($lotecolero->orden);				var_dump($lote->orden);
+
+				//$lotecolero=$lote->inventario->loteslifo[$numerolotes-1];
+				if ($lotecolero->orden > $lote->orden) { //si no esta colero entondces bajarlo , o intercambiar le orden hacia ariba
+
+					foreach ($registroshijos as $clave=>$fila) {
+						if ($fila->orden == $lote->orden) //esta es la ubicaciaon
+						{
+							$loteposterior = $registroshijos[$clave +1];
+							var_dump($loteposterior->orden);
+							var_dump($fila->orden);
+							$lote->setScenario('orden');
+							$loteposterior->setScenario('orden');
+							$lote->orden = $loteposterior->orden;
+							$loteposterior->orden = $fila->orden;
+							if($loteposterior->save())echo "grabo posterior  ".$loteposterior->id." - ".$loteposterior->orden."<br>";
+							if($lote->save())echo "grabo actual  ".$lote->id." - ".$lote->orden."<br>";
+							BREAK;
+						}
+
+					}
+
+				}
+				$transaction->commit();
+
+			}
+		}
+	}
+
+
+public function  actioncolocaloteprimero($idlote)
+{
+	$idlote=$_GET['idlote'];
+	$lote = $this->cargalote($idlote);
+	//si este registro tiene un solo lote activo
+	$numerolotes = $lote->inventario->numerolotes;
+	if ($numerolotes > 1) {
+		if ((IN_ARRAY($lote->inventario->detallesmaterial()['controlprecio'], ARRAY('F', 'L')))) {
+			if ($lote->inventario->detallesmaterial()['controlprecio'] == 'L')
+				$registroshijos = $lote->inventario->loteslifo;
+			if ($lote->inventario->detallesmaterial()['controlprecio'] == 'F')
+				$registroshijos = $lote->inventario->lotesfifo;
+
+
+		$transaction = Yii::app()->db->beginTransaction();
+		$arrayorden = array();
+		foreach ($registroshijos as $fila) {
+			$arrayorden[] = $fila->orden;
+		}
+		$ubicacion = array_search($lote->orden, $arrayorden);
+		$ordenpuntero=$registroshijos[0]->orden;
+		$arrayaux = array();
+		//$arrayaux[0] = $lote->orden;
+		foreach ($arrayorden as $clave => $valor) {
+			if($clave < $ubicacion){
+				$arrayaux[]=$arrayorden[$clave+1];
+			}
+			if ($clave == $ubicacion){
+				$arrayaux[] =$ordenpuntero ;
+			}
+			if ($clave > $ubicacion){
+				$arrayaux[] =$valor ;
+			}
+
+		}
+
+		$i = 0;
+			print_r($arrayaux);
+		//$lote->orden = $registroshijos[0]->orden;
+		foreach ($registroshijos as $fila) {
+			$fila->setScenario('orden');
+			$fila->orden = $arrayaux[$i];
+			if($fila->save()) echo "grabo   ".$fila->id."   -    ".$fila->orden."<br>";
+			$i += 1;
+		}
+		//$lote->save();
+
+		$transaction->commit();
+
+		}
+	}
+}
+
+
+	public function  actioncolocaloteultimo($idlote)
+	{
+		$idlote=$_GET['idlote'];
+		$lote = $this->cargalote($idlote);
+		//si este registro tiene un solo lote activo
+		$numerolotes = $lote->inventario->numerolotes;
+		if ($numerolotes > 1) {
+			if ((IN_ARRAY($lote->inventario->detallesmaterial()['controlprecio'], ARRAY('F', 'L')))) {
+				if ($lote->inventario->detallesmaterial()['controlprecio'] == 'L')
+					$registroshijos = $lote->inventario->loteslifo;
+				if ($lote->inventario->detallesmaterial()['controlprecio'] == 'F')
+					$registroshijos = $lote->inventario->lotesfifo;
+				$transaction = Yii::app()->db->beginTransaction();
+				$arrayorden = array();
+				foreach ($registroshijos as $fila) {
+					$arrayorden[] = $fila->orden;
+				}
+				$ordenultimo=$registroshijos[$numerolotes-1]->orden;
+				$ubicacion = array_search($lote->orden, $arrayorden);
+				$arrayaux = array();
+				foreach ($arrayorden as $clave => $valor) {
+					if ($clave < $ubicacion){
+						$arrayaux[] = $valor;
+					}
+					if ($clave == $ubicacion){
+						$arrayaux[] = $ordenultimo;
+					}
+					if ($clave > $ubicacion){
+						$arrayaux[] = $arrayorden[$clave-1];
+					}
+
+				}
+				//$arrayaux[$numerolotes - 1] = $lote->orden;
+				print_r($arrayaux);
+				$i = 0;
+
+				foreach ($registroshijos as $fila) {
+					$fila->setScenario('orden');
+					$fila->orden = $arrayaux[$i];
+					$fila->save();
+					$i += 1;
+				}
+			//	$lote->save();
+
+				$transaction->commit();
+
+			}
+
+		}
+
+
+
+	}
+
+public function actioneditalote($id){
+	$model=$this->cargalote($id);
+	$model->setScenario('update');
+
+	if(isset($_POST['Lotes']))
+	{
+		$model->attributes=$_POST['Lotes'];
+		$model->save();
+		//var_dump($_POST['Lotes']);
+		//var_dump($model->attributes);die();
+		if (!empty($_GET['asDialog']))
+		{
+			yii::app()->user->setFlash('success','Se modificó el Lote');
+			//Close the dialog, reset the iframe and update the grid
+			echo CHtml::script("window.parent.$('#cru-dialogdetalle').dialog('close');
+													                    window.parent.$('#cru-detalle').attr('src','');
+																		window.parent.$.fn.yiiGridView.update('alkardex-griggdXX');
+																		");
+
+			Yii::app()->end();
+		}
+	}
+
+
+			if (!empty($_GET['asDialog']))
+			$this->layout = '//layouts/iframe';
+				$this->render('_form_lote',array(
+					'model'=>$model,
+				));
+
+}
+
 
 }

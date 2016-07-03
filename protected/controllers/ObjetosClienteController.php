@@ -26,7 +26,7 @@ class ObjetosClienteController extends Controller
 			return array(
 
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('admin','view','Ajaxborraequipo','agregarequipo','create','update'),
+				'actions'=>array('ajaxpintadescripcion','admin','view','Ajaxborraequipo','agregarequipo','create','update'),
 				'users'=>array('@'),
 			),
 
@@ -211,5 +211,11 @@ class ObjetosClienteController extends Controller
 		}
 	}
 
+public function actionajaxpintadescripcion(){
+	$codigo=$_POST['codigo'];
+	$idet=$_POST['identificador'];
+	$reg=Masterequipo::findByCodigo($codigo);
+	echo $reg->descripcion."-".$idet;
+}
 
 }

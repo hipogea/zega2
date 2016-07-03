@@ -204,4 +204,22 @@ public $fecdoc1;
 	}
 
 
+	public function search_por_material($codigo)
+	{
+
+		$criteria=new CDbCriteria;
+
+
+		$criteria->addcondition("codart=:vcodart");
+		$criteria->params=array(":vcodart"=>$codigo);
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+			'pagination'=>array('pagesize'=>10),
+		));
+
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
+	}
+
 }

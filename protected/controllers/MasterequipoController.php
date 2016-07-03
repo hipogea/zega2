@@ -96,9 +96,12 @@ class MasterequipoController extends Controller
 		if(isset($_POST['Masterequipo']))
 		{
 			$model->attributes=$_POST['Masterequipo'];
+			//print_r($model->attributes);
 			if($model->save()){
 				yii::app()->user->setFlash('success','Se grabo el equipo '.$model->codigo);
 				$this->render('view',array('model'=>$model));
+			} else{
+				print_r($model->geterrors());die();
 			}
 				//$this->redirect(yii::app()->createUrl($this->id.'/view',$model->codigo));
 		}

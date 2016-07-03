@@ -46,11 +46,14 @@
 			<?php echo $form->textField($model,'txtmaterial',array('size'=>40,'maxlength'=>40)); ?>
 		</div>
 
-		<div class="row">
-			<?php echo $form->labelEx($model,'estado'); ?>
-			<?php $datos111=CHTml::listData(Estado::model()->findAll("codocu=:vcodocu",array(":vcodocu"=>CODIGO_DOC_SOLPE)),'codestado','estado'); ?>
 
-			<?php echo $form->dropDownList($model,'estado',$datos111,array('empty'=>'--Seleccione un estado--'));?>
+
+
+		<div class="row">
+			<?php echo $form->labelEx($model,'est'); ?>
+			<?php $datos111=CHTml::listData(Estado::model()->findAll("codocu=:vcodocu",array(":vcodocu"=>CODIGO_DOC_DESOLPE)),'codestado','estado'); ?>
+
+			<?php echo $form->dropDownList($model,'est',$datos111,array('empty'=>'--Seleccione un estado--'));?>
 
 		</div>
 

@@ -14,6 +14,7 @@
  * @property string $fechacre
  * @property string $flaginterno
  * @property string $codocu
+ * @property string $tipo
  * @property string $codestado
  * @property string $codmaster
  * @property integer $idinventario
@@ -21,10 +22,11 @@
  * @property integer $idusertemp
  * @property string $idtemp
  * @property integer $idstatus
+ * @property string $txt
  *
  * The followings are the available model relations:
- * @property Trabajadores $codresponsable0
  * @property Ot $hidorden0
+ * @property Trabajadores $codresponsable0
  */
 class Detot extends CActiveRecord
 {
@@ -44,18 +46,17 @@ class Detot extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('hidorden, item, textoactividad, codresponsable, fechainic, fechafinprog, fechacre, flaginterno, codocu, codestado, codmaster, idinventario, iduser, idusertemp, idtemp, idstatus', 'required'),
+			//array('id, hidorden, item, textoactividad, codresponsable, fechainic, fechafinprog, fechacre, flaginterno, codocu, tipo, codestado, codmaster, idinventario, iduser, idusertemp, idstatus, txt', 'required'),
 			array('idinventario, iduser, idusertemp, idstatus', 'numerical', 'integerOnly'=>true),
-			array('hidorden, idtemp', 'length', 'max'=>20),
-			array('item, codocu', 'length', 'max'=>3),
+			array('id, hidorden', 'length', 'max'=>20),
+			array('item, codocu, codestado', 'length', 'max'=>3),
 			array('textoactividad', 'length', 'max'=>40),
-			array('codresponsable', 'length', 'max'=>6),
-			array('flaginterno', 'length', 'max'=>1),
-			array('codestado', 'length', 'max'=>2),
+			array('codresponsable', 'length', 'max'=>8),
+			array('flaginterno, tipo', 'length', 'max'=>1),
 			array('codmaster', 'length', 'max'=>12),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, hidorden, item, textoactividad, codresponsable, fechainic, fechafinprog, fechacre, flaginterno, codocu, codestado, codmaster, idinventario, iduser, idusertemp, idtemp, idstatus', 'safe', 'on'=>'search'),
+			array('id, hidorden, item, textoactividad, codresponsable, fechainic, fechafinprog, fechacre, flaginterno, codocu, tipo, codestado, codmaster, idinventario, iduser, idusertemp, idtemp, idstatus, txt', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -67,8 +68,8 @@ class Detot extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'codresponsable0' => array(self::BELONGS_TO, 'Trabajadores', 'codresponsable'),
 			'hidorden0' => array(self::BELONGS_TO, 'Ot', 'hidorden'),
+			'codresponsable0' => array(self::BELONGS_TO, 'Trabajadores', 'codresponsable'),
 		);
 	}
 
@@ -88,6 +89,7 @@ class Detot extends CActiveRecord
 			'fechacre' => 'Fechacre',
 			'flaginterno' => 'Flaginterno',
 			'codocu' => 'Codocu',
+			'tipo' => 'Tipo',
 			'codestado' => 'Codestado',
 			'codmaster' => 'Codmaster',
 			'idinventario' => 'Idinventario',
@@ -95,6 +97,7 @@ class Detot extends CActiveRecord
 			'idusertemp' => 'Idusertemp',
 			'idtemp' => 'Idtemp',
 			'idstatus' => 'Idstatus',
+			'txt' => 'Txt',
 		);
 	}
 
@@ -126,6 +129,7 @@ class Detot extends CActiveRecord
 		$criteria->compare('fechacre',$this->fechacre,true);
 		$criteria->compare('flaginterno',$this->flaginterno,true);
 		$criteria->compare('codocu',$this->codocu,true);
+		$criteria->compare('tipo',$this->tipo,true);
 		$criteria->compare('codestado',$this->codestado,true);
 		$criteria->compare('codmaster',$this->codmaster,true);
 		$criteria->compare('idinventario',$this->idinventario);
@@ -133,6 +137,7 @@ class Detot extends CActiveRecord
 		$criteria->compare('idusertemp',$this->idusertemp);
 		$criteria->compare('idtemp',$this->idtemp,true);
 		$criteria->compare('idstatus',$this->idstatus);
+		$criteria->compare('txt',$this->txt,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

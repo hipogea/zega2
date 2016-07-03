@@ -209,7 +209,10 @@ public function tienecompras(){
 
 	public static function tienecatvaloracion($codart,$codal,$codcen){
 		$retorno=true;
+		if($codart==yii::app()->settings->get('materiales','materiales_codigoservicio'))
+			return true;
 		if(Yii::app()->hasModule('contabilidad')){
+
 		$registro=self::model()->findByPk(array('codart'=>$codart,'codal'=>$codal,'codcentro'=>$codcen));
 			//var_dump($registro->attributes);die();
 			if(is_null($registro)){

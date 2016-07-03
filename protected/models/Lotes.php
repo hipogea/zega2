@@ -1,10 +1,13 @@
 <?php
 
-class Lotes extends CActiveRecord
+class Lotes extends ModeloGeneral
 {
+
+	public $ubicacion; //orden relkaticov respecto alorden segun lifo fifo
 	/**
 	 * @return string the associated database table name
 	 */
+
 	public function tableName()
 	{
 		return '{{lotes}}';
@@ -26,8 +29,10 @@ class Lotes extends CActiveRecord
 			array('codestado', 'length', 'max'=>2),
 			array('descripcion', 'length', 'max'=>40),
 			//array('hidkardex,cant','safe','on'=>'despacho'),
-			array('cant','safe','on'=>'reconstruye'),
-			array('cant,hidkardex,fechaingreso,punit,stock,hidinventario,numlote','safe','on'=>'automatico'),
+			array('cant,orden','safe','on'=>'reconstruye'),
+			array('fechafabri, fechaingreso,loteprov, fechavenc','safe','on'=>'update'),
+			array('orden','safe','on'=>'orden'),
+			array('cant,hidkardex,orden,fechaingreso,punit,stock,hidinventario,numlote','safe','on'=>'automatico'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, numlote, fechafabri, fechaingreso, fechavenc, usuario, cant, hidinventario, loteprov, comentario, codestado, cantsaldo, descripcion', 'safe', 'on'=>'search'),
@@ -140,14 +145,18 @@ class Lotes extends CActiveRecord
 	}
 
 
-	public function search_por_inventario($id)
+	public function search_por_inventario($id,$orden)
 	{
 		$id=MiFactoria::cleanInput($id);
+		if(!in_array(strtoupper($orden),array('ASC','DESC')) or gettype($orden)!='string')
+			throw new CHttpException(500,'El parametro de ordenacion quepaso no es el correcto');
+
 		$criteria=new CDbCriteria;
 
 
 		$criteria->addCondition("hidinventario=".$id);
 		$criteria->addCondition("cant > 0");
+		$criteria->order = " orden ".$orden;
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -155,4 +164,41 @@ class Lotes extends CActiveRecord
 	}
 
 
+
+	public function init(){
+		$this->documento='260';
+
+	}
+
+  public function beforeSave(){
+	  if($this->isNewRecord) {
+		  $this->orden=microtime(true);
+		 // $this->numlote=$this->correlativo('numlote');
+		  }
+//var_dump($this->orden);
+	  //var_dump(microtime(true));die();
+
+	  return parent::beforeSave();
+
+  }
+
+	public function getubicacion(){
+		$orden=1;
+		  $inventario=$this->inventario;
+		  if(in_array($inventario->detallesmaterial()['controlprecio'] ,array('L','F') )){
+			 IF( $inventario->detallesmaterial()['controlprecio']=='L')
+				 $registroshijos=$inventario->loteslifo;
+			  IF( $inventario->detallesmaterial()['controlprecio']=='F')
+				  $registroshijos=$inventario->lotesfifo;
+
+			  FOREACH($registroshijos as $fila){
+				  if($fila->orden==$this->orden){
+						break;
+				  }
+				  $orden++;
+			  }
+			  unset($inventario); unset($registroshijos);
+		  }
+		return $orden;
+        }
 }

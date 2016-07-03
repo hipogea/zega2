@@ -130,7 +130,7 @@ class VwSolpe extends CActiveRecord
 		$criteria->compare('fechalib',$this->fechalib,true);
 		$criteria->compare('imputacion',$this->imputacion,true);
 		$criteria->compare('solicitanet',$this->solicitanet,true);
-		//$criteria->compare('txtmaterial',$this->txtmaterial,true);
+		$criteria->compare('txtmaterial',$this->txtmaterial,true);
 		$criteria->compare('hidsolpe',$this->hidsolpe,true);
 		$criteria->compare('id',$this->id);
 		$criteria->compare('codocu',$this->codocu,true);
@@ -142,7 +142,7 @@ class VwSolpe extends CActiveRecord
        $criteria->compare('escompra',$this->escompra,true);
 		$criteria->compare('numsolpe',$this->numsolpe,true);
 		$criteria->addcondition("numsolpe IS NOT NULL" );
-		$criteria->addcondition(" txtmaterial like '%".MiFactoria::cleanInput($this->txtmaterial)."%' ");
+		//$criteria->addcondition(" txtmaterial like '%".MiFactoria::cleanInput($this->txtmaterial)."%' ");
 
 		// if((isset($this->fecdoc) && trim($this->fecdoc) != "") && (isset($this->fecdoc1) && trim($this->fecdoc1) != ""))  {
 		             //  $limite1=date("Y-m-d",strotime($this->d_fectra)-24*60*60); //UN DIA MENOS 
@@ -262,4 +262,19 @@ class VwSolpe extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+
+
+	public function search_doc_padre($idpadre,$codocu)
+	{
+		$criteria=new CDbCriteria;
+		$criteria->addcondition("hidot=".$idpadre );
+		$criteria->addcondition("hcodoc=".$codocu );
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+			'pagination' => array(
+				'pageSize' => 100,
+			),
+		));
+	}
+
 }

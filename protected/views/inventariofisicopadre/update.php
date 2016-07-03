@@ -9,13 +9,13 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'List Inventariofisicopadre', 'url'=>array('index')),
-	array('label'=>'Create Inventariofisicopadre', 'url'=>array('create')),
-	array('label'=>'View Inventariofisicopadre', 'url'=>array('view', 'id'=>$model->id)),
-	array('label'=>'Manage Inventariofisicopadre', 'url'=>array('admin')),
+	//array('label'=>'List Inventariofisicopadre', 'url'=>array('index')),
+	array('label'=>'Crear conteo', 'url'=>array('create')),
+	//array('label'=>'View Inventariofisicopadre', 'url'=>array('view', 'id'=>$model->id)),
+	array('label'=>'Listado', 'url'=>array('admin')),
 );
 ?>
 
-<h1>Update Inventariofisicopadre <?php echo $model->id; ?></h1>
+<?php MiFactoria::titulo('Editar conteo físico','file'); ?>
 
 <?php $this->renderPartial('_form', array('modelhijo'=>$modelhijo,'model'=>$model)); ?>

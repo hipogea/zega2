@@ -469,19 +469,23 @@ class Alkardex extends ModeloGeneral
 	//public $conservarvalor=0; //Opcionpa reaverificar si se quedan lo valores predfindos en sesiones
 	public function beforeSave()
 	{
+
+
 		if ($this->isNewRecord) {
 			$this->codestado = '10';
 			$this->coddoc='460';
 			$this->iduser = yii::app()->user->id;
 
 		} else {
+			$this->saldo=$this->alkardex_alinventario->getstockregistro();
+			$this->umsaldo=$this->alkardex_alinventario->maestro->um;
+			$this->cantbase=$this->cantidadbase();
 
 			/* echo "saliop carajo";	//$this->ultimares=" ".strtoupper(trim($this->usuario=Yii::app()->user->name))." ".date("H:i")." :".$this->ultimares;
             */
 		}
-		$this->saldo=$this->alkardex_alinventario->getstockregistro();
-		$this->umsaldo=$this->alkardex_alinventario->maestro->um;
-		$this->cantbase=$this->cantidadbase();
+		//var_dump($this->alkardex_alinventario);die();
+
 
 		//if(!($this->codart==yii::app()->settings->get('materiales','materiales_codigoservicio')))
 		//$sig=$this->alkardex_almacenmovimientos->signo;
@@ -848,6 +852,7 @@ class Alkardex extends ModeloGeneral
 		return array(
 			array('textolargo,fecha,saldo,umsaldo,codmoneda,idotrokardex,preciounit,codmoneda,colector,montomovido', 'safe'),
 			array('cant', 'numerical'),
+			//array('codart','chkcatval'),
 			array('codart', 'length', 'max' => 10),
 			array('codmov, codestado, prefijo', 'length', 'max' => 2),
 			array('alemi, aldes, coddoc, um, codocuref', 'length', 'max' => 3),
@@ -1408,4 +1413,6 @@ class Alkardex extends ModeloGeneral
 	private function identidada(){
 		return '[ Objeto :'.__CLASS__.'] [ Funcion :'.__FUNCTION__.']  [ Linea :  '.__LINE__.']      Material : '.$this->codart.'- Almacen : '.$this->alemi.'  ';
 	}
+
+
 }

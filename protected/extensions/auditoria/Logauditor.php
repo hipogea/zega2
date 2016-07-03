@@ -47,10 +47,10 @@ class Logauditor extends CWidget
 				array('name'=>'action','header' => 'Accion' ),
 				array('name'=>'Usuario','header' => 'Usuario','value' => 'Yii::app()->user->um->loadUserById($data->userid)->username' ),
 				//array('name'=>'field','header' => 'Campo afectado' ),
-				array('name'=>'nombrecampo','header' => 'Campo afectado' ),
+				array('name'=>'nombrecampo','header' => 'Campo Modif' ),
 				array('name'=>'creationdate','header' => 'Fecha' ),
-				array('name'=>'oldvalue','header' => 'Valor anterior' ),
-				array('name'=>'newvalue','header' => 'Valor actualizado' ),
+				array('name'=>'oldvalue','header' => 'Val ant' ),
+				array('name'=>'newvalue','header' => 'Val act' ),
 
 
 			),

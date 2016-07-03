@@ -32,7 +32,7 @@ class Impuestosdocuaplicado extends CActiveRecord
 			array('iddocu', 'length', 'max'=>20),
 			array('valorimpuesto','safe', 'on'=>'insert,update'),
 			array('codimpuesto', 'length', 'max'=>3),
-			array('idsatus,id,idusertemp', 'safe'),
+			array('idstatus,id,idusertemp', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, iddocu,iduser,idusertemp, codocu, codimpuesto', 'safe', 'on'=>'search'),

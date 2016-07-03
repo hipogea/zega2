@@ -30,7 +30,9 @@ echo $cadenacabecera;
 </div>
 
 <div style="position:absolute; width:80%; left:<?php echo $modelo->x_grilla; ?>px; top:<?php echo $modelo->y_grilla; ?>px">
-<?php // echo $hojaestilo; yii::app()->end(); ?>
+<?php // echo $hojaestilo; yii::app()->end();
+//var_dump($modelo->tienecabecera);
+// ?>
   <?php  $this->widget('zii.widgets.grid.CGridView', array(
     'id'=>'detalle-grid',
     'hideHeader'=>($modelo->tienecabecera=='1')?FALSE:TRUE,

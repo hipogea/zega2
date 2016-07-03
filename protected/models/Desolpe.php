@@ -480,7 +480,7 @@ public function checkvalores1($attribute,$params) {
 								if($this->tipsolpe<>'S')
 								{
 									$registroinventario = $this->desolpe_alinventario;
-									$this->punitplan = $registroinventario->punit * $this->cant *
+									$this->punitplan = $registroinventario->getprecio(abs($this->cant)) *
 										Alconversiones::convierte($this->codart, $this->um) *
 										yii::app()->tipocambio->getcambio($registroinventario->almacen->codmon,
 											yii::app()->settings->get('general', 'general_monedadef'));//}
@@ -521,7 +521,7 @@ public function checkvalores1($attribute,$params) {
 												yii::app()->end();*/
 												//$registroinventario=Alinventario::model()->encontrarregistro($this->centro,$this->codal,$this->codart);
 												//$registroinventario=Alinventario::model()->encontrarregistro($this->centro,$this->codal,$this->codart);
-												$this->punitplan=$registroinventario->punit*$this->cant*
+												$this->punitplan=$registroinventario->getprecio(abs($this->cant))*
 													Alconversiones::convierte($this->codart,$this->um)*
 													yii::app()->tipocambio->getcambio($registroinventario->almacen->codmon,
 														yii::app()->settings->get('general','general_monedadef'));

@@ -20,7 +20,10 @@
 		                                                    )); ?>
 
             <div class="row">
-                <?php if($editable) {
+                <?php
+
+                if($editable) {
+
                     $botones = array(
                         'go' => array(
                             'type' => 'A',
@@ -39,7 +42,11 @@
                         'ok' => array(
                             'type' => 'B',
                             'ruta' => array($this->id . '/procesardocumento', array('id' => $model->idguia, 'ev' => 65)),//aprobar
-                            'visiblex' => array( ESTADO_CREADO, ((integer)$model->numeroitems >0) ),
+                            'visiblex' => array( ESTADO_CREADO, (
+                                (integer)$model->numeroitems >0 and
+                                Ocompra::puedeautorizar()
+
+                            ) ),
                            // 'visiblex' => array( true ),
                         ),
 
@@ -59,23 +66,16 @@
                         ),
                         'pdf' => array(
                             'type' => 'D', //AJAX LINK
-                            'ruta' => array('coordocs/hacereporte', array('id' => $model->idreporte, 'idfiltrodocu' => $model->idguia, 'file' => 1)),
-                            'opajax' => array(
-                                'type' => 'POST',
-                                'ruta' => array('coordocs/hacereporte', array('id' => $model->idreporte, 'idfiltrodocu' => $model->idguia, 'file' => 1)),
-                                'beforeSend' => 'js:function(){
-                                  				 var r = confirm("Esta Accion creara un archivo PDF, desea continuar ?");
-                          						 if(!r){return false;}else{ $("#myDivision").addClass("procesandoajax");}
-                               							 }',
-
-                                /*'beforeSend' => 'function(){
-                                            $("#myDivision").addClass("procesandoajax");}',*/
-                                'complete' => 'function(){
-                                         $("#myDivision").removeClass("procesandoajax");
-                                         $("#myDivision").html("Se genero el PDF CON EXITO").fadeIn().animate({opacity: 1.0}, 3000).fadeOut("slow");
-                                        $("#myDivision").append(".");
-                                         }'
+                          //  'ruta' => array('coordocs/hacereporte', array('id' => $model->idreporte, 'idfiltrodocu' => $model->idguia, 'file' => 1)),
+                            'ruta' => array($this->id . '/crearpdf', array('id' => $model->idguia)),
+                            'opajax'=>array(
+                               // 'url'=>array('coordocs/hacereporte', array('id' => $model->idreporte, 'idfiltrodocu' => $model->idguia, 'file' => 1)),
+                                'ruta' => array($this->id . '/crearpdf', array('id' => $model->idguia)),
+                                'success'=>"function(data) {
+										$('#myDivision').html(data).fadeIn().animate({opacity: 1.0}, 900).fadeOut('slow');
+                                        }",
                             ),
+
                             /*'success'=>'function(data) {
                                              $("#myDivision").html(data).fadeIn().animate({opacity: 1.0}, 3000).fadeOut("slow");
                                             }'
@@ -86,21 +86,11 @@
                         'mail' => array(
                             'type' => 'D', //AJAX LINK
                             'ruta' => array($this->id . '/enviarpdf', array('id' => $model->idguia)),
-                            'opajax' => array(
-                                'type' => 'POST',
-                                'ruta' => array($this->id . '/mail', array('id' => $model->idguia)),
-                                'beforeSend' => 'js:function(){
-                                  				 var r = confirm("Esta Accion un mail, desea continuar ?");
-                          						 if(!r){return false;}else{ $("#myDivision").addClass("procesandoajax");}
-                               							 }',
-
-                                /*'beforeSend' => 'function(){
-                                            $("#myDivision").addClass("procesandoajax");}',*/
-                                'complete' => 'function(){
-                                         $("#myDivision").removeClass("procesandoajax");
-                                         $("#myDivision").html("Se Envio el correo ").fadeIn().animate({opacity: 1.0}, 3000).fadeOut("slow");
-                                        $("#myDivision").append(".");
-                                         }'
+                            'opajax'=>array(
+                                'url'=> array($this->id . '/enviarpdf', array('id' => $model->idguia)),
+                                'success'=>"function(data) {
+										$('#myDivision').html(data).fadeIn().animate({opacity: 1.0}, 900).fadeOut('slow');
+                                        }",
                             ),
 
                             'visiblex' => array(ESTADO_ACEPTADO),
@@ -110,13 +100,23 @@
 
                         'camera' => array(
                             'type' => 'D', //AJAX LINK
-                            'ruta' => array('coordocs/hacereporte', array('id' => $model->idreporte, 'idfiltrodocu' => $model->idguia, 'file' => 0)),
-
-                            'opajax' => array(
-                                'type' => 'POST',
-                                'ruta' => array('coordocs/hacereporte', array('id' => $model->idreporte, 'idfiltrodocu' => $model->idguia, 'file' => 0)),
-                                'update' => '#zona_pdf',
+                             'ruta' => array($this->id.'/reporte', array('id' => $model->idguia)),
+                            'opajax'=>array(
+                                'url'=> array($this->id.'/reporte', array('id' => $model->idguia)),
+                                'success'=>"function(data) {
+										$('#myDivision').html(data).fadeIn().animate({opacity: 1.0}, 900).fadeOut('slow');
+                                        }",
                             ),
+                          /*  'opajax' => array(
+                                'type' => 'POST',
+                                'ruta' => array($this->id.'/reporte', array('id' => $model->idguia)),
+                               // 'update' => '#myDivision',
+                                'complete' =>'function(data){
+                                         $("#myDivision").removeClass("procesandoajax");
+                                         $("#myDivision").html(data).fadeIn().animate({opacity: 1.0}, 300).fadeOut("slow");
+                                        $("#myDivision").append(".");
+                                         }'
+                            ),*/
 
                             'visiblex' => array(ESTADO_ACEPTADO, ESTADO_PREVIO, ESTADO_CREADO),
 
@@ -216,7 +216,7 @@
                // var_dump($model->{$this->campoestado}); var_dump(ESTADO_CREADO);var_dump($model->numeroitems+0);die();
 
                 ?>
-            <div id="myDivision">
+            <div id="myDivision" style="display:block;float:right;" class="flash-regular">
 .
             </div>
 
@@ -299,149 +299,151 @@
             <div class="row">
 
                 <?php
-                $botones=array(
-                    'add'=>array(
-                        'type'=>'C',
-                        'ruta'=>array($this->id.'/creadetalle',array(
-                            'idcabeza'=>$model->idguia,
-                            'cest'=>$model->{$this->campoestado},
-                            //"id"=>$model->n_direc,
-                            "asDialog"=>1,
-                            "gridId"=>'detalle-grid',
-                        )
+                if($this->estasEnsesion($model->idguia)) {
+                    $botones = array(
+                        'add' => array(
+                            'type' => 'C',
+                            'ruta' => array($this->id . '/creadetalle', array(
+                                'idcabeza' => $model->idguia,
+                                'cest' => $model->{$this->campoestado},
+                                //"id"=>$model->n_direc,
+                                "asDialog" => 1,
+                                "gridId" => 'detalle-grid',
+                            )
+                            ),
+                            'dialog' => 'cru-dialogdetalle',
+                            'frame' => 'cru-detalle',
+                            'visiblex' => array(ESTADO_CREADO),
+
                         ),
-                        'dialog'=>'cru-dialogdetalle',
-                        'frame'=>'cru-detalle',
-                        'visiblex'=>array(ESTADO_CREADO),
 
-                    ),
+                        'tool' => array(
+                            'type' => 'C',
+                            'ruta' => array($this->id . '/agregaritemsolpe', array(
+                                'idguia' => $model->idguia,
+                            )
+                            ),
+                            'dialog' => 'cru-dialogdetalle',
+                            'frame' => 'cru-detalle',
+                            'visiblex' => array(ESTADO_CREADO),
 
-                    'tool'=>array(
-                        'type'=>'C',
-                        'ruta'=>array($this->id.'/agregaritemsolpe',array(
-                            'idguia'=>$model->idguia,
-                        )
                         ),
-                        'dialog'=>'cru-dialogdetalle',
-                        'frame'=>'cru-detalle',
-                        'visiblex'=>array(ESTADO_CREADO),
 
-                    ),
+                        'minus' => array(
+                            'type' => 'D',
+                            'ruta' => array($this->id . '/borraitems', array()),
 
-                    'minus'=>array(
-                        'type'=>'D',
-                        'ruta'=>array($this->id.'/borraitems',array()),
-
-                        'opajax'=>array(
-                            'type'=>'POST',
-                            'url'=>Yii::app()->createUrl($this->id.'/borraitems',array()),
-                            'success'=>"function(data) {
+                            'opajax' => array(
+                                'type' => 'POST',
+                                'url' => Yii::app()->createUrl($this->id . '/borraitems', array()),
+                                'success' => "function(data) {
 										$('#AjFlash').html(data).fadeIn().animate({opacity: 1.0}, 3000).fadeOut('slow');
-
-                                              $.fn.yiiGridView.update('detalle-grid'); return false;
+                                              $.fn.yiiGridView.update('detalle-grid');
+                                               $.fn.yiiGridView.update('resumenoc-grid');
+                                               return false;
                                         }",
-                            'beforeSend' => 'js:function(){
+                                'beforeSend' => 'js:function(){
                                   				 var r = confirm("Esta seguro de Eliminar estos Items?");
                           						 if(!r){return false;}
                                							 }
                                					',
 
+                            ),
+                            'visiblex' => array(ESTADO_CREADO, ESTADO_AUTORIZADO, ESTADO_ANULADO, ESTADO_CONFIRMADO, ESTADO_FACTURADO),
+
                         ),
-                        'visiblex'=>array(ESTADO_CREADO,ESTADO_AUTORIZADO,ESTADO_ANULADO,ESTADO_CONFIRMADO,ESTADO_FACTURADO),
-
-                    ),
 
 
-                    'checklist'=>array(
-                        'type'=>'C',
-                        'ruta'=>array($this->id.'/agregardespacho',array(
-                            'id'=>$model->idguia,
-                            //"id"=>$model->n_direc,
-                            "asDialog"=>1,
-                            "gridId"=>'detalle-grid',
-                        )
+                        'checklist' => array(
+                            'type' => 'C',
+                            'ruta' => array($this->id . '/agregardespacho', array(
+                                'id' => $model->idguia,
+                                //"id"=>$model->n_direc,
+                                "asDialog" => 1,
+                                "gridId" => 'detalle-grid',
+                            )
+                            ),
+                            'dialog' => 'cru-dialogdetalle',
+                            'frame' => 'cru-detalle',
+                            'visiblex' => array(ESTADO_CREADO),
                         ),
-                        'dialog'=>'cru-dialogdetalle',
-                        'frame'=>'cru-detalle',
-                        'visiblex'=>array(ESTADO_CREADO),
-                    ),
-                    'pack2'=>array(
-                        'type'=>'B',
-                        'ruta'=>array($this->id.'/procesardocumento',array('id'=>$model->idguia,'ev'=>35)),
-                        'visiblex'=>array(ESTADO_CREADO),
+                        'pack2' => array(
+                            'type' => 'B',
+                            'ruta' => array($this->id . '/procesardocumento', array('id' => $model->idguia, 'ev' => 35)),
+                            'visiblex' => array(ESTADO_CREADO),
 
-                    ),
+                        ),
 
 
-
-                    'briefcase'=>array(
-                        'type'=>'D',
-                        'ruta'=>array($this->id.'/Agregardelmaletin',array()),
-                        'opajax'=>array(
-                            'type'=>'GET',
-                            'data'=>array('id'=>$model->idguia),
-                            'url'=>Yii::app()->createUrl($this->id.'/Agregardelmaletin',array()),
-                            'success'=>'js:function(data) {
+                        'briefcase' => array(
+                            'type' => 'D',
+                            'ruta' => array($this->id . '/Agregardelmaletin', array()),
+                            'opajax' => array(
+                                'type' => 'GET',
+                                'data' => array('id' => $model->idguia),
+                                'url' => Yii::app()->createUrl($this->id . '/Agregardelmaletin', array()),
+                                'success' => 'js:function(data) {
                             $("#AjFlash").html(data).fadeIn().animate({opacity: 1.0}, 3000).fadeOut("slow");
                             $.fn.yiiGridView.update("detalle-grid"); alert(data);}',
-                            'beforeSend' => 'js:
+                                'beforeSend' => 'js:
                                					 function(){
                                   				 var r = confirm("¿Esta seguro de agregar los items del maletin ?");
                           						 if(!r){return false;}
                                							 }
                                					',
+                            ),
+                            'visiblex' => array(ESTADO_CREADO, ESTADO_AUTORIZADO, ESTADO_ANULADO, ESTADO_CONFIRMADO, ESTADO_FACTURADO),
+
                         ),
-                        'visiblex'=>array(ESTADO_CREADO,ESTADO_AUTORIZADO,ESTADO_ANULADO,ESTADO_CONFIRMADO,ESTADO_FACTURADO),
-
-                    ),
 
 
+                        'join' => array(
+                            'type' => 'C',
+                            'ruta' => array($this->id . '/agregaritemsolpe', array(
+                                'idguia' => $model->idguia,
+                                //"id"=>$model->n_direc,
+                                "asDialog" => 1,
+                                "gridId" => 'detalle-grid',
+                            )
+                            ),
+                            'dialog' => 'cru-dialogdetalle',
+                            'frame' => 'cru-detalle',
+                            'visiblex' => array(ESTADO_CREADO),
 
-                    'join'=>array(
-                        'type'=>'C',
-                        'ruta'=>array($this->id.'/agregaritemsolpe',array(
-                            'idguia'=>$model->idguia,
-                            //"id"=>$model->n_direc,
-                            "asDialog"=>1,
-                            "gridId"=>'detalle-grid',
+                        ),
+
+                        'pack' => array(
+                            'type' => 'C',
+                            'ruta' => array($this->id . '/agregarmasivamente', array(
+                                'idguia' => $model->idguia,
+                                //"id"=>$model->n_direc,
+                                "asDialog" => 1,
+                                "gridId" => 'detalle-grid',
+                            )
+                            ),
+                            'dialog' => 'cru-dialogdetalle',
+                            'frame' => 'cru-detalle',
+                            'visiblex' => array(ESTADO_CREADO),
+
+                        ),
+
+
+                    );
+
+
+                    $this->widget('ext.toolbar.Barra',
+                        array(
+                            //'botones'=>MiFactoria::opcionestoolbar($model->id,$this->documento,$model->codestado),
+                            'botones' => $botones,
+                            'size' => 24,
+                            'extension' => 'png',
+                            'status' => $model->{$this->campoestado},
+
+
                         )
-                        ),
-                        'dialog'=>'cru-dialogdetalle',
-                        'frame'=>'cru-detalle',
-                        'visiblex'=>array(ESTADO_CREADO),
-
-                    ),
-
-                    'pack'=>array(
-                        'type'=>'C',
-                        'ruta'=>array($this->id.'/agregarmasivamente',array(
-                            'idguia'=>$model->idguia,
-                            //"id"=>$model->n_direc,
-                            "asDialog"=>1,
-                            "gridId"=>'detalle-grid',
-                        )
-                        ),
-                        'dialog'=>'cru-dialogdetalle',
-                        'frame'=>'cru-detalle',
-                        'visiblex'=>array(ESTADO_CREADO),
-
-                    ),
-
-
-                );
-
-
-                $this->widget('ext.toolbar.Barra',
-                    array(
-                        //'botones'=>MiFactoria::opcionestoolbar($model->id,$this->documento,$model->codestado),
-                        'botones'=>$botones,
-                        'size'=>24,
-                        'extension'=>'png',
-                        'status'=>$model->{$this->campoestado},
-
-
-                    )
-                );?>
+                    );
+                }
+                ?>
             </div>
 
 

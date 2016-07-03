@@ -730,6 +730,8 @@ public function getstockTotalmaterial($codmaterial,$adatos=null){
  {
 
 
+
+
 	//echo "movimiento ". $codmov."      id invnetario  :     ". $this->id."<br>";
 		   $retorno=false;
 	// echo "salio ";
@@ -770,7 +772,7 @@ public function getstockTotalmaterial($codmaterial,$adatos=null){
 		 $retorno=false;
 		}
     if(!$this->tratalotes($cant,$codmov,$idkardex)){echo "erro ala tratar lotes ";die();}
-	 if($modelomov->actualizaprecio=='1' or  (IN_ARRAY($this->detallesmaterial()['controlprecio'], ARRAY('F', 'L')) ) )
+	 if($modelomov->actualizaprecio=='1' or  ($this->eslifofifo())  )
 	 {
 		// echo "salio";die();
 		 $this->actualizaprecio($cant*$signo,$punitnuevo,$idkardex);
@@ -784,7 +786,7 @@ public function getstockTotalmaterial($codmaterial,$adatos=null){
 							          //echo " fallo al grabar <br>";
 			  		                } else {
 							     $retorno=true;
-							  if(IN_ARRAY($this->detallesmaterial()['controlprecio'], ARRAY('F', 'L')) )
+							  if($this->eslifofifo() )
 							   if(!$this->verificaconsistencialotes()){
 								  $regkardex=Alkardex::model()->findByPK($idkardex);
 								 // VAR_DUMP($regkardex->attributes);
@@ -800,6 +802,7 @@ public function getstockTotalmaterial($codmaterial,$adatos=null){
 	 }
 
    return $retorno;
+
  }
 
 	/**
@@ -900,11 +903,12 @@ public function getstockTotalmaterial($codmaterial,$adatos=null){
 
 			//'dlote'=>array(self::HAS_MANY, 'Lotes',
 			'almacen' => array(self::BELONGS_TO, 'Almacenes', array('codalm'=>'codalm','codcen'=>'codcen')),
-			'loteslifo' => array(self::HAS_MANY, 'Lotes', 'hidinventario','order'=>'id DESC', 'condition'=>'cant > 0 '),
-			'lotesfifo' => array(self::HAS_MANY, 'Lotes', 'hidinventario','order'=>'id ASC', 'condition'=>'cant > 0 '),
+			'loteslifo' => array(self::HAS_MANY, 'Lotes', 'hidinventario','order'=>'orden DESC', 'condition'=>'cant > 0 '),
+			'lotesfifo' => array(self::HAS_MANY, 'Lotes', 'hidinventario','order'=>'orden ASC', 'condition'=>'cant > 0 '),
 			'lotesvencidos' => array(self::HAS_MANY, 'Lotes', 'hidinventario','order'=>'fechavenc ASC', 'condition'=>'cant > 0 '),
 			'lotesfrescos' => array(self::HAS_MANY, 'Lotes', 'hidinventario','order'=>'fechavenc DESC', 'condition'=>'cant > 0 '),
 			'tienelotes'=>array(self::HAS_MANY, 'Lotes', 'hidinventario', 'condition'=>'cant > 0 '),
+			'numerolotes'=>array(self::STAT, 'Lotes', 'hidinventario', 'condition'=>'cant > 0 '),
 
 			'lotescosteado'=>array(self::STAT,'Lotes','hidinventario','select'=>'SUM(cant*punit)', 'condition'=>'cant > 0 '),
 			'totallote'=>array(self::STAT,'Lotes','hidinventario','select'=>'SUM(cant)', 'condition'=>'cant > 0 '),
@@ -1349,20 +1353,23 @@ public function refrescapreciolote(){
 					$despachos=Dlote::model()->findAll("hidkardex=:vidkardex",array(":vidkardex"=>$refkardex->id));
 					foreach($despachos as $filadespacho)
 					{
-						$lote=New Lotes('automatico');
+
+							$lote=New Lotes('automatico');
 						$lote->setAttributes(
 							array(
 								'numlote'=>substr($numerolote,0,32),
-								'fechaingreso'=>date('Y-m-d H:m.s'),
+								'fechaingreso'=>date('Y-m-d H:i.s'),
 								'cant'=>$filadespacho->cant,//Ojo es la misma unidad de invenatrio a ainventario, la unidad base4
 								'hidinventario'=>$this->id,
 								'hidkardex'=>$hidkardex,
+								//'orden'=>microtime(true),
 								//'stock'=>$campo,
 								'punit'=>$filadespacho->lote->punit*  ///Aqui si los punits pueden ser difernetes por el cambio de moneda
 									yii::app()->tipocambio->
 									getcambio($refkardex->codmoneda, $regkardex->codmoneda),
 							)
 						);
+
 						if(!$lote->save())
 							MiFactoria::Mensaje('error',$this->identidada().'   '.yii::app()->mensajes->getErroresItem($lote->geterrors()));
 					}
@@ -1377,7 +1384,7 @@ public function refrescapreciolote(){
 				$lote->setAttributes(
 					array(
 						'numlote'=>substr($numerolote,0,32),
-						'fechaingreso'=>date('Y-m-d H:m.s'),
+						'fechaingreso'=>date('Y-m-d H:i.s'),
 						'cant'=>$cantidad,
 						'hidinventario'=>$this->id,
 						'hidkardex'=>$hidkardex,
@@ -1455,7 +1462,7 @@ var_dump($this->attributes);*/
 	{
 			if (is_null($tipovaloracion))
 			$tipovaloracion = $this->maestrodetalle->controlprecio;
-		if (in_array($tipovaloracion, array('L', 'F'))) {
+		if ($this->eslifofifo()) {
 				/*verificando el signo*/
 				$modelomov = Almacenmovimientos::model()->findByPk($codmov);
 				$campo = $modelomov->campoafectadoinv;
@@ -1702,5 +1709,26 @@ var_dump($this->attributes);*/
 		}
 	}
 
+	private function eslifofifo(){
+		$retorno=false;
+		IF(in_array($this->getControlPrecio(),array('L','F')))
+			$retorno=true;
+		return $retorno;
+	}
+
+
+	/*  funcio que devuelve el rpecio real
+	es decir cuando se trata de lores deuwelve el precio inmeDiato a salir si xiste un LIFO O FIFO
+	MUY UTIL CUANDO SE QUIERE ESTIMAR UN PRECIO DE UN MATERIAL ANTES DE SACARLO DEL ALAMCEN */
+
+	public function getprecio($cant){
+  		//$controlprecio=$this->getControlPrecio();
+		if($this->eslifofifo()){
+			return $this->costealote($cant,$this->getControlPrecio());
+		} else{
+			return $this->punit;
+		}
+
+     }
 
 }

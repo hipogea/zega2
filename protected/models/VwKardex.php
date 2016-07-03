@@ -151,6 +151,8 @@ class VwKardex extends CActiveRecord
 		yii::app()->end();*/
 		//$criteria->addcondition(" valido='1' ");
 		//$criteria->addcondition(" codestado <> '99' ");
+
+
         $criteria->addBetweenCondition('fecha', ''.$this->fecha.'', ''.$this->fecha1.'');
         if(isset($_SESSION['sesion_Maestrocompo'])) {
             $criteria->addInCondition('codart', $_SESSION['sesion_Maestrocompo'], 'AND');

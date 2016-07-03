@@ -11,7 +11,11 @@
 										'url'=>Yii::app()->createUrl('/Ocompra/refrescadescuento'
 										),
 										//'data'=>array('idguia'=>$model->idguia),
-					"success"=>"js:function() { $.fn.yiiGridView.update('detalle-grid'); }"
+					"success"=>"js:function() {
+					 $.fn.yiiGridView.update('resumenoc-grid');
+					$.fn.yiiGridView.update('detalle-grid');
+
+					                            }"
 				) ;
 
 

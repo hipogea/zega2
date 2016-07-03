@@ -230,8 +230,7 @@ public function etiquetascampos (){
 		var_dump($params);
 		ECHO "VALOR."; var_dump($valor);*/
 
-		/*var_dump($valor);
-		yii::app()->end();*/
+
 		   IF ($valor!=false)
 		   {
 

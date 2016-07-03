@@ -29,6 +29,7 @@ class Tempalkardex extends ModeloGeneral
 			array('id,hidvale,textolargo,idref,codocuref,colector,idotrokardex,preciounit,alemi,codcentro,numdocref,codmoneda', 'safe'),
 			array('iduser, idusertemp, idstatus', 'numerical', 'integerOnly'=>true),
 			array('cant, preciounit', 'numerical'),
+				array('codart','chkcatval'),
 			///En todos los escenarios
 			array('codart,um,
 			codmov,alemi,
@@ -457,7 +458,14 @@ public function chkcantpeticion(){
 		MiFactoria::InsertaCcGastosServ($this->id);
 	}
 
+	public function chkcatval($attribute,$params){
+		if(!Maestrodetalle::tienecatvaloracion($this->codart,$this->alemi,$this->codcentro))
+			$this->adderror('codart','Este material no tiene grupo de valor válido, complete este valor en los datos maestros del material para este centro y almacen');
+		if(!is_null($this->aldes))
+			if(!Maestrodetalle::tienecatvaloracion($this->codart,$this->aldes,$this->codcentro))
+				$this->adderror('codart','Este material no tiene grupo .. de valor válido, complete este valor en los datos maestros del material para este centro y almacen');
 
+	}
 
 
 

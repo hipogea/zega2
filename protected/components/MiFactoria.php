@@ -146,15 +146,25 @@ public function getWhoIsWorkingNow($id,$documento)
 
 public function getRegistrosHijos($nombreclase,$campoenlace,$id)
 {
-  /* var_DUMP($nombreclase);
-    yii::app()->end();*/
-    $nombretabla=$nombreclase::tableName();
-   // if (!$nombreclase::model()->hasAttribute($campoenlace))
-      //  throw new CHttpException(500,'El atributo ID en el modelo '.$nombreclase."   NO existe ");
+
+   // $nombretabla=$nombreclase::tableName();
+   // $criterio=New CDBCriteria();
+
+   if(is_array($campoenlace)){
+      /* foreach($campoenlace as $clave=>$valor ){
+           $criterio->addCondition($valor."=:v".$valor);
+           $criterio->params["=:v".$valor]=$id[$clave];
+       }*/
+     //  var_dump( $nombreclase);die();
+       return $nombreclase::model()->findAllByAttributes(array_combine($campoenlace,$id));
+   }else{
+      /* $criterio->addCondition($campoenlace."=:vcampo");
+       $criterio->params=array(":vcampo"=>$id);*/
+       return $nombreclase::model()->findAllByAttributes(array($campoenlace=>$id));
+   }
 
 
-    return $nombreclase::model()->findAllBySql(" select *from ".$nombretabla."
-  																 where	 ".$campoenlace."=".$id."  ");
+
 }
 
 public static function ExisteRegistro($nombreclase,$id)
@@ -542,7 +552,7 @@ const CAMPO_COLECTOR='mf_colector';
      /*observe la linea    t.aldes as ".self::CAMPO_ALEMI.",   quiere defri que el campo alemi es el campo aldes en el kardex de referncia */
 
         $items = Yii::app()->db->createCommand("select t.hidvale,t.id AS ".self::CAMPO_ID_FILA.",
-                                                 t.codcentro as ".self::CAMPO_CENTRO.",
+                                                 s.codcen as ".self::CAMPO_CENTRO.",
                                                                t.aldes as ".self::CAMPO_ALEMI.",
                                                              t.id AS ".self::CAMPO_ID_REF.",
                                                               t.id AS ".self::CAMPO_ID_OTROKARDEX.",
@@ -717,7 +727,8 @@ const CAMPO_COLECTOR='mf_colector';
  									 d.punit  AS ".self::CAMPO_PRECIO_UNITARIO_MATERIAL." , sum(x.cant) as n_sumita
  									from  {{ocompra}}  h  INNER JOIN {{docompra}} d
  									ON h.idguia=d.hidguia	left JOIN {{alentregas}} x ON d.id=x.iddetcompra
- 									WHERE  d.codigoalma='".$codalmacen."' and  d.hidguia=".$idcompra." and tipoitem='M' and d.estadodetalle not in('".self::ESTADO_DOCOMPRA_ANULADO."')
+ 									WHERE  d.codigoalma='".$codalmacen."' and  d.hidguia=".$idcompra."
+ 									 and d.estadodetalle not in('".self::ESTADO_DOCOMPRA_ANULADO."')
  									group by d.id, d.codart,d.um, d.cant,d.punit
  									HAVING sum(x.cant) < d.cant or sum(x.cant) is null ")->queryAll();
 
@@ -799,7 +810,7 @@ const CAMPO_COLECTOR='mf_colector';
         if(!is_null($row[self::CAMPO_TXTMATERIAL]))
         $kardex->comentario=$row[self::CAMPO_TXTMATERIAL];
         $kardex->alemi=$row[self::CAMPO_ALEMI];
-        $kardex->codcentro=$row[self::CAMPO_CENTRO];
+        $kardex->codcentro=(is_null($row[self::CAMPO_CENTRO]))?$row->alkardex_almacendocs->codcentro:$row[self::CAMPO_CENTRO];
         $kardex->idstatus=1;///OJO SIEMPRE ES AGREGADO +1
         $kardex->codocuref=$row[self::CAMPO_CODIGO_DOCUMENTO];
         $kardex->numdocref=$row[self::CAMPO_NUMERO_DOC];
@@ -820,7 +831,8 @@ const CAMPO_COLECTOR='mf_colector';
         if( $kardex->save()){
             $retorno=true;
         }else{
-          //  print_r($kardex->geterrors());yii::app()->end();
+            //print_r($kardex->geterrors());yii::app()->end();
+            self::Mensaje('error',' Este material '.$kardex->codart.'  en el centro '.$kardex->codcentro.' y el almacen '.$kardex->alemi.' presenta ls siguientes errores '.yii::app()->mensajes->getErroresItem($kardex->geterrors()));
         }
 
 

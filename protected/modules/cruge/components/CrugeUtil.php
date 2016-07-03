@@ -32,6 +32,7 @@ class CrugeUtil extends CComponent
         return substr(self::hash(rand() . rand()), 0, 8);
     }
 
+
     /* normaliza el nombre de la tabla anexandole el prefijo y aplicando mapping
 
     */

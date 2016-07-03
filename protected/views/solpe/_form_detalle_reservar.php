@@ -72,12 +72,7 @@
 			</div>
 	    </div>
 	     <div class="panelderecho">
-			<div class="row">
-				<?php echo CHtml::label('Reservar ','4r5'); ?>
-				<?php //echo $form->textField($model,'cantidad_reservada',array('value'=>min($model->cant,$model->desolpe_alinventario->cantlibre),'size'=>8,'maxlength'=>8)); ?>
-		         <?php echo $form->textField($model,'cantidad_reservada',array('size'=>8,'maxlength'=>8)); ?>
-		   
-			</div>
+
 		  <div class="row">
 				<?php echo CHtml::label('Comprar','4dgdg5'); ?>
 				<?php //echo $form->textField($model,'cantidad_compras',array('value'=>$model->cant-min($model->cant,$model->desolpe_alinventario->cantlibre),'size'=>8,'maxlength'=>8)); ?>
@@ -86,6 +81,13 @@
 				<?php echo $form->hiddenField($model,'est'); ?>
 			
 			</div>
+
+			 <div class="row">
+				 <?php echo CHtml::label('Reservar ','4r5'); ?>
+				 <?php //echo $form->textField($model,'cantidad_reservada',array('value'=>min($model->cant,$model->desolpe_alinventario->cantlibre),'size'=>8,'maxlength'=>8)); ?>
+				 <?php echo $form->textField($model,'cantidad_reservada',array('size'=>8,'maxlength'=>8)); ?>
+
+			 </div>
 		</div>	
 	</div>
 

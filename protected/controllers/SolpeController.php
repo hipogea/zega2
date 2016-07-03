@@ -1450,8 +1450,8 @@ public function actionprocesarsolpe($id)
 				}
 			}else {
 				$transaccion->rollback();
-				print_r($resultado);
-				Yii::app()->end();
+				//print_r($resultado);
+				//Yii::app()->end();
 			}
 		}
 		
@@ -1499,8 +1499,6 @@ public function actionprocesarsolpe($id)
 
 					  Yii::app()->end();
 				  }
-			  }ELSE {
-				  print_r($model->geterrors());die();
 			  }
 
 		    }

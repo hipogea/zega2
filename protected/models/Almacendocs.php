@@ -159,6 +159,8 @@ class Almacendocs extends ModeloGeneral
 			//array('fechacont', 'checkfecha','on'=>self::PREFIJO_ESCENARIO.'40'),
 			//array('codalmacen', 'required', 'message'=>'Indique el almacen','on'=>self::PREFIJO_ESCENARIO.'40'),
 			//array('numdocref', 'required', 'message'=>'Indica el numero de Vale que se va anular','on'=>self::PREFIJO_ESCENARIO.'40'),
+			array('numdocref', 'checkvaleaanular','on'=>self::PREFIJO_ESCENARIO.'40'),
+
 			array('numdocref', 'checkvaleingreso','on'=>self::PREFIJO_ESCENARIO.'40'),
 			array('numdocref', 'checkfacturacion','on'=>self::PREFIJO_ESCENARIO.'40'),
 			array('fechavale, fechacont,numero,numdocref,idref, fechacre,codalmacen,codcentro,', 'safe','on'=>self::PREFIJO_ESCENARIO.'40'),
@@ -427,14 +429,14 @@ class Almacendocs extends ModeloGeneral
 			{
 				$this->codalmacen=$this->codcentro->almacenes[0]->codalm;
 			}else{
-				if($this->almacenes->bloqueado=='1' and !in_array($this->codmovimiento,array('68','86')) )
-					$this->adderror('codalmacen','En este almacen el inventario se encuentra bloqueado por conteo, no puede efectuar movimientos de materiales');
 
 				$this->adderror('codcentro','Verificar el centro y el almacen no son consistentes');
 			}
 
 		}
 
+		if($this->almacenes->bloqueado=='1' and !in_array($this->codmovimiento,array('67','75','18','19','68','86')) )
+			$this->adderror('codalmacen','En este almacen el inventario se encuentra bloqueado por conteo, no puede efectuar movimientos de materiales');
 
 		//verificando el estado
 		//$ordencompra->codestado
@@ -592,7 +594,9 @@ public function checkvaleaanular($attribute,$params) {
 
 
 							break;
+						case '40':  ///anular compra
 
+							break;
 						default:
 							throw new CHttpException( 500 , '-Se ha tomado un movimiento que no es valido ' . $this->codmovimiento );
 					}

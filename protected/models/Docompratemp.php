@@ -11,6 +11,10 @@ class Docompratemp extends ModeloGeneral
 		return '{{docompratemp}}';
 	}
 
+
+
+
+
 	/*Importa un regisro de detalle solpe
 	para trarareloe n la orden de compra*/
 	public function importadesolpe($iddesolpe,$idcompra){
@@ -61,7 +65,8 @@ class Docompratemp extends ModeloGeneral
 			array('codart','chkcatval'),
 			array('hidguia,codart,idusertemp,ceco,coddocu,punit,punitdes,disp,stock,estado detalle,iddesolpe,codentro,codigoalma,descri,tipoitem,cant,um','safe','on'=> 'ingresodesolpe'),
 			array('cant','verificaconsistencia','on'=>'ingresodesolpe'),
-			array('codigoalma','exist','allowEmpty' => false, 'attributeName' => 'codalm', 'className' => 'Almacenes','message'=>'Este almacen no existe'),
+			//array('c_coclig,c_codtra','exist','allowEmpty' => false, 'attributeName' => 'codpro', 'className' => 'Clipro','message'=>'Esta empresa no existe'),
+
 			//array('codigoalma','exist','allowEmpty' => false, 'attributeName' => 'codalm', 'className' => 'Almacenes','message'=>'Este almacen no existe'),
 			array('tipoitem','verificatipo','on'=>'ingresodesolpe'),
 			array('estadodetalle', 'safe','on'=>'cambiaestado'),
@@ -78,9 +83,11 @@ class Docompratemp extends ModeloGeneral
 			array('codservicio', 'length', 'max'=>6),
 			array('ceco, orden', 'length', 'max'=>12),
 			array('codentro', 'length', 'max'=>4),
-			array('tipoitem', 'safe'),
+			array('tipoitem,codigoalma', 'safe'),
 			array('punit,cant, punitdes', 'safe','on'=>'descuento'),
 			array('detalle,iddesolpe,cant,codentro,codigoalma,punit,codart,descri,um, hidguia,tipoimputacion,orden', 'safe'),
+			array('codigoalma','exist','allowEmpty' => false, 'attributeName' => 'codalm', 'className' => 'Almacenes','message'=>'Este almacen no existe'),
+
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('codart, disp, cant, punit, item, descri, stock, detalle, tipoitem, estadodetalle, coddocu, um, hidguia, codservicio, tipoimputacion, ceco, orden, codentro, codigoalma, punitdes, iddesolpe, iduser, idusertemp, idstatus, id', 'safe', 'on'=>'search'),
@@ -285,8 +292,8 @@ class Docompratemp extends ModeloGeneral
 		$total=0;
 		foreach($provider->data as $data)
 		{
-			//if (!in_array($data->estadodetalle,Estado::estadosnocalculables($data->coddocu)))
-			//{
+			if (!in_array($data->estadodetalle,Estado::estadosnocalculables($data->coddocu)))
+			{
 				/*var_dump($data->estadodetalle); echo "<br>";
 				var_dump(Estado::estadosnocalculables($data->coddocu));echo "<br>";
 				//var_dump(!in_array($data->estadodetalle,array(Estado::estadosnocalculables($data->coddocu))));echo "<br>";
@@ -295,7 +302,7 @@ class Docompratemp extends ModeloGeneral
 				$totalbruto += $data->cant * $data->punit;
 				$totaldescuento += $data->cant * ($data->punit - $data->punitdes);
 				$total += $data->cant * $data->punitdes;
-			//}
+			}
 		}
 		return array('bruto'=>$totalbruto,'descuento'=>$totaldescuento,'total'=>$total);
 	}
@@ -338,4 +345,6 @@ class Docompratemp extends ModeloGeneral
 			$this->adderror('codart','Este material no tiene grupo de valor válido, complete este valor en los datos maestros del material para este centro y almacen');
 
 	}
+
+
 }

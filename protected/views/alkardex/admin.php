@@ -24,18 +24,19 @@ $('.search-form form').submit(function(){
 	return false;
 });
 ");
+
 ?>
 <?php MiFactoria::titulo('Documentos de Material','Cast')  ?>
 
 
 
-
+<div class="search-form" >
 
 <?php $this->renderPartial('_search',array(
 	'model'=>$model,
 )); ?>
 
-
+</div>
 <div class="division">
 
 

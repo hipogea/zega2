@@ -106,7 +106,7 @@ public function beforeSave() {
 
 										   }
 
-   if($this->codmo1==$this->codmon2)$this->cambio=1;
+   if($this->codmon1==$this->codmon2)$this->cambio=1;
 									
 
 									return parent::beforeSave();

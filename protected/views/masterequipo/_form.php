@@ -27,19 +27,19 @@
 	</div>
 
 	<div class="row">
-		<?php if(!$model->isNewRecord){ ?>
+		<?php //if(!$model->isNewRecord){ ?>
 		<?php echo $form->labelEx($model,'descripcion'); ?>
-		<?php echo $form->textField($model,'descripcion',array('disabled'=>'disabled','size'=>40,'maxlength'=>40)); ?>
+		<?php echo $form->textField($model,'descripcion',array('size'=>40,'maxlength'=>40)); ?>
 		<?php echo $form->error($model,'descripcion'); ?>
-				<?php } ?>
+				<?php //} ?>
 	</div>
 
 	<div class="row">
-		<?php if(!$model->isNewRecord){ ?>
+		<?php //if(!$model->isNewRecord){ ?>
 		<?php echo $form->labelEx($model,'marca'); ?>
-		<?php echo $form->textField($model,'marca',array('disabled'=>'disabled',)); ?>
+		<?php echo $form->textField($model,'marca',array()); ?>
 		<?php echo $form->error($model,'marca'); ?>
-		<?php } ?>
+		<?php //} ?>
 	</div>
 			<div class="row">
 
@@ -50,19 +50,19 @@
 			</div>
 
 	<div class="row">
-		<?php if(!$model->isNewRecord){ ?>
+		<?php //if(!$model->isNewRecord){ ?>
 		<?php echo $form->labelEx($model,'modelo'); ?>
-		<?php echo $form->textField($model,'modelo',array('disabled'=>'disabled',)); ?>
+		<?php echo $form->textField($model,'modelo',array()); ?>
 		<?php echo $form->error($model,'modelo'); ?>
-		<?php } ?>
+		<?php //} ?>
 	</div>
 
 	<div class="row">
-		<?php if(!$model->isNewRecord){ ?>
+		<?php //if(!$model->isNewRecord){ ?>
 		<?php echo $form->labelEx($model,'numeroparte'); ?>
-		<?php echo $form->textField($model,'numeroparte',array('disabled'=>'disabled','size'=>20,'maxlength'=>20)); ?>
+		<?php echo $form->textField($model,'numeroparte',array('size'=>20,'maxlength'=>20)); ?>
 		<?php echo $form->error($model,'numeroparte'); ?>
-		<?php } ?>
+		<?php // } ?>
 	</div>
 
 
