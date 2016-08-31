@@ -61,9 +61,9 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			'desolpe_estado.estado',	//'estado',
 
 		array('name'=>'punitplan','header'=>'Plan','value'=>'MiFactoria::decimal($data->punitplan)','footer'=>MiFactoria::decimal(Desolpe::getTotal($prove)['plan'],2)),
-		array('name'=>'punitreal','header'=>'Real','value'=>'MiFactoria::decimal($data->alkardex_gastos)','footer'=>MiFactoria::decimal(Desolpe::getTotal($prove)['real'],2)),
+		array('name'=>'punitreal','header'=>'Real','value'=>'MiFactoria::decimal($data->punitreal)','footer'=>MiFactoria::decimal(Desolpe::getTotal($prove)['real'],2)),
 		//array('name'=>'punitreal','header'=>'Real','value'=>'MiFactoria::decimal($data->cc_gastos)'),
-
+          //'punitreal',
 
 		array(
 			'htmlOptions'=>array('width'=>320),

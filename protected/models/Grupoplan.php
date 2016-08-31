@@ -30,6 +30,7 @@ class Grupoplan extends CActiveRecord
 			array('codgrupo', 'length', 'max'=>3),
 			array('desgrupo', 'length', 'max'=>50),
 			array('interno', 'length', 'max'=>1),
+			array('codgrupo, desgrupo,codcen,tarifa,codmon, interno', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('codgrupo, desgrupo, interno', 'safe', 'on'=>'search'),
@@ -44,6 +45,7 @@ class Grupoplan extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'moneda' => array(self::BELONGS_TO, 'Monedas', 'codmon'),
 		);
 	}
 

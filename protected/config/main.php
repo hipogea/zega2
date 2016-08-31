@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 //Yii::setPathOfAlias('bootstrap', dirname(__FILE__).'/../extensions/bootstrap');
 // uncomment the following to define a path alias
 // Yii::setPathOfAlias('local','path/to/local-folder');
@@ -320,7 +320,7 @@ return array(
         'charset' => 'utf8',
         ),*/
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=nautilus2',
+			'connectionString' => 'mysql:host=localhost;dbname=nautilus',
 			'emulatePrepare' => true,
 			'username' => 'root',
 			'password' => '',

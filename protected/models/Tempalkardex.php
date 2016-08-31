@@ -47,8 +47,8 @@ class Tempalkardex extends ModeloGeneral
 				array('colector','required','on'=>'50_SCN,60_SCN'),
 				array('preciounit','required','on'=>'98_SCN'),
 				array('codart','checkcodigo','on'=>'50_SCN,41_SCN,77_SCN,98_SCN'),
-			array('cant','checkcantidad','on'=>'10_SCN,50_SCN,41_SCN,77_SCN,79_SCN'),
-			array('cant','chkcantsolpe','on'=>'10_SCN'),
+			array('cant','checkcantidad','on'=>'10_SCN,43_SCN,50_SCN,41_SCN,77_SCN,79_SCN'),
+			array('cant','chkcantsolpe','on'=>'10_SCN,43_SCN'),
 			//array('cant','chkcantpeticion','on'=>'79_SCN,97_SCN'),
 			array('cant','chkcantvaletraspaso','on'=>'78_SCN'),
 			array('cant','chkcantvalereingreso','on'=>'70_SCN'),
@@ -207,20 +207,20 @@ public function chkcantpeticion(){
 	*/
 	public function campoeditable(){
 		if(in_array($this->alkardex_almacendocs->cestadovale,array('99','10'))){
-			$arraycant=array('10','30','50','13','41','77','78','70','79','98','97','68');
-			$arrayum=array('10','50','77','79','98');
+			$arraycant=array('10','30','50','13','41','43','77','78','70','79','98','97','68');
+			$arrayum=array('10','43','50','77','79','98');
 			$arraycodart=array('50','77','98','79');
 			$arraycolector=array('50','77','79');
 			$arraypreciounit=array('98');
-			$arraytextolargo=array('10','30','50','13','41','77','78','70','79','98','97');
-			$arraylote=array('10','30','50','13','41','77','78','70','79','98','97');
+			$arraytextolargo=array('10','30','50','13','41','43','77','78','70','79','98','97');
+			$arraylote=array('10','30','50','13','41','43','77','78','70','79','98','97');
 		} elseif($this->alkardex_almacendocs->cestadovale=='20') {  //Si se quieren hacer modificaciones despues de efectuado el vale pero solo para algunos campos
 			$arraycant=array();
 			$arrayum=array();
 			$arraycodart=array();
 			$arraycolector=array();
 			$arraypreciounit=array();
-			$arraytextolargo=array('10','30','50','13','41','77','78','70','79','98','97','68');
+			$arraytextolargo=array('10','30','50','13','41','43','77','78','70','79','98','97','68');
 			$arraylote=array();
 
 		} else {///Si no es editable por su estado no es editable ninguno de los campos
@@ -229,7 +229,7 @@ public function chkcantpeticion(){
 			$arraycodart=array();
 			$arraycolector=array();
 			$arraypreciounit=array();
-			$arraytextolargo=array('10','30','50','13','41','77','78','70','79','98','97','68');
+			$arraytextolargo=array('10','30','50','13','41','43','77','78','70','79','98','97','68');
 			$arraylote=array();
 		}
 	return	array(

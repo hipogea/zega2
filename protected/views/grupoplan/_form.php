@@ -5,6 +5,8 @@
 ?>
 
 <div class="form">
+	<div class="wide form">
+		<div class="division">
 
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'grupoplan-form',
@@ -32,15 +34,42 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'interno'); ?>
-		<?php echo $form->textField($model,'interno',array('size'=>1,'maxlength'=>1)); ?>
-		<?php echo $form->error($model,'interno'); ?>
+		<?php echo $form->labelEx($model,'codmon'); ?>
+		<?php $datos=CHTml::listdata(Monedas::model()->FindAll("habilitado='1'",array("order"=>"desmon ASC")),'codmoneda','desmon'); ?>
+		<?php echo $form->DropdownList($model,'codmon',$datos,array('empty'=>'--Seleccione moneda--')); ?>
+		<?php echo $form->error($model,'codmon'); ?>
 	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'desgrupo'); ?>
+		<?php echo $form->textField($model,'desgrupo',array('size'=>50,'maxlength'=>50)); ?>
+		<?php echo $form->error($model,'desgrupo'); ?>
+	</div>
+
+	<div class="row">
+
+
+		<?php echo $form->labelEx($model,'codcen'); ?>
+		<?php
+		$datos = CHtml::listData(Centros::model()->findAll(array('order'=>'nomcen')),'codcen','nomcen');
+		echo $form->DropDownList($model,'codcen',$datos, array('empty'=>'--Llene el centro emisor--'));
+
+		?>
+		<?php echo $form->error($model,'codcen'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'tarifa'); ?>
+		<?php echo $form->textField($model,'tarifa',array('size'=>8,'maxlength'=>8)); ?>
+		<?php echo $form->error($model,'tarifa'); ?>
+	</div>
+
+
 
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
 	</div>
 
 <?php $this->endWidget(); ?>
-
+		</div></div>
 </div><!-- form -->

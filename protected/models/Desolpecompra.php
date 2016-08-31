@@ -61,8 +61,8 @@ class Desolpecompra extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'docompra' => array(self::BELONGS_TO, 'Docompra', 'iddocompra'),
-			'docompratemp' => array(self::BELONGS_TO, 'Docompratemp', 'iddocompra'),
+			'docompra' => array(self::HAS_ONE, 'Docompra', 'id'),
+			'docompratemp' => array(self::HAS_ONE, 'Docompratemp', 'iddocompra'),
 			'desolpe' => array(self::BELONGS_TO, 'Desolpe', 'iddesolpe'),
 
 		);

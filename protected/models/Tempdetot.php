@@ -48,13 +48,14 @@ class Tempdetot extends ModeloGeneral
 		return array(
 			//array('id, hidorden, item, textoactividad, codresponsable, fechainic, fechafinprog, fechacre, flaginterno, codocu, codestado, codmaster, idinventario, iduser, idusertemp, idstatus', 'required'),
 			array('idinventario, iduser, idusertemp, idstatus', 'numerical', 'integerOnly'=>true),
-			array('id, hidorden', 'length', 'max'=>20),
+			array('codocu,codestado,nhoras,idaux,nhombres,codmaster,tipo,cc,txt,codgrupoplan', 'safe'),
+				array('id, hidorden', 'length', 'max'=>20),
 			array('item, codestado', 'length', 'max'=>3),
 			array('textoactividad', 'length', 'max'=>40),
 			array('codresponsable', 'length', 'max'=>8),
 			array('flaginterno', 'length', 'max'=>1),
 			array('codocu', 'length', 'max'=>3),
-			array('codocu,codestado,documentohijo', 'safe'),
+			array('codocu,codestado,nhoras,nhombres,codgrupoplan', 'safe'),
 			array('codmaster', 'length', 'max'=>12),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
@@ -71,7 +72,10 @@ class Tempdetot extends ModeloGeneral
 		// class name for the relations automatically generated below.
 		return array(
 			'ot' => array(self::BELONGS_TO, 'Ot', 'hidorden'),
+			'ceco'=> array(self::BELONGS_TO, 'Cc', 'cc'),
 			'trabajadores' => array(self::BELONGS_TO, 'Trabajadores', 'codresponsable'),
+			'masterequipo' => array(self::BELONGS_TO, 'Masterequipo', 'codmaster'),
+			'grupoplan' => array(self::BELONGS_TO, 'Grupoplan', 'codgrupoplan'),
 			'estado'=>array(self::BELONGS_TO,'Estado',array('codestado'=>'codestado','codocu'=>'codocu')),
 
 		);

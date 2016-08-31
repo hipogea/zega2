@@ -133,8 +133,8 @@ private function relacionesnietas(){
 				if(is_null($existeregistro))
 				  {  ///Solo si no existe
 					$modelotempdpeticion=new $nametablatemporal;
-					 // $modelotempdpeticion->setScenario("buffer");
-					 // $row->setScenario("buffer");
+					 $modelotempdpeticion->setScenario("buffer");
+					  $row->setScenario("buffer");
 					$modelotempdpeticion->attributes=$row->attributes;
 					  //if (get_class($modelotempdpeticion)=='Tempimpuestosdocuaplicados'){
 					  //print_r($row->attributes);echo "<br>";  print_r($modelotempdpeticion->attributes);
@@ -165,34 +165,48 @@ private function relacionesnietas(){
 
 		foreach($amodeloshijos as $nametablaoriginal => $nametablatemporal)
 		{
+
+
 			//$registrosoriginales=array();
 			$campoenlace=$this->getFieldLink($nametablaoriginal);
 			if(is_array($campoenlace))
 				$id=array($id,$this->documento);
 			$registroshijos=MiFactoria::getRegistrosHijos($nametablatemporal,$campoenlace,$id);
+			//var_dump($registroshijos);var_dump($id);echo "salio";die();
 			//var_dump($campoenlace);var_dump($id);echo "salio";die();
 			foreach  ($registroshijos as $row) {
 				//$row->setScenario('buffer');
+				$modelooriginal=NULL;
+
+				IF(!IS_NULL($row->id))
 				$modelooriginal=$nametablaoriginal::model()->findByPk($row->id);
 				if(is_null($modelooriginal)) {
 					$modelooriginal=new $nametablaoriginal;
-					//$modelooriginal->setScenario('buffer');
+
 				}
+				$modelooriginal->setScenario('buffer');
 				$modelooriginal->attributes=$row->attributes;
-					/*echo "Temporal    <br>";
-					var_dump($row->attributes);
-					echo "<br><br><br>";
-					echo "Original    <br>";
-					var_dump($modelooriginal->attributes);
-				echo "<br><br><br>";*/
+
 						if($row->idstatus==-1 and !$modelooriginal->isNewRecord)
 					if(!$modelooriginal->delete())
-						throw new CHttpException(500,__CLASS__.' ->  NO s epudo borrar el item  '.$modelooriginal->id. 'Del mdoelo'.$nombremodelohijo);
-				if(!$modelooriginal->save())
-				{	print_r($modelooriginal->geterrors());
-					throw new CHttpException(500,__CLASS__.' -> NO s epudo grabar el item  '.$modelooriginal->id. 'Del mdoelo'.$nametablaoriginal.'    '.yii::app()->mensajes->getErroresItem($modelooriginal->geterrors()));
+						MiFactoria::Mensaje('error', "NO se pudo borrar el registro  ".get_class($modelooriginal).yii::app()->mensajes->getErroresItem($modelooriginal->geterrors()));
+
+
+				if($modelooriginal->save())
+
+				{
+					MiFactoria::Mensaje('success', "se gravixx el registro  ".get_class($modelooriginal)." Con wescenario  ".$modelooriginal->getScenario()."    ".yii::app()->mensajes->getErroresItem($modelooriginal->geterrors()));
+
+					//MiFactoria::Mensaje('success', "Se grabo el documento  ".$nametablaoriginal);
+					//echo "<BR><BR><BR><BR><BR>   grabo mal   ".get_class($modelooriginal);
+					//print_r($modelooriginal->geterrors());
+					//throw new CHttpException(500,__CLASS__.' -> NO s epudo grabar el item  '.$modelooriginal->id. 'Del mdoelo'.$nametablaoriginal.'    '.yii::app()->mensajes->getErroresItem($modelooriginal->geterrors()));
 
 				} else {
+					//MiFactoria::Mensaje('success', "Se grabo el documento  ".$nametablatemporal);
+					MiFactoria::Mensaje('error', "NO se pudo grabar el registro  ".get_class($modelooriginal).yii::app()->mensajes->getErroresItem($modelooriginal->geterrors()));
+
+					///echo "<BR><BR><BR><BR><BR>   grabo bien   ".get_class($modelooriginal);
 					//print_r($modelooriginal->attributes);die();
 				}
 

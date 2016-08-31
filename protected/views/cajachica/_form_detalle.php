@@ -73,10 +73,8 @@
 	</div>
 	<div class="row">
 		<?php echo $form->labelEx($model,'monedahaber'); ?>
-		<?php  $datos1 = CHtml::listData(TMoneda::model()->findAll(),'codmoneda','desmon');
-		  echo $form->DropDownList($model,'monedahaber',$datos1, array('empty'=>'--Seleccione moneda--','disabled'=>'' ) ) ;
-		?>
-	
+		<?php $datos=CHTml::listdata(Monedas::model()->FindAll("habilitado='1'",array("order"=>"desmon ASC")),'codmoneda','desmon'); ?>
+		<?php echo $form->DropdownList($model,'monedahaber',$datos,array('empty'=>'--Seleccione moneda--','disabled'=>$habilitado)); ?>
 		<?php echo $form->error($model,'monedahaber'); ?>
 	</div>
 	

@@ -110,6 +110,8 @@ class Docompra extends ModeloGeneral
 			'docompra_alinventario'=>array(self::BELONGS_TO,'Alinventario',array('codigoalma'=>'codalm','codentro'=>'codcen','codart'=>'codart')),
 			'maestrodetalle'=>array(self::BELONGS_TO,'Maestrodetalle',array('codigoalma'=>'codal','codentro'=>'codcentro','codart'=>'codart')),
 			'docompra_ocompra'=>array(self::BELONGS_TO,'Ocompra','hidguia'),
+			'alkardex_gastos'=>array(self::STAT, 'Alkardex', 'idref','select'=>'sum(montomovido*-1)','condition'=>"codocuref in('220','210')"),//el campo foraneo
+
 			//'espejo'=>array(self::HAS_ONE,'Docompratemp','id')
 			//'subtotal'=>array(self::STAT, 'Docompra', 'hidguia','select'=>'sum(t.punit*t.cant)'),//el subtotal
 		);

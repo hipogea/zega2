@@ -262,7 +262,7 @@ class DireccionesController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		$this->performAjaxValidation($model);
 
-		if(isset($_POST['csvfile']))
+		if(isset($_POST['Direcciones']))
 		{
 
 			$model->attributes=$_POST['Direcciones'];
@@ -275,7 +275,7 @@ class DireccionesController extends Controller
 												}
 			  
 			
-				$this->redirect(array('view','id'=>$model->n_direc));
+				//$this->redirect(array('view','id'=>$model->n_direc));
 		}
 			
 		 //----- begin new code --------------------

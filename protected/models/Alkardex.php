@@ -198,6 +198,18 @@ class Alkardex extends ModeloGeneral
 				$this->alkardex_alinventario->actualiza_stock($this->codmov, abs($this->cantidadbase()), null, $this->id);
 				$codop='100'; //Consumo interno
 				break;
+
+			case "43":
+				$this->InsertaAtencionReserva(CODIGO_DOCUMENTO_RESERVA);
+				$ceco = Desolpe::model()->findByPk($this->idref)->imputacion;
+				//$ceco=$this->updatesolpe()->imputacion;
+				$this->InsertaCcGastos($ceco);
+				$this->alkardex_alinventario->actualiza_stock($this->codmov, abs($this->cantidadbase()), null, $this->id);
+				$codop='101'; //Consumo PARA VENTAS
+				break;
+
+
+
 			case "20":
 				$this->InsertaAtencionReserva(CODIGO_DOCUMENTO_RESERVA);
 				$ceco = Desolpe::model()->findByPk($this->idref)->imputacion;

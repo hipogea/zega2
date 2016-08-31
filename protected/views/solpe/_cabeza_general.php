@@ -79,6 +79,9 @@
 
 					);
 
+     if($model->escompra=='O'){
+		 UNSET($botones['tacho']);UNSET($botones['save']);UNSET($botones['go']);
+	 }
 
 
 
@@ -119,7 +122,12 @@
 	
 	<div class="row">
 		<?php echo $form->labelEx($model,'escompra'); ?>
-		<?php  $datos1 = CHtml::listData(Tiposolpe::model()->findAll("libre='1'"),'codtipo','destipo');
+		<?php
+		if($model->isNewRecord){
+			$datos1 = CHtml::listData(Tiposolpe::model()->findAll("libre='1'"),'codtipo','destipo');
+		}else{
+			$datos1 = CHtml::listData(Tiposolpe::model()->findAll(),'codtipo','destipo');
+		}
 		echo $form->DropDownList($model,'escompra',$datos1, array('empty'=>'--Seleccione un tipo--','disabled'=>(!$model->isNewRecord)?'disabled':'')  )  ;
 		?>
 		<?php echo $form->error($model,'escompra'); ?>

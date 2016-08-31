@@ -42,11 +42,13 @@ class MatchcodeController extends Controller
 			$ordencampo=$this->cleanInput($_GET['ordencampo']);
 			$campito=$this->cleanInput($_GET['campo']);
 			$vvalore=$this->cleanInput($_GET[$_GET['contr']][$campito]);
-		//$_GET['contr']var_dump($vvalore);var_dump($vvalore);
+
 		$cremoto=$this->cleanInput($_GET['camporemoto']);
 		$clasi=$_GET['clasesita'];
+
 		if($cremoto==""){
 			$rr= $clasi::model()->findByPK($vvalore);
+			//var_dump($rr);
 			if(!is_null($rr)){
 				echo $rr->{$rr->attributeNames()[$ordencampo]};
 			}else{

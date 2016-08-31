@@ -185,20 +185,7 @@ class Masterequipo extends ModeloGeneral
 
   if($this->isNewRecord ) {
 	  $this->codigo = $this->Correlativo ( 'codigo' , $criteria = null , '547' , null );
-	  if($this->codigo <>'5470000000') {
-		  if ( is_null ( $this->codigopadre )  or  $this->codigopadre=="" ){
-			  $this->codigopadre = '5470000000';
-			  $this->hidpadre=self::findByCodigo($this->codigopadre)->id;
-			  $this->parent_id=self::findByCodigo($this->codigopadre)->id;
 
-		  }else {
-			 // var_dump($this->codigopadre);yii::app()->end();
-		  }
-		  $this->hidpadre=self::findByCodigo($this->codigopadre)->id;
-		  $this->parent_id=self::findByCodigo($this->codigopadre)->id;
-	  }else {
-
-	  }
 
   }
 		//var_dump($this->codart);die();
@@ -211,7 +198,20 @@ class Masterequipo extends ModeloGeneral
 			unset($regmaestro);
 		}
 
+		if($this->codigo <>'5470000000') {
+			if ( is_null ( $this->codigopadre )  or  $this->codigopadre=="" ){
+				$this->codigopadre = '5470000000';
+				$this->hidpadre=self::findByCodigo($this->codigopadre)->id;
+				$this->parent_id=self::findByCodigo($this->codigopadre)->id;
 
+			}else {
+				// var_dump($this->codigopadre);yii::app()->end();
+			}
+			$this->hidpadre=self::findByCodigo($this->codigopadre)->id;
+			$this->parent_id=self::findByCodigo($this->codigopadre)->id;
+		}else {
+
+		}
 	return parent::beforeSave();
 }
 

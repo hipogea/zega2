@@ -76,6 +76,20 @@ class Almacendocs extends ModeloGeneral
 			array('codalmacen', 'checkmovper'),///todos los escenarios
 
 
+			/****************ESCENARIO SALIDA PARA ORDEN DE SERVICIO*******
+			/*********************************************/
+			array('numdocref', 'required', 'message'=>'El numero de Os es obligatorio','on'=>self::PREFIJO_ESCENARIO.'43'),
+			array('fechavale', 'required', 'message'=>'La fecha es obligatoria','on'=>self::PREFIJO_ESCENARIO.'43'),
+			array('fechacont', 'required', 'message'=>'Indique la fecha contabilizacion','on'=>self::PREFIJO_ESCENARIO.'43'),
+			array('fechacont', 'chkfechasol', 'message'=>'Indique la fecha contabilizacion','on'=>self::PREFIJO_ESCENARIO.'43'),
+			array('codalmacen', 'required', 'message'=>'Indique el almacen','on'=>self::PREFIJO_ESCENARIO.'43'),
+			//array('numdocref', 'checksolpe','on'=>self::PREFIJO_ESCENARIO.'43'),
+			array('numdocref', 'checkot','on'=>self::PREFIJO_ESCENARIO.'43'),
+			array('codcentro', 'required', 'message'=>'Indique el centro','on'=>self::PREFIJO_ESCENARIO.'43'),
+			array('fechavale, fechacont,numero, fechacre,codalmacen,codcentro', 'safe','on'=>self::PREFIJO_ESCENARIO.'43'),
+			/*********************************************/
+
+
 
 			array('codmovimiento', 'required', 'message'=>'El tipo de movimiento es indispensable'),
 			array('fechacont', 'required', 'message'=>'La fecha de contabilizacion es obligatoria'),
@@ -701,9 +715,9 @@ public function checksolpe($attribute,$params) {
 			   ////Verfiicando que existan en esa solpe items que esten reservadas 
 			  // $matriz=Desolpe::model()->findAll( "hidsolpe=:mipa and est='06' and cant > 0 ",array("mipa"=>$registro[0]['id']));
 			$matriz = Yii::app()->db->createCommand(" select t.id, t.codart,t.um, s.cant,r.punit from
-  																".Yii::app()->params['prefijo']."desolpe t,
-  																 ".Yii::app()->params['prefijo']."alreserva  s ,
-  																 ".Yii::app()->params['prefijo']."alinventario  r
+  																{{desolpe}} t,
+  																 {{alreserva}}  s ,
+  																{{alinventario}}  r
   																 where
   																 t.codal=r.codalm and
   																 t.centro=r.codcen and
@@ -1072,6 +1086,40 @@ public $maximovalor;
 			if($this->codalmacen===null or empty($this->codalmacen))
 				$this->adderror('codalmacen','Indique el almacen');
 		}
+	}
+
+	public function checkot($attribute,$params){
+		$registro=Ot::model()->findByNumero(trim($this->numdocref));
+		if(is_null($registro)){
+			$this->adderror('numdocref','Este numero de OT no existe ');
+		}else{
+			if ($registro->nrecursosfirme >0){ ///SI TIENE ITEMS DE MATERIALES ESTA ORDEN
+					//verifdicando ahora la Solpe asociada a esta OT
+				$regsolpe=$registro->desolpe[0]->desolpe_solpe;
+				$matriz = Yii::app()->db->createCommand(" select t.id, t.codart,t.um, s.cant,r.punit from
+  																{{desolpe}} t,
+  																 {{alreserva}}  s ,
+  																{{alinventario}}  r
+  																 where
+  																 t.codal=r.codalm and
+  																 t.centro=r.codcen and
+  																 t.codart=r.codart and
+  																 s.hidesolpe=t.id and
+  																 s.codocu='450' and
+  																 t.hidsolpe=".$regsolpe->id." and
+  																  s.estadoreserva in ('10' ,'40') ")->queryAll();
+
+				if(count($matriz) ==0 )  {
+					$this->adderror('numdocref','Esta OT no tiene items reservados ');
+				}
+			}else{
+				$this->adderror('numdocref','Esta  OT no tiene materiales que solicitar ');
+			}
+
+		}
+
+
+
 	}
 
 }

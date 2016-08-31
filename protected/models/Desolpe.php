@@ -59,6 +59,12 @@ class Desolpe extends ModeloGeneral
 		return array(
 			//array('hidsolpe', 'required'),
 			//array('numero, codart', 'length', 'max'=>10),
+			array('centro, codal, codart,cant, txtmaterial,um,hidlabor', 'required','on'=>'buffer'),
+			array('tipsolpe,centro, codal,hidot,hcodoc, codart,item,
+			codservicio,est,fechaent,txtmaterial,hidlabor,iduser,punitreal,idusertemp,idstatus,id,idtemp', 'safe','on'=>'buffer'),
+
+
+
 
 			array('punitreal','safe','on'=>'preciounitreal'),
 			array('punitreal','chkcatval'),
@@ -147,7 +153,6 @@ class Desolpe extends ModeloGeneral
 
 
 
-
 			//escenario para reservar 
 			array('cantidad_reservada','required','message'=>'Debes de indicar la cantidad reservada','on'=>'reservar'),
 			array('cantidad_compras','required','message'=>'Debes de indicar la cantidad a comprar','on'=>'reservar'),
@@ -180,6 +185,7 @@ class Desolpe extends ModeloGeneral
 		return array(
 			//'hidsolpe0' => array(self::BELONGS_TO, 'Solpe', 'hidsolpe'),
 			'almac' => array(self::BELONGS_TO, 'Almacenes', 'codal'),
+			'ot' => array(self::BELONGS_TO, 'Ot', 'hidot'),
 			'servicios'=>array(self::BELONGS_TO, 'Maestroservicios', 'codservicio'),
 			'maestro' => array(self::BELONGS_TO, 'Maestrocompo', 'codart'),
 			'desolpe_um'=> array(self::BELONGS_TO, 'Ums', 'um'),
@@ -203,7 +209,7 @@ class Desolpe extends ModeloGeneral
 			 // 'desolpe_alreserva'=>array(self::HAS_MANY, 'Alreserva', array('id'=>'hidesolpe',),//el campo foraneo
 			'alkardex_gastos'=>array(self::STAT, 'Alkardex', 'idref','select'=>'sum(montomovido*-1)','condition'=>"codocuref in('340','350')"),//el campo foraneo
              // 'desolpe_alinventario'=>array(self::BELONGS_TO,'Alinventario',array('codal'=>'codalm','centro'=>'codcen','codart'=>'codart')),
-
+			'desolpe_compras'=> array(self::HAS_MANY, 'Desolpecompra', 'iddesolpe'),
 		);
 	}
  public $descentro;
@@ -396,7 +402,7 @@ public function checktipimputacion(){
 		foreach($provider->data as $data)
 		{
 			if($data->est <> '20'){
-			$r = $data->alkardex_gastos;
+			$r = $data->punitreal;
 			$p=$data->punitplan;
 			$totalreal += $r;
 			$totalplan += $p;
@@ -457,7 +463,7 @@ public function checkvalores1($attribute,$params) {
 
 	public function beforeSave() {
 							if ($this->isNewRecord) {
-								if(!yii::app()->settings->get('genera','general_userauto')==$this->iduser){
+								if(!yii::app()->settings->get('general','general_userauto')==$this->iduser){
 									$this->iduser=Yii::app()->user->id;
 									$this->usuario=Yii::app()->user->name;
 								}else{
@@ -479,11 +485,8 @@ public function checkvalores1($attribute,$params) {
 								//$registroinventario=Alinventario::model()->encontrarregistro($this->centro,$this->codal,$this->codart);
 								if($this->tipsolpe<>'S')
 								{
-									$registroinventario = $this->desolpe_alinventario;
-									$this->punitplan = $registroinventario->getprecio(abs($this->cant)) *
-										Alconversiones::convierte($this->codart, $this->um) *
-										yii::app()->tipocambio->getcambio($registroinventario->almacen->codmon,
-											yii::app()->settings->get('general', 'general_monedadef'));//}
+									//$registroinventario = $this->desolpe_alinventario;
+									$this->punitplan = $this->getcosto();//}
 									$this->punitreal = 0;
 									$this->cantaten = 0;
 									//$this->codobjeto='001';
@@ -491,19 +494,66 @@ public function checkvalores1($attribute,$params) {
 											$this->est=(empty($this->est))?ESTADO_PREVIO:$this->est; //para que no lo agarre la vista VW-GUIA  HASTA QUE GRABE TODO EL DETALLE
 
                                                 ///el item
-                                $criterio=new CDbCriteria;
-                                $criterio->condition="hidsolpe=:nguia  ";
-                                $criterio->params=array(':nguia'=>$this->hidsolpe);
-                                $this->item=str_pad(Desolpe::model()->count($criterio)+1,3,"0",STR_PAD_LEFT);
+								if(is_null($this->hidot)){
+									$criterio=new CDbCriteria;
+									$criterio->condition="hidsolpe=:nguia  ";
+									$criterio->params=array(':nguia'=>$this->hidsolpe);
+									$this->item=str_pad(Desolpe::model()->count($criterio)+1,3,"0",STR_PAD_LEFT);
+								}
 
 
+								//verificando que no se haya creado una SOLEP
+								if(!is_null($this->hidot)){
+									if(($this->ot->nrecursosfirmeserv)==0 and $this->tipsolpe='S'){
+										$registro=New Solpe();
+										$registro->setAttributes(
+											array(
+												'escompra'=>'1',  //ES UNA OT
+												'textocabecera'=>'Solicitud automatica',  //ES UNA OT
+											)
+										);
+										$registro->save ();
+										$registro->refresh();
+										$identidad = $registro->id;
+										$this->hidsolpe=$identidad;
+
+
+									}
+								if(($this->ot->nrecursosfirme)==0 and $this->tipsolpe='M'){
+									$registro=New Solpe();
+									$registro->setAttributes(
+										array(
+											'escompra'=>'O',  //ES UNA OT
+											'textocabecera'=>'Solicitud automatica',  //ES UNA OT
+										)
+									);
+									$registro->save ();
+									$registro->refresh();
+									$identidad = $registro->id;
+									$this->hidsolpe=$identidad;
+
+
+								}
+
+								if(is_null($this->hidsolpe)){
+									if($this->tipsolpe='M')
+									$this->hidsolpe=$this->ot->desolpe[0]->hidsolpe;
+									if($this->tipsolpe='S')
+										$this->hidsolpe=$this->ot->desolpeserv[0]->hidsolpe;
+								}
+
+
+
+
+									$this->est='10';
+								}
 											
 									} else
 									{
 										 // IF ($this->est=='99') //SI SE TRATA DE UNA GUIA NUEVA COLOCARLE 'PREVIO'
 												//$this->est='01';
 
-										$registroinventario=$this->desolpe_alinventario;
+										//$registroinventario=$this->desolpe_alinventario;
 
 										///si ha cambiado el material o la cantidad  , el precio debe de actualziarse
 										/*********************************************************/
@@ -521,10 +571,7 @@ public function checkvalores1($attribute,$params) {
 												yii::app()->end();*/
 												//$registroinventario=Alinventario::model()->encontrarregistro($this->centro,$this->codal,$this->codart);
 												//$registroinventario=Alinventario::model()->encontrarregistro($this->centro,$this->codal,$this->codart);
-												$this->punitplan=$registroinventario->getprecio(abs($this->cant))*
-													Alconversiones::convierte($this->codart,$this->um)*
-													yii::app()->tipocambio->getcambio($registroinventario->almacen->codmon,
-														yii::app()->settings->get('general','general_monedadef'));
+												$this->punitplan=$this->getcosto();//}
 
 											}
 
@@ -717,7 +764,9 @@ public function checkvalores1($attribute,$params) {
 	}
 
 	public function hacerreserva($cantreservar=null,$cantcomprar=null){
-		$cantsol=$this->cant;
+	 //  $this->setScenario('aprobacion'); //Este escanerrio solo toma encuenta el estado, no confundir con las aprobaciones  tambien sirve para cambios de estadio
+			$cantsol=$this->cant;
+		$mensaje="";
 		$stock=$this->desolpe_alinventario->cantlibre;
 		$factor=Alconversiones::convierte($this->codart,$this->um);
 		if(is_null($cantreservar) and is_null($cantcomprar)){ //reserva automatica
@@ -728,8 +777,8 @@ public function checkvalores1($attribute,$params) {
 					$this->insertareserva('450',$stock/$factor);
 					$this->est=self::ESTADO_DESOLPE_RESERVADO;
 					if(!$this->desolpe_alinventario->reservar($stock)) {
-						$mensaje="No se pudo hacer la reserva desde el Inventario, hay una inconsistencia   cantidad libre(".$this->desolpe_alinventario->cantlibre.")  : cantidad a reservar(".$stock.")";
-						yii::app()->mensajes->setmessageitem('340',$this->item,$mensaje,'error');
+						$mensaje.="No se pudo hacer la reserva desde el Inventario, hay una inconsistencia   cantidad libre(".$this->desolpe_alinventario->cantlibre.")  : cantidad a reservar(".$stock.")";
+						MiFactoria::Mensaje('error',$mensaje);
 					}
 				}
 				$this->insertareserva('800',$diferencia/$factor);
@@ -739,8 +788,8 @@ public function checkvalores1($attribute,$params) {
 				$this->insertareserva('450',$cantidad/$factor);
 				$this->est=self::ESTADO_DESOLPE_RESERVADO;
 				if(!$this->desolpe_alinventario->reservar($cantidad)) {
-					$mensaje="No se pudo hacer la reserva desde el Inventario, hay una inconsistencia   cantidad libre(".$this->desolpe_alinventario->cantlibre.")  : cantidad a reservar(".$cantidad.")";
-					yii::app()->mensajes->setmessageitem('340',$this->item,$mensaje,'error');
+					$mensaje.="No se pudo hacer la reserva desde el Inventario, hay una inconsistencia   cantidad libre(".$this->desolpe_alinventario->cantlibre.")  : cantidad a reservar(".$cantidad.")";
+					MiFactoria::Mensaje('error',$mensaje);
 				}
 			}
 
@@ -748,8 +797,8 @@ public function checkvalores1($attribute,$params) {
 			$cantidad=$this->cant*$factor;
 			if( $cantreservar > 0){
 				if($cantreservar > $cantsol){
-					$mensaje="Está intentando reservar (".$cantreservar.") mas de lo solicitado(".$cantsol.")";
-					yii::app()->mensajes->setmessageitem('340',$this->item,$mensaje,'error');
+					$mensaje.="Está intentando reservar (".$cantreservar.") mas de lo solicitado(".$cantsol.")";
+					MiFactoria::Mensaje('error',$mensaje);
 				} else{
 					if($cantcomprar >0 ){
 						//nada
@@ -759,29 +808,29 @@ public function checkvalores1($attribute,$params) {
 							$this->est=self::ESTADO_DESOLPE_RESERVADO;
 							if(!$this->desolpe_alinventario->reservar($cantreservar))
 							{
-								$mensaje="No se pudo hacer la reserva desde el Inventario, hay una inconsistencia   cantidad libre(".$this->desolpe_alinventario->cantlibre.")  : cantidad a reservar(".$cantreservar.")";
-								yii::app()->mensajes->setmessageitem('340',$this->item,$mensaje,'error');
+								$mensaje.="No se pudo hacer la reserva desde el Inventario, hay una inconsistencia   cantidad libre(".$this->desolpe_alinventario->cantlibre.")  : cantidad a reservar(".$cantreservar.")";
+								MiFactoria::Mensaje('error',$mensaje);
 							}
 
 						}
 						else{
-							$mensaje="Lo reservado (".$cantreservar.") mas lo comprado(".$cantcomprar."), exceden a lo que se  pidio(".$cantsol.")";
-							yii::app()->mensajes->setmessageitem('340',$this->item,$mensaje,'error');
+							$mensaje.="Lo reservado (".$cantreservar.") mas lo comprado(".$cantcomprar."), exceden a lo que se  pidio(".$cantsol.")";
+							MiFactoria::Mensaje('error',$mensaje);
 						}
 
 
 					}else{
 						//si es cero
 						if($cantidad > $stock) {
-							$mensaje="Está Solicitando (".$cantidad.") mas de lo que hay en stock (".$stock.")";
-							yii::app()->mensajes->setmessageitem('340',$this->item,$mensaje,'error');
+							$mensaje.="Está Solicitando (".$cantidad.") mas de lo que hay en stock (".$stock.")";
+							MiFactoria::Mensaje('error',$mensaje);
 						} else{
 							$this->insertareserva('450',$cantidad/$factor);
 							$this->est=self::ESTADO_DESOLPE_RESERVADO;
 							if(!$this->desolpe_alinventario->reservar($cantidad))
 							{
-								$mensaje="No se pudo hacer la reserva desde el Inventario, hay una inconsistencia   cantidad libre(".$this->desolpe_alinventario->cantlibre.")  : cantidad a reservar(".$cantidad.")";
-								yii::app()->mensajes->setmessageitem('340',$this->item,$mensaje,'error');
+								$mensaje.="No se pudo hacer la reserva desde el Inventario, hay una inconsistencia   cantidad libre(".$this->desolpe_alinventario->cantlibre.")  : cantidad a reservar(".$cantidad.")";
+								MiFactoria::Mensaje('error',$mensaje);
 							}
 						}
 					}
@@ -790,8 +839,8 @@ public function checkvalores1($attribute,$params) {
 				if($stock==0){
 					//nada
 				}else{
-					$mensaje="La reserva no puede ser cero habiendo stock (".$stock.")";
-					yii::app()->mensajes->setmessageitem('340',$this->item,$mensaje,'error');
+					$mensaje.="La reserva no puede ser cero habiendo stock (".$stock.")";
+					MiFactoria::Mensaje('error',$mensaje);
 				}
 
 				if($cantcomprar > 0 ){
@@ -800,14 +849,14 @@ public function checkvalores1($attribute,$params) {
 						$this->insertareserva('800',$cantcomprar);
 						$this->est=self::ESTADO_DESOLPE_RESERVADO;
 					} else{
-						$mensaje="La cantidad a comprar (".$cantcomprar.") excede a lo solicitado (".$cantsol.")";
-						yii::app()->mensajes->setmessageitem('340',$this->item,$mensaje,'error');
+						$mensaje.="La cantidad a comprar (".$cantcomprar.") excede a lo solicitado (".$cantsol.")";
+						MiFactoria::Mensaje('error',$mensaje);
 					}
 
 
 				}else{
-					$mensaje="La reserva es cero y la requisición tambien es cero";
-					yii::app()->mensajes->setmessageitem('340',$this->item,$mensaje,'error');
+					$mensaje.="La reserva es cero y la requisición tambien es cero";
+					MiFactoria::Mensaje('error',$mensaje);
 				}
 
 
@@ -816,11 +865,11 @@ public function checkvalores1($attribute,$params) {
 		}
 		$this->setScenario('Atencionreserva');
         if(!$this->save()){
-			$mensaje="No se pudo grabar el registro de la soliictud ";
-			yii::app()->mensajes->setmessageitem('340',$this->item,$mensaje.yii::app()->mensajes->getErroresItem($this->geterrors()),'error');
+			$mensaje.="No se pudo grabar el registro de la soliictud ";
+			$mensaje.=yii::app()->mensajes->getErroresItem($this->geterrors());
 		}
 
-		return yii::app()->mensajes->hayerrores('340');
+		//return yii::app()->mensajes->hayerrores('340');
 
 
 	}
@@ -844,4 +893,30 @@ public function chkcatval($attribute,$params){
 
 }
 
+private function getcosto(){
+	$registroinventario = $this->desolpe_alinventario;
+	$val=$this->cant*$registroinventario->getprecio(abs($this->cant)) *
+		Alconversiones::convierte($this->codart, $this->um) *
+		yii::app()->tipocambio->getcambio($registroinventario->almacen->codmon,
+			yii::app()->settings->get('general', 'general_monedadef'));//}
+	unset($registroinventario);
+	return $val;
+}
+	public function afterfind(){
+		if($this->tipsolpe=='M'){
+			$this->punitreal=$this->alkardex_gastos;
+		}else{ //Si es un servicio
+
+			$this->punitreal=Yii::app()->db->createCommand()
+				->select('sum(k.montomovido)')
+				->from('{{alkardex}} k, {{docompra}} d, {{desolpecompra}} ds ' )
+				->where("k.idref=d.id and
+						k.codocuref in ('210','220') and
+						d.id=ds.iddocompra and
+						 ds.iddesolpe=:vid ",array(":vid"=>$this->id))->queryScalar();
+
+		}
+
+		return parent::afterfind();
+      }
 }

@@ -492,12 +492,9 @@ print_r($_SESSION['sesion_Maestrocompo']);
 	public function actionPareto()
 	{
 		$modinventario=new Alinventario();
-
 		$model=new ParetoForm;
-
 		// collect user input data
-		if(isset($_POST['ParetoForm']))
-		{
+		if(isset($_POST['ParetoForm']))		{
 
 			$model->attributes=$_POST['ParetoForm'];
 			$almacen=$_POST['ParetoForm']['almacen'];

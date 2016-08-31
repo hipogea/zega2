@@ -292,6 +292,15 @@ public function etiquetascampos (){
 
 	}
 
+	public function cambiocampo($nombrecampo){
+		if($this->oldVal($nombrecampo)<>$this->{$nombrecampo}){
+			return true;
+		}else{
+			return false;
+		}
+
+	}
+
 	////Devuelve el valor del campo actual
 	/*public function curVal($attribute) {
 		if (!$this->hasAttribute($attribute))

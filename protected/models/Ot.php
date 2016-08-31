@@ -10,7 +10,10 @@ class Ot extends  ModeloGeneral
 	{
 		return '{{ot}}';
 	}
+	public function init(){
+		$this->documento='890';
 
+	}
 	/**
 	 * @return array validation rules for model attributes.
 	 */
@@ -46,16 +49,21 @@ class Ot extends  ModeloGeneral
 	 */
 	public function relations()
 	{
-		// NOTE: you may need to adjust the relation name and the related
-		// class name for the relations automatically generated below.
 		return array(
 			'detot' => array(self::HAS_MANY, 'Detot', 'hidorden'),
 			'tempdetot' => array(self::HAS_MANY, 'Tempdetot', 'hidorden'),
-			'desolpe' => array(self::HAS_MANY, 'Desolpe', array('hidot'=>'id','hcodoc'=>'codocu')),
-			'tempdesolpe' => array(self::HAS_MANY, 'Tempdesolpe', array('hidot'=>'id','hcodoc'=>'codocu')),
+			'desolpe' => array(self::HAS_MANY, 'Desolpe', 'hidot','condition'=>"tipsolpe='M' "),
+			'desolpeserv' => array(self::HAS_MANY, 'Desolpe', 'hidot','condition'=>"tipsolpe='S' "),
+			'tempdesolpe' => array(self::HAS_MANY, 'Tempdesolpe','hidot'),
+			//'cant_solicitada'=>array(self::STAT, 'Alreserva', 'hidesolpe','select'=>'sum(t.cant)','condition'=>"estadoreserva <> '30' AND codocu IN ('800') "),//el campo foraneo
 
-		//	'hidoferta0' => array(self::BELONGS_TO, 'Dpeticion', 'hidoferta'),
+			'nrecursos' => array(self::STAT, 'Tempdesolpe','hidot','condition'=>"tipsolpe='M' "),
+			'nrecursosfirme' => array(self::STAT, 'Desolpe','hidot','condition'=>"tipsolpe='M' " ),
+			'nrecursosserv' => array(self::STAT, 'Tempdesolpe','hidot','condition'=>"tipsolpe='S' "),
+			'nrecursosfirmeserv' => array(self::STAT, 'Desolpe','hidot','condition'=>"tipsolpe='S' " ),
 			'clipro' => array(self::BELONGS_TO, 'Clipro', 'codpro'),
+			//'objetosmaster' => array(self::BELONGS_TO, 'Objetosmaster', 'idobjeto'),
+			'vwobjetos' => array(self::BELONGS_TO, 'VwObjetos', 'idobjeto'),
 			'objetosmaster' => array(self::BELONGS_TO, 'Objetosmaster', 'idobjeto'),
 			'trabajadores' => array(self::BELONGS_TO, 'Trabajadores', 'codresponsable'),
 		);
@@ -174,7 +182,7 @@ class Ot extends  ModeloGeneral
 		}
 		else
 		{
-			IF ($this->numero===null)
+			IF ($this->numero===null or empty($this->numero))
 			{
 				$this->numero=$this->correlativo('numero');
 			}
@@ -183,6 +191,9 @@ class Ot extends  ModeloGeneral
 		return parent::beforeSave();
 	}
 
+public static function findByNumero($numero){
+  return self::model()->find("numero=:vnumero",array(":vnumero"=>MiFactoria::cleanInput($numero)));
 
+}
 
 }

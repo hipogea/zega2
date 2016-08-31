@@ -40,7 +40,7 @@
 				'update'=>
 					array(
 						'visible'=>($this->eseditable($model->{$this->campoestado}))?'false':'true',
-						'url'=>'$this->grid->controller->createUrl("/Ocompra/Modificadetalle/",
+						'url'=>'$this->grid->controller->createUrl("/Ot/Modificadetalle/",
 										    array("id"=>$data->idtemp,
                                                                                          "asDialog"=>1,
 											"gridId"=>$this->grid->id
@@ -104,7 +104,7 @@
 
 			'tool' => array(
 				'type' => 'C',
-				'ruta' => array($this->id . '/agregaritemsolpe', array(
+				'ruta' => array($this->id . '/creaservicio', array(
 					'idguia' => $model->id,
 				)
 				),

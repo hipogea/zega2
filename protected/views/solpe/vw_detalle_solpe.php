@@ -6,7 +6,7 @@
 
  <div class="row">
 	 <?php
-	 $botones=array(
+	 $botones1=array(
 		 'add'=>array(
 			 'type'=>'C',
 			 'ruta'=>array($this->id.'/creadetalle',array(
@@ -99,10 +99,17 @@
 
 	 );
 
+	 if($modelcabecera->escompra=='O'){
+		 UNSET($botones1['add']);UNSET($botones1['tool']);UNSET($botones1['minus']);
+		 UNSET($botones1['adddoc']);
+
+	 }
+
+
 	 $this->widget('ext.toolbar.Barra',
 		 array(
 			 //'botones'=>MiFactoria::opcionestoolbar($model->id,$this->documento,$model->codestado),
-			 'botones'=>$botones,
+			 'botones'=>$botones1,
 			 'size'=>24,
 			 'extension'=>'png',
 			 'status'=>$modelcabecera->estado,

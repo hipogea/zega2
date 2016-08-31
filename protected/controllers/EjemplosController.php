@@ -386,6 +386,9 @@ $mo=New Alinventario();
 
 
 	public function actionPio() {
+		$reg=Desolpe::model()->findByPk(143);
+		var_dump($reg);die();
+
 		$reg=new Ot;
 		$reg=Ot::model()->findByPk(8);
 		var_dump($reg->desolpe);die();

@@ -20,6 +20,18 @@
 	<?php echo $form->errorSummary($model); ?>
 
 	<div class="row">
+
+
+		<?php echo $form->labelEx($model,'socio'); ?>
+
+
+		<?php  $datos1 = CHtml::listData(Sociedades::model()->findAll(array('order'=>'dsocio')),'socio','dsocio');
+		echo $form->DropDownList($model,'socio',$datos1, array('empty'=>'--Seleccione un emisor--')  )  ;
+		?>
+		<?php echo $form->error($model,'socio'); ?>
+	</div>
+
+	<div class="row">
 		<?php echo $form->labelEx($model,'desfondo'); ?>
 		<?php echo $form->textField($model,'desfondo',array('size'=>60,'maxlength'=>60)); ?>
 		<?php echo $form->error($model,'desfondo'); ?>

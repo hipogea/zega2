@@ -81,7 +81,8 @@ class GuiaController extends ControladorBase
 	public function actionEditaDocumento($id)
 	{
 		$model=MiFactoria::CargaModelo($this->modelopadre,$id);
-
+   if($model->c_salida=='0')
+	   $this->redirect(array('ne/editadocumento','id'=>$model->id));
 
 			//$model->{$this->campoestado}=ESTADO_CREADO;
 		//$this->performAjaxValidation($model);

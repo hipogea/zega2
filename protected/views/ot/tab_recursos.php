@@ -1,9 +1,11 @@
 
 
-<?php $this->widget('zii.widgets.grid.CGridView', array(
+<?php
+$prove=$modelolabor->search_por_ot($model->id);
+$this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'detalle-recursos-grid',
-	'dataProvider'=>Tempdesolpe::model()->search_por_ot($model->id),
-	//'filter'=>$model,
+	'dataProvider'=>$prove,
+	'filter'=>$modelolabor,
 	'itemsCssClass'=>'table table-striped table-bordered table-hover',
    'summaryText'=>' Total de Items : {count}',
 	'columns'=>array(
@@ -40,7 +42,7 @@
 				'update'=>
 					array(
 						'visible'=>($this->eseditable($model->{$this->campoestado}))?'false':'true',
-						'url'=>'$this->grid->controller->createUrl("/Ocompra/Modificadetalle/",
+						'url'=>'$this->grid->controller->createUrl("/Ot/Modificadetallerecurso/",
 										    array("id"=>$data->idtemp,
                                                                                          "asDialog"=>1,
 											"gridId"=>$this->grid->id
@@ -71,11 +73,16 @@
 		//array('htmlOptions'=>array('width'=>10),'name'=>'codigoalma','visible'=>(yii::app()->settings->get("materiales","materiales_codigoservicio")==$data->codart)?true:false),
 		//array('htmlOptions'=>array('width'=>5),'header'=>'um','value'=>'$data->ums->desum'),
 		//array('htmlOptions'=>array('width'=>5), 'type'=>'raw','name'=>'codart','value'=>'$data->codart','visible'=>(!yii::app()->settings->get("materiales","materiales_codigoservicio")==$data->codart)?true:false),
-		'codart',
+		array('name'=>'hidlabor','filter'=>CHTml::listData(Tempdetot::model()->findAll("idusertemp=:vuser and hidorden=:vorden",array(":vorden"=>$model->id,":vuser"=>yii::app()->user->id)),'idaux','textoactividad'), 'htmlOptions'=>array('width'=>30),),
+		array('name'=>'cant', 'type'=>'raw','header'=>'Cant','htmlOptions'=>array('width'=>20) ),
 		'txtmaterial',
+		'codart',
+
 		// array('name'=>'texto', 'type'=>'raw','header'=>'t','value'=>'(!empty($data->detalle))?CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."texto.png","hola"):""' ),
 		//array('name'=>'punit', 'type'=>'raw','header'=>'Pu','value'=>'Chtml::openTag("span", array("style"=>"float:right;font-weight:bold;")).Mifactoria::decimal($data->punit,3).Chtml::closeTag("span")','htmlOptions'=>array('width'=>20)),
 		//array('name'=>'Subt', 'type'=>'raw','header'=>'Subt','value'=>'Chtml::openTag("span", array("style"=>"float:right;font-weight:bold;")).Mifactoria::decimal($data->cant*($data->punit),3).Chtml::closeTag("span")','htmlOptions'=>array('width'=>68)),
+		array('name'=>'punitplan','header'=>'Plan','value'=>'MiFactoria::decimal($data->punitplan)','footer'=>MiFactoria::decimal(Tempdesolpe::getTotal($prove)['plan'],2), 'htmlOptions'=>array('width'=>30)),
+		array('name'=>'punitreal','header'=>'Real','value'=>'MiFactoria::decimal($data->punitreal)','footer'=>MiFactoria::decimal(Tempdesolpe::getTotal($prove)['real'],2), 'htmlOptions'=>array('width'=>30)),
 
 
 
@@ -105,8 +112,8 @@
 
 			'tool' => array(
 				'type' => 'C',
-				'ruta' => array($this->id . '/agregaritemsolpe', array(
-					'idguia' => $model->id,
+				'ruta' => array($this->id . '/creaservicio', array(
+					'id' => $model->id,'asDialog'=>'1'
 				)
 				),
 				'dialog' => 'cru-dialogdetalle',

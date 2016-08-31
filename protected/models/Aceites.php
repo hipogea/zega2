@@ -1,6 +1,20 @@
 <?php
 
+/**
+ * This is the model class for table "aceites".
+ *
+ * The followings are the available columns in table 'aceites':
+ * @property string $nombre
 
+
+ * @property string $marca
+ * @property string $prop1
+ * @property string $comaterial
+ * @property string $creadopor
+ * @property string $creadoel
+ * @property string $modificadopor
+ * @property string $modificadoel
+ */
 class Aceites extends CActiveRecord
 {
 	/**

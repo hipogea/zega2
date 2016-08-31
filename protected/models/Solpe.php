@@ -94,6 +94,7 @@ class Solpe extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'solpe_documentos'=>array(self::BELONGS_TO, 'Documentos', 'codocu'),
+			'tiposolpe'=>array(self::BELONGS_TO, 'Tiposolpe', 'escompra'),
 			'pendientescompras'=>array(self::BELONGS_TO, 'VwSolpeparacomprar', 'numero'),
 			'solpe_estado'=>array(self::BELONGS_TO,'Estado',array('estado'=>'codestado','codocu'=>'codocu')),
 			'numeroitems'=>array(self::STAT, 'Desolpe', 'hidsolpe'),//el campo foraneo
@@ -295,9 +296,9 @@ public $maximovalor;
 	//public $conservarvalor=0; //Opcionpa reaverificar si se quedan lo valores predfindos en sesiones 
 
 public function beforeSave() {
-    $prefix="public_";
+  //  $prefix="public_";
 							if ($this->isNewRecord) {
-								$this->idreporte=
+								//$this->idreporte=
 								$mij=null;
 											//$command = Yii::app()->db->createCommand(" select nextval('sq_guias') "); 											
 											//$this->n_guia= $command->queryScalar();
@@ -309,7 +310,12 @@ public function beforeSave() {
 												
 											
 											$this->estado='99'; //para que no lo agarre la vista VW-GUIA  HASTA QUE GRABE TODO EL DETALLE
+				if($this->escompra=='O'){
+					$this->estado='10';
+					$gg=new Numeromaximo;
+					$this->numero=$gg->numero($this,'correlativ','maximovalor',7,'codocu');
 
+				}
 										//$this->numero=Numeromaximo::numero($this->model(),'numero','maximovalor',10);
 
 
@@ -323,8 +329,8 @@ public function beforeSave() {
                                               $gg=new Numeromaximo;
                                               $this->numero=$gg->numero($this,'correlativ','maximovalor',7,'codocu');
 													// validate user input and redirect to the previous page if valid
-													$command = Yii::app()->db->createCommand(" UPDATE ".$prefix."desolpe set est='10' where hidsolpe=".$this->id." ");
-													 $command->execute();
+												//	$command = Yii::app()->db->createCommand(" UPDATE ".$prefix."desolpe set est='10' where hidsolpe=".$this->id." ");
+												//	 $command->execute();
 											
 											}
 

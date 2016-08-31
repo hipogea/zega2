@@ -26,11 +26,13 @@
 									'checkBoxHtmlOptions' => array(                
 																'name' => 'checkselected[]',
 																'width'=>'10'
-																	),
+																	)
            // 'id'=>'cajita' // the columnID for getChecked
+		,'htmlOptions'=>array('width'=>'10')
 							),
-		ARRAY('name'=>'descripcion','header'=>'Descripcion','htmlOptions'=>array('width'=>'400')),
 		ARRAY('name'=>'codigo','header'=>'Codigo','htmlOptions'=>array('width'=>'80')),
+		ARRAY('name'=>'descripcion','header'=>'Descripcion','htmlOptions'=>array('width'=>'400')),
+		array('name'=>'esrotativo','type'=>'raw','filter'=>array('1'=>'Rotativo','2'=>'No rotativo'),'value'=>'CHTml::checkbox("hdjs",($data->esrotativo=="1")?true:false)','htmlOptions'=>array('width'=>'20')),
 		ARRAY('name'=>'um','header'=>'UM','value'=>'$data->maestro_ums->desum','htmlOptions'=>array('width'=>'20')),
 		//ARRAY('name'=>'um','header'=>'UM','value'=>'$data->maestro_ums->desum','htmlOptions'=>array('width'=>'5%')),
 		//ARRAY('name'=>'marca','header'=>'Marca','htmlOptions'=>array('width'=>'10')),

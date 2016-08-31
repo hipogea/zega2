@@ -31,12 +31,6 @@ class Ne extends ModeloGeneral
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			//	array('c_numgui', 'required','message'=>'Falta llenar el numero'),
-			//array('c_serie', 'required','message'=>'No hay registrado un numero de serie'),
-
-
-
-
 			array('c_rsguia', 'required','message'=>'Llene la sociedad'),
 			array('c_coclig', 'required','message'=>'El remitente es un dato obligatorio'),
 			array('c_coclig,c_codtra','exist','allowEmpty' => false, 'attributeName' => 'codpro', 'className' => 'Clipro','message'=>'Esta empresa no existe'),
@@ -45,49 +39,19 @@ class Ne extends ModeloGeneral
 			array('n_dirsoc', 'required','message'=>'Llene el punto de llegada?'),
 			array('n_direc,n_dirsoc','exist','allowEmpty' => false, 'attributeName' => 'n_direc', 'className' => 'Direcciones','message'=>'Esta dirección no existe'),
 			array('c_trans', 'required','message'=>'Falta indicar el nombre del conductor'),
-			//array('c_motivo', 'required','message'=>'Llene el motivo del transporte'),
 			array('d_fecgui', 'required','message'=>'Llene la fecha del documento'),
 			array('d_fectra', 'required','message'=>'Llene la fecha del ingreso'),
 			array('d_fectra', 'checkfechas'),
-			//array('c_numgui', 'match', 'pattern'=>'/[0-9]/','message'=>'Numero errado'),
-			//array('c_codtra', 'checkvalores'),
-			//array('c_numgui', 'match', 'pattern'=>'/[0-9]/','message'=>'Numero errado'),
-			//array('c_numgui', 'checknumero','on'=>'insert'),
 			array('n_direc,n_dirsoc','checkdirecciones'),
 			array('n_direc, n_direcformaldes, n_directran, n_dirsoc, n_agencia', 'numerical', 'integerOnly'=>true),
-			//array('c_numgui', 'length', 'max'=>8),
-			//array('c_numgui', 'length', 'min'=>8),
-			//array('c_numgui,c_serie', 'numerical'),
 			array('c_coclig, c_codtra', 'length', 'max'=>6),
 			array('c_estgui', 'length', 'max'=>2),
 			array('c_rsguia, c_dirsoc, c_estado, c_salida', 'length', 'max'=>1),
-			//array('c_trans, creadoel, modificadoel', 'length', 'max'=>20),
-			//array('c_trans', 'required','message'=>'LLena el nombre del transportista'),
 			array('c_trans', 'match','pattern'=>'/[A-Z ][a-z ]/','message'=>'Nombre incorrecto'),
 			array('c_motivo, c_serie, codcentro, codobjeto, codocu', 'length', 'max'=>3),
-			//array('c_placa', 'length', 'max'=>15),
-			//array('c_licon', 'length', 'max'=>10),
-			//array('c_licon', 'required', 'message'=>'Debes de llenar el brevete'),
-			//array('c_creado, c_modificado', 'length', 'max'=>40),
-			//array('creadopor, modificadopor', 'length', 'max'=>25),
 			array('cod_cen', 'required', 'message'=>'Llena el centro receptor'),
-			array('d_fecgui, d_fectra, codcentro,c_desgui, c_texto,  d_fecentrega', 'safe'),
-			//array('c_numgui', 'match', 'pattern'=>'/[0-9]{8}/', 'on'=>''),
-			//array('c_serie', 'match', 'pattern'=>'/[0-9]{3}/'),
-			//array('c_serie', 'required','message'=>'Llene el numero de serie'),
-			//array('c_numgui', 'required','message'=>'Llene el numero de guia'),
-
-
+			array('d_fecgui, d_fectra, n_direcformaldes,n_directran,codcentro,c_desgui, c_texto,  d_fecentrega', 'safe'),
 			array('c_estgui','safe', 'on'=>'cambiaestado'),
-
-
-
-
-
-
-
-			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
 			array('c_numgui, c_coclig, d_fecgui, c_estgui, c_rsguia, c_codtra, c_trans, c_motivo, c_placa, c_licon, d_fectra, c_desgui, n_direc, c_texto, c_dirsoc, c_serie, n_direcformaldes, n_directran, c_creado,  c_estado, n_dirsoc, c_modificado, n_agencia, creadopor, creadoel, modificadopor, modificadoel, codcentro, codobjeto, d_fecentrega, c_salida, codocu, cod_cen', 'safe', 'on'=>'search'),
 		);
 	}
@@ -334,20 +298,7 @@ class Ne extends ModeloGeneral
 			 *	Sacar la direccion
 			 ****************************************************************/
 
-			$criteria=new CDbCriteria;
-			$criteria->addCondition(" c_hcod='".$this->c_coclig."' ");
-			$row=Direcciones::model()->findall($criteria);
-			if (!is_null($row[0])) {
-				$this->n_direcformaldes=$row->n_direc;
 
-			}
-			$criteria=new CDbCriteria;
-			$criteria->addCondition(" c_hcod='".$this->c_codtra."' ");
-			$row=Direcciones::model()->findall($criteria);
-			if (!is_null($row[0])) {
-				$this->n_directran=$row->n_direc;
-
-			}
 
 
 			/*******************************************************************
@@ -363,8 +314,14 @@ class Ne extends ModeloGeneral
 
 		} else
 		{
-			IF ($this->c_estgui=='99') //SI SE TRATA DE UNA GUIA NUEVA COLOCARLE 'PREVIO'
+
+
+
+			IF ($this->c_estgui=='99') {//SI SE TRATA DE UNA GUIA NUEVA COLOCARLE 'PREVIO'
 				$this->c_estgui='10';
+
+			}
+
 			if(is_null($this->c_numgui)){
 				$this->c_serie=substr($this->cod_cen,0,3);
 				$criterio=New CDBcriteria();
@@ -378,6 +335,23 @@ class Ne extends ModeloGeneral
 
 			//$this->ultimares=" ".strtoupper(trim($this->usuario=Yii::app()->user->name))." ".date("H:i")." :".$this->ultimares;
 		}
+
+		$criteria=new CDbCriteria;
+		$criteria->addCondition(" c_hcod='".$this->c_coclig."' ");
+		$row=Direcciones::model()->findall($criteria);
+		if (!is_null($row[0])) {
+			$this->n_direcformaldes=$row[0]->n_direc;
+
+		}
+
+		$criteria=new CDbCriteria;
+		$criteria->addCondition(" c_hcod='".$this->c_codtra."' ");
+		$row=Direcciones::model()->findall($criteria);
+		if (!is_null($row[0])) {
+			$this->n_directran=$row[0]->n_direc;
+
+		}
+
 
 
 		/*********VERIFICANDO LOS CHOFERES****************/

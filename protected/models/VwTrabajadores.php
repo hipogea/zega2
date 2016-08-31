@@ -84,8 +84,8 @@ class VwTrabajadores extends CActiveRecord
 
 	public function findByPk($id,$condition='',$params=array()) {
 
-			return self::model()->find("codigotra='".$id."'");
-	}
+	return self::model()->find("codigotra='".$id."'");
+}
 
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.

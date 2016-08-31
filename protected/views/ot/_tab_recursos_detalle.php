@@ -55,9 +55,15 @@
 </div>
 	<div class="row">
 		<?php echo $form->labelEx($model,'hidlabor'); ?>
-		<?php  $datos1t1 = CHtml::listData(Tempdetot::model()->findAll("idusertemp=:vuser and hidorden=:vorden",array(":vorden"=>$modelopadre->id,":vuser"=>yii::app()->user->id)),'id','textoactividad');
-
+		<?php
+		$criteria = new CDbCriteria();
+		$criteria->addCondition("idusertemp=:vuser and hidorden=:vorden");
+		$criteria->params = array(":vorden"=>$modelopadre->id,":vuser"=>yii::app()->user->id);
+		?>
+		<?php  $datos1t1 = CHtml::listData(Tempdetot::model()->findAll($criteria),'idaux','textoactividad');
+   //var_dump(Tempdetot::model()->findAll("idusertemp=:vuser and hidorden=:vorden",array(":vorden"=>$modelopadre->id,":vuser"=>yii::app()->user->id)));
 	// $datos1t1 = CHtml::listData(Tempdetot::model()->findAll("idusertemp=:vuser ",array(":vuser"=>yii::app()->user->id)),'id','textoactividad');
+	//	var_dump($datos1t1);
 		echo $form->DropDownList($model,'hidlabor',$datos1t1, array('empty'=>'--Seleccione una labor--','disabled'=>$this->eseditable($modelopadre->codestado))  )  ;
 		?>
 		<?php echo $form->error($model,'hidlabor'); ?>

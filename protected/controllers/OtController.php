@@ -75,28 +75,13 @@ class OtController extends ControladorBase
 
 	public function actionEditaDocumento($id)
 	{
-		//MiFactoria::Mensaje('error','dad');
-
-
 		$model=MiFactoria::CargaModelo($this->modelopadre,$id);
-		/*if(isset($_GET['ajax'])){
-			if(count($model->detalle)>0){
-				$filiat=$model->detalle[0];
-				//echo $filiat->punitdes ;die();
-				if($filiat->punit>0){
-					$factor=($filiat->punit-$filiat->punitdes)/$filiat->punit;
-				}else{
-					$factor=0;
-				}
-
-				$model->descuento=$factor*100;
-				$model->refrescaresumen($this);
-			}
-
-		}*/
-
-		//if(count($model->ocompra_tenorsup)==0  or count($model->ocompra_tenorinf)==0)
-			//MiFactoria::Mensaje('notice','Favor de definir los tenores para lo valores de la posicion y la sociedad');
+		$modelolabor=new Tempdesolpe('search_por_ot');
+		$modelolabor->unsetAttributes();  // clear any default values
+		if(isset($_GET['Tempdesolpe'])){
+			$modelolabor->attributes=$_GET['Tempdesolpe'];
+			//var_dump($modelhijo->attributes);die();
+		}
 
 		if($model->{$this->campoestado}==ESTADO_PREVIO)
 			$model->{$this->campoestado}=ESTADO_CREADO;
@@ -112,22 +97,20 @@ class OtController extends ControladorBase
 				$this->setBloqueo($id) ; 	///bloquea
 				$this->ClearBuffer($id); //Limpia temporal antes de levantar
 				$this->IniciaBuffer($id); //Levanta temporales
-				$this->render('update',array('model'=>$model,'editable'=>true));
+				$this->render('update',array('modelolabor'=>$modelolabor,'model'=>$model,'editable'=>true));
 				yii::app()->end();
 			}
 
 		} else {
 			if($this->isRefreshCGridView($id))
 			{ //si esta refresh de grilla
-
-				$this->render('update',array('model'=>$model,'editable'=>true));
+				$this->render('update',array('modelolabor'=>$modelolabor,'model'=>$model,'editable'=>true));
 				yii::app()->end();
 			} else { // Si no lo es  tenemos que analizar los dos casos que quedan
 				if($this->IsRefreshUrlWithoutSubmit($id))
 				{ ///Solo refreso la pagina
-
 					MiFactoria::Mensaje('notice', "No has confirmado los datos, solo has refrescado la pagina ");
-					$this->render('update',array('model'=>$model,'editable'=>true));
+					$this->render('update',array('modelolabor'=>$modelolabor,'model'=>$model,'editable'=>true));
 					yii::app()->end();
 				} else {
 					$this->performAjaxValidation($model);
@@ -136,13 +119,10 @@ class OtController extends ControladorBase
 						//$model->validate();
 						if($this->hubocambiodetalle($id) OR  $model->hacambiado()) {
 							$transacc=Yii::app()->db->beginTransaction();
-
 							if($model->save()){
 								$this->ConfirmaBuffer($id); //Levanta temporales
 								$this->terminabloqueo($id);
 								$this->ClearBuffer($id);
-
-
 							}
 							if(!$this->detectaerrores()){
 								$transacc->commit();
@@ -152,13 +132,12 @@ class OtController extends ControladorBase
 								$this->redirect(array('view','id'=>$model->id));
 							}else{
 								$transacc->rollback();
-								$this->render('update',array('model'=>$model,'editable'=>true));
+								$this->render('update',array('modelolabor'=>$modelolabor,'model'=>$model,'editable'=>true));
 								yii::app()->end();
 							}
 						} else   {
-
 							MiFactoria::Mensaje('notice', "  Enviaste los datos pero no has modificado nada.... ");
-							$this->render('update',array('model'=>$model,'editable'=>true));
+							$this->render('update',array('modelolabor'=>$modelolabor,'model'=>$model,'editable'=>true));
 							yii::app()->end();
 						}
 					} else  { //En este caso quiere decir que la sesion/bloqueo anterior no se ha cerrado correactmente
@@ -166,13 +145,11 @@ class OtController extends ControladorBase
 						$this->terminabloqueo($id);
 						$this->SetBloqueo($id);
 						MiFactoria::Mensaje('notice', "NO cerraste correctamente, Ya tenías una sesion abierta en este domcuento,");
-						$this->render('update',array('model'=>$model,'editable'=>true));
+						$this->render('update',array('modelolabor'=>$modelolabor,'model'=>$model,'editable'=>true));
 						yii::app()->end();
-
 					}
 				}
 			}
-
 		}
 	}
 
@@ -219,6 +196,7 @@ class OtController extends ControladorBase
 		$model->hidorden=$idcabeza;
 		$model->codestado=ESTADO_PREVIO;
 		$model->idusertemp=Yii::app()->user->id;
+		$model->idaux=round(microtime(true) * 1000);
 		$model->codocu=$this->documentohijo; ///detalle guia
 		$model->valorespordefecto($this->documentohijo);
 		//$model->tipoitem='M';
@@ -308,6 +286,45 @@ class OtController extends ControladorBase
 		));
 	}
 
+	public function actionmodificadetallerecurso($id)
+	{
+
+		$model=Tempdesolpe::model()->findByPk(MiFactoria::cleanInput($id));
+		$model->setScenario('buffer');
+		//$model->tipoitem='M';
+		if(isset($_POST['Tempdesolpe']))		{
+			$model->attributes=$_POST['Tempdesolpe'];
+
+
+			//$model->punitdes=$model->punit*$descuento;
+			//crietria para filtrar la cantidad de items del detalle
+
+			//str_pad($somevariable,$anchocampo,"0",STR_PAD_LEFT);
+			////con esto calculamos el numero de items
+			//echo "  El valor de  ".$idcabeza."       ".$model->n_hguia."   ";
+			$this->performAjaxValidationdetalle($model);
+			if($model->save()){
+				if (!empty($_GET['asDialog']))
+				{
+					//Close the dialog, reset the iframe and update the grid
+					echo CHtml::script("window.parent.$('#cru-dialogdetalle').dialog('close');
+													                    window.parent.$('#cru-detalle').attr('src','');
+																		window.parent.$.fn.yiiGridView.update('detalle-recursos-grid');
+																		window.parent.$.fn.yiiGridView.update('resumenoc-grid');
+																		");
+
+				}
+			}
+
+		}
+		// if (!empty($_GET['asDialog']))
+		$formulario=($model->tipsolpe=='M')?'_form_detalle_recursos':'_form_servicio';
+		$this->layout = '//layouts/iframe';
+		$modelopadre=Ot::model()->findByPk($model->hidot);
+		$this->render($formulario,array('modelopadre'=>$modelopadre,
+			'model'=>$model, 'idcabeza'=>$modelopadre->id,'editable'=>true
+		));
+	}
 
 	/**
 	 * @return array action filters
@@ -328,7 +345,7 @@ class OtController extends ControladorBase
 		return array(
 
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('creadetallerecurso','verprecios','crearpdf','verDetoc','firmar','aprobar','cargaprecios','enviarpdf','admin','borrarimpuesto','reporte','agregarmasivamente','cargadirecciones','borraitems','sacaitem','sacaum','salir','agregaimpuesto','agregaritemsolpe','procesardocumento','refrescadescuento','VerDocumento','EditaDocumento','creadocumento','Agregardelmaletin','borraitem','imprimirsolo','cargaentregas','agregarsolpe','agregarsolpetotal','pasaatemporal','create','imprimirsolo','imprimir','imprimir2','enviarmail',
+				'actions'=>array('creaservicio','modificadetallerecurso','creadetallerecurso','verprecios','crearpdf','verDetoc','firmar','aprobar','cargaprecios','enviarpdf','admin','borrarimpuesto','reporte','agregarmasivamente','cargadirecciones','borraitems','sacaitem','sacaum','salir','agregaimpuesto','agregaritemsolpe','procesardocumento','refrescadescuento','VerDocumento','EditaDocumento','creadocumento','Agregardelmaletin','borraitem','imprimirsolo','cargaentregas','agregarsolpe','agregarsolpetotal','pasaatemporal','create','imprimirsolo','imprimir','imprimir2','enviarmail',
 					'procesaroc','hijo','Aprobaroc','Reporteoc','Anularoc','Configuraop','Revertiroc', ///acciones de proceso
 					'libmasiva','creadetalle','Verdetalle','muestraimput','update','nada','Modificadetalle'),
 				'users'=>array('@'),
@@ -1772,16 +1789,14 @@ class OtController extends ControladorBase
 
 	public function actionModificadetalle($id)
 	{
-		$model=Docompratemp::Model()->findByPk(MiFactoria::cleanInput((int)$id));
+		$model=Tempdetot::Model()->findByPk(MiFactoria::cleanInput((int)$id));
 
 		if ($model===null)
 			throw new CHttpException(404,'No se encontro ningun documento para estos datos');
 		//colocar el escenario correcto
-		if($model->iddesolpe > 0 )
-			$model->setScenario('ingresodesolpe');
 
-		if(isset($_POST['Docompratemp']))		{
-			$model->attributes=$_POST['Docompratemp'];
+		if(isset($_POST['Tempdetot']))		{
+			$model->attributes=$_POST['Tempdetot'];
 			if($model->save()){
 				if (!empty($_GET['asDialog']))
 				{
@@ -2470,5 +2485,55 @@ class OtController extends ControladorBase
 
 	}
 
+
+	public function actionCreaservicio($id)
+	{
+		//VERIFICADO PRIMERO SI ES POSIBLE AGREGAR MAS ITEMS
+
+		$modelocabeza=$this->loadModel((integer)MiFactoria::cleanInput($id));
+		$model=new Tempdesolpe('buffer');
+		$model->hidot=$id;
+		$model->est=ESTADO_PREVIO;
+		$model->idusertemp=Yii::app()->user->id;
+		$model->hcodoc=$this->documento; ///detalle guia
+		$model->tipsolpe='S';
+
+		//$model->imputacion=$modelocabeza->objetosmaster->objetoscliente->cebe;
+
+		$model->valorespordefecto('350');
+
+			// Uncomment the following line if AJAX validation is needed
+			$this->performAjaxValidation($model);
+
+			if(isset($_POST['Tempdesolpe']))
+			{
+				$model->attributes=$_POST['Tempdesolpe'];
+				$model->codocu='350'; ///detalle guia
+				$model->tipsolpe='S';  //SERVICIO
+				$model->codart=yii::app()->settings->get('materiales','materiales_codigoservicio');
+				/*var_dump($model->codart);
+				yii::app()->end();*/
+				if($model->save())
+					if (!empty($_GET['asDialog']))
+					{
+						//Close the dialog, reset the iframe and update the grid
+						echo CHtml::script("window.parent.$('#cru-dialogdetalle').dialog('close');
+													                    window.parent.$('#cru-detalle').attr('src','');
+																		window.parent.$.fn.yiiGridView.update('detalle-grid');
+																		");
+						Yii::app()->end();
+					}
+
+
+			}
+			// if (!empty($_GET['asDialog']))
+			$this->layout = '//layouts/iframe';
+			$this->render('_form_servicio',array(
+				'model'=>$model, 'idcabeza'=>$id
+			));
+
+
+
+	}
 
 }

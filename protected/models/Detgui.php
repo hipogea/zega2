@@ -53,7 +53,9 @@ class Detgui extends CActiveRecord
 			array('c_codep', 'required','message'=>'Sin referencia'),
 			array('c_edgui', 'required','message'=>'Llene el destino'),
 			array('docrefext', 'length', 'max'=>15), */
-			array('n_hguia,m_obs,modo,codocu,c_itguia,c_codactivo,c_um,modo,c_codgui,c_um,c_itguia,n_cangui,c_descri,c_edgui,c_codep,n_hconformidad,docref,cargodevolucion,codlugar', 'safe'),
+			array('n_hguia,m_obs,modo,codocu,c_itguia,c_codactivo,c_um,modo,c_codgui,
+			c_um,c_itguia,n_cangui,c_descri,c_edgui,c_codep,n_hconformidad,docref,
+			cargodevolucion,codlugar', 'safe'),
 		 /*
 			//array('c_codsap', 'checkplaca','on'=>'insert,update'),
 			array('c_codgui', 'checkcodigo','on'=>'insert,update'),
@@ -72,9 +74,9 @@ class Detgui extends CActiveRecord
 
 
 		if(yii::app()->settings->get('transporte','transporte_objenguia')=='1'){
-			$reglas[]=array('codob'=>'safe');
+			$reglas[]=array('codob','safe');
 		}
-
+//VAR_DUMP($reglas);die();
 		return $reglas;
 	}
 
@@ -223,6 +225,8 @@ class Detgui extends CActiveRecord
 			'guia' => array(self::BELONGS_TO, 'Guia', 'n_hguia'),
 			'materiales' => array(self::BELONGS_TO, 'Maestrocompo', 'c_codgui'),
 			'activos'=> array(self::BELONGS_TO, 'VwInventario1', 'c_codactivo'),
+			//'ot'=> array(self::STAT, 'Deot','hidne', 'sum(t.cant)'),
+			//'lotescosteado'=>array(self::STAT,'Lotes','hidinventario','select'=>'SUM(cant*punit)', 'condition'=>'cant > 0 '),
 			
 		);
 	}

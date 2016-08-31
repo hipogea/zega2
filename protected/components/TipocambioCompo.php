@@ -27,6 +27,7 @@ class TipocambioCompo extends CApplicationComponent
         /*print_r($registros);
         yii::app()->end();*/
         //$registros=Tipocambio::model()->findAll($citer);
+        //var_dump($registros);die();
         return array_unique($registros);
     }
 

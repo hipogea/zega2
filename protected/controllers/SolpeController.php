@@ -86,7 +86,7 @@ const ESTADO_DESOLPE_RESERVADO='60';
 		$transaccion=$model->dbConnection->beginTransaction();
 		           foreach  ($registroshijos as $row) {
 
-					      if($row->numeroreservas == 0){
+					      if($row->numeroreservas == 0 and !in_array($row->est,array('20','90'))){
 							  $row->setScenario('Atencionreserva');
 							 
 							 /*$modeloreserva=New Alreserva;
@@ -657,23 +657,19 @@ $mpdf=Yii::app()->ePdf->mpdf();
 
 
 public function actionstock() {
-
-
-
 	//$codiguito='14000008';
 	//echo gettype($_POST['codiguito']);
 	if (isset($_POST['codiguito'])) {
-           $codigox=$_POST['codiguito'];
-           $centro=$_POST['centrito'];
-        $almacen=$_POST['almacencito'];
-
-			echo $this->renderpartial("stocks",array('codigo'=>$codigox,'centro'=>$centro,'codal'=>$almacen),true);
+           $codigox=MiFactoria::cleanInput($_POST['codiguito']);
+           $centro=MiFactoria::cleanInput($_POST['centrito']);
+        $almacen=MiFactoria::cleanInput($_POST['almacencito']);
+		/*MiFactoria::Mensaje('error','mensaje uno');
+		MiFactoria::Mensaje('notice','mensaje uno');
+		MiFactoria::Mensaje('success','mensaje uno');
+		$flashMessages = Yii::app()->user->getFlashes(false);if ($flashMessages) { $this->widget('ext.flashes.Flashes', array() );   }
+*/
+		echo $this->renderpartial("stocks",array('codigo'=>$codigox,'centro'=>$centro,'codal'=>$almacen),true);
 								}
-
-
-
-		
-
 }
 
 
@@ -1052,31 +1048,33 @@ public function actiontratareserva($id){
 public function actionBorraitems()
 	{
 	
-  
+
 		$autoIdAll = $_POST['cajita'];
 		$estado=$_POST['Solpe']['estado'];
 		 if(count($autoIdAll)>0 )
 			 {
 			 	$modelin=$this->loadmodel($_POST['Solpe']['id']);
-		         $transaccion=$modelin->dbConnection->beginTransaction();
+				 if($modelin->escompra->libre=='1') {
+					 $transaccion = $modelin->dbConnection->beginTransaction();
 
-				 foreach($autoIdAll as $autoId)
-					{
-							$this->borraitem($autoId);
+					 foreach ($autoIdAll as $autoId) {
+						 $this->borraitem($autoId);
 					 }
-				//muy bien , ahora que pasa si anulando este(os) items, el documento padre queda sin mas items validos?
-			// ..pues tiene que anularse tambien
-				  $consulta=Yii::app()->db->createCommand("select count(*) from ".Yii::app()->params['prefijo']."desolpe where est <> '20' and hidsolpe=".$_POST['Solpe']['id']." ")->queryScalar();
-				if(!$consulta) ///si todos estan anulados 
-				   if($consulta==0 and $modelin->estado <> '99' ) {//si es cero
-				   			$command = Yii::app()->db->createCommand("update ".Yii::app()->params['prefijo']."solpe set estado='30'  where id =".$_POST['Solpe']['id']." ");
-				 			$command->execute();
-					   Yii::app()->user->setFlash('succcess', "Se actualizo tambien la cabecera del documento");
+					 //muy bien , ahora que pasa si anulando este(os) items, el documento padre queda sin mas items validos?
+					 // ..pues tiene que anularse tambien
+					 $consulta = Yii::app()->db->createCommand("select count(*) from " . Yii::app()->params['prefijo'] . "desolpe where est <> '20' and hidsolpe=" . $_POST['Solpe']['id'] . " ")->queryScalar();
+					 if (!$consulta) ///si todos estan anulados
+						 if ($consulta == 0 and $modelin->estado <> '99') {//si es cero
+							 $command = Yii::app()->db->createCommand("update " . Yii::app()->params['prefijo'] . "solpe set estado='30'  where id =" . $_POST['Solpe']['id'] . " ");
+							 $command->execute();
+							 Yii::app()->user->setFlash('succcess', "Se actualizo tambien la cabecera del documento");
 
-				   }
-				 $transaccion->commit();
-				 //$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array(index));
-
+						 }
+					 $transaccion->commit();
+					 //$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array(index));
+				 }else{
+					 MiFactoria::Mensaje('error','Este tipo de solicitud no permite borrar items');
+				 }
 				// Yii::app()->end();
 			} ///luego actualizar yodos los cambos
 
@@ -1243,9 +1241,10 @@ public function borraitem($autoId) //Borra un registro de solpe
 	 *	Retorna una cadena '' o 'disabled' para deshabilitar los controles del form de la vista
 	 *   este es un flag para deshabilitar controles y no recarga Sqls , ES PLANO
 	 ****************************************************/
-	public function eseditable($estadodelmodelo)
+	public function eseditable($estadodelmodelo,$tiposolpe=null)
 	{
-		if ($estadodelmodelo=='10' or $estadodelmodelo=='99' or empty($estadodelmodelo) or is_null($estadodelmodelo)) {return true;} else{return false;}
+		if (($estadodelmodelo=='10' or $estadodelmodelo=='99' or empty($estadodelmodelo) or is_null($estadodelmodelo)) AND
+			($tiposolpe <> 'O')) {return true;} else{return false;}
 	}
 	
 
@@ -1479,36 +1478,45 @@ public function actionprocesarsolpe($id)
 		$modelocabeza=Solpe::model()->findbypk($idcabeza);
 			 if(is_null($modelocabeza))
 			 throw new CHttpException(500,'No existe esta solicitud con este ID');
-		if($modelocabeza->estado=='10' OR $modelocabeza->estado=='99' or ($modelocabeza->desolpe_solpe->iduser==yii::app()->end())) {
-		$model=new Desolpe;
-		$model->valorespordefecto();
-		//$this->performAjaxValidation($model);
-		if(isset($_POST['Desolpe']))
-		{
-			  $model->attributes=$_POST['Desolpe'];
-			  $model->codocu='350';
-			  IF($modelocabeza->escompra=='1')
-				  $model->setScenario('compra');
-			  if($model->save()) {
-				  if (!empty($_GET['asDialog']))				  {
-					  //Close the dialog, reset the iframe and update the grid
-					  echo CHtml::script("window.parent.$('#cru-dialogdetalle').dialog('close');
+		if($modelocabeza->estado=='10' OR $modelocabeza->estado=='99' or ($modelocabeza->desolpe_solpe->iduser==yii::app()->user->id)) {
+		  if($modelocabeza->escompra=='O'){
+			  if (!empty($_GET['asDialog']))
+				  $this->layout = '//layouts/iframe';
+			  $this->render('vw_imposible',array(
+
+			  ));
+		  }ELSE{
+			  $model=new Desolpe;
+			  $model->valorespordefecto();
+			  //$this->performAjaxValidation($model);
+			  if(isset($_POST['Desolpe']))
+			  {
+				  $model->attributes=$_POST['Desolpe'];
+				  $model->codocu='350';
+				  IF($modelocabeza->escompra=='1')
+					  $model->setScenario('compra');
+				  if($model->save()) {
+					  if (!empty($_GET['asDialog']))				  {
+						  //Close the dialog, reset the iframe and update the grid
+						  echo CHtml::script("window.parent.$('#cru-dialogdetalle').dialog('close');
 													                    window.parent.$('#cru-detalle').attr('src','');
 																		window.parent.$.fn.yiiGridView.update('detalle-grid');
 																		");
 
-					  Yii::app()->end();
+						  Yii::app()->end();
+					  }
 				  }
+
 			  }
 
-		    }
 
-		 
-		// if (!empty($_GET['asDialog']))
-		$this->layout = '//layouts/iframe';
-		$this->render('_form_detalle',array(
-			'model'=>$model, 'idcabeza'=>$idcabeza
-		));
+			  // if (!empty($_GET['asDialog']))
+			  $this->layout = '//layouts/iframe';
+			  $this->render('_form_detalle',array(
+				  'model'=>$model, 'idcabeza'=>$idcabeza
+			  ));
+		  }
+
 		
 		} else{ //si ya cambio el estado impisble agregar mas items
 

@@ -157,6 +157,7 @@ class ActiveRecordLogableBehavior extends CActiveRecordBehavior
 	}
 
 private function clave(){
+	//$this->Owner->refresh();
 	$vaL=$this->Owner->getPrimaryKey();
 	IF(IS_ARRAY($vaL))
 	{return $vaL[0];}ELSE{

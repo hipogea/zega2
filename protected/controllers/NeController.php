@@ -235,7 +235,7 @@ class NeController extends ControladorBase
 
 
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('CreaDocumento','salir','Imprimirsolo','cargadespacho','creadetalleActivo','agregardespacho','procesardocumento','EditaDocumento','Borraitems','imprimir','Configuraop',
+				'actions'=>array('relacionaot','CreaDocumento','salir','Imprimirsolo','cargadespacho','creadetalleActivo','agregardespacho','procesardocumento','EditaDocumento','Borraitems','imprimir','Configuraop',
 					'Pide','Modificadetalle','Visualiza','Excel','imprimirsolo',
 					'defaulte','pintamaterial','Libmasiva','pintaactivo','pintaequipo','Anularentrega',
 					'creadetalle','relaciona','recibevalor','Verdetalle','create','update',
@@ -1471,5 +1471,59 @@ class NeController extends ControladorBase
 		return $mensaje;
 	}
 
+
+	public function actionrelacionaot($id){
+		$registro=$this->loadModel(MiFactoria::cleanInput($id));
+		$this->render('relacionaot',array(
+			'model'=>$registro,
+		));
+
+	}
+
+	public function relot(){
+		if(yii::app()->request->isAjaxRequest) {
+			$identidad=(integer)MiFactoria::cleanInput($_POST['identidad']);
+			$cantidad=abs((integer)MiFactoria::cleanInput($_POST['cantidad']));
+			$idot=(integer)MiFactoria::cleanInput($_POST['idot']);
+        $registrodetallene=Detgui::model()->findByPk($identidad);
+			$registrodetoto=Detot::model()->findByPk($idot);
+			if (!is_null($registrodetallene)){
+				if (!is_null($registrodetoto)){
+					//verificamos las cantidades
+
+
+					//que la cantidad a aorotrgar nos ea mayor a la que ha ingresado
+					   if($cantidad + $registrodetallene->ot <= $registrodetallene->n_cangui ){
+						   $registro=New Deot();
+						   $registro->setAttributes(
+							   array(
+								   'hidot'=>$idot,
+								   'hidne'=>$identidad,
+								   'cant'=>$cantidad,
+								   'fec'=>date("Y-m-d H:i:s"),
+							   )
+						   );
+						   $registro->save();
+					   }else{
+						   $cola="";
+						   if($registrodetallene->ot >0)
+							   $cola=  " Esto puede suceder porque ya hay asignados (".$registrodetallene->ot. ")";
+						   $cola.=  $registrodetallene->c_descri." a la orden  (".$registrodetoto->ot->numero. ")-   (  ".$registrodetoto->item."  ) ";
+						   echo "La cantidad a ingresar es mayor a lo que queda disponible ".$cola;
+					   }
+
+
+
+				}else{
+					echo "No se encontro el registro del item de la orden ";
+			}
+
+			}else{
+				echo "No se encontro el registro del item de la nota de entrada";
+			}
+
+		}
+
+	}
 
 }

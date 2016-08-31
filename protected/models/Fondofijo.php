@@ -21,8 +21,8 @@ class Fondofijo extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('desfondo, codtra, codcen, ejercicio, fondo,codarea, codmon, numerodias,porctolerancia', 'required'),
-			array('desfondo, codtra, codcen, ejercicio, fondo,codarea, codmon, numerodias,porctolerancia', 'safe','on'=>'insert, update'),
+			array('desfondo, codtra, codcen,socio, ejercicio, fondo,codarea, codmon, numerodias,porctolerancia', 'required'),
+			array('desfondo, codtra, codcen,socio, ejercicio, fondo,codarea, codmon, numerodias,porctolerancia', 'safe','on'=>'insert, update'),
 			array('numerodias', 'numerical', 'integerOnly'=>true),
 			array('desfondo', 'length', 'max'=>60),
 			array('codtra, codcen', 'length', 'max'=>4),

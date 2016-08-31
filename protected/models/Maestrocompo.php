@@ -69,8 +69,8 @@ class Maestrocompo extends ModeloGeneral
 
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('codigo, marca, modelo, nparte, um, descripcion,esrotativo,  codtipo', 'safe', 'on'=>'update'),
-			array('codigo, marca, modelo, nparte, codpadre, um, descripcion, detalle, clase, codmaterial, flag, codtipo', 'safe', 'on'=>'search'),
+			array('codigo, marca, modelo, nparte, um, descripcion,esrotativo,  codtipo', 'safe', 'on'=>'insert,update'),
+			array('codigo, marca, modelo, nparte, codpadre, um,esrotativo, descripcion, detalle, clase, codmaterial, flag, codtipo', 'safe', 'on'=>'search'),
 		);
              //Escenario para cargar
 
@@ -527,6 +527,7 @@ public function Sepuedecambiarum() {
 		$criteria->compare('marca',$this->marca,true);
 		$criteria->compare('modelo',$this->modelo,true);
 		$criteria->compare('nparte',$this->nparte,true);
+		$criteria->compare('esrotativo',$this->esrotativo,true);
 		$criteria->addcondition(" descripcion like '%".$this->descripcion."%' ");
 
 

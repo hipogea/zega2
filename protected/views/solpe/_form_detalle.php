@@ -10,9 +10,10 @@
  <?php  
  
  $modelopadre=Solpe::model()->findByPk($idcabeza);
+ $tiposolpe=$modelopadre->escompra;
  if(is_null($modelopadre) )
  throw new CHttpException(500,'No se encontro ninguna Solicitud con ese ID');
- $habilitado=($this->eseditablecab($modelopadre->estado) and $this->eseditable($model->est) )?'':'Disabled';
+ $habilitado=($this->eseditablecab($modelopadre->estado) and $this->eseditable($model->est,$tiposolpe) )?'':'Disabled';
 
 
   ?>

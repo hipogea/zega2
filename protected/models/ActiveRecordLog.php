@@ -1,6 +1,18 @@
 <?php
 
-
+/**
+ * This is the model class for table "ActiveRecordLog".
+ *
+ * The followings are the available columns in table 'ActiveRecordLog':
+ * @property string $id
+ * @property string $description
+ * @property string $action
+ * @property string $model
+ * @property string $idModel
+ * @property string $field
+ * @property string $creationdate
+ * @property string $userid
+ */
 class ActiveRecordLog extends CActiveRecord
 {
 	/**

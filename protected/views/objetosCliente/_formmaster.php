@@ -52,13 +52,14 @@
 
 		?>
 		<?php echo $form->labelEx($model,'identificador'); ?>
-		<?php echo $form->textField($model,'identificador',array('ajax'=>$opajax)); ?>
+		<?php echo $form->textField($model,'identificador',array()); ?>
 		<?php echo $form->error($model,'identificador'); ?>
 
 	</div>
 	<div class="row">
-		<?php echo $form->labelEx($model,'textolargo'); ?>
-		<?php echo CHtml::textField('descripcionlarga',''); ?>
+		<?php echo $form->labelEx($model,'serie'); ?>
+		<?php echo $form->textField($model,'serie'); ?>
+		<?php echo $form->error($model,'serie'); ?>
 
 
 	</div>

@@ -1,53 +1,5 @@
 <?php
 
-/**
- * This is the model class for table "{{tempdesolpe}}".
- *
- * The followings are the available columns in table '{{tempdesolpe}}':
- * @property string $id
- * @property string $numero
- * @property string $tipimputacion
- * @property string $centro
- * @property string $codal
- * @property string $codart
- * @property string $txtmaterial
- * @property string $grupocompras
- * @property string $usuario
- * @property string $textodetalle
- * @property string $fechacrea
- * @property string $fechaent
- * @property string $fechalib
- * @property string $imputacion
- * @property string $hidsolpe
- * @property string $codocu
- * @property string $tipsolpe
- * @property string $est
- * @property double $cant
- * @property string $item
- * @property double $cantaten
- * @property integer $posicion
- * @property string $estadolib
- * @property string $solicitanet
- * @property string $um
- * @property string $firme
- * @property string $idreserva
- * @property double $punitplan
- * @property double $punitreal
- * @property string $codservicio
- * @property integer $iduser
- * @property string $hidot
- * @property string $hcodoc
- * @property integer $idusertemp
- * @property string $idtemp
- * @property integer $idstatus
- *
- * The followings are the available model relations:
- * @property Solpe $hidsolpe0
- * @property Maestrocomponentes $codart0
- * @property Ums $um0
- * @property Estado $codocu0
- * @property Estado $est0
- */
 class Tempdesolpe extends ModeloGeneral
 {
 	/**
@@ -67,8 +19,11 @@ class Tempdesolpe extends ModeloGeneral
 		// will receive user inputs.
 		return array(
 			//
-			array('centro, codal, codart, txtmaterial,hidlabor', 'required','on'=>'buffer'),
+			array('centro, codal,cant, codart, txtmaterial,um,hidlabor', 'required','on'=>'buffer'),
+			array('tipsolpe,centro, codal,hidot,hcodoc, codart,item,codservicio,
+			fechaent,est, txtmaterial,hidlabor,iduser,idusertemp,punitreal,idstatus,id,idtemp', 'safe','on'=>'buffer'),
 			array('codart', 'checkvalores'),
+
 			array('codal', 'checkal'),
 			array('posicion, iduser, idusertemp, idstatus', 'numerical', 'integerOnly'=>true),
 			array('cant, cantaten, punitplan, punitreal', 'numerical'),
@@ -83,10 +38,12 @@ class Tempdesolpe extends ModeloGeneral
 			array('est', 'length', 'max'=>2),
 			array('solicitanet', 'length', 'max'=>25),
 			array('codservicio', 'length', 'max'=>8),
-			array('textodetalle, fechacrea, fechaent, fechalib', 'safe'),
+			array('id,hidlabor, numero, tipimputacion, centro, codal, codart, txtmaterial, grupocompras, usuario, textodetalle, fechacrea, fechaent, fechalib, imputacion, hidsolpe, codocu, tipsolpe, est, cant, item, cantaten, posicion, estadolib, solicitanet, um, firme, idreserva, punitplan, punitreal, codservicio, iduser, hidot, hcodoc, idusertemp, idtemp, idstatus', 'safe', 'on'=>'search_por_ot'),
+
+
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, numero, tipimputacion, centro, codal, codart, txtmaterial, grupocompras, usuario, textodetalle, fechacrea, fechaent, fechalib, imputacion, hidsolpe, codocu, tipsolpe, est, cant, item, cantaten, posicion, estadolib, solicitanet, um, firme, idreserva, punitplan, punitreal, codservicio, iduser, hidot, hcodoc, idusertemp, idtemp, idstatus', 'safe', 'on'=>'search'),
+			array('id,hidlabor, numero, tipimputacion, centro, codal, codart, txtmaterial, grupocompras, usuario, textodetalle, fechacrea, fechaent, fechalib, imputacion, hidsolpe, codocu, tipsolpe, est, cant, item, cantaten, posicion, estadolib, solicitanet, um, firme, idreserva, punitplan, punitreal, codservicio, iduser, hidot, hcodoc, idusertemp, idtemp, idstatus', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -99,10 +56,18 @@ class Tempdesolpe extends ModeloGeneral
 		// class name for the relations automatically generated below.
 		return array(
 			'solpe' => array(self::BELONGS_TO, 'Solpe', 'hidsolpe'),
-			'maestro' => array(self::BELONGS_TO, 'Maestrocompo', 'codart'),
+			'desolpe' => array(self::HAS_ONE, 'Desolpe', 'idtemp'),
+			'servicios'=>array(self::BELONGS_TO, 'Maestroservicios', 'codservicio'),
+           'maestro' => array(self::BELONGS_TO, 'Maestrocompo', 'codart'),
+			'ot' => array(self::BELONGS_TO, 'Ot', 'hidot'),
+			'tempdetot' => array(self::BELONGS_TO, 'tempdetot', 'hidlabor'),
 			'um' => array(self::BELONGS_TO, 'Ums', 'um'),
 			'estado'=>array(self::BELONGS_TO,'Estado',array('est'=>'codestado','codocu'=>'codocu')),
 			'almac' => array(self::BELONGS_TO, 'Almacenes', 'codal'),
+			'desolpe_alinventario'=> array(self::BELONGS_TO, 'Alinventario', array('codal'=>'codalm','centro'=>'codcen','codart'=>'codart')),
+			'alkardex_gastos'=>array(self::STAT, 'Alkardex', 'idref','select'=>'sum(montomovido*-1)','condition'=>"codocuref in('890','891')"),//el campo foraneo
+			//'ot'=>array(self::STAT, 'Alkardex', 'idref','select'=>'sum(montomovido*-1)','condition'=>"codocuref in('340','350')"),//el campo foraneo
+
 
 
 		);
@@ -203,6 +168,7 @@ class Tempdesolpe extends ModeloGeneral
 		$criteria->compare('codservicio',$this->codservicio,true);
 		$criteria->compare('iduser',$this->iduser);
 		$criteria->compare('hidot',$this->hidot,true);
+		$criteria->compare('hidlabor',$this->hidot,true);
 		$criteria->compare('hcodoc',$this->hcodoc,true);
 		$criteria->compare('idusertemp',$this->idusertemp);
 		$criteria->compare('idtemp',$this->idtemp,true);
@@ -229,8 +195,8 @@ class Tempdesolpe extends ModeloGeneral
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
-
-
+		$criteria->compare('txtmaterial',$this->txtmaterial,true);
+		$criteria->compare('hidlabor',$this->hidlabor,true);
 		$criteria->addCondition("hidot=".$id);
 
 		return new CActiveDataProvider($this, array(
@@ -282,12 +248,82 @@ class Tempdesolpe extends ModeloGeneral
 	public function checkal($attribute,$params) {
 		if($this->almac->codcen <> $this->centro)
 			$this->adderror('codal','No se permite un almacen que no este en el centro' );
-		//SI ES UN SERVICIO Y LA SOLPE NO ES COMPRA
-		if ($this->solpe->escompra!='1' and $this->tipsolpe=='S')
-			$this->adderror('tipsolpe','La solicitud debe de tener activado el flag de compras' );
+
 
 
 
 
 	}
+
+	public function beforeSave() {
+		if ($this->isNewRecord) {
+			if($this->tipsolpe=='M'){
+				$registroinventario = $this->desolpe_alinventario;
+				$this->punitplan = $this->cant*$registroinventario->getprecio(abs($this->cant)) *
+					Alconversiones::convierte($this->codart, $this->um) *
+					yii::app()->tipocambio->getcambio($registroinventario->almacen->codmon,
+						yii::app()->settings->get('general', 'general_monedadef'));//}
+				$this->punitreal = 0;
+				$this->cantaten = 0;
+
+			}ELSE {
+				$this->punitplan = $this->punitplan * $this->cant;
+			}
+
+
+		} else
+		{
+			if($this->cambiocampo('codal') or $this->cambiocampo('codart') or $this->cambiocampo('cant') ) {
+				if ($this->tipsolpe == 'M') {
+					$registroinventario = $this->desolpe_alinventario;
+					$this->punitplan = $this->cant * $registroinventario->getprecio(abs($this->cant)) *
+						Alconversiones::convierte($this->codart, $this->um) *
+						yii::app()->tipocambio->getcambio($registroinventario->almacen->codmon,
+							yii::app()->settings->get('general', 'general_monedadef'));
+
+				}ELSE{
+					$this->punitplan=$this->punitplan*$this->cant;
+				}
+			}
+           }
+
+
+
+		return parent::beforeSave();
+	}
+
+	public static function getTotal($provider)
+	{
+		$totalreal=0;
+		$totalplan=0;
+		foreach($provider->data as $data)
+		{
+			if($data->est <> '20'){
+				$r = $data->punitreal;
+				$p=$data->punitplan;
+				$totalreal += $r;
+				$totalplan += $p;
+			}
+		}
+		return array('plan'=>$totalplan,'real'=>$totalreal);
+	}
+
+	public function afterfind(){
+		if($this->tipsolpe=='M'){
+			$this->punitreal=$this->alkardex_gastos;
+		}else{ //Si es un servicio
+
+			$this->punitreal=Yii::app()->db->createCommand()
+				->select('sum(k.montomovido)')
+				->from('{{alkardex}} k, {{docompra}} d, {{desolpecompra}} ds ' )
+				->where("k.idref=d.id and
+						k.codocuref in ('210','220') and
+						d.id=ds.iddocompra and
+						 ds.iddesolpe=:vid ",array(":vid"=>$this->id))->queryScalar();
+
+		}
+
+		return parent::afterfind();
+	}
+
 }

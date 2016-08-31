@@ -938,6 +938,10 @@ if(!$mensaje->save())
             case '10':
                 $registros=self::DevuelveSolPespendientes ($numdoc,$idvale);
                 break;
+            case '43':
+                $numero=Ot::model()->findByNumero(trim($numdoc))->desolpe[0]->desolpe_solpe->numero;
+                $registros=self::DevuelveSolPespendientes ($numero,$idvale);
+                break;
             case '79':
             $registros=array();
             break;
@@ -1173,7 +1177,7 @@ if(!$mensaje->save())
                          {{docompra}}  c   ON   c.hidguia=d.idguia   INNER JOIN
                        {{alentregas}} a   ON a.iddetcompra=c.id LEFT JOIN
                          {{detingfactura}}  e ON a.id=e.hidalentrega
-                         WHERE d.numcot='".$numerocompra."'  and e.codestado='10'  group by
+                         WHERE d.numcot='".$numerocompra."'    group by
                           a.id , a.cant ,c.item, c.cant , d.numcot
                           HAVING (sum(e.cant) < a.cant or sum(e.cant) IS NULL ) "  )->queryAll()  ;
 

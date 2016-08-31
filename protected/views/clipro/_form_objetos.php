@@ -63,7 +63,7 @@
 
 				<div class="row">
 					<?php echo $form->labelEx($model,'descripcionobjeto'); ?>
-					<?php echo $form->textArea($model,'descripcionobjeto',array('rows'=>6, 'cols'=>50)); ?>
+					<?php echo $form->textArea($model,'descripcionobjeto',array('rows'=>3, 'cols'=>50)); ?>
 					<?php echo $form->error($model,'descripcionobjeto'); ?>
 				</div>
 
@@ -112,12 +112,15 @@
 				'summaryText'=>'->',
 				'columns'=>array(
 					'id',
-					'master.codigo',
-					'master.descripcion',
-					'master.marca',
-					'master.modelo',
-					'master.numeroparte',
-					'master.codigopadre',
+
+					//'masterequipo.codigo',
+					'serie',
+					'identificador',
+					'masterequipo.descripcion',
+					'masterequipo.marca',
+					'masterequipo.modelo',
+					/*'masterequipo.numeroparte',
+					'masterequipo.codigopadre',*/
 
 					array(
 						'htmlOptions'=>array('width'=>55),

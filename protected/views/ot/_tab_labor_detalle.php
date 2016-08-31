@@ -6,7 +6,7 @@
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'detalleoc-form',
 
-	'enableAjaxValidation'=>true,
+	//'enableAjaxValidation'=>true,
 	
 
 
@@ -53,14 +53,21 @@
 
 	?>
 </div>
-	<div class="row">
-		<?php echo $form->labelEx($model,'hidlabor'); ?>
-		<?php  $datos1t1 = CHtml::listData(Tempdetot::model()->findAll("idusertemp=:vuser and hidorden=:orden",array(":orden"=>$model->id,":vuser"=>yii::app()->user->id)),'id','textoactividad');
-		echo $form->DropDownList($model,'hidlabor',$datos1t1, array('empty'=>'--Seleccione una labor--','disabled'=>$this->eseditable($model->codestado))  )  ;
-		?>
-		<?php echo $form->error($model,'hidlabor'); ?>
-	</div>
 
+
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'tipo'); ?>
+		<?php  //$datos1tb1x = CHtml::listData(Masterrelacion::model()->findAll("hidhijo=:orden   ",array(":orden"=>$model->ot->objetosmaster->masterequipo->codigo)),'hidpadre','padre.descripcion');
+		echo $form->DropDownList($model,'tipo',
+			array(
+				'C'=>'Servicio de campo',
+				'T'=>'Servicio de Taller',
+				'A'=>'Asesoria Tecnica',
+			), array('empty'=>'--Seleccione un tipo--','disabled'=>$this->eseditable($model->codestado))  )  ;
+		?>
+		<?php echo $form->error($model,'tipo'); ?>
+	</div>
 
 
 <div class="row">
@@ -75,7 +82,11 @@
 		<?php echo $form->textField($model,'textoactividad',array('disabled'=>($editable)?'':'disabled')); ?>
 		<?php echo $form->error($model,'textoactividad'); ?>
 	</div>
-
+	<div class="row">
+		<?php echo $form->labelEx($model,'txt'); ?>
+		<?php echo $form->textArea($model,'txt',array('disabled'=>($editable)?'':'disabled')); ?>
+		<?php echo $form->error($model,'txt'); ?>
+	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'codresponsable'); ?>
@@ -87,7 +98,7 @@
 			$this->widget('ext.matchcode.MatchCode',array(
 					'nombrecampo'=>'codresponsable',
 					'ordencampo'=>1,
-					'controlador'=>$this->id,
+					'controlador'=>'Tempdetot',
 					'relaciones'=>$model->relations(),
 					'tamano'=>6,
 					'model'=>$model,
@@ -107,20 +118,68 @@
 	</div>
 
 
+	<div class="row">
+		<?php echo $form->labelEx($model,'cc'); ?>
+		<?php
+
+		if ($this->eseditable($model->codestado)=='')
+
+		{
+			$this->widget('ext.matchcode.MatchCode',array(
+					'nombrecampo'=>'cc',
+					'ordencampo'=>3,
+					'controlador'=>'Tempdetot',
+					'relaciones'=>$model->relations(),
+					'tamano'=>12,
+					'model'=>$model,
+					'form'=>$form,
+					'nombredialogo'=>'cru-dialog3',
+					'nombreframe'=>'cru-frame3',
+					'nombrearea'=>'fehe367uudf8989ddj',
+				)
+
+			);
+		} else{
+			echo CHtml::textField('Saccccc',$model->ceco->desceco,array('disabled'=>'disabled','size'=>30)) ;
+
+		}
+		?>
+		<?php echo $form->error($model,'cc'); ?>
+	</div>
+	<div class="row">
+		<?php echo $form->labelEx($model,'codgrupoplan'); ?>
+		<?php  $datos1tb1 = CHtml::listData(Grupoplan::model()->findAll("codcen=:orden",array(":orden"=>$model->ot->codcen)),'codgrupo','desgrupo');
+		echo $form->DropDownList($model,'codgrupoplan',$datos1tb1, array('empty'=>'--Seleccione un grupo--','disabled'=>$this->eseditable($model->codestado))  )  ;
+		?>
+		<?php echo $form->error($model,'codgrupoplan'); ?>
+	</div>
+	<div class="row">
+		<?php echo $form->labelEx($model,'codmaster'); ?>
+		<?php
+              var_dump($model->ot->objetosmaster->masterequipo->codigo);
+
+         $datos1tb1x = CHtml::listData(Masterrelacion::model()->findAll("hidpadre=:orden",array(":orden"=>$model->ot->objetosmaster->masterequipo->codigo)),'hidhijo','hijo.descripcion');
+		echo $form->DropDownList($model,'codmaster',$datos1tb1x, array('empty'=>'--Seleccione un grupo--','disabled'=>$this->eseditable($model->codestado))  )  ;
+		?>
+		<?php echo $form->error($model,'codmaster'); ?>
+	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'codestado'); ?>
-		<?php echo $form->textField($model,'codestado'); ?>
+		<?php echo $form->labelEx($model,'nhoras'); ?>
+		<?php echo $form->textField($model,'nhoras',array('size'=>4)); ?>
+		<?php echo $form->error($model,'nhoras'); ?>
 
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'codocu'); ?>
-		<?php echo $form->textField($model,'codocu'); ?>
+		<?php echo $form->labelEx($model,'nhombres'); ?>
+		<?php echo $form->textField($model,'nhombres',array('size'=>4)); ?>
+		<?php echo $form->error($model,'nhombres'); ?>
 
 	</div>
 
-<?php $this->endWidget(); ?>
+
+	<?php $this->endWidget(); ?>
 
 </div><!-- form -->
 </div>

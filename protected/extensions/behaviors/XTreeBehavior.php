@@ -366,8 +366,9 @@ class XTreeBehavior extends CActiveRecordBehavior
     {
         $owner=$this->getOwner();
         $parentId=$owner->getAttribute($this->parent_id);
+       // $owner->addError($this->parent_id, Yii::t('treeBehavior',''. $parentId));
         $newParent=$owner->findbyPk($parentId);
-        if($newParent===null)
+        if($newParent===null AND $parentId >0)
         {
             $owner->addError($this->parent_id, Yii::t('treeBehavior','Parent node does not exist.'));
             $event->isValid=false;

@@ -31,7 +31,7 @@ class Objetosmaster extends CActiveRecord
 			array('hidobjeto', 'numerical', 'integerOnly'=>true),
 			array('hcodobmaster', 'length', 'max'=>15),
 			array('activo', 'length', 'max'=>1),
-			array('activo,serie,identificador,textolargo', 'safe', 'on'=>'search'),
+			array('activo,serie,identificador,textolargo', 'safe'),
 			//array('hidobjeto+hcodobmaster', 'application.extensions.uniqueMultiColumnValidator','on'=>'insert,update'),
 
 			// The following rule is used by search().

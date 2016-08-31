@@ -188,7 +188,7 @@
 			<?php echo $form->labelEx($model,'idobjeto'); ?>
 			<?php
 
-			if ($this->eseditable($model->codestado)=='')
+			if ($this->eseditable($model->codestado)=='' and $model->isNewRecord)
 
 			{
 				$this->widget('ext.matchcode.MatchCode',array(
@@ -206,7 +206,8 @@
 
 				);
 			} else{
-				//echo CHtml::textField('Saccc',$model->responsable1->ap.'-'.$model->responsable1->ap.'-'.$model->responsable1->nombres,array('disabled'=>'disabled','size'=>40)) ;
+				echo $form->textField($model,'idobjeto',array('disabled'=>'disabled','size'=>4)) ;
+				echo CHtml::textField('Saccc',VwObjetos::descripcion($model->idobjeto),array('size'=>60,'disabled'=>'disdabled')) ;
 
 			}
 			?>
@@ -327,7 +328,7 @@ $this->widget('zii.widgets.jui.CJuiTabs', array(
 				'content'=>$this->renderPartial('tab_labores', array('form'=>$form,'model'=>$model),TRUE)
 			),
 			'Recursos'=>array('id'=>'tab_ui',
-				'content'=>$this->renderPartial('tab_recursos', array('form'=>$form,'model'=>$model),TRUE)
+				'content'=>$this->renderPartial('tab_recursos', array('form'=>$form,'model'=>$model,'modelolabor'=>$modelolabor),TRUE)
 			),
 			'Auditoria'=>array('id'=>'tab____..__',
 				'content'=>$this->renderPartial('//site/tab_auditoria', array('form'=>$form,'model'=>$model),TRUE)

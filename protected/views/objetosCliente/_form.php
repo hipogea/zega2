@@ -55,7 +55,7 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'descripcionobjeto'); ?>
-		<?php echo $form->textArea($model,'descripcionobjeto',array('rows'=>6, 'cols'=>50)); ?>
+		<?php echo $form->textArea($model,'descripcionobjeto',array('rows'=>3, 'cols'=>20)); ?>
 		<?php echo $form->error($model,'descripcionobjeto'); ?>
 	</div>
 
@@ -104,6 +104,8 @@
 			'summaryText'=>'->',
 			'columns'=>array(
 				'id',
+				'identificador',
+				'serie',
 				'master.codigo',
 				'master.descripcion',
 				'master.marca',

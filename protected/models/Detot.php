@@ -28,7 +28,7 @@
  * @property Ot $hidorden0
  * @property Trabajadores $codresponsable0
  */
-class Detot extends CActiveRecord
+class Detot extends ModeloGeneral
 {
 	/**
 	 * @return string the associated database table name
@@ -47,7 +47,8 @@ class Detot extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			//array('id, hidorden, item, textoactividad, codresponsable, fechainic, fechafinprog, fechacre, flaginterno, codocu, tipo, codestado, codmaster, idinventario, iduser, idusertemp, idstatus, txt', 'required'),
-			array('idinventario, iduser, idusertemp, idstatus', 'numerical', 'integerOnly'=>true),
+			array('idinventario, iduser, idaux,idusertemp, idstatus', 'numerical', 'integerOnly'=>true),
+			array('codocu,codestado,nhoras,idaux,nhombres,tipo,txt,cc,codmaster,codgrupoplan', 'safe'),
 			array('id, hidorden', 'length', 'max'=>20),
 			array('item, codocu, codestado', 'length', 'max'=>3),
 			array('textoactividad', 'length', 'max'=>40),
@@ -68,8 +69,9 @@ class Detot extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'hidorden0' => array(self::BELONGS_TO, 'Ot', 'hidorden'),
-			'codresponsable0' => array(self::BELONGS_TO, 'Trabajadores', 'codresponsable'),
+			'ceco'=> array(self::BELONGS_TO, 'Cc', 'cc'),
+			'ot' => array(self::BELONGS_TO, 'Ot', 'hidorden'),
+			'trabajadores' => array(self::BELONGS_TO, 'Trabajadores', 'codresponsable'),
 		);
 	}
 
@@ -154,4 +156,11 @@ class Detot extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+
+	public function afterSave(){
+		Tempdesolpe::model()->updateAll(array("hidlabor"=>$this->id),"hidlabor=:viden",array(":viden"=>$this->idtemp));
+		return parent::afterSave();
+    }
+
+
 }
