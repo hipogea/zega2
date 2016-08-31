@@ -1,6 +1,19 @@
-# Windows image file caches
+# IMagenes
 Thumbs.db
 ehthumbs.db
+*.jpg
+*.jpeg
+*.bmp
+*.png
+*.gif
+
+# la carpeta runtime y assests
+imgreportes/
+assets/
+materiales/
+themes/temita/img/
+themes/temita/less/
+
 
 # Folder config file
 Desktop.ini
@@ -13,6 +26,7 @@ $RECYCLE.BIN/
 *.msi
 *.msm
 *.msp
+
 
 # Windows shortcuts
 *.lnk
