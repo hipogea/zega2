@@ -1,0 +1,171 @@
+.cuerpo-mensaje{
+    display:none;
+}
+
+
+.bloque {
+
+
+    border: 1px solid #de57ee;
+   width:98%;
+    padding: 5px 5px 5px 65px;
+    color: #b939ae;
+    margin: 0 0 6px 0;
+    background-color: #c5f4fe;
+    font-size: 1em;
+    font-weight: bold;
+    border-radius:5px;
+    -moz-border-radius:5px; /* Firefox */
+    -webkit-border-radius:5px; /* Safari y Chrome */
+    -webkit-box-shadow: 11px 11px 5px -7px rgba(0,0,0,0.23);
+    -moz-box-shadow: 11px 11px 5px -7px rgba(0,0,0,0.23);
+    box-shadow: 11px 11px 5px -7px rgba(0,0,0,0.23);
+}
+
+
+
+
+.flash-error {
+    background: url('../img/cancel.png');
+    background-position: 20px 5px;
+    background-repeat: no-repeat;
+    border: 1px solid #fdd7db;
+    padding: 5px 5px 5px 65px;
+    color: #f99f96;
+    margin: 0 0 6px 0;
+    background-color: #fff0f0;
+    font-size: 1em;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+
+.flash-success {
+
+    background: url('../img/check.png');
+    background-position:20px 5px;
+    background-repeat:no-repeat;
+    border: 1px solid #a2d246;
+    padding: 5px 5px 5px 65px;
+    color: #9db85d;
+    margin: 0 0 6px 0;
+    background-color: #ebf8a4;
+    font-size: 1em;
+    font-weight: bold;
+    border-radius:5px;
+
+}
+
+
+
+.flash-notice {
+
+    background: url('../img/security.png');
+    background-position:20px 5px;
+    background-repeat:no-repeat;
+    border: 1px solid #ffe869;
+    padding: 5px 5px 5px 65px;
+    color: #ffd66f;
+    margin: 0 0 6px 0;
+    background-color: rgba(255, 244, 193, 0.73);
+    font-size: 1em;
+    font-weight:bold;
+    border-radius:5px;
+
+}
+
+
+.flash-regular {
+
+    background-position:20px 5px;
+    background-repeat:no-repeat;
+    border: 1px solid #ffd139;
+    padding: 5px 5px 5px 65px;
+    color: #ffa31b;
+    margin: 0 0 6px 0;
+    background-color: rgba(255, 228, 181, 0.73);
+    font-size: 1em;
+    font-weight:bold;
+    border-radius:5px;
+    -moz-border-radius:5px; /* Firefox */
+    -webkit-border-radius:5px; /* Safari y Chrome */
+    -webkit-box-shadow: 11px 11px 5px -7px rgba(0,0,0,0.23);
+    -moz-box-shadow: 11px 11px 5px -7px rgba(0,0,0,0.23);
+    box-shadow: 11px 11px 5px -7px rgba(0,0,0,0.23);
+}
+
+/* Círculos de colores numerados */
+span.errormsg {
+    background: red;
+    border-radius: 0.8em;
+    -moz-border-radius: 0.8em;
+    -webkit-border-radius: 0.8em;
+    color: #ffffff;
+    display: inline-block;
+    font-weight: bold;
+    font-size: 1em;
+    line-height: 1.6em;
+    margin-right: 2px;
+    margin-left: 2px;
+    text-align: center;
+    width: 1.6em;
+    -webkit-box-shadow: 2px 2px 1px 0px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:    2px 2px 1px 0px rgba(50, 50, 50, 0.75);
+    box-shadow:         2px 2px 1px 0px rgba(50, 50, 50, 0.75);
+}
+
+span.grey {
+    background: #cccccc;
+    border-radius: 0.8em;
+    -moz-border-radius: 0.8em;
+    -webkit-border-radius: 0.8em;
+    color: #fff;
+    display: inline-block;
+    font-weight: bold;
+    line-height: 1.6em;
+    margin-right: 2px;
+    margin-left: 2px;
+    text-align: center;
+    width: 1.6em;
+    -webkit-box-shadow: 2px 2px 1px 0px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:    2px 2px 1px 0px rgba(50, 50, 50, 0.75);
+    box-shadow:         2px 2px 1px 0px rgba(50, 50, 50, 0.75);
+}
+
+span.successmsg {
+    background: #11a239;
+    border-radius: 0.8em;
+    -moz-border-radius: 0.8em;
+    -webkit-border-radius: 0.8em;
+    color: #ffffff;
+    display: inline-block;
+    font-weight: bold;
+    font-size: 1em;
+    line-height: 1.6em;
+    margin-right: 2px;
+    margin-left: 2px;
+    text-align: center;
+    width: 1.6em;
+    -webkit-box-shadow: 2px 2px 1px 0px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:    2px 2px 1px 0px rgba(50, 50, 50, 0.75);
+    box-shadow:         2px 2px 1px 0px rgba(50, 50, 50, 0.75);
+}
+
+span.noticemsg {
+    background: #efb31e;
+    border-radius: 0.8em;
+    -moz-border-radius: 0.8em;
+    -webkit-border-radius: 0.8em;
+    color: #ffffff;
+    display: inline-block;
+    font-weight: bold;
+    font-size: 1em;
+    line-height: 1.6em;
+    margin-right: 2px;
+    margin-left: 2px;
+    text-align: center;
+    width: 1.6em;
+    -webkit-box-shadow: 2px 2px 1px 0px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:    2px 2px 1px 0px rgba(50, 50, 50, 0.75);
+    box-shadow:         2px 2px 1px 0px rgba(50, 50, 50, 0.75);
+}
