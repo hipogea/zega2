@@ -10,6 +10,7 @@ ehthumbs.db
 # la carpeta runtime y assests
 imgreportes/
 /assets
+/protected/runtime
 materiales/
 themes/temita/img/
 themes/temita/less/
