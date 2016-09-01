@@ -23,21 +23,52 @@
 	'visiblex' => array('10'),
 	),
 
-      'money' => array(
-	'type' => 'C',
-	'ruta' => array($this->id . '/verprecios', array(
-	'codigomaterial' =>  ``,
-	//"id"=>$model->n_direc,
-	"asDialog" => 1,
-	"gridId" => 'detalle-grid',
-	)
-	),
-	'dialog' => 'cru-dialog3',
-	'frame' => 'cru-frame3',
-	'visiblex' => array('10'),
-
-	),
-
+    'calendar' => array(
+		'type' => 'D', //AJAX LINK
+		'ruta' => array($this->id.'/colocaloteultimo', array('idlote' => $model->id)),
+		'opajax' => array(
+		'type' => 'GET',
+		'success' => 'function(){
+                $("#sss").value=3333378;
+                      }'
+		),
+          'visiblex' => array('10'),
+                ),
+        'ok' => array(
+		'type' => 'D', //AJAX LINK
+		'ruta' => array($this->id.'/colocaloteultimo', array('idlote' => $model->id)),
+		'opajax' => array(
+		'type' => 'GET',
+		'success' => 'function(){
+                $("#sss").value=3333378;
+                      }'
+		),
+            'visiblex' => array('10'),
+                ),    
+             'tacho' => array(
+		'type' => 'D', //AJAX LINK
+		'ruta' => array($this->id.'/colocaloteultimo', array('idlote' => $model->id)),
+		'opajax' => array(
+		'type' => 'GET',
+		'success' => 'function(){
+                $("#sss").value=3333378;
+                      }'
+		),
+            'visiblex' => array('10'),
+                ),  
+            
+            'last' => array(
+		'type' => 'D', //AJAX LINK
+		'ruta' => array($this->id.'/colocaloteultimo', array('idlote' => $model->id)),
+		'opajax' => array(
+		'type' => 'GET',
+		'success' => 'function(){
+                $("#sss").value=3333378;
+                      }'
+		),
+            'visiblex' => array('10'),
+                ),  
+            
 	);
 
 		$this->widget('ext.toolbar.Barra',
@@ -68,15 +99,44 @@
 		?>
 		<?php echo $form->error($model,'tipo'); ?>
 	</div>
-
+<div class="row">
+    <?php if(!$model->isNewRecord){ ?>
+		<?php echo $form->labelEx($model,'codestado'); ?>
+		<?php echo CHtml::textField('modeldgdgd',$model->estado->estado,array('disabled'=>($editable)?'':'disabled')); ?>
+    <?php } ?>	
+	</div>
 
 <div class="row">
 
 						<?php echo $form->labelEx($model,'item'); ?>
 						<?php echo $form->textField($model,'item',array('size'=>3,'disabled'=>'disabled')); ?>
 </div>
+    
+    <div class="row">
+        
+        <?php echo CHtml::label('Avance','Avance (%)'); ?>
+        <?php 
+$this->widget('zii.widgets.jui.CJuiSliderInput', array(
+    'model'=>$model,
+    'attribute'=>'avance',
+    'name'=>'my_slider',
+    'value'=>$model->avance,
+    'event'=>'change',
+    'options'=>array(
+        'min'=>0,
+        'max'=>100,
+        'slide'=>'js:function(event,ui){$("#amount").text(ui.value);}',
+    ),
+    'htmlOptions'=>array(
+        'style'=>'width:400px; float:left;'
+    ),
+));
+?>
+        <div id="amount" >
+            
+        </div>
 
-
+    </div> 
 	<div class="row">
 		<?php echo $form->labelEx($model,'textoactividad'); ?>
 		<?php echo $form->textField($model,'textoactividad',array('disabled'=>($editable)?'':'disabled')); ?>
@@ -209,6 +269,93 @@
 		
 					</div>
 
+    <div class="row">
+						<?php echo $form->labelEx($model,'fechafin'); ?>
+
+						<?php $this->widget('zii.widgets.jui.CJuiDatePicker',
+							array(
+								'model'=>$model,
+								'attribute'=>'fechafin',
+								'value'=>$model->fechafin,
+								'language' => 'es',
+								'htmlOptions' => array('readonly'=>"readonly"),
+								'options'=>array(
+									'autoSize'=>true,
+									'defaultDate'=>$model->fechafin,
+									'showAnim'=>'fold', // 'show' (the default), 'slideDown', 'fadeIn', 'fold'
+									'showOn'=>'both', // 'focus', 'button', 'both'
+									'buttonImage'=>Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'calendar_1.png',
+									'buttonImageOnly'=>true,
+									'dateFormat'=>'yy-mm-dd',
+									'selectOtherMonths'=>true,
+									'showAnim'=>'slide',
+									'showButtonPanel'=>false,
+									'showOtherMonths'=>true,
+									'changeMonth' => 'true',
+									'changeYear' => 'true',
+								),
+							)
+						);?>
+		
+					</div>
+    <div class="row">
+						<?php echo $form->labelEx($model,'fechainiprog'); ?>
+
+						<?php $this->widget('zii.widgets.jui.CJuiDatePicker',
+							array(
+								'model'=>$model,
+								'attribute'=>'fechainiprog',
+								'value'=>$model->fechainiprog,
+								'language' => 'es',
+								'htmlOptions' => array('readonly'=>"readonly"),
+								'options'=>array(
+									'autoSize'=>true,
+									'defaultDate'=>$model->fechainiprog,
+									'showAnim'=>'fold', // 'show' (the default), 'slideDown', 'fadeIn', 'fold'
+									'showOn'=>'both', // 'focus', 'button', 'both'
+									'buttonImage'=>Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'calendar_1.png',
+									'buttonImageOnly'=>true,
+									'dateFormat'=>'yy-mm-dd',
+									'selectOtherMonths'=>true,
+									'showAnim'=>'slide',
+									'showButtonPanel'=>false,
+									'showOtherMonths'=>true,
+									'changeMonth' => 'true',
+									'changeYear' => 'true',
+								),
+							)
+						);?>
+		
+					</div>
+    <div class="row">
+						<?php echo $form->labelEx($model,'fechafinprog'); ?>
+
+						<?php $this->widget('zii.widgets.jui.CJuiDatePicker',
+							array(
+								'model'=>$model,
+								'attribute'=>'fechafinprog',
+								'value'=>$model->fechafinprog,
+								'language' => 'es',
+								'htmlOptions' => array('readonly'=>"readonly"),
+								'options'=>array(
+									'autoSize'=>true,
+									'defaultDate'=>$model->fechafinprog,
+									'showAnim'=>'fold', // 'show' (the default), 'slideDown', 'fadeIn', 'fold'
+									'showOn'=>'both', // 'focus', 'button', 'both'
+									'buttonImage'=>Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'calendar_1.png',
+									'buttonImageOnly'=>true,
+									'dateFormat'=>'yy-mm-dd',
+									'selectOtherMonths'=>true,
+									'showAnim'=>'slide',
+									'showButtonPanel'=>false,
+									'showOtherMonths'=>true,
+									'changeMonth' => 'true',
+									'changeYear' => 'true',
+								),
+							)
+						);?>
+		
+					</div>
 	<?php $this->endWidget(); ?>
 
 </div><!-- form -->

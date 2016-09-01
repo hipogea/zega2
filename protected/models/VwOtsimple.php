@@ -49,7 +49,7 @@ class VwOtsimple extends CActiveRecord
 			array('fechainiprog, fechainicio, fechafin', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('despro, rucpro, identificador, serie, descripcion, marca, modelo, nombreobjeto, codobjeto, id, numero, fechacre, fechafinprog, codpro, idobjeto, codresponsable, textocorto, textolargo, grupoplan, codcen, iduser, codocu, codestado, clase, hidoferta, fechainiprog, fechainicio, fechafin', 'safe', 'on'=>'search'),
+			array('despro, rucpro, identificador, serie, descripcion, marca, modelo, nombreobjeto, codobjeto, id, numero, fechacre, fechafinprog, codpro, idobjeto, codresponsable, textocorto, textolargo, grupoplan, codcen, iduser, codocu, codestado, clase, hidoferta, fechainiprog, fechainicio,fechainicio1, fechafin', 'safe', 'on'=>'search'),
 		);
 	}
 

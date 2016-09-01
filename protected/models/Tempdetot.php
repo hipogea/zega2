@@ -48,7 +48,7 @@ class Tempdetot extends ModeloGeneral
 		return array(
 			//array('id, hidorden, item, textoactividad, codresponsable, fechainic, fechafinprog, fechacre, flaginterno, codocu, codestado, codmaster, idinventario, iduser, idusertemp, idstatus', 'required'),
 			array('idinventario, iduser, idusertemp, idstatus', 'numerical', 'integerOnly'=>true),
-			array('codocu,codestado,nhoras,fechainic,fechafinprog,fechafin,fechainiprog,idaux,nhombres,codmon,monto,codmaster,tipo,cc,txt,codgrupoplan', 'safe'),
+			array('codocu,avance,codestado,nhoras,fechainic,fechafinprog,fechafin,fechainiprog,idaux,nhombres,codmon,monto,codmaster,tipo,cc,txt,codgrupoplan', 'safe'),
 				array('id, hidorden', 'length', 'max'=>20),
 			array('item, codestado', 'length', 'max'=>3),
 			array('textoactividad', 'length', 'max'=>40),
