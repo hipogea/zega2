@@ -1,10 +1,7 @@
-<?php
+﻿<?php
 
 class Buffer extends CDbCriteria
 {
-
-
-
 
 	//public $modelopadre;
 	const PREFIJO_TABLAS ='public_';

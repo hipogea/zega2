@@ -48,7 +48,7 @@ class Detot extends ModeloGeneral
 		return array(
 			//array('id, hidorden, item, textoactividad, codresponsable, fechainic, fechafinprog, fechacre, flaginterno, codocu, tipo, codestado, codmaster, idinventario, iduser, idusertemp, idstatus, txt', 'required'),
 			array('idinventario, iduser, idaux,idusertemp, idstatus', 'numerical', 'integerOnly'=>true),
-			array('codocu,codestado,nhoras,idaux,nhombres,tipo,txt,cc,codmaster,codgrupoplan', 'safe'),
+			array('codocu,codestado,nhoras,idaux,nhombres,codmon,monto,tipo,txt,cc,codmaster,codgrupoplan', 'safe'),
 			array('id, hidorden', 'length', 'max'=>20),
 			array('item, codocu, codestado', 'length', 'max'=>3),
 			array('textoactividad', 'length', 'max'=>40),

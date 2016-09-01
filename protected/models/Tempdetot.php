@@ -1,4 +1,4 @@
-<?php
+<<?php
 
 /**
  * This is the model class for table "{{tempdetot}}".
@@ -48,7 +48,7 @@ class Tempdetot extends ModeloGeneral
 		return array(
 			//array('id, hidorden, item, textoactividad, codresponsable, fechainic, fechafinprog, fechacre, flaginterno, codocu, codestado, codmaster, idinventario, iduser, idusertemp, idstatus', 'required'),
 			array('idinventario, iduser, idusertemp, idstatus', 'numerical', 'integerOnly'=>true),
-			array('codocu,codestado,nhoras,idaux,nhombres,codmaster,tipo,cc,txt,codgrupoplan', 'safe'),
+			array('codocu,codestado,nhoras,idaux,nhombres,codmon,monto,codmaster,tipo,cc,txt,codgrupoplan', 'safe'),
 				array('id, hidorden', 'length', 'max'=>20),
 			array('item, codestado', 'length', 'max'=>3),
 			array('textoactividad', 'length', 'max'=>40),
@@ -172,4 +172,20 @@ class Tempdetot extends ModeloGeneral
 	{
 		return parent::model($className);
 	}
+        
+        
+        public function beforeSave() {
+            if($this->isNewRecord) {
+                 $this->codmon = yii::app()->settings->get('general', 'general_monedadef');
+                }
+        if($this->cambiocampo('nhoras')	or $this->cambiocampo('codgrupoplan'))
+                                {
+                                    $this->monto=$this->nhoras*$this->nhombres*
+                                            yii::app()->tipocambio->getcambio($this->grupoplan->codmon,$this->codmon)*
+                                            $this->grupoplan->tarifa;
+                                }
+                               return parent::beforeSave();
+				}
+        
+        
 }

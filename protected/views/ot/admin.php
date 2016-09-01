@@ -26,45 +26,51 @@ $('.search-form form').submit(function(){
 ");
 ?>
 
-<h1>Manage Ots</h1>
+<?php
+MiFactoria::titulo("Ordenes de servicio", "sociedad")
+?>
 
-<p>
-You may optionally enter a comparison operator (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b>
-or <b>=</b>) at the beginning of each of your search values to specify how the comparison should be done.
-</p>
-
-<?php echo CHtml::link('Advanced Search','#',array('class'=>'search-button')); ?>
-<div class="search-form" style="display:none">
+<?php echo CHtml::link('Ocultar','#',array('class'=>'search-button')); ?>
+<div class="search-form" style="">
 <?php $this->renderPartial('_search',array(
 	'model'=>$model,
 )); ?>
 </div><!-- search-form -->
 
-<?php $this->widget('zii.widgets.grid.CGridView', array(
-	'id'=>'ot-grid',
-	'dataProvider'=>$model->search(),
-	'filter'=>$model,
-	'columns'=>array(
-		'id',
-		'numero',
-		'fechacre',
-		'fechafinprog',
-		'codpro',
-		'idobjeto',
-		/*
-		'codresponsable',
-		'textocorto',
-		'textolargo',
-		'grupoplan',
-		'codcen',
-		'iduser',
-		'codocu',
-		'codestado',
-		'clase',
-		'hidoferta',
-		*/
-		array(
-			'class'=>'CButtonColumn',
-		),
-	),
-)); ?>
+<?PHP
+ $this->widget('ext.groupgridview.GroupGridView', array(
+      'id' => 'ot-grid',
+      'dataProvider'=>$model->search(),
+      'mergeColumns' => array('numero','codpro','despro'),
+	 'itemsCssClass'=>'table table-striped table-bordered table-hover',
+	// 'extraRowColumns' => array('numero'),
+	/* 'extraRowTotals' => function($data, $row, &$totals) {
+		 if(!isset($totals['sum_totalneto'])) $totals['sum_totalneto'] = 0;
+		 $totals['sum_totalneto']+=$data['totalneto'];
+
+	 },*/
+	// 'extraRowExpression' => '"<span style=\"font-weight: bold;color: orangered;font-size:13px;\"> Total Oc : ".MiFactoria::decimal($totals["sum_totalneto"],2)." </span>"',
+	// 'extraRowPos'=>'below',
+      'columns' => array(
+		  ARRAY('name'=>'codcen','header'=>'Cent','value'=>'$data->codcen','htmlOptions'=>array('width'=>'3')),
+          ARRAY('name'=>'numero','header'=>'Num','type'=>'raw','value'=>'CHTml::link($data->numero,Yii::app()->createurl("ot/editadocumento", array("id"=> $data->id )) ,ARRAY("target"=>"_blank"))','htmlOptions'=>array('width'=>'5')),
+		 ARRAY('name'=>'numero','header'=>'Num','type'=>'raw','value'=>'CHTml::link(CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."find.png"),Yii::app()->createurl("ot/verdocumento", array("id"=> $data->id)) ,array("target"=>"_blank") )','htmlOptions'=>array('width'=>'5')),
+
+		  array(
+			  'name'=>'fechainicio',
+			  'header'=>'F ini',
+			  'value'=>'date("d.m.y", strtotime($data->fechainicio))','htmlOptions'=>array('width'=>'5')
+		  ),
+                    array('name'=>'codpro','value'=>'$data->codpro','htmlOptions'=>array('width'=>'8')),
+		  array('name'=>'despro','value'=>'$data->despro','htmlOptions'=>array('width'=>'40')),          
+               // array('name'=>'codobjeto','value'=>'$data->codobjeto','htmlOptions'=>array('width'=>'3')),
+                array('name'=>'nombreobjeto','value'=>'$data->nombreobjeto','htmlOptions'=>array('width'=>'40')),
+                array('name'=>'descripcion','value'=>'$data->descripcion."-".$data->marca."-".$data->modelo."-".$data->identificador','htmlOptions'=>array('width'=>'20')),
+       		  array('name'=>'textocorto','header'=>'Servicio','value'=>'ucfirst(strtolower($data->textocorto))','htmlOptions'=>array('width'=>'40')),
+        
+		 
+		      ),
+    ));
+
+?>
+

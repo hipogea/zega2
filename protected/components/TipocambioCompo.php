@@ -17,6 +17,7 @@ class TipocambioCompo extends CApplicationComponent
 
         $citer=New CDBCriteria;
         $citer->addCondition("ultima < :fechamenos AND cambio <> 1");
+          $citer->addCondition(" codmon1 <> codmon2 ");
         $citer->params=array(":fechamenos"=>date('Y-m-d H:i:s',time()-$this->_horastolerancia*60*60));
     /*  var_dump(date('Y-m-d H:i:s',time()-$this->_horastolerancia*60*60));
         var_dump(date('Y-m-d H:i:s',time()));

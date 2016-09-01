@@ -919,4 +919,10 @@ private function getcosto(){
 
 		return parent::afterfind();
       }
+      
+      
+      private function posiblescambios(){
+          
+      }
+      
 }

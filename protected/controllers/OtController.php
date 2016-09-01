@@ -1998,10 +1998,10 @@ class OtController extends ControladorBase
 	 */
 	public function actionAdmin()
 	{
-		$model=new VwOcomprasimple('search');
+		$model=new VwOtsimple('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['VwOcomprasimple'])) {
-			$model->attributes=$_GET['VwOcomprasimple'];
+		if(isset($_GET['VwOtsimple'])) {
+			$model->attributes=$_GET['VwOtsimple'];
 			$proveedor=$model->search();
 		}
 		$this->render('admin',array(
