@@ -921,8 +921,6 @@ private function getcosto(){
       }
       
       
-      private function posiblescambios(){
-          
-      }
+      
       
 }

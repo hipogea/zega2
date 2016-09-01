@@ -48,7 +48,7 @@ class Tempdetot extends ModeloGeneral
 		return array(
 			//array('id, hidorden, item, textoactividad, codresponsable, fechainic, fechafinprog, fechacre, flaginterno, codocu, codestado, codmaster, idinventario, iduser, idusertemp, idstatus', 'required'),
 			array('idinventario, iduser, idusertemp, idstatus', 'numerical', 'integerOnly'=>true),
-			array('codocu,codestado,nhoras,idaux,nhombres,codmon,monto,codmaster,tipo,cc,txt,codgrupoplan', 'safe'),
+			array('codocu,codestado,nhoras,fechainic,fechafinprog,fechafin,fechainiprog,idaux,nhombres,codmon,monto,codmaster,tipo,cc,txt,codgrupoplan', 'safe'),
 				array('id, hidorden', 'length', 'max'=>20),
 			array('item, codestado', 'length', 'max'=>3),
 			array('textoactividad', 'length', 'max'=>40),
@@ -187,5 +187,19 @@ class Tempdetot extends ModeloGeneral
                                return parent::beforeSave();
 				}
         
-        
+       public function imposiblescambios(){
+         return  array(
+              '98'=>array('10','20','12','99','14','16'),
+             '99'=>array('16','17'),
+              '10'=>array('16','17'),
+              '20'=>array('16','17'),
+              '12'=>array('99','17'),
+              '14'=>array('99','10','17'),
+              '16'=>array('98','10','99'),
+              '17'=>array('98','10','99','20','12','14'),
+          );
+      }
+                                
+                                
+                                
 }

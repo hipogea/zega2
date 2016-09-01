@@ -1,13 +1,7 @@
 <?php
-
 class OtController extends ControladorBase
 {
-	/**
-	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
-	 * using two-column layout. See 'protected/views/layouts/column2.php'.
-	 */
-
-
+	
 
 	CONST ESTADO_PREVIO='99';
 	CONST ESTADO_CREADO='10';
@@ -2536,4 +2530,37 @@ class OtController extends ControladorBase
 
 	}
 
-}
+    public function actionajaxprocesarothija(){
+        if(yii::app()->request->isAjaxRequest){
+            $opcion=  MiFactoria::cleanInput($_POST['opcion']);
+            $identidad=  (integer)MiFactoria::cleanInput($_POST['id']);
+            $registro=  Tempdetot::model()->findByPk($identidad);
+            if(!is_null($registro)){
+              switch ($opcion){
+                case 'PROG'://programarla
+                    $registro->programar();
+                    
+                    break;
+                case 'AUT': //autorizarla
+                     $registro->autorizar();
+                    break;
+                 case 'ANU'://anularla
+                     $registro->anular();
+                    break;
+                 case 'TERM'://terminarla
+                     $registro->terminar();
+                    break;
+                default:
+                    break;  
+            }
+            
+            }
+                
+            
+        }
+    }    
+        
+    }     
+        
+
+?>

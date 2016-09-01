@@ -156,7 +156,7 @@
 	<div class="row">
 		<?php echo $form->labelEx($model,'codmaster'); ?>
 		<?php
-              var_dump($model->ot->objetosmaster->masterequipo->codigo);
+              
 
          $datos1tb1x = CHtml::listData(Masterrelacion::model()->findAll("hidpadre=:orden",array(":orden"=>$model->ot->objetosmaster->masterequipo->codigo)),'hidhijo','hijo.descripcion');
 		echo $form->DropDownList($model,'codmaster',$datos1tb1x, array('empty'=>'--Seleccione un grupo--','disabled'=>$this->eseditable($model->codestado))  )  ;
@@ -178,6 +178,36 @@
 
 	</div>
 
+    
+    <div class="row">
+						<?php echo $form->labelEx($model,'fechainic'); ?>
+
+						<?php $this->widget('zii.widgets.jui.CJuiDatePicker',
+							array(
+								'model'=>$model,
+								'attribute'=>'fechainic',
+								'value'=>$model->fechainic,
+								'language' => 'es',
+								'htmlOptions' => array('readonly'=>"readonly"),
+								'options'=>array(
+									'autoSize'=>true,
+									'defaultDate'=>$model->fechainic,
+									'showAnim'=>'fold', // 'show' (the default), 'slideDown', 'fadeIn', 'fold'
+									'showOn'=>'both', // 'focus', 'button', 'both'
+									'buttonImage'=>Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'calendar_1.png',
+									'buttonImageOnly'=>true,
+									'dateFormat'=>'yy-mm-dd',
+									'selectOtherMonths'=>true,
+									'showAnim'=>'slide',
+									'showButtonPanel'=>false,
+									'showOtherMonths'=>true,
+									'changeMonth' => 'true',
+									'changeYear' => 'true',
+								),
+							)
+						);?>
+		
+					</div>
 
 	<?php $this->endWidget(); ?>
 

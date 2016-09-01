@@ -150,7 +150,6 @@ public $fecdoc1;
 		//$criteria->compare('hidguia',$this->hidguia,true);
 		$criteria->compare('codservicio',$this->codservicio,true);
 		$criteria->compare('tipoimputacion',$this->tipoimputacion,true);
-
 		if(isset($_SESSION['sesion_Maestrocompo'])) {
 			$criteria->addInCondition('codart', $_SESSION['sesion_Maestrocompo'], 'OR');
 		} ELSE {
