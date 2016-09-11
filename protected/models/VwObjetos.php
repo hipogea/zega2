@@ -112,12 +112,12 @@ public static function descripcion($id){
 	if($registro==null){
 		return "Valor no encontrado";
 	}else{
-		return $registro->descripcioncompleta;
+		return $registro->descripcion;
 	}
 }
 
 	public function afterfind() {
-		$this->descripcioncompleta=$this->serie."/".$this->descripcion."/".$this->codigo."/".$this->nombreobjeto;
+		$this->descripcion="[".$this->nombreobjeto."] : ".$this->descripcion." ".$this->marca." ".$this->modelo."/".$this->identificador."/".$this->serie;
 		Return parent::afterfind();
 	}
 

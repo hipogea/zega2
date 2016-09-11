@@ -50,6 +50,7 @@ class MatchcodeController extends Controller
 			$rr= $clasi::model()->findByPK($vvalore);
 			//var_dump($rr);
 			if(!is_null($rr)){
+                          //   var_dump($rr->attributes);
 				echo $rr->{$rr->attributeNames()[$ordencampo]};
 			}else{
 				echo "--Valor no encontrado ";
@@ -65,6 +66,7 @@ class MatchcodeController extends Controller
 				throw new CHttpException(500,__CLASS__.'   '.__FUNCTION__.'  '.__LINE__.' No se encontro ninguna columna remota con el nombre :  '.$cremoto.', por favor revise la propiedad ');
 			$moki=$clasi::model()->find("".$cremoto."='".trim($vvalore)."'");
 			if(!is_null($moki)){
+                           
 					echo $moki->{$moki->attributeNames()[$ordencampo]};
 				}else{
 					echo "--Valor no encontrado ";

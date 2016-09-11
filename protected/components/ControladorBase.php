@@ -38,14 +38,14 @@ class ControladorBase extends Controller
 		}
 
 		//ahora solo con estos valores vamos al siguietne nivel
-		foreach(array_keys($this->camposlink) as $clave=>$valor){
+		/*foreach(array_keys($this->camposlink) as $clave=>$valor){
 			$matriz=$valor::relations();
 			foreach($matriz as $clave=>$matricita)
 			{
 				if($matricita[0]==$valor::HAS_MANY and  in_array($matricita[1]  ,array_keys($this->modeloshijos)))
 					$this->camposlink[$matricita[1]]=$matricita[2];
 			}
-		}
+		}*/
 
 
 	}
@@ -426,6 +426,7 @@ public function borraitemhijo($nombremodelohijotemp,$idmodelohijo){
 	  }
 
 		public function estasEnSesion($id) {
+                   // var_dump(MiFactoria::getEstasEnSesion($id,$this->documento));
 			return  MiFactoria::getEstasEnSesion($id,$this->documento);
 
 			}

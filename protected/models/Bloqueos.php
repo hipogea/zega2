@@ -112,13 +112,17 @@ class Bloqueos extends CActiveRecord
 		$criterio->params=array(":vdocu"=>$codigodoc,":vid"=>$id, ":vusuario"=>Yii::app()->user->id);
 		$block=Bloqueos::model()->find($criterio);
 		if(!is_null($block)) {
+                   /* var_dump(time ());
+                    var_dump(strtotime ( $block->fechabloqueo . '' ));
+                    var_dump(time () - strtotime ( $block->fechabloqueo . '' ));
+                    var_dump(Yii::app ()->user->um->getDefaultSystem ()->getn ( 'sessionmaxdurationmins' ) * 60);*/
 			if ( ( time () - strtotime ( $block->fechabloqueo . '' ) ) >
 				Yii::app ()->user->um->getDefaultSystem ()->getn ( 'sessionmaxdurationmins' ) * 60 )
 			{
 			 	$block->delete();
 				return false;
 				}else {
-               return true;
+                                return true;
 			}
 
 

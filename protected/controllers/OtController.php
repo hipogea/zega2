@@ -1,9 +1,5 @@
 <?php
-class OtController extends ControladorBase
-{
-	
-
-	CONST ESTADO_PREVIO='99';
+CONST ESTADO_PREVIO='99';
 	CONST ESTADO_CREADO='10';
 	CONST ESTADO_ANULADO='50';
 	CONST ESTADO_MODIFICADO='20';
@@ -19,6 +15,11 @@ class OtController extends ControladorBase
 	CONST ESTADO_DOCOMPRA_ANULADO='40';// DESOLPECOMRPA ANULADO
 	const ESTADO_DOCOMPRA_CREADO='10';
 
+class OtController extends ControladorBase
+{
+	
+          
+	
 
 	public $layout='//layouts/column2';
 
@@ -138,7 +139,7 @@ class OtController extends ControladorBase
 						// Y es posble que haya entrado despues de 2 dias, una semana asi
 						$this->terminabloqueo($id);
 						$this->SetBloqueo($id);
-						MiFactoria::Mensaje('notice', "NO cerraste correctamente, Ya tenías una sesion abierta en este domcuento,");
+						MiFactoria::Mensaje('notice', "NO cerraste correctamente, Ya tenÃ­as una sesion abierta en este domcuento,");
 						$this->render('update',array('modelolabor'=>$modelolabor,'model'=>$model,'editable'=>true));
 						yii::app()->end();
 					}
@@ -238,7 +239,8 @@ class OtController extends ControladorBase
 		$model->hidot=$idcabeza;
 		$model->est=ESTADO_PREVIO;
 		$model->idusertemp=Yii::app()->user->id;
-		$model->hcodoc=$this->documento; ///detalle guia
+		$model->hcodoc=$this->documento; //
+                $model->codocu='350'; //
 		$model->tipsolpe='M';
 		$model->setScenario('buffer');
 		$model->imputacion=$modelopadre->objetosmaster->objetoscliente->cebe;
@@ -339,7 +341,7 @@ class OtController extends ControladorBase
 		return array(
 
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('creaservicio','modificadetallerecurso','creadetallerecurso','verprecios','crearpdf','verDetoc','firmar','aprobar','cargaprecios','enviarpdf','admin','borrarimpuesto','reporte','agregarmasivamente','cargadirecciones','borraitems','sacaitem','sacaum','salir','agregaimpuesto','agregaritemsolpe','procesardocumento','refrescadescuento','VerDocumento','EditaDocumento','creadocumento','Agregardelmaletin','borraitem','imprimirsolo','cargaentregas','agregarsolpe','agregarsolpetotal','pasaatemporal','create','imprimirsolo','imprimir','imprimir2','enviarmail',
+				'actions'=>array('borraitemsdesolpe','nadax','creaservicio','modificadetallerecurso','creadetallerecurso','verprecios','crearpdf','verDetoc','firmar','aprobar','cargaprecios','enviarpdf','admin','borrarimpuesto','reporte','agregarmasivamente','cargadirecciones','borraitems','sacaitem','sacaum','salir','agregaimpuesto','agregaritemsolpe','procesardocumento','refrescadescuento','VerDocumento','EditaDocumento','creadocumento','Agregardelmaletin','borraitem','imprimirsolo','cargaentregas','agregarsolpe','agregarsolpetotal','pasaatemporal','create','imprimirsolo','imprimir','imprimir2','enviarmail',
 					'procesaroc','hijo','Aprobaroc','Reporteoc','Anularoc','Configuraop','Revertiroc', ///acciones de proceso
 					'libmasiva','creadetalle','Verdetalle','muestraimput','update','nada','Modificadetalle'),
 				'users'=>array('@'),
@@ -575,7 +577,7 @@ class OtController extends ControladorBase
 									$registrodetallesolpe->save();
 								} else {///Error , La solpe no es de aprovisionamiento o tiene el campo idererva vacio  lo qaue quiere decir que no es una solpe de aprovisionamiento
 									///Error
-									$cadena.=" El item ".$modelodetalle->item." - ".$modelodetalle->descri."  : La solicitud asociada ".$registrodetallesolpe->desolpe->solpe->numero."-".$registrodetallesolpe->item."  no es de àprovisionamiento <br>";
+									$cadena.=" El item ".$modelodetalle->item." - ".$modelodetalle->descri."  : La solicitud asociada ".$registrodetallesolpe->desolpe->solpe->numero."-".$registrodetallesolpe->item."  no es de Ã provisionamiento <br>";
 
 								}
 							} else {///Error , este detakke de solped no existe
@@ -1093,7 +1095,7 @@ class OtController extends ControladorBase
 
 
 		}else{
-			$mensaje.=" No hay registros de solicitudes en el Maletín<br>";
+			$mensaje.=" No hay registros de solicitudes en el MaletÃ­n<br>";
 		}
 
 
@@ -1158,28 +1160,41 @@ class OtController extends ControladorBase
     */
 	public function borradetalle($id /*idtemp*/) {
 
-		$detalletemp=Docompratemp::model()->findByPk($id /*idtemp*/);
+		$detalletemp=Tempdetot::model()->findByPk($id /*idtemp*/);
 
 		$mensaje="";
 		if(!is_null($detalletemp)) {
 			///verificamos primero si es un registro agregado
 			if (is_null($detalletemp->id)) { ///quier decir que no existe una imagen en la tabla opriginal, osea se ha agregado recientemente
-				$detalletemp->delete();
+				//si es un registro agergado 
+                        ///puede tener recursos asociados veamos...
+                            IF($detalletemp->nrecursos > 0 ){
+                                $mensaje .= " El item  " . $detalletemp->item . " Ya tiene recursos, no puede ser borrado <br>";
+ 
+                            }else{
+                                 $detalletemp->delete();
+                            }
+                               
+                            
+                           
 				//$detalletemp->save();
 				$mensaje.="Se borro el registro";
 			} else {// si ya se ha grabado o confirmado en la tabla original
 				//buscar en le registro orignal el firma
-				$detallefirme=Docompra::model()->findByPk($detalletemp->id);
+				$detallefirme=Detot::model()->findByPk($detalletemp->id);
 				// primero verificamos si ha abido entragas
-				if ($detallefirme->cantidadentregada > 0) {
-					$mensaje .= " El item  " . $detalletemp->item . "  Tiene entregas, no puede ser borrado <br>";
+                                echo "<br><br><br>";
+                                var_dump($detallefirme->tempdetot->nrecursos());
+                                echo "<br><br><br>";
+				if ($detallefirme->tempdetot->nrecursos() > 0) {
+					$mensaje .= " El item  " . $detalletemp->item . "  Ya tiene recursos y no puede ser anulado <br>";
 
 				} else { ///si no tiene entrgas aun no cantemos victoria
 					//OJO QUE ALMOMENTO DE CONFIRMAR EL BUFFER DEBEMOS AEGURARNOQ UE EN EL EVENTO
 					//AFTERSAVE() DEL REGISTRO DOCOMPRA
 
 					$detalletemp->setScenario('cambiaestado');
-					$detalletemp->estadodetalle = ESTADO_DOCOMPRA_ANULADO;
+					$detalletemp->codestado = ESTADO_DOCOMPRA_ANULADO;
 					$mensaje .= ($detalletemp->save()) ? "" : " No se pudo anular el item " . $detalletemp->item . "<br>";
 				}
 
@@ -1381,7 +1396,7 @@ class OtController extends ControladorBase
 			$usuario=Trabajadores::model()->findByPk(Yii::app()->user->um->getFieldValue(Yii::app()->user->id,'codtrabajador') );
 			$asunto="Orden de compra".$ocompra->numcot."-".$ocompra->codsociedad0->dsocio;
 			$nombrecompleto=$usuario->nombres." ".$usuario->ap;
-			$mensaje="Este es un correo automático";
+			$mensaje="Este es un correo automÃ¡tico";
 			//el mail del contacto
 			$mail=$ocompra->contactos->getmails($this->documento);
 
@@ -1407,7 +1422,7 @@ class OtController extends ControladorBase
 				throw new CHttpException(404,'No se pudo grabar el mensaje ');
 			}
 		} else {
-			echo "Este documento no posee el status de APROBADO para efectuar esta acción";
+			echo "Este documento no posee el status de APROBADO para efectuar esta acciÃ³n";
 		}
 		//Yii::app()->crugemailer->mail_prueba('hipogea@hotmail.com', 'jramirez@neologys.com', 'JORGE ARMAS','jramirez@neologys.com', 'MENSAJE DE', 'SDHKSD SFKSFK FSJFKSF','casa')	;
 		//echo "Correo enviado";
@@ -1609,16 +1624,16 @@ class OtController extends ControladorBase
 
 	public function actionborraitems()
 	{
-		/*var_dump($_POST['Ocompra']);
+		/*var_dump($_POST['Ot']);
             yii::app()->end();*/
-		$modelocabeza=$this->loadModel($_POST['Ocompra']['idguia']);
+		$modelocabeza=$this->loadModel($_POST['Ot']['id']);
 		if(is_null($modelocabeza))
-			throw new CHttpException(500,__CLASS__.'   '.__FUNCTION__.'  No se econtro ningun evento con el id  '.$_POST['Ocompra']['idguia']);
+			throw new CHttpException(500,__CLASS__.'   '.__FUNCTION__.'  No se econtro ningun evento con el id  '.$_POST['Ot']['idt']);
 
 		if($modelocabeza->editable())
 		{
 			$autoIdAll = $_POST['cajita'];
-			$estado=$_POST['Ocompra']['codestado'];
+			$estado=$_POST['Ot']['codestado'];
 			echo $autoIdAll;
 			// Yii::app()->end();
 			if(count($autoIdAll)>0 ) //and ($this->eseditable($estado)==''))
@@ -1782,24 +1797,20 @@ class OtController extends ControladorBase
 
 
 	public function actionModificadetalle($id)
-	{
-		$model=Tempdetot::Model()->findByPk(MiFactoria::cleanInput((int)$id));
-
+	{		
+          // echo"ss";
+            $model=Tempdetot::Model()->findByPk(MiFactoria::cleanInput((int)$id));
+             //echo "ggererererererere";
 		if ($model===null)
 			throw new CHttpException(404,'No se encontro ningun documento para estos datos');
 		//colocar el escenario correcto
-
 		if(isset($_POST['Tempdetot']))		{
 			$model->attributes=$_POST['Tempdetot'];
 			if($model->save()){
 				if (!empty($_GET['asDialog']))
 				{
 					//Close the dialog, reset the iframe and update the grid
-					echo CHtml::script("window.parent.$('#cru-dialogdetalle').dialog('close');
-													                    window.parent.$('#cru-detalle').attr('src','');
-																		window.parent.$.fn.yiiGridView.update('detalle-grid');
-																		window.parent.$.fn.yiiGridView.update('resumenoc-grid');
-																		");
+					echo CHtml::script("window.parent.$('#cru-dialogdetalle').dialog('close');");
 					Yii::app()->end();
 				}
 			}else{
@@ -1808,8 +1819,11 @@ class OtController extends ControladorBase
 
 		}
 
-		if (!empty($_GET['asDialog']))
-			$this->layout = '//layouts/iframe';
+		if (!empty($_GET['asDialog'])){
+                    
+                    $this->layout = '//layouts/iframe';
+                }
+			
 
 		$this->render('_form_detalle',array(
 			'model'=>$model,'editable'=>true
@@ -2059,7 +2073,7 @@ class OtController extends ControladorBase
 	{
 		$model=Ot::model()->findByPk($id);
 		if($model===null)
-			throw new CHttpException(500,'No se encontro este documento de compra');
+			throw new CHttpException(500,'No se encontro este documento de Ot');
 		return $model;
 	}
 
@@ -2201,7 +2215,7 @@ class OtController extends ControladorBase
 							if( !in_array($row->estadodetalle,Estado::estadosnocalculablesdetalle($compra->codocu)))
 								$row->estadodetalle=ESTADO_DOCOMPRA_APROBADO;
 							if(!$row->save())
-								$mensaje.=" Ocurrió un error  en el item ".$row->item." al guardar los datos del estado detalle  <br>";
+								$mensaje.=" OcurriÃ³ un error  en el item ".$row->item." al guardar los datos del estado detalle  <br>";
 
 						}
 					}else{
@@ -2209,7 +2223,7 @@ class OtController extends ControladorBase
 					}
 
 				}else{
-					$mensaje.=" No tiene permisos para efectuar esta acción <br>";
+					$mensaje.=" No tiene permisos para efectuar esta acciÃ³n <br>";
 				}
 				break;
 
@@ -2559,8 +2573,81 @@ class OtController extends ControladorBase
             
         }
     }    
-        
-    }     
-        
+      
+    
+    public function actionBorraitemsdesolpe()
+	{
+	
+        if(yii::app()->request->isAjaxRequest){
+		$autoIdAll = $_POST['cajita'];		
+		 if(count($autoIdAll)>0 )
+			 {
+			 	
+                                  // $modelin=$autoIdAll[0]->solpe;  
+                                    //coger la cabecera del primer hijo basta 
+					// $transaccion = $modelin->dbConnection->beginTransaction();
+					 foreach ($autoIdAll as $autoId) {
+						 $this->borraitemdesolpe($autoId);
+					 }
+					
+					// $transaccion->commit();
+					 //$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array(index));
+				 
+				// Yii::app()->end();
+			} ///luego actualizar yodos los cambos
+        }
+	}
 
+
+	
+public function borraitemdesolpe($autoId) //Borra un registro de solpe
+	//para borrar  un registro tenemso 	ue tener en cuenta los criterios siguiertentes:
+	//  1) No debe de haber reservas activas, esto se logra contandolas con la propiedad "numerodereservas" del objeto modelo
+	{
+		$modelito=Tempdesolpe::model()->findByPk($autoId);
+			if($modelito->id >0) { ///Si ya tiene relacion con la tabla Desolpe firme
+                            //si ya tiene
+                            $modelito1=$modelito->desolpe;
+				$modelito1->setscenario('Atencionreserva');
+				if($modelito1->numeroreservas==0 ){
+					if($modelito->est=='20'){ //si ya estaba nulado
+						Yii::app()->user->setFlash('error', "El registro de solicitud ".$modelito1->desolpe_solpe->numero."-".$modelito1->item. "Ya fue anulado");
+					} else {
+						$modelito->est='20';
+						$modelito->save();
+						Yii::app()->user->setFlash('succcess', "El registro de solicitud ".$modelito1->desolpe_solpe->numero."-".$modelito1->item. " se ha anulado sin problemas");
+					}
+				} else {
+					Yii::app()->user->setFlash('error', "El registro de solicitud ".$modelito1->desolpe_solpe->numero."-".$modelito1->item. " No puede ser anulado  por que presenta reservas activas");
+				}
+                                
+                                
+				} else {
+                            
+                            $command = Yii::app()->db->createCommand("delete from  {{Tempdesolpe}}   where idtemp =".$autoId."   ");
+				$command->execute();
+				Yii::app()->user->setFlash('succcess', "El registro de solicitud ".$modelito1->solpe->numero."-".$modelito1->item. " se ha borrado");
+			   
+                            
+			}
+		foreach(Yii::app()->user->getFlashes() as $key => $message) {
+			echo "*)". $message . "\n";		}
+		//echo $this->renderpartial("vw_mensajes",array());
+	}
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    }
+    
+
+    
+    
+    
+    
 ?>

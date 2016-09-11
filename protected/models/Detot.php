@@ -1,33 +1,5 @@
 <?php
 
-/**
- * This is the model class for table "{{detot}}".
- *
- * The followings are the available columns in table '{{detot}}':
- * @property string $id
- * @property string $hidorden
- * @property string $item
- * @property string $textoactividad
- * @property string $codresponsable
- * @property string $fechainic
- * @property string $fechafinprog
- * @property string $fechacre
- * @property string $flaginterno
- * @property string $codocu
- * @property string $tipo
- * @property string $codestado
- * @property string $codmaster
- * @property integer $idinventario
- * @property integer $iduser
- * @property integer $idusertemp
- * @property string $idtemp
- * @property integer $idstatus
- * @property string $txt
- *
- * The followings are the available model relations:
- * @property Ot $hidorden0
- * @property Trabajadores $codresponsable0
- */
 class Detot extends ModeloGeneral
 {
 	/**
@@ -72,7 +44,9 @@ class Detot extends ModeloGeneral
 			'ceco'=> array(self::BELONGS_TO, 'Cc', 'cc'),
 			'ot' => array(self::BELONGS_TO, 'Ot', 'hidorden'),
 			'trabajadores' => array(self::BELONGS_TO, 'Trabajadores', 'codresponsable'),
-		);
+		  'tempdetot'=>array(self::HAS_ONE, 'Tempdetot', 'id'),
+                  //  'nrecursos' => array(self::STAT, 'Desolpe', 'hidlabor'),
+                    );
 	}
 
 	/**
@@ -103,18 +77,7 @@ class Detot extends ModeloGeneral
 		);
 	}
 
-	/**
-	 * Retrieves a list of models based on the current search/filter conditions.
-	 *
-	 * Typical usecase:
-	 * - Initialize the model fields with values from filter form.
-	 * - Execute this method to get CActiveDataProvider instance which will filter
-	 * models according to data in model fields.
-	 * - Pass data provider to CGridView, CListView or any similar widget.
-	 *
-	 * @return CActiveDataProvider the data provider that can return the models
-	 * based on the search/filter conditions.
-	 */
+	
 	public function search()
 	{
 		// @todo Please modify the following code to remove attributes that should not be searched.
@@ -162,5 +125,12 @@ class Detot extends ModeloGeneral
 		return parent::afterSave();
     }
 
-
+PUBLIC FUNCTION nrecursos(){
+        return count($this->recursos);
+    }   
+    
+    public function recursos(){
+        return Desolpe::model()->findAll("hidlabor=:vidlabor",array(":vidlabor"=>$this->idaux));
+        
+    }
 }

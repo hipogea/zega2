@@ -5,10 +5,7 @@
 ?>
 
 <div class="form">
-	<div class="division">
-	<div class="wide form">
-
-<?php $form=$this->beginWidget('CActiveForm', array(
+    <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'ot-form',
 	// Please note: When you enable ajax validation, make sure the corresponding
 	// controller action is handling ajax validation correctly.
@@ -16,13 +13,18 @@
 	// See class documentation of CActiveForm for details on this.
 	'enableAjaxValidation'=>false,
 )); ?>
+	<div class="division">
+	<div class="wide form">
+
+
 
 	<p class="note">Fields with <span class="required">*</span> are required.</p>
 
 	<?php echo $form->errorSummary($model);
 
 	?>
-
+<?php echo $form->hiddenField($model,'id'); ?>
+			
 		<div class="panelderecho">
 		<div class="row">
 		<?php echo $form->labelEx($model,'numero'); ?>
@@ -49,7 +51,7 @@
 						'dateFormat'=>'yy-mm-dd',
 					),
 					'htmlOptions'=>array(
-						'style'=>'width:60px;vertical-align:top',
+						'style'=>'width:80px;vertical-align:top',
 						//'readonly'=>'readonly',
 					),
 				));
@@ -84,7 +86,7 @@
 						'dateFormat'=>'yy-mm-dd',
 					),
 					'htmlOptions'=>array(
-						'style'=>'width:60px;vertical-align:top',
+						'style'=>'width:80px;vertical-align:top',
 						//'readonly'=>'readonly',
 					),
 				));
@@ -113,7 +115,7 @@
 						'dateFormat'=>'yy-mm-dd',
 					),
 					'htmlOptions'=>array(
-						'style'=>'width:60px;vertical-align:top',
+						'style'=>'width:80px;vertical-align:top',
 						//'readonly'=>'readonly',
 					),
 				));
@@ -142,7 +144,7 @@
 						'dateFormat'=>'yy-mm-dd',
 					),
 					'htmlOptions'=>array(
-						'style'=>'width:60px;vertical-align:top',
+						'style'=>'width:80px;vertical-align:top',
 						//'readonly'=>'readonly',
 					),
 				));
@@ -159,7 +161,7 @@
 			<?php echo $form->labelEx($model,'codpro'); ?>
 			<?php
 
-			if ($this->eseditable($model->codestado)=='')
+			if ($model->isNewRecord)
 
 			{
 				$this->widget('ext.matchcode.MatchCode',array(
@@ -188,12 +190,12 @@
 			<?php echo $form->labelEx($model,'idobjeto'); ?>
 			<?php
 
-			if ($this->eseditable($model->codestado)=='' and $model->isNewRecord)
+			if ($model->isNewRecord)
 
 			{
 				$this->widget('ext.matchcode.MatchCode',array(
 						'nombrecampo'=>'idobjeto',
-						'ordencampo'=>1,
+						'ordencampo'=>4,
 						'controlador'=>$this->id,
 						'relaciones'=>$model->relations(),
 						'tamano'=>6,
@@ -259,18 +261,15 @@
 		<?php echo $form->error($model,'textolargo'); ?>
 	</div>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'grupoplan'); ?>
-		<?php  $datos11 = CHtml::listData(Grupoplan::model()->findAll(),'codgrupo','desgrupo');
-		echo $form->DropDownList($model,'grupoplan',$datos11, array('empty'=>'--Seleccione un grupo--','disabled'=>$this->eseditable($model->codestado))  )  ;
-		?>
-		<?php echo $form->error($model,'grupoplan'); ?>
-	</div>
 
+            
 	<div class="row">
 		<?php echo $form->labelEx($model,'codcen'); ?>
-		<?php echo $form->textField($model,'codcen',array('size'=>4,'maxlength'=>4)); ?>
-		<?php echo $form->error($model,'codcen'); ?>
+		<?php                
+                            $datos1R = CHtml::listData(Centros::model()->findAll(array('order'=>'nomcen')),'codcen','nomcen');
+		 			 echo $form->DropDownList($model,'codcen',$datos1R, array('empty'=>'--Seleccione un centro--',));  
+		?>
+                    <?php echo $form->error($model,'codcen'); ?>
 	</div>
 
 	<div class="row">
@@ -279,29 +278,16 @@
 		<?php echo $form->error($model,'iduser'); ?>
 	</div>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'codocu'); ?>
-		<?php echo $form->textField($model,'codocu',array('size'=>3,'maxlength'=>3)); ?>
-		<?php echo $form->error($model,'codocu'); ?>
-	</div>
+	
 
 	<div class="row">
+    <?php if(!$model->isNewRecord){ ?>
 		<?php echo $form->labelEx($model,'codestado'); ?>
-		<?php echo $form->textField($model,'codestado',array('size'=>2,'maxlength'=>2)); ?>
-		<?php echo $form->error($model,'codestado'); ?>
+		<?php echo CHtml::textField('modeldgdgd',$model->estado->estado,array('disabled'=>($editable)?'':'disabled')); ?>
+    <?php } ?>	
 	</div>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'clase'); ?>
-		<?php echo $form->textField($model,'clase',array('size'=>1,'maxlength'=>1)); ?>
-		<?php echo $form->error($model,'clase'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'hidoferta'); ?>
-		<?php echo $form->textField($model,'hidoferta',array('size'=>20,'maxlength'=>20)); ?>
-		<?php echo $form->error($model,'hidoferta'); ?>
-	</div>
+	
 
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
@@ -309,13 +295,13 @@
 
 			</div>
 
-<?php $this->endWidget(); ?>
+
 
 </div><!-- form -->
 
 	</div>
 
-</div>
+
 
 
 
@@ -346,9 +332,9 @@ $this->widget('zii.widgets.jui.CJuiTabs', array(
 
 
 
+<?php $this->endWidget(); ?>
 
-
-
+</div>
 
 <?php
 $this->beginWidget('zii.widgets.jui.CJuiDialog', array(

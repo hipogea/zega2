@@ -386,6 +386,12 @@ $mo=New Alinventario();
 
 
 	public function actionPio() {
+                $ot=Ot::model()->findByPk(14);
+               var_dump( $ot->tienesolpeabierta('S')->attributes);die();
+            
+            
+            
+            
 		$reg=Desolpe::model()->findByPk(143);
 		var_dump($reg);die();
 

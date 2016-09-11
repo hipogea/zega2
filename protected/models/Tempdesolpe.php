@@ -19,6 +19,7 @@ class Tempdesolpe extends ModeloGeneral
 		// will receive user inputs.
 		return array(
 			//
+                    array('est',  'safe','on'=>'Atencionreserva'),
 			array('centro, codal,cant, codart, txtmaterial,um,hidlabor', 'required','on'=>'buffer'),
 			array('tipsolpe,centro, codal,hidot,hcodoc, codart,item,codservicio,
 			fechaent,est, txtmaterial,hidlabor,iduser,idusertemp,punitreal,idstatus,id,idtemp', 'safe','on'=>'buffer'),

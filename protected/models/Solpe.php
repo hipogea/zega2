@@ -310,7 +310,7 @@ public function beforeSave() {
 												
 											
 											$this->estado='99'; //para que no lo agarre la vista VW-GUIA  HASTA QUE GRABE TODO EL DETALLE
-				if($this->escompra=='O'){
+				if($this->escompra=='O' or $this->escompra=='S'    ){
 					$this->estado='10';
 					$gg=new Numeromaximo;
 					$this->numero=$gg->numero($this,'correlativ','maximovalor',7,'codocu');
@@ -486,4 +486,6 @@ public function beforeSave() {
 		return Solpe::model()->findByPk($identidad)->numero;
 	}
 
+        
+        
 }

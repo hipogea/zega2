@@ -121,6 +121,7 @@ public static function insertaprimerdetallecaja($id,$saldo){
 
 public function getEstasEnSesion($id,$documento)
 {
+   // var_dump(Bloqueos::estasensesion($id,$documento));
     return Bloqueos::estasensesion($id,$documento);
 }
 

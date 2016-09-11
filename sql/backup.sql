@@ -1,4 +1,4 @@
-﻿
+
 
 -- Volcando estructura para tabla nautilus.activerecordlog
 DROP TABLE IF EXISTS `activerecordlog`;

@@ -50,7 +50,8 @@ class Tempdetot extends ModeloGeneral
 			array('idinventario, iduser, idusertemp, idstatus', 'numerical', 'integerOnly'=>true),
 			array('codocu,avance,codestado,nhoras,fechainic,fechafinprog,fechafin,fechainiprog,idaux,nhombres,codmon,monto,codmaster,tipo,cc,txt,codgrupoplan', 'safe'),
 				array('id, hidorden', 'length', 'max'=>20),
-			array('item, codestado', 'length', 'max'=>3),
+			array('item', 'length', 'max'=>3),
+                    array('codestado', 'length', 'max'=>3,'message'=>' el valor es '.$this->codestado),
 			array('textoactividad', 'length', 'max'=>40),
 			array('codresponsable', 'length', 'max'=>8),
 			array('flaginterno', 'length', 'max'=>1),
@@ -77,7 +78,8 @@ class Tempdetot extends ModeloGeneral
 			'masterequipo' => array(self::BELONGS_TO, 'Masterequipo', 'codmaster'),
 			'grupoplan' => array(self::BELONGS_TO, 'Grupoplan', 'codgrupoplan'),
 			'estado'=>array(self::BELONGS_TO,'Estado',array('codestado'=>'codestado','codocu'=>'codocu')),
-
+                         // 'nrecursos' => array(self::STAT, 'Tempdesolpe', 'hidlabor'),
+                   //  'nrecursos'=>array(self::STAT, 'Tempdesolpe', array('idaux'=>'hidlabor')),
 		);
 	}
 
@@ -200,6 +202,13 @@ class Tempdetot extends ModeloGeneral
           );
       }
                                 
-                                
+    PUBLIC FUNCTION nrecursos(){
+        return count($this->recursos());
+    }   
+    
+    public function recursos(){
+        return Desolpe::model()->findAll("hidlabor=:vidlabor",array(":vidlabor"=>$this->idaux));
+        
+    }
                                 
 }

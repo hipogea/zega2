@@ -138,10 +138,12 @@ class MatchCode extends CWidget
 		}
 		if(is_null($moki)) {
 			return "--Valor no encontrado";
+                          //echo "  huy  ";die();
 		}else {
 			$camposotros=$moki->attributeNames();
+                       //echo "  huy  ";die();
 			//$ordencampo=0;
-			//var_dump( $moki->{$camposotros[is_null($ordencampo)?1:$ordencampo]});yii::app()->end();
+			//return array_ print_r($moki->attributeNames());die();
 			return $moki->{$moki->attributeNames()[is_null($ordencampo)?1:$ordencampo]};
 			// return get_class($moki)."->".$camposotros[is_null($ordencampo)?4:$ordencampo];
 		}

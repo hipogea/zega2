@@ -61,7 +61,7 @@ class Desolpe extends ModeloGeneral
 			//array('numero, codart', 'length', 'max'=>10),
 			array('centro, codal, codart,cant, txtmaterial,um,hidlabor', 'required','on'=>'buffer'),
 			array('tipsolpe,centro, codal,hidot,hcodoc, codart,item,
-			codservicio,est,fechaent,txtmaterial,hidlabor,iduser,punitreal,idusertemp,idstatus,id,idtemp', 'safe','on'=>'buffer'),
+			codservicio,est,fechaent,txtmaterial,hidlabor,iduser,punitreal,punitplan,idusertemp,idstatus,id,idtemp', 'safe','on'=>'buffer'),
 
 
 
@@ -494,32 +494,43 @@ public function checkvalores1($attribute,$params) {
 											$this->est=(empty($this->est))?ESTADO_PREVIO:$this->est; //para que no lo agarre la vista VW-GUIA  HASTA QUE GRABE TODO EL DETALLE
 
                                                 ///el item
-								if(is_null($this->hidot)){
-									$criterio=new CDbCriteria;
-									$criterio->condition="hidsolpe=:nguia  ";
-									$criterio->params=array(':nguia'=>$this->hidsolpe);
-									$this->item=str_pad(Desolpe::model()->count($criterio)+1,3,"0",STR_PAD_LEFT);
-								}
+								
 
 
 								//verificando que no se haya creado una SOLEP
+                                                               // VAR_DUMP($this->ot->tienesolpeabierta('S'));DIE();
 								if(!is_null($this->hidot)){
-									if(($this->ot->nrecursosfirmeserv)==0 and $this->tipsolpe='S'){
-										$registro=New Solpe();
-										$registro->setAttributes(
-											array(
-												'escompra'=>'1',  //ES UNA OT
-												'textocabecera'=>'Solicitud automatica',  //ES UNA OT
-											)
-										);
-										$registro->save ();
-										$registro->refresh();
-										$identidad = $registro->id;
-										$this->hidsolpe=$identidad;
+                                                                    $solpeotabiertaserv=$this->ot->tienesolpeabierta('S');
+                                                                    
+                                                                                           if(is_null($solpeotabiertaserv)   and    // si ya esta aprobada o ya tiene reservas
+                                                                                                 $this->tipsolpe=='S') {
+                                                                                                   /*VAR_DUMP($this->tipsolpe);
+                                                                                                           echo "<br>";
+                                                                                                           echo "uno<br>";
+                                                                                                           DIE();*/
 
-
-									}
-								if(($this->ot->nrecursosfirme)==0 and $this->tipsolpe='M'){
+                                                                                                $registro=New Solpe();
+                                                                                                 $registro->setAttributes(
+                                                                                                        array(
+                                                                                                            'escompra'=>'S',  //ES UN SOLPE DE SERVICIO
+                                                                                                            'textocabecera'=>'Solicitud automatica',  //ES UNA OT
+                                                                                                                )
+                                                                                                            );
+                                                                                                    $registro->save ();
+                                                                                                    $registro->refresh();
+                                                                                                    $identidad = $registro->id;
+                                                                                                    $this->hidsolpe=$identidad;
+                                                                                                    unset($solpeotabiertaserv);
+                                                                                                    $solpeotabiertaserv=$registro;
+                                                                            			}
+                                                                                                //unset($solpeotabiertaserv);
+                                                                              $solpeotabiertamat=$this->ot->tienesolpeabierta('M');  
+                                                                             // ECHO "AHI VA";DIE();
+                                                                       // VAR_DUMP($solpeaotabiertamat);//DIE();       
+								 if(is_null($solpeotabiertamat)   and    // si ya esta aprobada o ya tiene reservas
+                                                                                                 $this->tipsolpe=='M') {   //Si es material
+                                                                  
+                                                                                                           
 									$registro=New Solpe();
 									$registro->setAttributes(
 										array(
@@ -531,15 +542,21 @@ public function checkvalores1($attribute,$params) {
 									$registro->refresh();
 									$identidad = $registro->id;
 									$this->hidsolpe=$identidad;
-
+                                                                        unset($solpeotabiertamat);
+                                                                         $solpeotabiertamat=$registro;
 
 								}
 
 								if(is_null($this->hidsolpe)){
-									if($this->tipsolpe='M')
-									$this->hidsolpe=$this->ot->desolpe[0]->hidsolpe;
-									if($this->tipsolpe='S')
-										$this->hidsolpe=$this->ot->desolpeserv[0]->hidsolpe;
+                                                                    // VAR_DUMP($this->tipsolpe);
+                                                                                                          /* echo "<br>";
+                                                                                                           echo "tres<br>";
+                                                                                                           VAR_DUMP($this->ot->desolpe[0]->hidsolpe);
+                                                                                                           DIE();*/
+									if($this->tipsolpe==='S')
+									$this->hidsolpe=$solpeotabiertaserv->hidsolpe;
+									if($this->tipsolpe==='M')
+										$this->hidsolpe=$solpeotabiertamat->hidsolpe;
 								}
 
 
@@ -547,7 +564,15 @@ public function checkvalores1($attribute,$params) {
 
 									$this->est='10';
 								}
-											
+									
+                                                              
+									$criterio=new CDbCriteria;
+									$criterio->condition="hidsolpe=:nguia";
+									$criterio->params=array(':nguia'=>$this->hidsolpe);
+									$this->item=str_pad(Desolpe::model()->count($criterio)+1,3,"0",STR_PAD_LEFT);
+								
+                                                                
+                                                                
 									} else
 									{
 										 // IF ($this->est=='99') //SI SE TRATA DE UNA GUIA NUEVA COLOCARLE 'PREVIO'

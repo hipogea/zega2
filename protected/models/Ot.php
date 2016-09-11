@@ -1,5 +1,6 @@
 <?php
-
+CONST ESTADO_PREVIO='99';
+CONST ESTADO_CREADO='10';
 
 class Ot extends  ModeloGeneral
 {
@@ -17,14 +18,15 @@ class Ot extends  ModeloGeneral
 	/**
 	 * @return array validation rules for model attributes.
 	 */
-	public function rules()
-	{
+	public function rules(){
+	
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('fechainiprog,fechainicio, codpro,
-			 idobjeto, codresponsable, textocorto, grupoplan, codcen', 'required'),
+			array('fechainiprog,, codpro,
+			 idobjeto, codresponsable, textocorto, codcen', 'required'),
 			array('fechafinprog, fechainiprog,fechainicio, fechafin','checkfechas'),
+                    array('idobjeto', 'checkobjeto','on'=>'insert'),
 			array('idobjeto, iduser', 'numerical', 'integerOnly'=>true),
 			array('numero', 'length', 'max'=>12),
 			array('codpro', 'length', 'max'=>8),
@@ -66,6 +68,8 @@ class Ot extends  ModeloGeneral
 			'vwobjetos' => array(self::BELONGS_TO, 'VwObjetos', 'idobjeto'),
 			'objetosmaster' => array(self::BELONGS_TO, 'Objetosmaster', 'idobjeto'),
 			'trabajadores' => array(self::BELONGS_TO, 'Trabajadores', 'codresponsable'),
+                    'estado'=>array(self::BELONGS_TO,'Estado',array('codestado'=>'codestado','codocu'=>'codocu')),
+
 		);
 	}
 
@@ -153,8 +157,8 @@ class Ot extends  ModeloGeneral
 	 *
 	 */
 	public function checkobjeto($attribute,$params) {
-		if(!$this->codpro==$this->objetosmaster->objetoscliente->codpro)
-					$this->adderror('idobjeto','Este equipo no pertenece a la organizacion '.$this->objetosmaster->objetoscliente->clipro->despro);
+		if($this->codpro!=$this->objetosmaster->objetoscliente->codpro)
+					$this->adderror('idobjeto','Este equipo no pertenece a la organizacion '.$this->clipro->despro);
 	}
 
 
@@ -176,7 +180,7 @@ class Ot extends  ModeloGeneral
 
 	public function beforeSave() {
 		if ($this->isNewRecord) {
-			$this->codestado='99';
+			$this->codestado='10';
 			$this->codocu='890';
 			$this->fechacre=date("Y-m-d H:i:s");
 		}
@@ -195,5 +199,51 @@ public static function findByNumero($numero){
   return self::model()->find("numero=:vnumero",array(":vnumero"=>MiFactoria::cleanInput($numero)));
 
 }
+
+public function editable() {
+	$arregloestados=array(
+		ESTADO_PREVIO,
+		ESTADO_CREADO,
+
+	);
+	return in_array($this->codestado,$arregloestados);
+
+
+}
+
+public function tienesolpeabierta($tipo) {
+       $retorno=NULL;
+        $criteria = new CDbCriteria();
+        $criteria->distinct=true;
+        $criteria->addCondition ("hidot=".$this->id);  
+        $criteria->addCondition ("tipsolpe='".$tipo."'" );  
+        $criteria->addCondition ("iduser=".yii::app()->user->id );  
+        $criteria->select = 'hidsolpe';
+        $desolpes=Desolpe::model()->findAll($criteria);
+       if($tipo=='M'){
+          IF($this->nrecursosfirme >0){
+               foreach($desolpes as $registro){
+            if($registro->desolpe_solpe->estado=='10'){
+                $retorno=$registro;
+                 break; 
+            }
+          }
+			
+       }
+        if($tipo=='S'){
+           IF($this->nrecursosfirmeserv >0){
+               foreach($desolpes as $registro){
+            if($registro->desolpe_solpe->estado=='10'){
+                $retorno=$registro;
+                 break; 
+            }
+       }
+           }
+        }
+       return $retorno;
+            
+      }
+   }
+
 
 }

@@ -57,15 +57,22 @@ $this->widget('zii.widgets.grid.CGridView', array(
 						'label'=>'Actualizar Item',
 					),
 
-				'delete'=>
-					array(
-						'visible'=>'false',
+					'delete'=>
 
-					),
-
-
+                             array(
+                             	    'visible'=>'true',
+                                    'url'=>'$this->grid->controller->createUrl("/Solpe/cargadetalle", array("identi"=>$data->id))',
+							 'options' => array( 'ajax' => array('type' => 'GET', 'update'=>'#zona' ,'url'=>'js:$(this).attr("href")'),
+							  'onClick'=>'Loading.show();Loading.hide(); ',
+							 ) ,
+						    'imageUrl'=>''.Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'hand_point.png',
+								'label'=>'Ver detalle',
+                                ),	
+							
 			),
 		),
+             
+                //array( 'type'=>'raw','header'=>'Solic.','value'=>'$data->solpe->numero','htmlOptions'=>array('width'=>6) ),		
 		array('name'=>'item', 'type'=>'raw','header'=>'Item','htmlOptions'=>array('width'=>20) ),
 		//array('htmlOptions'=>array('width'=>24),'name'=>'st.','header'=>'st', 'type'=>'raw','value'=>'CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"].$data->coddocu.$data->estadodetalle.".png")'),
 		//array('name'=>'codentro', 'type'=>'raw','header'=>'Centro','htmlOptions'=>array('width'=>20) ),
@@ -73,21 +80,26 @@ $this->widget('zii.widgets.grid.CGridView', array(
 		//array('htmlOptions'=>array('width'=>10),'name'=>'codigoalma','visible'=>(yii::app()->settings->get("materiales","materiales_codigoservicio")==$data->codart)?true:false),
 		//array('htmlOptions'=>array('width'=>5),'header'=>'um','value'=>'$data->ums->desum'),
 		//array('htmlOptions'=>array('width'=>5), 'type'=>'raw','name'=>'codart','value'=>'$data->codart','visible'=>(!yii::app()->settings->get("materiales","materiales_codigoservicio")==$data->codart)?true:false),
-		array('name'=>'hidlabor','filter'=>CHTml::listData(Tempdetot::model()->findAll("idusertemp=:vuser and hidorden=:vorden",array(":vorden"=>$model->id,":vuser"=>yii::app()->user->id)),'idaux','textoactividad'), 'htmlOptions'=>array('width'=>30),),
+		array('header'=>'N° Solic','value'=>'$data->solpe->numero', 'htmlOptions'=>array('width'=>4),),
 		array('name'=>'cant', 'type'=>'raw','header'=>'Cant','htmlOptions'=>array('width'=>20) ),
-		'txtmaterial',
+		array('name'=>'hidlabor','header'=>'Recurso','value'=>'$data->txtmaterial','filter'=>CHTml::listData(Tempdetot::model()->findAll("idusertemp=:vuser and hidorden=:vorden",array(":vorden"=>$model->id,":vuser"=>yii::app()->user->id)),'idaux','textoactividad'), 'htmlOptions'=>array('width'=>30),),
+		
+                                                       // 'txtmaterial',
 		'codart',
 
 		// array('name'=>'texto', 'type'=>'raw','header'=>'t','value'=>'(!empty($data->detalle))?CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."texto.png","hola"):""' ),
 		//array('name'=>'punit', 'type'=>'raw','header'=>'Pu','value'=>'Chtml::openTag("span", array("style"=>"float:right;font-weight:bold;")).Mifactoria::decimal($data->punit,3).Chtml::closeTag("span")','htmlOptions'=>array('width'=>20)),
 		//array('name'=>'Subt', 'type'=>'raw','header'=>'Subt','value'=>'Chtml::openTag("span", array("style"=>"float:right;font-weight:bold;")).Mifactoria::decimal($data->cant*($data->punit),3).Chtml::closeTag("span")','htmlOptions'=>array('width'=>68)),
 		array('name'=>'punitplan','header'=>'Plan','value'=>'MiFactoria::decimal($data->punitplan)','footer'=>MiFactoria::decimal(Tempdesolpe::getTotal($prove)['plan'],2), 'htmlOptions'=>array('width'=>30)),
-		array('name'=>'punitreal','header'=>'Real','value'=>'MiFactoria::decimal($data->punitreal)','footer'=>MiFactoria::decimal(Tempdesolpe::getTotal($prove)['real'],2), 'htmlOptions'=>array('width'=>30)),
-
+		array('name'=>'punitreal','header'=>'Real','value'=>'MiFactoria::decimal($data->desolpe->alkardex_gastos)','footer'=>MiFactoria::decimal(Tempdesolpe::getTotal($prove)['real'],2), 'htmlOptions'=>array('width'=>30)),
+  array('name'=>'st.','header'=>'st', 'type'=>'raw','value'=>'CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"].$data->codocu.$data->est.".png")'),
+	   
 
 
 	),
 )); ?>
+
+<div id="zona"></div>
 
 <div class="row">
 
@@ -124,15 +136,14 @@ $this->widget('zii.widgets.grid.CGridView', array(
 
 			'minus' => array(
 				'type' => 'D',
-				'ruta' => array($this->id . '/borraitems', array()),
+				'ruta' => array($this->id . '/borraitemsdesolpe', array()),
 
 				'opajax' => array(
 					'type' => 'POST',
-					'url' => Yii::app()->createUrl($this->id . '/borraitems', array()),
+					'url' => Yii::app()->createUrl($this->id . '/borraitemsdesolpe', array()),
 					'success' => "function(data) {
 										$('#AjFlash').html(data).fadeIn().animate({opacity: 1.0}, 3000).fadeOut('slow');
-                                              $.fn.yiiGridView.update('detalle-grid');
-                                               $.fn.yiiGridView.update('resumenoc-grid');
+                                              $.fn.yiiGridView.update('detalle-recursos-grid');                                              
                                                return false;
                                         }",
 					'beforeSend' => 'js:function(){

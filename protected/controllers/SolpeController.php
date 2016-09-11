@@ -1053,8 +1053,15 @@ public function actionBorraitems()
 		$estado=$_POST['Solpe']['estado'];
 		 if(count($autoIdAll)>0 )
 			 {
-			 	$modelin=$this->loadmodel($_POST['Solpe']['id']);
-				 if($modelin->escompra->libre=='1') {
+			 	if(is_null($_POST['Solpe']['id'])){  
+                                    $modelin=$this->loadmodel($_POST['Solpe']['id']);
+                                }
+                                else{///Si es una solpe  dentro de una OT u otro  de DESOLPETEM 
+                                   $modelin=$autoIdAll[0]->solpe;  
+                                    //coger la cabecera del primer hijo basta
+                                }
+                                
+				 if($modelin->tiposolpe->libre=='1') {
 					 $transaccion = $modelin->dbConnection->beginTransaction();
 
 					 foreach ($autoIdAll as $autoId) {
