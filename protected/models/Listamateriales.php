@@ -28,8 +28,8 @@ class Listamateriales extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('nombrelista, codequipo,comentario, compartida', 'required'),
-			array('codequipo','exist','allowEmpty' => false, 'attributeName' => 'codigo', 'className' => 'Masterequipo','message'=>'Este equipo no existe'),
+			array('nombrelista, comentario, compartida,codtipo', 'required'),
+			//array('codequipo','exist','allowEmpty' => false, 'attributeName' => 'codigo', 'className' => 'Masterequipo','message'=>'Este equipo no existe'),
 			array('compartida','chkcompartida'),
 			array('iduser', 'numerical', 'integerOnly'=>true),
 			array('nombrelista', 'length', 'max'=>60),
@@ -51,7 +51,9 @@ class Listamateriales extends CActiveRecord
 		return array(
 
 			'hijos'=> array(self::HAS_MANY, 'Dlistamaeriales', 'hidlista'),
-			'equipo'=> array(self::BELONGS_TO, 'Masterequipo', 'codequipo'),
+                    'nhijos'=> array(self::STAT, 'Dlistamaeriales', 'hidlista'),
+                    'tipolista'=> array(self::BELONGS_TO, 'Tipolista', 'codtipo'),
+			//'equipo'=> array(self::BELONGS_TO, 'Masterequipo', 'codequipo'),
 
 		);
 	}
@@ -121,8 +123,8 @@ class Listamateriales extends CActiveRecord
 
 
 	public function chkcompartida($attribute,$params) {
-		if($this->compartida<>'1' and $this->codigo <> '5470000000')
-			$this->adderror('compartida','Este listado debe ser compartido, se trata de un objeto publico');
+		//if($this->compartida<>'1' and $this->codequipo <> '5470000000')
+			//$this->adderror('compartida','Este listado debe ser compartido, se trata de un objeto publico');
 
 	}
 

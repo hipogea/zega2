@@ -207,7 +207,7 @@ public function chkcantpeticion(){
 	*/
 	public function campoeditable(){
 		if(in_array($this->alkardex_almacendocs->cestadovale,array('99','10'))){
-			$arraycant=array('10','30','50','13','41','43','77','78','70','79','98','97','68');
+			$arraycant=array('14','10','30','50','13','41','43','77','78','70','79','98','97','68');
 			$arrayum=array('10','43','50','77','79','98');
 			$arraycodart=array('50','77','98','79');
 			$arraycolector=array('50','77','79');
@@ -229,7 +229,7 @@ public function chkcantpeticion(){
 			$arraycodart=array();
 			$arraycolector=array();
 			$arraypreciounit=array();
-			$arraytextolargo=array('10','30','50','13','41','43','77','78','70','79','98','97','68');
+			$arraytextolargo=array('14','10','30','50','13','41','43','77','78','70','79','98','97','68');
 			$arraylote=array();
 		}
 	return	array(

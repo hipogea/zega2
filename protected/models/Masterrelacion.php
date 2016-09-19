@@ -117,4 +117,21 @@ class Masterrelacion extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        
+        
+        
+            public function beforeSave() {
+                
+                $registrohijo=  Masterequipo::model()->findByCodigo($this->hidhijo);
+                $registrohijo->setScenario('herencia');
+                $registrohijo->codigopadre=$this->hidpadre;
+                 $registrohijo->parent_id=$registro->parent->id;
+			$registrohijo->save();
+                    
+                            return parent::beforeSave();
+                            }
+
+        
+        
+        
 }

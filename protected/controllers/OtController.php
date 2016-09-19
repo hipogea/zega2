@@ -28,7 +28,7 @@ class OtController extends ControladorBase
 		parent::__construct($id='ot',Null);
 		$this->documento='890';
 		$this->modelopadre='Ot';
-		$this->modeloshijos=array('Detot'=>'Tempdetot','Desolpe'=>'Tempdesolpe');
+		$this->modeloshijos=array('Detot'=>'Tempdetot','Desolpe'=>'Tempdesolpe','Otconsignacion'=>'Tempotconsignacion');
 		//$this->modeloshijos=array('Desolpe'=>'Tempdesolpe');
 		$this->documentohijo='891';
 		$this->campoestado="codestado";
@@ -73,6 +73,11 @@ class OtController extends ControladorBase
 		$model=MiFactoria::CargaModelo($this->modelopadre,$id);
 		$modelolabor=new Tempdesolpe('search_por_ot');
 		$modelolabor->unsetAttributes();  // clear any default values
+                
+                
+                $modeloconsi=new Tempotconsignacion('search_por_ot');
+		$modeloconsi->unsetAttributes();  // clear any default values
+                
 		if(isset($_GET['Tempdesolpe'])){
 			$modelolabor->attributes=$_GET['Tempdesolpe'];
 			//var_dump($modelhijo->attributes);die();
@@ -92,20 +97,20 @@ class OtController extends ControladorBase
 				$this->setBloqueo($id) ; 	///bloquea
 				$this->ClearBuffer($id); //Limpia temporal antes de levantar
 				$this->IniciaBuffer($id); //Levanta temporales
-				$this->render('update',array('modelolabor'=>$modelolabor,'model'=>$model,'editable'=>true));
+				$this->render('update',array('modeloconsi'=>$modeloconsi,'modelolabor'=>$modelolabor,'model'=>$model,'editable'=>true));
 				yii::app()->end();
 			}
 
 		} else {
 			if($this->isRefreshCGridView($id))
 			{ //si esta refresh de grilla
-				$this->render('update',array('modelolabor'=>$modelolabor,'model'=>$model,'editable'=>true));
+				$this->render('update',array('modeloconsi'=>$modeloconsi,'modelolabor'=>$modelolabor,'model'=>$model,'editable'=>true));
 				yii::app()->end();
 			} else { // Si no lo es  tenemos que analizar los dos casos que quedan
 				if($this->IsRefreshUrlWithoutSubmit($id))
 				{ ///Solo refreso la pagina
 					MiFactoria::Mensaje('notice', "No has confirmado los datos, solo has refrescado la pagina ");
-					$this->render('update',array('modelolabor'=>$modelolabor,'model'=>$model,'editable'=>true));
+					$this->render('update',array('modeloconsi'=>$modeloconsi,'modelolabor'=>$modelolabor,'model'=>$model,'editable'=>true));
 					yii::app()->end();
 				} else {
 					$this->performAjaxValidation($model);
@@ -127,12 +132,12 @@ class OtController extends ControladorBase
 								$this->redirect(array('view','id'=>$model->id));
 							}else{
 								$transacc->rollback();
-								$this->render('update',array('modelolabor'=>$modelolabor,'model'=>$model,'editable'=>true));
+								$this->render('update',array('modeloconsi'=>$modeloconsi,'modelolabor'=>$modelolabor,'model'=>$model,'editable'=>true));
 								yii::app()->end();
 							}
 						} else   {
 							MiFactoria::Mensaje('notice', "  Enviaste los datos pero no has modificado nada.... ");
-							$this->render('update',array('modelolabor'=>$modelolabor,'model'=>$model,'editable'=>true));
+							$this->render('update',array('modeloconsi'=>$modeloconsi,'modelolabor'=>$modelolabor,'model'=>$model,'editable'=>true));
 							yii::app()->end();
 						}
 					} else  { //En este caso quiere decir que la sesion/bloqueo anterior no se ha cerrado correactmente
@@ -140,7 +145,7 @@ class OtController extends ControladorBase
 						$this->terminabloqueo($id);
 						$this->SetBloqueo($id);
 						MiFactoria::Mensaje('notice', "NO cerraste correctamente, Ya tenÃ­as una sesion abierta en este domcuento,");
-						$this->render('update',array('modelolabor'=>$modelolabor,'model'=>$model,'editable'=>true));
+						$this->render('update',array('modeloconsi'=>$modeloconsi,'modelolabor'=>$modelolabor,'model'=>$model,'editable'=>true));
 						yii::app()->end();
 					}
 				}
@@ -341,7 +346,7 @@ class OtController extends ControladorBase
 		return array(
 
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('borraitemsdesolpe','nadax','creaservicio','modificadetallerecurso','creadetallerecurso','verprecios','crearpdf','verDetoc','firmar','aprobar','cargaprecios','enviarpdf','admin','borrarimpuesto','reporte','agregarmasivamente','cargadirecciones','borraitems','sacaitem','sacaum','salir','agregaimpuesto','agregaritemsolpe','procesardocumento','refrescadescuento','VerDocumento','EditaDocumento','creadocumento','Agregardelmaletin','borraitem','imprimirsolo','cargaentregas','agregarsolpe','agregarsolpetotal','pasaatemporal','create','imprimirsolo','imprimir','imprimir2','enviarmail',
+				'actions'=>array('creaconsignacion','borraitemsdesolpe','nadax','creaservicio','modificadetallerecurso','creadetallerecurso','verprecios','crearpdf','verDetoc','firmar','aprobar','cargaprecios','enviarpdf','admin','borrarimpuesto','reporte','agregarmasivamente','cargadirecciones','borraitems','sacaitem','sacaum','salir','agregaimpuesto','agregaritemsolpe','procesardocumento','refrescadescuento','VerDocumento','EditaDocumento','creadocumento','Agregardelmaletin','borraitem','imprimirsolo','cargaentregas','agregarsolpe','agregarsolpetotal','pasaatemporal','create','imprimirsolo','imprimir','imprimir2','enviarmail',
 					'procesaroc','hijo','Aprobaroc','Reporteoc','Anularoc','Configuraop','Revertiroc', ///acciones de proceso
 					'libmasiva','creadetalle','Verdetalle','muestraimput','update','nada','Modificadetalle'),
 				'users'=>array('@'),
@@ -2635,19 +2640,63 @@ public function borraitemdesolpe($autoId) //Borra un registro de solpe
 		//echo $this->renderpartial("vw_mensajes",array());
 	}
     
+    public function actionCreaconsignacion($idcabeza,$cest)
+            
+	{
+        
+        if(!yii::app()->request->isAjaxRequest){
+		$modelopadre=$this->loadModel($idcabeza);
+		//$descuento=(is_null($modelopadre->descuento))?0:(1-$modelopadre->descuento/100);
+        $model=new Tempotconsignacion();
+		$model->hidot=$idcabeza;
+		$model->est=ESTADO_PREVIO;
+		$model->idusertemp=Yii::app()->user->id;
+		//$model->hcodoc=$this->documento; //
+               // $model->codocu='350'; //
+		//$model->tipsolpe='M';
+		$model->setScenario('buffer');
+		//$model->imputacion=$modelopadre->objetosmaster->objetoscliente->cebe;
+
+		//$model->valorespordefecto('350');
+		//$model->tipoitem='M';
+		if(isset($_POST['Tempotconsignacion']))		{
+			$model->attributes=$_POST['Tempotconsignacion'];
+
+
+			//$model->punitdes=$model->punit*$descuento;
+			//crietria para filtrar la cantidad de items del detalle
+			$criterio=new CDbCriteria;
+			$criterio->condition="hidot=:idguia  ";
+			$criterio->params=array(':idguia'=>$idcabeza);
+			$model->item=str_pad(Tempotconsignacion::model()->count($criterio)+1,3,"0",STR_PAD_LEFT);
+			//str_pad($somevariable,$anchocampo,"0",STR_PAD_LEFT);
+			////con esto calculamos el numero de items
+			//echo "  El valor de  ".$idcabeza."       ".$model->n_hguia."   ";
+			//$this->performAjaxValidationconsignacion($model);
+			if($model->save()){
+				if (!empty($_GET['asDialog']))
+				{
+					//Close the dialog, reset the iframe and update the grid
+					echo CHtml::script("window.parent.$('#cru-dialogdetalle').dialog('close');
+													                    window.parent.$('#cru-detalle').attr('src','');
+																		window.parent.$.fn.yiiGridView.update('detalle-consignaciones-grid');
+																		");
+
+				}
+			}
+
+		}
+		// if (!empty($_GET['asDialog']))
+		$this->layout = '//layouts/iframe';
+		$this->render('_form_consignacion',array('modelopadre'=>$modelopadre,
+			'model'=>$model, 'idcabeza'=>$idcabeza,'editable'=>true
+		));
+        }
+	}
     
-    
-    
-    
-    
-    
-    
+ 
     
     }
-    
-
-    
-    
     
     
 ?>

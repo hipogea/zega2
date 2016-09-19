@@ -1,22 +1,24 @@
 <?php
 
 /**
- * This is the model class for table "{{objetosmaster}}".
+ * This is the model class for table "{{tipolista}}".
  *
- * The followings are the available columns in table '{{objetosmaster}}':
- * @property integer $id
- * @property string $hcodobmaster
- * @property integer $hidobjeto
- * @property string $activo
+ * The followings are the available columns in table '{{tipolista}}':
+ * @property string $codtipo
+ * @property string $destipo
+ * @property integer $iduser
+ *
+ * The followings are the available model relations:
+ * @property Listamateriales[] $listamateriales
  */
-class Objetosmaster extends Modelogeneral
+class Tipolista extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return '{{objetosmaster}}';
+		return '{{tipolista}}';
 	}
 
 	/**
@@ -27,16 +29,13 @@ class Objetosmaster extends Modelogeneral
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('hcodobmaster, hidobjeto', 'required'),
-			array('hidobjeto', 'numerical', 'integerOnly'=>true),
-			array('hcodobmaster', 'length', 'max'=>15),
-			array('activo', 'length', 'max'=>1),
-			array('activo,serie,identificador,textolargo', 'safe'),
-			//array('hidobjeto+hcodobmaster', 'application.extensions.uniqueMultiColumnValidator','on'=>'insert,update'),
-
+			array('codtipo', 'required'),
+			array('iduser', 'numerical', 'integerOnly'=>true),
+			array('codtipo', 'length', 'max'=>3),
+			array('destipo', 'length', 'max'=>50),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, hcodobmaster, hidobjeto, activo', 'safe', 'on'=>'search'),
+			array('codtipo, destipo, iduser', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -47,14 +46,9 @@ class Objetosmaster extends Modelogeneral
 	{
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
-
-			return array(
-
-				'objetoscliente'=> array(self::BELONGS_TO, 'ObjetosCliente', 'hidobjeto'),
-				'masterequipo'=> array(self::BELONGS_TO, 'Masterequipo', 'hcodobmaster'),
-                                  'nots'=> array(self::STAT, 'Ot', 'idobjeto'),
-			);
-
+		return array(
+			'listamateriales' => array(self::HAS_MANY, 'Listamateriales', 'codtipo'),
+		);
 	}
 
 	/**
@@ -63,10 +57,9 @@ class Objetosmaster extends Modelogeneral
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'hcodobmaster' => 'Hcodobmaster',
-			'hidobjeto' => 'Hidobjeto',
-			'activo' => 'Activo',
+			'codtipo' => 'Codtipo',
+			'destipo' => 'Destipo',
+			'iduser' => 'Iduser',
 		);
 	}
 
@@ -88,47 +81,23 @@ class Objetosmaster extends Modelogeneral
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('id',$this->id);
-		$criteria->compare('hcodobmaster',$this->hcodobmaster,true);
-		$criteria->compare('hidobjeto',$this->hidobjeto);
-		$criteria->compare('activo',$this->activo,true);
+		$criteria->compare('codtipo',$this->codtipo,true);
+		$criteria->compare('destipo',$this->destipo,true);
+		$criteria->compare('iduser',$this->iduser);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
 	}
-
-
-	public function search_por_objeto($id)
-	{
-		$identidad=(int)MiFactoria::cleanInput($id);
-			$criteria=new CDbCriteria;
-		$criteria->addCondition("hidobjeto=".$identidad);
-
-
-
-		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
-		));
-	}
-
-
-
 
 	/**
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return Objetosmaster the static model class
+	 * @return Tipolista the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
 	}
-
-
-
-	
-
-
 }

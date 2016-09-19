@@ -21,3 +21,8 @@
 	<?php echo $form->checkbox($model,'transporte_objenguia'); ?>
 	<?php echo $form->error($model,'transporte_objenguia'); ?>
 </div>
+<div class="row">
+	<?php echo $form->labelEx($model,'transporte_rutafotos') ?>
+	<?php echo $form->textField($model,'transporte_rutafotos',array('size'=>40,'maxlength'=>40)); ?>
+	<?php echo $form->error($model,'transporte_rutafotos'); ?>
+</div>

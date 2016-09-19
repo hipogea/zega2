@@ -14,4 +14,4 @@ $this->menu=array(
 
 <h1>Actualizar equipo<?php echo $model->codigo; ?></h1>
 
-<?php $this->renderPartial('_form', array('model'=>$model)); ?>
+<?php $this->renderPartial('_form', array('model'=>$model,'modeloruta'=>$modeloruta)); ?>

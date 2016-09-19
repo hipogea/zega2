@@ -167,7 +167,7 @@ public function actionModificadetalle($id)
 																				$handle = fopen("$file->tempName", "r");
 																																							
 																				$row = 1;
-																		while (($data = fgetcsv($handle, 1000, ";")) !== FALSE)
+																		while (($data = fgetcsv($handle, 1000, Yii::app()->user->getField('delimitador'))) !== FALSE)
 																		{
 
 

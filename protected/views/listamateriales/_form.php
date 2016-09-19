@@ -21,28 +21,15 @@
 	<?php echo $form->errorSummary($model); ?>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'codequipo'); ?>
+		<?php echo $form->labelEx($model,'codtipo'); ?>
 		<?php
 
+                        $datos = CHtml::listData(Tipolista::model()->findAll(array('order'=>'destipo')),'codtipo','destipo');
+    echo $form->DropDownList($model,'codtipo',$datos, array('empty'=>'--Llene el tipo--'));
 
-		$this->widget('ext.matchcode.MatchCode',array(
-				'nombrecampo'=>'codequipo',
-				'ordencampo'=>3,
-				'controlador'=>$this->id,
-				'relaciones'=>$model->relations(),
-				'tamano'=>14,
-				'model'=>$model,
-				'form'=>$form,
-				'nombrecamporemoto'=>'codigo',
-				'nombredialogo'=>'cru-dialog3',
-				'nombreframe'=>'cru-frame3',
-				'nombrearea'=>'fehdxafdaafj',
-			)
-
-		);
 
 		?>
-		<?php echo $form->error($model,'codequipo'); ?>
+		<?php echo $form->error($model,'codtipo'); ?>
 
 	</div>
 

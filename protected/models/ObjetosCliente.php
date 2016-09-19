@@ -58,6 +58,9 @@ class ObjetosCliente extends ModeloGeneral
 			'clipro'=> array(self::BELONGS_TO, 'Clipro', 'codpro'),
 			//'master'=> array(self::HAS_MANY, 'Masterequipo', 'codigo'),
 			'cc'=> array(self::BELONGS_TO, 'Cc', 'cebe'),
+                    'objetosmaster'=> array(self::HAS_MANY, 'Objetosmaster', 'hidobjeto'),
+                     'nobjetos'=> array(self::STAT, 'Objetosmaster', 'hidobjeto'),
+                    
 
 		);
 	}

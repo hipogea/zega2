@@ -29,7 +29,7 @@ class MasterequipoController extends Controller
 		return array(
 
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('borradetalle','modificadetalle','admin','creaadicional','create','update'),
+				'actions'=>array('crealista','borralista','modificalista','borradetalle','modificadetalle','admin','creaadicional','create','update'),
 				'users'=>array('@'),
 			),
 
@@ -100,8 +100,16 @@ class MasterequipoController extends Controller
 				//$this->redirect(yii::app()->createUrl($this->id.'/view',$model->codigo));
 		}
 
+                
+                $modeloruta=new VwHojaruta('search_por_codigo');
+		$modeloruta->unsetAttributes();  // clear any default values
+		if(isset($_GET['VwHojaruta'])){
+			$modeloruta->attributes=$_GET['VwHojaruta'];
+			//var_dump($modelhijo->attributes);die();
+		}
+                
 		$this->render('update',array(
-			'model'=>$model,
+			'model'=>$model,'modeloruta'=>$modeloruta
 		));
 	}
 
@@ -233,7 +241,62 @@ class MasterequipoController extends Controller
 	}
 
 
+public function actioncrealista($idcabeza){
+
+		$model=new Masterlistamateriales();
+		//$model->cant=1;
+		$id=MiFactoria::cleanInput($idcabeza);
+		$registro=$this->loadModel($id);
+		$model->codigo=$registro->codigo;
+	//	$model->hidcontacto=$idcabeza;
+		if(isset($_POST['Masterlistamateriales']))		{
+			$model->attributes=$_POST['Masterlistamateriales'];
+			$model->save();
+			//Close the dialog, reset the iframe and update the grid
+			echo CHtml::script("window.parent.$('#cru-dialog3').dialog('close');
+													                    window.parent.$('#cru-frame3').attr('src','');
+																		window.parent.$.fn.yiiGridView.update('detallelista-grid');
+																		");
+			Yii::app()->end();
+
+		}
+		// if (!empty($_GET['asDialog']))
+		$this->layout = '//layouts/iframe';
+		$this->render('_form_lista',array(
+			'model'=>$model, 'idcabeza'=>$idcabeza
+		));
+
+	}
 
 
+        
 
+	public function actionmodificalista($id){
+		$model=  Masterlistamateriales::model()->findByPk($id);
+		//echo "salio";
+		//$model->hidcontacto=$idcabeza;
+		if(isset($_POST['Masterlistamateriales']))		{
+			$model->attributes=$_POST['Masterlistamateriales'];
+			$model->save();
+			//Close the dialog, reset the iframe and update the grid
+			echo CHtml::script("window.parent.$('#cru-dialog3').dialog('close');
+							           window.parent.$('#cru-frame3').attr('src','');
+								window.parent.$.fn.yiiGridView.update('detallelista-grid');
+								");
+			Yii::app()->end();
+
+		}
+		//if (!empty($_GET['asDialog']))
+		$this->layout = '//layouts/iframe';
+		$this->render('_form_lista',array(
+			'model'=>$model,
+		));
+
+	}
+        
+        public function actionborralista($id){
+		$model=  Masterlistamateriales::model()->findByPk($id);
+		//echo "salio";
+		$model->delete();
+	}
 }

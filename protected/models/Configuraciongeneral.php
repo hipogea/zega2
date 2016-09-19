@@ -28,6 +28,8 @@ public $documentos_tolerecepfacturaendias=null;
 	public $transporte_trancheck;
     public $transporte_lugares;
 	public $transporte_objenguia; //permite tener objbetos de referncia en los detalle sde la guia de remision
+       public $transporte_rutafotos ;///directorio donde se almacenaran las imagenes de l
+     
 
 
 	/*****inventario***/
@@ -109,7 +111,7 @@ public $materiales_verpresolpe;
 					email_cuentahost',
 				'required','message'=>'Este dato es obligatorio'
 			),
-			array('transporte_objenguia,general_userauto,inventario_auto,inventario_bloqueado,inventario_mascaraubicaciones,materiales_contabilidad,materiales_verpresolpe,documentos_selloagua,documentos_controlrecepcion,transporte_lugares','safe'),
+			array('transporte_rutafotos,transporte_objenguia,general_userauto,inventario_auto,inventario_bloqueado,inventario_mascaraubicaciones,materiales_contabilidad,materiales_verpresolpe,documentos_selloagua,documentos_controlrecepcion,transporte_lugares','safe'),
 			array(
 				// array('transporte_tiempopermitidohastaentrega','numerical', 'integerOnly'=>true, 'min'=>0, 'max'=>100),
 				'transporte_tiempopermitidohastaentrega', 'numerical', 'integerOnly'=>true,
@@ -147,6 +149,7 @@ public $materiales_verpresolpe;
 	'transporte_trancheck'=>'Restringir Mov Af por lugar',
            ' transporte_lugares'=>'Exigir lugares para direccion',
 			'transporte_objenguia'=>'	Referencias a objetos en  el detalle de la guia',
+                    'transporte_rutafotos'=>'Directorio de footografias',
 	'inventario_periodocontrol'=>'Periodo Dias control de inventario',
 			'inventario_mascaraubicaciones'=>'Mascara ubicaciones',
 			'inventario_auto'=>'Reposic stock Automa.',

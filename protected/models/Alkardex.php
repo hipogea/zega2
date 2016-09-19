@@ -227,6 +227,15 @@ class Alkardex extends ModeloGeneral
 				//$this->alkardex_alinventario->actualiza_stock($this->codmov,abs($this->cantidadbase()),null);
 				$codop='100'; //Consumo interno
 				break;
+                            
+                        case "14":  //ingreso de repuestos OT 
+				$this->InsertaAtencionConsignacion();
+				break;  
+                            
+                              case "15":  //ingreso de repuestos OT 
+				$this->InsertaAtencionConsignacion();
+				break;  
+                            
 			case "12":
 				$this->gestionaRQ();
 				$codop='100'; //Consumo interno
@@ -1425,5 +1434,17 @@ class Alkardex extends ModeloGeneral
 		return '[ Objeto :'.__CLASS__.'] [ Funcion :'.__FUNCTION__.']  [ Linea :  '.__LINE__.']      Material : '.$this->codart.'- Almacen : '.$this->alemi.'  ';
 	}
 
-
+ public function insertaatencionconsignacion(){
+     $model=New Atencionconsignaciones();
+     $model->setAttributes(
+             array(
+                 'hidkardex'=>$this->id,
+                  'hidconsi'=>$this->idref,     
+                 'cant'=>$this->cant,
+             )
+             );
+            $model->save();                
+          }
+          
+          
 }

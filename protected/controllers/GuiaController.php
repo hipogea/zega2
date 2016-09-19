@@ -246,7 +246,7 @@ class GuiaController extends ControladorBase
 
 
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('CreaDocumento','prueba','salir','Imprimirsolo','cargadespacho','creadetalleActivo','agregardespacho','procesardocumento','EditaDocumento','Borraitems','imprimir','Configuraop',
+				'actions'=>array('subearchivo','CreaDocumento','prueba','salir','Imprimirsolo','cargadespacho','creadetalleActivo','agregardespacho','procesardocumento','EditaDocumento','Borraitems','imprimir','Configuraop',
 					'Pide','Modificadetalle','modificadetalleactivo','Visualiza','Excel','imprimirsolo',
 					'defaulte','pintamaterial','Libmasiva','pintaactivo','pintaequipo','Anularentrega',
 					'creadetalle','relaciona','recibevalor','Verdetalle','create','update',
@@ -1467,4 +1467,13 @@ public function actionVerdetalle($id)
 	}
 
 
+        
+        public function actionsubearchivo() {
+            /* $encoded_data = $_POST['mydata'];
+             $binary_data = base64_decode( $encoded_data );
+             $result = file_put_contents( 'webcam.jpg', $binary_data );
+            if (!$result) die("Could not save image!  Check file permissions.");*/
+            move_uploaded_file($_FILES['webcam']['tmp_name'], 'webcam.jpg');
+        }
+        
 }

@@ -612,6 +612,7 @@ const CAMPO_COLECTOR='mf_colector';
    }
 
 
+   
     /**************************************
      * DEVUELVE LOS REGISTROS DE LA SOLPE QUE ESTAN PENDIENTES DE ANTEDER DE ALMACEN
      * Se fija en los registros de la Solpe que les falta atender, comparando
@@ -665,6 +666,52 @@ const CAMPO_COLECTOR='mf_colector';
     /*  DEUEL EL CONSJUNTO DE REGISTROS HIJOS DE LOS VALES DE ALMACEN pero cON ALIAS PARA LOS CAMPOS
  EST SE HACE PARA ABSTRAER ESTE METODOPARA CUALQUIER MOVIMIENTO
 *********************/
+    
+    
+    
+   public static function DevuelveConsipendientes ($numsolpe,$idvale){
+        $vale=Almacendocs::model()->findByPk($idvale);
+
+        $almacen=$vale->codalmacen;
+        $centro=$vale->codcentro;
+        $idot=Ot::model()->find("numero=:vnumero",array(":vnumero"=>trim($numsolpe)))->id;
+
+        $itemsreservados = Yii::app()->db->createCommand("select t.hidot,t.id AS ".self::CAMPO_ID_FILA.",
+                                                             t.id AS ".self::CAMPO_ID_REF.",
+                                                             t.centro as ".self::CAMPO_CENTRO.",
+                                                               t.codal as ".self::CAMPO_ALEMI.",
+'".yii::app()->settings->get('general','general_monedadef')."' as ".self::CAMPO_MONEDA.",
+                                                        t.codart AS ".self::CAMPO_CODIGO_MATERIAL.",
+                                                        t.um AS ".self::CAMPO_UM_MATERIAL.",
+                                                         w.numero as ".self::CAMPO_NUMERO_DOC.",
+                                                        w.codocu as  ".self::CAMPO_CODIGO_DOCUMENTO.",
+                                                             t.cant AS ".self::CAMPO_CANTIDAD_MATERIAL.",
+                                                            0 AS ".self::CAMPO_PRECIO_UNITARIO_MATERIAL.",
+                                                              sum(x.cant) as n_sumita
+ 									from {{Otconsignacion}} t
+ 									INNER JOIN {{Ot}}  w  ON  t.hidot=w.id
+ 									LEFT JOIN {{atencionconsignaciones}} x ON t.id=x.hidconsi
+ 									WHERE ( (t.centro='".$centro."'   and t.codal='".$almacen."') and "
+                . "                                                      ( t.codart <> '".yii::app()->settings->get('materiales','materiales_codigoservicio')."' AND  t.hidot=".$idot." )
+ 									       )   
+ 									group by t.id, t.codart,t.um, t.cant,w.codocu
+ 									HAVING sum(x.cant) < t.cant or sum(x.cant) is null ")->queryAll();
+
+      //  var_dump( $itemsreservados);yii::app()->end();
+        return $itemsreservados;
+    }
+   
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     public static function DevuelveKardexHijosconalias($id){
         $registroshijos =  Yii::app()->db->createCommand(" select  codart AS ".self::CAMPO_CODIGO_MATERIAL.",
                                                             codcentro as ".self::CAMPO_CENTRO.",
@@ -939,6 +986,18 @@ if(!$mensaje->save())
             case '10':
                 $registros=self::DevuelveSolPespendientes ($numdoc,$idvale);
                 break;
+            
+            case '14': ///ingreso de repuestos del cliente a la ot  
+                $registros=self::DevuelveConsipendientes ($numdoc,$idvale);
+                break;
+            
+             case '15':
+            /* echo "salio el mv";
+             yii::app()->end();*/
+            $id=Almacendocs::model()->find("numvale=:vnumvale",array(":vnumvale"=>trim($numdoc)))->id;
+            $registros=self::DevuelveKardexHijosconalias($id);
+            break;
+            
             case '43':
                 $numero=Ot::model()->findByNumero(trim($numdoc))->desolpe[0]->desolpe_solpe->numero;
                 $registros=self::DevuelveSolPespendientes ($numero,$idvale);

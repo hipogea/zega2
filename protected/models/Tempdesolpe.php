@@ -11,7 +11,7 @@ class Tempdesolpe extends ModeloGeneral
 	}
 
 	/**
-	 * @return array validation rules for model attributes.
+	 * @return array valhistion rules for model attributes.
 	 */
 	public function rules()
 	{

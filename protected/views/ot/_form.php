@@ -316,6 +316,10 @@ $this->widget('zii.widgets.jui.CJuiTabs', array(
 			'Recursos'=>array('id'=>'tab_ui',
 				'content'=>$this->renderPartial('tab_recursos', array('form'=>$form,'model'=>$model,'modelolabor'=>$modelolabor),TRUE)
 			),
+                    
+                    'Rec externos'=>array('id'=>'tab_uifre4',
+				'content'=>$this->renderPartial('tab_consignaciones', array('modeloconsi'=>$modeloconsi,'form'=>$form,'model'=>$model,'modeloconsi'=>$modeloconsi),TRUE)
+			),
 			'Auditoria'=>array('id'=>'tab____..__',
 				'content'=>$this->renderPartial('//site/tab_auditoria', array('form'=>$form,'model'=>$model),TRUE)
 			),

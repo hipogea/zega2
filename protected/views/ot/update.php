@@ -18,4 +18,4 @@ $this->menu=array(
 
 <h1>Update Ot <?php echo $model->id; ?></h1>
 
-<?php $this->renderPartial('_form', array('modelolabor'=>$modelolabor,'model'=>$model)); ?>
+<?php $this->renderPartial('_form', array('modeloconsi'=>$modeloconsi,'modelolabor'=>$modelolabor,'model'=>$model)); ?>

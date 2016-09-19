@@ -1,11 +1,11 @@
 
 
 <?php
-$prove=$modelolabor->search_por_ot($model->id);
+$prove=$modeloconsi->search_por_ot($model->id);
 $this->widget('zii.widgets.grid.CGridView', array(
-	'id'=>'detalle-recursos-grid',
+	'id'=>'detalle-consignaciones-grid',
 	'dataProvider'=>$prove,
-	'filter'=>$modelolabor,
+	'filter'=>$modeloconsi,
 	'itemsCssClass'=>'table table-striped table-bordered table-hover',
    'summaryText'=>' Total de Items : {count}',
 	'columns'=>array(
@@ -80,19 +80,20 @@ $this->widget('zii.widgets.grid.CGridView', array(
 		//array('htmlOptions'=>array('width'=>10),'name'=>'codigoalma','visible'=>(yii::app()->settings->get("materiales","materiales_codigoservicio")==$data->codart)?true:false),
 		//array('htmlOptions'=>array('width'=>5),'header'=>'um','value'=>'$data->ums->desum'),
 		//array('htmlOptions'=>array('width'=>5), 'type'=>'raw','name'=>'codart','value'=>'$data->codart','visible'=>(!yii::app()->settings->get("materiales","materiales_codigoservicio")==$data->codart)?true:false),
-		array('header'=>'N° Solic','value'=>'$data->solpe->numero', 'htmlOptions'=>array('width'=>4),),
+		//array('header'=>'N° Solic','value'=>'$data->solpe->numero', 'htmlOptions'=>array('width'=>4),),
 		array('name'=>'cant', 'type'=>'raw','header'=>'Cant','htmlOptions'=>array('width'=>20) ),
-		array('name'=>'hidlabor','header'=>'Recurso','value'=>'$data->txtmaterial','filter'=>CHTml::listData(Tempdetot::model()->findAll("idusertemp=:vuser and hidorden=:vorden",array(":vorden"=>$model->id,":vuser"=>yii::app()->user->id)),'idaux','textoactividad'), 'htmlOptions'=>array('width'=>400),),
+		array('name'=>'hidetot','header'=>'Recurso','value'=>'$data->descripcion','filter'=>CHTml::listData(Tempdetot::model()->findAll("idusertemp=:vuser and hidorden=:vorden",array(":vorden"=>$model->id,":vuser"=>yii::app()->user->id)),'idaux','descripcion'), 'htmlOptions'=>array('width'=>400),),
 		
                                                        // 'txtmaterial',
 		'codart',
-
+            array('header'=>'Atendido','value'=>'$data->otconsignacion->cantatendida', 'htmlOptions'=>array('width'=>4),),
+		
 		// array('name'=>'texto', 'type'=>'raw','header'=>'t','value'=>'(!empty($data->detalle))?CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."texto.png","hola"):""' ),
 		//array('name'=>'punit', 'type'=>'raw','header'=>'Pu','value'=>'Chtml::openTag("span", array("style"=>"float:right;font-weight:bold;")).Mifactoria::decimal($data->punit,3).Chtml::closeTag("span")','htmlOptions'=>array('width'=>20)),
 		//array('name'=>'Subt', 'type'=>'raw','header'=>'Subt','value'=>'Chtml::openTag("span", array("style"=>"float:right;font-weight:bold;")).Mifactoria::decimal($data->cant*($data->punit),3).Chtml::closeTag("span")','htmlOptions'=>array('width'=>68)),
-		array('name'=>'punitplan','header'=>'Plan','value'=>'MiFactoria::decimal($data->punitplan)','footer'=>MiFactoria::decimal(Tempdesolpe::getTotal($prove)['plan'],2), 'htmlOptions'=>array('width'=>30)),
-		array('name'=>'punitreal','header'=>'Real','value'=>'MiFactoria::decimal($data->desolpe->alkardex_gastos)','footer'=>MiFactoria::decimal(Tempdesolpe::getTotal($prove)['real'],2), 'htmlOptions'=>array('width'=>40)),
-  array('name'=>'st.','header'=>'st', 'type'=>'raw','value'=>'CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"].$data->codocu.$data->est.".png")'),
+		//array('name'=>'punitplan','header'=>'Plan','value'=>'MiFactoria::decimal($data->punitplan)','footer'=>MiFactoria::decimal(Tempdesolpe::getTotal($prove)['plan'],2), 'htmlOptions'=>array('width'=>30)),
+		//array('name'=>'punitreal','header'=>'Real','value'=>'MiFactoria::decimal($data->desolpe->alkardex_gastos)','footer'=>MiFactoria::decimal(Tempdesolpe::getTotal($prove)['real'],2), 'htmlOptions'=>array('width'=>30)),
+  //array('name'=>'st.','header'=>'st', 'type'=>'raw','value'=>'CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"].$data->codocu.$data->est.".png")'),
 	   
 
 
@@ -108,7 +109,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 		$botones = array(
 			'add' => array(
 				'type' => 'C',
-				'ruta' => array($this->id . '/creadetallerecurso', array(
+				'ruta' => array($this->id . '/creaconsignacion', array(
 					'idcabeza' => $model->id,
 					'cest' => $model->{$this->campoestado},
 					//"id"=>$model->n_direc,

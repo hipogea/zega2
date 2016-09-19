@@ -67,7 +67,8 @@ $('.search-form form').submit(function(){
 		'n_cangui',
 		'c_codgui',
 		'c_descri',
-		array('name'=>'nomep', 'header'=>'Ref','value'=>'$data->nomep'),
+            'nombreobjeto',
+		//array('name'=>'nomep', 'header'=>'Ref','value'=>'$data->nomep'),
 		'c_codactivo',
 		//'desmotivo',
 
@@ -89,4 +90,16 @@ $('.search-form form').submit(function(){
 		
 	),
 )); ?>
+
+
+<?php
+$this->widget('ext.camara.Camara',
+					array(
+                                            'accion'=>'subearchivo'
+					)
+				);
+                                                
+                                                
+  ?>
+
 

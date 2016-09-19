@@ -38,6 +38,7 @@ class Masterequipo extends ModeloGeneral
 			array('codigopadre','exist','allowEmpty' => true, 'attributeName' => 'codigo', 'className' => 'Masterequipo','message'=>'Este codigo de equipo no existe'),
 			array('codigopadre','checkigual'),
 			array('codart','checkrotativo','on'=>'insert,update'),
+                            array('id_parent,codpadre','safe','on'=>'herencia'),
 
 			//array('marca', 'numerical', 'integerOnly'=>true),
 			array('codigo', 'length', 'max'=>10),
@@ -66,6 +67,8 @@ class Masterequipo extends ModeloGeneral
 			'parent' => array(self::BELONGS_TO, 'Masterequipo', 'parent_id'),
 			'children' => array(self::HAS_MANY, 'Masterequipo', 'parent_id'),
 			'childCount' => array(self::STAT, 'Masterequipo', 'parent_id'),
+                    'nobjetosmaster' => array(self::STAT, 'Objetosmaster', 'id'),
+                    
 		);
 	}
 
@@ -180,40 +183,10 @@ class Masterequipo extends ModeloGeneral
 	{
 		return parent::model($className);
 	}
+        
+        
 
-	public function beforeSave() {
-
-  if($this->isNewRecord ) {
-	  $this->codigo = $this->Correlativo ( 'codigo' , $criteria = null , '547' , null );
-
-
-  }
-		//var_dump($this->codart);die();
-		if(!IS_NULL($this->codart) AND STRLEN($this->codart)>0){
-			$regmaestro=Maestrocompo::model()->findByPk($this->codart);
-			$this->descripcion=$regmaestro->descripcion;
-			$this->marca=$regmaestro->marca;
-			$this->modelo=$regmaestro->modelo;
-			$this->numeroparte=$regmaestro->nparte;
-			unset($regmaestro);
-		}
-
-		if($this->codigo <>'5470000000') {
-			if ( is_null ( $this->codigopadre )  or  $this->codigopadre=="" ){
-				$this->codigopadre = '5470000000';
-				$this->hidpadre=self::findByCodigo($this->codigopadre)->id;
-				$this->parent_id=self::findByCodigo($this->codigopadre)->id;
-
-			}else {
-				// var_dump($this->codigopadre);yii::app()->end();
-			}
-			$this->hidpadre=self::findByCodigo($this->codigopadre)->id;
-			$this->parent_id=self::findByCodigo($this->codigopadre)->id;
-		}else {
-
-		}
-	return parent::beforeSave();
-}
+	
 
 	public static function findByCodigo($codig){
 		$codig=MiFactoria::cleanInput($codig);
@@ -243,6 +216,39 @@ class Masterequipo extends ModeloGeneral
 
 
 
+public function beforeSave() {
 
+  if($this->isNewRecord ) {
+	  $this->codigo = $this->Correlativo ( 'codigo' , $criteria = null , '547' , null );
+
+
+  }
+		//var_dump($this->codart);die();
+		if(!IS_NULL($this->codart) AND STRLEN($this->codart)>0){
+			$regmaestro=Maestrocompo::model()->findByPk($this->codart);
+			$this->descripcion=$regmaestro->descripcion;
+			$this->marca=$regmaestro->marca;
+			$this->modelo=$regmaestro->modelo;
+			$this->numeroparte=$regmaestro->nparte;
+			unset($regmaestro);
+		}
+
+		if($this->codigo <>'5470000000') {
+			if ( is_null ( $this->codigopadre )  or  $this->codigopadre=="" ){
+				$this->codigopadre = '5470000000';
+				$this->hidpadre=self::findByCodigo($this->codigopadre)->id;
+				$this->parent_id=self::findByCodigo($this->codigopadre)->id;
+
+			}else {
+				// var_dump($this->codigopadre);yii::app()->end();
+                            $this->hidpadre=self::findByCodigo($this->codigopadre)->id;
+                            $this->parent_id=self::findByCodigo($this->codigopadre)->id;
+                             $this->codigopadre=self::findByCodigo($this->codigopadre)->codigo;
+                            }
+			
+			
+		}
+	return parent::beforeSave();
+}
 
 }

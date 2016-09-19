@@ -283,7 +283,7 @@ print_r($_SESSION['sesion_Maestrocompo']);
                     SELECT hcodart from {{maestrodetallecentros}} where codcen='".trim($modelito->centro)."' ) ")->queryAll();
 
 			for ($i=0; $i < count($matriz3); $i++) { //recorremos y lo vamos insertando
-				$cadena="INSERT INTO ".$prefix."maestrodetallecentros
+				$cadena="INSERT INTO {{maestrodetallecentros}}
 				( catvalor,codcen,hcodart,iqf)
 				 VALUES (null, '".$modelito->centro."','".$matriz3[$i]['codigo']."', '0')";
 				$command = Yii::app()->db->createCommand($cadena);

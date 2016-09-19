@@ -54,6 +54,8 @@ class Ot extends  ModeloGeneral
 		return array(
 			'detot' => array(self::HAS_MANY, 'Detot', 'hidorden'),
 			'tempdetot' => array(self::HAS_MANY, 'Tempdetot', 'hidorden'),
+                    'tempotconsignacion' => array(self::HAS_MANY, 'Tempotconsignacion', 'hidot'),
+                    'otconsignacion' => array(self::HAS_MANY, 'Otconsignacion', 'hidot'),
 			'desolpe' => array(self::HAS_MANY, 'Desolpe', 'hidot','condition'=>"tipsolpe='M' "),
 			'desolpeserv' => array(self::HAS_MANY, 'Desolpe', 'hidot','condition'=>"tipsolpe='S' "),
 			'tempdesolpe' => array(self::HAS_MANY, 'Tempdesolpe','hidot'),

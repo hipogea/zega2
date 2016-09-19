@@ -38,12 +38,25 @@ class Maestrodetalle extends ModeloGeneral
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('codart,codcentro, codal,controlprecio,catval', 'required','on'=>'BATCH_UPD'),
-			array('codart','exist','allowEmpty' => false, 'attributeName' => 'codigo', 'className' => 'Maestrocompo','message'=>'Este material no existe','on'=>'BATCH_UPD'),
-			array('codal','exist','allowEmpty' => false, 'attributeName' => 'codalm', 'className' => 'Almacenes','message'=>'Este almacen existe','on'=>'BATCH_UPD'),
-			array('codcentro','exist','allowEmpty' => false, 'attributeName' => 'codcen', 'className' => 'Centros','message'=>'Este centro no existe','on'=>'BATCH_UPD'),
-			array('catval','exist','allowEmpty' => false, 'attributeName' => 'codcatval', 'className' => 'Catvaloracion','message'=>'Este grupo de valor no existe','on'=>'BATCH_UPD'),
-			array('canteconomica, cantreposic, cantreorden', 'numerical','on'=>'BATCH_UPD'),
+			
+                    array('codart,codcentro, codal,controlprecio,catval', 'required','on'=>'BATCH_UPD'),
+			
+                    array('codart','exist','allowEmpty' => false, 'attributeName' => 'codigo', 'className' => 'Maestrocompo','message'=>'Este material no existe','on'=>'BATCH_UPD,BATCH_UPD_CATVAL,BATCH_UPD_CONTROL_PRECIO,BATCH_UPD_CATVAL_CONTROLPRECIO'),
+			array('codal','exist','allowEmpty' => false, 'attributeName' => 'codalm', 'className' => 'Almacenes','message'=>'Este almacen existe','on'=>'BATCH_UPD,BATCH_UPD_CATVAL,BATCH_UPD_CONTROL_PRECIO,BATCH_UPD_CATVAL_CONTROLPRECIO'),
+			array('codcentro','exist','allowEmpty' => false, 'attributeName' => 'codcen', 'className' => 'Centros','message'=>'Este centro no existe','on'=>'BATCH_UPD,BATCH_UPD_CATVAL,BATCH_UPD_CONTROL_PRECIO,BATCH_UPD_CATVAL_CONTROLPRECIO'),
+			
+                    array('codart,codcentro, codal,catval','safe','on'=>'BATCH_UPD_CATVAL'),
+			array('codart,codcentro, codal,controlprecio','safe','on'=>'BATCH_UPD_CONTROL_PRECIO'),
+                    
+                    array('codart,codcentro, codal,controlprecio,catval','safe','on'=>'BATCH_UPD_CATVAL_CONTROLPRECIO'),
+                    
+                    array('controlprecio','checkcontrolprecio','on'=>'BATCH_UPD,BATCH_UPD_CONTROL_PRECIO,BATCH_UPD_CATVAL_CONTROLPRECIO'),                       
+                    array('catval','exist','allowEmpty' => false, 'attributeName' => 'codcatval', 
+                        'className' => 'Catvaloracion','message'=>'Este grupo de valor no existe','on'=>'BATCH_UPD,BATCH_UPD_CATVAL,BATCH_UPD_CATVAL_CONTROLPRECIO'),
+                    
+                    
+			
+                    array('canteconomica, cantreposic, cantreorden', 'numerical','on'=>'BATCH_UPD'),
 			array('canteconomica, cantreposic, cantreorden', 'checkauto','on'=>'BATCH_UPD'),
 			array('cantsol,repautomatica,supervisionautomatica,codart,codcentro, codal,controlprecio,catval,canteconomica, cantreposic, cantreorden,leadtime', 'safe','on'=>'BATCH_UPD'),
 
@@ -105,6 +118,12 @@ class Maestrodetalle extends ModeloGeneral
 
 
 	}
+        
+        
+       
+        
+        
+        
 	/**
 	 * @return array customized attribute labels (name=>label)
 	 */
