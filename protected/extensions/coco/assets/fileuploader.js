@@ -495,8 +495,8 @@ qq.FileUploader = function(o){
                 '<span class="qq-upload-file"></span>' +
                 '<span class="qq-upload-spinner"></span>' +
                 '<span class="qq-upload-size"></span>' +
-                '<a class="qq-upload-cancel" href="#">Cancelado</a>' +
-                '<span class="qq-upload-failed-text">...</span>' +'<div class="qq-upload-failed-text-icon ></div>'+
+                '<a class="qq-upload-cancel" href="#">Cancel</a>' +
+                '<span class="qq-upload-failed-text">Failed</span>' +
             '</li>',
 
         classes: {
@@ -542,7 +542,7 @@ qq.extend(qq.FileUploader.prototype, {
     _find: function(parent, type){
         var element = qq.getByClass(parent, this._options.classes[type])[0];
         if (!element){
-            throw new Error('elemento no encontrado ' + type);
+            throw new Error('element not found ' + type);
         }
 
         return element;

@@ -2,8 +2,8 @@
 
 .qq-upload-button {
     display:block; /* or inline-block */
-    width: 150px; padding: 2px 0; text-align:center;    
-    background:#ccc; border-bottom:1px solid #aaa;color:#fff;
+    width: 150px; padding: 7px 0; text-align:center;    
+    background:#0099CC; border-bottom:1px solid #ddd;color:#fff;
 }
 .qq-upload-button-hover {background:#10AABB;}
 .qq-upload-button-focus {outline:1px dotted black;}
@@ -26,7 +26,6 @@
 .qq-upload-file {}
 .qq-upload-spinner {display:inline-block; background: url("loading.gif"); width:15px; height:15px; vertical-align:text-bottom;}
 .qq-upload-size,.qq-upload-cancel {font-size:11px;}
-.qq-upload-failed-text-icon {display:inline-block; background: url("loading.gif"); width:15px; height:15px; vertical-align:text-bottom;}
-.qq-upload-failed-text {display:none;}
 
+.qq-upload-failed-text {display:none;}
 .qq-upload-fail .qq-upload-failed-text {display:inline;}

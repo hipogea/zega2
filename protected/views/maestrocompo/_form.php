@@ -224,7 +224,7 @@ echo $form->DropDownList($model,'um',$datos, array('empty'=>'--Unidad de medida-
             'onCancelled'=>'function(id,filename){ alert("cancelled"); }',
             'onMessage'=>'function(m){ alert(m); }',
             'allowedExtensions'=>array('JPEG','JPG','gif','PNG'), // server-side mime-type validated
-            'sizeLimit'=>2000000, // limit in server-side and in client-side
+            'sizeLimit'=>8000000, // limit in server-side and in client-side
             'uploadDir' => $ruta, // coco will @mkdir it
             // this arguments are used to send a notification
             // on a specific class when a new file is uploaded,
@@ -233,7 +233,7 @@ echo $form->DropDownList($model,'um',$datos, array('empty'=>'--Unidad de medida-
             'methodName'=>'FileReceptor',
             'userdata'=>$model->codigo,
             // controls how many files must be uploaded
-            'maxUploads'=>10, // defaults to -1 (unlimited)
+            'maxUploads'=>-1, // defaults to -1 (unlimited)
             'maxUploadsReachMessage'=>'No esta permitido cargar mas archivos', // if empty, no message is shown
             // controls how many files the can select (not upload, for uploads see also: maxUploads)
             'multipleFileSelection'=>true, // true or false, defaults: true

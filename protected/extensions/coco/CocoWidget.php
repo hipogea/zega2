@@ -17,8 +17,8 @@ class CocoWidget extends CWidget implements EYuiActionRunnable {
 	public $defaultControllerName='site';
 	public $defaultActionName='coco';
 
-	public $buttonText='Encontrar & Subir';
-	public $dropFilesText='Arrastre los archivos aquí!';
+	public $buttonText='Find & Upload';
+	public $dropFilesText='Drop Files Here !';
 	public $allowedExtensions=array();
 	public $sizeLimit;
 	public $uploadDir = 'assets/';
@@ -32,8 +32,6 @@ class CocoWidget extends CWidget implements EYuiActionRunnable {
 	public $maxConnections=3; // max simultaneus connections (client-side)
 	public $maxUploads=-1; // -1=unlimited. number of uploads allowed (client-side)
 	public $maxUploadsReachMessage = ''; // a message when maxUploads is reach.
-	PUBLIC $nombrealt;
-
 
 	private $_baseUrl;
 
@@ -91,7 +89,6 @@ class CocoWidget extends CWidget implements EYuiActionRunnable {
 			'receptorClassName'=>$this->receptorClassName,
 			'methodName'=>$this->methodName,
 			'userdata'=>$this->userdata,
-			'nombrealt'=>$this->nombrealt,
 		);
 
 		$action['data'] = serialize($vars);
@@ -203,7 +200,7 @@ echo
 			$this->uploadDir = rtrim($this->uploadDir,'/').'/';
 			@mkdir($this->uploadDir);
 
-			$result = $uploader->handleUpload($this->uploadDir,$this->nombrealt,false);
+			$result = $uploader->handleUpload($this->uploadDir);
 			if(isset($result['success'])){
 				if($result['success']==true){
 					Yii::log('ACTION CALLED - RESULT=SUCCESS','info');
