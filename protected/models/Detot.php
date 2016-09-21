@@ -9,6 +9,23 @@ class Detot extends ModeloGeneral
 	{
 		return '{{detot}}';
 	}
+        
+        public function behaviors()
+	{
+		//var_dump(yii::app()->settings->get('general','general_nregistrosporcarpeta'));die();
+            
+            return array(
+			// Classname => path to Class
+			'imagenesjpg'=>array(
+				'class'=>'ext.behaviors.TomaFotosBehavior',
+                            '_codocu'=>'210',
+                            '_ruta'=>yii::app()->settings->get('general','general_directorioimg'),
+                            '_numerofotosporcarpeta'=>yii::app()->settings->get('general','general_nregistrosporcarpeta')+0,
+                            '_extensionatrabajar'=>'.jpg',
+                            '_id'=>$this->getPrimarykey(),
+                                ));
+
+	}
 
 	/**
 	 * @return array validation rules for model attributes.

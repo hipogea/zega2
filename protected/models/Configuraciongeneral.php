@@ -14,6 +14,8 @@ class Configuraciongeneral extends CFormModel
 	public $general_horaspasadastipocambio;
 	public $general_porcexcesocaja; ///porcenytaje de exceso para la caja chica
 	public $general_userauto; ///porcenytaje de exceso para la caja chica
+        public $general_directorioimg; ///porcenytaje de exceso para la caja chica
+         public $general_nregistrosporcarpeta; ///porcenytaje de exceso para la caja chica
 
 	/*****documentos***/
 	public $documentos_numeromaxbloqueos;
@@ -86,7 +88,9 @@ public $materiales_verpresolpe;
 				   general_rutatemaimagenes,
 				   general_horaspasadastipocambio,
 				   general_porcexcesocaja,
+                                   general_directorioimg,
 				   general_userauto,
+                                   general_nregistrosporcarpeta,
 					documentos_numeromaxbloqueos,
 					documentos_docmascara,
 					documentos_archivo_sello_agua,
@@ -111,10 +115,10 @@ public $materiales_verpresolpe;
 					email_cuentahost',
 				'required','message'=>'Este dato es obligatorio'
 			),
-			array('transporte_rutafotos,transporte_objenguia,general_userauto,inventario_auto,inventario_bloqueado,inventario_mascaraubicaciones,materiales_contabilidad,materiales_verpresolpe,documentos_selloagua,documentos_controlrecepcion,transporte_lugares','safe'),
+			array('general_nregistrosporcarpeta,transporte_rutafotos,general_directorioimg,transporte_objenguia,general_userauto,inventario_auto,inventario_bloqueado,inventario_mascaraubicaciones,materiales_contabilidad,materiales_verpresolpe,documentos_selloagua,documentos_controlrecepcion,transporte_lugares','safe'),
 			array(
 				// array('transporte_tiempopermitidohastaentrega','numerical', 'integerOnly'=>true, 'min'=>0, 'max'=>100),
-				'transporte_tiempopermitidohastaentrega', 'numerical', 'integerOnly'=>true,
+				'general_nregistrosporcarpeta,transporte_tiempopermitidohastaentrega', 'numerical', 'integerOnly'=>true,
 			),
 
 
@@ -141,6 +145,8 @@ public $materiales_verpresolpe;
 			'general_monedadef'=>'Moneda base',
 			'general_porcexcesocaja'=>'Exceso cajachica (%)',
 			'general_userauto'=>'Uusario para operaciones automaticas',
+                    'general_directorioimg'=>'Directorio de almacenamiento de Imagenes',
+                    'general_nregistrosporcarpeta'=>'Cantidad registros por carpeta',
 	'documentos_numeromaxbloqueos'=>'Cant Max Documentos abiertos por usuario',
 			'documentos_selloagua'=>'Sello de agua',
 			'documentos_archivo_sello_agua'=>'Archivo sello agua',

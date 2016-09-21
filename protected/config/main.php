@@ -348,12 +348,20 @@ return array(
 			'class'=>'CLogRouter',
 
 			'routes'=>array(
-				array(
+				/*array(
 					'class'=>'CFileLogRoute',
 					//'levels'=>'error, info, rbac', // <--- agregar 'rbac'
-					'levels'=>'error, info,rbac,warning, email', //agreagamos aqui el mail para probar los correos en modo DEBUG 
+					'levels'=>'error,warning', //agreagamos aqui el mail para probar los correos en modo DEBUG 
 					//'enableParamLogging'=>true,
-				),
+				),*/
+                            array(
+                    'class'=>'CEmailLogRoute',
+                    'levels'=>'error, warning',
+                    'emails'=>'neotegnia@gmail.com',
+                                
+                                ),
+                            
+                           
 				// uncomment the following to show log messages on web pages
 				/*
 				array(

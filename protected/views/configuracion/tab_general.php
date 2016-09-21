@@ -52,6 +52,20 @@
 		<?php echo $form->error($model,'general_userauto'); ?>
 	</div>
 
+        
+        
+	<div class="row">
+		<?php echo $form->labelEx($model,'general_directorioimg'); ?>
+		<?php echo $form->textField($model,'general_directorioimg',array('size'=>13,'maxlength'=>13)); ?>
+		<?php echo $form->error($model,'general_directorioimg'); ?>
+	</div>
+        <div class="row">
+		<?php echo $form->labelEx($model,'general_nregistrosporcarpeta'); ?>
+		<?php echo $form->textField($model,'general_nregistrosporcarpeta',array('size'=>3,'maxlength'=>3)); ?>
+		<?php echo $form->error($model,'general_nregistrosporcarpeta'); ?>
+	</div>
+        
+        
 	<BR>
 
 

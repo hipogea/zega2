@@ -850,7 +850,7 @@ public function actionModificaconversion($id)
 			}
 	}
 
-		public function actionver()
+		public function actionver($id)
 	{
 		$maestro=$this->loadModel(MiFactoria::cleanInput($id));
 		$this->render('ver',array('model'=>$maestro));

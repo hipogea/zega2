@@ -346,7 +346,7 @@ class OtController extends ControladorBase
 		return array(
 
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('creaconsignacion','borraitemsdesolpe','nadax','creaservicio','modificadetallerecurso','creadetallerecurso','verprecios','crearpdf','verDetoc','firmar','aprobar','cargaprecios','enviarpdf','admin','borrarimpuesto','reporte','agregarmasivamente','cargadirecciones','borraitems','sacaitem','sacaum','salir','agregaimpuesto','agregaritemsolpe','procesardocumento','refrescadescuento','VerDocumento','EditaDocumento','creadocumento','Agregardelmaletin','borraitem','imprimirsolo','cargaentregas','agregarsolpe','agregarsolpetotal','pasaatemporal','create','imprimirsolo','imprimir','imprimir2','enviarmail',
+				'actions'=>array('tomafoto','creaconsignacion','borraitemsdesolpe','nadax','creaservicio','modificadetallerecurso','creadetallerecurso','verprecios','crearpdf','verDetoc','firmar','aprobar','cargaprecios','enviarpdf','admin','borrarimpuesto','reporte','agregarmasivamente','cargadirecciones','borraitems','sacaitem','sacaum','salir','agregaimpuesto','agregaritemsolpe','procesardocumento','refrescadescuento','VerDocumento','EditaDocumento','creadocumento','Agregardelmaletin','borraitem','imprimirsolo','cargaentregas','agregarsolpe','agregarsolpetotal','pasaatemporal','create','imprimirsolo','imprimir','imprimir2','enviarmail',
 					'procesaroc','hijo','Aprobaroc','Reporteoc','Anularoc','Configuraop','Revertiroc', ///acciones de proceso
 					'libmasiva','creadetalle','Verdetalle','muestraimput','update','nada','Modificadetalle'),
 				'users'=>array('@'),
@@ -2694,7 +2694,43 @@ public function borraitemdesolpe($autoId) //Borra un registro de solpe
         }
 	}
     
- 
+ public function actiontomafoto($id){
+      $detalle=  Tempdetot::model()->findByPk((integer)  MiFactoria::cleanInput($id));  
+      if(!is_null($detalle)){          
+          if(isset($_FILES['webcam']['tmp_name']))
+              {
+              $nombretemp= Yii::getPathOfAlias('webroot').
+                      yii::app()->settings->get('general','general_directorioimg').DIRECTORY_SEPARATOR;
+              $nombretemp.=(microtime(true)*10000).yii::app()->user->id.'.jpg';
+              //throw new CHttpException(500,'ver     '.$nombretemp); 
+             if( move_uploaded_file(
+                      $_FILES['webcam']['tmp_name'],
+                     $nombretemp
+                      ))
+                   // throw new CHttpException(500,'eroor      '.$_FILES['webcam']['tmp_name']); 
+              //echo $_FILES['webcam']['tmp_name'];die();
+               $detalle->colocaarchivo($nombretemp);
+               unlink($nombretemp);
+              //move_uploaded_file($_FILES['webcam']['tmp_name'],Yii::getPathOfAlias('webroot').'/images/webcam.jpg');
+                           
+					//Close the dialog, reset the iframe and update the grid
+					echo CHtml::script(     "window.parent.$('#cru-dialog3').dialog('close');
+								window.parent.$('#cru-frame3').attr('src','');"
+                                                            );
+				
+                                yii::app()->end();
+                }            
+                                
+          if (!empty($_GET['asDialog']))
+		$this->layout = '//layouts/iframe';
+		$this->render('/site/camara');
+         
+      }else{
+         	throw new CHttpException(500,'No se encontro el item id del item de la Ot'); 
+      }
+    }
+    
+    
     
     }
     

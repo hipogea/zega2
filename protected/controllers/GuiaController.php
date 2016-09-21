@@ -1473,7 +1473,9 @@ public function actionVerdetalle($id)
              $binary_data = base64_decode( $encoded_data );
              $result = file_put_contents( 'webcam.jpg', $binary_data );
             if (!$result) die("Could not save image!  Check file permissions.");*/
-            move_uploaded_file($_FILES['webcam']['tmp_name'], 'webcam.jpg');
+             //$foto=New Directoriofotos($this->documentohijo,$this->id,100,'/images','.jpg');
+            move_uploaded_file($_FILES['webcam']['tmp_name'],Yii::getPathOfAlias('webroot').'/images/webcam.jpg');
+            
         }
         
 }

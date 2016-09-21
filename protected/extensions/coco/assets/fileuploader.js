@@ -496,7 +496,7 @@ qq.FileUploader = function(o){
                 '<span class="qq-upload-spinner"></span>' +
                 '<span class="qq-upload-size"></span>' +
                 '<a class="qq-upload-cancel" href="#">Cancelado</a>' +
-                '<span class="qq-upload-failed-text">Hubo error</span>' +'<div class="qq-upload-failed-text-icon ></div>'+
+                '<span class="qq-upload-failed-text">...</span>' +'<div class="qq-upload-failed-text-icon ></div>'+
             '</li>',
 
         classes: {

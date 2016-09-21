@@ -337,7 +337,17 @@ $mo=New Alinventario();
 	 echo "yii::app()->request->userHostAddress     :     ".yii::app()->request->userHostAddress ."<br> ";
 
    echo "<br><br><br>";
-
+   
+   echo "Comprobar el directorio con la funcio is_dir()    :     is_dir(".Yii::getPathOfAlias('webroot').DIRECTORY_SEPARATOR.")  <br> ";
+   var_dump( is_dir(Yii::getPathOfAlias('webroot').DIRECTORY_SEPARATOR));
+   echo "<br><br><br>";
+   echo " microtime() : <br> ";
+   var_dump(microtime(true));
+   var_dump(date("Y-m-d H:i:s",microtime(true)));
+   echo "<br><br><br>";
+   
+   echo "Comprobar el directorio con la funcio is_dir()    :     is_dir(".Yii::getPathOfAlias('webroot').")  <br> ";
+   var_dump( is_dir(Yii::getPathOfAlias('webroot')));
 	 echo "<br><br><br>";
 	 echo "Archivos del directorio ". Yii::app()->getTheme()->basePath."  <br>";
 	 $archivos=CFileHelper::findFiles(		Yii::app()->getTheme()->basePath.DIRECTORY_SEPARATOR.'css'.DIRECTORY_SEPARATOR.'reportes',
@@ -351,6 +361,9 @@ $mo=New Alinventario();
 	 print_r($archivos);
 
 
+         
+         
+         
  }
 
 
@@ -386,6 +399,19 @@ $mo=New Alinventario();
 
 
 	public function actionPio() {
+            //$foto=New Directoriofotos('100',572,5,'/images','.jpg');
+            $foto=Detot::model()->findByPk(5);
+            //var_dump($foto->getPrimaryKey());die();
+        //  var_dump($foto->creacarpeta());die();
+            //echo "carpeta destino :<br>";
+            //var_dump($foto->_carpetadestino);die();
+            echo "<br>";
+            $archivo="C:/xampp/htdocs/recurso/webcam.jpg";
+          // var_dump($foto->colocaarchivo($archivo));
+            var_dump($foto->getauditoria());
+            die();
+            
+            
                 $ot=Ot::model()->findByPk(14);
                var_dump( $ot->tienesolpeabierta('S')->attributes);die();
             

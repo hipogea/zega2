@@ -233,7 +233,7 @@ echo $form->DropDownList($model,'um',$datos, array('empty'=>'--Unidad de medida-
             'methodName'=>'FileReceptor',
             'userdata'=>$model->codigo,
             // controls how many files must be uploaded
-            'maxUploads'=>1, // defaults to -1 (unlimited)
+            'maxUploads'=>10, // defaults to -1 (unlimited)
             'maxUploadsReachMessage'=>'No esta permitido cargar mas archivos', // if empty, no message is shown
             // controls how many files the can select (not upload, for uploads see also: maxUploads)
             'multipleFileSelection'=>true, // true or false, defaults: true
