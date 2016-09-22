@@ -320,6 +320,10 @@ $this->widget('zii.widgets.jui.CJuiTabs', array(
                     'Rec externos'=>array('id'=>'tab_uifre4',
 				'content'=>$this->renderPartial('tab_consignaciones', array('modeloconsi'=>$modeloconsi,'form'=>$form,'model'=>$model,'modeloconsi'=>$modeloconsi),TRUE)
 			),
+                    
+                    'Componentes rotativos'=>array('id'=>'tab_uifre5',
+				'content'=>$this->renderPartial('tab_neot', array('modeloconsi'=>$modeloconsi),TRUE)
+			),
 			'Auditoria'=>array('id'=>'tab____..__',
 				'content'=>$this->renderPartial('//site/tab_auditoria', array('form'=>$form,'model'=>$model),TRUE)
 			),

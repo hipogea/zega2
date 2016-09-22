@@ -18,6 +18,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
         ),
         array(
             'class' => 'CButtonColumn',
+            'htmlOptions'=>array('width'=>80),
             'buttons' => array(
                 'view' =>
                 array(

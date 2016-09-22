@@ -229,6 +229,8 @@ class Detgui extends CActiveRecord
                     'tempdetgui'=>array(self::HAS_ONE, 'Tempdetgui', 'id'),
                     'neot'=>array(self::HAS_MANY, 'Neot', 'hidne'),
                     'asignadosot'=>array(self::STAT, 'Neot', 'hidne','select'=>'sum(t.cant)'),
+                  //  'cantsolpes'=>array(self::STAT, 'Desolpecompra', 'iddocompra','select'=>'sum(t.cant)','condition'=>"codestado <> '30'"),//el campo foraneo
+			
 			//'ot'=> array(self::STAT, 'Deot','hidne', 'sum(t.cant)'),
 			//'lotescosteado'=>array(self::STAT,'Lotes','hidinventario','select'=>'SUM(cant*punit)', 'condition'=>'cant > 0 '),
 			

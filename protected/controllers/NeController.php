@@ -1544,19 +1544,17 @@ class NeController extends ControladorBase
 				
 
 				if($model->save())
-					if (!empty($_GET['asDialog']))
+					
 					{
-						//Close the dialog, reset the iframe and update the grid
-						echo CHtml::script("window.parent.$('#cru-dialog3').dialog('close');
-													                    window.parent.$('#cru-frame3').attr('src','');
-																		window.parent.$.fn.yiiGridView.update('detalle-grid');
-																		");
-						Yii::app()->end();
+                                    MiFactoria::Mensaje('success', 'Se ha asignado '.$model->cant.' a la OT '.$model->detalleot->ot->numero.'Esta 
+                                        operación se graba directamente en la Base de datos'
+                                           );
+                                   // yii::app()->end();
 					}
 			}
 			// if (!empty($_GET['asDialog']))
 			$this->layout = '//layouts/iframe';
-			$this->render('_form_neot',array(
+			$this->render('_form_neot',array('modelopadre'=>$registrocabeza,
 				'model'=>$model, 'idcabeza'=>$idcabeza
 			));
 		} else{ //si ya cambio el estado impisble agregar mas items

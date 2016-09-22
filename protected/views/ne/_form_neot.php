@@ -46,16 +46,39 @@
 		<?php $form->hiddenField($model,'hidne'); ?>
 		
 	</div>
-	
-	
-	
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'cant'); ?>
-		<?php echo $form->textField($model,'cant',array('size'=>4,'maxlength'=>4)); ?>
-            <?php echo $form->error($model,'cant'); ?>
+    
+    <div class="panelizquierdo" >
+         
+         <div class="row">
+		<?php echo $form->labelEx($modelopadre->ne,'c_numgui'); ?>
+		<?php echo $form->textField($modelopadre->ne,'c_numgui',array('size'=>8,'maxlength'=>8,'disabled'=>'disabled')); ?>
+            
 
 	</div>
+        <div class="row">
+		<?php echo $form->labelEx($modelopadre,'c_itguia'); ?>
+		<?php echo $form->textField($modelopadre,'c_itguia',array('size'=>4,'maxlength'=>4,'disabled'=>'disabled')); ?>
+            
+
+	</div>
+	<div class="row">
+		<?php echo $form->labelEx($modelopadre,'n_cangui'); ?>
+		<?php echo $form->textField($modelopadre,'n_cangui',array('size'=>4,'maxlength'=>4,'disabled'=>'disabled')); ?>
+            
+
+	</div>
+        <div class="row">
+		<?php echo $form->labelEx($modelopadre,'c_descri'); ?>
+		<?php echo $form->textField($modelopadre,'c_descri',array('size'=>40,'maxlength'=>40,'disabled'=>'disabled')); ?>
+            
+
+	</div>
+        
+    </div>
+	
+
+    <div class="panelderecho" >
 
 
     <div class="row">
@@ -65,7 +88,7 @@
 		
 			$this->widget('ext.matchcode.MatchCode',array(
 					'nombrecampo'=>'hidot',
-					'ordencampo'=>3,
+					'ordencampo'=>4,
 					'controlador'=>'Neot',
 					'relaciones'=>$model->relations(),
 					'tamano'=>6,
@@ -86,24 +109,79 @@
 		
 		<?php echo $form->error($model,'hidot'); ?>
 	</div>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-	<div class="row buttons">
+        <br>
+        <br>
+        <div class="row">
+		<?php echo $form->labelEx($model,'cant'); ?>
+		<?php echo $form->textField($model,'cant',array('size'=>3,'maxlength'=>3)); ?>
+          
+
+	</div>
+        <div class="row">
+      <?php echo $form->error($model,'cant'); ?>
+    </div>
+        
+        <div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Agregar' : 'Actualizar'); ?>
 	</div>
+        
+    
+    </div>
+    
+    
+    
+    
+    
+    <?php
+$this->widget('ext.groupgridview.GroupGridView', array(
+      'id' => 'detalle-grid',
+      'dataProvider'=>Neot::model()->search_por_ne(13),
+      'mergeColumns' => array('numero','textoactividad'),
+	 'itemsCssClass'=>'table table-striped table-bordered table-hover',
+	  'extraRowColumns' => array('numero'),
+	 'extraRowTotals' => function($data, $row, &$totals) {
+		 if(!isset($totals['sum_cant'])) $totals['sum_cant'] = 0;
+		 $totals['sum_cant']+=$data['cant'];
+
+	 },
+	 'extraRowExpression' => '"<span style=\"font-weight: bold;color: orangered;font-size:13px;\"> Total OT : ".MiFactoria::decimal($totals["sum_cant"],2)." </span>"',
+	 'extraRowPos'=>'below',
+                 
+	
+	//'filter'=>$model,
+	'columns'=>array(
+                'cant',
+		array('name'=>'numero','value'=>'$data->detalleot->ot->numero'),
+                'detalleot.item',
+             array('name'=>'textoactividad','value'=>'$data->detalleot->textoactividad'),
+            'detalleot.ot.objetosmaster.masterequipo.descripcion',
+            'detalleot.ot.objetosmaster.identificador',
+
+            /*
+            'detot.textocorto',
+                ' detot.codobjeto',
+               'detot.nombreobjeto',
+              'detot.descripcion',*/
+         
+				array(
+			'class'=>'CButtonColumn',
+		),
+	),
+)); ?>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+	
 
 <?php $this->endWidget(); ?>
 

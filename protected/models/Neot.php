@@ -57,6 +57,7 @@ class Neot extends CActiveRecord
 		return array(
 			'detgui' => array(self::BELONGS_TO, 'Detgui', 'hidne'),
 			'detot' => array(self::BELONGS_TO, 'VwOtdetalle', 'hidot'),
+                         'detalleot'=>array(self::BELONGS_TO, 'Detot', 'hidot'),
 		);
 	}
 
@@ -105,6 +106,35 @@ class Neot extends CActiveRecord
 		));
 	}
 
+        
+        public function search_por_ne($hidne)
+	{
+		// @todo Please modify the following code to remove attributes that should not be searched.
+                $hidne=(integer)  MiFactoria::cleanInput($hidne);
+		$criteria=new CDbCriteria;
+
+		//->compare('id',$this->id,true);
+		$criteria->addCondition("hidne=:vhidne");
+                $criteria->params=array(":vhidne"=>$hidne);
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
+	}
+        
+        
+        public function search_por_ot($hidot)
+	{
+		// @todo Please modify the following code to remove attributes that should not be searched.
+                $hidne=(integer)  MiFactoria::cleanInput($hidot);
+		$criteria=new CDbCriteria;
+
+		//->compare('id',$this->id,true);
+		$criteria->addCondition("idot=:vhidne");
+                $criteria->params=array(":vhidne"=>$hidot);
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
+	}
 	/**
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
@@ -120,10 +150,17 @@ class Neot extends CActiveRecord
             if($this->hidne >0){
                 $detne=Detgui::model()->findByPk($this->hidne+0);
                 if(!is_null($detne)){
-                    if( !( (($detne->asignadosot-$detne->n_cangui) <= $this->cant) and
-                          (($detne->asignadosot+$detne->n_cangui) >= $this->cant)  
+                  if($this->cant >=0)
+                    if( !(( $this->cant   >=   0 ) and
+                          (   $this->cant <=  ( $detne->n_cangui-$detne->asignadosot) )  
                         ))
                        $this->adderror('n_cangui','Esta cantidad ['.$this->cant.' ] mas lo asignado a las Ots ['.$detne->asignadosot.' ]   ,sobrepasa a lo ingresado ['.$detne->n_cangui.' ] : '); 
+                if($this->cant <0)
+                    if((abs($this->cant)  > $detne->asignadosot ))
+                       $this->adderror('n_cangui','No puede retirar  ['.ABS($this->cant).' ] de la OT,  lo asignado es : ['.$detne->asignadosot.' ]    '); 
+               
+                    
+                    
                 }else{
                     $this->adderror('n_cangui','La referencia al Ingreso no es la correcta');
                 }

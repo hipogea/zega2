@@ -72,7 +72,7 @@ class Ot extends  ModeloGeneral
 			'trabajadores' => array(self::BELONGS_TO, 'Trabajadores', 'codresponsable'),
                     'estado'=>array(self::BELONGS_TO,'Estado',array('codestado'=>'codestado','codocu'=>'codocu')),
                     'neot'=>array(self::HAS_MANY,'Neot','hidot'),
-                    'ncomponentes'=>array(self::STAT,'Neot','hidot','Select'=>'sum(t.cant)'),
+                   // 'ncomponentes'=>array(self::STAT,'Neot','hidot','Select'=>'sum(t.cant)'),
 
 		);
 	}

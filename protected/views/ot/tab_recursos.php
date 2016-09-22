@@ -9,6 +9,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 	'itemsCssClass'=>'table table-striped table-bordered table-hover',
    'summaryText'=>' Total de Items : {count}',
 	'columns'=>array(
+            
 		array(
            'class'=>'CCheckBoxColumn',
 		    'selectableRows' => 20,
@@ -19,6 +20,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                 ),
 		array(
 			'class'=>'CButtonColumn',
+                      'htmlOptions'=>array('width'=>80),
 			'buttons'=>array(
 
 				'view'=>
