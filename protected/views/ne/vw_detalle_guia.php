@@ -68,6 +68,24 @@ $this->endWidget();
 				'visiblex'=>array(ESTADO_PREVIO,ESTADO_CREADO),
 
 			),
+                                                
+                            'tool'=>array(
+				'type'=>'C',
+				'ruta'=>array('guia/CreadetalleCompo',array(
+					'idcabeza'=>$modelcabecera->id,
+					'cest'=>$modelcabecera->{$this->campoestado},
+					//"id"=>$model->n_direc,
+					"asDialog"=>1,
+					"gridId"=>'detalle-grid',
+				)
+				),
+				'dialog'=>'cru-dialogdetalle',
+				'frame'=>'cru-detalle',
+				'visiblex'=>array(ESTADO_PREVIO,ESTADO_CREADO),
+
+			),                    
+                                                
+                                                
 			'asset'=>array(
 				'type'=>'C',
 				'ruta'=>array('guia/creadetalleActivo',array(

@@ -72,7 +72,7 @@ $('.search-form form').submit(function(){
 													  array(
 															
 															"type"      => "GET",
-														     "data"      => array("codiguito"=>$data->idinventario),
+														     "data"      => array("cguito"=>$data->idinventario),
 																)
 																	)'						
 			 ),*/
@@ -116,7 +116,7 @@ $('.search-form form').submit(function(){
 		'serie',*/
 		array('name'=>'.','header'=>'.','type'=>'raw','value'=>'(!$data->rocoto=="1")?CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."ancla.png","",array("width"=>15,"height"=>15)):CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."truck.png","",array("width"=>15,"height"=>15))','htmlOptions'=>array('width'=>'50')),
 		array('name'=>'lugares_lugar','header'=>'Lugar','value'=>'$data->lugares->deslugar'),
-		'documentox.desdocu',
+		//'documentox.desdocu',
 		array('name'=>'fecha','value'=>'date("d/m/Y",strtotime($data->fecha))'),
 		'numerodocumento',
 		

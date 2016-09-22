@@ -12,17 +12,20 @@
 						array(
 									'class'=>'CCheckBoxColumn',
 									'selectableRows' => 1,
-									'value'=>'$data->id."_".$data->c_serie."-".$data->c_numgui',
+									'value'=>'$data->idetot."_".$data->descripcion',
 									'checkBoxHtmlOptions' => array(                
 																'name' => 'checkselected[]',
 																	),
            // 'id'=>'cajita' // the columnID for getChecked
 							),
 	
-		'id',
-		'c_serie',
-		'c_numgui',
-		
+		'numero',
+		'codpro',
+		'despro',
+		'rucpro',
+            'descripcion',
+		'textoactividad',
+		'despro',
 		
 	),
 )); ?>

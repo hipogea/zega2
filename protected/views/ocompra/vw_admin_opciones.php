@@ -211,7 +211,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                 'maxUploadsReachMessage'=>'No esta permitido cargar mas archivos', // if empty, no message is shown
                 // controls how many files the can select (not upload, for uploads see also: maxUploads)
                 'multipleFileSelection'=>true, // true or false, defaults: true
-                'nombrealt'=>'021',
+                //'nombrealt'=>'021',
             ));
 
 

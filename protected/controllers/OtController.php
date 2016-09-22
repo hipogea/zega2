@@ -2723,14 +2723,14 @@ public function borraitemdesolpe($autoId) //Borra un registro de solpe
                                 
           if (!empty($_GET['asDialog']))
 		$this->layout = '//layouts/iframe';
-		$this->render('/site/camara');
+		$this->render('//site/subefotos',array('model'=>$detalle));
          
       }else{
          	throw new CHttpException(500,'No se encontro el item id del item de la Ot'); 
       }
     }
     
-    
+   
     
     }
     

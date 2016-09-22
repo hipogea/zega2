@@ -267,7 +267,7 @@
 </div>
 </div>
 	<?php
-	$this->widget('zii.widgets.grid.CGridView', array(
+	/*$this->widget('zii.widgets.grid.CGridView', array(
 		'id'=>'detalle-grid',
 		'dataProvider'=>Componentes::model()->search_por_activo($model->idinventario),
 		//'filter'=>$model,
@@ -290,4 +290,4 @@
 			'master.descripcion',
 			'lugares.deslugar',
 		),
-	)); ?>
+	));*/ ?>

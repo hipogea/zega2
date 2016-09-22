@@ -246,7 +246,7 @@ class GuiaController extends ControladorBase
 
 
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('subearchivo','CreaDocumento','prueba','salir','Imprimirsolo','cargadespacho','creadetalleActivo','agregardespacho','procesardocumento','EditaDocumento','Borraitems','imprimir','Configuraop',
+				'actions'=>array('modificadetallecompo',  'CreadetalleCompo','subearchivo','CreaDocumento','prueba','salir','Imprimirsolo','cargadespacho','creadetalleActivo','agregardespacho','procesardocumento','EditaDocumento','Borraitems','imprimir','Configuraop',
 					'Pide','Modificadetalle','modificadetalleactivo','Visualiza','Excel','imprimirsolo',
 					'defaulte','pintamaterial','Libmasiva','pintaactivo','pintaequipo','Anularentrega',
 					'creadetalle','relaciona','recibevalor','Verdetalle','create','update',
@@ -1478,4 +1478,93 @@ public function actionVerdetalle($id)
             
         }
         
+        
+        public function actionCreadetalleCompo($idcabeza,$cest)
+	{
+		$idcabeza=(integer)  MiFactoria::cleanInput($idcabeza);
+                
+            if($cest=='10' OR $cest=='99') {
+		$model=new Tempdetgui;
+		$model->setScenario('INS_COMPO');
+		$model->valorespordefecto($this->documentohijo);
+			$model->n_cangui=1;
+			$model->c_um='120';
+		if(isset($_POST['Tempdetgui']))		{
+			$model->attributes=$_POST['Tempdetgui'];
+			$model->codocu=$this->documentohijo; ///detalle guia
+			$model->n_hguia=$idcabeza;
+			//crietria para filtrar la cantidad de items del detalle
+			$criterio=new CDbCriteria;			
+			 $criterio->condition="n_hguia=:idguia  ";
+                          $criterio->addCondition("n_hguia=:idguia  ");
+			$criterio->params=array(':idguia'=>$idcabeza);
+			$model->c_itguia=str_pad(Tempdetgui::model()->count($criterio)+1,3,"0",STR_PAD_LEFT);
+			//str_pad($somevariable,$anchocampo,"0",STR_PAD_LEFT);
+			////con esto calculamos el numero de items
+			//echo "  El valor de  ".$idcabeza."       ".$model->n_hguia."   ";
+			
+			if($model->save())
+					  if (!empty($_GET['asDialog']))
+								{
+													//Close the dialog, reset the iframe and update the grid
+								echo CHtml::script("window.parent.$('#cru-dialogdetalle').dialog('close');
+                                                                 window.parent.$('#cru-detalle').attr('src','');
+								window.parent.$.fn.yiiGridView.update('detalle-grid');
+								");
+														Yii::app()->end();
+							}
+		}
+		// if (!empty($_GET['asDialog']))
+		$this->layout = '//layouts/iframe';
+		$this->render('_form_componente',array(
+			'model'=>$model, 'idcabeza'=>$idcabeza
+		));
+		} else{ //si ya cambio el estado impisble agregar mas items
+		   if (!empty($_GET['asDialog']))
+		$this->layout = '//layouts/iframe';
+		$this->render('vw_imposible',array(
+			
+		));	
+		}
+	}
+	
+        
+	public function actionmodificadetallecompo($id)
+	{
+		$model=Tempdetgui::Model()->findByPk($id);
+		$model->setScenario('UPD_COMPO');
+		if ($model===null)
+			throw new CHttpException(404,'No se encontro ningun documento para estos datos');
+			$this->performAjaxValidation1($model);
+		if(isset($_POST['Tempdetgui']))
+		{
+			$model->attributes=$_POST['Tempdetgui'];
+			if($model->save())
+				if (!empty($_GET['asDialog']))
+				{
+					//Close the dialog, reset the iframe and update the grid
+					echo CHtml::script("window.parent.$('#cru-dialogdetalle').dialog('close');
+													                    window.parent.$('#cru-detalle').attr('src','');
+																		window.parent.$.fn.yiiGridView.update('detalle-grid');
+																		");
+					Yii::app()->end();
+				}
+			//$this->redirect(array('view','id'=>$model->n_guia));
+		}
+		if (!empty($_GET['asDialog']))
+			$this->layout = '//layouts/iframe';
+		$this->render('_form_componente',array(
+			'model'=>$model, 'idcabeza'=>$model->n_hguia,
+		));
+
+		/*} else{ //si ya cambio el estado impisble agregar mas items
+
+		   if (!empty($_GET['asDialog']))
+		$this->layout = '//layouts/iframe';
+		$this->render('vw_imposible',array(
+
+		));
+		}*/
+
+	}
 }

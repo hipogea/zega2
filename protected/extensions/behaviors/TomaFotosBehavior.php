@@ -104,6 +104,7 @@ private function prepara() {
                     
                                                                     
                                                 }else{
+                                                    Yii::log(' ejecutandosfssfsfsfs '.$this->_rutabas.DIRECTORY_SEPARATOR.$this->_codocu.DIRECTORY_SEPARATOR.$this->_extensionatrabajar,'error');
                                                   // var_dump($this->_rutabas.DIRECTORY_SEPARATOR.$this->_codocu.DIRECTORY_SEPARATOR.$this->_extensionatrabajar);die();
                                                     if(mkdir($this->_rutabas.DIRECTORY_SEPARATOR.$this->_codocu.DIRECTORY_SEPARATOR.$this->_extensionatrabajar,0777)){
                                                                                      $this->creacarpeta();
@@ -135,7 +136,11 @@ private function prepara() {
                
     }
     
-    public function colocaarchivo($filename) {
+    public function colocaarchivo($fullFileName) {
+        
+        $fullFileName=$this->limpiaruta($fullFileName);
+        
+        $filename=$fullFileName;
         $this->prepara();
         $this->creacarpeta();
         // var_dump($filename);
@@ -194,31 +199,40 @@ private function prepara() {
             //var_dump(strpos($nombre,$this->_id.'_'));
                      
                          if(strpos($nombre,$this->_id.'_')>=0){
-                            /* echo " nombre en la cadena ";
-                             var_dump(substr($nombre,strpos($nombre,$this->_id.'_'),strlen(trim($this->_id))));
-                             echo "<br>";
-                            
-                            
-                             echo " nombre en el id ";
-                             var_dump(trim($this->_id));
-                             
-                             echo "<br>";
-                              echo "Comparacion <br>";
-                              var_dump(substr($nombre,strpos($nombre,$this->_id.'_'),strlen(trim($this->_id)))===trim($this->_id));
-                              echo "<br>";*/
-                             
+                                                        
                              if(substr($nombre,strpos($nombre,$this->_id.'_'),strlen(trim($this->_id)))===trim($this->_id))
                              //$archivosfiltrados[]=substr($nombre,strpos($nombre,$this->_id.'_'),strlen(trim($this->_id)));
                                      if($rutasabsolutas){
-                                         $archivosfiltrados[]=$this->_carpetadestino.substr($nombre,strpos($nombre,$this->_id.'_'));
+                                        // $archivosfiltrados['rutalarga']=$this->_carpetadestino.substr($nombre,strpos($nombre,$this->_id.'_'));
+                                       $nombrearchivo=$this->_carpetadestino.substr($nombre,strpos($nombre,$this->_id.'_'));                                      
+                                       $archivosfiltrados[]=$this->limpiaruta($nombrearchivo);                                        
+                                         
                                      }else{
-                                         $archivosfiltrados[]=$nombre;
+                                        // $archivosfiltrados[]=$this->rutarelativa().$nombre;
+                                         $nombrearchivo=$this->rutarelativa().$nombre;
                                      }
+                                     $nombrearchivo=$this->limpiaruta($nombrearchivo);
+                                     $datosruta=  pathinfo($nombrearchivo);
                                      
-                         }
+                                              $archivosfiltrados[]=array(
+                                                  'nombre'=>$datosruta['filename'],
+                                                  'extension'=>$datosruta['extension'],
+                                                  'subidopor'=>$this->getquiensubio($nombre),
+                                                  'subidoel'=>$this->getcreado($nombre),
+                                                  'tamano'=>$this->getSize($nombrearchivo),
+                                                  'rutacorta'=>($rutasabsolutas)?trim($this->rutarelativa(),DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR:trim($this->limpiaruta($datosruta['dirname']),DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR,
+                                                   'rutalarga'=>($rutasabsolutas)?$this->limpiaruta(trim($datosruta['dirname'],DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR):
+                                                  $this->limpiaruta(trim(Yii::getPathOfAlias('webroot'))).
+                                                  $this->limpiaruta($this->rutarelativa()),
+                                                                                        
+                                              );
+                                      
+                                }
                             
                                    
              }
+             
+             
         
         return $archivosfiltrados;
         
@@ -250,6 +264,12 @@ private function prepara() {
         return strrev(substr(strrev($aparts[2]),4));
     }
     
+    public function getSize($archivo){
+        
+        $archi= CFile::getInstance($archivo);
+        return $archi->getSize('0.00');
+    }
+    
     public function getauditoria(){
         $audi=array();
         
@@ -262,5 +282,43 @@ private function prepara() {
         return $audi;
     }
     
+    
+    
+    public function getulpoaddirectory(){
+        return rtrim($this->_ruta,DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
+    }
+    
+    private function rutarelativa(){
+        $this->prepara();
+         $cadena= rtrim(yii::app()->baseUrl,DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.
+             rtrim( $this->_ruta,DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.
+              rtrim($this->_codocu,DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.
+              rtrim($this->_extensionatrabajar,DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.
+                 trim((string)ceil($this->_id/$this->_numerofotosporcarpeta),DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
+       // $cadena=$this->limpiaruta($cadena);
+        
+        return $cadena;
+     
+    }
+    
+    private function limpiaruta ($cadena){
+           $varso=strtolower($_SERVER['HTTP_USER_AGENT']);
+           yii::log('yii   es lerroe '.$cadena,'error');
+           $cadena=str_replace ( "/" ,DIRECTORY_SEPARATOR , $cadena );
+            yii::log('yii   es lerroe '.$cadena,'error');
+        $cadena=str_replace ( "\\" ,DIRECTORY_SEPARATOR , $cadena );
+         yii::log('yii   es lerroe '.$cadena,'error');
+        $cadena=str_replace ( "//" ,DIRECTORY_SEPARATOR , $cadena );
+         yii::log('yii   es lerroe '.$cadena,'error');
+        $cadena=str_replace ( "\\\\" ,DIRECTORY_SEPARATOR , $cadena); 
+         yii::log('yii   es lerroe '.$cadena,'error');
+       if(strpos($varso,'windows')>=0){ //si e swindows
+              $cadena=str_replace ( "\\" ,"/" , $cadena);
+               yii::log('yii   si es window '.$cadena,'error');
+              }else{
+                  
+              }
+              return $cadena;
+    }
     
 }

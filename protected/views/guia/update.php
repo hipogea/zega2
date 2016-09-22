@@ -11,7 +11,7 @@
 
 $this->menu=array(
 	//array('label'=>'List Embarcaciones', 'url'=>array('index')),
-	array('label'=>'Nueva guia', 'url'=>array('create')),
+	array('label'=>'Nueva guia', 'url'=>array('creadocumento')),
 	array('label'=>'Imprimir', 'url'=>array('imprimir','id'=>$model->id)),
 	//array('label'=>'Editar', 'url'=>array('update', 'id'=>$model->id)),
 	//array('label'=>'Delete Embarcaciones', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->codep),'confirm'=>'Are you sure you want to delete this item?')),

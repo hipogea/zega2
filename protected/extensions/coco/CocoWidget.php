@@ -10,7 +10,7 @@
 	@license http://opensource.org/licenses/bsd-license.php
 */
 class CocoWidget extends CWidget implements EYuiActionRunnable {
-
+         public $modelin;
 	public $id='cocowidget0';
 	public $debug;
 	public $htmlOptions;
@@ -34,6 +34,7 @@ class CocoWidget extends CWidget implements EYuiActionRunnable {
 	public $maxUploadsReachMessage = ''; // a message when maxUploads is reach.
 
 	private $_baseUrl;
+       
 
 	public static function t($text){
 		return Yii::t("CocoWidget.coco",$text);
@@ -41,6 +42,7 @@ class CocoWidget extends CWidget implements EYuiActionRunnable {
 
 	public function init(){
 		parent::init();
+                
 		$this->registerCoreScripts();
 		if($this->sizeLimit == null)
 			$this->sizeLimit = 2 * 1024 * 1024;
@@ -89,6 +91,7 @@ class CocoWidget extends CWidget implements EYuiActionRunnable {
 			'receptorClassName'=>$this->receptorClassName,
 			'methodName'=>$this->methodName,
 			'userdata'=>$this->userdata,
+                        'modelin'=>$this->modelin,
 		);
 
 		$action['data'] = serialize($vars);
@@ -109,6 +112,7 @@ class CocoWidget extends CWidget implements EYuiActionRunnable {
 				'maxConnections'=>$this->maxConnections,
 				'maxUploads'=>$this->maxUploads,
 				'maxUploadsReachMessage'=>$this->maxUploadsReachMessage,
+                                'modelin'=>$this->modelin
 				//'data'=>serialize($vars),
 			)
 		);
@@ -181,6 +185,7 @@ echo
 		$this->receptorClassName = $vars['receptorClassName'];
 		$this->methodName = $vars['methodName'];
 		$this->userdata = $vars['userdata'];
+                $this->modelin = $vars['modelin'];
 
 		if(($this->allowedExtensions == null) || ($this->allowedExtensions==''))
 			$this->allowedExtensions = array();
@@ -221,7 +226,16 @@ echo
 
 		// will invoke method in a class defined when you setup the widget:
 		// using: receptorClassName and methodName attributes.
-		$this->_invokeMethod($filePath,$userdata);
+            
+            
+           // Yii::log(' la propiexdad .'.gettype($this->modelin),'error');
+            //Liena modificada por JRAMIREZ 23 09 2016  PARA DARLE MAS FUNCIONALIDA DA COCO
+              if(is_null($this->modelin) or empty($this->modelin)){
+                  $this->_invokeMethod($filePath,$userdata);
+              }else{
+                  $this->_invokeMethodWithModel($filePath,$userdata);
+              }
+		
 
 	}
 
@@ -268,6 +282,25 @@ echo
 		}catch(Exception $e){
 			Yii::log(__CLASS__.' an error occurs.','error');
 		}
+	}
+        
+      
+        //FUncio angergado potr jRAMIREZ
+        private function _invokeMethodwithModel($upladedFilePath,$userdata){
+		
+						try{
+                                                    $methodname = $this->methodName;
+                                                    $o=$this->modelin;
+							//Yii::log(' la el modelo es  .'. get_class($o->$methodname),'error');
+                                                        
+                                                    $o->$methodname($upladedFilePath,$userdata);
+						}catch(Exception $e){
+							Yii::log(__CLASS__.' an error occurs when invoke: '.$phpFilepath.' method: '.$methodname
+								.', error is: '.$e
+							,'error');
+						}
+						// method invoked
+					
 	}
 
 }

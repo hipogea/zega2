@@ -78,12 +78,20 @@ foreach($this->images as $img)
 	echo 
 "
 <div class='img1-item'>
-	<div class='img1-image'>{$img}</div>
-	<div class='img1-control'>
-		<input title='{$this->selectTitle}' type='radio' name='img1def' value=''>
-		<img class='wait' src='{$loading}'>
-		<img class='delete' src='{$delete}'>
-	</div>
+	<div class='img1-image'>".CHtml::image($img['rutacorta'].$img['nombre'].'.'.$img['extension'],'',ARRAY("width"=>250,"height"=>300))."</div>
+           
+
+                <div class='img1-control'>
+		 ".CHTml::label(yii::app()->user->um->LoadUserbyId((integer)$img['subidopor'])->username.
+                         '  :  '.$img['subidoel'],
+                         'ksdkweruwrugwr')."
+                </div>
+                
+                <div class='img1-control'>
+                        <input title='{$this->selectTitle}' type='radio' name='img1def' value=''>
+                        <img class='wait' src='{$loading}'>
+                        <img class='delete' src='{$delete}'>
+                </div>
 </div>
 ";
 

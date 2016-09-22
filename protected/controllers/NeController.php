@@ -235,10 +235,10 @@ class NeController extends ControladorBase
 
 
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('relacionaot','CreaDocumento','salir','Imprimirsolo','cargadespacho','creadetalleActivo','agregardespacho','procesardocumento','EditaDocumento','Borraitems','imprimir','Configuraop',
+				'actions'=>array( 'asignaot',  'relacionaot','CreaDocumento','salir','Imprimirsolo','cargadespacho','creadetalleActivo','agregardespacho','procesardocumento','EditaDocumento','Borraitems','imprimir','Configuraop',
 					'Pide','Modificadetalle','Visualiza','Excel','imprimirsolo',
 					'defaulte','pintamaterial','Libmasiva','pintaactivo','pintaequipo','Anularentrega',
-					'creadetalle','relaciona','recibevalor','Verdetalle','create','update',
+					'creadetalle','relaciona','recibevalor','Verdetalle',
 					'procesarguia','verificaproceso','aplicaproceso',
 					'Aprobarguia','Anularguia','Confirmarguia','Desautorizarguia','admin','Confirmarentrega','Revertirdespachoguia', ///acciones de proceso
 					'visualizaguia'),
@@ -1525,5 +1525,48 @@ class NeController extends ControladorBase
 		}
 
 	}
+        
+        public function actionasignaot($id)
+	{
+                        $id=(integer)  MiFactoria::cleanInput($id);
+                        $registrocabeza=Detgui::model()->findByPk($id);
+                        if(is_null($registrocabeza))
+                             throw new CHttpException(500,'NO se econtro registros detalles para  el id '.$id);
+            
+            if($cest=='10' OR $registrocabeza->c_estado=='99') {
+			$model=new Neot();
+			//$model->setScenario('INS_NUEVO');
+			//$model->valorespordefecto($this->documentohijo);
+			if(isset($_POST['Neot']))		{
+				$model->attributes=$_POST['Neot'];
+				$model->hidne=$id;
+				//crietria para filtrar la cantidad de items del detalle
+				
+
+				if($model->save())
+					if (!empty($_GET['asDialog']))
+					{
+						//Close the dialog, reset the iframe and update the grid
+						echo CHtml::script("window.parent.$('#cru-dialog3').dialog('close');
+													                    window.parent.$('#cru-frame3').attr('src','');
+																		window.parent.$.fn.yiiGridView.update('detalle-grid');
+																		");
+						Yii::app()->end();
+					}
+			}
+			// if (!empty($_GET['asDialog']))
+			$this->layout = '//layouts/iframe';
+			$this->render('_form_neot',array(
+				'model'=>$model, 'idcabeza'=>$idcabeza
+			));
+		} else{ //si ya cambio el estado impisble agregar mas items
+			if (!empty($_GET['asDialog']))
+				$this->layout = '//layouts/iframe';
+			$this->render('vw_imposible',array(
+
+			));
+		}
+	}
+
 
 }

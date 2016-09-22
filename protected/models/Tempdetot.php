@@ -226,5 +226,13 @@ class Tempdetot extends ModeloGeneral
         return Desolpe::model()->findAll("hidlabor=:vidlabor",array(":vidlabor"=>$this->idaux));
         
     }
-                                
+         
+    public function colocaarchivox($fullFileName,$userdata=null) {
+       // $filename=$fullFileName;
+        
+       // $path_parts = pathinfo($fullFileName);
+       Yii::log(' ejecutando '.serialize($fullFileName),'error');
+        $this->colocaarchivo($fullFileName);
+    }
+    
 }

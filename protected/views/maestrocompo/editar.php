@@ -153,26 +153,31 @@ echo $form->DropDownList($model,'um',$datos, array('empty'=>'--Unidad de medida-
 									if(!$model->isNewRecord ) {
 									$ruta='materiales'.DIRECTORY_SEPARATOR;
 									$this->widget('ext.coco.CocoWidget'
+                                                                       // $this->widget('ext.subefotos.SubeFotos'
 										,array(
 										'id'=>'cocowidget1',
 										'onCompleted'=>'function(id,filename,jsoninfo){  }',
 												'onCancelled'=>'function(id,filename){ alert("cancelled"); }',
 												'onMessage'=>'function(m){ alert(m); }',
 														'allowedExtensions'=>array('JPEG','JPG','gif','PNG'), // server-side mime-type validated
-												'sizeLimit'=>2000000, // limit in server-side and in client-side
+												'sizeLimit'=>8000000, // limit in server-side and in client-side
 											'uploadDir' => $ruta, // coco will @mkdir it
 			// this arguments are used to send a notification
 			// on a specific class when a new file is uploaded,
-											'buttonText'=>'Subir Imagen',
+											'buttonText'=>'Subi Imagen',
 											'receptorClassName'=>'application.models.Maestrocompo',
-											'methodName'=>'FileReceptor',
+                                                                                        'modelin'=>  Tempdetot::model()->findByPk(187),
+                                                                                       // 'modeli'=>23,
+                                                                                    //'receptorClassName'=>'application.models.Tempdetot',
+										//'methodName'=>'FileReceptor',
+                                                                                    'methodName'=>'colocaarchivox',
 											'userdata'=>$model->codigo,
 			// controls how many files must be uploaded
-												'maxUploads'=>1, // defaults to -1 (unlimited)
+												'maxUploads'=>-1, // defaults to -1 (unlimited)
 												'maxUploadsReachMessage'=>'No esta permitido cargar mas archivos', // if empty, no message is shown
 			// controls how many files the can select (not upload, for uploads see also: maxUploads)
 											'multipleFileSelection'=>true, // true or false, defaults: true
-										'nombrealt'=>$model->codigo.'',
+										//'nombrealt'=>$model->codigo.'',
 											));
 
 									}

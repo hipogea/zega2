@@ -5,7 +5,7 @@
 
 $this->menu=array(
 	//array('label'=>'List Inventario', 'url'=>array('index')),
-	array('label'=>'Talleres Ext.', 'url'=>array('/vwpendientetaller')),
+	//array('label'=>'Talleres Ext.', 'url'=>array('/vwpendientetaller')),
 	//array('label'=>'Observaciones ', 'url'=>array('observaciones')),
 	//array('label'=>'Confirmar movimientos', 'url'=>array('/vwloginventari')),
 );

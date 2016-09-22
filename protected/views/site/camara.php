@@ -1,13 +1,11 @@
-
-
 <?php
-$this->widget('ext.camara.Camara',
+/*$this->widget('ext.camara.Camara',
 					array(
                                             'accion'=>''
 					)
 				);
                                                 
-                                                
+       */                                         
   ?>
 
 

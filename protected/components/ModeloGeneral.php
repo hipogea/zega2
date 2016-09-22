@@ -220,6 +220,7 @@ public function etiquetascampos (){
           $ancho=$this->getSizeColumn($attribute);
 		if(is_null($prefijo))
 		$prefijo=$this->getPrefijo();
+                yii::log('el ancho del campo es '.$ancho,'error');
 
 		$valor=Yii::app()->db->createCommand()
 			->select('max('.$attribute.')')
@@ -229,16 +230,29 @@ public function etiquetascampos (){
 		/*var_dump($condition);
 		var_dump($params);
 		ECHO "VALOR."; var_dump($valor);*/
-
+ yii::log('el valor crudo es '.$valor,'error');
 
 		   IF ($valor!=false)
 		   {
-
+                             $valor=trim(($valor+1)."");
+                       if(is_null($prefijo)){
+                               
+                                $valor=str_pad($valor,$ancho-strlen($prefijo),"0",STR_PAD_LEFT);
+                            }else{
+                                $valor=$prefijo.str_pad($valor,$ancho-strlen($prefijo),"0",STR_PAD_LEFT);
+                            }
 			    //$valor=str_pad(trim($valor+1),$ancho-strlen($prefijo),"0",STR_PAD_LEFT);
-					$valor=trim(($valor+1)."");
+					
+                                        
 		   }ELSE {
-			  $valor=$prefijo.str_pad($valor,$ancho-strlen($prefijo),"0",STR_PAD_LEFT);
-
+                       if(is_null($prefijo)){
+                                $valor=trim("1");
+                                $valor=str_pad($valor,$ancho-strlen($prefijo),"0",STR_PAD_LEFT);
+                            }else{
+                                $valor=$prefijo.str_pad($valor,$ancho-strlen($prefijo),"0",STR_PAD_LEFT);
+                            }
+			  
+                                 
 		   }
 		//$valor=$prefijo.str_pad($valor,$ancho-strlen($prefijo),"0",STR_PAD_LEFT);
 		/*var_dump($valor+0);
@@ -256,6 +270,7 @@ public function etiquetascampos (){
 			   throw new CHttpException(500, __CLASS__ . '   ' . __FUNCTION__ . '   ' . __LINE__ .
 				   ' El valor del numero correlativo de este documento ' . (integer)$valor . ' ya se saturo y excede el ancho de la columna  '.$valmax);
 		   }
+                   yii::log('Rrtornadno el valor '.$valor,'error');
 	return $valor;
 		 /*var_dump($prefijo.str_pad($valor,$ancho-strlen($prefijo),"0",STR_PAD_LEFT));
 		 YII::APP()->END();*/

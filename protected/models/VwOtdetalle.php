@@ -1,40 +1,5 @@
 <?php
 
-/**
- * This is the model class for table "vw_otdetalle".
- *
- * The followings are the available columns in table 'vw_otdetalle':
- * @property string $despro
- * @property string $rucpro
- * @property string $identificador
- * @property string $serie
- * @property string $descripcion
- * @property string $marca
- * @property string $modelo
- * @property string $nombreobjeto
- * @property string $codobjeto
- * @property string $item
- * @property string $textoactividad
- * @property string $id
- * @property string $numero
- * @property string $fechacre
- * @property string $fechafinprog
- * @property string $codpro
- * @property integer $idobjeto
- * @property string $codresponsable
- * @property string $textocorto
- * @property string $textolargo
- * @property string $grupoplan
- * @property string $codcen
- * @property integer $iduser
- * @property string $codocu
- * @property string $codestado
- * @property string $clase
- * @property string $hidoferta
- * @property string $fechainiprog
- * @property string $fechainicio
- * @property string $fechafin
- */
 class VwOtdetalle extends CActiveRecord
 {
 	/**
@@ -45,6 +10,8 @@ class VwOtdetalle extends CActiveRecord
 		return 'vw_otdetalle';
 	}
 
+        
+        public $completo;
 	/**
 	 * @return array validation rules for model attributes.
 	 */
@@ -72,7 +39,7 @@ class VwOtdetalle extends CActiveRecord
 			array('fechainiprog, fechainicio, fechafin', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('despro, rucpro, identificador, serie, descripcion, marca, modelo, nombreobjeto, codobjeto, item, textoactividad, id, numero, fechacre, fechafinprog, codpro, idobjeto, codresponsable, textocorto, textolargo, grupoplan, codcen, iduser, codocu, codestado, clase, hidoferta, fechainiprog, fechainicio, fechafin', 'safe', 'on'=>'search'),
+			array('despro, idetot,rucpro, identificador, serie, descripcion, marca, modelo, nombreobjeto, codobjeto, item, textoactividad, id, numero, fechacre, fechafinprog, codpro, idobjeto, codresponsable, textocorto, textolargo, grupoplan, codcen, iduser, codocu, codestado, clase, hidoferta, fechainiprog, fechainicio, fechafin', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -153,7 +120,7 @@ class VwOtdetalle extends CActiveRecord
 		$criteria->compare('modelo',$this->modelo,true);
 		$criteria->compare('nombreobjeto',$this->nombreobjeto,true);
 		$criteria->compare('codobjeto',$this->codobjeto,true);
-		$criteria->compare('item',$this->item,true);
+		$criteria->compare('idetot',$this->idetot,true);
 		$criteria->compare('textoactividad',$this->textoactividad,true);
 		$criteria->compare('id',$this->id,true);
 		$criteria->compare('numero',$this->numero,true);
@@ -190,4 +157,15 @@ class VwOtdetalle extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        
+        public function afterfind(){
+            
+            $this->descripcion="[".$this->numero."]  -  ".$this->despro." - ".$this->nombreobjeto." - ".$this->textoactividad;
+            return parent::afterfind();
+        }
+        
+        public function findByPk($id){
+          $id=(integer)MiFactoria::cleanInput($id);
+		return self::model()->find("id=:vid",array(":vid"=>$id));
+        }
 }

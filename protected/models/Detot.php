@@ -150,4 +150,11 @@ PUBLIC FUNCTION nrecursos(){
         return Desolpe::model()->findAll("hidlabor=:vidlabor",array(":vidlabor"=>$this->idaux));
         
     }
+    
+    public function colocaarchivox($fullFileName,$userdata=null) {
+       // $filename=$fullFileName;
+        $this->colocaarchivo($fullFileName);
+    }
+    
+    
 }

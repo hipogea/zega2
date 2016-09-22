@@ -223,8 +223,12 @@ class Detgui extends CActiveRecord
 	{
 		return array(
 			'guia' => array(self::BELONGS_TO, 'Guia', 'n_hguia'),
+                    'ne' => array(self::BELONGS_TO, 'Ne', 'n_hguia'),
 			'materiales' => array(self::BELONGS_TO, 'Maestrocompo', 'c_codgui'),
 			'activos'=> array(self::BELONGS_TO, 'VwInventario1', 'c_codactivo'),
+                    'tempdetgui'=>array(self::HAS_ONE, 'Tempdetgui', 'id'),
+                    'neot'=>array(self::HAS_MANY, 'Neot', 'hidne'),
+                    'asignadosot'=>array(self::STAT, 'Neot', 'hidne','select'=>'sum(t.cant)'),
 			//'ot'=> array(self::STAT, 'Deot','hidne', 'sum(t.cant)'),
 			//'lotescosteado'=>array(self::STAT,'Lotes','hidinventario','select'=>'SUM(cant*punit)', 'condition'=>'cant > 0 '),
 			

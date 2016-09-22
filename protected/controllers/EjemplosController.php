@@ -399,9 +399,15 @@ $mo=New Alinventario();
 
 
 	public function actionPio() {
+            //($_SERVER['HTTP_USER_AGENT']);
+            
+            $archivo="/recurso/images/210/jpg/3/14_14744927089492_1.jpg";
+            $pare=  pathinfo($archivo);
+            echo $archivo; echo "<br>";
+            var_dump($pare);die();
             //$foto=New Directoriofotos('100',572,5,'/images','.jpg');
-            $foto=Detot::model()->findByPk(5);
-            //var_dump($foto->getPrimaryKey());die();
+            $foto=  Tempdetot::model()->findByPk(187);
+            var_dump($foto);die();
         //  var_dump($foto->creacarpeta());die();
             //echo "carpeta destino :<br>";
             //var_dump($foto->_carpetadestino);die();

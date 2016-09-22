@@ -20,9 +20,10 @@ return array(
 
 	// autoloading model and component classes
 	'import'=>array(
-		'application.nusoap.*',
-		'ext.editable.*',
+		//'application.nusoap.*',
+		//'ext.editable.*',
 		'application.extensions.phpmailer.*',
+            'application.extensions.behaviors.TomaFotosBehavior',
 		'application.models.*',
 		'application.components.*',
 		'application.interfaces.*',
@@ -31,6 +32,7 @@ return array(
 		'application.modules.cruge.extensions.crugemailer.*',
 		'application.modules.cruge.extensions.crugemailer.*',
          'application.extensions.coco.*',
+            'application.extensions.CFile',
 		  'application.helpers.*',
 		//  'application.extensions.galleryManager.models.*',
 		  // 'application.extensions.galleryManager.*',
@@ -348,18 +350,18 @@ return array(
 			'class'=>'CLogRouter',
 
 			'routes'=>array(
-				/*array(
+				array(
 					'class'=>'CFileLogRoute',
 					//'levels'=>'error, info, rbac', // <--- agregar 'rbac'
 					'levels'=>'error,warning', //agreagamos aqui el mail para probar los correos en modo DEBUG 
 					//'enableParamLogging'=>true,
-				),*/
-                            array(
+				),
+                          /*  array(
                     'class'=>'CEmailLogRoute',
                     'levels'=>'error, warning',
                     'emails'=>'neotegnia@gmail.com',
                                 
-                                ),
+                                ),*/
                             
                            
 				// uncomment the following to show log messages on web pages

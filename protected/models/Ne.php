@@ -52,7 +52,13 @@ class Ne extends ModeloGeneral
 			array('cod_cen', 'required', 'message'=>'Llena el centro receptor'),
 			array('d_fecgui, d_fectra, n_direcformaldes,n_directran,codcentro,c_desgui, c_texto,  d_fecentrega', 'safe'),
 			array('c_estgui','safe', 'on'=>'cambiaestado'),
-			array('c_numgui, c_coclig, d_fecgui, c_estgui, c_rsguia, c_codtra, c_trans, c_motivo, c_placa, c_licon, d_fectra, c_desgui, n_direc, c_texto, c_dirsoc, c_serie, n_direcformaldes, n_directran, c_creado,  c_estado, n_dirsoc, c_modificado, n_agencia, creadopor, creadoel, modificadopor, modificadoel, codcentro, codobjeto, d_fecentrega, c_salida, codocu, cod_cen', 'safe', 'on'=>'search'),
+			array('c_numgui, c_coclig, d_fecgui, c_estgui, c_rsguia, c_codtra,'
+                            . ' c_trans, c_motivo, c_placa, c_licon, d_fectra, c_desgui,'
+                            . ' n_direc, c_texto, c_dirsoc, c_serie, n_direcformaldes,'
+                            . ' n_directran, c_creado,  c_estado, n_dirsoc, c_modificado, '
+                            . 'n_agencia, creadopor, creadoel, modificadopor, modificadoel, '
+                            . 'codcentro, codobjeto, d_fecentrega, c_salida, codocu,'
+                            . ' cod_cen', 'safe', 'on'=>'search'),
 		);
 	}
 

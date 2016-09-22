@@ -34,9 +34,9 @@ CREATE TABLE IF NOT EXISTS `activerecordlog` (
   `campo3` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `model` (`model`)
-) ENGINE=InnoDB AUTO_INCREMENT=5305 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5306 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Volcando datos para la tabla nautilus.activerecordlog: ~3,168 rows (aproximadamente)
+-- Volcando datos para la tabla nautilus.activerecordlog: ~3,169 rows (aproximadamente)
 DELETE FROM `activerecordlog`;
 /*!40000 ALTER TABLE `activerecordlog` DISABLE KEYS */;
 INSERT INTO `activerecordlog` (`id`, `description`, `action`, `model`, `idModel`, `field`, `creationdate`, `userid`, `idModelReal`, `oldvalue`, `newvalue`, `nombrecampo`, `campo1`, `campo2`, `campo3`) VALUES
@@ -3518,7 +3518,8 @@ INSERT INTO `activerecordlog` (`id`, `description`, `action`, `model`, `idModel`
 	(5301, 'El usuario admin creo Solpe[130].', 'CREACION', 'Solpe', 130, '', '2016-09-18 17:10:52', '1', '130', NULL, '', '', '', NULL, NULL),
 	(5302, 'El usuario admin creo Desolpe[0].', 'CREACION', 'Desolpe', 0, '', '2016-09-18 17:10:52', '1', '0', NULL, '', '', '', NULL, NULL),
 	(5303, 'El usuario admin creo Desolpe[0].', 'CREACION', 'Desolpe', 0, '', '2016-09-18 17:10:53', '1', '0', NULL, '', '', '', NULL, NULL),
-	(5304, 'El usuario admin Cambio punitreal en Desolpe[138].', 'CAMBIO', 'Desolpe', 138, 'punitreal', '2016-09-18 17:36:34', '1', '138', '2.411540356', '0', 'Punitreal', '', NULL, NULL);
+	(5304, 'El usuario admin Cambio punitreal en Desolpe[138].', 'CAMBIO', 'Desolpe', 138, 'punitreal', '2016-09-18 17:36:34', '1', '138', '2.411540356', '0', 'Punitreal', '', NULL, NULL),
+	(5305, 'El usuario admin creo Inventario[7].', 'CREACION', 'Inventario', 7, '', '2016-09-21 16:36:17', '1', '7', NULL, '', '', '', NULL, NULL);
 /*!40000 ALTER TABLE `activerecordlog` ENABLE KEYS */;
 
 
@@ -3554,7 +3555,7 @@ CREATE TABLE IF NOT EXISTS `cruge_authitem` (
   PRIMARY KEY (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Volcando datos para la tabla nautilus.cruge_authitem: ~1,283 rows (aproximadamente)
+-- Volcando datos para la tabla nautilus.cruge_authitem: ~1,286 rows (aproximadamente)
 DELETE FROM `cruge_authitem`;
 /*!40000 ALTER TABLE `cruge_authitem` DISABLE KEYS */;
 INSERT INTO `cruge_authitem` (`name`, `type`, `description`, `bizrule`, `data`) VALUES
@@ -4050,6 +4051,7 @@ INSERT INTO `cruge_authitem` (`name`, `type`, `description`, `bizrule`, `data`) 
 	('action_guia_configuraop', 0, '', NULL, 'N;'),
 	('action_guia_creadetalle', 0, '', NULL, 'N;'),
 	('action_guia_creadetalleactivo', 0, '', NULL, 'N;'),
+	('action_guia_CreadetalleCompo', 0, '', NULL, 'N;'),
 	('action_guia_creaDocumento', 0, '', NULL, 'N;'),
 	('action_guia_create', 0, '', NULL, 'N;'),
 	('action_guia_editadocumento', 0, '', NULL, 'N;'),
@@ -4058,6 +4060,7 @@ INSERT INTO `cruge_authitem` (`name`, `type`, `description`, `bizrule`, `data`) 
 	('action_guia_index', 0, '', NULL, 'N;'),
 	('action_guia_modificadetalle', 0, '', NULL, 'N;'),
 	('action_guia_modificadetalleactivo', 0, '', NULL, 'N;'),
+	('action_guia_Modificadetallecompo', 0, '', NULL, 'N;'),
 	('action_guia_procesardocumento', 0, '', NULL, 'N;'),
 	('action_guia_salir', 0, '', NULL, 'N;'),
 	('action_guia_subearchivo', 0, '', NULL, 'N;'),
@@ -4282,6 +4285,7 @@ INSERT INTO `cruge_authitem` (`name`, `type`, `description`, `bizrule`, `data`) 
 	('action_ne_anularguia', 0, '', NULL, 'N;'),
 	('action_ne_aprobar', 0, '', NULL, 'N;'),
 	('action_ne_aprobarguia', 0, '', NULL, 'N;'),
+	('action_ne_asignaot', 0, '', NULL, 'N;'),
 	('action_ne_borraitems', 0, '', NULL, 'N;'),
 	('action_ne_cargadespacho', 0, '', NULL, 'N;'),
 	('action_ne_cargafavorito', 0, '', NULL, 'N;'),
@@ -4447,6 +4451,7 @@ INSERT INTO `cruge_authitem` (`name`, `type`, `description`, `bizrule`, `data`) 
 	('action_ot_Modificadetallerecurso', 0, '', NULL, 'N;'),
 	('action_ot_nada', 0, '', NULL, 'N;'),
 	('action_ot_nadax', 0, '', NULL, 'N;'),
+	('action_ot_tomafoto', 0, '', NULL, 'N;'),
 	('action_ot_update', 0, '', NULL, 'N;'),
 	('action_ot_verdocumento', 0, '', NULL, 'N;'),
 	('action_ot_view', 0, '', NULL, 'N;'),
@@ -5012,9 +5017,9 @@ CREATE TABLE IF NOT EXISTS `cruge_session` (
   `logoutdate` bigint(20) DEFAULT NULL,
   `ipaddressout` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
   PRIMARY KEY (`idsession`)
-) ENGINE=InnoDB AUTO_INCREMENT=1399 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1406 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Volcando datos para la tabla nautilus.cruge_session: ~144 rows (aproximadamente)
+-- Volcando datos para la tabla nautilus.cruge_session: ~153 rows (aproximadamente)
 DELETE FROM `cruge_session`;
 /*!40000 ALTER TABLE `cruge_session` DISABLE KEYS */;
 INSERT INTO `cruge_session` (`idsession`, `iduser`, `created`, `expire`, `status`, `ipaddress`, `usagecount`, `lastusage`, `logoutdate`, `ipaddressout`) VALUES
@@ -5163,7 +5168,14 @@ INSERT INTO `cruge_session` (`idsession`, `iduser`, `created`, `expire`, `status
 	(1395, 1, 1474124658, 1474148658, 0, '::1', 2, 1474140955, NULL, NULL),
 	(1396, 1, 1474167793, 1474191793, 1, '::1', 1, 1474167793, NULL, NULL),
 	(1397, 1, 1474218208, 1474242208, 0, '::1', 1, 1474218208, NULL, NULL),
-	(1398, 1, 1474242419, 1474266419, 1, '::1', 1, 1474242419, NULL, NULL);
+	(1398, 1, 1474242419, 1474266419, 1, '::1', 1, 1474242419, NULL, NULL),
+	(1399, 1, 1474331306, 1474355306, 1, '::1', 1, 1474331306, NULL, NULL),
+	(1400, 1, 1474380547, 1474404547, 0, '::1', 1, 1474380547, NULL, NULL),
+	(1401, 1, 1474411444, 1474435444, 0, '192.168.0.10', 3, 1474428412, NULL, NULL),
+	(1402, 1, 1474436216, 1474460216, 1, '::1', 1, 1474436216, NULL, NULL),
+	(1403, 1, 1474470342, 1474494342, 0, '::1', 1, 1474470342, NULL, NULL),
+	(1404, 1, 1474494417, 1474518417, 0, '192.168.0.10', 2, 1474497298, NULL, NULL),
+	(1405, 1, 1474518731, 1474542731, 1, '::1', 1, 1474518731, NULL, NULL);
 /*!40000 ALTER TABLE `cruge_session` ENABLE KEYS */;
 
 
@@ -5217,7 +5229,7 @@ CREATE TABLE IF NOT EXISTS `cruge_user` (
 DELETE FROM `cruge_user`;
 /*!40000 ALTER TABLE `cruge_user` DISABLE KEYS */;
 INSERT INTO `cruge_user` (`iduser`, `regdate`, `actdate`, `logondate`, `username`, `email`, `password`, `authkey`, `state`, `totalsessioncounter`, `currentsessioncounter`) VALUES
-	(1, NULL, NULL, 1474242419, 'admin', 'admin@tucorreo.com', 'admin', NULL, 1, 0, 0),
+	(1, NULL, NULL, 1474518731, 'admin', 'admin@tucorreo.com', 'admin', NULL, 1, 0, 0),
 	(2, NULL, NULL, NULL, 'invitado', 'invitado', 'nopassword', NULL, 1, 0, 0),
 	(3, 1462261915, NULL, 1474124611, 'demo', 'dfdfd@ddf.com', '123456', '6fde954a456a66001d7cecbb621c22ad', 1, 0, 0),
 	(4, 1464084880, NULL, NULL, 'Sistema', 'hipo@hotmail.com', '63b675a3', '0c2019b13931587d2239d22e47504c2e', 1, 0, 0);
@@ -7196,9 +7208,9 @@ CREATE TABLE IF NOT EXISTS `public_alkardex` (
   KEY `bk_codcendes` (`codcendes`),
   KEY `um` (`um`),
   KEY `Índice 10` (`alemi`)
-) ENGINE=InnoDB AUTO_INCREMENT=587 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=589 DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla nautilus.public_alkardex: ~370 rows (aproximadamente)
+-- Volcando datos para la tabla nautilus.public_alkardex: ~372 rows (aproximadamente)
 DELETE FROM `public_alkardex`;
 /*!40000 ALTER TABLE `public_alkardex` DISABLE KEYS */;
 INSERT INTO `public_alkardex` (`codart`, `codmov`, `cant`, `alemi`, `aldes`, `fecha`, `coddoc`, `numdoc`, `usuario`, `um`, `comentario`, `codocuref`, `numdocref`, `codcentro`, `id`, `codestado`, `prefijo`, `fechadoc`, `correlativo`, `numkardex`, `solicitante`, `hidvale`, `idref`, `lote`, `valido`, `checki`, `destino`, `preciounit`, `correlativ`, `codcendes`, `iduser`, `idusertemp`, `idstatus`, `idtemp`, `textolargo`, `colector`, `montomovido`, `idotrokardex`, `codmoneda`, `saldo`, `umsaldo`, `cantbase`) VALUES
@@ -7581,7 +7593,9 @@ INSERT INTO `public_alkardex` (`codart`, `codmov`, `cant`, `alemi`, `aldes`, `fe
 	('12000014', '14', 1, '125', NULL, '2016-09-18', '460', NULL, NULL, '100', NULL, '890', '490000000007', '1203', 583, '10', NULL, '2016-09-19 02:37:14', NULL, NULL, NULL, 356, 1, NULL, NULL, NULL, NULL, 0, NULL, NULL, 1, NULL, 1, NULL, '', '', 0, 0, 'PEN', NULL, NULL, NULL),
 	('12000095', '14', 8, '125', NULL, '2016-09-18', '460', NULL, NULL, '100', NULL, '890', '490000000007', '1203', 584, '10', NULL, '2016-09-19 02:37:14', NULL, NULL, NULL, 356, 2, NULL, NULL, NULL, NULL, 0, NULL, NULL, 1, NULL, 1, NULL, '', '', 0, 0, 'PEN', NULL, NULL, NULL),
 	('12000014', '15', -1, '125', NULL, '2016-09-18', '460', NULL, NULL, '100', NULL, '890', '490000000007', '1203', 585, '10', NULL, '2016-09-19 06:29:57', NULL, NULL, NULL, 357, 1, NULL, NULL, NULL, NULL, 0, NULL, NULL, 1, NULL, 1, NULL, '', '', 0, 583, 'PEN', NULL, NULL, NULL),
-	('12000095', '15', -8, '125', NULL, '2016-09-18', '460', NULL, NULL, '100', NULL, '890', '490000000007', '1203', 586, '10', NULL, '2016-09-19 06:29:57', NULL, NULL, NULL, 357, 2, NULL, NULL, NULL, NULL, 0, NULL, NULL, 1, NULL, 1, NULL, '', '', 0, 584, 'PEN', NULL, NULL, NULL);
+	('12000095', '15', -8, '125', NULL, '2016-09-18', '460', NULL, NULL, '100', NULL, '890', '490000000007', '1203', 586, '10', NULL, '2016-09-19 06:29:57', NULL, NULL, NULL, 357, 2, NULL, NULL, NULL, NULL, 0, NULL, NULL, 1, NULL, 1, NULL, '', '', 0, 584, 'PEN', NULL, NULL, NULL),
+	('12000014', '14', 0.51, '125', NULL, '2016-09-21', '460', NULL, NULL, '100', NULL, '890', '490000000007', '1203', 587, '10', NULL, '2016-09-22 05:33:01', NULL, NULL, NULL, 358, 1, NULL, NULL, NULL, NULL, 0, NULL, NULL, 1, NULL, 1, NULL, '', '', 0, 0, 'PEN', NULL, NULL, NULL),
+	('12000095', '14', 3, '125', NULL, '2016-09-21', '460', NULL, NULL, '100', NULL, '890', '490000000007', '1203', 588, '10', NULL, '2016-09-22 05:33:01', NULL, NULL, NULL, 358, 2, NULL, NULL, NULL, NULL, 0, NULL, NULL, 1, NULL, 1, NULL, '', '', 0, 0, 'PEN', NULL, NULL, NULL);
 /*!40000 ALTER TABLE `public_alkardex` ENABLE KEYS */;
 
 
@@ -7656,9 +7670,9 @@ CREATE TABLE IF NOT EXISTS `public_almacendocs` (
   CONSTRAINT `public_almacendocs_ibfk_2` FOREIGN KEY (`codtrabajador`) REFERENCES `public_trabajadores` (`codigotra`),
   CONSTRAINT `public_almacendocs_ibfk_3` FOREIGN KEY (`codcentro`) REFERENCES `public_centros` (`codcen`),
   CONSTRAINT `public_almacendocs_ibfk_4` FOREIGN KEY (`codalmacen`) REFERENCES `public_almacenes` (`codalm`)
-) ENGINE=InnoDB AUTO_INCREMENT=358 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=359 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Volcando datos para la tabla nautilus.public_almacendocs: ~200 rows (aproximadamente)
+-- Volcando datos para la tabla nautilus.public_almacendocs: ~201 rows (aproximadamente)
 DELETE FROM `public_almacendocs`;
 /*!40000 ALTER TABLE `public_almacendocs` DISABLE KEYS */;
 INSERT INTO `public_almacendocs` (`fechavale`, `creadopor`, `modificadopor`, `creadoel`, `modificadoel`, `codmovimiento`, `numvale`, `codtipovale`, `codtrabajador`, `codalmacen`, `codcentro`, `cestadovale`, `codocu`, `fechacont`, `fechacre`, `numdocref`, `posic`, `codocuref`, `id`, `correlativo`, `textolargo`, `codaldestino`, `codcendestino`, `codsociedad`, `ceco`, `iduser`, `idref`) VALUES
@@ -7867,7 +7881,8 @@ INSERT INTO `public_almacendocs` (`fechavale`, `creadopor`, `modificadopor`, `cr
 	('2016-09-10', NULL, NULL, NULL, NULL, '10', '120300000198', NULL, '7001', '125', '1203', '20', '101', '2016-09-10', '2016-09-11 03:02:14', '3400000096', NULL, '340', 349, 198, NULL, NULL, NULL, '', '', 1, 0),
 	('2016-09-18', NULL, NULL, NULL, NULL, '14', '120300000199', NULL, '7001', '125', '1203', '20', '101', '2016-09-18', '2016-09-19 02:09:38', '490000000007', NULL, '890', 355, 199, NULL, NULL, NULL, '', '', 1, 0),
 	('2016-09-18', NULL, NULL, NULL, NULL, '14', '120300000200', NULL, '7001', '125', '1203', '30', '101', '2016-09-18', '2016-09-19 02:37:23', '490000000007', NULL, '890', 356, 200, NULL, NULL, NULL, '', '', 1, 0),
-	('2016-09-18', NULL, NULL, NULL, NULL, '15', '120300000201', NULL, '7001', '125', '1203', '20', '101', '2016-09-18', '2016-09-19 06:30:03', '120300000200', NULL, '101', 357, 201, NULL, NULL, NULL, '', '', 1, 0);
+	('2016-09-18', NULL, NULL, NULL, NULL, '15', '120300000201', NULL, '7001', '125', '1203', '20', '101', '2016-09-18', '2016-09-19 06:30:03', '120300000200', NULL, '101', 357, 201, NULL, NULL, NULL, '', '', 1, 0),
+	('2016-09-21', NULL, NULL, NULL, NULL, '14', '120300000202', NULL, '7001', '125', '1203', '20', '101', '2016-09-21', '2016-09-22 05:33:25', '490000000007', NULL, '890', 358, 202, NULL, NULL, NULL, '', '', 1, 0);
 /*!40000 ALTER TABLE `public_almacendocs` ENABLE KEYS */;
 
 
@@ -7946,7 +7961,7 @@ CREATE TABLE IF NOT EXISTS `public_almacenmovimientos` (
   CONSTRAINT `public_almacenmovimientos_ibfk_1` FOREIGN KEY (`idevento`) REFERENCES `public_eventos` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla nautilus.public_almacenmovimientos: ~31 rows (aproximadamente)
+-- Volcando datos para la tabla nautilus.public_almacenmovimientos: ~33 rows (aproximadamente)
 DELETE FROM `public_almacenmovimientos`;
 /*!40000 ALTER TABLE `public_almacenmovimientos` DISABLE KEYS */;
 INSERT INTO `public_almacenmovimientos` (`codmov`, `movimiento`, `signo`, `codigo_objeto`, `ingreso`, `codocu`, `anticodmov`, `escontable`, `permcodcondicion`, `permiteparciales`, `campoafectadoinv`, `permitereversiones`, `actualizaprecio`, `campodestino`, `activo`, `idevento`, `esconsumo`, `itemsdeterministicos`, `borraritems`, `editarcantidad`, `verifconversionmoneda`, `esreal`) VALUES
@@ -8259,6 +8274,32 @@ INSERT INTO `public_areas` (`codarea`, `codsoc`, `area`, `explica`) VALUES
 /*!40000 ALTER TABLE `public_areas` ENABLE KEYS */;
 
 
+-- Volcando estructura para tabla nautilus.public_atencionconsignaciones
+CREATE TABLE IF NOT EXISTS `public_atencionconsignaciones` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `cant` double DEFAULT NULL,
+  `fecha` datetime DEFAULT NULL,
+  `hidconsi` bigint(20) DEFAULT NULL,
+  UNIQUE KEY `Índice 1` (`id`),
+  KEY `FK_public_atencionconsignaciones_public_otconsignacion` (`hidconsi`),
+  CONSTRAINT `FK_public_atencionconsignaciones_public_otconsignacion` FOREIGN KEY (`hidconsi`) REFERENCES `public_otconsignacion` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='guarada la atencion de las consignaciones';
+
+-- Volcando datos para la tabla nautilus.public_atencionconsignaciones: ~8 rows (aproximadamente)
+DELETE FROM `public_atencionconsignaciones`;
+/*!40000 ALTER TABLE `public_atencionconsignaciones` DISABLE KEYS */;
+INSERT INTO `public_atencionconsignaciones` (`id`, `cant`, `fecha`, `hidconsi`) VALUES
+	(1, 2, NULL, 1),
+	(2, 4, NULL, 2),
+	(3, 1, NULL, 1),
+	(4, 8, NULL, 2),
+	(5, -1, NULL, 1),
+	(6, -8, NULL, 2),
+	(7, 0.51, NULL, 1),
+	(8, 3, NULL, 2);
+/*!40000 ALTER TABLE `public_atencionconsignaciones` ENABLE KEYS */;
+
+
 -- Volcando estructura para tabla nautilus.public_atencionfacturacion
 CREATE TABLE IF NOT EXISTS `public_atencionfacturacion` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -8397,13 +8438,15 @@ CREATE TABLE IF NOT EXISTS `public_bloqueos` (
   `url` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `codocu_index` (`codocu`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla nautilus.public_bloqueos: ~3 rows (aproximadamente)
+-- Volcando datos para la tabla nautilus.public_bloqueos: ~2 rows (aproximadamente)
 DELETE FROM `public_bloqueos`;
 /*!40000 ALTER TABLE `public_bloqueos` DISABLE KEYS */;
 INSERT INTO `public_bloqueos` (`id`, `codocu`, `iduser`, `fechabloqueo`, `iddocu`, `ip`, `idsesion`, `url`) VALUES
-	(14, '890', 1, '2016-09-19 02:55:16', 16, '::1', 0, 'http://localhost/recurso/ot/editadocumento/16.jsp');
+	(24, '500', 1, '2016-09-22 06:14:40', 4, '::1', 0, 'http://localhost/recurso/ne/editadocumento/4'),
+	(30, '500', 1, '2016-09-22 09:42:14', 10, '::1', 0, 'http://localhost/recurso/ne/editadocumento/10.jsp'),
+	(31, '890', 1, '2016-09-22 10:29:28', 16, '::1', 0, 'http://localhost/recurso/ot/editadocumento/16.jsp');
 /*!40000 ALTER TABLE `public_bloqueos` ENABLE KEYS */;
 
 
@@ -11300,7 +11343,7 @@ CREATE TABLE IF NOT EXISTS `public_desolpe` (
   CONSTRAINT `public_desolpe_ibfk_4` FOREIGN KEY (`codocu`, `est`) REFERENCES `public_estado` (`codocu`, `codestado`)
 ) ENGINE=InnoDB AUTO_INCREMENT=147 DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla nautilus.public_desolpe: ~120 rows (aproximadamente)
+-- Volcando datos para la tabla nautilus.public_desolpe: ~122 rows (aproximadamente)
 DELETE FROM `public_desolpe`;
 /*!40000 ALTER TABLE `public_desolpe` DISABLE KEYS */;
 INSERT INTO `public_desolpe` (`id`, `numero`, `tipimputacion`, `centro`, `hcodoc`, `idusertemp`, `codal`, `codart`, `txtmaterial`, `grupocompras`, `usuario`, `textodetalle`, `fechacrea`, `fechaent`, `fechalib`, `imputacion`, `hidsolpe`, `codocu`, `tipsolpe`, `est`, `cant`, `item`, `cantaten`, `posicion`, `estadolib`, `solicitanet`, `um`, `firme`, `idreserva`, `punitplan`, `punitreal`, `codservicio`, `iduser`, `idtemp`, `hidot`, `hidlabor`, `idstatus`) VALUES
@@ -11638,9 +11681,9 @@ CREATE TABLE IF NOT EXISTS `public_detgui` (
   CONSTRAINT `public_detgui_ibfk_3` FOREIGN KEY (`c_edgui`) REFERENCES `public_paraqueva` (`cmotivo`),
   CONSTRAINT `public_detgui_ibfk_4` FOREIGN KEY (`c_codep`) REFERENCES `public_embarcaciones` (`codep`),
   CONSTRAINT `public_detgui_ibfk_5` FOREIGN KEY (`c_edgui`) REFERENCES `public_paraqueva` (`cmotivo`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla nautilus.public_detgui: ~6 rows (aproximadamente)
+-- Volcando datos para la tabla nautilus.public_detgui: ~11 rows (aproximadamente)
 DELETE FROM `public_detgui`;
 /*!40000 ALTER TABLE `public_detgui` DISABLE KEYS */;
 INSERT INTO `public_detgui` (`c_itguia`, `n_cangui`, `c_codgui`, `c_edgui`, `c_descri`, `m_obs`, `c_um`, `c_codep`, `ndeenvio`, `id`, `l_libre`, `n_hconformidad`, `c_estado`, `n_libre`, `n_idconformidad`, `c_af`, `c_codactivo`, `c_img`, `c_codsap`, `docref`, `docrefext`, `hidref`, `codocu`, `codlugar`, `iduser`, `idtemp`, `idstatus`, `n_hguia`, `hidespacho`, `modo`, `codob`) VALUES
@@ -11649,7 +11692,12 @@ INSERT INTO `public_detgui` (`c_itguia`, `n_cangui`, `c_codgui`, `c_edgui`, `c_d
 	('001', 1, '', '01', 'BOMBA DE ACEITE CAT ', '', '100', '100', NULL, 5, NULL, NULL, '99', NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, '230', NULL, 0, 0, 0, 4, 0, '1', '001'),
 	('002', 1, '', '01', 'BOMBA DE ACEITE CAT ', '', '100', '100', NULL, 6, NULL, NULL, '99', NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, '230', NULL, 0, 0, 0, 4, 0, '1', '001'),
 	('001', 1, '12000002', '01', 'CAJA DE MADERA', '', '100', '100', NULL, 7, NULL, NULL, '99', NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, '230', NULL, 0, 0, 0, 5, 0, '1', '001'),
-	('001', 3, '', '01', 'CARCAZA DE CA CAT 7251', '', '100', '100', NULL, 8, NULL, NULL, '99', NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, '230', NULL, 0, 0, 0, 6, 0, '1', '001');
+	('001', 3, '', '01', 'CARCAZA DE CA CAT 7251', '', '100', '100', NULL, 8, NULL, NULL, '99', NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, '230', NULL, 0, 0, 0, 6, 0, '1', '001'),
+	('001', 2, '12000015', '01', 'ELECTROBOMBA DE AGUA', '', '100', '100', NULL, 9, NULL, NULL, '99', NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, '230', NULL, 0, 0, 0, 8, 0, '1', '001'),
+	('002', 34, '12000034', '01', 'TARJETAS DE EMBARQUE', '', '100', '100', NULL, 10, NULL, NULL, '99', NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, '230', NULL, 0, 0, 0, 8, 0, '1', '001'),
+	('001', 1, '12000017', '01', 'ALMOH. ESPUMA 20 X 28CM X 4MM', '', '100', '100', NULL, 11, NULL, NULL, '99', NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, '230', NULL, 0, 0, 0, 9, 0, '3', '003'),
+	('001', 5, '12000095', '01', 'CAJA PLASTICA ALPINE 5 KG.ALT.26.5 CM.', '', '100', '100', NULL, 12, NULL, NULL, '99', NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, '230', NULL, 0, 0, 0, 10, 0, '3', '001'),
+	('002', 4, '54700000', '20', 'MOTOR MECANICO', '', '120', '100', NULL, 13, NULL, NULL, '99', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '230', NULL, 0, 0, 0, 10, 0, '', '001');
 /*!40000 ALTER TABLE `public_detgui` ENABLE KEYS */;
 
 
@@ -13973,14 +14021,15 @@ CREATE TABLE IF NOT EXISTS `public_docompratemp` (
   CONSTRAINT `public_docompratemp_ibfk_2` FOREIGN KEY (`um`) REFERENCES `public_ums` (`um`),
   CONSTRAINT `public_docompratemp_ibfk_4` FOREIGN KEY (`coddocu`, `estadodetalle`) REFERENCES `public_estado` (`codocu`, `codestado`),
   CONSTRAINT `public_docompratemp_ibfk_5` FOREIGN KEY (`codart`) REFERENCES `public_maestrocomponentes` (`codigo`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla nautilus.public_docompratemp: ~2 rows (aproximadamente)
+-- Volcando datos para la tabla nautilus.public_docompratemp: ~3 rows (aproximadamente)
 DELETE FROM `public_docompratemp`;
 /*!40000 ALTER TABLE `public_docompratemp` DISABLE KEYS */;
 INSERT INTO `public_docompratemp` (`idtemp`, `codart`, `disp`, `cant`, `punit`, `item`, `descri`, `stock`, `detalle`, `tipoitem`, `estadodetalle`, `coddocu`, `um`, `hidguia`, `codservicio`, `tipoimputacion`, `ceco`, `orden`, `codentro`, `codigoalma`, `punitdes`, `iddesolpe`, `iduser`, `idusertemp`, `idstatus`, `id`) VALUES
 	(3, '78000001', '', 1, 500, '001', 'SER DE GRUAS ', NULL, NULL, 'S', '10', '220', '100', 43, NULL, 'K', NULL, NULL, '1203', '450', 500, 69, 0, 1, 0, 66),
-	(9, '78000001', '', 1, 540, '001', 'MAQUINADO Y ROSCADO DE TUBO ', NULL, 'Maquinado de pieza y rolado de superficie, previo arenado con 230 libaras de presió,.\r\n\r\nSoldado de tubo  de tubo de 1/2" \r\nARANDELA DE PRESION PARA REUERZO \r\n', 'S', '10', '220', '100', 45, NULL, 'K', NULL, NULL, '1203', '450', 540, 70, 0, 1, 0, 67);
+	(9, '78000001', '', 1, 540, '001', 'MAQUINADO Y ROSCADO DE TUBO ', NULL, 'Maquinado de pieza y rolado de superficie, previo arenado con 230 libaras de presió,.\r\n\r\nSoldado de tubo  de tubo de 1/2" \r\nARANDELA DE PRESION PARA REUERZO \r\n', 'S', '10', '220', '100', 45, NULL, 'K', NULL, NULL, '1203', '450', 540, 70, 0, 1, 0, 67),
+	(11, '12000003', '', 10, 123.6, '001', 'CADENA DE PAOS 5656/34', NULL, '', 'M', '10', '220', '120', 1, NULL, NULL, NULL, NULL, '1203', '850', 123.6, 0, 0, 1, 0, 1);
 /*!40000 ALTER TABLE `public_docompratemp` ENABLE KEYS */;
 
 
@@ -14688,9 +14737,9 @@ CREATE TABLE IF NOT EXISTS `public_guia` (
   CONSTRAINT `public_guia_ibfk_7` FOREIGN KEY (`n_direc`) REFERENCES `public_direcciones` (`n_direc`),
   CONSTRAINT `public_guia_ibfk_8` FOREIGN KEY (`n_direcformaldes`) REFERENCES `public_direcciones` (`n_direc`),
   CONSTRAINT `public_guia_ibfk_9` FOREIGN KEY (`n_directran`) REFERENCES `public_direcciones` (`n_direc`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla nautilus.public_guia: ~6 rows (aproximadamente)
+-- Volcando datos para la tabla nautilus.public_guia: ~10 rows (aproximadamente)
 DELETE FROM `public_guia`;
 /*!40000 ALTER TABLE `public_guia` DISABLE KEYS */;
 INSERT INTO `public_guia` (`c_numgui`, `c_coclig`, `d_fecgui`, `c_estgui`, `c_rsguia`, `c_codtra`, `c_trans`, `c_motivo`, `c_placa`, `c_licon`, `d_fectra`, `c_desgui`, `n_direc`, `c_texto`, `c_dirsoc`, `c_serie`, `n_direcformaldes`, `n_directran`, `n_guia`, `c_estado`, `n_dirsoc`, `c_modificado`, `n_agencia`, `codcentro`, `codobjeto`, `d_fecentrega`, `c_salida`, `codocu`, `cod_cen`, `id`, `codocuaux`, `iddocuaux`, `iduser`, `idreporte`) VALUES
@@ -14699,7 +14748,11 @@ INSERT INTO `public_guia` (`c_numgui`, `c_coclig`, `d_fecgui`, `c_estgui`, `c_rs
 	('04444444', '970006', '2016-05-26', '99', 'A', '970001', 'JULIAN RAMIREZ TENOR', '100', 'GFGFGF', 'Q10115533', '2016-05-26', '', 2, '', NULL, '007', 3, 1, 0, NULL, 1, NULL, NULL, NULL, '001', NULL, '1', '100', '1203', 3, NULL, NULL, 1, 7),
 	('00000000', '970008', '2016-09-10', '10', 'A', '970008', 'JULIAN RAMIREZ TENOR', '100', NULL, NULL, '2016-09-10', 'dad', 2, 'dadada', NULL, '120', 4, 4, 0, NULL, 4, NULL, NULL, NULL, '001', NULL, '0', '500', '1203', 4, NULL, NULL, 0, 0),
 	('1', '970006', '2016-09-10', '10', 'A', '970008', 'JULIAN RAMIREZ TENOR', '100', NULL, NULL, '2016-09-12', '', 4, '', NULL, '120', 3, 4, 0, NULL, 2, NULL, NULL, NULL, '001', NULL, '0', '500', '1203', 5, NULL, NULL, 0, 0),
-	('2', '970006', '2016-09-11', '30', 'A', '970008', 'JULIAN RAMIREZ TENOR', '100', NULL, NULL, '2016-09-11', 'dg', 4, 'gdgdg', NULL, '120', 3, 4, 0, NULL, 2, NULL, NULL, NULL, '001', NULL, '0', '500', '1203', 6, NULL, NULL, 1, 0);
+	('2', '970006', '2016-09-11', '30', 'A', '970008', 'JULIAN RAMIREZ TENOR', '100', NULL, NULL, '2016-09-11', 'dg', 4, 'gdgdg', NULL, '120', 3, 4, 0, NULL, 2, NULL, NULL, NULL, '001', NULL, '0', '500', '1203', 6, NULL, NULL, 1, 0),
+	(NULL, '970008', '2016-09-21', '99', 'A', '970008', 'JULIAN RAMIREZ TENOR', '100', NULL, NULL, '2016-09-22', 'REPCECOP  DE CULATA', 2, '', NULL, NULL, 4, 4, 0, NULL, 3, NULL, NULL, NULL, '001', NULL, '0', '500', '1203', 7, NULL, NULL, 0, 0),
+	('3', '970008', '2016-09-21', '10', 'A', '970008', 'JULIAN RAMIREZ TENOR', '100', NULL, NULL, '2016-09-21', 'da', 2, '', NULL, '120', 4, 4, 0, NULL, 3, NULL, NULL, NULL, '001', NULL, '0', '500', '1203', 8, NULL, NULL, 1, 0),
+	('4', '970008', '2016-09-21', '10', 'A', '970008', 'JULIAN RAMIREZ TENOR', '100', NULL, NULL, '2016-09-21', '', 2, '', NULL, '120', 4, 4, 0, NULL, 3, NULL, NULL, NULL, '001', NULL, '0', '500', '1203', 9, NULL, NULL, 1, 0),
+	('00000004', '970008', '2016-09-21', '10', 'A', '970008', 'JULIAN RAMIREZ TENOR', '100', NULL, NULL, '2016-09-21', '', 2, '', NULL, '120', 4, 4, 0, NULL, 3, NULL, NULL, NULL, '001', NULL, '0', '500', '1203', 10, NULL, NULL, 1, 0);
 /*!40000 ALTER TABLE `public_guia` ENABLE KEYS */;
 
 
@@ -14901,13 +14954,14 @@ CREATE TABLE IF NOT EXISTS `public_inventario` (
   CONSTRAINT `public_inventario_ibfk_4` FOREIGN KEY (`tipo`) REFERENCES `public_tipomaquina` (`codtipo`),
   CONSTRAINT `public_inventario_ibfk_5` FOREIGN KEY (`coddocu`, `codestado`) REFERENCES `public_estado` (`codocu`, `codestado`),
   CONSTRAINT `public_inventario_ibfk_6` FOREIGN KEY (`codarea`) REFERENCES `public_areas` (`codarea`),
-  CONSTRAINT `public_inventario_ibfk_7` FOREIGN KEY (`codpropietario`) REFERENCES `public_centros` (`codcen`),
-  CONSTRAINT `public_inventario_ibfk_8` FOREIGN KEY (`codmaster`) REFERENCES `public_masterequipo` (`codigo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  CONSTRAINT `public_inventario_ibfk_7` FOREIGN KEY (`codpropietario`) REFERENCES `public_centros` (`codcen`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla nautilus.public_inventario: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla nautilus.public_inventario: ~1 rows (aproximadamente)
 DELETE FROM `public_inventario`;
 /*!40000 ALTER TABLE `public_inventario` DISABLE KEYS */;
+INSERT INTO `public_inventario` (`codigo`, `c_estado`, `codep`, `comentario`, `fecha`, `coddocu`, `codlugar`, `codigosap`, `codigoaf`, `descripcion`, `marca`, `modelo`, `serie`, `clasefoto`, `codigopadre`, `numerodocumento`, `adicional`, `codigoafant`, `posicion`, `codcentro`, `codcentrooriginal`, `codeporiginal`, `rocoto`, `codepanterior`, `codcentroanterior`, `clase`, `baja`, `n_direc`, `ubicacion`, `tipo`, `codestado`, `tienecarter`, `codarea`, `iddocu`, `codigodoc`, `portransporte`, `historial`, `hidpadre`, `codpropietario`, `idinventario`, `codmaster`, `flagdesarmado`) VALUES
+	(NULL, NULL, '100', '', '2016-09-21', '390', '000001', '', '90-3200-08837', 'MACACO DE PB 35', '', '', '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '100', NULL, '100', NULL, NULL, NULL, NULL, NULL, '10', '10', NULL, '240', NULL, NULL, NULL, NULL, NULL, '1203', 7, '', '');
 /*!40000 ALTER TABLE `public_inventario` ENABLE KEYS */;
 
 
@@ -15784,11 +15838,13 @@ CREATE TABLE IF NOT EXISTS `public_lugares` (
   KEY `fki_fk-centros` (`codplanta`),
   KEY `fki_wewojfw` (`codpro`),
   CONSTRAINT `public_lugares_ibfk_1` FOREIGN KEY (`n_direc`) REFERENCES `public_direcciones` (`n_direc`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla nautilus.public_lugares: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla nautilus.public_lugares: ~1 rows (aproximadamente)
 DELETE FROM `public_lugares`;
 /*!40000 ALTER TABLE `public_lugares` DISABLE KEYS */;
+INSERT INTO `public_lugares` (`codlugar`, `deslugar`, `provincia`, `claselugar`, `codpro`, `n_direc`, `codplanta`, `id`) VALUES
+	('000001', 'galves', NULL, NULL, '970002', 2, NULL, 1);
 /*!40000 ALTER TABLE `public_lugares` ENABLE KEYS */;
 
 
@@ -18216,6 +18272,24 @@ INSERT INTO `public_maestrodetallecentros` (`id`, `hcodart`, `iqf`, `catvalor`, 
 /*!40000 ALTER TABLE `public_maestrodetallecentros` ENABLE KEYS */;
 
 
+-- Volcando estructura para tabla nautilus.public_maestroequivalente
+CREATE TABLE IF NOT EXISTS `public_maestroequivalente` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `codart` varchar(12) DEFAULT NULL,
+  `codart2` varchar(12) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `Índice 2` (`codart`),
+  KEY `Índice 3` (`codart2`),
+  CONSTRAINT `FK__public_maestrocomponentes` FOREIGN KEY (`codart`) REFERENCES `public_maestrocomponentes` (`codigo`),
+  CONSTRAINT `FK__public_maestrocomponentes_2` FOREIGN KEY (`codart2`) REFERENCES `public_maestrocomponentes` (`codigo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='guarda lso codigos de equivalencias o materiales alternativos para dar mayor agilidad al stock';
+
+-- Volcando datos para la tabla nautilus.public_maestroequivalente: ~0 rows (aproximadamente)
+DELETE FROM `public_maestroequivalente`;
+/*!40000 ALTER TABLE `public_maestroequivalente` DISABLE KEYS */;
+/*!40000 ALTER TABLE `public_maestroequivalente` ENABLE KEYS */;
+
+
 -- Volcando estructura para tabla nautilus.public_maestroservicios
 CREATE TABLE IF NOT EXISTS `public_maestroservicios` (
   `codserv` varchar(8) CHARACTER SET utf8 NOT NULL,
@@ -18652,7 +18726,7 @@ CREATE TABLE IF NOT EXISTS `public_montoinventario` (
   `montototal` decimal(16,0) NOT NULL,
   `semana` varchar(4) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=181 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=193 DEFAULT CHARSET=utf8;
 
 -- Volcando datos para la tabla nautilus.public_montoinventario: ~148 rows (aproximadamente)
 DELETE FROM `public_montoinventario`;
@@ -18837,7 +18911,19 @@ INSERT INTO `public_montoinventario` (`id`, `dia`, `mes`, `anno`, `iduser`, `mon
 	(177, '18', '09', '16', 1, 4712.000, 0.000, 0.000, 0.000, '125', '1203', '', 0, '2016-09-18', 4724, '1637'),
 	(178, '18', '09', '16', 1, 20590.000, 0.000, 0.000, 0.000, '140', '1203', '', 0, '2016-09-18', 20590, '1637'),
 	(179, '18', '09', '16', 1, 3297.000, 0.000, 0.000, 0.000, '450', '1203', '', 0, '2016-09-18', 3420, '1637'),
-	(180, '18', '09', '16', 1, 1565.000, 0.000, 0.000, 0.000, '850', '1203', '', 0, '2016-09-18', 10444, '1637');
+	(180, '18', '09', '16', 1, 1565.000, 0.000, 0.000, 0.000, '850', '1203', '', 0, '2016-09-18', 10444, '1637'),
+	(181, '20', '09', '16', 1, 4712.000, 0.000, 0.000, 0.000, '125', '1203', '', 0, '2016-09-20', 4724, '1638'),
+	(182, '20', '09', '16', 1, 20590.000, 0.000, 0.000, 0.000, '140', '1203', '', 0, '2016-09-20', 20590, '1638'),
+	(183, '20', '09', '16', 1, 3297.000, 0.000, 0.000, 0.000, '450', '1203', '', 0, '2016-09-20', 3420, '1638'),
+	(184, '20', '09', '16', 1, 1565.000, 0.000, 0.000, 0.000, '850', '1203', '', 0, '2016-09-20', 10444, '1638'),
+	(185, '21', '09', '16', 1, 4712.000, 0.000, 0.000, 0.000, '125', '1203', '', 0, '2016-09-21', 4724, '1638'),
+	(186, '21', '09', '16', 1, 20590.000, 0.000, 0.000, 0.000, '140', '1203', '', 0, '2016-09-21', 20590, '1638'),
+	(187, '21', '09', '16', 1, 3297.000, 0.000, 0.000, 0.000, '450', '1203', '', 0, '2016-09-21', 3420, '1638'),
+	(188, '21', '09', '16', 1, 1565.000, 0.000, 0.000, 0.000, '850', '1203', '', 0, '2016-09-21', 10444, '1638'),
+	(189, '22', '09', '16', 1, 4712.000, 0.000, 0.000, 0.000, '125', '1203', '', 0, '2016-09-22', 4724, '1638'),
+	(190, '22', '09', '16', 1, 20590.000, 0.000, 0.000, 0.000, '140', '1203', '', 0, '2016-09-22', 20590, '1638'),
+	(191, '22', '09', '16', 1, 3297.000, 0.000, 0.000, 0.000, '450', '1203', '', 0, '2016-09-22', 3420, '1638'),
+	(192, '22', '09', '16', 1, 1565.000, 0.000, 0.000, 0.000, '850', '1203', '', 0, '2016-09-22', 10444, '1638');
 /*!40000 ALTER TABLE `public_montoinventario` ENABLE KEYS */;
 
 
@@ -18855,6 +18941,34 @@ DELETE FROM `public_motivo`;
 INSERT INTO `public_motivo` (`codmotivo`, `desmotivo`, `cretornable`) VALUES
 	('100', 'VENTA', '');
 /*!40000 ALTER TABLE `public_motivo` ENABLE KEYS */;
+
+
+-- Volcando estructura para tabla nautilus.public_neot
+CREATE TABLE IF NOT EXISTS `public_neot` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `hidne` bigint(20) NOT NULL,
+  `hidot` bigint(20) NOT NULL,
+  `cant` double NOT NULL,
+  `fecreacion` datetime NOT NULL,
+  `iduser` smallint(6) NOT NULL,
+  `idot` bigint(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `Índice 2` (`hidne`),
+  KEY `Índice 3` (`hidot`),
+  KEY `Índice 4` (`idot`),
+  CONSTRAINT `FK__public_detgui` FOREIGN KEY (`hidne`) REFERENCES `public_detgui` (`id`),
+  CONSTRAINT `FK__public_detot` FOREIGN KEY (`hidot`) REFERENCES `public_detot` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='tabla que guarda las referencias a la OT\r\n';
+
+-- Volcando datos para la tabla nautilus.public_neot: ~2 rows (aproximadamente)
+DELETE FROM `public_neot`;
+/*!40000 ALTER TABLE `public_neot` DISABLE KEYS */;
+INSERT INTO `public_neot` (`id`, `hidne`, `hidot`, `cant`, `fecreacion`, `iduser`, `idot`) VALUES
+	(1, 13, 14, 1, '0000-00-00 00:00:00', 0, 16),
+	(2, 13, 14, 2, '0000-00-00 00:00:00', 0, 16),
+	(3, 13, 14, 1, '0000-00-00 00:00:00', 0, 16),
+	(4, 13, 14, 3, '0000-00-00 00:00:00', 0, 16);
+/*!40000 ALTER TABLE `public_neot` ENABLE KEYS */;
 
 
 -- Volcando estructura para tabla nautilus.public_noticias
@@ -19172,9 +19286,9 @@ CREATE TABLE IF NOT EXISTS `public_opcionescamposdocu` (
   PRIMARY KEY (`id`),
   KEY `codocu` (`codocu`),
   CONSTRAINT `public_opcionescamposdocu_ibfk_1` FOREIGN KEY (`codocu`) REFERENCES `public_documentos` (`coddocu`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Volcando datos para la tabla nautilus.public_opcionescamposdocu: ~10 rows (aproximadamente)
+-- Volcando datos para la tabla nautilus.public_opcionescamposdocu: ~11 rows (aproximadamente)
 DELETE FROM `public_opcionescamposdocu`;
 /*!40000 ALTER TABLE `public_opcionescamposdocu` DISABLE KEYS */;
 INSERT INTO `public_opcionescamposdocu` (`id`, `codocu`, `campo`, `nombrecampo`, `tipodato`, `longitud`, `nombredelmodelo`, `primercampolista`, `segundocampolista`, `seleccionable`) VALUES
@@ -19187,7 +19301,8 @@ INSERT INTO `public_opcionescamposdocu` (`id`, `codocu`, `campo`, `nombrecampo`,
 	(7, '210', 'tipologia', 'Tipo Compra', 'C', 1, 'Ocompra', NULL, NULL, ''),
 	(8, '210', 'moneda', '', 'C', 3, 'Ocompra', NULL, NULL, ''),
 	(9, '210', 'tenorsup', 'Tenor superiror', 'C', 1, 'Ocompra', NULL, NULL, ''),
-	(10, '210', 'tenorinf', 'Tenor inf', 'C', 1, 'Ocompra', NULL, NULL, '');
+	(10, '210', 'tenorinf', 'Tenor inf', 'C', 1, 'Ocompra', NULL, NULL, ''),
+	(11, '500', 'c_coclig', 'c_coclig', 'C', 6, 'Ne', NULL, NULL, '');
 /*!40000 ALTER TABLE `public_opcionescamposdocu` ENABLE KEYS */;
 
 
@@ -19304,7 +19419,7 @@ CREATE TABLE IF NOT EXISTS `public_ot` (
   CONSTRAINT `public_ot_ibfk_5` FOREIGN KEY (`codcen`) REFERENCES `public_centros` (`codcen`)
 ) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla nautilus.public_ot: ~9 rows (aproximadamente)
+-- Volcando datos para la tabla nautilus.public_ot: ~8 rows (aproximadamente)
 DELETE FROM `public_ot`;
 /*!40000 ALTER TABLE `public_ot` DISABLE KEYS */;
 INSERT INTO `public_ot` (`id`, `numero`, `fechacre`, `fechafinprog`, `codpro`, `idobjeto`, `codresponsable`, `textocorto`, `textolargo`, `grupoplan`, `codcen`, `iduser`, `codocu`, `codestado`, `clase`, `hidoferta`, `fechainiprog`, `fechainicio`, `fechafin`) VALUES
@@ -19322,6 +19437,40 @@ INSERT INTO `public_ot` (`id`, `numero`, `fechacre`, `fechafinprog`, `codpro`, `
 /*!40000 ALTER TABLE `public_ot` ENABLE KEYS */;
 
 
+-- Volcando estructura para tabla nautilus.public_otconsignacion
+CREATE TABLE IF NOT EXISTS `public_otconsignacion` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `codcli` varchar(18) NOT NULL DEFAULT '0',
+  `hidetot` bigint(20) DEFAULT NULL,
+  `cant` double DEFAULT NULL,
+  `um` char(3) DEFAULT NULL,
+  `codart` varchar(12) DEFAULT NULL,
+  `fecnec` date DEFAULT NULL,
+  `idusertemp` int(11) DEFAULT NULL,
+  `idtemp` bigint(20) NOT NULL,
+  `identificador` bigint(20) DEFAULT NULL,
+  `hidot` bigint(20) DEFAULT NULL,
+  `descripcion` varchar(40) DEFAULT NULL,
+  `textolargo` mediumtext,
+  `idstatus` int(11) DEFAULT NULL,
+  `item` varchar(3) DEFAULT NULL,
+  `centro` char(4) DEFAULT NULL,
+  `codal` char(3) DEFAULT NULL,
+  `est` char(2) DEFAULT NULL,
+  UNIQUE KEY `Índice 1` (`id`),
+  KEY `Índice 2` (`codart`),
+  KEY `Índice 3` (`idtemp`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='tabla que guarda los registros temporales de lods repuestos yo materiales s que sesiiciutana los clientes,';
+
+-- Volcando datos para la tabla nautilus.public_otconsignacion: ~2 rows (aproximadamente)
+DELETE FROM `public_otconsignacion`;
+/*!40000 ALTER TABLE `public_otconsignacion` DISABLE KEYS */;
+INSERT INTO `public_otconsignacion` (`id`, `codcli`, `hidetot`, `cant`, `um`, `codart`, `fecnec`, `idusertemp`, `idtemp`, `identificador`, `hidot`, `descripcion`, `textolargo`, `idstatus`, `item`, `centro`, `codal`, `est`) VALUES
+	(1, '', 1473551110341, 3, '100', '12000014', '2016-09-24', 1, 41, NULL, 16, 'AALFILER DE 4 GRAPAS', '', NULL, '008', '1203', '125', '99'),
+	(2, '', 1473551110341, 12, '100', '12000095', '2016-09-23', 1, 42, NULL, 16, 'CAJA PLASTICA ALPINE 5 KG.ALT.26.5 CM.', '', NULL, '002', '1203', '125', '99');
+/*!40000 ALTER TABLE `public_otconsignacion` ENABLE KEYS */;
+
+
 -- Volcando estructura para tabla nautilus.public_paraqueva
 CREATE TABLE IF NOT EXISTS `public_paraqueva` (
   `cmotivo` varchar(2) CHARACTER SET utf8 NOT NULL,
@@ -19330,11 +19479,16 @@ CREATE TABLE IF NOT EXISTS `public_paraqueva` (
   KEY `i_parqueva` (`cmotivo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Volcando datos para la tabla nautilus.public_paraqueva: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla nautilus.public_paraqueva: ~6 rows (aproximadamente)
 DELETE FROM `public_paraqueva`;
 /*!40000 ALTER TABLE `public_paraqueva` DISABLE KEYS */;
 INSERT INTO `public_paraqueva` (`cmotivo`, `motivo`) VALUES
-	('01', 'VENTA');
+	('01', 'VENTA'),
+	('20', 'OT'),
+	('30', 'MUESTRA'),
+	('40', 'EXPLOSION'),
+	('50', 'RESERVA'),
+	('60', 'DEVOLUCION');
 /*!40000 ALTER TABLE `public_paraqueva` ENABLE KEYS */;
 
 
@@ -19803,9 +19957,9 @@ CREATE TABLE IF NOT EXISTS `public_settings` (
   `value` text NOT NULL,
   PRIMARY KEY (`id`),
   KEY `category_key` (`category`,`key`)
-) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=79 DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla nautilus.public_settings: ~37 rows (aproximadamente)
+-- Volcando datos para la tabla nautilus.public_settings: ~39 rows (aproximadamente)
 DELETE FROM `public_settings`;
 /*!40000 ALTER TABLE `public_settings` DISABLE KEYS */;
 INSERT INTO `public_settings` (`id`, `category`, `key`, `value`) VALUES
@@ -19845,7 +19999,9 @@ INSERT INTO `public_settings` (`id`, `category`, `key`, `value`) VALUES
 	(73, 'inventario', 'inventario_auto', 's:1:"1";'),
 	(74, 'general', 'general_userauto', 's:1:"4";'),
 	(75, 'transporte', 'transporte_objenguia', 's:1:"1";'),
-	(76, 'transporte', 'transporte_rutafotos', 's:11:"/transporte";');
+	(76, 'transporte', 'transporte_rutafotos', 's:11:"/transporte";'),
+	(77, 'general', 'general_directorioimg', 's:7:"/images";'),
+	(78, 'general', 'general_nregistrosporcarpeta', 's:1:"5";');
 /*!40000 ALTER TABLE `public_settings` ENABLE KEYS */;
 
 
@@ -20120,9 +20276,9 @@ CREATE TABLE IF NOT EXISTS `public_tempalkardex` (
   CONSTRAINT `public_tempalkardex_ibfk_2` FOREIGN KEY (`codart`) REFERENCES `public_maestrocomponentes` (`codigo`),
   CONSTRAINT `public_tempalkardex_ibfk_3` FOREIGN KEY (`codcentro`) REFERENCES `public_centros` (`codcen`),
   CONSTRAINT `public_tempalkardex_ibfk_4` FOREIGN KEY (`alemi`) REFERENCES `public_almacenes` (`codalm`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Volcando datos para la tabla nautilus.public_tempalkardex: ~3 rows (aproximadamente)
+-- Volcando datos para la tabla nautilus.public_tempalkardex: ~5 rows (aproximadamente)
 DELETE FROM `public_tempalkardex`;
 /*!40000 ALTER TABLE `public_tempalkardex` DISABLE KEYS */;
 INSERT INTO `public_tempalkardex` (`codart`, `codmov`, `cant`, `alemi`, `aldes`, `fecha`, `coddoc`, `numdoc`, `usuario`, `um`, `comentario`, `codocuref`, `numdocref`, `codcentro`, `codestado`, `prefijo`, `fechadoc`, `correlativo`, `numkardex`, `solicitante`, `hidvale`, `idref`, `lote`, `valido`, `checki`, `destino`, `preciounit`, `correlativ`, `codcendes`, `id`, `iduser`, `idusertemp`, `idstatus`, `idtemp`, `colector`, `textolargo`, `codtrabajador`, `montomovido`, `idotrokardex`, `codmoneda`) VALUES
@@ -20189,7 +20345,7 @@ CREATE TABLE IF NOT EXISTS `public_tempdesolpe` (
   CONSTRAINT `public_tempdesolpe_ibfk_4` FOREIGN KEY (`codocu`, `est`) REFERENCES `public_estado` (`codocu`, `codestado`)
 ) ENGINE=InnoDB AUTO_INCREMENT=141 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
--- Volcando datos para la tabla nautilus.public_tempdesolpe: ~28 rows (aproximadamente)
+-- Volcando datos para la tabla nautilus.public_tempdesolpe: ~30 rows (aproximadamente)
 DELETE FROM `public_tempdesolpe`;
 /*!40000 ALTER TABLE `public_tempdesolpe` DISABLE KEYS */;
 INSERT INTO `public_tempdesolpe` (`id`, `numero`, `tipimputacion`, `idusertemp`, `hcodoc`, `centro`, `codal`, `codart`, `txtmaterial`, `grupocompras`, `usuario`, `textodetalle`, `fechacrea`, `fechaent`, `fechalib`, `imputacion`, `hidsolpe`, `codocu`, `tipsolpe`, `est`, `cant`, `item`, `cantaten`, `posicion`, `estadolib`, `solicitanet`, `um`, `firme`, `idreserva`, `punitplan`, `punitreal`, `codservicio`, `iduser`, `idtemp`, `hidot`, `hidlabor`, `idstatus`) VALUES
@@ -20219,7 +20375,7 @@ INSERT INTO `public_tempdesolpe` (`id`, `numero`, `tipimputacion`, `idusertemp`,
 	(134, '', '', 1, '890', '1203', '125', '12000012', 'POLVO QUIMICO SECO NH3', '', 'admin', NULL, NULL, '2016-09-10', NULL, '9010450001', 125, '350', 'M', '20', 1, '001', 0, NULL, NULL, '', '120', '', 0, 0, 0, '', 1, 133, 16, 1473551110341, 0),
 	(135, '', '', 1, '890', '1203', '125', '12000007', 'ANILLO PLANO 1/2" AC INOX ', '', 'admin', NULL, NULL, '2016-09-10', NULL, '9010450001', 125, '350', 'M', '20', 1, '002', 0, NULL, NULL, '', '100', '', 0, 1.205770178, 0, '', 1, 134, 16, 1473551110341, 0),
 	(136, '', '', 1, '890', '1203', '125', '12000004', 'MAQUINA DE COSER', '', 'admin', NULL, NULL, '2016-09-10', NULL, '9010450001', 125, '350', 'M', '20', 1, '003', 0, NULL, NULL, '', '100', '', 0, 7.468283475, 0, '', 1, 135, 16, 1473551110341, 0),
-	(137, '', '', 1, '890', '1203', '125', '12000003', 'CADENA DE PAOS 5656/34', '', 'admin', NULL, NULL, '2016-09-10', NULL, '9010450001', 126, '350', 'M', '20', 2, '001', 0, NULL, NULL, '', '120', '', 0, 12.12458959, 0, '', 1, 136, 16, 1474248612656, 0),
+	(137, '', '', 1, '890', '1203', '125', '12000003', 'CADENA DE PAOS 5656/34', '', 'admin', NULL, NULL, '2016-09-10', NULL, '9010450001', 126, '350', 'M', '20', 2, '001', 0, NULL, NULL, '', '120', '', 0, 12.12458959, 0, '', 1, 136, 16, 1473551110341, 0),
 	(138, '', '', 1, '890', '1203', '125', '12000007', 'ANILLO PLANO 1/2" AC INOX ', '', 'admin', NULL, NULL, '2016-09-10', NULL, '9010450001', 126, '350', 'M', '10', 2, '002', 0, NULL, NULL, 's323', '100', '', 0, 2.411540356, 0, '', 1, 137, 16, 1473551110341, 0),
 	(145, '', '', 1, '890', '1203', '125', '12000012', 'POLVO QUIMICO SECO NH3', '', 'admin', NULL, NULL, '2016-09-18', NULL, '9010450001', 130, '350', 'M', '10', 1, '001', 0, NULL, NULL, '', '120', '', 0, 0, 0, '', 1, 139, 16, 1473551110341, 0),
 	(146, '', '', 1, '890', '1203', '125', '12000078', 'BANDEJA 24.85x21.75x2.04CM B-149 NEPS', '', 'admin', NULL, NULL, '2016-09-18', NULL, '9010450001', 130, '350', 'M', '10', 1, '002', 0, NULL, NULL, '', '100', '', 0, 0, 0, '', 1, 140, 16, 1473551110341, 0);
@@ -20249,7 +20405,7 @@ CREATE TABLE IF NOT EXISTS `public_tempdetgui` (
   `c_codsap` varchar(5) CHARACTER SET utf8 DEFAULT NULL,
   `docref` varchar(12) CHARACTER SET utf8 DEFAULT NULL,
   `docrefext` varchar(15) CHARACTER SET utf8 DEFAULT NULL,
-  `hidref` bigint(20) DEFAULT NULL,
+  `hidref` bigint(20) DEFAULT NULL COMMENT 'REFERENCIA A LA OT',
   `codocu` varchar(3) CHARACTER SET utf8 DEFAULT NULL,
   `codlugar` varchar(6) CHARACTER SET utf8 DEFAULT NULL,
   `iduser` int(11) NOT NULL,
@@ -20278,9 +20434,9 @@ CREATE TABLE IF NOT EXISTS `public_tempdetgui` (
   CONSTRAINT `public_tempdetgui_ibfk_2` FOREIGN KEY (`codocu`, `c_estado`) REFERENCES `public_estado` (`codocu`, `codestado`),
   CONSTRAINT `public_tempdetgui_ibfk_3` FOREIGN KEY (`c_codep`) REFERENCES `public_embarcaciones` (`codep`),
   CONSTRAINT `public_tempdetgui_ibfk_4` FOREIGN KEY (`c_edgui`) REFERENCES `public_paraqueva` (`cmotivo`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Volcando datos para la tabla nautilus.public_tempdetgui: ~6 rows (aproximadamente)
+-- Volcando datos para la tabla nautilus.public_tempdetgui: ~9 rows (aproximadamente)
 DELETE FROM `public_tempdetgui`;
 /*!40000 ALTER TABLE `public_tempdetgui` DISABLE KEYS */;
 INSERT INTO `public_tempdetgui` (`n_hguia`, `c_itguia`, `n_cangui`, `c_codgui`, `c_edgui`, `c_descri`, `m_obs`, `c_um`, `c_codep`, `ndeenvio`, `l_libre`, `n_hconformidad`, `c_estado`, `n_libre`, `n_idconformidad`, `c_af`, `c_codactivo`, `c_img`, `c_codsap`, `docref`, `docrefext`, `hidref`, `codocu`, `codlugar`, `iduser`, `idtemp`, `idstatus`, `id`, `idusertemp`, `hidespacho`, `modo`, `codob`) VALUES
@@ -20288,8 +20444,11 @@ INSERT INTO `public_tempdetgui` (`n_hguia`, `c_itguia`, `n_cangui`, `c_codgui`, 
 	(2, '002', 2, '12000003', '01', 'CADENA DE PAOS 5656/34', '', 'BOT', '100', NULL, NULL, NULL, '99', NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, '230', NULL, 0, 6, 0, 4, 1, 0, '3', NULL),
 	(3, '001', 1, '12000002', '01', 'CAJA DE MADERA', '', '100', '100', NULL, NULL, NULL, '99', NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, '230', NULL, 0, 7, 0, 0, 1, 0, '3', '002'),
 	(6, '001', 3, '', '01', 'CARCAZA DE CA CAT 7251', '', '100', '100', NULL, NULL, NULL, '99', NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, '230', NULL, 0, 17, 0, 8, 1, 0, '1', '001'),
-	(4, '001', 1, '', '01', 'BOMBA DE ACEITE CAT ', '', '100', '100', NULL, NULL, NULL, '99', NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, '230', NULL, 0, 18, 0, 5, 1, 0, '1', '001'),
-	(4, '002', 1, '', '01', 'BOMBA DE ACEITE CAT ', '', '100', '100', NULL, NULL, NULL, '99', NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, '230', NULL, 0, 19, 0, 6, 1, 0, '1', '001');
+	(7, '001', 2, '12000015', '01', 'ELECTROBOMBA DE AGUA', '', '100', '100', NULL, NULL, NULL, '99', NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, '230', NULL, 0, 22, 0, 0, 1, 0, '1', '004'),
+	(4, '001', 1, '', '01', 'BOMBA DE ACEITE CAT ', '', '100', '100', NULL, NULL, NULL, '99', NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, '230', NULL, 0, 27, 0, 5, 1, 0, '1', '001'),
+	(4, '002', 1, '', '01', 'BOMBA DE ACEITE CAT ', '', '100', '100', NULL, NULL, NULL, '99', NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, '230', NULL, 0, 28, 0, 6, 1, 0, '1', '001'),
+	(10, '001', 5, '12000095', '01', 'CAJA PLASTICA ALPINE 5 KG.ALT.26.5 CM.', '', '100', '100', NULL, NULL, NULL, '99', NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, '230', NULL, 0, 38, 0, 12, 1, 0, '3', '001'),
+	(10, '002', 4, '54700000', '20', 'MOTOR MECANICO', '', '120', '100', NULL, NULL, NULL, '99', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '230', NULL, 0, 39, 0, 13, 1, 0, '', '001');
 /*!40000 ALTER TABLE `public_tempdetgui` ENABLE KEYS */;
 
 
@@ -20361,7 +20520,7 @@ CREATE TABLE IF NOT EXISTS `public_tempdetot` (
   KEY `idinventario` (`idinventario`),
   KEY `codresponsable_2` (`codresponsable`),
   KEY `codocu` (`codocu`,`codestado`)
-) ENGINE=MyISAM AUTO_INCREMENT=186 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=190 DEFAULT CHARSET=utf8;
 
 -- Volcando datos para la tabla nautilus.public_tempdetot: 16 rows
 DELETE FROM `public_tempdetot`;
@@ -20379,8 +20538,7 @@ INSERT INTO `public_tempdetot` (`id`, `hidorden`, `nhoras`, `nhombres`, `item`, 
 	(2, 1, 2, 3, '001', 'LIMAR LA PPARECD', '100', '7002', '0000-00-00', '0000-00-00', '0000-00-00', '', '891', '99', '5470000002', 0, 0, 1, 106, 0, 1472518574587, 'C', 'EMRFELGM', '9010451485', 'PEN', 73.800, '0000-00-00', '0000-00-00', 40),
 	(12, 14, 2, 1, '001', 'Reparacion', '100', '7002', '0000-00-00', '0000-00-00', '0000-00-00', '', '891', '99', '', 0, 0, 1, 178, 0, 1473545161858, 'C', 'adadad', '9010451485', 'PEN', 24.600, '0000-00-00', '0000-00-00', NULL),
 	(13, 15, 1, 1, '001', 'Inspeccionar in situ caja', '100', '7002', '0000-00-00', '0000-00-00', '0000-00-00', '', '891', '99', '', 0, 0, 1, 179, 0, 1473548813775, 'C', 'sfsfsf', '9010451485', 'PEN', 12.300, '0000-00-00', '0000-00-00', NULL),
-	(14, 16, 1, 1, '001', 'Reparacion DE INYECTORES', '100', '7002', '0000-00-00', '0000-00-00', '0000-00-00', '', '891', '99', '', 0, 0, 1, 184, 0, 1473551110341, 'C', '', '9010450001', 'PEN', 12.300, '0000-00-00', '0000-00-00', NULL),
-	(0, 16, 0, 0, '002', 'REPARAR CULATAS', '100', '7004', '0000-00-00', '0000-00-00', '0000-00-00', '', '891', '99', '', 0, 0, 1, 185, 0, 1474248612656, 'T', '', '904500234', 'PEN', 0.000, '0000-00-00', '0000-00-00', 14),
+	(14, 16, 1, 1, '001', 'Reparacion DE INYECTORES', '100', '7002', '0000-00-00', '0000-00-00', '0000-00-00', '', '891', '99', '', 0, 0, 1, 189, 0, 1473551110341, 'C', '', '9010450001', 'PEN', 12.300, '0000-00-00', '0000-00-00', NULL),
 	(0, 18, 2, 2, '001', 'Desmontar macaco de abordo', '100', '7005', '0000-00-00', '0000-00-00', '0000-00-00', '', '891', '99', '', 0, 0, 1, 175, 0, 1474129504854, 'C', '', '904500234', 'PEN', 49.200, '0000-00-00', '0000-00-00', 18),
 	(0, 18, 0, 0, '002', 'Transporte de macaoc a taller', '100', '7001', '0000-00-00', '0000-00-00', '0000-00-00', '', '891', '99', '', 0, 0, 1, 176, 0, 1474129538174, 'C', '', '904500234', 'PEN', 0.000, '0000-00-00', '0000-00-00', 13),
 	(0, 18, 0, 0, '003', 'Desarmado para inspeccin', '100', '7002', '0000-00-00', '0000-00-00', '0000-00-00', '', '891', '99', '', 0, 0, 1, 177, 0, 1474129575448, 'T', '', '904500500', 'PEN', 0.000, '0000-00-00', '0000-00-00', NULL);
@@ -20475,6 +20633,40 @@ CREATE TABLE IF NOT EXISTS `public_temporadas` (
 DELETE FROM `public_temporadas`;
 /*!40000 ALTER TABLE `public_temporadas` DISABLE KEYS */;
 /*!40000 ALTER TABLE `public_temporadas` ENABLE KEYS */;
+
+
+-- Volcando estructura para tabla nautilus.public_tempotconsignacion
+CREATE TABLE IF NOT EXISTS `public_tempotconsignacion` (
+  `id` bigint(20) NOT NULL,
+  `hidetot` bigint(20) DEFAULT NULL,
+  `codcli` varchar(18) DEFAULT NULL,
+  `cant` double DEFAULT NULL,
+  `um` char(3) DEFAULT NULL,
+  `codart` varchar(12) DEFAULT NULL,
+  `fecnec` date DEFAULT NULL,
+  `idusertemp` int(11) DEFAULT NULL,
+  `idtemp` bigint(20) NOT NULL AUTO_INCREMENT,
+  `identificador` bigint(20) DEFAULT NULL,
+  `hidot` bigint(20) DEFAULT NULL,
+  `descripcion` varchar(40) DEFAULT NULL,
+  `textolargo` mediumtext,
+  `idstatus` int(11) DEFAULT NULL,
+  `centro` char(4) DEFAULT NULL,
+  `codal` char(3) DEFAULT NULL,
+  `item` varchar(3) DEFAULT NULL,
+  `est` char(2) DEFAULT NULL,
+  PRIMARY KEY (`idtemp`),
+  KEY `Índice 1` (`id`),
+  KEY `Índice 2` (`codart`)
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8 COMMENT='tabla que guarda los registros temporales de lods repuestos yo materiales s que sesiiciutana los clientes,';
+
+-- Volcando datos para la tabla nautilus.public_tempotconsignacion: ~2 rows (aproximadamente)
+DELETE FROM `public_tempotconsignacion`;
+/*!40000 ALTER TABLE `public_tempotconsignacion` DISABLE KEYS */;
+INSERT INTO `public_tempotconsignacion` (`id`, `hidetot`, `codcli`, `cant`, `um`, `codart`, `fecnec`, `idusertemp`, `idtemp`, `identificador`, `hidot`, `descripcion`, `textolargo`, `idstatus`, `centro`, `codal`, `item`, `est`) VALUES
+	(1, 1473551110341, '', 3, '100', '12000014', '2016-09-24', 1, 41, NULL, 16, 'AALFILER DE 4 GRAPAS', '', 0, '1203', '125', '008', '99'),
+	(2, 1473551110341, '', 12, '100', '12000095', '2016-09-23', 1, 42, NULL, 16, 'CAJA PLASTICA ALPINE 5 KG.ALT.26.5 CM.', '', 0, '1203', '125', '002', '99');
+/*!40000 ALTER TABLE `public_tempotconsignacion` ENABLE KEYS */;
 
 
 -- Volcando estructura para tabla nautilus.public_tenores
@@ -20645,9 +20837,11 @@ CREATE TABLE IF NOT EXISTS `public_tipomaquina` (
   PRIMARY KEY (`codtipo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla nautilus.public_tipomaquina: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla nautilus.public_tipomaquina: ~1 rows (aproximadamente)
 DELETE FROM `public_tipomaquina`;
 /*!40000 ALTER TABLE `public_tipomaquina` DISABLE KEYS */;
+INSERT INTO `public_tipomaquina` (`codtipo`, `tipo`, `creadopor`, `creadoel`, `modificadopor`, `modificadoel`) VALUES
+	('10', 'VEHICULOS', NULL, NULL, NULL, NULL);
 /*!40000 ALTER TABLE `public_tipomaquina` ENABLE KEYS */;
 
 
@@ -22667,15 +22861,16 @@ CREATE TABLE IF NOT EXISTS `public_usuariosfavoritos` (
   `valido` varchar(1) DEFAULT NULL,
   `chapa` varchar(40) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla nautilus.public_usuariosfavoritos: ~3 rows (aproximadamente)
+-- Volcando datos para la tabla nautilus.public_usuariosfavoritos: ~4 rows (aproximadamente)
 DELETE FROM `public_usuariosfavoritos`;
 /*!40000 ALTER TABLE `public_usuariosfavoritos` DISABLE KEYS */;
 INSERT INTO `public_usuariosfavoritos` (`id`, `hiduser`, `url`, `fecharegistro`, `valido`, `chapa`) VALUES
 	(1, 1, '/recurso\\maestrocompo\\listadetalle', NULL, NULL, 'Detalle materiales'),
-	(2, 1, '/recurso\\ingfactura\\admin', NULL, NULL, 'Recep Facturas'),
-	(3, 1, '/recurso\\alinventario\\admin', NULL, NULL, 'Stocks');
+	(3, 1, '/recurso\\alinventario\\admin', NULL, NULL, 'Stocks'),
+	(4, 1, '/recurso\\documentos\\admin', NULL, NULL, 'DOCUMENTOS'),
+	(5, 1, '/recurso\\estado\\admin', NULL, NULL, 'ESTADOS');
 /*!40000 ALTER TABLE `public_usuariosfavoritos` ENABLE KEYS */;
 
 
@@ -23513,6 +23708,43 @@ CREATE TABLE `vw_opcionesdocumentos` (
 ) ENGINE=MyISAM;
 
 
+-- Volcando estructura para vista nautilus.vw_otdetalle
+-- Creando tabla temporal para superar errores de dependencia de VIEW
+CREATE TABLE `vw_otdetalle` (
+	`despro` VARCHAR(100) NULL COLLATE 'utf8_general_ci',
+	`rucpro` VARCHAR(11) NOT NULL COLLATE 'utf8_general_ci',
+	`identificador` VARCHAR(24) NULL COLLATE 'utf8_general_ci',
+	`serie` VARCHAR(50) NULL COLLATE 'utf8_general_ci',
+	`descripcion` VARCHAR(40) NOT NULL COLLATE 'utf8_general_ci',
+	`marca` VARCHAR(24) NOT NULL COLLATE 'utf8_general_ci',
+	`modelo` VARCHAR(25) NOT NULL COLLATE 'utf8_general_ci',
+	`nombreobjeto` VARCHAR(40) NULL COLLATE 'utf8_general_ci',
+	`codobjeto` VARCHAR(3) NOT NULL COLLATE 'utf8_general_ci',
+	`item` VARCHAR(3) NOT NULL COLLATE 'utf8_general_ci',
+	`textoactividad` VARCHAR(40) NOT NULL COLLATE 'utf8_general_ci',
+	`idetot` BIGINT(20) NOT NULL,
+	`id` BIGINT(20) NOT NULL,
+	`numero` VARCHAR(12) NOT NULL COLLATE 'utf8_general_ci',
+	`fechacre` DATE NOT NULL,
+	`fechafinprog` DATE NOT NULL,
+	`codpro` VARCHAR(8) NOT NULL COLLATE 'utf8_general_ci',
+	`idobjeto` INT(11) NOT NULL,
+	`codresponsable` VARCHAR(6) NOT NULL COLLATE 'utf8_general_ci',
+	`textocorto` VARCHAR(40) NOT NULL COLLATE 'utf8_general_ci',
+	`textolargo` TEXT NOT NULL COLLATE 'utf8_general_ci',
+	`grupoplan` VARCHAR(3) NOT NULL COLLATE 'utf8_general_ci',
+	`codcen` VARCHAR(4) NOT NULL COLLATE 'utf8_general_ci',
+	`iduser` INT(11) NOT NULL,
+	`codocu` VARCHAR(3) NOT NULL COLLATE 'utf8_general_ci',
+	`codestado` VARCHAR(2) NOT NULL COLLATE 'utf8_general_ci',
+	`clase` VARCHAR(1) NOT NULL COLLATE 'utf8_general_ci',
+	`hidoferta` BIGINT(20) NOT NULL,
+	`fechainiprog` DATE NULL,
+	`fechainicio` DATE NULL,
+	`fechafin` DATE NULL
+) ENGINE=MyISAM;
+
+
 -- Volcando estructura para vista nautilus.vw_otsimple
 -- Creando tabla temporal para superar errores de dependencia de VIEW
 CREATE TABLE `vw_otsimple` (
@@ -24327,6 +24559,25 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_opcionesdocumento
 	 ((`documentos`.`coddocu` = `opcionescamposdocu`.`codocu`) and 
 	 (`opcionesdocumentos`.`idopdoc` = `opcionescamposdocu`.`id`) and 
 	 (`opcionesdocumentos`.`idusuario` = `cruge_user`.`iduser`)) ; ;
+
+
+-- Volcando estructura para vista nautilus.vw_otdetalle
+-- Eliminando tabla temporal y crear estructura final de VIEW
+DROP TABLE IF EXISTS `vw_otdetalle`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_otdetalle` AS select c.despro,c.rucpro,
+o.identificador,o.serie,m.descripcion,
+m.marca,m.modelo,n.nombreobjeto,n.codobjeto,r.item,r.textoactividad,r.id as idetot,
+t.*  
+from public_ot t, public_clipro c,public_objetosmaster o,
+public_masterequipo m,public_objetos_cliente n,public_detot r
+where c.codpro=t.codpro
+and
+o.id=t.idobjeto
+and 
+m.codigo=o.hcodobmaster
+and n.id=o.hidobjeto 
+and
+r.hidorden=t.id ;
 
 
 -- Volcando estructura para vista nautilus.vw_otsimple

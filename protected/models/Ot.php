@@ -71,6 +71,8 @@ class Ot extends  ModeloGeneral
 			'objetosmaster' => array(self::BELONGS_TO, 'Objetosmaster', 'idobjeto'),
 			'trabajadores' => array(self::BELONGS_TO, 'Trabajadores', 'codresponsable'),
                     'estado'=>array(self::BELONGS_TO,'Estado',array('codestado'=>'codestado','codocu'=>'codocu')),
+                    'neot'=>array(self::HAS_MANY,'Neot','hidot'),
+                    'ncomponentes'=>array(self::STAT,'Neot','hidot','Select'=>'sum(t.cant)'),
 
 		);
 	}

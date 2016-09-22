@@ -40,6 +40,7 @@ class Tempdetgui extends ModeloGeneral
 			array('c_descri', 'length', 'max'=>40),
 			array('c_descri', 'length', 'min'=>10),
 			array('c_descri', 'required','message'=>'Sin descripcion'),
+                        array('n_cangui', 'required', 'message'=>'La cantidad es obligatoria'),
 
 
 			//ESCENARIO DE ACTIVO FIJO //
@@ -52,7 +53,10 @@ class Tempdetgui extends ModeloGeneral
 			array('c_codactivo','checkcantidaddescripcion','on'=>'INS_ACTIVO,UPD_ACTIVO'),
 			array('c_codactivo+n_hguia', 'application.extensions.uniqueMultiColumnValidator','message'=>'Este Activo ya se encuentra Registrado en el documento ','on'=>'INS_ACTIVO,UPD_ACTIVO'),
 
-
+//ESCENARIO  DE COMPONENTE  //
+                        array('c_codgui','exist','allowEmpty' => false, 'attributeName' => 'codigo', 'className' => 'Masterequipo','message'=>'Este componente o equipo no existe','on'=>'INS_COMPO,UPD_COMPO'),
+                        array('c_codgui,n_cangui,c_itguia,c_descri,c_um,hidref,c_edgui,c_codep','safe','on'=>'INS_COMPO,UPD_COMPO'),
+			
 
 
 
@@ -99,6 +103,8 @@ class Tempdetgui extends ModeloGeneral
 			'guia' => array(self::BELONGS_TO, 'Guia', 'n_hguia'),
 		'materiales' => array(self::BELONGS_TO, 'Maestrocompo', 'c_codgui'),
 			'inventario'=>array(self::BELONGS_TO, 'Inventario', 'c_codactivo'),
+                    'masterequipo'=>array(self::BELONGS_TO, 'Masterequipo', 'c_codgui'),
+                      'detgui'=>array(self::HAS_ONE, 'Detgui', 'idtemp'),
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 

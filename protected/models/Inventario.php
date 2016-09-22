@@ -168,8 +168,8 @@ class Inventario extends ModeloGeneral
 			array('c_estado, rocoto, baja', 'length', 'max'=>1,'on'=>'insert,update,inscarga,updacarga'),
 			array('codestado', 'length', 'max'=>2,'on'=>'insert,update,inscarga,updacarga'),
 			array('codep, coddocu, codeporiginal, codepanterior', 'length', 'max'=>3,'on'=>'insert,update,inscarga,updacarga'),
-			array('creadopor, modificadopor, modelo', 'length', 'max'=>25,'on'=>'insert,update,inscarga,updacarga'),
-			array('creadoel, modificadoel, serie, numerodocumento', 'length', 'max'=>20,'on'=>'insert,update,inscarga,updacarga'),
+			array(' modelo', 'length', 'max'=>25,'on'=>'insert,update,inscarga,updacarga'),
+			array('serie, numerodocumento', 'length', 'max'=>20,'on'=>'insert,update,inscarga,updacarga'),
 			array('codigoaf', 'unique', 'attributeName'=> 'codigoaf', 'caseSensitive' => 'true','message'=>'Este numero de placa ya esta registrada','on'=>'insert,update,inscarga,updacarga'),
 			array('codigosap', 'unique', 'attributeName'=> 'codigosap', 'caseSensitive' => 'true','message'=>'Este codigo ya esta registrada','on'=>'insert,update,inscarga,updacarga'),
 			array('codigoaf', 'length', 'max'=>13,'on'=>'insert,update,inscarga,updacarga'),
@@ -192,7 +192,7 @@ class Inventario extends ModeloGeneral
 				array('proceso', 'required','message'=>'Debes de indicar un proceso','on'=>'procesar'),
 			
 
-			array('idinventario,codmaster, codigo,tipo,c_estado,tienecarter, codep, comentario, fecha,clasefoto, coddocu, creadopor, creadoel, modificadopor, modificadoel,  codigosap, codigoaf, descripcion, marca, modelo, serie, clasefoto, codigopadre, numerodocumento, adicional, codigoafant, posicion, codcentro, codcentrooriginal, codeporiginal, rocoto, codepanterior, codcentroanterior, clase, baja, n_direc', 'safe', 'on'=>'search'),
+			array('idinventario,codmaster, codigo,tipo,c_estado,tienecarter, codep, comentario, fecha,clasefoto, coddocu,   codigosap, codigoaf, descripcion, marca, modelo, serie, clasefoto, codigopadre, numerodocumento, adicional, codigoafant, posicion, codcentro, codcentrooriginal, codeporiginal, rocoto, codepanterior, codcentroanterior, clase, baja, n_direc', 'safe', 'on'=>'search'),
 		   array('codestado,lugares_lugar,codlugar,clasefoto,tienecarter',  'safe', 'on'=>'search'),
 		);
 	}
@@ -646,7 +646,8 @@ public static function canttransporte(){
 	public function beforeSave() {
 				
 		if ($this->isNewRecord) {
-			       $this->codigodoc='390';
+			       $this->coddocu='390';
+                               $this->codestado='10';
 				if(is_null($this->codigosap) or empty($this->codigosap) or trim($this->codigosap=="")) 
 				{
 					/*$criterio=new CDbCriteria;

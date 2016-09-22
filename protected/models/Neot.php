@@ -5,14 +5,15 @@
  *
  * The followings are the available columns in table '{{neot}}':
  * @property string $id
- * @property string $hidot
- * @property string $fec
  * @property string $hidne
- * @property integer $cant
+ * @property string $hidot
+ * @property double $cant
+ * @property string $fecreacion
+ * @property integer $iduser
  *
  * The followings are the available model relations:
- * @property Detgui $hidot0
- * @property Detot $hidne0
+ * @property Detgui $hidne0
+ * @property Detot $hidot0
  */
 class Neot extends CActiveRecord
 {
@@ -32,11 +33,17 @@ class Neot extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('cant', 'numerical', 'integerOnly'=>true),
-			array('hidot, fec, hidne', 'length', 'max'=>20),
+			array('hidne, hidot, cant', 'required'),
+			array('iduser', 'numerical', 'integerOnly'=>true),
+                     array('hidot','exist','allowEmpty' => false, 'attributeName' => 'id', 'className' => 'Detot','message'=>'La referncia al detalle de la Ot no existe','on'=>'insert,update'),
+                        array('hidne','exist','allowEmpty' => false, 'attributeName' => 'id', 'className' => 'Detgui','message'=>'La referncia al detalle de la Ne  no existe','on'=>'insert,update'),
+                     
+			array('cant', 'numerical'),
+			array('hidne, hidot', 'length', 'max'=>20),
+                    array('cant', 'checkcant','on'=>'insert,update'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, hidot, fec, hidne, cant', 'safe', 'on'=>'search'),
+			array('id, hidne, hidot, cant, fecreacion, iduser', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -48,9 +55,8 @@ class Neot extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			//'detot' => array(self::BELONGS_TO, 'Detgui', 'hidot'),
-			'detgui' => array(self::BELONGS_TO, 'Detot', 'hidne'),
-			'detot' => array(self::BELONGS_TO, 'VwOtsimple', 'hidot'),
+			'detgui' => array(self::BELONGS_TO, 'Detgui', 'hidne'),
+			'detot' => array(self::BELONGS_TO, 'VwOtdetalle', 'hidot'),
 		);
 	}
 
@@ -61,10 +67,11 @@ class Neot extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'hidot' => 'Hidot',
-			'fec' => 'Fec',
 			'hidne' => 'Hidne',
+			'hidot' => 'Hidot',
 			'cant' => 'Cant',
+			'fecreacion' => 'Fecreacion',
+			'iduser' => 'Iduser',
 		);
 	}
 
@@ -87,10 +94,11 @@ class Neot extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id,true);
-		$criteria->compare('hidot',$this->hidot,true);
-		$criteria->compare('fec',$this->fec,true);
 		$criteria->compare('hidne',$this->hidne,true);
+		$criteria->compare('hidot',$this->hidot,true);
 		$criteria->compare('cant',$this->cant);
+		$criteria->compare('fecreacion',$this->fecreacion,true);
+		$criteria->compare('iduser',$this->iduser);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -107,4 +115,26 @@ class Neot extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        
+        public function checkcant($attribute,$params) {
+            if($this->hidne >0){
+                $detne=Detgui::model()->findByPk($this->hidne+0);
+                if(!is_null($detne)){
+                    if( !( (($detne->asignadosot-$detne->n_cangui) <= $this->cant) and
+                          (($detne->asignadosot+$detne->n_cangui) >= $this->cant)  
+                        ))
+                       $this->adderror('n_cangui','Esta cantidad ['.$this->cant.' ] mas lo asignado a las Ots ['.$detne->asignadosot.' ]   ,sobrepasa a lo ingresado ['.$detne->n_cangui.' ] : '); 
+                }else{
+                    $this->adderror('n_cangui','La referencia al Ingreso no es la correcta');
+                }
+            }
+		
+	}
+        
+        
+        public function beforesave(){
+            if($this->hidot >0 and is_null($this->idot));
+            $this->idot=Detot::model()->findByPk($this->hidot)->ot->id;
+            return parent::beforesave();
+        }
 }
