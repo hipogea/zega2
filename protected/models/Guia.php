@@ -308,6 +308,7 @@ class Guia extends ModeloGeneral
 			'dirsoc' => array(self::BELONGS_TO, 'Direcciones', 'n_dirsoc'),
 			'testado' => array(self::BELONGS_TO, 'Estado', 'c_estgui'),
 			'choferes' => array(self::BELONGS_TO, 'Choferes', 'c_licon'),
+                   // 'numeroitemstemp'=>array(self::STAT, 'Tempdetgui', 'n_hguia'),
 			//'codocu0' => array(self::BELONGS_TO, 'Estado', 'codocu'),
 			//'cCoclig' => array(self::BELONGS_TO, 'ObjetosCliente', 'c_coclig'),
 			//'codobjeto0' => array(self::BELONGS_TO, 'ObjetosCliente', 'codobjeto'),

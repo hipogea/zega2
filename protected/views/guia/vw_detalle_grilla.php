@@ -58,7 +58,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                         'update'=>
                             array(
                             	   'visible'=>($eseditable=="disabled")?'false':'true',
-								'url'=>'(strlen(trim($data->c_codactivo))>0)?$this->grid->controller->createUrl("/guia/Modificadetalleactivo/", array("id"=>$data->idtemp,"asDialog"=>1,"gridId"=>$this->grid->id,"ed"=>"no",)):$this->grid->controller->createUrl("/guia/Modificadetalle/", array("id"=>$data->idtemp,"asDialog"=>1,"gridId"=>$this->grid->id,"ed"=>"no",))',
+								'url'=>'$this->grid->controller->createUrl("/guia/Modificadetalle/", array("id"=>$data->idtemp,"asDialog"=>1,"gridId"=>$this->grid->id,"ed"=>"no","tipo"=>$data->c_af))',
 								                                    'click'=>('function(){
 							    $("#cru-detalle").attr("src",$(this).attr("href")); 
 							    $("#cru-dialogdetalle").dialog("open");  

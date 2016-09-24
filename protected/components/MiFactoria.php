@@ -2,6 +2,7 @@
 class MiFactoria  {
     CONST DOCUMENTO_SOLPE='340';
     const DOCUMENTO_VALE='101';
+   
 
 
 
@@ -1387,5 +1388,24 @@ if(!$mensaje->save())
                 '25'=>'2025','26'=>'2026','27'=>'2027','28'=>'2028',
             );
     }
+    
+    public static function tiposmateriales(){
+        return ARRAY('M','C','A','V');
+    }
+    
+    public static function material_activo(){
+        return 'A';
+    }
+    public static function material_almacen(){
+        return 'V';
+    }
+    public static function material_rotativo(){
+        return 'C';
+    }
+    public static function material_general(){
+        return 'M';
+    }
+    
+    
 
 }//fin de la clase Mifactoria

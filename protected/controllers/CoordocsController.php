@@ -482,8 +482,9 @@ $cadena="";
 			$mpdf->Output($rutax,'F');
 		}
         elseif($file==2){
-            $this->layout='//layouts/docus';
-            $this->render('web',array('cadena'=>$cadena));
+            $mpdf->Output();
+           // $this->layout='//layouts/docus';
+           // $this->render('web',array('cadena'=>$cadena));
         }
         else{
 			$mpdf->Output();
@@ -630,7 +631,13 @@ public function actioncargacampos(){
     public function actionUpdate($id)
     {
         $model=$this->loadModel($id);
-
+        $regi=New Coordreporte('search_por_hidreporte');
+                $regi->unsetAttributes();  // clear any default values
+		if(isset($_GET['Coordreporte']))
+			$regi->attributes=$_GET['Coordreporte'];
+                
+               // var_dump($_GET);
+               // var_dump($_GET['Coordreporte']);
         if(isset($_POST['Coordocs']))
         {
             $model->attributes=$_POST['Coordocs'];
@@ -655,12 +662,16 @@ public function actioncargacampos(){
 				$this->redirect(array('view', 'id' => $model->id));
 			}
         }
-
+               //if(yii::app()->request->isAjaxRequest){
+                    
+               //}
+            
+                
         if (!empty($_GET['asDialog']))
             $this->layout = '//layouts/iframe';
 
         $this->render('_form',array(
-            'model'=>$model,
+            'model'=>$model,'regi'=>$regi
         ));
 
 

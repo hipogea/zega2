@@ -3,7 +3,7 @@
 /* @var $model Detgui */
 /* @var $form CActiveForm */
 ?>
-<div class="division">
+
 <div class="wide form">
  <?php  
  $habil=$this->eseditablecab($idcabeza);
@@ -40,14 +40,13 @@
 	<div class="row">
 		
 		<?php echo ($model->isNewRecord)?$form->hiddenField($model,'n_hguia',array('value'=>Guia::model()->findbypk($idcabeza)->n_guia)):''; ?>
-
+		
 	</div>
 	
-
-
+	
 	<div class="row">
 				<?php echo $form->labelEx($model,'modo'); ?>
-
+				<?php echo $model->getScenario(); ?>
 					<?php
 							//$opciones=array();
 							if( $esembaracable=$model->guia->direccionesllegada->esembarque=='1'){
@@ -82,74 +81,64 @@
 
 
 		?>
-		<?php echo $form->error($model,'c_estado'); ?>
+		<?php echo $form->error($model,'modo'); ?>
 	</div>
 
-
-
-
-
+	
+	
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'n_cangui'); ?>
-		<?php echo $form->textField($model,'n_cangui',array('size'=>8,'maxlength'=>8, 'disabled'=>$habilitado)); ?>
-		<?php echo $form->error($model,'n_cangui'); ?>
+		<?php echo $form->textField($model,'n_cangui',array('size'=>4,'maxlength'=>4,'value'=>1, 'disabled'=>'disabled')); ?>
+
 	</div>
 
+
+
+
 	<div class="row">
-		<?php echo $form->labelEx($model,'c_codgui'); ?>
-		<?php echo $form->error($model,'c_codgui'); ?>
-		<?php /* echo $form->textField($model,'c_codgui',array('size'=>8,'maxlength'=>8,
-									'ajax'=>array( 
-																		'type'=>'POST', 
+		<?php echo $form->labelEx($model,'c_codactivo'); ?>
+		<?php /* echo $form->textField($model,'c_codactivo',array('size'=>13,'maxlength'=>13,
+																'ajax'=>array(
+																		'type'=>'POST',
 																		//'data'=>array('codsap'=>$model->c_codsap),
-																		'url'=>Yii::app()->createUrl('/Guia/Pintamaterial'),					//
+																		'url'=>Yii::app()->createUrl('/Guia/Pintaactivo'),					//
 																		'replace'=>'#Detgui_c_descri',
-																			) 
-		
-		
-		)); */
-							
-			$this->widget('ext.matchcode1.MatchCode1',array(		
-												'nombrecampo'=>'c_codgui',
-												'pintarcaja'=>1, ///indica si debe de pintar el textbox al iniciar 
-												'ordencampo'=>6,
-												'controlador'=>'Tempdetgui',
-												'relaciones'=>$model->relations(),
-												'tamano'=>8,
-												'habilitado'=>$habil,
-												'model'=>$model,
-												'form'=>$form,
-												'nombredialogo'=>'cru-dialog3',
-												'nombreframe'=>'cru-frame3',
-												'nombrearea'=>'miffuufu',
-											'nombrecampoareemplazar'=>'c_descri',
-											//'comopintar'=>'c_descri',//Significa que va a ha reemplazar al imput del campo
-													));
-				?>
+																			)
+															 ));
+				*/
+		$this->widget('ext.matchcode1.MatchCode1',array(
+			'nombrecampo'=>'c_codactivo',
+			'campoex'=>'codigoaf',
+			'pintarcaja'=>0, ///indica si debe de pintar el textbox al iniciar
+			'ordencampo'=>14,
+			'controlador'=>'Tempdetgui',
+			'relaciones'=>$model->relations(),
+			'tamano'=>13,
+			'model'=>$model,
+			'form'=>$form,
+			'habilitado'=>$habil,
+			'nombredialogo'=>'cru-dialog3',
+			'nombreframe'=>'cru-frame3',
+			'nombrearea'=>'miffwwwufu',
+			'nombrecampoareemplazar'=>'c_descri',
+			//'comopintar'=>'c_descri',//Significa que va a ha reemplazar al imput del campo
+		));
+		?>
 
-													<?php echo $form->error($model,'c_descri'); ?>
-	
 		
+
+
+		<?php echo $form->error($model,'c_codactivo'); ?>
 	</div>
-
 	
 
 	<div class="row">
-		<?php //echo $form->labelEx($model,'c_descri'); ?>
-		<?php //echo $form->textField($model,'c_descri',array('size'=>40,'maxlength'=>40)); ?>
-		<?php //echo $form->error($model,'c_descri'); ?>
-	</div>
+		<?php echo $form->labelEx($model,'c_descri'); ?>
+		<?php echo $form->textField($model,'c_descri',array('size'=>40,'maxlength'=>40)); ?>
+		<?php echo $form->error($model,'c_descri'); ?>
 
-	
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'c_um'); ?>
-		<?php 
-$datos = CHtml::listData(Ums::model()->findAll(),'um','desum');
-echo $form->DropDownList($model,'c_um',$datos, array('empty'=>'--Unidad de medida--', 'disabled'=>$habilitado)  )  ;						     
- ?>
-		<?php echo $form->error($model,'c_um'); ?>
 	</div>
 
 	<div class="row">
@@ -160,12 +149,12 @@ echo $form->DropDownList($model,'c_um',$datos, array('empty'=>'--Unidad de medid
 													          isset(Yii::app()->session['c_codep'])?Yii::app()->session['c_codep']:$model->c_codep=>array('selected'=>true)
 																		)  ) ) ;
 		?>
-		<?php echo $form->error($model,'c_codep'); ?>
+		<?php echo $form->error($model,'c_codep'); ?>m
 	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'c_edgui'); ?>
-		<?php  $datos11 = CHtml::listData(Paraqueva::model()->findAll(array('order'=>'motivo')),'cmotivo','motivo');
+		<?php  $datos11 = CHtml::listData(Motivos::model()->findAll(array('order'=>'desmotivo')),'codmotivo','desmotivo');
 		  echo $form->DropDownList($model,'c_edgui',$datos11, array('empty'=>'--Seleccione un destino--',  'disabled'=>$habilitado,
 													   'options'=>array(
 													          isset(Yii::app()->session['c_edgui'])?Yii::app()->session['c_edgui']:$model->c_edgui=>array('selected'=>true)
@@ -173,53 +162,17 @@ echo $form->DropDownList($model,'c_um',$datos, array('empty'=>'--Unidad de medid
 		?>
 		<?php echo $form->error($model,'c_edgui'); ?>
 	</div>
-
-
-	<div class="row">
-		<?php
-		if(yii::app()->settings->get('transporte','transporte_objenguia')=='1') {
-
-			?>
-			<?php echo $form->labelEx($model, 'codob'); ?>
-			<?php
-					$codpro=Guia::model()->findByPk($idcabeza)->c_coclig;
-			?>
-			<?php $datos15 = CHtml::listData( ObjetosCliente::model()->findAll(array('condition'=>"codpro=:codpro",'params'=>array(':codpro'=>$codpro),'order' => 'nombreobjeto')), 'codobjeto', 'nombreobjeto');
-			echo $form->DropDownList($model, 'codob', $datos15, array('empty' => '--Seleccione un objeto--', 'disabled' => $habilitado,
-				'options' => array(
-					isset(Yii::app()->session['codob']) ? Yii::app()->session['codob'] : $model->c_edgui => array('selected' => true)
-				)));
-			?>
-			<?php echo $form->error($model, 'codob'); ?>
-		<?php
-		         }
-		?>
-	</div>
-
-
-
-
-
-
- <div class="row">
-     <?php echo $form->labelEx($model,'n_hconformidad'); ?>
-     <?php echo $form->textField($model,'n_hconformidad',array('size'=>8,'maxlength'=>8, )); ?>
-     <?php echo $form->error($model,'n_hconformidad'); ?>
- </div>
 	
-		
-	<div class="row">
-		<?php echo $form->labelEx($model,'docref'); ?>
-		<?php echo $form->textField($model,'docref',array('size'=>12,'maxlength'=>12, )); ?>
-		<?php echo $form->error($model,'docref'); ?>
-	</div>
+	
+	
+
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'m_obs'); ?>
 		<?php echo $form->textArea($model,'m_obs',array( 'disabled'=>$habilitado,'rows'=>6, 'cols'=>50)); ?>
 		<?php echo $form->error($model,'m_obs'); ?>
 	</div>
-
+	
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Agregar' : 'Actualizar'); ?>
 	</div>
@@ -240,7 +193,7 @@ echo $form->DropDownList($model,'c_um',$datos, array('empty'=>'--Unidad de medid
         'autoOpen'=>false,
         'modal'=>true,
         'width'=>400,
-        'height'=>300,
+        'height'=>600,
     ),
     ));
 ?>
@@ -250,5 +203,3 @@ echo $form->DropDownList($model,'c_um',$datos, array('empty'=>'--Unidad de medid
 $this->endWidget();
 //--------------------- end new code --------------------------
 ?>
-
-	</div>

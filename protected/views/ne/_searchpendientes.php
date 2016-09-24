@@ -47,8 +47,8 @@
 	
 	
 	<div class="row">
-		<?php echo $form->label($model,'razondestinatario'); ?>
-		<?php echo $form->textField($model,'razondestinatario',array('size'=>25,'maxlength'=>14)); ?>
+		<?php echo $form->label($model,'despro'); ?>
+		<?php echo $form->textField($model,'despro',array('size'=>25,'maxlength'=>14)); ?>
 	</div>
 
 			

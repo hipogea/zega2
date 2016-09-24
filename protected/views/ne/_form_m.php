@@ -237,7 +237,7 @@ echo $form->DropDownList($model,'c_um',$datos, array('empty'=>'--Unidad de medid
         'title'=>'Explorador',
         'autoOpen'=>false,
         'modal'=>true,
-        'width'=>600,
+        'width'=>400,
         'height'=>400,
     ),
     ));

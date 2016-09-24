@@ -54,7 +54,7 @@
 			'maxUploadsReachMessage'=>'No esta permitido cargar mas archivos', // if empty, no message is shown
 			// controls how many files the can select (not upload, for uploads see also: maxUploads)
 			'multipleFileSelection'=>true, // true or false, defaults: true
-			'nombrealt'=>'',
+			//'nombrealt'=>'',
 		));
 
 ECHO CHTml::image(yii::app()->getBaseUrl(false).$model->documentos_archivo_sello_agua.DIRECTORY_SEPARATOR.'NOAPROBADO.JPG','',ARRAY('width'=>80,'height'=>80));
@@ -104,7 +104,7 @@ $this->widget('ext.coco.CocoWidget'
 		'maxUploadsReachMessage'=>'No esta permitido cargar mas archivos', // if empty, no message is shown
 		// controls how many files the can select (not upload, for uploads see also: maxUploads)
 		'multipleFileSelection'=>true, // true or false, defaults: true
-		'nombrealt'=>'',
+		//'nombrealt'=>'',
 	));
 ECHO CHTml::image(yii::app()->getBaseUrl(false).$model->documentos_archivo_sello_agua.DIRECTORY_SEPARATOR.'APROBADO.JPG','',ARRAY('width'=>80,'height'=>80));
 

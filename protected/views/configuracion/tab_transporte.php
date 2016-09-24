@@ -26,3 +26,19 @@
 	<?php echo $form->textField($model,'transporte_rutafotos',array('size'=>40,'maxlength'=>40)); ?>
 	<?php echo $form->error($model,'transporte_rutafotos'); ?>
 </div>
+
+<div class="row">
+		<?php echo $form->labelEx($model,'transporte_motivoot'); ?>
+		<?php $datos=CHTml::listdata(Paraqueva::model()->FindAll(array("order"=>"motivo ASC")),'cmotivo','motivo'); ?>
+
+		<?php echo $form->DropdownList($model,'transporte_motivoot',$datos,array('empty'=>'--Seleccione movimiento--')); ?>
+		<?php echo $form->error($model,'transporte_motivoot'); ?>
+	</div>
+
+<div class="row">
+		<?php echo $form->labelEx($model,'transporte_umdefault'); ?>
+		<?php $datos=CHTml::listdata(Ums::model()->FindAll(array("order"=>"desum ASC")),'um','desum'); ?>
+
+		<?php echo $form->DropdownList($model,'transporte_umdefault',$datos,array('empty'=>'--Seleccione um--')); ?>
+		<?php echo $form->error($model,'transporte_umdefault'); ?>
+	</div>

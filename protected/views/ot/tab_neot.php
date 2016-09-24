@@ -31,6 +31,7 @@ $this->widget('ext.groupgridview.GroupGridView', array(
              array('name'=>'textoactividad','value'=>'$data->detgui->c_descri'),
              // array('name'=>'textoactividad','value'=>'$data->detgui->c_descri'),
               array('name'=>'user','value'=>'yii::app()->user->um->loadUserById($data->iduser)->username'),
+            // array('name'=>'creado','value'=>'yii::app()->user->um->loadUserById($data->iduser)->username'),
            // 'detalleot.ot.objetosmaster.masterequipo.descripcion',
            // 'detalleot.ot.objetosmaster.identificador',
 

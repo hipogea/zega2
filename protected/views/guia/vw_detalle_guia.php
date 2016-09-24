@@ -46,6 +46,23 @@ $this->endWidget();
 					//"id"=>$model->n_direc,
 					"asDialog"=>1,
 					"gridId"=>'detalle-grid',
+                                                "tipo"=>"M"
+				)
+				),
+				'dialog'=>'cru-dialogdetalle',
+				'frame'=>'cru-detalle',
+				'visiblex'=>array($this->editable($model->{$this->campoestado}),ESTADO_CREADO,ESTADO_PREVIO),
+
+			),
+			'tool'=>array(
+				'type'=>'C',
+				'ruta'=>array($this->id.'/creadetalle',array(
+					'idcabeza'=>$modelcabecera->id,
+					'cest'=>$modelcabecera->{$this->campoestado},
+					//"id"=>$model->n_direc,
+					"asDialog"=>1,
+					"gridId"=>'detalle-grid',
+                                                "tipo"=>"C"
 				)
 				),
 				'dialog'=>'cru-dialogdetalle',
@@ -55,10 +72,9 @@ $this->endWidget();
 			),
 			
 			
-			
 			'asset'=>array(
 				'type'=>'C',
-				'ruta'=>array($this->id.'/creadetalleActivo',array(
+				'ruta'=>array($this->id.'/creadetalle',array(
 					'idcabeza'=>$modelcabecera->id,
 					'cest'=>$modelcabecera->{$this->campoestado},
 					//"id"=>$model->n_direc,
@@ -69,6 +85,7 @@ $this->endWidget();
 				'dialog'=>'cru-dialogdetalle',
 				'frame'=>'cru-detalle',
 				'visiblex'=>array($this->editable($model->{$this->campoestado}),ESTADO_CREADO,ESTADO_PREVIO),
+                                               "tipo"=>"A"
 
 			),
 
@@ -98,7 +115,7 @@ $this->endWidget();
 
 			'checklist'=>array(
 				'type'=>'C',
-				'ruta'=>array($this->id.'/agregardespacho',array(
+				'ruta'=>array($this->id.'/agregadespacho',array(
 					'id'=>$modelcabecera->id,
 					//"id"=>$model->n_direc,
 					"asDialog"=>1,

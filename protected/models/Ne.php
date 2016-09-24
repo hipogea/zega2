@@ -430,4 +430,6 @@ class Ne extends ModeloGeneral
 			'criteria'=>$criteria,
 		));
 	}
+        
+        
 }

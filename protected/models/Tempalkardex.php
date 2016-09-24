@@ -36,8 +36,8 @@ class Tempalkardex extends ModeloGeneral
 			codocuref,codcentro,
 			hidvale','required'),
 			//escenario para el buffer
-			array('codart,um,idstatus,idotrokardex,numdocref,idref,preciounit,codestado,
-			codmov,alemi,textolargo,coddoc,fechadoc,valido,codocuref,codcentro,numdocref,fecha,colector,
+			array('codart,um,idstatus,idotrokardex,numdocref,idref,preciounit,codestado,hidref,
+			codmov,alemi,textolargo,coddoc,fechadoc,valido,codocuref,codcentro,numdocref,fecha,colector,checki,
 			hidvale','safe','on'=>'buffer'),
 
 		///escenario para cambios despues de efectuado el vale, son limitados los campos "

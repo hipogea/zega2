@@ -31,6 +31,8 @@ public $documentos_tolerecepfacturaendias=null;
     public $transporte_lugares;
 	public $transporte_objenguia; //permite tener objbetos de referncia en los detalle sde la guia de remision
        public $transporte_rutafotos ;///directorio donde se almacenaran las imagenes de l
+      public $transporte_motivoot ;///directorio donde se almacenaran las imagenes de l
+       public $transporte_umdefault ;///unidad de medida por default 
      
 
 
@@ -91,12 +93,14 @@ public $materiales_verpresolpe;
                                    general_directorioimg,
 				   general_userauto,
                                    general_nregistrosporcarpeta,
+                                   transporte_motivoot,
 					documentos_numeromaxbloqueos,
 					documentos_docmascara,
 					documentos_archivo_sello_agua,
 					documentos_tolerecepfacturaendias,
 					transporte_tiempopermitidohastaentrega,
 					transporte_trancheck,
+                                        transporte_umdefault,
 					inventario_periodocontrol,
 					compras_restringircantidades,
 					af_afmascara,
@@ -115,7 +119,7 @@ public $materiales_verpresolpe;
 					email_cuentahost',
 				'required','message'=>'Este dato es obligatorio'
 			),
-			array('general_nregistrosporcarpeta,transporte_rutafotos,general_directorioimg,transporte_objenguia,general_userauto,inventario_auto,inventario_bloqueado,inventario_mascaraubicaciones,materiales_contabilidad,materiales_verpresolpe,documentos_selloagua,documentos_controlrecepcion,transporte_lugares','safe'),
+			array('transporte_umdefault,transporte_motivoot,general_nregistrosporcarpeta,transporte_rutafotos,general_directorioimg,transporte_objenguia,general_userauto,inventario_auto,inventario_bloqueado,inventario_mascaraubicaciones,materiales_contabilidad,materiales_verpresolpe,documentos_selloagua,documentos_controlrecepcion,transporte_lugares','safe'),
 			array(
 				// array('transporte_tiempopermitidohastaentrega','numerical', 'integerOnly'=>true, 'min'=>0, 'max'=>100),
 				'general_nregistrosporcarpeta,transporte_tiempopermitidohastaentrega', 'numerical', 'integerOnly'=>true,
@@ -147,6 +151,7 @@ public $materiales_verpresolpe;
 			'general_userauto'=>'Uusario para operaciones automaticas',
                     'general_directorioimg'=>'Directorio de almacenamiento de Imagenes',
                     'general_nregistrosporcarpeta'=>'Cantidad registros por carpeta',
+                   
 	'documentos_numeromaxbloqueos'=>'Cant Max Documentos abiertos por usuario',
 			'documentos_selloagua'=>'Sello de agua',
 			'documentos_archivo_sello_agua'=>'Archivo sello agua',
@@ -156,6 +161,8 @@ public $materiales_verpresolpe;
            ' transporte_lugares'=>'Exigir lugares para direccion',
 			'transporte_objenguia'=>'	Referencias a objetos en  el detalle de la guia',
                     'transporte_rutafotos'=>'Directorio de footografias',
+                    'transporte_motivoot'=>'Movimiento de ordenes de trabajo',
+                    'transporte_umdefault'=>'Unidad de medida por default',
 	'inventario_periodocontrol'=>'Periodo Dias control de inventario',
 			'inventario_mascaraubicaciones'=>'Mascara ubicaciones',
 			'inventario_auto'=>'Reposic stock Automa.',

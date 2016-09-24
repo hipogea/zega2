@@ -35,7 +35,7 @@ $('.search-form form').submit(function(){
 
 <?php //echo CHtml::link('Busqueda ','#',array('class'=>'search-button')); ?>
 <div class="search-form" >
-<?php $this->renderPartial('_search',array(
+<?php $this->renderPartial('_searchpendientes',array(
 	'model'=>$model,
 )); ?>
 </div><!-- search-form -->
@@ -66,10 +66,10 @@ $('.search-form form').submit(function(){
 		array('name'=>'d_fectra', 'header'=>'F tr','value'=>'date("d.m.Y",strtotime($data->d_fectra))'),
 		'n_cangui',
           array('name'=>'asignado', 'header'=>'Trat','value'=>'$data->asignado'),
-		array('name'=>'numot', 'header'=>'Ot','value'=>'$data->numero'),
+		//array('name'=>'numot', 'header'=>'Ot','value'=>'$data->numero'),
 		'c_codgui',
 		'c_descri',
-            'nombreobjeto',
+            //'nombreobjeto',
 		//array('name'=>'nomep', 'header'=>'Ref','value'=>'$data->nomep'),
 		//'c_codactivo',
 		//'desmotivo',

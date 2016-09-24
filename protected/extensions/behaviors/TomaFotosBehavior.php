@@ -185,7 +185,7 @@ private function prepara() {
     }
     
     public function recuperaarchivos($rutasabsolutas){
-        $this->prepara();
+        $this->creacarpeta();
         $archivos= CFileHelper::findFiles(
                 $this->_carpetadestino,
                array('fileTypes'=>array($this->_extensionatrabajar),

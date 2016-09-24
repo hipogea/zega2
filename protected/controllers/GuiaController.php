@@ -246,7 +246,7 @@ class GuiaController extends ControladorBase
 
 
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('modificadetallecompo',  'CreadetalleCompo','subearchivo','CreaDocumento','prueba','salir','Imprimirsolo','cargadespacho','creadetalleActivo','agregardespacho','procesardocumento','EditaDocumento','Borraitems','imprimir','Configuraop',
+				'actions'=>array('tomafoto','agregadespacho',  'modificadetallecompo',  'CreadetalleCompo','subearchivo','CreaDocumento','prueba','salir','Imprimirsolo','cargadespacho','creadetalleActivo','agregardespacho','procesardocumento','EditaDocumento','Borraitems','imprimir','Configuraop',
 					'Pide','Modificadetalle','modificadetalleactivo','Visualiza','Excel','imprimirsolo',
 					'defaulte','pintamaterial','Libmasiva','pintaactivo','pintaequipo','Anularentrega',
 					'creadetalle','relaciona','recibevalor','Verdetalle','create','update',
@@ -596,12 +596,20 @@ public function actioncargadespacho(){
 
 	public function actionCreadetalle($idcabeza,$cest)
 	{
-		/*echo "dsdsdsds";
-        var_dump($_GET['cest']);var_dump($cest);yii::app()->end();*/
+		 $id= (integer) MiFactoria::cleanInput($idcabeza);
         if ($cest == '10' OR $cest == '99') {
+     $this->loadModel($id);
 			$model = new Tempdetgui();
 			//var_dump($model->rules());die();
-			$model->setScenario('INS_NUEVO');
+                        $tipo=  MiFactoria::cleanInput($_GET['tipo']);
+                        if(!in_array($tipo,  MiFactoria::tiposmateriales()))
+                                throw new CHttpException(500,__CLASS__.'   '.__FUNCTION__.'  El tipo de material especificado {$tipo} no existe ');
+                                 $model->c_af=$tipo;
+                         
+                               $relaciones=$model->colocaescenario($tipo);
+                               //var_dump($model->relations());die();
+                                 $model->c_um=yii::app()->settings->get('transporte','transporte_umdefault');
+			//$model->setScenario('INS_NUEVO');
 			$model->valorespordefecto($this->documentohijo);
 			if (isset($_POST['Tempdetgui'])) {
 				$model->attributes = $_POST['Tempdetgui'];
@@ -627,8 +635,8 @@ public function actioncargadespacho(){
 			}
 			// if (!empty($_GET['asDialog']))
 			$this->layout = '//layouts/iframe';
-			$this->render('_form_detalle', array(
-				'model' => $model, 'idcabeza' => $idcabeza
+			$this->render('_form_'.strtolower($tipo), array(
+				'model' => $model, 'idcabeza' => $idcabeza,'relaciones'=>$relaciones
 			));
 		} else { //si ya cambio el estado impisble agregar mas items
 			if (!empty($_GET['asDialog']))
@@ -647,11 +655,14 @@ public function actioncargadespacho(){
 		//VERIFICADO PRIMERO SI ES POSIBLE AGREGAR MAS ITEMS
 		
 		//if($cest=='01' OR $cest=='99') {
-		
+             $tipo=  MiFactoria::cleanInput($_GET['tipo']);
+		 $id= (integer) MiFactoria::cleanInput($id);
 		$model=Tempdetgui::Model()->findByPk($id);
 		 if ($model===null)
 		 	  throw new CHttpException(404,'No se encontro ningun documento para estos datos');
-	  	
+	  	 if(!in_array($tipo,  MiFactoria::tiposmateriales()))
+                                throw new CHttpException(500,__CLASS__.'   '.__FUNCTION__.'  El tipo de material especificado {$tipo} no existe '.$tipo);
+                               $relaciones= $model->colocaescenario($tipo);
 
 		// Uncomment the following line if AJAX validation is needed
 		$this->performAjaxValidation1($model);
@@ -687,8 +698,8 @@ public function actioncargadespacho(){
 		 if (!empty($_GET['asDialog']))
 		$this->layout = '//layouts/iframe';
 		
-		$this->render('_form_detalle',array(
-			'model'=>$model, 'idcabeza'=>$model->n_hguia,
+		$this->render('_form_'.strtolower($tipo),array(
+			'model'=>$model, 'idcabeza'=>$model->n_hguia,'relaciones'=>$relaciones
 		));
 		
 		/*} else{ //si ya cambio el estado impisble agregar mas items
@@ -1567,4 +1578,125 @@ public function actionVerdetalle($id)
 		}*/
 
 	}
+        
+        
+        public function actionAgregadespacho($id){
+            $idguia=(integer)  MiFactoria::cleanInput($id);
+            // $idvale=(integer)  MiFactoria::cleanInput($_GET['idvale']);
+             $guia=$this->loadModel($id);
+             $registrodetalle=New Tempdetgui('INS_VALEMASIVO');
+             //$vale=  Almacendocs::model()->findBypK($idvale);
+            // if(is_null($vale))
+               //  throw new CHttpException(500,'No se encontro ningun documento Vale para estos datos '.$idvale);
+             //var_dump($_POST);
+             if(isset($_POST['Tempdetgui'])){
+                    $autoIdAll = $_POST['cajita'];
+                    //$estado=$guia->{$this->campoestado};
+		 if(in_array($guia->{$this->campoestado},array(ESTADO_CREADO,ESTADO_PREVIO)))
+			 {
+			//$logi="";
+                        $mensaje="";	
+                        //var_dump($autoIdAll);die();
+                        $items=$guia->numeroitems;
+                     foreach($autoIdAll as $autoId)
+					{
+                                            
+                                            $modelodespacho=Despacho::model()->findBypK($autoId);
+                                           $modelodetalle=New Tempdetgui('INS_VALE');
+			
+                                            $modelodetalle->setAttributes(
+                                                    array(
+                                                        'c_af'=>  MiFactoria::material_almacen(),
+                                                        'c_itguia'=>str_pad($items+1,3,"0",STR_PAD_LEFT),
+                                                        'n_hguia'=>$guia->id,
+                                                        'hidref'=>$modelodespacho->id,
+                                                        'n_cangui'=>$modelodespacho->getcantidadadespachar(),
+                                                        'c_codgui'=>$modelodespacho->kardex->codart,
+                                                         'c_edgui'=>$_POST['Tempdetgui']['c_edgui'],
+                                                         'c_descri'=>$modelodespacho->kardex->maestro->descripcion,
+                                                          'c_um'=>$modelodespacho->kardex->um,
+                                                        'c_codep'=>$_POST['Tempdetgui']['c_codep'],
+                                                         'c_estado'=>ESTADO_PREVIO,
+                                                          'idusertemp'=>yii::app()->user->id,
+                                                         'codocu'=>$this->documentohijo,
+                                                            'codob'=>$_POST['Tempdetgui']['codob'],
+                                                    )
+                                                    );
+					if($modelodetalle->save()){
+                                            $items+=1;
+                                           // $logi.="1";
+                                        }else{
+                                             //$logi.="0";
+                                             $mensaje.=yii::app()->mensajes->getErroresItem($modelodetalle->getErrors());
+                                             
+                                            MiFactoria::Mensaje('error',yii::app()->mensajes->getErroresItem($modelodetalle->getErrors()));
+                                        }
+                                        
+                                            unset($modelodetalle);
+                                        
+                                        
+					}
+                                        //var_dump($mensaje);die();
+                                       //ahora si es que no hay errores a cerrar el cuadro de dialogo 
+                                            if(strlen($mensaje)==0){  
+                                                echo CHtml::script("window.parent.$('#cru-dialogdetalle').dialog('close');
+                                                                 window.parent.$('#cru-detalle').attr('src','');
+								window.parent.$.fn.yiiGridView.update('detalle-grid');
+								");
+                                                Yii::app()->end();
+                                            }
+													//Close the dialog, reset the iframe and update the grid
+								
+														//Yii::app()->end();
+							  
+                                        
+			} ELSE {
+			 yii::app()->user->setFlash('error',' El estado del documento no permite borrar el Item');
+		   }
+             
+             }
+            
+             // if (!empty($_GET['asDialog']))
+		$this->layout = '//layouts/iframe';
+		$this->render('_form_despacho',array(
+			'model'=>$registrodetalle, 'guia'=>$guia
+		));
+             
+        }
+        
+        public function actiontomafoto($id){
+      $detalle=  Tempdetgui::model()->findByPk((integer)  MiFactoria::cleanInput($id));  
+      if(!is_null($detalle)){          
+          if(isset($_FILES['webcam']['tmp_name']))
+              {
+              $nombretemp= Yii::getPathOfAlias('webroot').
+                      yii::app()->settings->get('general','general_directorioimg').DIRECTORY_SEPARATOR;
+              $nombretemp.=(microtime(true)*10000).yii::app()->user->id.'.jpg';
+              //throw new CHttpException(500,'ver     '.$nombretemp); 
+             if( move_uploaded_file(
+                      $_FILES['webcam']['tmp_name'],
+                     $nombretemp
+                      ))
+                   // throw new CHttpException(500,'eroor      '.$_FILES['webcam']['tmp_name']); 
+              //echo $_FILES['webcam']['tmp_name'];die();
+               $detalle->colocaarchivo($nombretemp);
+               unlink($nombretemp);
+              //move_uploaded_file($_FILES['webcam']['tmp_name'],Yii::getPathOfAlias('webroot').'/images/webcam.jpg');
+                           
+					//Close the dialog, reset the iframe and update the grid
+					echo CHtml::script(     "window.parent.$('#cru-dialog3').dialog('close');
+								window.parent.$('#cru-frame3').attr('src','');"
+                                                            );
+				
+                                yii::app()->end();
+                }            
+                                
+          if (!empty($_GET['asDialog']))
+		$this->layout = '//layouts/iframe';
+		$this->render('//site/subefotos',array('model'=>$detalle));
+         
+      }else{
+         	throw new CHttpException(500,'No se encontro el item id del item de la Gr'); 
+      }
+    }
 }

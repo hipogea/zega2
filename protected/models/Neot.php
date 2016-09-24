@@ -41,6 +41,7 @@ class Neot extends CActiveRecord
 			array('cant', 'numerical'),
 			array('hidne, hidot', 'length', 'max'=>20),
                     array('cant', 'checkcant','on'=>'insert,update'),
+                     array('hidot', 'checkobjeto','on'=>'insert,update'), //checkar el remitente VS el cliente en la OT, ademeas checkar el objeto ne vs el Objeto de la OT
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, hidne, hidot, cant, fecreacion, iduser', 'safe', 'on'=>'search'),
@@ -174,4 +175,27 @@ class Neot extends CActiveRecord
             $this->idot=Detot::model()->findByPk($this->hidot)->ot->id;
             return parent::beforesave();
         }
+        
+         public function checkobjeto($attribute,$params) {
+            if($this->hidne >0){
+                $detne=Detgui::model()->findByPk($this->hidne+0);
+                if(!is_null($detne)){
+                  $orden=Ot::model()->findByPk($this->hidot+0);
+                    if(!is_null($orden)){
+                        if(!(trim($orden->codpro)==trim($detne->ne->c_coclig)))
+                            $this->adderror('hidot','La referencia al cliente en la Ot no coincide con el emisor del ingreso'); 
+                           if(!(trim($orden->objetosmaster->objetoscliente->codobjeto)==trim($detne->codob)))
+                               $this->adderror('hidot','La referencia al objeto en la Ot :  ['.$orden->objetosmaster->objetoscliente->codobjeto.'] ['.$orden->objetosmaster->objetoscliente->nombreobjeto.' ] no coincide con el objeto del emisor del ingreso [ '.$detne->codob.' ]      '); 
+                               
+                    }else{
+                       $this->adderror('hidot','La referencia a la Ot no existe'); 
+                    }
+                    
+                }else{
+                    $this->adderror('n_cangui','La referencia al Ingreso no es la correcta');
+                }
+            }
+		
+	}
+        
 }

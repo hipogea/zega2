@@ -45,8 +45,10 @@ class Despacho extends CActiveRecord
 	{
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
-		return array(
-			array('hidpunto, hidkardex, fechacreac', 'required'),
+		return array( 
+                    array('vigente','safe','on'=>'vigencia'),
+                       array('hidpunto, hidkardex, fechacreac', 'required','on'=>'insert,update'),
+			array('hidpunto, hidkardex', 'required','on'=>'insert,update'),
 			array('hidpunto, iduser', 'numerical', 'integerOnly'=>true),
 			array('hidkardex', 'length', 'max'=>20),
 			array('descripcion', 'length', 'max'=>60),
@@ -68,6 +70,7 @@ class Despacho extends CActiveRecord
 			'responsable' => array(self::BELONGS_TO, 'Trabajadores', 'responsable'),
 			'kardex' => array(self::BELONGS_TO, 'Alkardex', 'hidkardex'),
 			'punto' => array(self::BELONGS_TO, 'Puntodespacho', 'hidpunto'),
+                    'cantdespachada' => array(self::STAT, 'Despachoguia', 'hidespacho','select'=>'sum(t.cant)'),
 		);
 	}
 
@@ -112,4 +115,12 @@ class Despacho extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+        
+        public function getcantidadadespachar(){
+            if(!$this->isNewRecord){
+                return abs($this->kardex->cant)-$this->cantdespachada;
+            }else{
+                return 0;
+            }
+        }
 }

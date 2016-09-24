@@ -35,7 +35,7 @@
         'title'=>'Crear item',
         'autoOpen'=>false,
         'modal'=>true,
-        'width'=>500,
+        'width'=>900,
         'height'=>500,
 		'show'=>'Transform',
     ),
@@ -61,6 +61,7 @@ $this->endWidget();
 					//"id"=>$model->n_direc,
 					"asDialog"=>1,
 					"gridId"=>'detalle-grid',
+                                                "tipo"=>"M",
 				)
 				),
 				'dialog'=>'cru-dialogdetalle',
@@ -71,12 +72,13 @@ $this->endWidget();
                                                 
                             'tool'=>array(
 				'type'=>'C',
-				'ruta'=>array('guia/CreadetalleCompo',array(
+				'ruta'=>array('guia/Creadetalle',array(
 					'idcabeza'=>$modelcabecera->id,
 					'cest'=>$modelcabecera->{$this->campoestado},
 					//"id"=>$model->n_direc,
 					"asDialog"=>1,
 					"gridId"=>'detalle-grid',
+                                                "tipo"=>"C",
 				)
 				),
 				'dialog'=>'cru-dialogdetalle',
@@ -88,12 +90,13 @@ $this->endWidget();
                                                 
 			'asset'=>array(
 				'type'=>'C',
-				'ruta'=>array('guia/creadetalleActivo',array(
+				'ruta'=>array('guia/creadetalle',array(
 					'idcabeza'=>$modelcabecera->id,
 					'cest'=>$modelcabecera->{$this->campoestado},
 					//"id"=>$model->n_direc,
 					"asDialog"=>1,
 					"gridId"=>'detalle-grid',
+                                                "tipo"=>"A",
 				)
 				),
 				'dialog'=>'cru-dialogdetalle',

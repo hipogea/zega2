@@ -1,9 +1,9 @@
+<?php 
 
-
-<?php $this->widget('zii.widgets.grid.CGridView', array(
+$this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'coordreporte-grid',
-	'dataProvider'=>Coordreporte::model()->search_por_hidreporte($idcabeza),
-	//'filter'=>$model,
+	'dataProvider'=>$regi->search_por_hidreporte($idcabeza),
+	'filter'=>$regi,
 	'cssFile' => Yii::app()->getTheme()->baseUrl.'/css/grilla_naranja.css',
 
 	'columns'=>array(

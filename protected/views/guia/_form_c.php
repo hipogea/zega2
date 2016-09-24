@@ -62,6 +62,23 @@
 	'visiblex' => array('10'),
 
 	),
+            
+            'camera' => array(
+                            'type' => 'C',
+                            'ruta' => array($this->id . '/tomafoto', array(
+                                'id' => $model->idtemp,
+                                //"id"=>$model->n_direc,
+                                "asDialog" => 1,
+                                "gridId" => 'detalle-grid',
+                            )
+                            ),
+                            'dialog' => 'cru-dialog3',
+                            'frame' => 'cru-frame3',
+                            'visiblex' => array('10'),
+
+                        ), 
+            
+            
 
 	);
 
@@ -150,20 +167,21 @@
 																		'replace'=>'#Detgui_c_descri',
 																			)
 															 ));
-				*/
+				echo "<br><br><br>";
+              //  var_dump($relaciones);	echo "<br><br><br>";var_dump($model->relations());die();*/
 		$this->widget('ext.matchcode1.MatchCode1',array(
 			'nombrecampo'=>'c_codgui',
 			'campoex'=>'codigo',
 			'pintarcaja'=>0, ///indica si debe de pintar el textbox al iniciar
 			'ordencampo'=>3,
 			'controlador'=>'Tempdetgui',
-			'relaciones'=>$model->relations(),
-			'tamano'=>10,
+			'relaciones'=>$relaciones,
+			'tamano'=>14,
 			'model'=>$model,
 			'form'=>$form,
 			'habilitado'=>$habil,
 			'nombredialogo'=>'cru-dialog3',
-			'nombreframe'=>'cru-frame3',
+			'nombreframe'=>'cru-frame3',              
 			'nombrearea'=>'miffwwwxufu',
 			'nombrecampoareemplazar'=>'c_descri',
 			//'comopintar'=>'c_descri',//Significa que va a ha reemplazar al imput del campo

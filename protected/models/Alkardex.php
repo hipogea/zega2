@@ -76,8 +76,13 @@ class Alkardex extends ModeloGeneral
 			/*Cuando tinene valoracion LIFO IFO, el monot movido se analiza con lostes			 */
 			if (IN_ARRAY($this->maestrodetalle->controlprecio, ARRAY('F', 'L')) ) {
 				     if($this->alkardex_almacenmovimientos->esconsumo=='1' AND !($this->codmov==CODIGO_MOVIMIENTO_SALIDA_AUTOMATICA_RQ)){ //sOLO EN LE CASO DE LA TENCION RQ NO SE CALCULA POR LOTES , SE CALULA DIRECTAMETNE DE LA COMPRA
-						 $vasriab = $this->alkardex_alinventario->costealote( abs($this->cantidadbase()),$this->maestrodetalle->controlprecio) *
-							 $conversionmoneda*gmp_sign((integer)round($this->cantidadbase(),4)) ;
+						 $vasriab = $this->alkardex_alinventario->costealote( abs($this->cantidadbase()),
+                                                                                                        $this->maestrodetalle->controlprecio
+                                                                                                    ) *
+                                                                                                $conversionmoneda*
+                                                                                                $this->alkardex_almacenmovimientos->signo
+                                                                                       // gmp_sign((integer)round($this->cantidadbase(),4)
+                                                                                                 ;
 						// echo "Esta ES LA OP1         ".$vasriab; die();
 						 //$vasriab = $this->montobase();
 					 }elseIF($this->codmov==CODIGO_MOVIMIENTO_SALIDA_AUTOMATICA_RQ){
@@ -87,6 +92,7 @@ class Alkardex extends ModeloGeneral
 					 }ELSE{
 						// echo "Esta ES LA OP4"; die();
 						// $vasriab = $this->montobase();
+                                             //gmp_sig
 						 $vasriab =($this->idotrokardex > 0)?Alkardex::model()->findByPk($this->idotrokardex)->montomovido*-1: $this->montobase(); //Se trata de anulaciones  O PARES
 						 ///Si tiene par  se coloca le mismo noto base
 						 //Si no tiene par colocar el monrto base
@@ -478,10 +484,14 @@ class Alkardex extends ModeloGeneral
 
 		/*  Nos aseguramos que no se dulpiquen los procesos, solo efectuarlos despues de la insercion
 		del registro nuevo, mas no en los siguientes updates */
-		if(count($this->oldAttributes)==0)
+            if(!in_array($this->getScenario(),arrAy('transporte'))){
+                   
+	if(count($this->oldAttributes)==0)
 		$this->mueveadicionales();
 		//$this->refresh();
 		//var_dump($this->attributes);yii::app()->end();
+        
+            }
 		return parent::afterSave();
 	}
 
@@ -489,7 +499,9 @@ class Alkardex extends ModeloGeneral
 	//public $conservarvalor=0; //Opcionpa reaverificar si se quedan lo valores predfindos en sesiones
 	public function beforeSave()
 	{
-
+               if(!in_array($this->getScenario(),arrAy('transporte'))){
+                   
+               
 
 		if ($this->isNewRecord) {
 			$this->codestado = '10';
@@ -505,7 +517,7 @@ class Alkardex extends ModeloGeneral
             */
 		}
 		//var_dump($this->alkardex_alinventario);die();
-
+                    $this->montomovido = $this->getMonto();
 
 		//if(!($this->codart==yii::app()->settings->get('materiales','materiales_codigoservicio')))
 		//$sig=$this->alkardex_almacenmovimientos->signo;
@@ -513,10 +525,12 @@ class Alkardex extends ModeloGeneral
 		$sig = -1;*/
 		//$sig=($this->codmov=='11')?-1:1;
 		//var_dump($this->montomovido);
-		$this->montomovido = $this->getMonto();
+		
 		//var_dump($this->id);
 		//var_dump($this->montomovido);yii::app()->end();
 		//print_r($this->attributes);yii::app()->end();
+                
+        }
 		return parent::beforesave();
 	}
 
@@ -885,12 +899,13 @@ class Alkardex extends ModeloGeneral
 			array('solicitante', 'length', 'max' => 18),
 			array('fecha,idref, fechadoc,valido,checki, hidvale,montomovido', 'safe'),
 
-
+                        array('checki','safe','on'=>'transporte'),
+                    
 			/*  escenario para el buffer
 			//escenario para el buffer*/
 			array('codart,um,idstatus,numdocref,idref,idotrokardex,preciounit,codestado,
-			codmov,alemi,textolargo,coddoc,fechadoc,valido,
-			codocuref,codcentro,numdocref,fecha,
+			codmov,alemi,textolargo,coddoc,fechadoc,valido,hidref,
+			codocuref,codcentro,numdocref,fecha,checki,
 			hidvale,preciounit', 'safe', 'on' => 'buffer'),
 
 

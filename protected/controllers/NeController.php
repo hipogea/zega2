@@ -235,7 +235,7 @@ class NeController extends ControladorBase
 
 
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array( 'asignaot',  'relacionaot','CreaDocumento','salir','Imprimirsolo','cargadespacho','creadetalleActivo','agregardespacho','procesardocumento','EditaDocumento','Borraitems','imprimir','Configuraop',
+				'actions'=>array('pendientes', 'lista','asignaot',  'relacionaot','CreaDocumento','salir','Imprimirsolo','cargadespacho','creadetalleActivo','agregardespacho','procesardocumento','EditaDocumento','Borraitems','imprimir','Configuraop',
 					'Pide','Modificadetalle','Visualiza','Excel','imprimirsolo',
 					'defaulte','pintamaterial','Libmasiva','pintaactivo','pintaequipo','Anularentrega',
 					'creadetalle','relaciona','recibevalor','Verdetalle',
@@ -706,26 +706,32 @@ class NeController extends ControladorBase
 
 	public function actionCreadetalle($idcabeza,$cest)
 	{
-		if($cest=='10' OR $cest=='99') {
-			$model=new Tempdetgui();
-			$model->setScenario('INS_NUEVO');
+		 $id= (integer) MiFactoria::cleanInput($idcabeza);
+        if ($cest == '10' OR $cest == '99') {
+     $this->loadModel($id);
+			$model = new Tempdetgui();
+			//var_dump($model->rules());die();
+                        $tipo=  MiFactoria::cleanInput($_GET['tipo']);
+                        if(!in_array($tipo,  MiFactoria::tiposmateriales()))
+                                throw new CHttpException(500,__CLASS__.'   '.__FUNCTION__.'  El tipo de material especificado {$tipo} no existe ');
+                                $model->colocaescenario($tipo);
+                                $model->c_af=$tipo;
+			//$model->setScenario('INS_NUEVO');
 			$model->valorespordefecto($this->documentohijo);
-			if(isset($_POST['Tempdetgui']))		{
-				$model->attributes=$_POST['Tempdetgui'];
-				$model->codocu=$this->documentohijo; ///detalle guia
-				$model->n_hguia=$idcabeza;
+			if (isset($_POST['Tempdetgui'])) {
+				$model->attributes = $_POST['Tempdetgui'];
+				$model->codocu = $this->documentohijo; ///detalle guia
+				$model->n_hguia = $idcabeza;
 				//crietria para filtrar la cantidad de items del detalle
-				$criterio=new CDbCriteria;
-				$criterio->condition="n_hguia=:idguia  ";
-				$criterio->params=array(':idguia'=>$idcabeza);
-				$model->c_itguia=str_pad(Tempdetgui::model()->count($criterio)+1,3,"0",STR_PAD_LEFT);
+				$criterio = new CDbCriteria;
+				$criterio->condition = "n_hguia=:idguia  ";
+				$criterio->params = array(':idguia' => $idcabeza);
+				$model->c_itguia = str_pad(Tempdetgui::model()->count($criterio) + 1, 3, "0", STR_PAD_LEFT);
 				//str_pad($somevariable,$anchocampo,"0",STR_PAD_LEFT);
 				////con esto calculamos el numero de items
 				//echo "  El valor de  ".$idcabeza."       ".$model->n_hguia."   ";
-
-				if($model->save())
-					if (!empty($_GET['asDialog']))
-					{
+				if ($model->save())
+					if (!empty($_GET['asDialog'])) {
 						//Close the dialog, reset the iframe and update the grid
 						echo CHtml::script("window.parent.$('#cru-dialogdetalle').dialog('close');
 													                    window.parent.$('#cru-detalle').attr('src','');
@@ -736,16 +742,19 @@ class NeController extends ControladorBase
 			}
 			// if (!empty($_GET['asDialog']))
 			$this->layout = '//layouts/iframe';
-			$this->render('_form_detalle',array(
-				'model'=>$model, 'idcabeza'=>$idcabeza
+			$this->render('_form_'.strtolower($tipo), array(
+				'model' => $model, 'idcabeza' => $idcabeza
 			));
-		} else{ //si ya cambio el estado impisble agregar mas items
+		} else { //si ya cambio el estado impisble agregar mas items
 			if (!empty($_GET['asDialog']))
 				$this->layout = '//layouts/iframe';
-			$this->render('vw_imposible',array(
-
-			));
+			$this->render('vw_imposible', array());
 		}
+
+			/*$this->render('_form_detalle',array(
+				'model'=>$model, 'idcabeza'=>$idcabeza
+			));
+		*/
 	}
 
 	public function actionModificadetalle($id)
@@ -1567,4 +1576,56 @@ class NeController extends ControladorBase
 	}
 
 
+	public function actionlista()
+	{
+		$model=new VwMovimientos('search');
+		$model->unsetAttributes();  // clear any default values
+		
+		 //$this->performAjaxValidation($model);
+		if(isset($_GET['VwMovimientos'])) {
+			//EN EL CASO DE QUE SEA UNA BUSQUEDA MEDIANTE EL FOMRUALARIO 
+			//if ($model->validate()) {
+			$model->attributes=$_GET['VwMovimientos'];
+			//$model->validate();
+			$proveedor=$model->search();
+			 //  } else {
+			  // echo "que carajo";
+			  // }
+		} else {
+		 // $model->validate();
+				$proveedor=$model->search();
+		 }
+		
+		$this->render('admin',array(
+			'model'=>$model,'proveedor'=>$proveedor,
+		));
+	}
+	
+        
+	public function actionpendientes()
+	{
+		$model=new VwMovpendientes('search_por_salidas');
+		$model->unsetAttributes();  // clear any default values
+		
+		 //$this->performAjaxValidation($model);
+		if(isset($_GET['VwMovpendientes'])) {
+			//EN EL CASO DE QUE SEA UNA BUSQUEDA MEDIANTE EL FOMRUALARIO 
+			//if ($model->validate()) {
+			$model->attributes=$_GET['VwMovpendientes'];
+			//$model->validate();
+			$proveedor=$model->search_por_salida();
+			 //  } else {
+			  // echo "que carajo";
+			  // }
+		} else {
+		 // $model->validate();
+				$proveedor=$model->search_por_salida();
+		 }
+		
+		$this->render('adminpendientes',array(
+			'model'=>$model,'proveedor'=>$proveedor,
+		));
+	}
+	
+        
 }

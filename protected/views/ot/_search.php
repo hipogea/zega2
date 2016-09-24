@@ -10,7 +10,7 @@
 	'action'=>Yii::app()->createUrl($this->route),
 	'method'=>'get',
 )); ?>
-    
+  
   <div class="row">
 		<?php
 		$botones=array(
@@ -39,7 +39,7 @@
 	</div>
 
 	
-	
+	  <div class="panelizquierdo">
     
     <div class="row">
 			<?php echo $form->labelEx($model,'numero'); ?>
@@ -66,7 +66,71 @@
 
 	
 
-    <div class="row">
+  
+
+	  <div class="row">
+			<?php echo $form->labelEx($model,'codpro'); ?>
+			<?php
+			$this->widget('ext.matchcode1.Seleccionavarios',array(
+					'nombrecampo'=>'codpro',
+					//'ordencampo'=>1,
+					'controlador'=>'VwOtsimple',
+					'relaciones'=>$model->relations(),
+					'tamano'=>12,
+					'model'=>$model,
+					'nombremodelo'=>'Clipro',
+					'form'=>$form,
+					'nombredialogo'=>'cru-dialog3',
+					'nombreframe'=>'cru-frame3',
+					//'nombrearea'=>'fehdfj',
+				)
+
+			);
+
+
+			?>
+		</div>
+
+	  <div class="row">
+			<?php echo $form->labelEx($model,'idobjeto'); ?>
+			<?php
+			$this->widget('ext.matchcode1.Seleccionavarios',array(
+					'nombrecampo'=>'idobjeto',
+					//'ordencampo'=>1,
+					'controlador'=>'VwOtsimple',
+					'relaciones'=>$model->relations(),
+					'tamano'=>12,
+					'model'=>$model,
+					'nombremodelo'=>'Objetosmaster',
+					'form'=>$form,
+					'nombredialogo'=>'cru-dialog3',
+					'nombreframe'=>'cru-frame3',
+					//'nombrearea'=>'fehdfj',
+				)
+
+			);
+
+
+			?>
+		</div>
+
+	<div class="row">
+		<?php echo $form->label($model,'codresponsable'); ?>
+		<?php echo $form->textField($model,'codresponsable',array('size'=>6,'maxlength'=>6)); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->label($model,'textocorto'); ?>
+		<?php echo $form->textField($model,'textocorto',array('size'=>40,'maxlength'=>40)); ?>
+	</div>
+
+              <br><br><br>
+	
+
+	
+</div>
+    <div class="panelderecho">
+          <div class="row">
 						<?php echo $form->labelEx($model,'fechacre'); ?>
 
 						<?php $this->widget('zii.widgets.jui.CJuiDatePicker',
@@ -94,9 +158,7 @@
 							)
 						);?>
 		
-					</div>
-					<div class="row">
-							<?php echo $form->labelEx($model,'fechacre1'); ?>
+					
 
 							<?php $this->widget('zii.widgets.jui.CJuiDatePicker',
 								array(
@@ -154,9 +216,7 @@
 							)
 						);?>
 		
-					</div>
-					<div class="row">
-							<?php echo $form->labelEx($model,'fechainicio1'); ?>
+					
 
 							<?php $this->widget('zii.widgets.jui.CJuiDatePicker',
 								array(
@@ -228,9 +288,7 @@
 							)
 						);?>
 		
-					</div>
-					<div class="row">
-							<?php echo $form->labelEx($model,'fechainiprog1'); ?>
+					
 
 							<?php $this->widget('zii.widgets.jui.CJuiDatePicker',
 								array(
@@ -259,7 +317,62 @@
 		
 					</div>
     
-    
+     <div class="row">
+						<?php echo $form->labelEx($model,'fechafin'); ?>
+
+						<?php $this->widget('zii.widgets.jui.CJuiDatePicker',
+							array(
+								'model'=>$model,
+								'attribute'=>'fechafin',
+								'value'=>$model->fechafin,
+								'language' => 'es',
+								'htmlOptions' => array('readonly'=>"readonly"),
+								'options'=>array(
+									'autoSize'=>true,
+									'defaultDate'=>$model->fechafin,
+									'showAnim'=>'fold', // 'show' (the default), 'slideDown', 'fadeIn', 'fold'
+									'showOn'=>'both', // 'focus', 'button', 'both'
+									'buttonImage'=>Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'calendar_1.png',
+									'buttonImageOnly'=>true,
+									'dateFormat'=>'yy-mm-dd',
+									'selectOtherMonths'=>true,
+									'showAnim'=>'slide',
+									'showButtonPanel'=>false,
+									'showOtherMonths'=>true,
+									'changeMonth' => 'true',
+									'changeYear' => 'true',
+								),
+							)
+						);?>
+		
+					
+
+							<?php $this->widget('zii.widgets.jui.CJuiDatePicker',
+								array(
+									'model'=>$model,
+									'attribute'=>'fechafin1',
+									'value'=>$model->fechafin1,
+									'language' => 'es',
+									'htmlOptions' => array('readonly'=>"readonly"),
+									'options'=>array(
+										'autoSize'=>true,
+										'defaultDate'=>$model->fechafin1,
+										'showAnim'=>'fold', // 'show' (the default), 'slideDown', 'fadeIn', 'fold'
+										'showOn'=>'both', // 'focus', 'button', 'both'
+										'buttonImage'=>Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'calendar_1.png',
+										'buttonImageOnly'=>true,
+										'dateFormat'=>'yy-mm-dd',
+										'selectOtherMonths'=>true,
+										'showAnim'=>'slide',
+										'showButtonPanel'=>false,
+										'showOtherMonths'=>true,
+										'changeMonth' => 'true',
+										'changeYear' => 'true',
+									),
+								)
+							);?>
+		
+					</div>
     
     
     
@@ -292,9 +405,7 @@
 							)
 						);?>
 		
-					</div>
-					<div class="row">
-							<?php echo $form->labelEx($model,'fechafinprog1'); ?>
+					
 
 							<?php $this->widget('zii.widgets.jui.CJuiDatePicker',
 								array(
@@ -323,126 +434,7 @@
 		
 					</div>
     
-       <div class="row">
-						<?php echo $form->labelEx($model,'fechafin'); ?>
-
-						<?php $this->widget('zii.widgets.jui.CJuiDatePicker',
-							array(
-								'model'=>$model,
-								'attribute'=>'fechafin',
-								'value'=>$model->fechafin,
-								'language' => 'es',
-								'htmlOptions' => array('readonly'=>"readonly"),
-								'options'=>array(
-									'autoSize'=>true,
-									'defaultDate'=>$model->fechafin,
-									'showAnim'=>'fold', // 'show' (the default), 'slideDown', 'fadeIn', 'fold'
-									'showOn'=>'both', // 'focus', 'button', 'both'
-									'buttonImage'=>Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'calendar_1.png',
-									'buttonImageOnly'=>true,
-									'dateFormat'=>'yy-mm-dd',
-									'selectOtherMonths'=>true,
-									'showAnim'=>'slide',
-									'showButtonPanel'=>false,
-									'showOtherMonths'=>true,
-									'changeMonth' => 'true',
-									'changeYear' => 'true',
-								),
-							)
-						);?>
-		
-					</div>
-					<div class="row">
-							<?php echo $form->labelEx($model,'fechafin1'); ?>
-
-							<?php $this->widget('zii.widgets.jui.CJuiDatePicker',
-								array(
-									'model'=>$model,
-									'attribute'=>'fechafin1',
-									'value'=>$model->fechafin1,
-									'language' => 'es',
-									'htmlOptions' => array('readonly'=>"readonly"),
-									'options'=>array(
-										'autoSize'=>true,
-										'defaultDate'=>$model->fechafin1,
-										'showAnim'=>'fold', // 'show' (the default), 'slideDown', 'fadeIn', 'fold'
-										'showOn'=>'both', // 'focus', 'button', 'both'
-										'buttonImage'=>Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'calendar_1.png',
-										'buttonImageOnly'=>true,
-										'dateFormat'=>'yy-mm-dd',
-										'selectOtherMonths'=>true,
-										'showAnim'=>'slide',
-										'showButtonPanel'=>false,
-										'showOtherMonths'=>true,
-										'changeMonth' => 'true',
-										'changeYear' => 'true',
-									),
-								)
-							);?>
-		
-					</div>
-	
-
-	  <div class="row">
-			<?php echo $form->labelEx($model,'codpro'); ?>
-			<?php
-			$this->widget('ext.matchcode1.Seleccionavarios',array(
-					'nombrecampo'=>'codpro',
-					//'ordencampo'=>1,
-					'controlador'=>'VwOtsimple',
-					'relaciones'=>$model->relations(),
-					'tamano'=>12,
-					'model'=>$model,
-					'nombremodelo'=>'Clipro',
-					'form'=>$form,
-					'nombredialogo'=>'cru-dialog3',
-					'nombreframe'=>'cru-frame3',
-					//'nombrearea'=>'fehdfj',
-				)
-
-			);
-
-
-			?>
-		</div>
-
-	  <div class="row">
-			<?php echo $form->labelEx($model,'idobjeto'); ?>
-			<?php
-			$this->widget('ext.matchcode1.Seleccionavarios',array(
-					'nombrecampo'=>'idobjeto',
-					//'ordencampo'=>1,
-					'controlador'=>'VwOtsimple',
-					'relaciones'=>$model->relations(),
-					'tamano'=>12,
-					'model'=>$model,
-					'nombremodelo'=>'Objetosmaster',
-					'form'=>$form,
-					'nombredialogo'=>'cru-dialog3',
-					'nombreframe'=>'cru-frame3',
-					//'nombrearea'=>'fehdfj',
-				)
-
-			);
-
-
-			?>
-		</div>
-
-	<div class="row">
-		<?php echo $form->label($model,'codresponsable'); ?>
-		<?php echo $form->textField($model,'codresponsable',array('size'=>6,'maxlength'=>6)); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->label($model,'textocorto'); ?>
-		<?php echo $form->textField($model,'textocorto',array('size'=>40,'maxlength'=>40)); ?>
-	</div>
-
-	
-	
-
-	<div class="row">
+      <div class="row">
                                      <?php echo $form->labelEx($model,'codcen'); ?>
 					<?php  $datos = CHtml::listData(Centros::model()->findAll(array('order'=>'nomcen')),'codcen','nomcen');
 					echo $form->DropDownList($model,'codcen',$datos, array('empty'=>'--Seleccione un centro --')  );
@@ -472,7 +464,7 @@
 			?>
 		</div>
 	
-	
+    </div>
 
 	
 

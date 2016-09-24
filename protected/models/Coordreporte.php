@@ -50,6 +50,7 @@ class Coordreporte extends CActiveRecord
 			// @todo Please remove those attributes that should not be searched.
 			array('id, codocu, x, y, font_size, font_family, font_weight, font_color, nombre_campo, lbl_left, lbl_top, lbl_font_size, lbl_font_weight, lbl_font_family, lbl_font_color,esdetalle,visiblelabel,visiblecampo', 'safe', 'on'=>'search'),
 			array('codocu,hidreporte,esdetalle,totalizable,esnumerico,adosaren, x, y,left_,aliascampo,longitudcampo,tipodato, top, font_size, font_family, font_weight, font_color, nombre_campo, lbl_left, lbl_top, lbl_font_size, lbl_font_weight, lbl_font_family,estilo, tienepie, lbl_font_color,visiblelabel,visiblecampo,iduser', 'safe', 'on'=>'insert,update'),
+array('codocu,aliascampo,longitudcampo,tipodato, top, font_size, font_family,  nombre_campo, lbl_left, lbl_top, lbl_font_size, lbl_font_weight, lbl_font_family,estilo, tienepie, lbl_font_color,visiblelabel,visiblecampo,iduser', 'safe', 'on'=>'search_por_hidreporte'),
 
 		);
 	}

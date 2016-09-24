@@ -64,11 +64,11 @@ $this->widget('zii.widgets.grid.CGridView', array(
                         'update'=>
                             array(
                             	   'visible'=>($eseditable=="disabled")?'false':'true',
-                                    'url'=>'$this->grid->controller->createUrl("/guia/Modificadetallecompo/",
+                                    'url'=>'$this->grid->controller->createUrl("/guia/Modificadetalle/",
 										    array("id"=>$data->idtemp,
                                                                                          "asDialog"=>1,
 											"gridId"=>$this->grid->id,
-											"ed"=>"si",
+											"tipo"=>$data->c_af,
 
 											)
 									    )',

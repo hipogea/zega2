@@ -29,11 +29,38 @@
 		<div class="row">
 		<?php echo $form->labelEx($model,'numero'); ?>
 
-			<?php echo $form->textField($model,'numero',array('size'=>12,'maxlength'=>12,'Disabled'=>'Disabled')); ?>
-			<?php echo $form->error($model,'numero');  ?>
+			<?php echo $form->textField($model,'numero',array('size'=>10,'maxlength'=>10,'Disabled'=>'Disabled')); ?>
+			<?php echo $form->textField($model,'textocorto',array('size'=>30,'maxlength'=>40)); ?>
+		<?php echo $form->error($model,'textocorto'); ?>
 	</div>
+        <div class="row">
+            <?php if(!$model->isNewRecord) { ?>
+		<?php echo $form->labelEx($model,'codpro'); ?>
 
+			<?php echo $form->textField($model,'codpro',array('size'=>6,'Disabled'=>'Disabled')); ?>
+                        <?php echo CHTml::textField('despri',$model->clipro->despro,array('size'=>36,'Disabled'=>'Disabled')); ?>
+			
+            <?php }  ?>
+	</div>
+        <div class="row">
+            <?php if(!$model->isNewRecord) { ?>
+		<?php echo $form->labelEx($model,'idobjeto'); ?>
 
+			<?php echo CHTml::textField('objetito',$model->idobjeto,array('size'=>3,'Disabled'=>'Disabled')); ?>
+                        <?php echo CHTml::textField('despriobjeto',$model->objetosmaster->objetoscliente->nombreobjeto,array('size'=>36,'Disabled'=>'Disabled')); ?>
+			
+            <?php }  ?>
+	</div>
+                    
+                    <div class="row">
+            <?php if(!$model->isNewRecord) { ?>
+		
+                    <?php echo $form->labelEx($model,'idobjeto'); ?>
+			<?php echo CHTml::textField('objetito42',$model->objetosmaster->masterequipo->codigo,array('size'=>3,'Disabled'=>'Disabled')); ?>
+                        <?php echo CHTml::textField('despriobjeto2',$model->objetosmaster->masterequipo->descripcion,array('size'=>36,'Disabled'=>'Disabled')); ?>
+			
+            <?php }  ?>
+	</div>
 
 		<div class="row">
 			<?php echo $form->labelEx($model,'fechainiprog'); ?>
@@ -60,18 +87,9 @@
 
 			}
 			?>
-			<?php echo $form->error($model,'fechainiprog'); ?>
-		</div>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'fechacre'); ?>
-		<?php echo $form->textField($model,'fechacre',array('disabled'=>'disabled')); ?>
-		<?php echo $form->error($model,'fechacre'); ?>
-	</div>
-
-
-		<div class="row">
-			<?php echo $form->labelEx($model,'fechafinprog'); ?>
+			<?php //echo $form->error($model,'fechainiprog'); ?>
+		
+			<?php //echo $form->labelEx($model,'fechafinprog'); ?>
 			<?php if ($this->eseditable($model->codestado)=='')
 			{
 				$this->widget('zii.widgets.jui.CJuiDatePicker', array(
@@ -124,12 +142,9 @@
 
 			}
 			?>
-			<?php echo $form->error($model,'fechainicio'); ?>
-		</div>
-
-
-		<div class="row">
-			<?php echo $form->labelEx($model,'fechafin'); ?>
+			<?php //echo $form->error($model,'fechainicio'); ?>
+		
+			<?php // echo $form->labelEx($model,'fechafin'); ?>
 			<?php if ($this->eseditable($model->codestado)=='')
 			{
 				$this->widget('zii.widgets.jui.CJuiDatePicker', array(
@@ -155,7 +170,11 @@
 			?>
 			<?php echo $form->error($model,'fechafin'); ?>
 		</div>
-
+<div class="row">
+		<?php echo $form->labelEx($model,'fechacre'); ?>
+		<?php echo $form->textField($model,'fechacre',array('disabled'=>'disabled')); ?>
+		<?php echo $form->error($model,'fechacre'); ?>
+	</div>
 
 		<div class="row">
 			<?php echo $form->labelEx($model,'codpro'); ?>
@@ -178,10 +197,7 @@
 					)
 
 				);
-			} else{
-				echo CHtml::textField('Sa',$model->clipro->despro,array('disabled'=>'disabled','size'=>40)) ;
-
-			}
+			} 
 			?>
 
 		</div>
@@ -207,11 +223,7 @@
 					)
 
 				);
-			} else{
-				echo $form->textField($model,'idobjeto',array('disabled'=>'disabled','size'=>4)) ;
-				echo CHtml::textField('Saccc',VwObjetos::descripcion($model->idobjeto),array('size'=>60,'disabled'=>'disdabled')) ;
-
-			}
+			} 
 			?>
 			<?php echo $form->error($model,'idobjeto'); ?>
 		</div>
@@ -249,11 +261,7 @@
 			<div class="panelizquierdo">
 
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'textocorto'); ?>
-		<?php echo $form->textField($model,'textocorto',array('size'=>40,'maxlength'=>40)); ?>
-		<?php echo $form->error($model,'textocorto'); ?>
-	</div>
+	
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'textolargo'); ?>

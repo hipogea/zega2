@@ -35,12 +35,14 @@ class Maestrocompo extends ModeloGeneral
 		// will receive user inputs.
 		return array(
 			//eSCENARIO BASICO
-			array('descripcion,codigo,codtipo,marca,modelo,nparte,um,esrotativo','safe','on'=>'BATCH_BASICO_INS,BATCH_BASICO_UPD'),
+			array('descripcion,codigo,codtipo,marca,modelo,nparte,um,esrotativo','safe','on'=>'BATCH_BASICO_INS'),
+                    array('descripcion,codigo,codtipo,marca,modelo,nparte,um','safe','on'=>'BATCH_BASICO_UPD'),
+                    
 			array('descripcion,codtipo,um','required','on'=>'BATCH_BASICO_INS,BATCH_BASICO_UPD'),
 			array('um','checkvalores','on'=>'BATCH_BASICO_UPD'),
 			array('um','exist','allowEmpty' => false, 'attributeName' => 'um', 'className' => 'Ums','message'=>'Esta um no es valida','on'=>'BATCH_BASICO_INS,BATCH_BASICO_UPD'),
 			array('codtipo','exist','allowEmpty' => false, 'attributeName' => 'codtipo', 'className' => 'Maestrotipos','message'=>'Este tipo no existe','on'=>'BATCH_BASICO_INS,BATCH_BASICO_UPD'),
-			array('esrotativo','checkrotativo','on'=>'BATCH_BASICO_UPD'),
+			//array('esrotativo','checkrotativo','on'=>'BATCH_BASICO_UPD'),
 
 
 
@@ -69,7 +71,8 @@ class Maestrocompo extends ModeloGeneral
 
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('codigo, marca, modelo, nparte, um, descripcion,esrotativo,  codtipo', 'safe', 'on'=>'insert,update'),
+			array('codigo, marca, modelo, nparte, um, descripcion,esrotativo,  codtipo', 'safe', 'on'=>'insert'),
+                    array('codigo, marca, modelo, nparte, um, descripcion,codtipo', 'safe', 'on'=>'update'),
 			array('codigo, marca, modelo, nparte, codpadre, um,esrotativo, descripcion, detalle, clase, codmaterial, flag, codtipo', 'safe', 'on'=>'search'),
 		);
              //Escenario para cargar

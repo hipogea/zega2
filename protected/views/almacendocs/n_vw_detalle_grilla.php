@@ -28,6 +28,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			'type'=>'raw',
 			'value'=>'($data->codestado=="98")?CHtml::Image("'.Yii::app()->getTheme()->baseUrl.'/img/tacho1.png"):""',
 		),
+           
 			//'item',
 			//array('name'=>'tipimputacion','header'=>'I'),
 		//	array('name'=>'tipsolpe','header'=>'T'),
@@ -41,6 +42,12 @@ $this->widget('zii.widgets.grid.CGridView', array(
 		'codart',
 		//'c_edgui',	
 		'maestro.descripcion',
+             array(
+			'name'=>'fr',
+			'type'=>'raw',
+			'value'=>'($data->checki=="1")?CHtml::Image("'.Yii::app()->getTheme()->baseUrl.'/img/delivery.png"):""',
+                     'htmlOptions' => array('width' => 30)
+		),
                 //array('name'=>'texto', 'type'=>'raw','header'=>'t','value'=>'(!empty($data->m_obs))?"x":""' ),
                  array('name'=>'comentario', 'type'=>'raw','header'=>'t','value'=>'(!empty($data->textolargo))?CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."texto.png","hola"):""' ),
 

@@ -1,6 +1,6 @@
 <?php
 
-class Detgui extends CActiveRecord
+class Detgui extends ModeloGeneral
 {
 	/**
 	 * Returns the static model of the specified AR class.
@@ -53,8 +53,8 @@ class Detgui extends CActiveRecord
 			array('c_codep', 'required','message'=>'Sin referencia'),
 			array('c_edgui', 'required','message'=>'Llene el destino'),
 			array('docrefext', 'length', 'max'=>15), */
-			array('n_hguia,m_obs,modo,codocu,c_itguia,c_codactivo,c_um,modo,c_codgui,
-			c_um,c_itguia,n_cangui,c_descri,c_edgui,c_codep,n_hconformidad,docref,
+			array('n_hguia,m_obs,modo,codocu,c_itguia,c_codactivo,c_um,modo,c_codgui,hidref,
+			c_um,c_itguia,n_cangui,c_descri,c_edgui,c_codep,n_hconformidad,docref,c_af,
 			cargodevolucion,codlugar', 'safe'),
 		 /*
 			//array('c_codsap', 'checkplaca','on'=>'insert,update'),
@@ -317,4 +317,36 @@ public function search()
 			'criteria'=>$criteria,
 		));
 	}
+        
+        public function aftersave(){
+            if($this->hidref > 0){
+                if($this->cambiocampo('hidref')){
+                   $registrodespacho=  Despacho::model()->findByPk($this->hidref);
+                   $kardex=$registrodespacho->kardex;
+                   $kardex->setScenario('transporte');$kardex->checki='1';$kardex->save();unset($kardex);
+                $registro=New Despachoguia();
+                $registro->setattributes(
+                        array(
+                            'hidespacho'=>$registrodespacho->id,
+                            'hiddetgui'=>$this->id,
+                            'cant'=>$this->n_cangui,
+                        )
+                        );
+                $registro->save();
+                if($registrodespacho->cantdespachada >= $registrodespacho->kardex->cant){
+                     $registrodespacho->setScenario('vigencia');
+                 $registrodespacho->vigente='0';
+                 $registrodespacho->save();
+                } 
+                
+                
+                }
+                
+                   
+                
+            }
+            
+            return parent::aftersave();
+        }
+        
 }

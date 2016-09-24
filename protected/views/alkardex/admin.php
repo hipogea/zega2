@@ -63,9 +63,16 @@ $('.search-form form').submit(function(){
             'htmlOptions' => array('width' => 250)
         ),
 		array(
+			'name'=>'fr',
+			'type'=>'raw',
+			'value'=>'($data->checki=="1")?CHtml::Image("'.Yii::app()->getTheme()->baseUrl.'/img/accept.png").CHtml::Image("'.Yii::app()->getTheme()->baseUrl.'/img/delivery.png"):""',
+                     'htmlOptions' => array('width' => 20)
+		),
+            array(
 			'name'=>'fecha',
 			'header'=>'Fec',
-			'value'=>'date("d.m.Y", strtotime($data->fecha))','htmlOptions'=>array('width'=>'50')
+			'value'=>'date("d.m.Y", strtotime($data->fecha))','htmlOptions'=>array('width'=>'50'),
+                
 		),
 		//'numdoc',
 		//'movimiento',
