@@ -11,11 +11,13 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 -- Volcando estructura de base de datos para nautilus
+DROP DATABASE IF EXISTS `nautilus`;
 CREATE DATABASE IF NOT EXISTS `nautilus` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `nautilus`;
 
 
 -- Volcando estructura para tabla nautilus.activerecordlog
+DROP TABLE IF EXISTS `activerecordlog`;
 CREATE TABLE IF NOT EXISTS `activerecordlog` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `description` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -40,6 +42,7 @@ CREATE TABLE IF NOT EXISTS `activerecordlog` (
 
 
 -- Volcando estructura para tabla nautilus.cruge_authassignment
+DROP TABLE IF EXISTS `cruge_authassignment`;
 CREATE TABLE IF NOT EXISTS `cruge_authassignment` (
   `userid` int(11) NOT NULL,
   `bizrule` text,
@@ -56,6 +59,7 @@ CREATE TABLE IF NOT EXISTS `cruge_authassignment` (
 
 
 -- Volcando estructura para tabla nautilus.cruge_authitem
+DROP TABLE IF EXISTS `cruge_authitem`;
 CREATE TABLE IF NOT EXISTS `cruge_authitem` (
   `name` varchar(64) NOT NULL,
   `type` int(11) NOT NULL,
@@ -69,6 +73,7 @@ CREATE TABLE IF NOT EXISTS `cruge_authitem` (
 
 
 -- Volcando estructura para tabla nautilus.cruge_authitemchild
+DROP TABLE IF EXISTS `cruge_authitemchild`;
 CREATE TABLE IF NOT EXISTS `cruge_authitemchild` (
   `parent` varchar(64) NOT NULL,
   `child` varchar(64) NOT NULL,
@@ -82,6 +87,7 @@ CREATE TABLE IF NOT EXISTS `cruge_authitemchild` (
 
 
 -- Volcando estructura para tabla nautilus.cruge_field
+DROP TABLE IF EXISTS `cruge_field`;
 CREATE TABLE IF NOT EXISTS `cruge_field` (
   `idfield` int(11) NOT NULL AUTO_INCREMENT,
   `fieldname` varchar(20) NOT NULL,
@@ -102,6 +108,7 @@ CREATE TABLE IF NOT EXISTS `cruge_field` (
 
 
 -- Volcando estructura para tabla nautilus.cruge_fieldvalue
+DROP TABLE IF EXISTS `cruge_fieldvalue`;
 CREATE TABLE IF NOT EXISTS `cruge_fieldvalue` (
   `idfieldvalue` int(11) NOT NULL AUTO_INCREMENT,
   `iduser` int(11) NOT NULL,
@@ -118,6 +125,7 @@ CREATE TABLE IF NOT EXISTS `cruge_fieldvalue` (
 
 
 -- Volcando estructura para tabla nautilus.cruge_session
+DROP TABLE IF EXISTS `cruge_session`;
 CREATE TABLE IF NOT EXISTS `cruge_session` (
   `idsession` int(11) NOT NULL AUTO_INCREMENT,
   `iduser` int(11) NOT NULL,
@@ -136,6 +144,7 @@ CREATE TABLE IF NOT EXISTS `cruge_session` (
 
 
 -- Volcando estructura para tabla nautilus.cruge_system
+DROP TABLE IF EXISTS `cruge_system`;
 CREATE TABLE IF NOT EXISTS `cruge_system` (
   `idsystem` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
@@ -161,6 +170,7 @@ CREATE TABLE IF NOT EXISTS `cruge_system` (
 
 
 -- Volcando estructura para tabla nautilus.cruge_user
+DROP TABLE IF EXISTS `cruge_user`;
 CREATE TABLE IF NOT EXISTS `cruge_user` (
   `iduser` int(11) NOT NULL AUTO_INCREMENT,
   `regdate` bigint(30) DEFAULT NULL,
@@ -180,6 +190,7 @@ CREATE TABLE IF NOT EXISTS `cruge_user` (
 
 
 -- Volcando estructura para tabla nautilus.diccionario
+DROP TABLE IF EXISTS `diccionario`;
 CREATE TABLE IF NOT EXISTS `diccionario` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `prefijo` varchar(25) CHARACTER SET utf8 NOT NULL,
@@ -194,6 +205,7 @@ CREATE TABLE IF NOT EXISTS `diccionario` (
 
 
 -- Volcando estructura para tabla nautilus.public_alconversiones
+DROP TABLE IF EXISTS `public_alconversiones`;
 CREATE TABLE IF NOT EXISTS `public_alconversiones` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `um1` varchar(3) DEFAULT NULL,
@@ -215,6 +227,7 @@ CREATE TABLE IF NOT EXISTS `public_alconversiones` (
 
 
 -- Volcando estructura para tabla nautilus.public_alentregas
+DROP TABLE IF EXISTS `public_alentregas`;
 CREATE TABLE IF NOT EXISTS `public_alentregas` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `iddetcompra` bigint(20) DEFAULT NULL,
@@ -237,6 +250,7 @@ CREATE TABLE IF NOT EXISTS `public_alentregas` (
 
 
 -- Volcando estructura para tabla nautilus.public_alinventario
+DROP TABLE IF EXISTS `public_alinventario`;
 CREATE TABLE IF NOT EXISTS `public_alinventario` (
   `codalm` varchar(3) NOT NULL,
   `fechainicio` char(19) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -271,6 +285,7 @@ CREATE TABLE IF NOT EXISTS `public_alinventario` (
 
 
 -- Volcando estructura para tabla nautilus.public_alkardex
+DROP TABLE IF EXISTS `public_alkardex`;
 CREATE TABLE IF NOT EXISTS `public_alkardex` (
   `codart` varchar(10) DEFAULT NULL,
   `codmov` varchar(2) DEFAULT NULL,
@@ -330,6 +345,7 @@ CREATE TABLE IF NOT EXISTS `public_alkardex` (
 
 
 -- Volcando estructura para tabla nautilus.public_alkardextraslado
+DROP TABLE IF EXISTS `public_alkardextraslado`;
 CREATE TABLE IF NOT EXISTS `public_alkardextraslado` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `hidkardexemi` bigint(20) NOT NULL,
@@ -345,6 +361,7 @@ CREATE TABLE IF NOT EXISTS `public_alkardextraslado` (
 
 
 -- Volcando estructura para tabla nautilus.public_almacendocs
+DROP TABLE IF EXISTS `public_almacendocs`;
 CREATE TABLE IF NOT EXISTS `public_almacendocs` (
   `fechavale` date DEFAULT NULL,
   `creadopor` varchar(25) CHARACTER SET utf8 DEFAULT NULL,
@@ -390,6 +407,7 @@ CREATE TABLE IF NOT EXISTS `public_almacendocs` (
 
 
 -- Volcando estructura para tabla nautilus.public_almacenes
+DROP TABLE IF EXISTS `public_almacenes`;
 CREATE TABLE IF NOT EXISTS `public_almacenes` (
   `codalm` varchar(3) NOT NULL,
   `nomal` varchar(35) DEFAULT NULL,
@@ -427,6 +445,7 @@ CREATE TABLE IF NOT EXISTS `public_almacenes` (
 
 
 -- Volcando estructura para tabla nautilus.public_almacenmovimientos
+DROP TABLE IF EXISTS `public_almacenmovimientos`;
 CREATE TABLE IF NOT EXISTS `public_almacenmovimientos` (
   `codmov` varchar(2) NOT NULL,
   `movimiento` varchar(35) DEFAULT NULL,
@@ -460,6 +479,7 @@ CREATE TABLE IF NOT EXISTS `public_almacenmovimientos` (
 
 
 -- Volcando estructura para tabla nautilus.public_almacentransacciones
+DROP TABLE IF EXISTS `public_almacentransacciones`;
 CREATE TABLE IF NOT EXISTS `public_almacentransacciones` (
   `codal` varchar(3) NOT NULL,
   `codmov` varchar(2) NOT NULL,
@@ -474,6 +494,7 @@ CREATE TABLE IF NOT EXISTS `public_almacentransacciones` (
 
 
 -- Volcando estructura para tabla nautilus.public_alreserva
+DROP TABLE IF EXISTS `public_alreserva`;
 CREATE TABLE IF NOT EXISTS `public_alreserva` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `hidesolpe` bigint(20) DEFAULT NULL,
@@ -498,6 +519,7 @@ CREATE TABLE IF NOT EXISTS `public_alreserva` (
 
 
 -- Volcando estructura para tabla nautilus.public_archivador
+DROP TABLE IF EXISTS `public_archivador`;
 CREATE TABLE IF NOT EXISTS `public_archivador` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `codocu` varchar(3) DEFAULT NULL,
@@ -518,6 +540,7 @@ CREATE TABLE IF NOT EXISTS `public_archivador` (
 
 
 -- Volcando estructura para tabla nautilus.public_areas
+DROP TABLE IF EXISTS `public_areas`;
 CREATE TABLE IF NOT EXISTS `public_areas` (
   `codarea` varchar(3) NOT NULL,
   `codsoc` char(1) NOT NULL,
@@ -532,6 +555,7 @@ CREATE TABLE IF NOT EXISTS `public_areas` (
 
 
 -- Volcando estructura para tabla nautilus.public_atencionconsignaciones
+DROP TABLE IF EXISTS `public_atencionconsignaciones`;
 CREATE TABLE IF NOT EXISTS `public_atencionconsignaciones` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `cant` double DEFAULT NULL,
@@ -546,6 +570,7 @@ CREATE TABLE IF NOT EXISTS `public_atencionconsignaciones` (
 
 
 -- Volcando estructura para tabla nautilus.public_atencionfacturacion
+DROP TABLE IF EXISTS `public_atencionfacturacion`;
 CREATE TABLE IF NOT EXISTS `public_atencionfacturacion` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `cant` double NOT NULL DEFAULT '0',
@@ -562,6 +587,7 @@ CREATE TABLE IF NOT EXISTS `public_atencionfacturacion` (
 
 
 -- Volcando estructura para tabla nautilus.public_atencionreserva
+DROP TABLE IF EXISTS `public_atencionreserva`;
 CREATE TABLE IF NOT EXISTS `public_atencionreserva` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `cant` double NOT NULL,
@@ -579,6 +605,7 @@ CREATE TABLE IF NOT EXISTS `public_atencionreserva` (
 
 
 -- Volcando estructura para tabla nautilus.public_bloqueos
+DROP TABLE IF EXISTS `public_bloqueos`;
 CREATE TABLE IF NOT EXISTS `public_bloqueos` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `codocu` char(3) NOT NULL,
@@ -596,6 +623,7 @@ CREATE TABLE IF NOT EXISTS `public_bloqueos` (
 
 
 -- Volcando estructura para tabla nautilus.public_cajachica
+DROP TABLE IF EXISTS `public_cajachica`;
 CREATE TABLE IF NOT EXISTS `public_cajachica` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `hidperiodo` int(11) NOT NULL,
@@ -619,6 +647,7 @@ CREATE TABLE IF NOT EXISTS `public_cajachica` (
 
 
 -- Volcando estructura para tabla nautilus.public_canales
+DROP TABLE IF EXISTS `public_canales`;
 CREATE TABLE IF NOT EXISTS `public_canales` (
   `codcanal` varchar(3) CHARACTER SET utf8 NOT NULL,
   `canal` varchar(40) CHARACTER SET utf8 NOT NULL,
@@ -629,6 +658,7 @@ CREATE TABLE IF NOT EXISTS `public_canales` (
 
 
 -- Volcando estructura para tabla nautilus.public_cargainventariofisico
+DROP TABLE IF EXISTS `public_cargainventariofisico`;
 CREATE TABLE IF NOT EXISTS `public_cargainventariofisico` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `hidpadre` int(11) NOT NULL,
@@ -645,6 +675,7 @@ CREATE TABLE IF NOT EXISTS `public_cargainventariofisico` (
 
 
 -- Volcando estructura para tabla nautilus.public_cargamasiva
+DROP TABLE IF EXISTS `public_cargamasiva`;
 CREATE TABLE IF NOT EXISTS `public_cargamasiva` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `modelo` varchar(60) NOT NULL,
@@ -661,6 +692,7 @@ CREATE TABLE IF NOT EXISTS `public_cargamasiva` (
 
 
 -- Volcando estructura para tabla nautilus.public_cargamasivadet
+DROP TABLE IF EXISTS `public_cargamasivadet`;
 CREATE TABLE IF NOT EXISTS `public_cargamasivadet` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `hidcarga` int(11) NOT NULL,
@@ -682,6 +714,7 @@ CREATE TABLE IF NOT EXISTS `public_cargamasivadet` (
 
 
 -- Volcando estructura para tabla nautilus.public_catvaloracion
+DROP TABLE IF EXISTS `public_catvaloracion`;
 CREATE TABLE IF NOT EXISTS `public_catvaloracion` (
   `codcatval` varchar(4) NOT NULL,
   `descat` varchar(30) DEFAULT NULL,
@@ -693,6 +726,7 @@ CREATE TABLE IF NOT EXISTS `public_catvaloracion` (
 
 
 -- Volcando estructura para tabla nautilus.public_cc
+DROP TABLE IF EXISTS `public_cc`;
 CREATE TABLE IF NOT EXISTS `public_cc` (
   `codc` varchar(12) NOT NULL,
   `cc` varchar(30) DEFAULT NULL,
@@ -720,6 +754,7 @@ CREATE TABLE IF NOT EXISTS `public_cc` (
 
 
 -- Volcando estructura para tabla nautilus.public_ccgastos
+DROP TABLE IF EXISTS `public_ccgastos`;
 CREATE TABLE IF NOT EXISTS `public_ccgastos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `ceco` varchar(12) DEFAULT NULL,
@@ -744,6 +779,7 @@ CREATE TABLE IF NOT EXISTS `public_ccgastos` (
 
 
 -- Volcando estructura para tabla nautilus.public_centros
+DROP TABLE IF EXISTS `public_centros`;
 CREATE TABLE IF NOT EXISTS `public_centros` (
   `codcen` varchar(4) NOT NULL,
   `codsoc` varchar(2) NOT NULL,
@@ -756,6 +792,7 @@ CREATE TABLE IF NOT EXISTS `public_centros` (
 
 
 -- Volcando estructura para tabla nautilus.public_choferes
+DROP TABLE IF EXISTS `public_choferes`;
 CREATE TABLE IF NOT EXISTS `public_choferes` (
   `nombre` varchar(20) DEFAULT NULL,
   `brevete` varchar(10) NOT NULL,
@@ -770,6 +807,7 @@ CREATE TABLE IF NOT EXISTS `public_choferes` (
 
 
 -- Volcando estructura para tabla nautilus.public_clasecc
+DROP TABLE IF EXISTS `public_clasecc`;
 CREATE TABLE IF NOT EXISTS `public_clasecc` (
   `codclasecolector` char(2) NOT NULL,
   `desclasecolector` varchar(40) NOT NULL,
@@ -781,6 +819,7 @@ CREATE TABLE IF NOT EXISTS `public_clasecc` (
 
 
 -- Volcando estructura para tabla nautilus.public_clipro
+DROP TABLE IF EXISTS `public_clipro`;
 CREATE TABLE IF NOT EXISTS `public_clipro` (
   `codpro` varchar(6) NOT NULL,
   `despro` varchar(100) DEFAULT NULL,
@@ -803,6 +842,7 @@ CREATE TABLE IF NOT EXISTS `public_clipro` (
 
 
 -- Volcando estructura para tabla nautilus.public_confignoticias
+DROP TABLE IF EXISTS `public_confignoticias`;
 CREATE TABLE IF NOT EXISTS `public_confignoticias` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `iduseradm` int(11) NOT NULL,
@@ -814,6 +854,7 @@ CREATE TABLE IF NOT EXISTS `public_confignoticias` (
 
 
 -- Volcando estructura para tabla nautilus.public_contactos
+DROP TABLE IF EXISTS `public_contactos`;
 CREATE TABLE IF NOT EXISTS `public_contactos` (
   `c_hcod` varchar(6) NOT NULL,
   `c_nombre` varchar(30) NOT NULL,
@@ -833,6 +874,7 @@ CREATE TABLE IF NOT EXISTS `public_contactos` (
 
 
 -- Volcando estructura para tabla nautilus.public_contactosadicio
+DROP TABLE IF EXISTS `public_contactosadicio`;
 CREATE TABLE IF NOT EXISTS `public_contactosadicio` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `hidcontacto` int(11) NOT NULL,
@@ -851,6 +893,7 @@ CREATE TABLE IF NOT EXISTS `public_contactosadicio` (
 
 
 -- Volcando estructura para tabla nautilus.public_coordocs
+DROP TABLE IF EXISTS `public_coordocs`;
 CREATE TABLE IF NOT EXISTS `public_coordocs` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `xgeneral` int(5) NOT NULL,
@@ -885,6 +928,7 @@ CREATE TABLE IF NOT EXISTS `public_coordocs` (
 
 
 -- Volcando estructura para tabla nautilus.public_coordreporte
+DROP TABLE IF EXISTS `public_coordreporte`;
 CREATE TABLE IF NOT EXISTS `public_coordreporte` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `codocu` varchar(3) NOT NULL,
@@ -923,6 +967,7 @@ CREATE TABLE IF NOT EXISTS `public_coordreporte` (
 
 
 -- Volcando estructura para tabla nautilus.public_cuentas
+DROP TABLE IF EXISTS `public_cuentas`;
 CREATE TABLE IF NOT EXISTS `public_cuentas` (
   `codcuenta` varchar(18) CHARACTER SET utf8 NOT NULL,
   `descuenta` varchar(35) CHARACTER SET utf8 NOT NULL,
@@ -941,6 +986,7 @@ CREATE TABLE IF NOT EXISTS `public_cuentas` (
 
 
 -- Volcando estructura para tabla nautilus.public_dcajachica
+DROP TABLE IF EXISTS `public_dcajachica`;
 CREATE TABLE IF NOT EXISTS `public_dcajachica` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `hidcaja` int(11) NOT NULL,
@@ -969,6 +1015,7 @@ CREATE TABLE IF NOT EXISTS `public_dcajachica` (
 
 
 -- Volcando estructura para tabla nautilus.public_departamentos
+DROP TABLE IF EXISTS `public_departamentos`;
 CREATE TABLE IF NOT EXISTS `public_departamentos` (
   `id` int(11) NOT NULL,
   `coddepa` varchar(2) NOT NULL,
@@ -981,6 +1028,7 @@ CREATE TABLE IF NOT EXISTS `public_departamentos` (
 
 
 -- Volcando estructura para tabla nautilus.public_desolcot
+DROP TABLE IF EXISTS `public_desolcot`;
 CREATE TABLE IF NOT EXISTS `public_desolcot` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `hidsolcot` int(11) NOT NULL,
@@ -998,6 +1046,7 @@ CREATE TABLE IF NOT EXISTS `public_desolcot` (
 
 
 -- Volcando estructura para tabla nautilus.public_desolpe
+DROP TABLE IF EXISTS `public_desolpe`;
 CREATE TABLE IF NOT EXISTS `public_desolpe` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `numero` varchar(10) NOT NULL,
@@ -1055,6 +1104,7 @@ CREATE TABLE IF NOT EXISTS `public_desolpe` (
 
 
 -- Volcando estructura para tabla nautilus.public_desolpecompra
+DROP TABLE IF EXISTS `public_desolpecompra`;
 CREATE TABLE IF NOT EXISTS `public_desolpecompra` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `iddesolpe` bigint(20) DEFAULT NULL,
@@ -1075,6 +1125,7 @@ CREATE TABLE IF NOT EXISTS `public_desolpecompra` (
 
 
 -- Volcando estructura para tabla nautilus.public_despacho
+DROP TABLE IF EXISTS `public_despacho`;
 CREATE TABLE IF NOT EXISTS `public_despacho` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `hidpunto` int(11) NOT NULL,
@@ -1097,7 +1148,27 @@ CREATE TABLE IF NOT EXISTS `public_despacho` (
 -- La exportación de datos fue deseleccionada.
 
 
+-- Volcando estructura para tabla nautilus.public_despachoguia
+DROP TABLE IF EXISTS `public_despachoguia`;
+CREATE TABLE IF NOT EXISTS `public_despachoguia` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `hidespacho` bigint(20) DEFAULT '0',
+  `hiddetgui` bigint(20) DEFAULT NULL,
+  `cant` bigint(20) DEFAULT NULL,
+  `fecha` datetime DEFAULT NULL,
+  `iduser` smallint(6) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `Índice 2` (`hidespacho`),
+  KEY `Índice 3` (`hiddetgui`),
+  CONSTRAINT `FK_public_despachoguia_public_despacho` FOREIGN KEY (`hidespacho`) REFERENCES `public_despacho` (`id`),
+  CONSTRAINT `FK_public_despachoguia_public_detgui` FOREIGN KEY (`hiddetgui`) REFERENCES `public_detgui` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Controla las cantidades del kardes pedientes vs las cantidades despachadas en aguia';
+
+-- La exportación de datos fue deseleccionada.
+
+
 -- Volcando estructura para tabla nautilus.public_detercuentas
+DROP TABLE IF EXISTS `public_detercuentas`;
 CREATE TABLE IF NOT EXISTS `public_detercuentas` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `codcatval` varchar(4) DEFAULT NULL,
@@ -1121,6 +1192,7 @@ CREATE TABLE IF NOT EXISTS `public_detercuentas` (
 
 
 -- Volcando estructura para tabla nautilus.public_detgui
+DROP TABLE IF EXISTS `public_detgui`;
 CREATE TABLE IF NOT EXISTS `public_detgui` (
   `c_itguia` varchar(3) DEFAULT NULL,
   `n_cangui` double DEFAULT NULL,
@@ -1175,6 +1247,7 @@ CREATE TABLE IF NOT EXISTS `public_detgui` (
 
 
 -- Volcando estructura para tabla nautilus.public_detingfactura
+DROP TABLE IF EXISTS `public_detingfactura`;
 CREATE TABLE IF NOT EXISTS `public_detingfactura` (
   `hidfactura` bigint(20) NOT NULL,
   `item` varchar(3) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
@@ -1200,6 +1273,7 @@ CREATE TABLE IF NOT EXISTS `public_detingfactura` (
 
 
 -- Volcando estructura para tabla nautilus.public_detot
+DROP TABLE IF EXISTS `public_detot`;
 CREATE TABLE IF NOT EXISTS `public_detot` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `nhoras` int(11) NOT NULL DEFAULT '0',
@@ -1245,6 +1319,7 @@ CREATE TABLE IF NOT EXISTS `public_detot` (
 
 
 -- Volcando estructura para tabla nautilus.public_dfactur
+DROP TABLE IF EXISTS `public_dfactur`;
 CREATE TABLE IF NOT EXISTS `public_dfactur` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `hidfactu` bigint(20) NOT NULL,
@@ -1289,6 +1364,7 @@ CREATE TABLE IF NOT EXISTS `public_dfactur` (
 
 
 -- Volcando estructura para tabla nautilus.public_direcciones
+DROP TABLE IF EXISTS `public_direcciones`;
 CREATE TABLE IF NOT EXISTS `public_direcciones` (
   `c_hcod` varchar(6) DEFAULT NULL,
   `c_direc` varchar(100) DEFAULT NULL,
@@ -1325,6 +1401,7 @@ CREATE TABLE IF NOT EXISTS `public_direcciones` (
 
 
 -- Volcando estructura para tabla nautilus.public_disponiblidad
+DROP TABLE IF EXISTS `public_disponiblidad`;
 CREATE TABLE IF NOT EXISTS `public_disponiblidad` (
   `codisp` varchar(2) CHARACTER SET utf8 NOT NULL,
   `dedispo` varchar(40) CHARACTER SET utf8 DEFAULT NULL,
@@ -1335,6 +1412,7 @@ CREATE TABLE IF NOT EXISTS `public_disponiblidad` (
 
 
 -- Volcando estructura para tabla nautilus.public_distritos
+DROP TABLE IF EXISTS `public_distritos`;
 CREATE TABLE IF NOT EXISTS `public_distritos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `coddist` varchar(2) NOT NULL,
@@ -1347,6 +1425,7 @@ CREATE TABLE IF NOT EXISTS `public_distritos` (
 
 
 -- Volcando estructura para tabla nautilus.public_dlistamaeriales
+DROP TABLE IF EXISTS `public_dlistamaeriales`;
 CREATE TABLE IF NOT EXISTS `public_dlistamaeriales` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `hidlista` bigint(20) NOT NULL,
@@ -1367,6 +1446,7 @@ CREATE TABLE IF NOT EXISTS `public_dlistamaeriales` (
 
 
 -- Volcando estructura para tabla nautilus.public_dlote
+DROP TABLE IF EXISTS `public_dlote`;
 CREATE TABLE IF NOT EXISTS `public_dlote` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `hidlote` bigint(20) NOT NULL,
@@ -1386,6 +1466,7 @@ CREATE TABLE IF NOT EXISTS `public_dlote` (
 
 
 -- Volcando estructura para tabla nautilus.public_docompra
+DROP TABLE IF EXISTS `public_docompra`;
 CREATE TABLE IF NOT EXISTS `public_docompra` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `codart` varchar(8) NOT NULL,
@@ -1432,6 +1513,7 @@ CREATE TABLE IF NOT EXISTS `public_docompra` (
 
 
 -- Volcando estructura para tabla nautilus.public_docompratemp
+DROP TABLE IF EXISTS `public_docompratemp`;
 CREATE TABLE IF NOT EXISTS `public_docompratemp` (
   `idtemp` bigint(20) NOT NULL AUTO_INCREMENT,
   `codart` varchar(8) NOT NULL,
@@ -1479,6 +1561,7 @@ CREATE TABLE IF NOT EXISTS `public_docompratemp` (
 
 
 -- Volcando estructura para tabla nautilus.public_documentos
+DROP TABLE IF EXISTS `public_documentos`;
 CREATE TABLE IF NOT EXISTS `public_documentos` (
   `coddocu` varchar(3) CHARACTER SET utf8 NOT NULL,
   `desdocu` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
@@ -1505,6 +1588,7 @@ CREATE TABLE IF NOT EXISTS `public_documentos` (
 
 
 -- Volcando estructura para tabla nautilus.public_dpeticion
+DROP TABLE IF EXISTS `public_dpeticion`;
 CREATE TABLE IF NOT EXISTS `public_dpeticion` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `hidpeticion` bigint(20) NOT NULL,
@@ -1558,6 +1642,7 @@ CREATE TABLE IF NOT EXISTS `public_dpeticion` (
 
 
 -- Volcando estructura para tabla nautilus.public_embarcaciones
+DROP TABLE IF EXISTS `public_embarcaciones`;
 CREATE TABLE IF NOT EXISTS `public_embarcaciones` (
   `codep` varchar(3) CHARACTER SET utf8 NOT NULL,
   `nomep` varchar(25) CHARACTER SET utf8 DEFAULT NULL,
@@ -1574,6 +1659,7 @@ CREATE TABLE IF NOT EXISTS `public_embarcaciones` (
 
 
 -- Volcando estructura para tabla nautilus.public_estado
+DROP TABLE IF EXISTS `public_estado`;
 CREATE TABLE IF NOT EXISTS `public_estado` (
   `codestado` char(2) NOT NULL,
   `codocu` char(3) NOT NULL,
@@ -1594,6 +1680,7 @@ CREATE TABLE IF NOT EXISTS `public_estado` (
 
 
 -- Volcando estructura para tabla nautilus.public_eventos
+DROP TABLE IF EXISTS `public_eventos`;
 CREATE TABLE IF NOT EXISTS `public_eventos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `codocu` varchar(3) DEFAULT NULL,
@@ -1612,6 +1699,7 @@ CREATE TABLE IF NOT EXISTS `public_eventos` (
 
 
 -- Volcando estructura para tabla nautilus.public_factur
+DROP TABLE IF EXISTS `public_factur`;
 CREATE TABLE IF NOT EXISTS `public_factur` (
   `numero` varchar(13) CHARACTER SET utf8 DEFAULT NULL,
   `codpro` varchar(6) CHARACTER SET utf8 DEFAULT NULL,
@@ -1673,6 +1761,7 @@ CREATE TABLE IF NOT EXISTS `public_factur` (
 
 
 -- Volcando estructura para tabla nautilus.public_fondofijo
+DROP TABLE IF EXISTS `public_fondofijo`;
 CREATE TABLE IF NOT EXISTS `public_fondofijo` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `desfondo` varchar(60) NOT NULL,
@@ -1707,6 +1796,7 @@ CREATE TABLE IF NOT EXISTS `public_fondofijo` (
 
 
 -- Volcando estructura para tabla nautilus.public_grupocc
+DROP TABLE IF EXISTS `public_grupocc`;
 CREATE TABLE IF NOT EXISTS `public_grupocc` (
   `codgrupo` varchar(4) NOT NULL,
   `desgrupo` varchar(40) NOT NULL,
@@ -1721,6 +1811,7 @@ CREATE TABLE IF NOT EXISTS `public_grupocc` (
 
 
 -- Volcando estructura para tabla nautilus.public_grupocompras
+DROP TABLE IF EXISTS `public_grupocompras`;
 CREATE TABLE IF NOT EXISTS `public_grupocompras` (
   `codgrupo` varchar(4) NOT NULL,
   `codalm` varchar(3) DEFAULT NULL,
@@ -1736,6 +1827,7 @@ CREATE TABLE IF NOT EXISTS `public_grupocompras` (
 
 
 -- Volcando estructura para tabla nautilus.public_grupoplan
+DROP TABLE IF EXISTS `public_grupoplan`;
 CREATE TABLE IF NOT EXISTS `public_grupoplan` (
   `codgrupo` varchar(3) NOT NULL,
   `desgrupo` varchar(45) DEFAULT NULL,
@@ -1750,6 +1842,7 @@ CREATE TABLE IF NOT EXISTS `public_grupoplan` (
 
 
 -- Volcando estructura para tabla nautilus.public_grupoventas
+DROP TABLE IF EXISTS `public_grupoventas`;
 CREATE TABLE IF NOT EXISTS `public_grupoventas` (
   `codgrupo` varchar(3) NOT NULL,
   `codalm` varchar(3) DEFAULT NULL,
@@ -1767,6 +1860,7 @@ CREATE TABLE IF NOT EXISTS `public_grupoventas` (
 
 
 -- Volcando estructura para tabla nautilus.public_guia
+DROP TABLE IF EXISTS `public_guia`;
 CREATE TABLE IF NOT EXISTS `public_guia` (
   `c_numgui` varchar(8) DEFAULT NULL,
   `c_coclig` varchar(6) DEFAULT NULL,
@@ -1844,6 +1938,7 @@ CREATE TABLE IF NOT EXISTS `public_guia` (
 
 
 -- Volcando estructura para tabla nautilus.public_impuestos
+DROP TABLE IF EXISTS `public_impuestos`;
 CREATE TABLE IF NOT EXISTS `public_impuestos` (
   `codimpuesto` varchar(3) NOT NULL,
   `descripcion` varchar(50) NOT NULL,
@@ -1857,6 +1952,7 @@ CREATE TABLE IF NOT EXISTS `public_impuestos` (
 
 
 -- Volcando estructura para tabla nautilus.public_impuestosaplicados
+DROP TABLE IF EXISTS `public_impuestosaplicados`;
 CREATE TABLE IF NOT EXISTS `public_impuestosaplicados` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `hidocu` bigint(20) NOT NULL,
@@ -1880,6 +1976,7 @@ CREATE TABLE IF NOT EXISTS `public_impuestosaplicados` (
 
 
 -- Volcando estructura para tabla nautilus.public_impuestosdocu
+DROP TABLE IF EXISTS `public_impuestosdocu`;
 CREATE TABLE IF NOT EXISTS `public_impuestosdocu` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `codocu` varchar(3) CHARACTER SET utf8 NOT NULL,
@@ -1896,6 +1993,7 @@ CREATE TABLE IF NOT EXISTS `public_impuestosdocu` (
 
 
 -- Volcando estructura para tabla nautilus.public_impuestosdocuaplicado
+DROP TABLE IF EXISTS `public_impuestosdocuaplicado`;
 CREATE TABLE IF NOT EXISTS `public_impuestosdocuaplicado` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `iddocu` bigint(20) NOT NULL,
@@ -1916,6 +2014,7 @@ CREATE TABLE IF NOT EXISTS `public_impuestosdocuaplicado` (
 
 
 -- Volcando estructura para tabla nautilus.public_ingfactura
+DROP TABLE IF EXISTS `public_ingfactura`;
 CREATE TABLE IF NOT EXISTS `public_ingfactura` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `codpro` varchar(8) CHARACTER SET utf8 NOT NULL,
@@ -1947,6 +2046,7 @@ CREATE TABLE IF NOT EXISTS `public_ingfactura` (
 
 
 -- Volcando estructura para tabla nautilus.public_inventario
+DROP TABLE IF EXISTS `public_inventario`;
 CREATE TABLE IF NOT EXISTS `public_inventario` (
   `codigo` varchar(6) DEFAULT NULL,
   `c_estado` varchar(1) DEFAULT NULL,
@@ -2014,6 +2114,7 @@ CREATE TABLE IF NOT EXISTS `public_inventario` (
 
 
 -- Volcando estructura para tabla nautilus.public_inventariofisico
+DROP TABLE IF EXISTS `public_inventariofisico`;
 CREATE TABLE IF NOT EXISTS `public_inventariofisico` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `hidinventario` bigint(20) DEFAULT NULL,
@@ -2048,6 +2149,7 @@ CREATE TABLE IF NOT EXISTS `public_inventariofisico` (
 
 
 -- Volcando estructura para tabla nautilus.public_inventariofisicopadre
+DROP TABLE IF EXISTS `public_inventariofisicopadre`;
 CREATE TABLE IF NOT EXISTS `public_inventariofisicopadre` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `ano` char(2) NOT NULL DEFAULT '0',
@@ -2076,6 +2178,7 @@ CREATE TABLE IF NOT EXISTS `public_inventariofisicopadre` (
 
 
 -- Volcando estructura para tabla nautilus.public_librodiario
+DROP TABLE IF EXISTS `public_librodiario`;
 CREATE TABLE IF NOT EXISTS `public_librodiario` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `periodo` varchar(8) NOT NULL DEFAULT '0',
@@ -2107,6 +2210,7 @@ CREATE TABLE IF NOT EXISTS `public_librodiario` (
 
 
 -- Volcando estructura para tabla nautilus.public_listamateriales
+DROP TABLE IF EXISTS `public_listamateriales`;
 CREATE TABLE IF NOT EXISTS `public_listamateriales` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `nombrelista` varchar(60) NOT NULL,
@@ -2125,6 +2229,7 @@ CREATE TABLE IF NOT EXISTS `public_listamateriales` (
 
 
 -- Volcando estructura para tabla nautilus.public_logcargamasiva
+DROP TABLE IF EXISTS `public_logcargamasiva`;
 CREATE TABLE IF NOT EXISTS `public_logcargamasiva` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `hidcarga` int(11) NOT NULL,
@@ -2143,6 +2248,7 @@ CREATE TABLE IF NOT EXISTS `public_logcargamasiva` (
 
 
 -- Volcando estructura para tabla nautilus.public_lotes
+DROP TABLE IF EXISTS `public_lotes`;
 CREATE TABLE IF NOT EXISTS `public_lotes` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `stock` varchar(12) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
@@ -2175,6 +2281,7 @@ CREATE TABLE IF NOT EXISTS `public_lotes` (
 
 
 -- Volcando estructura para tabla nautilus.public_lugares
+DROP TABLE IF EXISTS `public_lugares`;
 CREATE TABLE IF NOT EXISTS `public_lugares` (
   `codlugar` varchar(6) NOT NULL,
   `deslugar` varchar(50) NOT NULL,
@@ -2196,6 +2303,7 @@ CREATE TABLE IF NOT EXISTS `public_lugares` (
 
 
 -- Volcando estructura para tabla nautilus.public_maestroclipro
+DROP TABLE IF EXISTS `public_maestroclipro`;
 CREATE TABLE IF NOT EXISTS `public_maestroclipro` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `codart` varchar(8) CHARACTER SET utf8 DEFAULT NULL,
@@ -2223,6 +2331,7 @@ CREATE TABLE IF NOT EXISTS `public_maestroclipro` (
 
 
 -- Volcando estructura para tabla nautilus.public_maestrocomponentes
+DROP TABLE IF EXISTS `public_maestrocomponentes`;
 CREATE TABLE IF NOT EXISTS `public_maestrocomponentes` (
   `codigo` varchar(10) NOT NULL,
   `marca` varchar(35) DEFAULT NULL,
@@ -2258,6 +2367,7 @@ CREATE TABLE IF NOT EXISTS `public_maestrocomponentes` (
 
 
 -- Volcando estructura para tabla nautilus.public_maestrodetalle
+DROP TABLE IF EXISTS `public_maestrodetalle`;
 CREATE TABLE IF NOT EXISTS `public_maestrodetalle` (
   `codart` varchar(10) NOT NULL,
   `codcentro` varchar(4) NOT NULL,
@@ -2294,6 +2404,7 @@ CREATE TABLE IF NOT EXISTS `public_maestrodetalle` (
 
 
 -- Volcando estructura para tabla nautilus.public_maestrodetallecentros
+DROP TABLE IF EXISTS `public_maestrodetallecentros`;
 CREATE TABLE IF NOT EXISTS `public_maestrodetallecentros` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `hcodart` varchar(10) CHARACTER SET utf8 NOT NULL,
@@ -2311,6 +2422,7 @@ CREATE TABLE IF NOT EXISTS `public_maestrodetallecentros` (
 
 
 -- Volcando estructura para tabla nautilus.public_maestroequivalente
+DROP TABLE IF EXISTS `public_maestroequivalente`;
 CREATE TABLE IF NOT EXISTS `public_maestroequivalente` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `codart` varchar(12) DEFAULT NULL,
@@ -2326,6 +2438,7 @@ CREATE TABLE IF NOT EXISTS `public_maestroequivalente` (
 
 
 -- Volcando estructura para tabla nautilus.public_maestroservicios
+DROP TABLE IF EXISTS `public_maestroservicios`;
 CREATE TABLE IF NOT EXISTS `public_maestroservicios` (
   `codserv` varchar(8) CHARACTER SET utf8 NOT NULL,
   `catval` varchar(6) CHARACTER SET utf8 NOT NULL,
@@ -2341,6 +2454,7 @@ CREATE TABLE IF NOT EXISTS `public_maestroservicios` (
 
 
 -- Volcando estructura para tabla nautilus.public_maestrotipos
+DROP TABLE IF EXISTS `public_maestrotipos`;
 CREATE TABLE IF NOT EXISTS `public_maestrotipos` (
   `esrotativo` char(1) NOT NULL DEFAULT '0' COMMENT 'Especiofica si es rotativo o no',
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -2355,6 +2469,7 @@ CREATE TABLE IF NOT EXISTS `public_maestrotipos` (
 
 
 -- Volcando estructura para tabla nautilus.public_maletin
+DROP TABLE IF EXISTS `public_maletin`;
 CREATE TABLE IF NOT EXISTS `public_maletin` (
   `idregistro` bigint(20) NOT NULL,
   `clase` varchar(35) NOT NULL,
@@ -2370,6 +2485,7 @@ CREATE TABLE IF NOT EXISTS `public_maletin` (
 
 
 -- Volcando estructura para tabla nautilus.public_masterequipo
+DROP TABLE IF EXISTS `public_masterequipo`;
 CREATE TABLE IF NOT EXISTS `public_masterequipo` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `hidpadre` int(11) DEFAULT NULL,
@@ -2393,6 +2509,7 @@ CREATE TABLE IF NOT EXISTS `public_masterequipo` (
 
 
 -- Volcando estructura para tabla nautilus.public_masterlistamateriales
+DROP TABLE IF EXISTS `public_masterlistamateriales`;
 CREATE TABLE IF NOT EXISTS `public_masterlistamateriales` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `codigo` varchar(18) DEFAULT NULL,
@@ -2409,6 +2526,7 @@ CREATE TABLE IF NOT EXISTS `public_masterlistamateriales` (
 
 
 -- Volcando estructura para tabla nautilus.public_masterrelacion
+DROP TABLE IF EXISTS `public_masterrelacion`;
 CREATE TABLE IF NOT EXISTS `public_masterrelacion` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `cant` int(11) DEFAULT NULL,
@@ -2425,6 +2543,7 @@ CREATE TABLE IF NOT EXISTS `public_masterrelacion` (
 
 
 -- Volcando estructura para tabla nautilus.public_mensajes
+DROP TABLE IF EXISTS `public_mensajes`;
 CREATE TABLE IF NOT EXISTS `public_mensajes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `usuario` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
@@ -2443,6 +2562,7 @@ CREATE TABLE IF NOT EXISTS `public_mensajes` (
 
 
 -- Volcando estructura para tabla nautilus.public_mensajesd
+DROP TABLE IF EXISTS `public_mensajesd`;
 CREATE TABLE IF NOT EXISTS `public_mensajesd` (
   `correodestinatario` varchar(60) CHARACTER SET utf8 DEFAULT NULL,
   `esinterno` varchar(1) CHARACTER SET utf8 DEFAULT NULL,
@@ -2455,6 +2575,7 @@ CREATE TABLE IF NOT EXISTS `public_mensajesd` (
 
 
 -- Volcando estructura para tabla nautilus.public_monedas
+DROP TABLE IF EXISTS `public_monedas`;
 CREATE TABLE IF NOT EXISTS `public_monedas` (
   `codmoneda` char(3) NOT NULL,
   `desmon` varchar(60) NOT NULL,
@@ -2467,6 +2588,7 @@ CREATE TABLE IF NOT EXISTS `public_monedas` (
 
 
 -- Volcando estructura para tabla nautilus.public_montoinventario
+DROP TABLE IF EXISTS `public_montoinventario`;
 CREATE TABLE IF NOT EXISTS `public_montoinventario` (
   `id` mediumint(9) NOT NULL AUTO_INCREMENT,
   `dia` char(2) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
@@ -2491,6 +2613,7 @@ CREATE TABLE IF NOT EXISTS `public_montoinventario` (
 
 
 -- Volcando estructura para tabla nautilus.public_motivo
+DROP TABLE IF EXISTS `public_motivo`;
 CREATE TABLE IF NOT EXISTS `public_motivo` (
   `codmotivo` varchar(3) NOT NULL,
   `desmotivo` varchar(35) DEFAULT NULL,
@@ -2502,6 +2625,7 @@ CREATE TABLE IF NOT EXISTS `public_motivo` (
 
 
 -- Volcando estructura para tabla nautilus.public_neot
+DROP TABLE IF EXISTS `public_neot`;
 CREATE TABLE IF NOT EXISTS `public_neot` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `hidne` bigint(20) NOT NULL,
@@ -2522,6 +2646,7 @@ CREATE TABLE IF NOT EXISTS `public_neot` (
 
 
 -- Volcando estructura para tabla nautilus.public_noticias
+DROP TABLE IF EXISTS `public_noticias`;
 CREATE TABLE IF NOT EXISTS `public_noticias` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `txtnoticia` longtext,
@@ -2542,6 +2667,7 @@ CREATE TABLE IF NOT EXISTS `public_noticias` (
 
 
 -- Volcando estructura para tabla nautilus.public_novedades
+DROP TABLE IF EXISTS `public_novedades`;
 CREATE TABLE IF NOT EXISTS `public_novedades` (
   `hidparte` int(11) DEFAULT NULL,
   `codsistema` varchar(5) CHARACTER SET utf8 DEFAULT NULL,
@@ -2566,6 +2692,7 @@ CREATE TABLE IF NOT EXISTS `public_novedades` (
 
 
 -- Volcando estructura para tabla nautilus.public_objetosmaster
+DROP TABLE IF EXISTS `public_objetosmaster`;
 CREATE TABLE IF NOT EXISTS `public_objetosmaster` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `hcodobmaster` varchar(15) NOT NULL,
@@ -2586,6 +2713,7 @@ CREATE TABLE IF NOT EXISTS `public_objetosmaster` (
 
 
 -- Volcando estructura para tabla nautilus.public_objetos_cliente
+DROP TABLE IF EXISTS `public_objetos_cliente`;
 CREATE TABLE IF NOT EXISTS `public_objetos_cliente` (
   `codpro` varchar(6) CHARACTER SET utf8 NOT NULL,
   `codobjeto` varchar(3) CHARACTER SET utf8 NOT NULL,
@@ -2609,6 +2737,7 @@ CREATE TABLE IF NOT EXISTS `public_objetos_cliente` (
 
 
 -- Volcando estructura para tabla nautilus.public_observaciones
+DROP TABLE IF EXISTS `public_observaciones`;
 CREATE TABLE IF NOT EXISTS `public_observaciones` (
   `hidinventario` bigint(20) DEFAULT NULL,
   `fecha` char(19) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -2627,6 +2756,7 @@ CREATE TABLE IF NOT EXISTS `public_observaciones` (
 
 
 -- Volcando estructura para tabla nautilus.public_observacionesdetalle
+DROP TABLE IF EXISTS `public_observacionesdetalle`;
 CREATE TABLE IF NOT EXISTS `public_observacionesdetalle` (
   `hidobservaciones` bigint(20) DEFAULT NULL,
   `comentario` longtext CHARACTER SET utf8,
@@ -2640,6 +2770,7 @@ CREATE TABLE IF NOT EXISTS `public_observacionesdetalle` (
 
 
 -- Volcando estructura para tabla nautilus.public_ocompra
+DROP TABLE IF EXISTS `public_ocompra`;
 CREATE TABLE IF NOT EXISTS `public_ocompra` (
   `numcot` varchar(10) DEFAULT NULL,
   `codpro` varchar(6) NOT NULL,
@@ -2704,6 +2835,7 @@ CREATE TABLE IF NOT EXISTS `public_ocompra` (
 
 
 -- Volcando estructura para tabla nautilus.public_oficios
+DROP TABLE IF EXISTS `public_oficios`;
 CREATE TABLE IF NOT EXISTS `public_oficios` (
   `codof` varchar(3) CHARACTER SET utf8 NOT NULL,
   `oficio` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
@@ -2714,6 +2846,7 @@ CREATE TABLE IF NOT EXISTS `public_oficios` (
 
 
 -- Volcando estructura para tabla nautilus.public_opcionescamposdocu
+DROP TABLE IF EXISTS `public_opcionescamposdocu`;
 CREATE TABLE IF NOT EXISTS `public_opcionescamposdocu` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `codocu` varchar(3) CHARACTER SET utf8 DEFAULT NULL,
@@ -2734,6 +2867,7 @@ CREATE TABLE IF NOT EXISTS `public_opcionescamposdocu` (
 
 
 -- Volcando estructura para tabla nautilus.public_opcionesdocumentos
+DROP TABLE IF EXISTS `public_opcionesdocumentos`;
 CREATE TABLE IF NOT EXISTS `public_opcionesdocumentos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `usuario` varchar(40) CHARACTER SET utf8 DEFAULT NULL,
@@ -2758,6 +2892,7 @@ CREATE TABLE IF NOT EXISTS `public_opcionesdocumentos` (
 
 
 -- Volcando estructura para tabla nautilus.public_opcontables
+DROP TABLE IF EXISTS `public_opcontables`;
 CREATE TABLE IF NOT EXISTS `public_opcontables` (
   `codop` varchar(3) NOT NULL,
   `desop` varchar(50) NOT NULL,
@@ -2771,6 +2906,7 @@ CREATE TABLE IF NOT EXISTS `public_opcontables` (
 
 
 -- Volcando estructura para tabla nautilus.public_ot
+DROP TABLE IF EXISTS `public_ot`;
 CREATE TABLE IF NOT EXISTS `public_ot` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `numero` varchar(12) NOT NULL,
@@ -2812,6 +2948,7 @@ CREATE TABLE IF NOT EXISTS `public_ot` (
 
 
 -- Volcando estructura para tabla nautilus.public_otconsignacion
+DROP TABLE IF EXISTS `public_otconsignacion`;
 CREATE TABLE IF NOT EXISTS `public_otconsignacion` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `codcli` varchar(18) NOT NULL DEFAULT '0',
@@ -2840,6 +2977,7 @@ CREATE TABLE IF NOT EXISTS `public_otconsignacion` (
 
 
 -- Volcando estructura para tabla nautilus.public_paraqueva
+DROP TABLE IF EXISTS `public_paraqueva`;
 CREATE TABLE IF NOT EXISTS `public_paraqueva` (
   `cmotivo` varchar(2) CHARACTER SET utf8 NOT NULL,
   `motivo` varchar(30) CHARACTER SET utf8 DEFAULT NULL,
@@ -2851,6 +2989,7 @@ CREATE TABLE IF NOT EXISTS `public_paraqueva` (
 
 
 -- Volcando estructura para tabla nautilus.public_pareto
+DROP TABLE IF EXISTS `public_pareto`;
 CREATE TABLE IF NOT EXISTS `public_pareto` (
   `ranking` int(11) NOT NULL,
   `clase` char(1) COLLATE utf8_unicode_ci NOT NULL,
@@ -2867,6 +3006,7 @@ CREATE TABLE IF NOT EXISTS `public_pareto` (
 
 
 -- Volcando estructura para tabla nautilus.public_periodos
+DROP TABLE IF EXISTS `public_periodos`;
 CREATE TABLE IF NOT EXISTS `public_periodos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `mes` char(2) CHARACTER SET utf8 NOT NULL,
@@ -2883,6 +3023,7 @@ CREATE TABLE IF NOT EXISTS `public_periodos` (
 
 
 -- Volcando estructura para tabla nautilus.public_pescaterceros
+DROP TABLE IF EXISTS `public_pescaterceros`;
 CREATE TABLE IF NOT EXISTS `public_pescaterceros` (
   `id` int(11) NOT NULL,
   `codplanta` varchar(2) CHARACTER SET utf8 DEFAULT NULL,
@@ -2901,6 +3042,7 @@ CREATE TABLE IF NOT EXISTS `public_pescaterceros` (
 
 
 -- Volcando estructura para tabla nautilus.public_peticion
+DROP TABLE IF EXISTS `public_peticion`;
 CREATE TABLE IF NOT EXISTS `public_peticion` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `codpro` varchar(6) NOT NULL,
@@ -2965,6 +3107,7 @@ CREATE TABLE IF NOT EXISTS `public_peticion` (
 
 
 -- Volcando estructura para tabla nautilus.public_provincias
+DROP TABLE IF EXISTS `public_provincias`;
 CREATE TABLE IF NOT EXISTS `public_provincias` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `codprov` varchar(2) NOT NULL,
@@ -2979,6 +3122,7 @@ CREATE TABLE IF NOT EXISTS `public_provincias` (
 
 
 -- Volcando estructura para tabla nautilus.public_puntodespacho
+DROP TABLE IF EXISTS `public_puntodespacho`;
 CREATE TABLE IF NOT EXISTS `public_puntodespacho` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `hcodcanal` varchar(3) CHARACTER SET utf8 NOT NULL,
@@ -2996,6 +3140,7 @@ CREATE TABLE IF NOT EXISTS `public_puntodespacho` (
 
 
 -- Volcando estructura para tabla nautilus.public_reportepesca
+DROP TABLE IF EXISTS `public_reportepesca`;
 CREATE TABLE IF NOT EXISTS `public_reportepesca` (
   `codep` varchar(3) CHARACTER SET utf8 DEFAULT NULL,
   `id` int(11) NOT NULL,
@@ -3044,6 +3189,7 @@ CREATE TABLE IF NOT EXISTS `public_reportepesca` (
 
 
 -- Volcando estructura para tabla nautilus.public_reportepesca_coor
+DROP TABLE IF EXISTS `public_reportepesca_coor`;
 CREATE TABLE IF NOT EXISTS `public_reportepesca_coor` (
   `hidreporte` bigint(20) DEFAULT NULL,
   `latitud` varchar(6) CHARACTER SET utf8 DEFAULT NULL,
@@ -3057,6 +3203,7 @@ CREATE TABLE IF NOT EXISTS `public_reportepesca_coor` (
 
 
 -- Volcando estructura para tabla nautilus.public_settings
+DROP TABLE IF EXISTS `public_settings`;
 CREATE TABLE IF NOT EXISTS `public_settings` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `category` varchar(64) NOT NULL DEFAULT 'system',
@@ -3070,6 +3217,7 @@ CREATE TABLE IF NOT EXISTS `public_settings` (
 
 
 -- Volcando estructura para tabla nautilus.public_sociedades
+DROP TABLE IF EXISTS `public_sociedades`;
 CREATE TABLE IF NOT EXISTS `public_sociedades` (
   `socio` varchar(1) CHARACTER SET utf8 NOT NULL,
   `dsocio` varchar(40) CHARACTER SET utf8 NOT NULL,
@@ -3091,6 +3239,7 @@ CREATE TABLE IF NOT EXISTS `public_sociedades` (
 
 
 -- Volcando estructura para tabla nautilus.public_solcot
+DROP TABLE IF EXISTS `public_solcot`;
 CREATE TABLE IF NOT EXISTS `public_solcot` (
   `codpro` varchar(8) NOT NULL,
   `idcontacto` int(11) NOT NULL,
@@ -3116,6 +3265,7 @@ CREATE TABLE IF NOT EXISTS `public_solcot` (
 
 
 -- Volcando estructura para tabla nautilus.public_solpe
+DROP TABLE IF EXISTS `public_solpe`;
 CREATE TABLE IF NOT EXISTS `public_solpe` (
   `numero` varchar(10) DEFAULT NULL,
   `tipo` varchar(3) DEFAULT NULL,
@@ -3146,6 +3296,7 @@ CREATE TABLE IF NOT EXISTS `public_solpe` (
 
 
 -- Volcando estructura para tabla nautilus.public_tempalkardex
+DROP TABLE IF EXISTS `public_tempalkardex`;
 CREATE TABLE IF NOT EXISTS `public_tempalkardex` (
   `codart` varchar(10) CHARACTER SET utf8 DEFAULT NULL,
   `codmov` varchar(2) CHARACTER SET utf8 DEFAULT NULL,
@@ -3207,6 +3358,7 @@ CREATE TABLE IF NOT EXISTS `public_tempalkardex` (
 
 
 -- Volcando estructura para tabla nautilus.public_tempdesolpe
+DROP TABLE IF EXISTS `public_tempdesolpe`;
 CREATE TABLE IF NOT EXISTS `public_tempdesolpe` (
   `id` bigint(20) NOT NULL,
   `numero` varchar(10) NOT NULL,
@@ -3265,6 +3417,7 @@ CREATE TABLE IF NOT EXISTS `public_tempdesolpe` (
 
 
 -- Volcando estructura para tabla nautilus.public_tempdetgui
+DROP TABLE IF EXISTS `public_tempdetgui`;
 CREATE TABLE IF NOT EXISTS `public_tempdetgui` (
   `n_hguia` bigint(20) DEFAULT NULL,
   `c_itguia` varchar(3) CHARACTER SET utf8 DEFAULT NULL,
@@ -3322,6 +3475,7 @@ CREATE TABLE IF NOT EXISTS `public_tempdetgui` (
 
 
 -- Volcando estructura para tabla nautilus.public_tempdetingfactura
+DROP TABLE IF EXISTS `public_tempdetingfactura`;
 CREATE TABLE IF NOT EXISTS `public_tempdetingfactura` (
   `hidfactura` bigint(20) NOT NULL,
   `item` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
@@ -3349,6 +3503,7 @@ CREATE TABLE IF NOT EXISTS `public_tempdetingfactura` (
 
 
 -- Volcando estructura para tabla nautilus.public_tempdetot
+DROP TABLE IF EXISTS `public_tempdetot`;
 CREATE TABLE IF NOT EXISTS `public_tempdetot` (
   `id` bigint(20) NOT NULL,
   `hidorden` bigint(20) NOT NULL,
@@ -3392,6 +3547,7 @@ CREATE TABLE IF NOT EXISTS `public_tempdetot` (
 
 
 -- Volcando estructura para tabla nautilus.public_tempdpeticion
+DROP TABLE IF EXISTS `public_tempdpeticion`;
 CREATE TABLE IF NOT EXISTS `public_tempdpeticion` (
   `id` bigint(20) NOT NULL,
   `idusertemp` int(11) NOT NULL,
@@ -3440,6 +3596,7 @@ CREATE TABLE IF NOT EXISTS `public_tempdpeticion` (
 
 
 -- Volcando estructura para tabla nautilus.public_tempimpuestosdocuaplicados
+DROP TABLE IF EXISTS `public_tempimpuestosdocuaplicados`;
 CREATE TABLE IF NOT EXISTS `public_tempimpuestosdocuaplicados` (
   `idtemp` bigint(20) NOT NULL AUTO_INCREMENT,
   `codocu` char(3) NOT NULL,
@@ -3457,6 +3614,7 @@ CREATE TABLE IF NOT EXISTS `public_tempimpuestosdocuaplicados` (
 
 
 -- Volcando estructura para tabla nautilus.public_temporadas
+DROP TABLE IF EXISTS `public_temporadas`;
 CREATE TABLE IF NOT EXISTS `public_temporadas` (
   `id` int(11) NOT NULL,
   `destemporada` varchar(60) CHARACTER SET utf8 DEFAULT NULL,
@@ -3473,6 +3631,7 @@ CREATE TABLE IF NOT EXISTS `public_temporadas` (
 
 
 -- Volcando estructura para tabla nautilus.public_tempotconsignacion
+DROP TABLE IF EXISTS `public_tempotconsignacion`;
 CREATE TABLE IF NOT EXISTS `public_tempotconsignacion` (
   `id` bigint(20) NOT NULL,
   `hidetot` bigint(20) DEFAULT NULL,
@@ -3501,6 +3660,7 @@ CREATE TABLE IF NOT EXISTS `public_tempotconsignacion` (
 
 
 -- Volcando estructura para tabla nautilus.public_tenores
+DROP TABLE IF EXISTS `public_tenores`;
 CREATE TABLE IF NOT EXISTS `public_tenores` (
   `coddocu` varchar(3) CHARACTER SET utf8 NOT NULL,
   `mensaje` longtext CHARACTER SET utf8,
@@ -3524,6 +3684,7 @@ CREATE TABLE IF NOT EXISTS `public_tenores` (
 
 
 -- Volcando estructura para tabla nautilus.public_tipimputa
+DROP TABLE IF EXISTS `public_tipimputa`;
 CREATE TABLE IF NOT EXISTS `public_tipimputa` (
   `codimpu` varchar(1) NOT NULL,
   `desimputa` varchar(15) DEFAULT NULL,
@@ -3534,6 +3695,7 @@ CREATE TABLE IF NOT EXISTS `public_tipimputa` (
 
 
 -- Volcando estructura para tabla nautilus.public_tipoactivos
+DROP TABLE IF EXISTS `public_tipoactivos`;
 CREATE TABLE IF NOT EXISTS `public_tipoactivos` (
   `codtipo` varchar(2) NOT NULL,
   `destipo` varchar(40) NOT NULL,
@@ -3545,6 +3707,7 @@ CREATE TABLE IF NOT EXISTS `public_tipoactivos` (
 
 
 -- Volcando estructura para tabla nautilus.public_tipocambio
+DROP TABLE IF EXISTS `public_tipocambio`;
 CREATE TABLE IF NOT EXISTS `public_tipocambio` (
   `codmon1` varchar(3) DEFAULT NULL,
   `codmon2` varchar(3) DEFAULT NULL,
@@ -3570,6 +3733,7 @@ CREATE TABLE IF NOT EXISTS `public_tipocambio` (
 
 
 -- Volcando estructura para tabla nautilus.public_tipofacturacion
+DROP TABLE IF EXISTS `public_tipofacturacion`;
 CREATE TABLE IF NOT EXISTS `public_tipofacturacion` (
   `codtipofac` varchar(2) CHARACTER SET utf8 NOT NULL,
   `tipofacturacion` varchar(35) CHARACTER SET utf8 DEFAULT NULL,
@@ -3580,6 +3744,7 @@ CREATE TABLE IF NOT EXISTS `public_tipofacturacion` (
 
 
 -- Volcando estructura para tabla nautilus.public_tipoflujocaja
+DROP TABLE IF EXISTS `public_tipoflujocaja`;
 CREATE TABLE IF NOT EXISTS `public_tipoflujocaja` (
   `codtipo` varchar(3) NOT NULL,
   `destipo` varchar(40) NOT NULL,
@@ -3591,6 +3756,7 @@ CREATE TABLE IF NOT EXISTS `public_tipoflujocaja` (
 
 
 -- Volcando estructura para tabla nautilus.public_tipolista
+DROP TABLE IF EXISTS `public_tipolista`;
 CREATE TABLE IF NOT EXISTS `public_tipolista` (
   `codtipo` char(3) NOT NULL,
   `destipo` varchar(50) DEFAULT NULL,
@@ -3602,6 +3768,7 @@ CREATE TABLE IF NOT EXISTS `public_tipolista` (
 
 
 -- Volcando estructura para tabla nautilus.public_tipomaquina
+DROP TABLE IF EXISTS `public_tipomaquina`;
 CREATE TABLE IF NOT EXISTS `public_tipomaquina` (
   `codtipo` varchar(2) NOT NULL,
   `tipo` varchar(25) DEFAULT NULL,
@@ -3616,6 +3783,7 @@ CREATE TABLE IF NOT EXISTS `public_tipomaquina` (
 
 
 -- Volcando estructura para tabla nautilus.public_tipoobjeto
+DROP TABLE IF EXISTS `public_tipoobjeto`;
 CREATE TABLE IF NOT EXISTS `public_tipoobjeto` (
   `codigo` varchar(3) NOT NULL,
   `descripcion` varchar(40) NOT NULL,
@@ -3626,6 +3794,7 @@ CREATE TABLE IF NOT EXISTS `public_tipoobjeto` (
 
 
 -- Volcando estructura para tabla nautilus.public_tipooc
+DROP TABLE IF EXISTS `public_tipooc`;
 CREATE TABLE IF NOT EXISTS `public_tipooc` (
   `codtipo` char(1) NOT NULL,
   `destipo` varchar(35) NOT NULL,
@@ -3636,6 +3805,7 @@ CREATE TABLE IF NOT EXISTS `public_tipooc` (
 
 
 -- Volcando estructura para tabla nautilus.public_tipoperacionactivos
+DROP TABLE IF EXISTS `public_tipoperacionactivos`;
 CREATE TABLE IF NOT EXISTS `public_tipoperacionactivos` (
   `codop` char(3) NOT NULL,
   `desop` varchar(40) NOT NULL,
@@ -3646,6 +3816,7 @@ CREATE TABLE IF NOT EXISTS `public_tipoperacionactivos` (
 
 
 -- Volcando estructura para tabla nautilus.public_tiposolicitudesactivos
+DROP TABLE IF EXISTS `public_tiposolicitudesactivos`;
 CREATE TABLE IF NOT EXISTS `public_tiposolicitudesactivos` (
   `codtipo` varchar(1) CHARACTER SET utf8 NOT NULL,
   `destipo` varchar(40) CHARACTER SET utf8 DEFAULT NULL,
@@ -3656,6 +3827,7 @@ CREATE TABLE IF NOT EXISTS `public_tiposolicitudesactivos` (
 
 
 -- Volcando estructura para tabla nautilus.public_tiposolpe
+DROP TABLE IF EXISTS `public_tiposolpe`;
 CREATE TABLE IF NOT EXISTS `public_tiposolpe` (
   `codtipo` char(1) NOT NULL DEFAULT '',
   `destipo` varchar(32) DEFAULT NULL,
@@ -3670,6 +3842,7 @@ CREATE TABLE IF NOT EXISTS `public_tiposolpe` (
 
 
 -- Volcando estructura para tabla nautilus.public_trabajadores
+DROP TABLE IF EXISTS `public_trabajadores`;
 CREATE TABLE IF NOT EXISTS `public_trabajadores` (
   `codigotra` varchar(6) NOT NULL,
   `ap` varchar(30) DEFAULT NULL,
@@ -3698,6 +3871,7 @@ CREATE TABLE IF NOT EXISTS `public_trabajadores` (
 
 
 -- Volcando estructura para tabla nautilus.public_ubigeos
+DROP TABLE IF EXISTS `public_ubigeos`;
 CREATE TABLE IF NOT EXISTS `public_ubigeos` (
   `coddep` varchar(2) NOT NULL,
   `codprov` varchar(2) NOT NULL,
@@ -3714,6 +3888,7 @@ CREATE TABLE IF NOT EXISTS `public_ubigeos` (
 
 
 -- Volcando estructura para tabla nautilus.public_ubl
+DROP TABLE IF EXISTS `public_ubl`;
 CREATE TABLE IF NOT EXISTS `public_ubl` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `codocu` char(3) CHARACTER SET utf8 NOT NULL,
@@ -3727,6 +3902,7 @@ CREATE TABLE IF NOT EXISTS `public_ubl` (
 
 
 -- Volcando estructura para tabla nautilus.public_ums
+DROP TABLE IF EXISTS `public_ums`;
 CREATE TABLE IF NOT EXISTS `public_ums` (
   `um` varchar(3) CHARACTER SET utf8 NOT NULL,
   `desum` varchar(20) CHARACTER SET utf8 DEFAULT NULL,
@@ -3739,6 +3915,7 @@ CREATE TABLE IF NOT EXISTS `public_ums` (
 
 
 -- Volcando estructura para tabla nautilus.public_usuariosfavoritos
+DROP TABLE IF EXISTS `public_usuariosfavoritos`;
 CREATE TABLE IF NOT EXISTS `public_usuariosfavoritos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `hiduser` bigint(20) DEFAULT NULL,
@@ -3753,6 +3930,7 @@ CREATE TABLE IF NOT EXISTS `public_usuariosfavoritos` (
 
 
 -- Volcando estructura para tabla nautilus.public_valorimpuestos
+DROP TABLE IF EXISTS `public_valorimpuestos`;
 CREATE TABLE IF NOT EXISTS `public_valorimpuestos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `hcodimpuesto` char(3) NOT NULL,
@@ -3769,6 +3947,7 @@ CREATE TABLE IF NOT EXISTS `public_valorimpuestos` (
 
 
 -- Volcando estructura para vista nautilus.vw_alinventario
+DROP VIEW IF EXISTS `vw_alinventario`;
 -- Creando tabla temporal para superar errores de dependencia de VIEW
 CREATE TABLE `vw_alinventario` (
 	`numlote` VARCHAR(32) NULL COLLATE 'utf8_general_ci',
@@ -3806,6 +3985,7 @@ CREATE TABLE `vw_alinventario` (
 
 
 -- Volcando estructura para vista nautilus.vw_alinventario_resumen
+DROP VIEW IF EXISTS `vw_alinventario_resumen`;
 -- Creando tabla temporal para superar errores de dependencia de VIEW
 CREATE TABLE `vw_alinventario_resumen` (
 	`stocklibre` DOUBLE(20,3) NULL,
@@ -3819,6 +3999,7 @@ CREATE TABLE `vw_alinventario_resumen` (
 
 
 -- Volcando estructura para vista nautilus.vw_almacendocs
+DROP VIEW IF EXISTS `vw_almacendocs`;
 -- Creando tabla temporal para superar errores de dependencia de VIEW
 CREATE TABLE `vw_almacendocs` (
 	`numvale` CHAR(12) NULL COLLATE 'utf8_general_ci',
@@ -3871,6 +4052,7 @@ CREATE TABLE `vw_almacendocs` (
 
 
 -- Volcando estructura para vista nautilus.vw_alreservas
+DROP VIEW IF EXISTS `vw_alreservas`;
 -- Creando tabla temporal para superar errores de dependencia de VIEW
 CREATE TABLE `vw_alreservas` (
 	`codart` VARCHAR(10) NOT NULL COLLATE 'utf8_general_ci',
@@ -3894,6 +4076,7 @@ CREATE TABLE `vw_alreservas` (
 
 
 -- Volcando estructura para vista nautilus.vw_atencionessolpe
+DROP VIEW IF EXISTS `vw_atencionessolpe`;
 -- Creando tabla temporal para superar errores de dependencia de VIEW
 CREATE TABLE `vw_atencionessolpe` (
 	`item` CHAR(3) NULL COLLATE 'utf8_general_ci',
@@ -3929,6 +4112,7 @@ CREATE TABLE `vw_atencionessolpe` (
 
 
 -- Volcando estructura para vista nautilus.vw_contactos
+DROP VIEW IF EXISTS `vw_contactos`;
 -- Creando tabla temporal para superar errores de dependencia de VIEW
 CREATE TABLE `vw_contactos` (
 	`id` INT(11) NOT NULL,
@@ -3943,6 +4127,7 @@ CREATE TABLE `vw_contactos` (
 
 
 -- Volcando estructura para vista nautilus.vw_costos
+DROP VIEW IF EXISTS `vw_costos`;
 -- Creando tabla temporal para superar errores de dependencia de VIEW
 CREATE TABLE `vw_costos` (
 	`id` INT(11) NOT NULL,
@@ -3990,6 +4175,7 @@ CREATE TABLE `vw_costos` (
 
 
 -- Volcando estructura para vista nautilus.vw_despacho
+DROP VIEW IF EXISTS `vw_despacho`;
 -- Creando tabla temporal para superar errores de dependencia de VIEW
 CREATE TABLE `vw_despacho` (
 	`id` BIGINT(20) NOT NULL,
@@ -4023,6 +4209,7 @@ CREATE TABLE `vw_despacho` (
 
 
 -- Volcando estructura para vista nautilus.vw_despachogeneral
+DROP VIEW IF EXISTS `vw_despachogeneral`;
 -- Creando tabla temporal para superar errores de dependencia de VIEW
 CREATE TABLE `vw_despachogeneral` (
 	`hidvale` BIGINT(20) NULL,
@@ -4036,6 +4223,7 @@ CREATE TABLE `vw_despachogeneral` (
 
 
 -- Volcando estructura para vista nautilus.vw_detalleingresofactura
+DROP VIEW IF EXISTS `vw_detalleingresofactura`;
 -- Creando tabla temporal para superar errores de dependencia de VIEW
 CREATE TABLE `vw_detalleingresofactura` (
 	`idtemp` BIGINT(20) NOT NULL,
@@ -4065,6 +4253,7 @@ CREATE TABLE `vw_detalleingresofactura` (
 
 
 -- Volcando estructura para vista nautilus.vw_detalleingresofacturafirme
+DROP VIEW IF EXISTS `vw_detalleingresofacturafirme`;
 -- Creando tabla temporal para superar errores de dependencia de VIEW
 CREATE TABLE `vw_detalleingresofacturafirme` (
 	`id` BIGINT(20) NOT NULL,
@@ -4102,12 +4291,14 @@ CREATE TABLE `vw_detalleingresofacturafirme` (
 
 
 -- Volcando estructura para vista nautilus.vw_detalle_guia
+DROP VIEW IF EXISTS `vw_detalle_guia`;
 -- Creando tabla temporal para superar errores de dependencia de VIEW
 CREATE TABLE `vw_detalle_guia` (
 	`m_obs` LONGTEXT NULL COLLATE 'utf8_general_ci',
 	`desum` VARCHAR(20) NULL COLLATE 'utf8_general_ci',
 	`idtemp` BIGINT(20) NOT NULL,
 	`id` BIGINT(20) NOT NULL,
+	`c_af` VARCHAR(1) NULL COLLATE 'utf8_general_ci',
 	`n_hguia` BIGINT(20) NULL,
 	`c_itguia` VARCHAR(3) NULL COLLATE 'utf8_general_ci',
 	`n_cangui` DOUBLE NULL,
@@ -4127,6 +4318,7 @@ CREATE TABLE `vw_detalle_guia` (
 
 
 -- Volcando estructura para vista nautilus.vw_detercuentas
+DROP VIEW IF EXISTS `vw_detercuentas`;
 -- Creando tabla temporal para superar errores de dependencia de VIEW
 CREATE TABLE `vw_detercuentas` (
 	`codop` VARCHAR(3) NULL COLLATE 'utf8_general_ci',
@@ -4143,6 +4335,7 @@ CREATE TABLE `vw_detercuentas` (
 
 
 -- Volcando estructura para vista nautilus.vw_entregas
+DROP VIEW IF EXISTS `vw_entregas`;
 -- Creando tabla temporal para superar errores de dependencia de VIEW
 CREATE TABLE `vw_entregas` (
 	`numvale` CHAR(12) NULL COLLATE 'utf8_general_ci',
@@ -4186,6 +4379,7 @@ CREATE TABLE `vw_entregas` (
 
 
 -- Volcando estructura para vista nautilus.vw_eventos
+DROP VIEW IF EXISTS `vw_eventos`;
 -- Creando tabla temporal para superar errores de dependencia de VIEW
 CREATE TABLE `vw_eventos` (
 	`id` INT(11) NOT NULL,
@@ -4202,9 +4396,11 @@ CREATE TABLE `vw_eventos` (
 
 
 -- Volcando estructura para vista nautilus.vw_guia
+DROP VIEW IF EXISTS `vw_guia`;
 -- Creando tabla temporal para superar errores de dependencia de VIEW
 CREATE TABLE `vw_guia` (
 	`id` BIGINT(20) NOT NULL,
+	`desdocu` VARCHAR(45) NULL COLLATE 'utf8_general_ci',
 	`c_numgui` VARCHAR(8) NULL COLLATE 'utf8_general_ci',
 	`c_coclig` VARCHAR(6) NULL COLLATE 'utf8_general_ci',
 	`cod_cen` VARCHAR(4) NULL COLLATE 'utf8_general_ci',
@@ -4272,6 +4468,7 @@ CREATE TABLE `vw_guia` (
 
 
 -- Volcando estructura para vista nautilus.vw_hojaruta
+DROP VIEW IF EXISTS `vw_hojaruta`;
 -- Creando tabla temporal para superar errores de dependencia de VIEW
 CREATE TABLE `vw_hojaruta` (
 	`nombrelista` VARCHAR(60) NOT NULL COLLATE 'utf8_general_ci',
@@ -4292,6 +4489,7 @@ CREATE TABLE `vw_hojaruta` (
 
 
 -- Volcando estructura para vista nautilus.vw_imputaciones
+DROP VIEW IF EXISTS `vw_imputaciones`;
 -- Creando tabla temporal para superar errores de dependencia de VIEW
 CREATE TABLE `vw_imputaciones` (
 	`desimputa` VARCHAR(35) NULL COLLATE 'utf8_general_ci',
@@ -4312,6 +4510,7 @@ CREATE TABLE `vw_imputaciones` (
 
 
 -- Volcando estructura para vista nautilus.vw_inventariosimple
+DROP VIEW IF EXISTS `vw_inventariosimple`;
 -- Creando tabla temporal para superar errores de dependencia de VIEW
 CREATE TABLE `vw_inventariosimple` (
 	`descripcion` VARCHAR(60) NULL COLLATE 'utf8_general_ci',
@@ -4331,6 +4530,7 @@ CREATE TABLE `vw_inventariosimple` (
 
 
 -- Volcando estructura para vista nautilus.vw_kardex
+DROP VIEW IF EXISTS `vw_kardex`;
 -- Creando tabla temporal para superar errores de dependencia de VIEW
 CREATE TABLE `vw_kardex` (
 	`numvale` CHAR(12) NULL COLLATE 'utf8_general_ci',
@@ -4370,6 +4570,7 @@ CREATE TABLE `vw_kardex` (
 
 
 -- Volcando estructura para vista nautilus.vw_lugares
+DROP VIEW IF EXISTS `vw_lugares`;
 -- Creando tabla temporal para superar errores de dependencia de VIEW
 CREATE TABLE `vw_lugares` (
 	`despro` VARCHAR(100) NULL COLLATE 'utf8_general_ci',
@@ -4388,6 +4589,7 @@ CREATE TABLE `vw_lugares` (
 
 
 -- Volcando estructura para vista nautilus.vw_maestrodetalle
+DROP VIEW IF EXISTS `vw_maestrodetalle`;
 -- Creando tabla temporal para superar errores de dependencia de VIEW
 CREATE TABLE `vw_maestrodetalle` (
 	`codigo` VARCHAR(10) NOT NULL COLLATE 'utf8_general_ci',
@@ -4412,13 +4614,82 @@ CREATE TABLE `vw_maestrodetalle` (
 ) ENGINE=MyISAM;
 
 
+-- Volcando estructura para vista nautilus.vw_movimientos
+DROP VIEW IF EXISTS `vw_movimientos`;
+-- Creando tabla temporal para superar errores de dependencia de VIEW
+CREATE TABLE `vw_movimientos` (
+	`m_obs` LONGTEXT NULL COLLATE 'utf8_general_ci',
+	`c_serie` VARCHAR(3) NULL COLLATE 'utf8_general_ci',
+	`desum` VARCHAR(20) NULL COLLATE 'utf8_general_ci',
+	`idtemp` BIGINT(20) NOT NULL,
+	`id` BIGINT(20) NOT NULL,
+	`n_hguia` BIGINT(11) NOT NULL,
+	`c_itguia` VARCHAR(3) NULL COLLATE 'utf8_general_ci',
+	`n_cangui` DOUBLE NULL,
+	`idstatus` INT(11) NOT NULL,
+	`c_codgui` VARCHAR(8) NULL COLLATE 'utf8_general_ci',
+	`c_edgui` VARCHAR(2) NULL COLLATE 'utf8_general_ci',
+	`c_descri` VARCHAR(40) NULL COLLATE 'utf8_general_ci',
+	`c_um` VARCHAR(3) NULL COLLATE 'utf8_general_ci',
+	`c_codep` VARCHAR(3) NULL COLLATE 'utf8_general_ci',
+	`c_estado` VARCHAR(2) NULL COLLATE 'utf8_general_ci',
+	`c_codactivo` VARCHAR(13) NULL COLLATE 'utf8_general_ci',
+	`cod_cen` VARCHAR(4) NULL COLLATE 'utf8_general_ci',
+	`c_codsap` VARCHAR(5) NULL COLLATE 'utf8_general_ci',
+	`nomep` VARCHAR(25) NULL COLLATE 'utf8_general_ci',
+	`estado` VARCHAR(25) NULL COLLATE 'utf8_general_ci',
+	`desmotivo` VARCHAR(30) NULL COLLATE 'utf8_general_ci',
+	`asignado` DOUBLE NULL,
+	`numero` VARCHAR(12) NULL COLLATE 'utf8_general_ci',
+	`c_numgui` VARCHAR(8) NULL COLLATE 'utf8_general_ci',
+	`c_salida` VARCHAR(1) NULL COLLATE 'utf8_general_ci',
+	`d_fectra` CHAR(19) NULL COLLATE 'utf8_general_ci',
+	`despro` VARCHAR(100) NULL COLLATE 'utf8_general_ci',
+	`nombreobjeto` VARCHAR(40) NULL COLLATE 'utf8_general_ci'
+) ENGINE=MyISAM;
+
+
+-- Volcando estructura para vista nautilus.vw_movpendientes
+DROP VIEW IF EXISTS `vw_movpendientes`;
+-- Creando tabla temporal para superar errores de dependencia de VIEW
+CREATE TABLE `vw_movpendientes` (
+	`c_salida` VARCHAR(1) NULL COLLATE 'utf8_general_ci',
+	`c_numgui` VARCHAR(8) NULL COLLATE 'utf8_general_ci',
+	`c_serie` VARCHAR(3) NULL COLLATE 'utf8_general_ci',
+	`desum` VARCHAR(20) NULL COLLATE 'utf8_general_ci',
+	`idtemp` BIGINT(20) NOT NULL,
+	`id` BIGINT(20) NOT NULL,
+	`n_hguia` BIGINT(11) NOT NULL,
+	`c_itguia` VARCHAR(3) NULL COLLATE 'utf8_general_ci',
+	`n_cangui` DOUBLE NULL,
+	`idstatus` INT(11) NOT NULL,
+	`c_codgui` VARCHAR(8) NULL COLLATE 'utf8_general_ci',
+	`c_edgui` VARCHAR(2) NULL COLLATE 'utf8_general_ci',
+	`c_descri` VARCHAR(40) NULL COLLATE 'utf8_general_ci',
+	`c_um` VARCHAR(3) NULL COLLATE 'utf8_general_ci',
+	`c_codep` VARCHAR(3) NULL COLLATE 'utf8_general_ci',
+	`c_estado` VARCHAR(2) NULL COLLATE 'utf8_general_ci',
+	`c_codactivo` VARCHAR(13) NULL COLLATE 'utf8_general_ci',
+	`cod_cen` VARCHAR(4) NULL COLLATE 'utf8_general_ci',
+	`c_codsap` VARCHAR(5) NULL COLLATE 'utf8_general_ci',
+	`nomep` VARCHAR(25) NULL COLLATE 'utf8_general_ci',
+	`estado` VARCHAR(25) NULL COLLATE 'utf8_general_ci',
+	`desmotivo` VARCHAR(30) NULL COLLATE 'utf8_general_ci',
+	`asignado` DOUBLE NULL,
+	`d_fectra` CHAR(19) NULL COLLATE 'utf8_general_ci',
+	`despro` VARCHAR(100) NULL COLLATE 'utf8_general_ci'
+) ENGINE=MyISAM;
+
+
 -- Volcando estructura para vista nautilus.vw_objetos
+DROP VIEW IF EXISTS `vw_objetos`;
 -- Creando tabla temporal para superar errores de dependencia de VIEW
 CREATE TABLE `vw_objetos` (
 	`id` INT(11) NOT NULL,
 	`serie` VARCHAR(50) NULL COLLATE 'utf8_general_ci',
 	`codigo` VARCHAR(10) NOT NULL COLLATE 'utf8_general_ci',
 	`nombreobjeto` VARCHAR(40) NULL COLLATE 'utf8_general_ci',
+	`codobjeto` VARCHAR(3) NOT NULL COLLATE 'utf8_general_ci',
 	`descripcion` VARCHAR(40) NOT NULL COLLATE 'utf8_general_ci',
 	`marca` VARCHAR(24) NOT NULL COLLATE 'utf8_general_ci',
 	`modelo` VARCHAR(25) NOT NULL COLLATE 'utf8_general_ci',
@@ -4429,6 +4700,7 @@ CREATE TABLE `vw_objetos` (
 
 
 -- Volcando estructura para vista nautilus.vw_ocompra
+DROP VIEW IF EXISTS `vw_ocompra`;
 -- Creando tabla temporal para superar errores de dependencia de VIEW
 CREATE TABLE `vw_ocompra` (
 	`numcot` VARCHAR(10) NULL COLLATE 'utf8_general_ci',
@@ -4503,6 +4775,7 @@ CREATE TABLE `vw_ocompra` (
 
 
 -- Volcando estructura para vista nautilus.vw_ocomprasimple
+DROP VIEW IF EXISTS `vw_ocomprasimple`;
 -- Creando tabla temporal para superar errores de dependencia de VIEW
 CREATE TABLE `vw_ocomprasimple` (
 	`numcot` VARCHAR(10) NULL COLLATE 'utf8_general_ci',
@@ -4557,6 +4830,7 @@ CREATE TABLE `vw_ocomprasimple` (
 
 
 -- Volcando estructura para vista nautilus.vw_opcionesdocumentos
+DROP VIEW IF EXISTS `vw_opcionesdocumentos`;
 -- Creando tabla temporal para superar errores de dependencia de VIEW
 CREATE TABLE `vw_opcionesdocumentos` (
 	`desdocu` VARCHAR(45) NULL COLLATE 'utf8_general_ci',
@@ -4576,6 +4850,7 @@ CREATE TABLE `vw_opcionesdocumentos` (
 
 
 -- Volcando estructura para vista nautilus.vw_otdetalle
+DROP VIEW IF EXISTS `vw_otdetalle`;
 -- Creando tabla temporal para superar errores de dependencia de VIEW
 CREATE TABLE `vw_otdetalle` (
 	`despro` VARCHAR(100) NULL COLLATE 'utf8_general_ci',
@@ -4613,6 +4888,7 @@ CREATE TABLE `vw_otdetalle` (
 
 
 -- Volcando estructura para vista nautilus.vw_otsimple
+DROP VIEW IF EXISTS `vw_otsimple`;
 -- Creando tabla temporal para superar errores de dependencia de VIEW
 CREATE TABLE `vw_otsimple` (
 	`despro` VARCHAR(100) NULL COLLATE 'utf8_general_ci',
@@ -4647,6 +4923,7 @@ CREATE TABLE `vw_otsimple` (
 
 
 -- Volcando estructura para vista nautilus.vw_pareto
+DROP VIEW IF EXISTS `vw_pareto`;
 -- Creando tabla temporal para superar errores de dependencia de VIEW
 CREATE TABLE `vw_pareto` (
 	`codart` VARCHAR(10) NULL COLLATE 'utf8_general_ci',
@@ -4671,6 +4948,7 @@ CREATE TABLE `vw_pareto` (
 
 
 -- Volcando estructura para vista nautilus.vw_reservaspendientes2
+DROP VIEW IF EXISTS `vw_reservaspendientes2`;
 -- Creando tabla temporal para superar errores de dependencia de VIEW
 CREATE TABLE `vw_reservaspendientes2` (
 	`hidinventario` BIGINT(20) NOT NULL,
@@ -4701,6 +4979,7 @@ CREATE TABLE `vw_reservaspendientes2` (
 
 
 -- Volcando estructura para vista nautilus.vw_solpe
+DROP VIEW IF EXISTS `vw_solpe`;
 -- Creando tabla temporal para superar errores de dependencia de VIEW
 CREATE TABLE `vw_solpe` (
 	`punitplan` DOUBLE NOT NULL,
@@ -4744,6 +5023,7 @@ CREATE TABLE `vw_solpe` (
 
 
 -- Volcando estructura para vista nautilus.vw_solpeatencion
+DROP VIEW IF EXISTS `vw_solpeatencion`;
 -- Creando tabla temporal para superar errores de dependencia de VIEW
 CREATE TABLE `vw_solpeatencion` (
 	`numero` VARCHAR(10) NULL COLLATE 'utf8_general_ci',
@@ -4770,6 +5050,7 @@ CREATE TABLE `vw_solpeatencion` (
 
 
 -- Volcando estructura para vista nautilus.vw_solpeparacomprar
+DROP VIEW IF EXISTS `vw_solpeparacomprar`;
 -- Creando tabla temporal para superar errores de dependencia de VIEW
 CREATE TABLE `vw_solpeparacomprar` (
 	`escompra` VARCHAR(1) NULL COLLATE 'utf8_general_ci',
@@ -4800,6 +5081,7 @@ CREATE TABLE `vw_solpeparacomprar` (
 
 
 -- Volcando estructura para vista nautilus.vw_stocktotal_almacenes
+DROP VIEW IF EXISTS `vw_stocktotal_almacenes`;
 -- Creando tabla temporal para superar errores de dependencia de VIEW
 CREATE TABLE `vw_stocktotal_almacenes` (
 	`codcen` VARCHAR(4) NOT NULL COLLATE 'utf8_general_ci',
@@ -4813,6 +5095,7 @@ CREATE TABLE `vw_stocktotal_almacenes` (
 
 
 -- Volcando estructura para vista nautilus.vw_stock_por_tipos
+DROP VIEW IF EXISTS `vw_stock_por_tipos`;
 -- Creando tabla temporal para superar errores de dependencia de VIEW
 CREATE TABLE `vw_stock_por_tipos` (
 	`destipo` VARCHAR(30) NULL COLLATE 'utf8_general_ci',
@@ -4829,6 +5112,7 @@ CREATE TABLE `vw_stock_por_tipos` (
 
 
 -- Volcando estructura para vista nautilus.vw_stock_supervision
+DROP VIEW IF EXISTS `vw_stock_supervision`;
 -- Creando tabla temporal para superar errores de dependencia de VIEW
 CREATE TABLE `vw_stock_supervision` (
 	`codart` VARCHAR(10) NOT NULL COLLATE 'utf8_general_ci',
@@ -4850,6 +5134,7 @@ CREATE TABLE `vw_stock_supervision` (
 
 
 -- Volcando estructura para vista nautilus.vw_trabajadores
+DROP VIEW IF EXISTS `vw_trabajadores`;
 -- Creando tabla temporal para superar errores de dependencia de VIEW
 CREATE TABLE `vw_trabajadores` (
 	`codigotra` VARCHAR(6) NOT NULL COLLATE 'utf8_general_ci',
@@ -4864,6 +5149,7 @@ CREATE TABLE `vw_trabajadores` (
 
 
 -- Volcando estructura para vista nautilus.vw_trazabilidad_reservas
+DROP VIEW IF EXISTS `vw_trazabilidad_reservas`;
 -- Creando tabla temporal para superar errores de dependencia de VIEW
 CREATE TABLE `vw_trazabilidad_reservas` (
 	`hidesolpe` BIGINT(20) NULL,
@@ -4893,6 +5179,7 @@ CREATE TABLE `vw_trazabilidad_reservas` (
 
 
 -- Volcando estructura para vista nautilus.vw_trazabilidad_solpe_1
+DROP VIEW IF EXISTS `vw_trazabilidad_solpe_1`;
 -- Creando tabla temporal para superar errores de dependencia de VIEW
 CREATE TABLE `vw_trazabilidad_solpe_1` (
 	`numero` VARCHAR(10) NULL COLLATE 'utf8_general_ci',
@@ -4923,6 +5210,7 @@ CREATE TABLE `vw_trazabilidad_solpe_1` (
 
 
 -- Volcando estructura para vista nautilus.vw_usuarios
+DROP VIEW IF EXISTS `vw_usuarios`;
 -- Creando tabla temporal para superar errores de dependencia de VIEW
 CREATE TABLE `vw_usuarios` (
 	`iduser` INT(11) NOT NULL,
@@ -4932,6 +5220,7 @@ CREATE TABLE `vw_usuarios` (
 
 
 -- Volcando estructura para vista nautilus.vw_alinventario
+DROP VIEW IF EXISTS `vw_alinventario`;
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `vw_alinventario`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_alinventario` AS select x.numlote, x.cant as cantlote, x.fechavenc, x.fechafabri, x.punit as punitlote, x.orden as ordenlote, `t`.`codalm` AS `codalm`,`t`.`fechainicio` AS `fechainicio`,
@@ -4954,6 +5243,7 @@ round((((`t`.`punit` * `t`.`cantlibre`) + (`t`.`punit` * `t`.`canttran`)) +
 
 
 -- Volcando estructura para vista nautilus.vw_alinventario_resumen
+DROP VIEW IF EXISTS `vw_alinventario_resumen`;
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `vw_alinventario_resumen`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_alinventario_resumen` AS select sum(`vw_alinventario`.`ptlibre`) AS `stocklibre`,
@@ -4964,6 +5254,7 @@ sum(`vw_alinventario`.`pttotal`) AS `stocktotal`,`vw_alinventario`.`codalm` AS `
 
 
 -- Volcando estructura para vista nautilus.vw_almacendocs
+DROP VIEW IF EXISTS `vw_almacendocs`;
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `vw_almacendocs`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_almacendocs` AS select `s`.`numvale` AS `numvale`,
@@ -4991,6 +5282,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_almacendocs` AS s
 
 
 -- Volcando estructura para vista nautilus.vw_alreservas
+DROP VIEW IF EXISTS `vw_alreservas`;
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `vw_alreservas`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_alreservas` AS select `a`.`codart` AS `codart`,`a`.`txtmaterial` AS `txtmaterial`,
@@ -5006,12 +5298,14 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_alreservas` AS se
 
 
 -- Volcando estructura para vista nautilus.vw_atencionessolpe
+DROP VIEW IF EXISTS `vw_atencionessolpe`;
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `vw_atencionessolpe`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_atencionessolpe` AS select `d`.`item` AS `item`,`d`.`id` AS `iddesolpe`,`d`.`cant` AS `cantdesolpe`,`h`.`numvale` AS `numvale`,`k`.`desum` AS `desumsolpe`,`d`.`hidsolpe` AS `idsolpe`,`d`.`um` AS `umsolpe`,`u`.`cant` AS `cantreserva`,`u`.`codocu` AS `codocu`,`u`.`numreserva` AS `numreserva`,`u`.`estadoreserva` AS `estadoreserva`,`t`.`id` AS `id`,`s`.`cant` AS `cant`,`t`.`hidreserva` AS `hidreserva`,`t`.`hidkardex` AS `hidkardex`,`t`.`estadoatencion` AS `estadoatencion`,`s`.`codmov` AS `codmov`,`s`.`um` AS `um`,`s`.`numkardex` AS `numkardex`,`s`.`usuario` AS `usuario`,`s`.`codart` AS `codart`,`s`.`preciounit` AS `preciounit`,`s`.`fecha` AS `fecha`,`g`.`monto` AS `monto`,`g`.`ceco` AS `ceco`,`d`.`txtmaterial` AS `txtmaterial`,`j`.`desum` AS `desumkardex`,`f`.`movimiento` AS `movimiento`,`s`.`iduser` AS `iduser` from (((((((((`public_solpe` `x` join `public_desolpe` `d` on((`x`.`id` = `d`.`hidsolpe`))) join `public_alkardex` `s` on(((`s`.`idref` = `d`.`id`) and (`s`.`codocuref` = `x`.`codocu`)))) left join `public_atencionreserva` `t` on((`s`.`id` = `t`.`hidkardex`))) left join `public_alreserva` `u` on((`u`.`id` = `t`.`hidreserva`))) left join `public_ums` `k` on((`k`.`um` = `d`.`um`))) left join `public_ccgastos` `g` on((`g`.`idref` = `s`.`id`))) left join `public_almacendocs` `h` on((`h`.`id` = `s`.`hidvale`))) left join `public_almacenmovimientos` `f` on((`f`.`codmov` = `s`.`codmov`))) left join `public_ums` `j` on((`j`.`um` = `s`.`um`))) ; ;
 
 
 -- Volcando estructura para vista nautilus.vw_contactos
+DROP VIEW IF EXISTS `vw_contactos`;
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `vw_contactos`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_contactos` AS select `b`.`id` AS `id`,`b`.`c_nombre` AS `c_nombre`,
@@ -5022,6 +5316,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_contactos` AS sel
 
 
 -- Volcando estructura para vista nautilus.vw_costos
+DROP VIEW IF EXISTS `vw_costos`;
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `vw_costos`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_costos` AS select `z`.`id` AS `id`,`z`.`ceco` AS `ceco`,
@@ -5048,12 +5343,14 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_costos` AS select
 
 
 -- Volcando estructura para vista nautilus.vw_despacho
+DROP VIEW IF EXISTS `vw_despacho`;
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `vw_despacho`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_despacho` AS select `t`.`id` AS `id`,`t`.`hidpunto` AS `hidpunto`,`t`.`hidkardex` AS `hidkardex`,`t`.`fechacreac` AS `fechacreac`,`t`.`fechaprog` AS `fechaprog`,`t`.`descripcion` AS `descripcion`,`t`.`responsable` AS `responsable`,`t`.`iduser` AS `iduser`,`t`.`vigente` AS `vigente`,`k`.`codart` AS `codart`,`v`.`codcentro` AS `codcentro`,`k`.`um` AS `um`,`p`.`nombrepunto` AS `nombrepunto`,`v`.`codalmacen` AS `codalmacen`,`mm`.`descripcion` AS `descripmaterial`,`k`.`cant` AS `cant`,`u`.`desum` AS `desum`,`k`.`id` AS `idkardex`,`k`.`numdocref` AS `numdocref`,`v`.`numvale` AS `numvale`,`k`.`hidvale` AS `hidvale`,`m`.`movimiento` AS `movimiento`,`s`.`ap` AS `ap`,`s`.`am` AS `am`,`s`.`nombres` AS `nombres`,`k`.`codocuref` AS `codocuref`,`l`.`desdocu` AS `desdocu` from ((((((((`public_despacho` `t` join `public_ums` `u`) join `public_maestrocomponentes` `mm`) join `public_almacendocs` `v`) join `public_almacenmovimientos` `m`) join `public_alkardex` `k`) join `public_puntodespacho` `p`) join `public_trabajadores` `s`) join `public_documentos` `l`) where ((`t`.`hidkardex` = `k`.`id`) and (`s`.`codigotra` = `t`.`responsable`) and (`l`.`coddocu` = `k`.`codocuref`) and (`k`.`codart` = `mm`.`codigo`) and (`k`.`um` = `u`.`um`) and (`k`.`hidvale` = `v`.`id`) and (`v`.`codmovimiento` = `m`.`codmov`) and (`t`.`hidpunto` = `p`.`id`)) ; ;
 
 
 -- Volcando estructura para vista nautilus.vw_despachogeneral
+DROP VIEW IF EXISTS `vw_despachogeneral`;
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `vw_despachogeneral`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_despachogeneral` AS select `vw_despacho`.`hidvale` AS `hidvale`,
@@ -5066,6 +5363,7 @@ from `vw_despacho` group by `vw_despacho`.`codcentro`,`vw_despacho`.`codalmacen`
 
 
 -- Volcando estructura para vista nautilus.vw_detalleingresofactura
+DROP VIEW IF EXISTS `vw_detalleingresofactura`;
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `vw_detalleingresofactura`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_detalleingresofactura` AS select `a`.`idtemp` AS `idtemp`,`a`.`id` AS `id`,x.moneda,
@@ -5084,6 +5382,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_detalleingresofac
 
 
 -- Volcando estructura para vista nautilus.vw_detalleingresofacturafirme
+DROP VIEW IF EXISTS `vw_detalleingresofacturafirme`;
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `vw_detalleingresofacturafirme`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_detalleingresofacturafirme` AS select `a`.`id` AS `id`,a.cant,
@@ -5104,10 +5403,11 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_detalleingresofac
 
 
 -- Volcando estructura para vista nautilus.vw_detalle_guia
+DROP VIEW IF EXISTS `vw_detalle_guia`;
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `vw_detalle_guia`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_detalle_guia` AS select `a`.`m_obs` AS `m_obs`,
-`x`.`desum` AS `desum`,`a`.`idtemp` AS `idtemp`,`a`.`id` AS `id`,
+`x`.`desum` AS `desum`,`a`.`idtemp` AS `idtemp`,`a`.`id` AS `id`,a.c_af,
 `a`.`n_hguia` AS `n_hguia`,`a`.`c_itguia` AS `c_itguia`,
 `a`.`n_cangui` AS `n_cangui`,`a`.`idstatus` AS `idstatus`,
 `a`.`c_codgui` AS `c_codgui`,`a`.`c_edgui` AS `c_edgui`,
@@ -5117,10 +5417,11 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_detalle_guia` AS 
 `d`.`motivo` AS `desmotivo` from ((((`public_tempdetgui` `a` join `public_embarcaciones` `b`) join 
 `public_estado` `c`) join `public_paraqueva` `d`) join `public_ums` `x`) where
  ((`a`.`c_codep` = `b`.`codep`) and (`a`.`c_edgui` = `d`.`cmotivo`) and 
- (`c`.`codestado` = `a`.`c_estado`) and (`c`.`codocu` = `a`.`codocu`) and (`a`.`c_um` = `x`.`um`)) ; ;
+ (`c`.`codestado` = `a`.`c_estado`) and (`c`.`codocu` = `a`.`codocu`) and (`a`.`c_um` = `x`.`um`)) ;
 
 
 -- Volcando estructura para vista nautilus.vw_detercuentas
+DROP VIEW IF EXISTS `vw_detercuentas`;
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `vw_detercuentas`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_detercuentas` AS SELECT a.codop,a.codcatval,a.cuentadebe,a.cuentahaber, a.id,a.activo,
@@ -5134,6 +5435,7 @@ ORDER BY a.codcatval, a.codop ASC ; ;
 
 
 -- Volcando estructura para vista nautilus.vw_entregas
+DROP VIEW IF EXISTS `vw_entregas`;
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `vw_entregas`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_entregas` AS select `s`.`numvale` AS `numvale`,
@@ -5159,15 +5461,17 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_entregas` AS sele
 
 
 -- Volcando estructura para vista nautilus.vw_eventos
+DROP VIEW IF EXISTS `vw_eventos`;
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `vw_eventos`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_eventos` AS select `eventos`.`id` AS `id`,`eventos`.`codocu` AS `codocu`,`eventos`.`estadofinal` AS `estadofinal`,`eventos`.`estadoinicial` AS `estadoinicial`,`eventos`.`descripcion` AS `descripcion`,`eventos`.`creadopor` AS `creadopor`,`eventos`.`creadoel` AS `creadoel`,`estadoinicial`.`estado` AS `einicial`,`documentos`.`desdocu` AS `desdocu`,`estadofinal`.`estado` AS `efinal` from (((`public_eventos` `eventos` join `public_documentos` `documentos`) join `public_estado` `estadoinicial`) join `public_estado` `estadofinal`) where ((`eventos`.`codocu` = `documentos`.`coddocu`) and (`eventos`.`estadofinal` = `estadofinal`.`codestado`) and (`estadoinicial`.`codestado` = `eventos`.`estadoinicial`) and (`estadoinicial`.`codocu` = `eventos`.`codocu`) and (`estadofinal`.`codocu` = `eventos`.`codocu`)) ; ;
 
 
 -- Volcando estructura para vista nautilus.vw_guia
+DROP VIEW IF EXISTS `vw_guia`;
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `vw_guia`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_guia` AS select `guia`.`id` AS `id`,
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_guia` AS select `guia`.`id` AS `id`,documentos.desdocu,
 `guia`.`c_numgui` AS `c_numgui`,
 `guia`.`c_coclig` AS `c_coclig`,`guia`.`cod_cen` AS `cod_cen`,
 `guia`.`d_fecgui` AS `d_fecgui`,`guia`.`c_estgui` AS `c_estgui`,
@@ -5218,6 +5522,7 @@ join `public_direcciones` `direcciones_c` on((`direcciones_c`.`n_direc` = `guia`
 
 
 -- Volcando estructura para vista nautilus.vw_hojaruta
+DROP VIEW IF EXISTS `vw_hojaruta`;
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `vw_hojaruta`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_hojaruta` AS select a.nombrelista,a.comentario,a.id ,
@@ -5240,12 +5545,14 @@ x.codtipo=a.codtipo ;
 
 
 -- Volcando estructura para vista nautilus.vw_imputaciones
+DROP VIEW IF EXISTS `vw_imputaciones`;
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `vw_imputaciones`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_imputaciones` AS select a.desceco as desimputa, a.* from  public_cc a ; ;
 
 
 -- Volcando estructura para vista nautilus.vw_inventariosimple
+DROP VIEW IF EXISTS `vw_inventariosimple`;
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `vw_inventariosimple`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_inventariosimple` AS select a.descripcion,c.punit,c.ubicacion,b.desum,c.codart, c.codalm, c.codcen ,
@@ -5261,6 +5568,7 @@ a.codigo=c.codart and a.um=b.um ; ;
 
 
 -- Volcando estructura para vista nautilus.vw_kardex
+DROP VIEW IF EXISTS `vw_kardex`;
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `vw_kardex`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_kardex` AS select `s`.`numvale` AS `numvale`,
@@ -5282,6 +5590,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_kardex` AS select
 
 
 -- Volcando estructura para vista nautilus.vw_lugares
+DROP VIEW IF EXISTS `vw_lugares`;
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `vw_lugares`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_lugares` AS select `a`.`despro` AS `despro`,`b`.`codlugar` AS `codlugar`,
@@ -5301,6 +5610,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_lugares` AS selec
 
 
 -- Volcando estructura para vista nautilus.vw_maestrodetalle
+DROP VIEW IF EXISTS `vw_maestrodetalle`;
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `vw_maestrodetalle`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_maestrodetalle` AS select `a`.`codigo` AS `codigo`,
@@ -5314,10 +5624,70 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_maestrodetalle` A
 `public_maestrodetalle` `b`) where ((`a`.`codigo` = `b`.`codart`) and (`a`.`um` = `c`.`um`)) ; ;
 
 
+-- Volcando estructura para vista nautilus.vw_movimientos
+DROP VIEW IF EXISTS `vw_movimientos`;
+-- Eliminando tabla temporal y crear estructura final de VIEW
+DROP TABLE IF EXISTS `vw_movimientos`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_movimientos` AS select `a`.`m_obs` AS `m_obs`,z.c_serie,
+`x`.`desum` AS `desum`,`a`.`idtemp` AS `idtemp`,`a`.`id` AS `id`,
+`a`.`n_hguia` AS `n_hguia`,`a`.`c_itguia` AS `c_itguia`,
+`a`.`n_cangui` AS `n_cangui`,`a`.`idstatus` AS `idstatus`,
+`a`.`c_codgui` AS `c_codgui`,`a`.`c_edgui` AS `c_edgui`,
+`a`.`c_descri` AS `c_descri`,`a`.`c_um` AS `c_um`,`a`.`c_codep` AS `c_codep`,
+`a`.`c_estado` AS `c_estado`,`a`.`c_codactivo` AS `c_codactivo`,z.cod_cen,
+`a`.`c_codsap` AS `c_codsap`,`b`.`nomep` AS `nomep`,`c`.`estado` AS `estado`,
+`d`.`motivo` AS `desmotivo`, sum(f.cant) as asignado,o.numero ,z.c_numgui,c_salida
+,z.d_fectra,j.despro,h.nombreobjeto
+ from ((((((((( (public_guia z  join  `public_detgui` `a`  ) join `public_embarcaciones` `b`) join 
+`public_estado` `c`) join `public_paraqueva` `d`) join `public_ums` `x`) join 
+public_clipro j ) 
+ left join
+public_neot f on (f.hidne=a.id))
+left join public_ot o  on  o.id=f.idot
+) left join
+public_objetosmaster k  on k.id=o.idobjeto )
+left join
+public_objetos_cliente h on h.id=k.hidobjeto
+ )
+ where
+ z.id=a.n_hguia and 
+ (`a`.`c_codep` = `b`.`codep`) and (`a`.`c_edgui` = `d`.`cmotivo`) and (j.codpro=z.c_coclig) and
+  (`c`.`codestado` = `a`.`c_estado`) and (`c`.`codocu` = `a`.`codocu`) and (`a`.`c_um` = `x`.`um`) 
+
+ group by m_obs,desum,idtemp,id,n_hguia,c_itguia,
+ n_cangui,idstatus,c_codgui,c_edgui,c_descri,c_um,c_codep,c_estado,
+ c_codactivo,c_codsap,nomep,estado,desmotivo,numero ,c_numgui,c_salida,despro,nombreobjeto ;
+
+
+-- Volcando estructura para vista nautilus.vw_movpendientes
+DROP VIEW IF EXISTS `vw_movpendientes`;
+-- Eliminando tabla temporal y crear estructura final de VIEW
+DROP TABLE IF EXISTS `vw_movpendientes`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_movpendientes` AS select z.c_salida,z.c_numgui,  z.c_serie,`x`.`desum` AS `desum`,`a`.`idtemp` AS `idtemp`,`a`.`id` AS `id`,
+`a`.`n_hguia` AS `n_hguia`,`a`.`c_itguia` AS `c_itguia`,`a`.`n_cangui` AS `n_cangui`,`a`.`idstatus` AS `idstatus`,
+`a`.`c_codgui` AS `c_codgui`,`a`.`c_edgui` AS `c_edgui`,`a`.`c_descri` AS `c_descri`,`a`.`c_um` AS `c_um`,`a`.`c_codep` AS `c_codep`,
+`a`.`c_estado` AS `c_estado`,`a`.`c_codactivo` AS `c_codactivo`,z.cod_cen,`a`.`c_codsap` AS `c_codsap`,`b`.`nomep` AS `nomep`,`c`.`estado` AS `estado`,
+`d`.`motivo` AS `desmotivo`, sum(f.cant) as asignado
+,z.d_fectra,j.despro
+ from (((((( (public_guia z  join  `public_detgui` `a`  ) join `public_embarcaciones` `b`) join 
+`public_estado` `c`) join `public_paraqueva` `d`) join `public_ums` `x`) join 
+public_clipro j )  left join
+public_neot f on (f.hidne=a.id))
+ where
+ z.id=a.n_hguia and 
+ (`a`.`c_codep` = `b`.`codep`) and (`a`.`c_edgui` = `d`.`cmotivo`) and (j.codpro=z.c_coclig) and
+  (`c`.`codestado` = `a`.`c_estado`) and (`c`.`codocu` = `a`.`codocu`) and (`a`.`c_um` = `x`.`um`) 
+
+ group by c_serie,desum,idtemp,id,n_hguia,c_itguia,
+ n_cangui,idstatus,c_codgui,c_edgui,c_descri,c_um,c_codep,c_estado,
+ c_codactivo,c_codsap,nomep,estado,desmotivo ,c_numgui,c_salida,despro ;
+
+
 -- Volcando estructura para vista nautilus.vw_objetos
+DROP VIEW IF EXISTS `vw_objetos`;
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `vw_objetos`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_objetos` AS select t.id,t.serie,m.codigo, o.nombreobjeto,  m.descripcion,m.marca,m.modelo,t.identificador
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_objetos` AS select t.id,t.serie,m.codigo, o.nombreobjeto,o.codobjeto,  m.descripcion,m.marca,m.modelo,t.identificador
  ,c.rucpro,c.despro from public_objetosmaster t 
 ,public_clipro c ,public_masterequipo m ,public_objetos_cliente o
 where m.codigo=t.hcodobmaster and
@@ -5326,6 +5696,7 @@ t.hidobjeto=o.id ;
 
 
 -- Volcando estructura para vista nautilus.vw_ocompra
+DROP VIEW IF EXISTS `vw_ocompra`;
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `vw_ocompra`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_ocompra` AS select `coti`.`numcot` AS `numcot`,`coti`.`codpro` AS `codpro`,
@@ -5369,6 +5740,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_ocompra` AS selec
 
 
 -- Volcando estructura para vista nautilus.vw_ocomprasimple
+DROP VIEW IF EXISTS `vw_ocomprasimple`;
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `vw_ocomprasimple`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_ocomprasimple` AS select `coti`.`numcot` AS `numcot`,`coti`.`codpro` AS `codpro`,
@@ -5409,6 +5781,7 @@ sum(`n`.`cant`) AS `entregado` from ((((((((`public_ocompra` `coti` join `public
 
 
 -- Volcando estructura para vista nautilus.vw_opcionesdocumentos
+DROP VIEW IF EXISTS `vw_opcionesdocumentos`;
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `vw_opcionesdocumentos`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_opcionesdocumentos` AS select 
@@ -5429,6 +5802,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_opcionesdocumento
 
 
 -- Volcando estructura para vista nautilus.vw_otdetalle
+DROP VIEW IF EXISTS `vw_otdetalle`;
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `vw_otdetalle`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_otdetalle` AS select c.despro,c.rucpro,
@@ -5448,6 +5822,7 @@ r.hidorden=t.id ;
 
 
 -- Volcando estructura para vista nautilus.vw_otsimple
+DROP VIEW IF EXISTS `vw_otsimple`;
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `vw_otsimple`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_otsimple` AS select c.despro,c.rucpro,
@@ -5465,6 +5840,7 @@ and n.id=o.hidobjeto ;
 
 
 -- Volcando estructura para vista nautilus.vw_pareto
+DROP VIEW IF EXISTS `vw_pareto`;
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `vw_pareto`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_pareto` AS select `t`.`codart` AS `codart`,t.id,
@@ -5477,6 +5853,7 @@ from (`public_pareto` `w` join `vw_inventariosimple` `t`) where (`t`.`id` = `w`.
 
 
 -- Volcando estructura para vista nautilus.vw_reservaspendientes2
+DROP VIEW IF EXISTS `vw_reservaspendientes2`;
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `vw_reservaspendientes2`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_reservaspendientes2` AS select `j`.`id` AS `hidinventario`,`a`.`id` AS `idsolpe`,
@@ -5506,6 +5883,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_reservaspendiente
 
 
 -- Volcando estructura para vista nautilus.vw_solpe
+DROP VIEW IF EXISTS `vw_solpe`;
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `vw_solpe`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_solpe` AS select `t`.`punitplan` AS `punitplan`,`t`.`punitreal` AS `punitreal`,a.textocabecera,a.fechadoc,a.iduser,
@@ -5529,6 +5907,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_solpe` AS select 
 
 
 -- Volcando estructura para vista nautilus.vw_solpeatencion
+DROP VIEW IF EXISTS `vw_solpeatencion`;
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `vw_solpeatencion`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_solpeatencion` AS select `q`.`numero` AS `numero`,`t`.`um` AS `um`,
@@ -5545,12 +5924,14 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_solpeatencion` AS
 
 
 -- Volcando estructura para vista nautilus.vw_solpeparacomprar
+DROP VIEW IF EXISTS `vw_solpeparacomprar`;
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `vw_solpeparacomprar`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_solpeparacomprar` AS select `a`.`escompra` AS `escompra`,b.textodetalle,`a`.`numero` AS `numero`,`a`.`estado` AS `estado`,`b`.`item` AS `item`,`b`.`id` AS `id`,`b`.`est` AS `est`,`b`.`tipimputacion` AS `tipimputacion`,`b`.`punitplan` AS `punitplan`,`a`.`id` AS `identidad`,`b`.`fechaent` AS `fechaent`,`b`.`fechacrea` AS `fechacrea`,`b`.`usuario` AS `usuario`,`b`.`um` AS `um`,`b`.`tipsolpe` AS `tipsolpe`,`b`.`centro` AS `centro`,`b`.`codal` AS `codal`,`b`.`codart` AS `codart`,`b`.`imputacion` AS `imputacion`,`b`.`cant` AS `cant`,`d`.`desum` AS `desum`,`b`.`txtmaterial` AS `txtmaterial`,sum(`c`.`cant`) AS `cantatendida`,(`b`.`cant` - sum(`c`.`cant`)) AS `cant_pendiente` from (((`public_solpe` `a` join `public_desolpe` `b` on((`a`.`id` = `b`.`hidsolpe`))) left join `public_desolpecompra` `c` on((`b`.`id` = `c`.`iddesolpe`))) join `public_ums` `d` on((`d`.`um` = `b`.`um`))) where (`a`.`escompra` = '1') group by `a`.`escompra`,`a`.`numero`,`a`.`fechanec`,`b`.`centro`,`b`.`txtmaterial`,`b`.`codal`,`b`.`codart`,`b`.`imputacion`,`b`.`cant`,`d`.`desum` having ((sum(`c`.`cant`) < `cant`) or isnull(sum(`c`.`cant`))) ; ;
 
 
 -- Volcando estructura para vista nautilus.vw_stocktotal_almacenes
+DROP VIEW IF EXISTS `vw_stocktotal_almacenes`;
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `vw_stocktotal_almacenes`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_stocktotal_almacenes` AS select `a`.`codcen` AS `codcen`,
@@ -5564,6 +5945,7 @@ group by `a`.`codcen`,`a`.`codsoc`,`a`.`nomal` ; ;
 
 
 -- Volcando estructura para vista nautilus.vw_stock_por_tipos
+DROP VIEW IF EXISTS `vw_stock_por_tipos`;
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `vw_stock_por_tipos`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_stock_por_tipos` AS select `n`.`destipo` AS `destipo`,
@@ -5580,6 +5962,7 @@ from (((`public_alinventario` `b` join `public_almacenes` `a`) join
 
 
 -- Volcando estructura para vista nautilus.vw_stock_supervision
+DROP VIEW IF EXISTS `vw_stock_supervision`;
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `vw_stock_supervision`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_stock_supervision` AS select `a`.`codart` AS `codart`,
@@ -5594,6 +5977,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_stock_supervision
 
 
 -- Volcando estructura para vista nautilus.vw_trabajadores
+DROP VIEW IF EXISTS `vw_trabajadores`;
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `vw_trabajadores`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_trabajadores` AS select `trabajadores`.`codigotra` AS 
@@ -5605,6 +5989,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_trabajadores` AS 
 
 
 -- Volcando estructura para vista nautilus.vw_trazabilidad_reservas
+DROP VIEW IF EXISTS `vw_trazabilidad_reservas`;
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `vw_trazabilidad_reservas`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_trazabilidad_reservas` AS select  `a`.`hidesolpe` AS `hidesolpe`,`a`.`id` AS `id`,`a`.`fechares` AS `fecha_reserva`,
@@ -5634,12 +6019,14 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_trazabilidad_rese
 
 
 -- Volcando estructura para vista nautilus.vw_trazabilidad_solpe_1
+DROP VIEW IF EXISTS `vw_trazabilidad_solpe_1`;
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `vw_trazabilidad_solpe_1`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_trazabilidad_solpe_1` AS select `a`.`numero` AS `numero`,`b`.`centro` AS `centro`,`b`.`codal` AS `codal`,`b`.`codart` AS `codart`,`b`.`txtmaterial` AS `txtmaterial`,`b`.`fechaent` AS `fechaent`,`b`.`cant` AS `cant`,`b`.`item` AS `item`,`b`.`um` AS `um`,`c`.`desum` AS `desum`,`d`.`iddesolpe` AS `iddesolpe`,`d`.`iddocompra` AS `iddocompra`,`d`.`cant` AS `cantaten`,`d`.`fecha` AS `featencion`,`d`.`user` AS `user`,`e`.`cant` AS `cantcompras`,`e`.`item` AS `itemcompra`,`x`.`desum` AS `umcompra`,`f`.`numcot` AS `numcot`,`s`.`fecha` AS `fecha`,`s`.`cant` AS `cantkardex`,`s`.`codmov` AS `codmov`,`t`.`numvale` AS `numvale`,`u`.`movimiento` AS `movimiento` from (((((((((`public_solpe` `a` join `public_desolpe` `b` on((`a`.`id` = `b`.`hidsolpe`))) join `public_ums` `c` on((`c`.`um` = `b`.`um`))) join `public_desolpecompra` `d` on((`d`.`iddesolpe` = `b`.`id`))) join `public_docompra` `e` on((`e`.`id` = `d`.`iddocompra`))) join `public_ums` `x` on((`x`.`um` = `e`.`um`))) join `public_ocompra` `f` on((`f`.`idguia` = `e`.`hidguia`))) left join `public_alkardex` `s` on((`s`.`idref` = `e`.`id`))) left join `public_almacendocs` `t` on((`t`.`id` = `s`.`hidvale`))) left join `public_almacenmovimientos` `u` on((`t`.`codmovimiento` = `u`.`codmov`))) ; ;
 
 
 -- Volcando estructura para vista nautilus.vw_usuarios
+DROP VIEW IF EXISTS `vw_usuarios`;
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `vw_usuarios`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_usuarios` AS select iduser, username ,email  from cruge_user ;
