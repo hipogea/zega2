@@ -1,11 +1,6 @@
-<?php
-/* @var $this OtController */
-/* @var $model Ot */
-/* @var $form CActiveForm */
-?>
-
 <div class="form">
-    <?php $form=$this->beginWidget('CActiveForm', array(
+    <?php 
+       $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'ot-form',
 	// Please note: When you enable ajax validation, make sure the corresponding
 	// controller action is handling ajax validation correctly.
@@ -13,14 +8,144 @@
 	// See class documentation of CActiveForm for details on this.
 	'enableAjaxValidation'=>false,
 )); ?>
-	<div class="division">
+	<div class="division">            
 	<div class="wide form">
+            <div class="row">
+                <?php 
+              
+                    $botones = array(
+                        'go' => array(
+                            'type' => 'A',
+                            'ruta' => array(),
+                            'visiblex' => array('10'),
+                        ),
+                        'save' => array(
+                            'type' => 'A',
+                            'ruta' => array(),
+                            'visiblex' => array('10'),
+                         ),
+
+                        'ok' => array(
+                            'type' => 'B',
+                            'ruta' => array($this->id . '/procesardocumento', array('id' => $model->id, 'ev' => 65)),//aprobar
+                            'visiblex' => array('10'),
+                           // 'visiblex' => array( true ),
+                        ),
 
 
+                        'undo' => array(
+                            'type' => 'B',
+                            'ruta' => array($this->id . '/procesardocumento', array('id' => $model->id, 'ev' => 67)), //revertir aprobacion
+                            'visiblex' => array('10'),
 
-	<p class="note">Fields with <span class="required">*</span> are required.</p>
+                        ),
 
-	<?php echo $form->errorSummary($model);
+                        'tacho' => array(
+                            'type' => 'B',
+                            'ruta' => array($this->id . '/procesardocumento', array('id' => $model->id, 'ev' => 66)),
+                            'visiblex' => array('10'),
+
+                        ),
+                        'pdf' => array(
+                            'type' => 'D', //AJAX LINK
+                          //  'ruta' => array('coordocs/hacereporte', array('id' => $model->idreporte, 'idfiltrodocu' => $model->idguia, 'file' => 1)),
+                            'ruta' => array($this->id . '/crearpdf', array('id' => $model->id)),
+                            'opajax'=>array(
+                               // 'url'=>array('coordocs/hacereporte', array('id' => $model->idreporte, 'idfiltrodocu' => $model->idguia, 'file' => 1)),
+                                'ruta' => array($this->id . '/crearpdf', array('id' => $model->id)),
+                                'success'=>"function(data) {
+										$('#myDivision').html(data).fadeIn().animate({opacity: 1.0}, 900).fadeOut('slow');
+                                        }",
+                            ),                           
+                            'visiblex' => array('10'),
+
+                        ),
+                        'mail' => array(
+                            'type' => 'D', //AJAX LINK
+                            'ruta' => array($this->id . '/enviarpdf', array('id' => $model->id)),
+                            'opajax'=>array(
+                                'url'=> array($this->id . '/enviarpdf', array('id' => $model->id)),
+                                'success'=>"function(data) {
+										$('#myDivision').html(data).fadeIn().animate({opacity: 1.0}, 900).fadeOut('slow');
+                                        }",
+                            ),
+
+                            'visiblex' => array('10'),
+
+                        ),
+
+
+                        'camera' => array(
+                            'type' => 'D', //AJAX LINK
+                             'ruta' => array($this->id.'/reporte', array('id' => $model->id)),
+                            'opajax'=>array(
+                                'url'=> array($this->id.'/reporte', array('id' => $model->id)),
+                                'success'=>"function(data) {
+										$('#myDivision').html(data).fadeIn().animate({opacity: 1.0}, 900).fadeOut('slow');
+                                        }",
+                            ),
+                         
+                            'visiblex' => array('10'),
+
+                        ),
+
+                        'config' => array(
+                            'type' => 'B',
+                            'ruta' => array($this->id . '/procesardocumento', array('id' => $model->id, 'ev' => 64)),
+                            'visiblex' => array('10'),
+
+                        ),
+                        'print' => array(
+                            'type' => 'B',
+                            'ruta' => array('coordocs/hacereporte', array('id' => $model->id, 'idfiltrodocu' => $model->id, 'file' => 0)),
+                            'visiblex' => array('10'),
+                        ),
+
+                        'money' => array(
+                            'type' => 'C',
+                            'ruta' => array($this->id . '/agregaimpuesto', array(
+                                'idguia' => $model->id,
+                                //"id"=>$model->n_direc,
+                                "asDialog" => 1,
+                                "gridId" => 'detalle-grid',
+                            )
+                            ),
+                            'dialog' => 'cru-dialogdetalle',
+                            'frame' => 'cru-detalle',
+                            'visiblex' => array('10'),
+
+                        ),
+
+                        'out' => array(
+                            'type' => 'B',
+                            'ruta' => array($this->id . '/salir', array('id' => $model->id)),
+                            'visiblex' => array('10'),
+                        )
+                        );
+                    
+                    
+                    $this->widget('ext.toolbar.Barra',
+					array(
+						//'botones'=>MiFactoria::opcionestoolbar($model->id,$this->documento,$model->codestado),
+						'botones'=>$botones,
+						'size'=>24,
+						'extension'=>'png',
+						'status'=>'10' ,
+
+					)
+				);
+                   
+              ?>
+            <div id="myDivision" style="display:block;float:right;" class="flash-regular">
+.
+            </div>
+
+            </div>
+
+            
+	
+
+	<?php  echo $form->errorSummary($model);
 
 	?>
 <?php echo $form->hiddenField($model,'id'); ?>
@@ -29,7 +154,7 @@
 		<div class="row">
 		<?php echo $form->labelEx($model,'numero'); ?>
 
-			<?php echo $form->textField($model,'numero',array('size'=>10,'maxlength'=>10,'Disabled'=>'Disabled')); ?>
+			<?php echo $form->textField($model,'numero',array('class'=>'numerodocumento','size'=>10,'maxlength'=>10,'Disabled'=>'Disabled')); ?>
 			<?php echo $form->textField($model,'textocorto',array('size'=>30,'maxlength'=>40)); ?>
 		<?php echo $form->error($model,'textocorto'); ?>
 	</div>
@@ -39,6 +164,15 @@
 
 			<?php echo $form->textField($model,'codpro',array('size'=>6,'Disabled'=>'Disabled')); ?>
                         <?php echo CHTml::textField('despri',$model->clipro->despro,array('size'=>36,'Disabled'=>'Disabled')); ?>
+			
+            <?php }  ?>
+	</div>
+                    <div class="row">
+            <?php if(!$model->isNewRecord) { ?>
+		<?php echo $form->labelEx($model,'codpro1'); ?>
+
+			<?php echo $form->textField($model,'codpro1',array('size'=>6,'Disabled'=>'Disabled')); ?>
+                        <?php echo CHTml::textField('despri',$model->clipro1->despro,array('size'=>36,'Disabled'=>'Disabled')); ?>
 			
             <?php }  ?>
 	</div>
@@ -56,7 +190,7 @@
             <?php if(!$model->isNewRecord) { ?>
 		
                     <?php echo $form->labelEx($model,'idobjeto'); ?>
-			<?php echo CHTml::textField('objetito42',$model->objetosmaster->masterequipo->codigo,array('size'=>3,'Disabled'=>'Disabled')); ?>
+			<?php echo CHTml::textField('objetito42',$model->objetosmaster->masterequipo->codigo,array('size'=>8,'Disabled'=>'Disabled')); ?>
                         <?php echo CHTml::textField('despriobjeto2',$model->objetosmaster->masterequipo->descripcion,array('size'=>36,'Disabled'=>'Disabled')); ?>
 			
             <?php }  ?>
@@ -74,12 +208,14 @@
 					'options'=>array(
 						'showAnim'=>'fold', // 'show' (the default), 'slideDown', 'fadeIn', 'fold'
 						'showOn'=>'both', // 'focus', 'button', 'both'
-						'buttonText'=>Yii::t('ui','...'),
-						'dateFormat'=>'yy-mm-dd',
+                                                         'buttonImage'=>Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'calendar_1.png',
+												'buttonImageOnly'=>true,
+						//'buttonText'=>Yii::t('ui','...'),
+						'dateFormat'=>'dd-mm-yy',
 					),
 					'htmlOptions'=>array(
 						'style'=>'width:80px;vertical-align:top',
-						//'readonly'=>'readonly',
+						'readonly'=>'readonly',
 					),
 				));
 			} else{
@@ -100,12 +236,14 @@
 					'options'=>array(
 						'showAnim'=>'fold', // 'show' (the default), 'slideDown', 'fadeIn', 'fold'
 						'showOn'=>'both', // 'focus', 'button', 'both'
-						'buttonText'=>Yii::t('ui','...'),
+						'buttonImage'=>Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'calendar_1.png',
+												'buttonImageOnly'=>true,
 						'dateFormat'=>'yy-mm-dd',
 					),
 					'htmlOptions'=>array(
 						'style'=>'width:80px;vertical-align:top',
-						//'readonly'=>'readonly',
+                                            
+						'readonly'=>'readonly',
 					),
 				));
 			} else{
@@ -129,12 +267,13 @@
 					'options'=>array(
 						'showAnim'=>'fold', // 'show' (the default), 'slideDown', 'fadeIn', 'fold'
 						'showOn'=>'both', // 'focus', 'button', 'both'
-						'buttonText'=>Yii::t('ui','...'),
+						'buttonImage'=>Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'calendar_1.png',
+												'buttonImageOnly'=>true,
 						'dateFormat'=>'yy-mm-dd',
 					),
 					'htmlOptions'=>array(
 						'style'=>'width:80px;vertical-align:top',
-						//'readonly'=>'readonly',
+						'readonly'=>'readonly',
 					),
 				));
 			} else{
@@ -155,12 +294,13 @@
 					'options'=>array(
 						'showAnim'=>'fold', // 'show' (the default), 'slideDown', 'fadeIn', 'fold'
 						'showOn'=>'both', // 'focus', 'button', 'both'
-						'buttonText'=>Yii::t('ui','...'),
+						'buttonImage'=>Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'calendar_1.png',
+												'buttonImageOnly'=>true,
 						'dateFormat'=>'yy-mm-dd',
 					),
 					'htmlOptions'=>array(
 						'style'=>'width:80px;vertical-align:top',
-						//'readonly'=>'readonly',
+						'readonly'=>'readonly',
 					),
 				));
 			} else{
@@ -177,13 +317,15 @@
 	</div>
 
 		<div class="row">
-			<?php echo $form->labelEx($model,'codpro'); ?>
+			
 			<?php
 
 			if ($model->isNewRecord)
 
 			{
-				$this->widget('ext.matchcode.MatchCode',array(
+				echo $form->labelEx($model,'codpro');
+                            
+                            $this->widget('ext.matchcode.MatchCode',array(
 						'nombrecampo'=>'codpro',
 						'ordencampo'=>1,
 						'controlador'=>$this->id,
@@ -201,15 +343,44 @@
 			?>
 
 		</div>
-
-		<div class="row">
-			<?php echo $form->labelEx($model,'idobjeto'); ?>
+                    
+                    <div class="row">
+			
 			<?php
 
 			if ($model->isNewRecord)
 
 			{
-				$this->widget('ext.matchcode.MatchCode',array(
+			echo $form->labelEx($model,'codpro1');	
+                            $this->widget('ext.matchcode.MatchCode',array(
+						'nombrecampo'=>'codpro1',
+						'ordencampo'=>1,
+						'controlador'=>$this->id,
+						'relaciones'=>$model->relations(),
+						'tamano'=>6,
+						'model'=>$model,
+						'form'=>$form,
+						'nombredialogo'=>'cru-dialog3',
+						'nombreframe'=>'cru-frame3',
+						'nombrearea'=>'feh34dfgyfj',
+					)
+
+				);
+			} 
+			?>
+
+		</div>
+                    
+                    
+		<div class="row">
+			
+			<?php  
+ 
+			if ($model->isNewRecord)
+
+			{
+				echo $form->labelEx($model,'idobjeto');
+                            $this->widget('ext.matchcode.MatchCode',array(
 						'nombrecampo'=>'idobjeto',
 						'ordencampo'=>4,
 						'controlador'=>$this->id,

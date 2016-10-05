@@ -55,6 +55,10 @@ class ModeloGeneral extends CActiveRecord
 		}
 		return 1;*/
 	}
+        
+        public function hasvaluedefault($namefield){
+            return VwOpcionesdocumentos::tienevalorpordefecto($this, $namefield);
+        }
 
 
 
@@ -205,17 +209,128 @@ public function etiquetascampos (){
 
 
 	public function Correlativo ($attribute,$criteria=null,$prefijo=null,$ancho=null) {
+            
+             if (is_null($criteria)){
+                 $condition="1=1";
+		  $params=array();
+             }ELSE{
+                 $condition=is_null($criteria->condition)?"1=1":$criteria->condition;
+                 $params=is_null($criteria->params)?array():$criteria->params;
+             }
+            // var_dump($condition);var_dump($params);die();
+                 $valor=Yii::app()->db->createCommand()
+			->select('max('.$attribute.')')
+			->from($this->tableName())
+			->where($condition,$params)->queryScalar();
+                      if(is_null($valor)){ //sI ES EL PRIMER REGISTRO
+                                                   IF(is_null($prefijo)){
+                                                                            if(is_null($ancho)){
+                                                                                    $ancho=$this->getSizeColumn($attribute);
+                                                                       
+                                                                                 }else{
+                                                                                         if ($ancho > $this->getSizeColumn($attribute)){
+                                                                                                        throw new CHttpException(500, __CLASS__ . '   ' . __FUNCTION__ . '   ' . __LINE__ .
+                                                                                                        ' El ancho especificado [  '.$ancho.'  ] en esta funcion como parametro, es mayor que la longitud ['.$this->getSizeColumn($attribute).'  ] de columna  ');
+		  
+                                                                                             }else{
+                                                                                                         if ($ancho <= 1){
+                                                                                                                throw new CHttpException(500, __CLASS__ . '   ' . __FUNCTION__ . '   ' . __LINE__ .
+                                                                                                                    ' El ancho especificado [  '.$ancho.'  ] en esta funcion como parametro, es minimo  ');
+		                                                                      
+                                                                                                                         }
+                                                                                                    
+                                                                                                    }
+                                                                                 }
+                                                                        return str_pad('1',$ancho,"0",STR_PAD_LEFT); 
+                                                                }else { ///si especifico prefijo                                                                        
+                                                                    if(is_null($ancho)){ ///si no especifico ancho y si especifico prefijo
+                                                                                    $ancho=$this->getSizeColumn($attribute);
+                                                                                   
+                                                                         }else{ //si especifico prefijo  y tambien ancho
+                                                                                         if ($ancho > $this->getSizeColumn($attribute)){
+                                                                                                        throw new CHttpException(500, __CLASS__ . '   ' . __FUNCTION__ . '   ' . __LINE__ .
+                                                                                                        ' El ancho especificado [  '.$ancho.'  ] en esta funcion como parametro, es mayor que la longitud ['.$this->getSizeColumn($attribute).'  ] de columna  ');
+		  
+                                                                                             }else{
+                                                                                                         if ($ancho <= 1){
+                                                                                                                throw new CHttpException(500, __CLASS__ . '   ' . __FUNCTION__ . '   ' . __LINE__ .
+                                                                                                                    ' El ancho especificado [  '.$ancho.'  ] en esta funcion como parametro, es minimo  ');
+		                                                                      
+                                                                                                                         }
+                                                                                                    
+                                                                                                    }
+                                                                            }
+                                                                            
+                                                                             if(strlen(trim($ancho)) <= strlen(trim($prefijo)))
+                                                                                         throw new CHttpException(500, __CLASS__ . '   ' . __FUNCTION__ . '   ' . __LINE__ .
+                                                                                    ' El prefijo especificado [  '.$prefijo.'  ] en esta funcion como parametro, es mayor o igual  al ancho del ultimo valor  dela columan es : ['.$valor.'  ]   ');
+                                                                                   
+                                                                        $colita=substr($valor,strlen(trim($prefijo)));
+                                                                           return trim($prefijo).str_pad(trim((string)($colita+1)),$ancho,'0',STR_PAD_LEFT);
+                                                       
+                                                                    }
+                                             }else{  /// ya hay registros 
+                                                  IF(is_null($prefijo)){ //Si no especifico prefijo
+                                                       if(is_null($ancho))  { //si no epspecifico prefijo y tampoco ancho
+                                                                            $ancho=strlen(trim($valor));
+                                                                             $prefijo="";       
+                                                                         } else{ //si han epscidficado ancho  y prefijo no 
+                                                                             
+                                                                              if(strlen(trim($ancho))> strlen(trim($valor)))
+                                                                                         throw new CHttpException(500, __CLASS__ . '   ' . __FUNCTION__ . '   ' . __LINE__ .
+                                                                                    ' El ancho especificado [  '.$ancho.'  ] en esta funcion como parametro, es mayor o igual  al ancho del ultimo valor  dela columan es : ['.$valor.'  ]   ');
+                                                                                                                                                                                                                                             
+                                                                         }
+                                                     
+                                                      
+                                                  }else{///si ha especificadoprefijos
+                                                      if(!$prefijo==substr(trim($valor),0,strlen(trim($prefijo)))) // si no coindice el prefijo con los prefijos de los valores almacenados
+                                                            throw new CHttpException(500, __CLASS__ . '   ' . __FUNCTION__ . '   ' . __LINE__ .
+                                                                                    ' El prefijo especificado [  '.$prefijo.'  ] en esta funcion como parametro, no coincide con los valores almacenados en eta columna , por ejemplo el ultimo valor  dela columan es : ['.$valor.'  ]   ');
+                                                                         if(is_null($ancho))  {
+                                                                            $ancho=strlen(trim($valor));
+                                                                                    if(strlen(trim($ancho)) <= strlen(trim($prefijo)))
+                                                                                         throw new CHttpException(500, __CLASS__ . '   ' . __FUNCTION__ . '   ' . __LINE__ .
+                                                                                    ' El prefijo especificado [  '.$prefijo.'  ] en esta funcion como parametro, es mayor o igual  al ancho del ultimo valor  dela columan es : ['.$valor.'  ]   ');
+                                                                                   
+                                                                                   
+                                                                         } else{ //si han epscidficado nacho y prefijo , haya que validar 
+                                                                             if(strlen(trim($ancho)) <= strlen(trim($prefijo)))
+                                                                                   throw new CHttpException(500, __CLASS__ . '   ' . __FUNCTION__ . '   ' . __LINE__ .
+                                                                                    ' El ancho del prefijo especificado [  '.$prefijo.'  ] en esta funcion como parametro, es mayor o igual  al ancho tambien especificado : ['.$ancho.'  ]   ');
+                                                                                                                                                             
+                                                                         }
+                                                                         
+                                                                          
+                                                      
+                                                  }
+                                                 
+                                                $colita=substr($valor,strlen(trim($prefijo)));
+                                                //var_dump($ancho);
+                                               // var_dump($prefijo);
+                                                // var_dump($colita);
+                                                $retorno=trim($prefijo).str_pad(trim((string)($colita+1)),$ancho,'0',STR_PAD_LEFT); 
+                                                // var_dump($colita+1);
+                                               // var_dump(trim((string)((integer)($colita)+1)));
+                                               // var_dump($retorno);die();
+                                                if(  (integer)substr($retorno,0,strlen(trim($prefijo)))  > (integer)$prefijo ) ///Si ya excedio el limite de la tabla
+                                                     throw new CHttpException(500, __CLASS__ . '   ' . __FUNCTION__ . '   ' . __LINE__ .
+                                                                                    ' El valor  [  '.$valor.'  ] ya saturo la longitud de la tabla conlos citerios especificados   ');
+                                                      return $retorno;          
+                          
+                                            }
+                                            
+                                            
+              /*           
+            
 		if(is_null($criteria)){
 			$condition="1=1";
 			$params=array();
 		}else {
 			$condition=$criteria->condition;
-			$params=$criteria->params;
+			$params=is_null($criteria->params)?array():$criteria->params;
 		}
-		/*var_dump($condition);
-		var_dump($params);
-		var_dump($criteria);
-		yii::app()->end();*/
+		
 		if(is_null($ancho))
           $ancho=$this->getSizeColumn($attribute);
 		if(is_null($prefijo))
@@ -226,55 +341,65 @@ public function etiquetascampos (){
 			->select('max('.$attribute.')')
 			->from($this->tableName())
 			->where($condition,$params)->queryScalar();
-		//->where("codmovimiento='456'")->queryScalar();
-		/*var_dump($condition);
-		var_dump($params);
-		ECHO "VALOR."; var_dump($valor);*/
+		
  yii::log('el valor crudo es '.$valor,'error');
 
 		   IF ($valor!=false)
 		   {
                              $valor=trim(($valor+1)."");
-                       if(is_null($prefijo)){
-                               
-                                $valor=str_pad($valor,$ancho-strlen($prefijo),"0",STR_PAD_LEFT);
-                            }else{
-                                $valor=$prefijo.str_pad($valor,$ancho-strlen($prefijo),"0",STR_PAD_LEFT);
-                            }
-			    //$valor=str_pad(trim($valor+1),$ancho-strlen($prefijo),"0",STR_PAD_LEFT);
-					
-                                        
+                             
+                             
+                      
 		   }ELSE {
                        if(is_null($prefijo)){
                                 $valor=trim("1");
-                                $valor=str_pad($valor,$ancho-strlen($prefijo),"0",STR_PAD_LEFT);
+                                $valor=str_pad($valor,$ancho,"0",STR_PAD_LEFT);
+                                yii::log('el valor ahora  es  3 '.$valor,'error');
                             }else{
                                 $valor=$prefijo.str_pad($valor,$ancho-strlen($prefijo),"0",STR_PAD_LEFT);
+                                yii::log('el valor ahora  es  4 '.$valor,'error');
                             }
-			  
+			  $valmax=$prefijo.str_pad("",$ancho-strlen($prefijo),"9",STR_PAD_LEFT)+0;
                                  
 		   }
-		//$valor=$prefijo.str_pad($valor,$ancho-strlen($prefijo),"0",STR_PAD_LEFT);
-		/*var_dump($valor+0);
-		var_dump(($prefijo.str_pad("",$ancho-strlen($prefijo),"9",STR_PAD_LEFT)+0));
-		yii::app()->end();*/
-           //Return $valor;
-		$valmax=$prefijo.str_pad("",$ancho-strlen($prefijo),"9",STR_PAD_LEFT)+0;
-		//var_dump($valor);
-		//var_dump($valmax);/*
-		//yii::app()->end();*/
-
+		
 
 		   if(($valor+0) > ($valmax+0)) {
-				//var_dump((integer)$valor); var_dump((integer)$valmax);DIE();
+				
 			   throw new CHttpException(500, __CLASS__ . '   ' . __FUNCTION__ . '   ' . __LINE__ .
 				   ' El valor del numero correlativo de este documento ' . (integer)$valor . ' ya se saturo y excede el ancho de la columna  '.$valmax);
 		   }
                    yii::log('Rrtornadno el valor '.$valor,'error');
-	return $valor;
-		 /*var_dump($prefijo.str_pad($valor,$ancho-strlen($prefijo),"0",STR_PAD_LEFT));
-		 YII::APP()->END();*/
-	}
+	return $valor;*/
+		                
+                 
+             }
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+	
 
 
 

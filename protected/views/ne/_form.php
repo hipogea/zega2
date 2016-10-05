@@ -304,9 +304,9 @@ echo $form->DropDownList($model,'cod_cen',$datos, array('empty'=>'--Llene el cen
      <div class="row">
 		<?php echo $form->labelEx($model,'c_numgui'); ?>
 
-		<?php echo $form->textField($model,'c_serie',array('disabled'=>'disabled','style'=>'font-size: 14px; color:red; font-weight:bold; ','size'=>3,'maxlength'=>3)); ?>
+		<?php echo $form->textField($model,'c_serie',array('disabled'=>'disabled','class'=>'numerodocumento','size'=>3,'maxlength'=>3)); ?>
 
-				<?php echo $form->textField($model,'c_numgui',array('style'=>'font-size: 14px; color:red; font-weight:bold; ','size'=>8,'maxlength'=>8,'disabled'=>'disabled'));
+				<?php echo $form->textField($model,'c_numgui',array('class'=>'numerodocumento','size'=>8,'maxlength'=>8,'disabled'=>'disabled'));
 				?>
 
 	</div>

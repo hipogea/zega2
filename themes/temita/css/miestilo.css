@@ -176,3 +176,10 @@ div.procesandoajax {
 div.procesandoajax * {
   opacity: .8;
 }
+
+
+.numerodocumento{
+     font-size:14px !important;
+      color:rgb(201, 6, 234) !important;
+     font-weight:bold !important;
+}

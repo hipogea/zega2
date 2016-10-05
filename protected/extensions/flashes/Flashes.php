@@ -60,3 +60,4 @@ class Flashes extends CWidget
 
 
 }
+?>

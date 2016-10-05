@@ -1,5 +1,3 @@
-<div id="AjFlash" class="flash-regular"></div>
-
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
     'id' => 'detalle-grid',

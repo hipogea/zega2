@@ -41,10 +41,13 @@ return array(
 	
 	'modules'=>array(
 		// uncomment the following to enable the Gii tool
-
+                    
+        'facturacion'=>array(),
+    
 		//'backup'=> array('path' => __DIR__.'/../_backup/'  ),
 		'backup'=> array('path' =>'images/' ),
 		'ayuda'=>array(),
+            'clientes'=> array(),
 		'contabilidad'=> array(),
 		'cruge'=>array(
 				'tableprefix'=>'cruge_',

@@ -20,7 +20,7 @@ class ActiveRecordLog extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'ActiveRecordLog';
+		return '{{activerecordlog}}';
 	}
 
 	/**

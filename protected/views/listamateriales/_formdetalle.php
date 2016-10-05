@@ -24,7 +24,7 @@
 <div class="row">
 	<?php $this->widget('ext.matchcode.MatchCode',array(
 	'nombrecampo'=>'codigo',
-	'ordencampo'=>2,
+	'ordencampo'=>6,
 	'controlador'=>'Dlistamaeriales',
 	'relaciones'=>$model->relations(),
 	'tamano'=>10,

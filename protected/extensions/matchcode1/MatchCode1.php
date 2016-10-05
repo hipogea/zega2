@@ -33,6 +33,7 @@ class MatchCode1 extends CWidget
 		$cadi=strtoupper(trim($cadi[0]));
 		$cadi=$cadi.substr($this->controlador,1);
 		$this->controlador=$cadi;
+               // var_dump($this->relaciones);die();
 			foreach ($this->relaciones as $clave => $valor) {
 							foreach ( $this->relaciones[$clave] as $clave2=>$valor2 ) {
 												//echo $valor2."=???".$campito."<br>";

@@ -1,33 +1,5 @@
-<<?php
+<?php
 
-/**
- * This is the model class for table "{{tempdetot}}".
- *
- * The followings are the available columns in table '{{tempdetot}}':
- * @property string $id
- * @property string $hidorden
- * @property string $item
- * @property string $textoactividad
- * @property string $codresponsable
- * @property string $fechainic
- * @property string $fechafinprog
- * @property string $fechacre
- * @property string $flaginterno
- * @property string $codocu
- * @property string $codestado
- * @property string $codmaster
- * @property integer $idinventario
- * @property integer $iduser
- * @property integer $idusertemp
- * @property string $idtemp
- * @property integer $idstatus
- *
- * The followings are the available model relations:
- * @property Ot $hidorden0
- * @property Trabajadores $codresponsable0
- * @property Estado $codocu0
- * @property Estado $codestado0
- */
 class Tempdetot extends ModeloGeneral
 {
 	/**
@@ -44,7 +16,7 @@ class Tempdetot extends ModeloGeneral
             
             return array(
 			// Classname => path to Class
-			'imagenesjpg'=>array(
+			'adjuntos'=>array(
 				'class'=>'ext.behaviors.TomaFotosBehavior',
                             '_codocu'=>'210',
                             '_ruta'=>yii::app()->settings->get('general','general_directorioimg'),
@@ -62,9 +34,12 @@ class Tempdetot extends ModeloGeneral
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
+                    array('idlabor','exist','allowEmpty' => true, 'attributeName' => 'id', 'className' => 'Listamateriales','message'=>'Esta actividad no está registrada'),
+			array('idlabor', 'checkcamposdefecto'),
 			//array('id, hidorden, item, textoactividad, codresponsable, fechainic, fechafinprog, fechacre, flaginterno, codocu, codestado, codmaster, idinventario, iduser, idusertemp, idstatus', 'required'),
 			array('idinventario, iduser, idusertemp, idstatus', 'numerical', 'integerOnly'=>true),
-			array('codocu,avance,codestado,nhoras,fechainic,fechafinprog,fechafin,fechainiprog,idaux,nhombres,codmon,monto,codmaster,tipo,cc,txt,codgrupoplan', 'safe'),
+			array('idlabor,codocu,avance,codestado,nhoras,fechainic,fechafinprog,fechafin,'
+                            . 'fechainiprog,idaux,nhombres,codmon,monto,codmaster,tipo,cc,txt,codgrupoplan', 'safe'),
 				array('id, hidorden', 'length', 'max'=>20),
 			array('item', 'length', 'max'=>3),
                     array('codestado', 'length', 'max'=>3,'message'=>' el valor es '.$this->codestado),
@@ -94,7 +69,8 @@ class Tempdetot extends ModeloGeneral
 			'masterequipo' => array(self::BELONGS_TO, 'Masterequipo', 'codmaster'),
 			'grupoplan' => array(self::BELONGS_TO, 'Grupoplan', 'codgrupoplan'),
 			'estado'=>array(self::BELONGS_TO,'Estado',array('codestado'=>'codestado','codocu'=>'codocu')),
-                         // 'nrecursos' => array(self::STAT, 'Tempdesolpe', 'hidlabor'),
+                    'listamateriales'=> array(self::BELONGS_TO, 'Listamateriales', 'idlabor'),
+                          'nrecursos' => array(self::STAT, 'Tempdesolpe', 'hidlabor'),
                    //  'nrecursos'=>array(self::STAT, 'Tempdesolpe', array('idaux'=>'hidlabor')),
 		);
 	}
@@ -196,15 +172,34 @@ class Tempdetot extends ModeloGeneral
             if($this->isNewRecord) {
                  $this->codmon = yii::app()->settings->get('general', 'general_monedadef');
                 }
-        if($this->cambiocampo('nhoras')	or $this->cambiocampo('codgrupoplan'))
+                            if($this->cambiocampo('nhoras')	or $this->cambiocampo('codgrupoplan'))
                                 {
                                     $this->monto=$this->nhoras*$this->nhombres*
                                             yii::app()->tipocambio->getcambio($this->grupoplan->codmon,$this->codmon)*
                                             $this->grupoplan->tarifa;
                                 }
+                if(!is_null($this->idlabor)){
+                    if($this->cambiocampo('idlabor')){
+                      $this->cargarecursos(); 
+                    }
+                }                
+                                
+                                
                                return parent::beforeSave();
 				}
         
+                                
+             public function afterSave() {
+            
+                if(!is_null($this->idlabor)){
+                   
+                      $this->cargarecursos(); 
+                   
+                }            
+                               return parent::afterSave();
+	}                    
+                                
+                                
        public function imposiblescambios(){
          return  array(
               '98'=>array('10','20','12','99','14','16'),
@@ -231,8 +226,57 @@ class Tempdetot extends ModeloGeneral
        // $filename=$fullFileName;
         
        // $path_parts = pathinfo($fullFileName);
-       Yii::log(' ejecutando '.serialize($fullFileName),'error');
+      // Yii::log(' ejecutando '.serialize($fullFileName),'error');
         $this->colocaarchivo($fullFileName);
     }
+    
+    //7carga los materiales relacinados a la tabla tempdesolpe a al actividad de la lista materiales 
+    private function cargarecursos(){
+        ///devuelve primero los registros hijos para ver si tiene hijos 
+        $registros=  Listamateriales::model()->hijos;
+        foreach($registros as $fila){
+            $recurso=New Tempdesolpe('hojaruta');
+             $recurso->setAttributes(
+                            array(
+                                'codcen'=>$recurso->getvaluedefault('centro'),
+                                'codal'=>$recurso->getvaluedefault('codal'),
+                                'idusertemp'=>yii::app()->user->id,
+                                'hcodoc'=>$this->ot->codocu,
+                                'codart'=>$fila->codigo,
+                                'um'=>$fila->um,
+                                'cant'=>$fila->cant,
+                                'txtmaterial'=>$fila->maestro->descripcion,
+                                
+                            )
+                     );
+            
+        }
+        
+    }
+    
+    
+    public function checkcamposdefecto(){
+             
+             if($this->idlabor >0){
+                 $reg=new Tempdesolpe();
+                                    if(!$reg->hasvaluedefault('codal')){
+                                                 
+                                                $this->adderror('idlabor','Para seleccionar Hojas de ruta, debe poner valores por defecto al registro de materiales (Codigo de almacen)');
+                                    }
+                               if(!$reg->hasvaluedefault('centro')){
+                                                 
+                                                $this->adderror('idlabor','Para seleccionar Hojas de ruta, debe poner valores por defecto al registro de materiales (Centro)');
+                                    }
+                                    
+                                                 unset($reg);
+                                                
+                                    
+                 }
+             
+
+                    }
+
+    
+    
     
 }

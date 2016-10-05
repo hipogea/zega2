@@ -1,0 +1,949 @@
+
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="/recurso/assets/a2e485e3/css/barra.css" />
+<link rel="stylesheet" type="text/css" href="/recurso/themes/temita/css/jquery-ui.css" />
+<link rel="stylesheet" type="text/css" href="/recurso/assets/35ca71bf/gridview/styles.css" />
+<link rel="stylesheet" type="text/css" href="/recurso/assets/633dbc6e/pager.css" />
+<link rel="stylesheet" type="text/css" href="/recurso/themes/temita/css/grilla_naranja.css" />
+<link rel="stylesheet" type="text/css" href="/recurso/assets/3cff1f91/css/semaforo.css" />
+<link rel="stylesheet" type="text/css" href="/recurso/assets/e4959144/css/flash.css" />
+<link rel="stylesheet" type="text/css" href="/recurso/themes/temita/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="/recurso/themes/temita/css/bootstrap-responsive.min.css" />
+<link rel="stylesheet" type="text/css" href="/recurso/themes/temita/css/abound.css" />
+<link rel="stylesheet" type="text/css" href="/recurso/themes/temita/css/miestilo.css" />
+<link rel="stylesheet" type="text/css" href="/recurso/assets/efb0c5ca/css/dropdown/dropdown.css" />
+<link rel="stylesheet" type="text/css" href="/recurso/assets/efb0c5ca/css/dropdown/themes/default/default.css" />
+<script type="text/javascript" src="/recurso/assets/6fd67628/jquery.js"></script>
+<script type="text/javascript" src="/recurso/assets/6fd67628/jquery.ba-bbq.js"></script>
+<script type="text/javascript" src="/recurso/assets/6fd67628/jquery.yiiactiveform.js"></script>
+<script type="text/javascript" src="/recurso/assets/a2e485e3/js/barra.js"></script>
+<script type="text/javascript" src="/recurso/assets/e4959144/js/flash.js"></script>
+<script type="text/javascript" src="/recurso/themes/temita/css/jquery-ui.css"></script>
+<script type="text/javascript" src="/recurso/themes/temita/js/plugins/blockuiplugin.js"></script>
+<title>Nautilus-Solver</title>
+   <meta name="description" content="Logistica, desarrollo software, gestion materiales, SAP, inventarios">
+    <meta name="author" content=" NEOTEGNIA CONSULTORES SAC">
+	    <link rel="shortcut icon" href="/recurso/themes/temita/img/icons/logi.png">
+	             </head>
+<body >
+<script type="text/javascript">
+/*<![CDATA[*/
+
+$(document).ajaxStart(function () {
+ $.blockUI(
+        {fadeIn: 700,
+            fadeOut: 700,
+            timeout: 2000,
+            showOverlay: false,
+            centerY: false,
+            css: {
+                width: '350px',
+                top: '200px',
+                left: '10px',
+                right: '',
+                border: 'none',
+                padding: '5px',
+                backgroundColor: '#000',
+                '-webkit-border-radius': '20px',
+                '-moz-border-radius': '20px',
+                opacity: .8,
+                color: '#fff'
+            }
+        }
+ );
+}).ajaxStop($.unblockUI);
+/*]]>*/
+</script>
+<section id="navigation-main">
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">                            
+                              <div class="nav-collapse">
+                                    <div id="myslidemenu" class="barrademenu">
+                        <ul class="dropdown dropdown-horizontal" id="yw9">
+<li><a href="#"> Catálogos</a>
+<ul>
+<li><a href="/recurso/site/maestros">Layout</a></li>
+<li><a href="#"><img src="/recurso/themes/temita/img/orga.png" /> Corporativos</a>
+<ul>
+<li><a href="/recurso/sociedades/admin">Sociedades</a></li>
+<li><a href="/recurso/centros/admin">Centros</a></li>
+<li><a href="/recurso/areas/admin">Areas</a></li>
+<li><a href="/recurso/clipro/admin">Acreedores</a></li>
+</ul>
+</li>
+<li><a href="#">Logistica</a>
+<ul>
+<li><a href="#"><img src="/recurso/themes/temita/img/logi.png" />Almacen</a>
+<ul>
+<li><a href="/recurso/almacenes/admin">Almacenes</a></li>
+<li><a href="/recurso/almacenmovimientos/admin">Transacciones</a></li>
+<li><a href="/recurso/canales/admin">Canales de despacho</a></li>
+<li><a href="/recurso/clipro/admin">Acreedores</a></li>
+<li><a href="/recurso/objetoscliente/admin">Objetos externos</a></li>
+</ul>
+</li>
+<li><a href="#"><img src="/recurso/themes/temita/img/car.png" /> Transporte</a>
+<ul>
+<li><a href="/recurso/embarcaciones/admin">Vehiculos</a></li>
+<li><a href="/recurso/direcciones/admin">Ptos Transporte</a></li>
+<li><a href="/recurso/lugares/admin">Lugares</a></li>
+<li><a href="/recurso/paraqueva/admin">Tipos mov</a></li>
+<li><a href="/recurso/CMotivo/admin">Motivos traslado</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#">Analisis y costeo</a>
+<ul>
+<li><a href="#">Colectores</a>
+<ul>
+<li><a href="/recurso/grupocc/admin">Grupos</a></li>
+<li><a href="/recurso/cc/admin">Colectores</a></li>
+<li><a href="/recurso/cc/create">Crear Colector</a></li>
+</ul>
+</li>
+<li><a href="#">Impuestos</a>
+<ul>
+<li><a href="/recurso/impuestos/admin">Definir impuestos</a></li>
+<li><a href="/recurso/valorimpuestos/admin">Valorizacion de impuestos</a></li>
+<li><a href="/recurso/impuestosdocu/admin">Asignar Impuestos</a></li>
+</ul>
+</li>
+<li><a href="/recurso/TMoneda/colocacambio">Tipo cambio</a></li>
+<li><a href="/recurso/Tipofacturacion/admin">Formas de pago</a></li>
+<li><a href="/recurso/fondofijo/admin">Fondo Fijo</a></li>
+</ul>
+</li>
+<li><a href="#">Comerciales</a>
+<ul>
+<li><a href="/recurso/Contactos/admin">Contactos</a></li>
+<li><a href="/recurso/Disponibilidad/admin">Disponibilidad</a></li>
+<li><a href="/recurso/Grupoventas/admin">Grupo ventas</a></li>
+</ul>
+</li>
+<li><a href="/recurso/Documentos/admin">Documentos</a></li>
+<li><a href="#">Servicios</a>
+<ul>
+<li><a href="/recurso/maestroservicios/create">Crear servicio</a></li>
+<li><a href="/recurso/maestroservicios/admin">Servicios</a></li>
+</ul>
+</li>
+<li><a href="/recurso/Estado/admin">Estados</a></li>
+<li><a href="/recurso/Eventos/admin">Eventos</a></li>
+<li><a href="/recurso/Grupocompras/admin">Grupo compras</a></li>
+<li><a href="#">Objetos tecnicos</a>
+<ul>
+<li><a href="/recurso/maestrocompo/create">Crear Material</a></li>
+<li><a href="/recurso/maestrotipos/admin">Tipos mater.</a></li>
+<li><a href="/recurso/maestrocompo/admin">Materiales</a></li>
+<li><a href="/recurso/maestrocompo/listadetalle">Detalle Materiales</a></li>
+<li><a href="/recurso/Tipoactivos/admin">Tipos AF</a></li>
+<li><a href="/recurso/ums/admin">Unidades med</a></li>
+<li><a href="/recurso/masterequipo/admin">Catalogo equipos</a></li>
+<li><a href="/recurso/listamateriales/admin">Lista de materiales</a></li>
+</ul>
+</li>
+<li><a href="/recurso/Trabajadores/admin"><img src="/recurso/themes/temita/img/user_business.png" /> Trabajadores</a></li>
+<li><a href="/recurso/Oficios/admin">Cargos</a></li>
+<li><a href="/recurso/Periodos/admin">Periodos</a></li>
+<li><a href="/recurso/TMoneda/admin">Monedas</a></li>
+</ul>
+</li>
+<li><a href="#">Operaciones </a>
+<ul>
+<li><a href="#">Ordenes servicio </a>
+<ul>
+<li><a href="/recurso/ot/creadocumento">Crear Orden</a></li>
+<li><a href="/recurso/ot/admin">Ordenes</a></li>
+<li><a href="/recurso/grupoplan/">Grupos plan</a></li>
+</ul>
+</li>
+<li><a href="#">Solicitudes </a>
+<ul>
+<li><a href="/recurso/solpe/create">Crear Solicitud</a></li>
+<li><a href="/recurso/solpe/admin">Solicitudes</a></li>
+</ul>
+</li>
+<li><a href="#">Compras </a>
+<ul>
+<li><a href="/recurso/solpe/tomarcompras">Tomar Solicitudes</a></li>
+<li><a href="/recurso/solcot/create">Crear Sol Cotizac</a></li>
+<li><a href="/recurso/solcot/admin">Solicitudes Cotizac</a></li>
+<li><a href="/recurso/ocompra/creaDocumento">Crear Orden compra</a></li>
+<li><a href="/recurso/ocompra/admin">Ordenes de  compra</a></li>
+<li><a href="#">Servicios</a>
+<ul>
+<li><a href="/recurso/maestroservicios/create">Crear servicio</a></li>
+<li><a href="/recurso/maestroservicios/creaconformidad">Dar conformidad</a></li>
+<li><a href="/recurso/maestroservicios/admin">Servicios</a></li>
+<li><a href="/recurso/maestroservicios/conformidades">Visualizar Conformidades</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#">Administracion </a>
+<ul>
+<li><a href="/recurso/noticias/admin">Novedades</a></li>
+<li><a href="#">Aprobar Docs</a>
+<ul>
+<li><a href="/recurso/solpe/liberacion">Solicitudes Mat</a></li>
+<li><a href="/recurso/Ocompra/liberacion">Compras</a></li>
+<li><a href="/recurso/Guia/liberacion">Transporte</a></li>
+<li><a href="/recurso/noticias/poraprobar">Noticias</a></li>
+</ul>
+</li>
+<li><a href="/recurso/tipocambio/admin">Tipo cambio</a></li>
+<li><a href="#">Maestros utiles</a>
+<ul>
+<li><a href="/recurso/clipro/agenda">Contactos</a></li>
+<li><a href="/recurso/trabajadores/admin">Trabajadores</a></li>
+<li><a href="/recurso/clipro/admin">Proveedores</a></li>
+</ul>
+</li>
+<li><a href="/recurso/docingresados/admin">Recepcion doc.</a></li>
+<li><a href="/recurso/cajachica/admin">Caja menor.</a></li>
+<li><a href="/recurso/Embarcaciones/admin">Vehiculos</a></li>
+<li><a href="/recurso/Periodos/admin">Periodos</a></li>
+<li><a href="/recurso/TMoneda/cambio">Monedas</a></li>
+<li><a href="/recurso/noticias/solicita">Solicitar noticia</a></li>
+<li><a href="/recurso/archivador/admin">Biblioteca</a></li>
+<li><a href="/recurso/ingfactura/admin">Recep Facturas</a></li>
+<li><a href="/recurso/cc/reporte">Costos</a></li>
+<li><a href="/recurso/ccGastos/admin">Registro Costos</a></li>
+</ul>
+</li>
+<li><a href="#">Inventario</a>
+<ul>
+<li><a href="#"><img src="/recurso/themes/temita/img/materia.png" />Existencias</a>
+<ul>
+<li><a href="/recurso/almacendocs/almacenes">Resumen</a></li>
+<li><a href="/recurso/alinventario/admin">Listado stock </a></li>
+<li><a href="/recurso/alinventario/supervision">Supervisar Stock</a></li>
+</ul>
+</li>
+<li><a href="#"><img src="/recurso/themes/temita/img/doc_table.png" />Doc Almacen</a>
+<ul>
+<li><a href="/recurso/almacendocs/crearvale">Crear movimiento</a></li>
+<li><a href="/recurso/almacendocs/admin">Vales</a></li>
+<li><a href="/recurso/alkardex/admin">Kardex</a></li>
+</ul>
+</li>
+<li><a href="#"><img src="/recurso/themes/temita/img/rq.png" />Requerimientos</a>
+<ul>
+<li><a href="/recurso/solpe/atiendesolpe">Ajuste de reservas</a></li>
+<li><a href="/recurso/almacendocs/admin">Listado de solicitudes</a></li>
+<li><a href="/recurso/despacho/admin">Despachos</a></li>
+</ul>
+</li>
+<li><a href="#"><img src="/recurso/themes/temita/img/chek.png" />Conteo</a>
+<ul>
+<li><a href="/recurso/inventariofisicopadre/admin">Inv fisico</a></li>
+<li><a href="/recurso/inventariofisicopadre/create">Crear conteo</a></li>
+</ul>
+</li>
+<li><a href="#"><img src="/recurso/themes/temita/img/noti01.png" />Reportes</a>
+<ul>
+<li><a href="/recurso/alinventario/pareto">Analisis ABC</a></li>
+<li><a href="/recurso/alinventario/adminpareto">Reporte ABC</a></li>
+<li><a href="/recurso/alinventario/repinventario">Reportes de inventario</a></li>
+</ul>
+</li>
+<li><a href="/recurso/alinventario/cargarmat">Actualizar materiales</a></li>
+</ul>
+</li>
+<li><a href="#">Aplicacion</a>
+<ul>
+<li><a href="#">Configuracion</a>
+<ul>
+<li><a href="/recurso/configuracion">Parametros Generales</a></li>
+<li><a href="/recurso/site/config">Maestros Base</a></li>
+<li><a href="/recurso/opcionescamposdocu/admin">Valores defecto</a></li>
+<li><a href="#">Reportes</a>
+<ul>
+<li><a href="/recurso/coordocs/admin">Administrar </a></li>
+<li><a href="/recurso/tenores/admin">Tenores </a></li>
+</ul>
+</li>
+<li><a href="#">Contabilidad</a>
+<ul>
+<li><a href="/recurso/contabilidad/opcontables/admin">Operadores</a></li>
+<li><a href="/recurso/contabilidad/detercuentas/admin">Determinar operadores</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#">Seguridad</a>
+<ul>
+<li><a href="/recurso/cruge/ui/usermanagementadmin">Gestion Usuarios</a></li>
+<li><a href="/recurso/cruge/ui/rbaclisttasks">Definir perfiles</a></li>
+<li><a href="/recurso/cruge/ui/rbaclistroles">Definir Roles</a></li>
+<li><a href=" /recurso/cruge/ui/systemupdate">Gestion de Acceso</a></li>
+<li><a href="/recurso/cruge/ui/rbacusersassignments">Permisologia</a></li>
+<li><a href="/recurso/Authobjetos/admin">Reglas Negocio</a></li>
+<li><a href="/recurso/backup">Backup</a></li>
+</ul>
+</li>
+<li><a href="/recurso/cargamasiva/admin">Importacion de datos</a></li>
+<li><a href="/recurso/site/bloqueos">Ediciones de usuario</a></li>
+</ul>
+</li>
+<li><a class="dropdown-toggle" data-toggle="dropdown" href="#">Transporte </a>
+<ul>
+<li><a href="/recurso/guia/creaDocumento">Crear Doc Transp</a></li>
+<li><a href="/recurso/ne/creadocumento">Crear Doc Recep</a></li>
+<li><a href="/recurso/guia/admin">Documentos</a></li>
+<li><a href="/recurso/choferes/create">Crear Conductores</a></li>
+<li><a href="/recurso/direcciones/create">Crear Direccion</a></li>
+<li><a href="/recurso/lugares/create">Crear Ubicaciones</a></li>
+<li><a href="/recurso/canales/admin">Canales de distr</a></li>
+<li><a href="/recurso/puntodespacho/admin">Centro expedicion</a></li>
+<li><a href="/recurso/despacho/admin">Expedicion</a></li>
+</ul>
+</li>
+<li><a class="dropdown-toggle" data-toggle="dropdown" href="#">G. Activos </a>
+<ul>
+<li><a href="/recurso/Inventario/admin">Inventario AF</a></li>
+<li><a href="/recurso/Inventario/create">Crear AF</a></li>
+<li><a href="/recurso/Observaciones/admin">Observaciones</a></li>
+<li><a href="/recurso/Inventario/create">Crear AF</a></li>
+<li><a href="/recurso/tipoactivos/create">Tipos AF</a></li>
+</ul>
+</li>
+<li><a href="/recurso/site/ayuda">Ayuda</a></li>
+<li><a href="/recurso/cruge/ui/logout.jsp">Salir (admin)</a></li>
+</ul>
+
+
+                            <br style="clear: left" />
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+
+
+    
+
+
+ </section><!-- /#navigation-main -->
+<section class="main-body">
+    <div class="container-fluid">
+                <div class="row-fluid">
+        <div class="span3">
+		        <div class="sidebar-nav">
+                                                 <!-- INICIO DEL WIDGET TIPO DE CAMMBIO!-->
+                                         <div>
+                    <div class="portlet" id="yw5">
+<div class="portlet-decoration">
+<div class="portlet-title"><img src="/recurso/themes/temita/img/coins.png" /> Tipo cambio  (USD)</div>
+</div>
+<div class="portlet-content">
+                                                            <div  id="zonacompra"> <a onclick="$(&#039;#cru-framegeneral&#039;).attr(&#039;src&#039;,&#039;/recurso/site/Colocatipocambio.jsp &#039;); $(&#039;#cru-dialoggeneral&#039;).dialog(&#039;open&#039;);" href="#"><img width="20" height="20" src="/recurso/themes/temita/img/dinero.png" alt="hola" /></a>                        <span class="label badge-success" >Compra : 3.26 </span>..<span class="label badge-warning " >  Venta  : 3.34</span></div>
+                    </div>
+</div>                </div>
+                <!-- FIN EL WIDGET TIPO CAMBIO !-->
+                                     		  <div>
+              <div class="portlet" id="yw6">
+<div class="portlet-decoration">
+<div class="portlet-title"><img src="/recurso/themes/temita/img/options.png" /> Opciones</div>
+</div>
+<div class="portlet-content">
+		    <ul id="yw7">
+<li><span></span>
+<ul>
+<li><a href="/recurso/ocompra/2.jsp">Visualizar Oc</a></li>
+<li><a href="/recurso/ocompra/creadocumento.jsp">Crear Oc</a></li>
+<li><a href="/recurso/ocompra/configuraop.jsp">Opciones Oc</a></li>
+<li><a href="/recurso/ocompra/admin.jsp">Listado Oc</a></li>
+<li><a href="/recurso/ocompra/imprimir/2.jsp">Imprimir</a></li>
+</ul>
+</li>
+</ul>              </div>
+</div>          </div>
+		        </div>
+                            <div> <!--INICIA DIV DE USUARIO -->
+                    <div class="portlet" id="yw8">
+<div class="portlet-decoration">
+<div class="portlet-title"><img src="/recurso/themes/temita/img/user_business_boss.png" /> (admin) - Conectado </div>
+</div>
+<div class="portlet-content">
+                                        <img width="15" height="15" src="/recurso/themes/temita/img/estrella.png" alt="hola" />                    Mis Accesos Directos
+                    <a onclick="$(&#039;#cru-framegeneral&#039;).attr(&#039;src&#039;,&#039;/recurso/site/agregafavorito.jsp?maccion=editadocumento&amp;mcontrolador=ocompra&amp;asDialog=1&amp;gridId=favoritos-grid &#039;); $(&#039;#cru-dialoggeneral&#039;).dialog(&#039;open&#039;);" href="#"><img width="15" height="15" src="/recurso/themes/temita/img/mas.png" alt="hola" /></a>                      <div id="favoritos-grid" class="grid-view">
+<div class="summary"></div>
+<table class="table table-striped table-bordered table-hover">
+<tbody>
+<tr class="odd">
+<td><a href="/recurso\maestrocompo\listadetalle">Detalle materiales</a></td><td class="button-column">  <a class="delete" title="Borrar" href="/recurso/usuariosfavoritos/borrar/1.jsp" id="yt5"><img src="/recurso/themes/temita/img/borrador.png" alt="Borrar" /></a></td></tr>
+<tr class="even">
+<td><a href="/recurso\alinventario\admin">Stocks</a></td><td class="button-column">  <a class="delete" title="Borrar" href="/recurso/usuariosfavoritos/borrar/3.jsp" id="yt6"><img src="/recurso/themes/temita/img/borrador.png" alt="Borrar" /></a></td></tr>
+<tr class="odd">
+<td><a href="/recurso\documentos\admin">DOCUMENTOS</a></td><td class="button-column">  <a class="delete" title="Borrar" href="/recurso/usuariosfavoritos/borrar/4.jsp" id="yt7"><img src="/recurso/themes/temita/img/borrador.png" alt="Borrar" /></a></td></tr>
+<tr class="even">
+<td><a href="/recurso\estado\admin">ESTADOS</a></td><td class="button-column">  <a class="delete" title="Borrar" href="/recurso/usuariosfavoritos/borrar/5.jsp" id="yt8"><img src="/recurso/themes/temita/img/borrador.png" alt="Borrar" /></a></td></tr>
+</tbody>
+</table>
+<div class="keys" style="display:none" title="/recurso/ocompra/editadocumento/2.jsp"><span>1</span><span>3</span><span>4</span><span>5</span></div>
+</div>                    <div id="maletin">
+                                                                        <a onclick="$(&#039;#cru-framegeneral&#039;).attr(&#039;src&#039;,&#039;/recurso/site/revisamaletin.jsp?maccion=editadocumento&amp;mcontrolador=ocompra&amp;asDialog=1 &#039;); $(&#039;#cru-dialoggeneral&#039;).dialog(&#039;open&#039;);" href="#"><img width="20" height="20" src="/recurso/themes/temita/img/maletin.png" alt="hola" /></a>( 0 ) - Mi maletin                    </div>
+                    <div id="documentosfavoritos">
+                        <img src="/recurso/themes/temita/img/disponible.png" alt="hola" /><a href="/recurso/listamateriales/admin">Listados de Materiales</a>                    </div>
+                        <div>
+                            <img src="/recurso/themes/temita/img/safe.png" alt="hola" /><a href="/recurso/usuariosfavoritos/misbloqueos">Doc. Bloqueados :</a>                            <span class="label badge-warning">
+                        4                        </span>
+                          </div>
+                    <div>
+                        <a href="#"><img src="/recurso/themes/temita/img/page_white_gear.png" alt="hola" /></a>                        <a href="/recurso/documentos/prefdoc">Opciones Documentos</a>                    </div>
+                    <div>
+                    <a href="/recurso/cruge/ui/usermanagementadmin.jsp"><img src="/recurso/themes/temita/img/ruler_triangle.png" alt="hola" /></a>                    <a href="/recurso/trabajadores/perfil"> Mi cuenta</a>                    </div>
+                                               <div>
+                                 <a href="/recurso/noticias/poraprobar"><img src="/recurso/themes/temita/img/sound.png" alt="hola" /></a>                                <a href="/recurso/noticias/poraprobar"> Avisos por aprobar </a>                                <span class="label badge-warning">
+                        0                        </span>
+                            </div>
+                                      <div>
+                        <a href="/recurso/noticias/adminusuariopendientes"><img src="/recurso/themes/temita/img/sound.png" alt="hola" /></a>                        <a href="/recurso/noticias/adminusuariopendientes"> Avisos pendientes </a>                        <span class="label badge-warning">
+                        0                        </span>
+                    </div>
+                    <div>
+                    <img src="/recurso/themes/temita/img/clock.png" alt="hola" />                     <a href="#"> Quedan : 356   Minutos</a>                    <div class="progress progress-success">
+                        <div class="bar" style="width: 90%"></div>
+                    </div>
+                    </div>
+                    <!--FINALIZA EL PORTLET DE USUARIO -->
+                    </div>
+</div>                </div> <!--FINALIZA EL DIV USUARIO -->
+                                                                                      <table class="table table-striped table-bordered">
+          <tbody>
+            <tr>
+              <td width="50%">Ancho de banda usado</td>
+              <td>
+              	<div class="progress progress-right">
+                  <div class="bar" style="width: 10%"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Espacio en Disco</td>
+              <td>
+                  <DIV CLASS='marco' ><img src="/recurso/assets/3cff1f91/img/semaforo-ambar.png" alt="" /></div>              </td>
+            </tr>
+            <tr>
+              <td>Ventas cerradas</td>
+              <td>
+              	<div class="progress progress-info">
+                  <div class="bar" style="width: 20%"></div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        </div><!--/span3-->
+    <div class="span9">
+
+        <div class="flash-notice">notice_No has confirmado los datos, solo has refrescado la pagina </div>
+
+
+
+
+
+            <!-- Include content pages -->
+    
+
+
+
+
+
+   <div class="division">
+        <div class="wide form">
+            <div class="barrasup barrasup-simple">
+
+                <img width="15" height="8" src="/recurso/themes/temita/img/compra.png" alt="hola" />                <span class="badge badge-notice">Orden de compra
+                </span>
+            </div>
+
+                <form id="Ocompra-form" action="/recurso/ocompra/editadocumento/2.jsp" method="post">
+            <div class="row">
+                <DIV CLASS='marco' ><DIV CLASS='boton boton24' ><input value="" class="boton_barrita" onMouseOver="this.src=&#039;/recurso/assets/a2e485e3/img/24/save_.png&#039;" onMouseOut="this.src=&#039;/recurso/assets/a2e485e3/img/24/save.png&#039;" width="23" height="23" src="/recurso/assets/a2e485e3/img/24/save.png" type="image" name="yt0" /></div></div><DIV CLASS='marco' ><DIV CLASS='boton boton24' ><a href="/recurso/ocompra/procesardocumento/2.jsp?ev=65"><img id="ok" class="img_swap imagen" onMouseOver="this.src=&#039;/recurso/assets/a2e485e3/img/24/ok_.png&#039;" onMouseOut="this.src=&#039;/recurso/assets/a2e485e3/img/24/ok.png&#039;" width="23" height="23" src="/recurso/assets/a2e485e3/img/24/ok.png" alt="" /></a></div></div><DIV CLASS='marco' ><DIV CLASS='boton boton24' ><a href="/recurso/ocompra/procesardocumento/2.jsp?ev=66"><img id="tacho" class="img_swap imagen" onMouseOver="this.src=&#039;/recurso/assets/a2e485e3/img/24/tacho_.png&#039;" onMouseOut="this.src=&#039;/recurso/assets/a2e485e3/img/24/tacho.png&#039;" width="23" height="23" src="/recurso/assets/a2e485e3/img/24/tacho.png" alt="" /></a></div></div><DIV CLASS='marco' ><DIV CLASS='boton boton24' ><a href="#" id="yt1"><img id="camera" class="img_swap imagen" onMouseOver="this.src=&#039;/recurso/assets/a2e485e3/img/24/camera_.png&#039;" onMouseOut="this.src=&#039;/recurso/assets/a2e485e3/img/24/camera.png&#039;" width="23" height="23" src="/recurso/assets/a2e485e3/img/24/camera.png" alt="" /></a></div></div><DIV CLASS='marco' ><DIV CLASS='boton boton24' ><a href="/recurso/ocompra/procesardocumento/2.jsp?ev=64"><img id="config" class="img_swap imagen" onMouseOver="this.src=&#039;/recurso/assets/a2e485e3/img/24/config_.png&#039;" onMouseOut="this.src=&#039;/recurso/assets/a2e485e3/img/24/config.png&#039;" width="23" height="23" src="/recurso/assets/a2e485e3/img/24/config.png" alt="" /></a></div></div><DIV CLASS='marco' ><DIV CLASS='boton boton24' ><a onclick=" $(&#039;#cru-detalle&#039;).attr(&#039;src&#039;,&#039;/recurso/ocompra/agregaimpuesto.jsp?idguia=2&amp;asDialog=1&amp;gridId=detalle-grid&#039;);$(&#039;#cru-dialogdetalle&#039;).dialog(&#039;open&#039;);" href="#"><img id="money" class="img_swap imagen" onMouseOver="this.src=&#039;/recurso/assets/a2e485e3/img/24/money_.png&#039;" onMouseOut="this.src=&#039;/recurso/assets/a2e485e3/img/24/money.png&#039;" width="23" height="23" src="/recurso/assets/a2e485e3/img/24/money.png" alt="" /></a></div></div><DIV CLASS='marco' ><DIV CLASS='boton boton24' ><a href="/recurso/ocompra/salir/2.jsp"><img id="out" class="img_swap imagen" onMouseOver="this.src=&#039;/recurso/assets/a2e485e3/img/24/out_.png&#039;" onMouseOut="this.src=&#039;/recurso/assets/a2e485e3/img/24/out.png&#039;" width="23" height="23" src="/recurso/assets/a2e485e3/img/24/out.png" alt="" /></a></div></div>            <div id="myDivision" style="display:block;float:right;" class="flash-regular">
+.
+            </div>
+
+            </div>
+
+            <div id="Ocompra-form_es_" class="errorSummary" style="display:none"><p>Por favor corrija los siguientes errores de ingreso:</p>
+<ul><li>dummy</li></ul></div>
+
+   
+                <div id="MyTabi">
+<ul>
+<li><a href="#tab_" title="Inicio">Inicio</a></li>
+<li><a href="#tab__" title="Comerciales">Comerciales</a></li>
+<li><a href="#tab___" title="Adicionales">Adicionales</a></li>
+<li><a href="#tab____" title="Mensajes">Mensajes</a></li>
+<li><a href="#tab_____" title="Historial">Historial</a></li>
+<li><a href="#tab______" title="Impuestos">Impuestos</a></li>
+<li><a href="#tab____..__" title="Auditoria">Auditoria</a></li>
+</ul>
+<div id="tab_">
+
+
+	<div class="row">
+		<label for="Ocompra_numcot">Numero</label>		<input size="8" maxlength="8" Disabled="Disabled" name="Ocompra[numcot]" id="Ocompra_numcot" type="text" value="2100000001" />		<div class="errorMessage" id="Ocompra_numcot_em_" style="display:none"></div>	</div>
+
+	
+		<div class="row">
+		            <label for="Ocompra_codpro">Proveedor</label>					<div style='float: left; '><input size="6" name="Ocompra[codpro]" id="Ocompra_codpro" type="text" maxlength="6" value="970003" /> </div> <div style='float: left;'><a onclick="$(&quot;#cru-frame3&quot;).attr(
+																					&quot;src&quot;,
+																					&quot;/recurso/Matchcode/recibevalor.jsp?campo=codpro&amp;clasesita=Clipro&amp;controlado=Ocompra&quot;); $(&quot;#cru-dialog3&quot;).data(&quot;hilo&quot;,&quot;Ocompra_codpro@fehdfj&quot;).dialog(&quot;open&quot;); return false" href="#"><img src="/recurso/themes/temita/img/Search.png" alt="" /></a> </div> <div style='float: left; background-color :#FFF; padding-left:4px;  padding-right:4px; font-family: verdana,tahoma,arial,sans-serif;
+								font-size: 8pt;'  id =fehdfj>SOLTECNIA SA </div>			   
+	</div>
+	<div class="row">
+		<label for="Ocompra_codresponsable" class="required">Codresponsable <span class="required">*</span></label>		<div style='float: left; '><input size="6" name="Ocompra[codresponsable]" id="Ocompra_codresponsable" type="text" value="7001" /> </div> <div style='float: left;'><a onclick="$(&quot;#cru-frame3&quot;).attr(
+																					&quot;src&quot;,
+																					&quot;/recurso/Matchcode/recibevalor.jsp?campo=codresponsable&amp;clasesita=VwTrabajadores&amp;controlado=Ocompra&quot;); $(&quot;#cru-dialog3&quot;).data(&quot;hilo&quot;,&quot;Ocompra_codresponsable@fehdfddj&quot;).dialog(&quot;open&quot;); return false" href="#"><img src="/recurso/themes/temita/img/Search.png" alt="" /></a> </div> <div style='float: left; background-color :#FFF; padding-left:4px;  padding-right:4px; font-family: verdana,tahoma,arial,sans-serif;
+								font-size: 8pt;'  id =fehdfddj>RAMIREZ -TENORIO-JULIAN </div>
+	</div>
+	
+	<div style='float: left;'>
+					<div class="errorMessage" id="Ocompra_codpro_em_" style="display:none"></div>	</div>
+
+
+
+
+
+
+
+	<div class="row">
+
+		<label for="Ocompra_idcontacto" class="required">Contacto <span class="required">*</span></label>				<a href="#" id="yt2"><img src="/recurso/themes/temita/img/filter.png" alt="" /></a><select name="Ocompra[idcontacto]" id="Ocompra_idcontacto">
+<option value="">--Seleccione Contacto--</option>
+<option value="1" selected="selected">SERGIO MALAPARTIDA </option>
+</select>		<div class="errorMessage" id="Ocompra_idcontacto_em_" style="display:none"></div>			</div>
+
+
+
+
+	<input name="Ocompra[idguia]" id="Ocompra_idguia" type="hidden" value="2" />
+	<div class="row">
+		<label for="Ocompra_codestado">Estado</label>		<input disabled="disabled" size="20" type="text" value="CREADO" name="hola" id="hola" /><input name="Ocompra[codestado]" id="Ocompra_codestado" type="hidden" value="10" />		
+	</div>
+
+
+	<div class="row">
+		<label for="Ocompra_texto">Comentario</label>		<input size="40" maxlength="40" name="Ocompra[texto]" id="Ocompra_texto" type="text" value="gsg" />		<div class="errorMessage" id="Ocompra_texto_em_" style="display:none"></div>	</div>
+
+	
+
+	<div class="row">
+		<label for="Ocompra_tipologia" class="required">Tipo <span class="required">*</span></label>		<select disabled="disabled" name="Ocompra[tipologia]" id="Ocompra_tipologia">
+<option value="">--Seleccione tipo--</option>
+<option value="W">Servicio</option>
+<option value="K">Importaciones</option>
+<option value="C" selected="selected">Compra nacional</option>
+<option value="H">Consignacion</option>
+</select>
+		<div class="errorMessage" id="Ocompra_tipologia_em_" style="display:none"></div>	</div>
+
+	<div class="row">
+		<label for="Ocompra_moneda">Moneda</label>		<input size="3" maxlength="3" name="Ocompra[moneda]" id="Ocompra_moneda" type="text" value="PEN" />
+
+		<div class="errorMessage" id="Ocompra_moneda_em_" style="display:none"></div>	</div>
+
+	<div class="row">
+		<label for="Ocompra_orcli">Cotizac Prov</label>		<input size="12" maxlength="12" name="Ocompra[orcli]" id="Ocompra_orcli" type="text" value="" />		<div class="errorMessage" id="Ocompra_orcli_em_" style="display:none"></div>	</div>
+</div>
+<div id="tab__">
+
+
+
+
+<div class="row">
+		<label for="Ocompra_descuento">Desc (%)</label>				<input size="4" maxlength="4" name="Ocompra[descuento]" id="Ocompra_descuento" type="text" value="0" />		<div class="errorMessage" id="Ocompra_descuento_em_" style="display:none"></div>	</div>
+
+
+	<div class="row">
+		<label for="Ocompra_codtipofac" class="required">F. pago <span class="required">*</span></label>		<select name="Ocompra[codtipofac]" id="Ocompra_codtipofac">
+<option value="">--Seleccione modalidad--</option>
+<option value="12">AL CONTADO</option>
+<option value="13" selected="selected">FACTURA A QUINCE DIAS</option>
+</select>	
+		<div class="errorMessage" id="Ocompra_codtipofac_em_" style="display:none"></div>	</div>
+
+<div class="row">
+	<label for="Ocompra_direcentrega" class="required">Direcentrega <span class="required">*</span></label>			  <select name="Ocompra[direcentrega]" id="Ocompra_direcentrega">
+<option value="">--Seleccione una direccion--</option>
+<option value="1" selected="selected">JR NUEVA ESPERANZA 345 URB VILLA UNIV</option>
+</select>
+	<div class="errorMessage" id="Ocompra_direcentrega_em_" style="display:none"></div></div>
+
+
+
+	  <div class="row">
+	  
+		
+		<label for="Ocompra_codsociedad" class="required">Sociedad <span class="required">*</span></label>		
+		<select name="Ocompra[codsociedad]" id="Ocompra_codsociedad">
+<option value="">--Seleccione un emisor--</option>
+<option value="A" selected="selected">NEOTEGNIA CONSULTORES</option>
+</select>		<div class="errorMessage" id="Ocompra_codsociedad_em_" style="display:none"></div>	</div>
+
+	<div class="row">
+		<label for="Ocompra_codgrupoventas" class="required">Gr. Compras <span class="required">*</span></label>		<select name="Ocompra[codgrupoventas]" id="Ocompra_codgrupoventas">
+<option value="">--Seleccione grupo compras--</option>
+<option value="145" selected="selected">COMPRAS LIMA</option>
+</select>		<div class="errorMessage" id="Ocompra_codgrupoventas_em_" style="display:none"></div>	</div>
+
+	<div class="row">
+		<label for="Ocompra_codtipocotizacion">Tipo</label>		<input size="1" maxlength="1" disabled="disabled" name="Ocompra[codtipocotizacion]" id="Ocompra_codtipocotizacion" type="text" value="" />		<div class="errorMessage" id="Ocompra_codtipocotizacion_em_" style="display:none"></div>	</div>
+
+<div class="row">
+			</div>
+
+
+
+
+	<div class="row">
+		<label for="Ocompra_validez">Validez</label>		<input size="2" maxlength="2" name="Ocompra[validez]" id="Ocompra_validez" type="text" value="0" />		<div class="errorMessage" id="Ocompra_validez_em_" style="display:none"></div>	</div>
+
+
+	
+	<div class="row">
+		<label for="Ocompra_codobjeto">Refer</label>		<input size="3" maxlength="3" name="Ocompra[codobjeto]" id="Ocompra_codobjeto" type="text" value="" />		<div class="errorMessage" id="Ocompra_codobjeto_em_" style="display:none"></div>	</div>
+
+
+<script type="text/javascript">
+/*<![CDATA[*/
+ function reloadGrid(data) {
+    $.fn.yiiGridView.update('detalle-grid');
+} 
+/*]]>*/
+</script></div>
+<div id="tab___"><div class="row">
+		<label for="Ocompra_fechapresentacion">Fec Pre</label>		<input style="width:60px;vertical-align:top" id="Ocompra_fechapresentacion" name="Ocompra[fechapresentacion]" type="text" />		
+		<div class="errorMessage" id="Ocompra_fechapresentacion_em_" style="display:none"></div>	</div>
+
+	<div class="row">
+		<label for="Ocompra_fechanominal" class="required">Fec Oc <span class="required">*</span></label>			<input style="width:60px;vertical-align:top" id="Ocompra_fechanominal" name="Ocompra[fechanominal]" type="text" value="2016-04-09" />
+		<div class="errorMessage" id="Ocompra_fechanominal_em_" style="display:none"></div>	</div>
+
+	<div class="row">
+		<label for="Ocompra_tenorsup" class="required">Tenorsup <span class="required">*</span></label>		<input size="1" maxlength="1" name="Ocompra[tenorsup]" id="Ocompra_tenorsup" type="text" value="A" />		<div class="errorMessage" id="Ocompra_tenorsup_em_" style="display:none"></div>	</div>
+
+	<div class="row">
+		<label for="Ocompra_tenorinf" class="required">Tenorinf <span class="required">*</span></label>		<input size="1" maxlength="1" name="Ocompra[tenorinf]" id="Ocompra_tenorinf" type="text" value="B" />		<div class="errorMessage" id="Ocompra_tenorinf_em_" style="display:none"></div>	</div>
+
+<div class="row">
+		<label for="Ocompra_textolargo">Comentario</label>		<textarea rows="6" cols="50" name="Ocompra[textolargo]" id="Ocompra_textolargo"></textarea>		<div class="errorMessage" id="Ocompra_textolargo_em_" style="display:none"></div>	</div></div>
+<div id="tab____"><div class="panelizquierdo">
+
+
+</div>
+    <div class="panelderecho">
+
+<select name="Ocompra[idreporte]" id="Ocompra_idreporte">
+<option value="">Seleccione un reporte</option>
+<option value="8">ORDEN DE COMPRA</option>
+</select>
+
+    </div>
+
+
+<div id="detallex-grid" class="grid-view">
+<div class="summary">Viendo 1-1 de 1 resultado.</div>
+<table class="items">
+<thead>
+<tr>
+<th id="detallex-grid_c0"><a class="sort-link" href="/recurso/ocompra/editadocumento/2.jsp?Mensajes_sort=tipo">Tipo</a></th><th id="detallex-grid_c1"><a class="sort-link" href="/recurso/ocompra/editadocumento/2.jsp?Mensajes_sort=cuando">Cuando</a></th><th id="detallex-grid_c2"><a class="sort-link" href="/recurso/ocompra/editadocumento/2.jsp?Mensajes_sort=usuario">Usuario</a></th><th id="detallex-grid_c3"><a class="sort-link" href="/recurso/ocompra/editadocumento/2.jsp?Mensajes_sort=nombrefichero">Nombrefichero</a></th></tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td width="50">U</td><td>2016-09-25 09:53:24</td><td>admin</td><td width="50">&nbsp;</td></tr>
+</tbody>
+</table>
+<div class="keys" style="display:none" title="/recurso/ocompra/editadocumento/2.jsp"><span>24</span></div>
+</div>
+<div id="zona_pdf">
+
+</div></div>
+<div id="tab_____">
+<div class="row">
+
+<select name="selector_item" id="selector_item">
+<option value="">Seleccione un item</option>
+<option value="2">TELEVISOR HD PHILLIPS LE-4589</option>
+</select>
+<input name="Ocompra[idguia]" id="Ocompra_idguia" type="hidden" value="2" />
+</div>
+<div id="division_entregas">
+
+
+</div>
+
+</div>
+<div id="tab______"><div style="width:400px;">
+<div id="impuestos-grid" class="grid-view">
+
+<table class="items">
+<thead>
+<tr>
+<th id="impuestos-grid_c0">Descripcion</th><th id="impuestos-grid_c1"><a class="sort-link" href="/recurso/ocompra/editadocumento/2.jsp?Tempimpuestosdocuaplicados_sort=valorimpuesto">Valorimpuesto</a></th><th class="button-column" id="impuestos-grid_c2">&nbsp;</th></tr>
+</thead>
+<tbody>
+<tr><td colspan="3" class="empty"><span class="empty">No se encontraron resultados.</span></td></tr>
+</tbody>
+</table>
+<div class="keys" style="display:none" title="/recurso/ocompra/editadocumento/2.jsp"></div>
+</div></div></div>
+<div id="tab____..__"><div id="alkbvardex-grivvbd" class="grid-view">
+<div class="summary">Viendo 1-1 de 1 resultado.</div>
+<table class="table table-striped table-bordered table-hover">
+<thead>
+<tr>
+<th id="alkbvardex-grivvbd_c0"><a class="sort-link" href="/recurso/ocompra/editadocumento/2.jsp?ActiveRecordLog_sort=action">Accion</a></th><th id="alkbvardex-grivvbd_c1">Usuario</th><th id="alkbvardex-grivvbd_c2"><a class="sort-link" href="/recurso/ocompra/editadocumento/2.jsp?ActiveRecordLog_sort=nombrecampo">Campo Modif</a></th><th id="alkbvardex-grivvbd_c3"><a class="sort-link" href="/recurso/ocompra/editadocumento/2.jsp?ActiveRecordLog_sort=creationdate">Fecha</a></th><th id="alkbvardex-grivvbd_c4"><a class="sort-link" href="/recurso/ocompra/editadocumento/2.jsp?ActiveRecordLog_sort=oldvalue">Val ant</a></th><th id="alkbvardex-grivvbd_c5"><a class="sort-link" href="/recurso/ocompra/editadocumento/2.jsp?ActiveRecordLog_sort=newvalue">Val act</a></th></tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>CAMBIO</td><td>admin</td><td>Estado</td><td>2016-09-25 02:53:24</td><td>30</td><td>10</td></tr>
+</tbody>
+</table>
+<div class="keys" style="display:none" title="/recurso/ocompra/editadocumento/2.jsp"><span>2</span></div>
+</div></div>
+</div>
+            
+                                 <div id="AjFlash" class="flash-regular"></div>
+<div id="detalle-grid" class="grid-view">
+<div class="summary"> Total de Items : 1</div>
+<table class="table table-striped table-bordered table-hover">
+<thead>
+<tr>
+<th class="checkbox-column" id="detalle-grid_c0"><input type="checkbox" value="1" name="detalle-grid_c0_all" id="detalle-grid_c0_all" /></th><th class="button-column" id="detalle-grid_c1">&nbsp;</th><th id="detalle-grid_c2"><a class="sort-link" href="/recurso/ocompra/editadocumento/2.jsp?Docompratemp_sort=item">Item</a></th><th id="detalle-grid_c3">st</th><th id="detalle-grid_c4"><a class="sort-link" href="/recurso/ocompra/editadocumento/2.jsp?Docompratemp_sort=codentro">Centro</a></th><th id="detalle-grid_c5"><a class="sort-link" href="/recurso/ocompra/editadocumento/2.jsp?Docompratemp_sort=cant">Cant</a></th><th id="detalle-grid_c7">um</th><th id="detalle-grid_c8"><a class="sort-link" href="/recurso/ocompra/editadocumento/2.jsp?Docompratemp_sort=codart">Codart</a></th><th id="detalle-grid_c9"><a class="sort-link" href="/recurso/ocompra/editadocumento/2.jsp?Docompratemp_sort=descri">Descri</a></th><th id="detalle-grid_c10">t</th><th id="detalle-grid_c11"><a class="sort-link" href="/recurso/ocompra/editadocumento/2.jsp?Docompratemp_sort=punit">Pu</a></th><th id="detalle-grid_c12">Subt</th></tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td class="checkbox-column"><input value="37" id="detalle-grid_c0_0" type="checkbox" name="cajita[]" /></td><td class="button-column"><a class="view" title="Visualizar Item" href="/recurso/Ocompra/Verdetoc/37.jsp?action=editadocumento&amp;asDialog=1&amp;gridId=detalle-grid"><img src="/recurso/themes/temita\img\find.png" alt="Visualizar Item" /></a> <a class="update" title="Actualizar Item" href="/recurso/Ocompra/Modificadetalle/37.jsp?asDialog=1&amp;gridId=detalle-grid"><img src="/recurso/themes/temita\img\update.png" alt="Actualizar Item" /></a> </td><td width="20">001</td><td width="24"><img src="/recurso/themes/temita/img/22010.png" alt="" /></td><td width="20">1203</td><td width="20"><span style="float:right;font-weight:bold;">12.00</span></td><td width="5">UND</td><td width="5">45000018</td><td>TELEVISOR HD PHILLIPS LE-4589</td><td></td><td width="20"><span style="float:right;font-weight:bold;">150.00</span></td><td width="68"><span style="float:right;font-weight:bold;">1,800.00</span></td></tr>
+</tbody>
+</table>
+<div class="keys" style="display:none" title="/recurso/ocompra/editadocumento/2.jsp"><span>37</span></div>
+</div>
+
+<div style="display: block; float:right; width:170px;">
+<div id="resumenoc-grid" class="grid-view">
+<div class="summary"></div>
+<table class="table table-striped table-bordered table-hover">
+<tbody>
+<tr class="odd">
+<td>Subtotal</td><td><span style="float:right;font-weight:bold;">1,800.00</span></td></tr>
+<tr class="even">
+<td>Descuento</td><td><span style="float:right;font-weight:bold;">0.00</span></td></tr>
+<tr class="odd">
+<td>Neto</td><td><span style="float:right;font-weight:bold;">1,800.00</span></td></tr>
+<tr class="even">
+<td>Impuestos</td><td><span style="float:right;font-weight:bold;">0.00</span></td></tr>
+<tr class="odd">
+<td>Total</td><td><span style="float:right;font-weight:bold;">1,800.00</span></td></tr>
+</tbody>
+</table>
+<div class="keys" style="display:none" title="/recurso/ocompra/editadocumento/2.jsp"><span>Subtotal</span><span>Descuento</span><span>Neto</span><span>Impuestos</span><span>Total</span></div>
+</div>
+</div>
+
+
+                        
+
+	
+            <div class="row">
+
+                <DIV CLASS='marco' ><DIV CLASS='boton boton24' ><a onclick=" $(&#039;#cru-detalle&#039;).attr(&#039;src&#039;,&#039;/recurso/ocompra/creadetalle.jsp?idcabeza=2&amp;cest=10&amp;asDialog=1&amp;gridId=detalle-grid&#039;);$(&#039;#cru-dialogdetalle&#039;).dialog(&#039;open&#039;);" href="#"><img id="add" class="img_swap imagen" onMouseOver="this.src=&#039;/recurso/assets/a2e485e3/img/24/add_.png&#039;" onMouseOut="this.src=&#039;/recurso/assets/a2e485e3/img/24/add.png&#039;" width="23" height="23" src="/recurso/assets/a2e485e3/img/24/add.png" alt="" /></a></div></div><DIV CLASS='marco' ><DIV CLASS='boton boton24' ><a onclick=" $(&#039;#cru-detalle&#039;).attr(&#039;src&#039;,&#039;/recurso/ocompra/agregaritemsolpe.jsp?idguia=2&#039;);$(&#039;#cru-dialogdetalle&#039;).dialog(&#039;open&#039;);" href="#"><img id="tool" class="img_swap imagen" onMouseOver="this.src=&#039;/recurso/assets/a2e485e3/img/24/tool_.png&#039;" onMouseOut="this.src=&#039;/recurso/assets/a2e485e3/img/24/tool.png&#039;" width="23" height="23" src="/recurso/assets/a2e485e3/img/24/tool.png" alt="" /></a></div></div><DIV CLASS='marco' ><DIV CLASS='boton boton24' ><a href="#" id="yt3"><img id="minus" class="img_swap imagen" onMouseOver="this.src=&#039;/recurso/assets/a2e485e3/img/24/minus_.png&#039;" onMouseOut="this.src=&#039;/recurso/assets/a2e485e3/img/24/minus.png&#039;" width="23" height="23" src="/recurso/assets/a2e485e3/img/24/minus.png" alt="" /></a></div></div><DIV CLASS='marco' ><DIV CLASS='boton boton24' ><a onclick=" $(&#039;#cru-detalle&#039;).attr(&#039;src&#039;,&#039;/recurso/ocompra/agregardespacho/2.jsp?asDialog=1&amp;gridId=detalle-grid&#039;);$(&#039;#cru-dialogdetalle&#039;).dialog(&#039;open&#039;);" href="#"><img id="checklist" class="img_swap imagen" onMouseOver="this.src=&#039;/recurso/assets/a2e485e3/img/24/checklist_.png&#039;" onMouseOut="this.src=&#039;/recurso/assets/a2e485e3/img/24/checklist.png&#039;" width="23" height="23" src="/recurso/assets/a2e485e3/img/24/checklist.png" alt="" /></a></div></div><DIV CLASS='marco' ><DIV CLASS='boton boton24' ><a href="/recurso/ocompra/procesardocumento/2.jsp?ev=35"><img id="pack2" class="img_swap imagen" onMouseOver="this.src=&#039;/recurso/assets/a2e485e3/img/24/pack2_.png&#039;" onMouseOut="this.src=&#039;/recurso/assets/a2e485e3/img/24/pack2.png&#039;" width="23" height="23" src="/recurso/assets/a2e485e3/img/24/pack2.png" alt="" /></a></div></div><DIV CLASS='marco' ><DIV CLASS='boton boton24' ><a href="#" id="yt4"><img id="briefcase" class="img_swap imagen" onMouseOver="this.src=&#039;/recurso/assets/a2e485e3/img/24/briefcase_.png&#039;" onMouseOut="this.src=&#039;/recurso/assets/a2e485e3/img/24/briefcase.png&#039;" width="23" height="23" src="/recurso/assets/a2e485e3/img/24/briefcase.png" alt="" /></a></div></div><DIV CLASS='marco' ><DIV CLASS='boton boton24' ><a onclick=" $(&#039;#cru-detalle&#039;).attr(&#039;src&#039;,&#039;/recurso/ocompra/agregaritemsolpe.jsp?idguia=2&amp;asDialog=1&amp;gridId=detalle-grid&#039;);$(&#039;#cru-dialogdetalle&#039;).dialog(&#039;open&#039;);" href="#"><img id="join" class="img_swap imagen" onMouseOver="this.src=&#039;/recurso/assets/a2e485e3/img/24/join_.png&#039;" onMouseOut="this.src=&#039;/recurso/assets/a2e485e3/img/24/join.png&#039;" width="23" height="23" src="/recurso/assets/a2e485e3/img/24/join.png" alt="" /></a></div></div><DIV CLASS='marco' ><DIV CLASS='boton boton24' ><a onclick=" $(&#039;#cru-detalle&#039;).attr(&#039;src&#039;,&#039;/recurso/ocompra/agregarmasivamente.jsp?idguia=2&amp;asDialog=1&amp;gridId=detalle-grid&#039;);$(&#039;#cru-dialogdetalle&#039;).dialog(&#039;open&#039;);" href="#"><img id="pack" class="img_swap imagen" onMouseOver="this.src=&#039;/recurso/assets/a2e485e3/img/24/pack_.png&#039;" onMouseOut="this.src=&#039;/recurso/assets/a2e485e3/img/24/pack.png&#039;" width="23" height="23" src="/recurso/assets/a2e485e3/img/24/pack.png" alt="" /></a></div></div>            </div>
+
+
+
+
+
+                    </form>
+        </div> <!--div class wide form !-->
+   </div> <!--div class division !-->
+
+<div id="cru-dialogdetalle">
+<iframe id="cru-detalle" frameborder="0"  width="100%" height="100%" ></iframe>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="cru-dialog3">
+<iframe id="cru-frame3" width="100%" height="100%"></iframe>
+</div>
+
+	</div><!--/span-->
+  </div><!--/row fuid -->
+    </div>
+</section>
+
+
+
+
+<footer>
+        <div class="subnav navbar navbar-fixed-bottom">
+            <div class="navbar-inner">
+                <div class="container">
+                    Desarrollado por Neotegnia Consultores SAC ®  <a href="http://www.neotegnia.com" target="_new">www.neotegnia.com</a>. Derechos reservados.<br /><small> El diseño y las fuentes son Propiedad Intelectual
+                    de Neotegnia, según registro INDECOPI : RPI3455678 </small>
+                </div>
+            </div>
+        </div>      
+	</footer>
+
+  <script type="text/javascript" src="/recurso/assets/6fd67628/jui/js/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/recurso/assets/6fd67628/jui/js/jquery-ui-i18n.min.js"></script>
+<script type="text/javascript" src="/recurso/assets/35ca71bf/gridview/jquery.yiigridview.js"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+jQuery(function($) {
+jQuery('body').on('click','#yt1',function(){jQuery.ajax({'url':'/recurso/ocompra/reporte/2.jsp','success':function(data) {
+										$('#myDivision').html(data).fadeIn().animate({opacity: 1.0}, 900).fadeOut('slow');
+                                        },'cache':false});return false;});
+jQuery('body').on('change','#Ocompra_codpro',function(){jQuery.ajax({'type':'GET','url':'/recurso/Matchcode/relaciona.jsp?campo=codpro&ordencampo=1&clasesita=Clipro&contr=Ocompra&camporemoto=','cache':false,'data':jQuery(this).parents("form").serialize(),'success':function(html){jQuery("#fehdfj").html(html)}});return false;});
+jQuery('body').on('change','#Ocompra_codresponsable',function(){jQuery.ajax({'type':'GET','url':'/recurso/Matchcode/relaciona.jsp?campo=codresponsable&ordencampo=1&clasesita=VwTrabajadores&contr=Ocompra&camporemoto=','cache':false,'data':jQuery(this).parents("form").serialize(),'success':function(html){jQuery("#fehdfddj").html(html)}});return false;});
+jQuery('body').on('click','#yt2',function(){jQuery.ajax({'type':'POST','url':'/recurso/Contactos/Contactosporprove.jsp','data':{'codigoprov':Ocompra_codpro.value},'cache':false,'success':function(html){jQuery("#Ocompra_idcontacto").html(html)}});return false;});
+jQuery('body').on('change','#Ocompra_descuento',function(){jQuery.ajax({'type':'POST','url':'/recurso/Ocompra/refrescadescuento.jsp','success':function() {
+					 $.fn.yiiGridView.update('resumenoc-grid');
+					$.fn.yiiGridView.update('detalle-grid');
+
+					                            },'cache':false,'data':jQuery(this).parents("form").serialize()});return false;});
+jQuery('body').on('change','#Ocompra_codsociedad',function(){jQuery.ajax({'type':'POST','data':{'socito':this.value},'url':'/recurso/Ocompra/cargadirecciones.jsp','cache':false,'success':function(html){jQuery("#Ocompra_direcentrega").html(html)}});return false;});
+jQuery('#Ocompra_fechapresentacion').datepicker(jQuery.extend({showMonthAfterYear:false},jQuery.datepicker.regional['es'],{'showAnim':'fold','showOn':'both','buttonText':'...','dateFormat':'yy-mm-dd'}));
+jQuery('#Ocompra_fechanominal').datepicker(jQuery.extend({showMonthAfterYear:false},jQuery.datepicker.regional['es'],{'showAnim':'fold','showOn':'both','buttonText':'...','dateFormat':'yy-mm-dd'}));
+jQuery('#detallex-grid').yiiGridView({'ajaxUpdate':['detallex-grid'],'ajaxVar':'ajax','pagerClass':'pager','loadingClass':'grid-view-loading','filterClass':'filters','tableClass':'items','selectableRows':1,'enableHistory':false,'updateSelector':'{page}, {sort}','filterSelector':'{filter}','pageVar':'Mensajes_page'});
+jQuery('body').on('change','#selector_item',function(){jQuery.ajax({'type':'POST','url':'/recurso/Ocompra/cargaentregas.jsp','cache':false,'data':jQuery(this).parents("form").serialize(),'success':function(html){jQuery("#division_entregas").html(html)}});return false;});
+jQuery(document).on('click','#impuestos-grid a.delete',function() {
+	if(!confirm('¿Está seguro que desea borrar este elemento?')) return false;
+	var th = this,
+		afterDelete = function(){};
+	jQuery('#impuestos-grid').yiiGridView('update', {
+		type: 'POST',
+		url: jQuery(this).attr('href'),
+		success: function(data) {
+			jQuery('#impuestos-grid').yiiGridView('update');
+			afterDelete(th, true, data);
+		},
+		error: function(XHR) {
+			return afterDelete(th, false, XHR);
+		}
+	});
+	return false;
+});
+jQuery('#impuestos-grid').yiiGridView({'ajaxUpdate':['impuestos-grid'],'ajaxVar':'ajax','pagerClass':'pager','loadingClass':'grid-view-loading','filterClass':'filters','tableClass':'items','selectableRows':1,'enableHistory':false,'updateSelector':'{page}, {sort}','filterSelector':'{filter}','pageVar':'Tempimpuestosdocuaplicados_page'});
+jQuery('#alkbvardex-grivvbd').yiiGridView({'ajaxUpdate':['alkbvardex-grivvbd'],'ajaxVar':'ajax','pagerClass':'pager','loadingClass':'grid-view-loading','filterClass':'filters','tableClass':'table table-striped table-bordered table-hover','selectableRows':1,'enableHistory':false,'updateSelector':'{page}, {sort}','filterSelector':'{filter}','pageVar':'ActiveRecordLog_page'});
+jQuery('#MyTabi').tabs({'overflow':'auto','collapsible':false});
+jQuery(document).on('click','#detalle-grid_c0_all',function() {
+	var checked=this.checked;
+	jQuery("input[name='cajita\[\]']:enabled").each(function() {this.checked=checked;});
+});
+jQuery(document).on('click', "input[name='cajita\[\]']", function() {
+	jQuery('#detalle-grid_c0_all').prop('checked', jQuery("input[name='cajita\[\]']").length==jQuery("input[name='cajita\[\]']:checked").length);
+});
+jQuery(document).on('click','#detalle-grid a.view',function(){
+							    $("#cru-detalle").attr("src",$(this).attr("href"));
+							    $("#cru-dialogdetalle").dialog("open");
+							     return false;
+							 });
+jQuery(document).on('click','#detalle-grid a.update',function(){
+							    $("#cru-detalle").attr("src",$(this).attr("href"));
+							    $("#cru-dialogdetalle").dialog("open");
+							     return false;
+							 });
+jQuery(document).on('click','#detalle-grid a.delete',function() {
+	if(!confirm('¿Está seguro que desea borrar este elemento?')) return false;
+	var th = this,
+		afterDelete = function(){};
+	jQuery('#detalle-grid').yiiGridView('update', {
+		type: 'POST',
+		url: jQuery(this).attr('href'),
+		success: function(data) {
+			jQuery('#detalle-grid').yiiGridView('update');
+			afterDelete(th, true, data);
+		},
+		error: function(XHR) {
+			return afterDelete(th, false, XHR);
+		}
+	});
+	return false;
+});
+jQuery('#detalle-grid').yiiGridView({'ajaxUpdate':['detalle-grid'],'ajaxVar':'ajax','pagerClass':'pager','loadingClass':'grid-view-loading','filterClass':'filters','tableClass':'table table-striped table-bordered table-hover','selectableRows':1,'enableHistory':false,'updateSelector':'{page}, {sort}','filterSelector':'{filter}','pageVar':'Docompratemp_page'});
+jQuery('#resumenoc-grid').yiiGridView({'ajaxUpdate':['resumenoc-grid'],'ajaxVar':'ajax','pagerClass':'pager','loadingClass':'grid-view-loading','filterClass':'filters','tableClass':'table table-striped table-bordered table-hover','selectableRows':1,'enableHistory':false,'updateSelector':'{page}, {sort}','filterSelector':'{filter}','pageVar':'page'});
+jQuery('body').on('click','#yt3',function(){jQuery.ajax({'type':'POST','url':'/recurso/ocompra/borraitems.jsp','success':function(data) {
+										$('#AjFlash').html(data).fadeIn().animate({opacity: 1.0}, 3000).fadeOut('slow');
+                                              $.fn.yiiGridView.update('detalle-grid');
+                                               $.fn.yiiGridView.update('resumenoc-grid');
+                                               return false;
+                                        },'beforeSend':function(){
+                                  				 var r = confirm("Esta seguro de Eliminar estos Items?");
+                          						 if(!r){return false;}
+                               							 }
+                               					,'cache':false,'data':jQuery(this).parents("form").serialize()});return false;});
+jQuery('body').on('click','#yt4',function(){jQuery.ajax({'type':'GET','data':{'id':'2'},'url':'/recurso/ocompra/Agregardelmaletin.jsp','success':function(data) {
+                            $("#AjFlash").html(data).fadeIn().animate({opacity: 1.0}, 3000).fadeOut("slow");
+                            $.fn.yiiGridView.update("detalle-grid"); alert(data);},'beforeSend':
+                               					 function(){
+                                  				 var r = confirm("¿Esta seguro de agregar los items del maletin ?");
+                          						 if(!r){return false;}
+                               							 }
+                               					,'cache':false});return false;});
+jQuery('#Ocompra-form').yiiactiveform({'validateOnSubmit':true,'validateOnChange':true,'attributes':[{'id':'Ocompra_numcot','inputID':'Ocompra_numcot','errorID':'Ocompra_numcot_em_','model':'Ocompra','name':'numcot','enableAjaxValidation':true,'status':1,'summary':true},{'id':'Ocompra_codpro','inputID':'Ocompra_codpro','errorID':'Ocompra_codpro_em_','model':'Ocompra','name':'codpro','enableAjaxValidation':true,'status':1,'summary':true},{'id':'Ocompra_idcontacto','inputID':'Ocompra_idcontacto','errorID':'Ocompra_idcontacto_em_','model':'Ocompra','name':'idcontacto','enableAjaxValidation':true,'status':1,'summary':true},{'id':'Ocompra_texto','inputID':'Ocompra_texto','errorID':'Ocompra_texto_em_','model':'Ocompra','name':'texto','enableAjaxValidation':true,'status':1,'summary':true},{'id':'Ocompra_tipologia','inputID':'Ocompra_tipologia','errorID':'Ocompra_tipologia_em_','model':'Ocompra','name':'tipologia','enableAjaxValidation':true,'status':1,'summary':true},{'id':'Ocompra_moneda','inputID':'Ocompra_moneda','errorID':'Ocompra_moneda_em_','model':'Ocompra','name':'moneda','enableAjaxValidation':true,'status':1,'summary':true},{'id':'Ocompra_orcli','inputID':'Ocompra_orcli','errorID':'Ocompra_orcli_em_','model':'Ocompra','name':'orcli','enableAjaxValidation':true,'status':1,'summary':true},{'id':'Ocompra_descuento','inputID':'Ocompra_descuento','errorID':'Ocompra_descuento_em_','model':'Ocompra','name':'descuento','enableAjaxValidation':true,'status':1,'summary':true},{'id':'Ocompra_codtipofac','inputID':'Ocompra_codtipofac','errorID':'Ocompra_codtipofac_em_','model':'Ocompra','name':'codtipofac','enableAjaxValidation':true,'status':1,'summary':true},{'id':'Ocompra_direcentrega','inputID':'Ocompra_direcentrega','errorID':'Ocompra_direcentrega_em_','model':'Ocompra','name':'direcentrega','enableAjaxValidation':true,'status':1,'summary':true},{'id':'Ocompra_codsociedad','inputID':'Ocompra_codsociedad','errorID':'Ocompra_codsociedad_em_','model':'Ocompra','name':'codsociedad','enableAjaxValidation':true,'status':1,'summary':true},{'id':'Ocompra_codgrupoventas','inputID':'Ocompra_codgrupoventas','errorID':'Ocompra_codgrupoventas_em_','model':'Ocompra','name':'codgrupoventas','enableAjaxValidation':true,'status':1,'summary':true},{'id':'Ocompra_codtipocotizacion','inputID':'Ocompra_codtipocotizacion','errorID':'Ocompra_codtipocotizacion_em_','model':'Ocompra','name':'codtipocotizacion','enableAjaxValidation':true,'status':1,'summary':true},{'id':'Ocompra_validez','inputID':'Ocompra_validez','errorID':'Ocompra_validez_em_','model':'Ocompra','name':'validez','enableAjaxValidation':true,'status':1},{'id':'Ocompra_codobjeto','inputID':'Ocompra_codobjeto','errorID':'Ocompra_codobjeto_em_','model':'Ocompra','name':'codobjeto','enableAjaxValidation':true,'status':1,'summary':true},{'id':'Ocompra_fechapresentacion','inputID':'Ocompra_fechapresentacion','errorID':'Ocompra_fechapresentacion_em_','model':'Ocompra','name':'fechapresentacion','enableAjaxValidation':true,'status':1},{'id':'Ocompra_fechanominal','inputID':'Ocompra_fechanominal','errorID':'Ocompra_fechanominal_em_','model':'Ocompra','name':'fechanominal','enableAjaxValidation':true,'status':1,'summary':true},{'id':'Ocompra_tenorsup','inputID':'Ocompra_tenorsup','errorID':'Ocompra_tenorsup_em_','model':'Ocompra','name':'tenorsup','enableAjaxValidation':true,'status':1,'summary':true},{'id':'Ocompra_tenorinf','inputID':'Ocompra_tenorinf','errorID':'Ocompra_tenorinf_em_','model':'Ocompra','name':'tenorinf','enableAjaxValidation':true,'status':1,'summary':true},{'id':'Ocompra_textolargo','inputID':'Ocompra_textolargo','errorID':'Ocompra_textolargo_em_','model':'Ocompra','name':'textolargo','enableAjaxValidation':true,'status':1,'summary':true},{'summary':true},{'summary':true},{'summary':true},{'summary':true},{'summary':true},{'summary':true},{'summary':true},{'summary':true}],'summaryID':'Ocompra-form_es_','errorCss':'error'});
+jQuery('#cru-dialogdetalle').dialog({'title':'Item','autoOpen':false,'modal':true,'width':600,'height':500,'show':'Transform'});
+jQuery('#cru-dialog3').dialog({'title':'Explorador','autoOpen':false,'modal':true,'width':850,'height':500});
+jQuery(document).on('click','#favoritos-grid a.delete',function() {
+	if(!confirm('¿Está seguro que desea borrar este elemento?')) return false;
+	var th = this,
+		afterDelete = function(){};
+	jQuery('#favoritos-grid').yiiGridView('update', {
+		type: 'POST',
+		url: jQuery(this).attr('href'),
+		success: function(data) {
+			jQuery('#favoritos-grid').yiiGridView('update');
+			afterDelete(th, true, data);
+		},
+		error: function(XHR) {
+			return afterDelete(th, false, XHR);
+		}
+	});
+	return false;
+});
+jQuery('#favoritos-grid').yiiGridView({'ajaxUpdate':['favoritos-grid'],'ajaxVar':'ajax','pagerClass':'pager','loadingClass':'grid-view-loading','filterClass':'filters','tableClass':'table table-striped table-bordered table-hover','selectableRows':1,'enableHistory':false,'updateSelector':'{page}, {sort}','filterSelector':'{filter}'});
+jQuery('body').on('click','#yt5',function(){jQuery.ajax({'type':'GET','success':function(data) { $.fn.yiiGridView.update("favoritos-grid")},'url':$(this).attr("href"),'cache':false,'data':jQuery(this).parents("form").serialize()});return false;});
+jQuery('body').on('click','#yt6',function(){jQuery.ajax({'type':'GET','success':function(data) { $.fn.yiiGridView.update("favoritos-grid")},'url':$(this).attr("href"),'cache':false,'data':jQuery(this).parents("form").serialize()});return false;});
+jQuery('body').on('click','#yt7',function(){jQuery.ajax({'type':'GET','success':function(data) { $.fn.yiiGridView.update("favoritos-grid")},'url':$(this).attr("href"),'cache':false,'data':jQuery(this).parents("form").serialize()});return false;});
+jQuery('body').on('click','#yt8',function(){jQuery.ajax({'type':'GET','success':function(data) { $.fn.yiiGridView.update("favoritos-grid")},'url':$(this).attr("href"),'cache':false,'data':jQuery(this).parents("form").serialize()});return false;});
+jQuery('#cru-dialoggeneral').dialog({'title':'','autoOpen':false,'modal':true,'width':600,'height':420,'border':0});
+});
+/*]]>*/
+</script>
+</body>
+</html>
+<div id="cru-dialoggeneral">
+<iframe id="cru-framegeneral" style="border:0px; width:100%; height:100%;" ></iframe>
+</div>

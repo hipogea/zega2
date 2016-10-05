@@ -1,14 +1,6 @@
 <?php
-/*
-* gauge extention
-* author : pegel.linuxs@gmail.com
-*/
 class Barra extends CWidget
 {
-	
-	/*
-	* @var options for gauge options
-	*/
 	
 	public $botones=array(); ///clave de boton y como valor un array que contiene el enlace (otro artray)  y un flag para determonar
 	//si el boton es SUBMIT  array['save'=> 'S' ]
@@ -16,23 +8,16 @@ class Barra extends CWidget
 	public $size; ///pixeles para el tamaño de los botones
 	public $ruta;
 	public $extension;
-	public $status;
-
-		
+	public $status;		
 	public function init()
 	{
-
-
-		$asset=Yii::app()->assetManager->publish(dirname(__FILE__).'/assets');
-		$this->ruta=$asset;
+	$asset=Yii::app()->assetManager->publish(dirname(__FILE__).'/assets');
+	$this->ruta=$asset;
     	$cs=Yii::app()->clientScript;
-
     	$cs->registerCssFile($asset."/css/barra.css");
 		//$cs->registerScriptFile($asset."/js/jQueryRotate.min.js");
-		$cs->registerScriptFile($asset."/js/barra.js");
-		
+		$cs->registerScriptFile($asset."/js/barra.js");		
 		$script = 'assetUrl = "' . $asset . '";';
-
 	}
 	private function iniciamarco(){
 		echo "<DIV CLASS='marco' >";

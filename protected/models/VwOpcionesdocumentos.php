@@ -199,4 +199,16 @@ class VwOpcionesdocumentos extends CActiveRecord
 		//echo "<br><br>";
       //print_r($model->attributes);yii::app()->end();
 	}
+        
+        public static function tienevalorpordefecto($model,$campo){
+		$nombreclase=get_class($model);
+
+		$criteria=new CDbCriteria;
+		$criteria->addCondition(" nombredelmodelo=:vnamemodelo and idusuario=:vidusuario and nombrecampo=:vnombrecampo");
+		$criteria->params=array(":vnamemodelo"=>$nombreclase ,":vidusuario"=>yii::app()->user->id,":vnombrecampo"=>$campo);
+		$registros=self::model()->find($criteria);
+               return (is_null($registros))?false:true;
+		//echo "<br><br>";
+      //print_r($model->attributes);yii::app()->end();
+	}
 }

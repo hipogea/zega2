@@ -1,0 +1,958 @@
+
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="/recurso/themes/temita/css/jquery-ui.css" />
+<link rel="stylesheet" type="text/css" href="/recurso/assets/35ca71bf/gridview/styles.css" />
+<link rel="stylesheet" type="text/css" href="/recurso/assets/633dbc6e/pager.css" />
+<link rel="stylesheet" type="text/css" href="/recurso/assets/a2e485e3/css/barra.css" />
+<link rel="stylesheet" type="text/css" href="/recurso/assets/3cff1f91/css/semaforo.css" />
+<link rel="stylesheet" type="text/css" href="/recurso/assets/e4959144/css/flash.css" />
+<link rel="stylesheet" type="text/css" href="/recurso/themes/temita/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="/recurso/themes/temita/css/bootstrap-responsive.min.css" />
+<link rel="stylesheet" type="text/css" href="/recurso/themes/temita/css/abound.css" />
+<link rel="stylesheet" type="text/css" href="/recurso/themes/temita/css/miestilo.css" />
+<link rel="stylesheet" type="text/css" href="/recurso/assets/efb0c5ca/css/dropdown/dropdown.css" />
+<link rel="stylesheet" type="text/css" href="/recurso/assets/efb0c5ca/css/dropdown/themes/default/default.css" />
+<script type="text/javascript" src="/recurso/assets/6fd67628/jquery.js"></script>
+<script type="text/javascript" src="/recurso/assets/6fd67628/jquery.ba-bbq.js"></script>
+<script type="text/javascript" src="/recurso/assets/a2e485e3/js/barra.js"></script>
+<script type="text/javascript" src="/recurso/assets/e4959144/js/flash.js"></script>
+<script type="text/javascript" src="/recurso/themes/temita/css/jquery-ui.css"></script>
+<script type="text/javascript" src="/recurso/themes/temita/js/plugins/blockuiplugin.js"></script>
+<title>Nautilus-Solver</title>
+   <meta name="description" content="Logistica, desarrollo software, gestion materiales, SAP, inventarios">
+    <meta name="author" content=" NEOTEGNIA CONSULTORES SAC">
+	    <link rel="shortcut icon" href="/recurso/themes/temita/img/icons/logi.png">
+	             </head>
+<body >
+<script type="text/javascript">
+/*<![CDATA[*/
+
+$(document).ajaxStart(function () {
+ $.blockUI(
+        {fadeIn: 700,
+            fadeOut: 700,
+            timeout: 2000,
+            showOverlay: false,
+            centerY: false,
+            css: {
+                width: '350px',
+                top: '200px',
+                left: '10px',
+                right: '',
+                border: 'none',
+                padding: '5px',
+                backgroundColor: '#000',
+                '-webkit-border-radius': '20px',
+                '-moz-border-radius': '20px',
+                opacity: .8,
+                color: '#fff'
+            }
+        }
+ );
+}).ajaxStop($.unblockUI);
+/*]]>*/
+</script>
+<section id="navigation-main">
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">                            
+                              <div class="nav-collapse">
+                                    <div id="myslidemenu" class="barrademenu">
+                        <ul class="dropdown dropdown-horizontal" id="yw9">
+<li><a href="#"> Catálogos</a>
+<ul>
+<li><a href="/recurso/site/maestros">Layout</a></li>
+<li><a href="#"><img src="/recurso/themes/temita/img/orga.png" /> Corporativos</a>
+<ul>
+<li><a href="/recurso/sociedades/admin">Sociedades</a></li>
+<li><a href="/recurso/centros/admin">Centros</a></li>
+<li><a href="/recurso/areas/admin">Areas</a></li>
+<li><a href="/recurso/clipro/admin">Acreedores</a></li>
+</ul>
+</li>
+<li><a href="#">Logistica</a>
+<ul>
+<li><a href="#"><img src="/recurso/themes/temita/img/logi.png" />Almacen</a>
+<ul>
+<li><a href="/recurso/almacenes/admin">Almacenes</a></li>
+<li><a href="/recurso/almacenmovimientos/admin">Transacciones</a></li>
+<li><a href="/recurso/canales/admin">Canales de despacho</a></li>
+<li><a href="/recurso/clipro/admin">Acreedores</a></li>
+<li><a href="/recurso/objetoscliente/admin">Objetos externos</a></li>
+</ul>
+</li>
+<li><a href="#"><img src="/recurso/themes/temita/img/car.png" /> Transporte</a>
+<ul>
+<li><a href="/recurso/embarcaciones/admin">Vehiculos</a></li>
+<li><a href="/recurso/direcciones/admin">Ptos Transporte</a></li>
+<li><a href="/recurso/lugares/admin">Lugares</a></li>
+<li><a href="/recurso/paraqueva/admin">Tipos mov</a></li>
+<li><a href="/recurso/CMotivo/admin">Motivos traslado</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#">Analisis y costeo</a>
+<ul>
+<li><a href="#">Colectores</a>
+<ul>
+<li><a href="/recurso/grupocc/admin">Grupos</a></li>
+<li><a href="/recurso/cc/admin">Colectores</a></li>
+<li><a href="/recurso/cc/create">Crear Colector</a></li>
+</ul>
+</li>
+<li><a href="#">Impuestos</a>
+<ul>
+<li><a href="/recurso/impuestos/admin">Definir impuestos</a></li>
+<li><a href="/recurso/valorimpuestos/admin">Valorizacion de impuestos</a></li>
+<li><a href="/recurso/impuestosdocu/admin">Asignar Impuestos</a></li>
+</ul>
+</li>
+<li><a href="/recurso/TMoneda/colocacambio">Tipo cambio</a></li>
+<li><a href="/recurso/Tipofacturacion/admin">Formas de pago</a></li>
+<li><a href="/recurso/fondofijo/admin">Fondo Fijo</a></li>
+</ul>
+</li>
+<li><a href="#">Comerciales</a>
+<ul>
+<li><a href="/recurso/Contactos/admin">Contactos</a></li>
+<li><a href="/recurso/Disponibilidad/admin">Disponibilidad</a></li>
+<li><a href="/recurso/Grupoventas/admin">Grupo ventas</a></li>
+</ul>
+</li>
+<li><a href="/recurso/Documentos/admin">Documentos</a></li>
+<li><a href="#">Servicios</a>
+<ul>
+<li><a href="/recurso/maestroservicios/create">Crear servicio</a></li>
+<li><a href="/recurso/maestroservicios/admin">Servicios</a></li>
+</ul>
+</li>
+<li><a href="/recurso/Estado/admin">Estados</a></li>
+<li><a href="/recurso/Eventos/admin">Eventos</a></li>
+<li><a href="/recurso/Grupocompras/admin">Grupo compras</a></li>
+<li><a href="#">Objetos tecnicos</a>
+<ul>
+<li><a href="/recurso/maestrocompo/create">Crear Material</a></li>
+<li><a href="/recurso/maestrotipos/admin">Tipos mater.</a></li>
+<li><a href="/recurso/maestrocompo/admin">Materiales</a></li>
+<li><a href="/recurso/maestrocompo/listadetalle">Detalle Materiales</a></li>
+<li><a href="/recurso/Tipoactivos/admin">Tipos AF</a></li>
+<li><a href="/recurso/ums/admin">Unidades med</a></li>
+<li><a href="/recurso/masterequipo/admin">Catalogo equipos</a></li>
+<li><a href="/recurso/listamateriales/admin">Lista de materiales</a></li>
+</ul>
+</li>
+<li><a href="/recurso/Trabajadores/admin"><img src="/recurso/themes/temita/img/user_business.png" /> Trabajadores</a></li>
+<li><a href="/recurso/Oficios/admin">Cargos</a></li>
+<li><a href="/recurso/Periodos/admin">Periodos</a></li>
+<li><a href="/recurso/TMoneda/admin">Monedas</a></li>
+</ul>
+</li>
+<li><a href="#">Operaciones </a>
+<ul>
+<li><a href="#">Ordenes servicio </a>
+<ul>
+<li><a href="/recurso/ot/creadocumento">Crear Orden</a></li>
+<li><a href="/recurso/ot/admin">Ordenes</a></li>
+<li><a href="/recurso/grupoplan/">Grupos plan</a></li>
+</ul>
+</li>
+<li><a href="#">Solicitudes </a>
+<ul>
+<li><a href="/recurso/solpe/create">Crear Solicitud</a></li>
+<li><a href="/recurso/solpe/admin">Solicitudes</a></li>
+</ul>
+</li>
+<li><a href="#">Compras </a>
+<ul>
+<li><a href="/recurso/solpe/tomarcompras">Tomar Solicitudes</a></li>
+<li><a href="/recurso/solcot/create">Crear Sol Cotizac</a></li>
+<li><a href="/recurso/solcot/admin">Solicitudes Cotizac</a></li>
+<li><a href="/recurso/ocompra/creaDocumento">Crear Orden compra</a></li>
+<li><a href="/recurso/ocompra/admin">Ordenes de  compra</a></li>
+<li><a href="#">Servicios</a>
+<ul>
+<li><a href="/recurso/maestroservicios/create">Crear servicio</a></li>
+<li><a href="/recurso/maestroservicios/creaconformidad">Dar conformidad</a></li>
+<li><a href="/recurso/maestroservicios/admin">Servicios</a></li>
+<li><a href="/recurso/maestroservicios/conformidades">Visualizar Conformidades</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#">Administracion </a>
+<ul>
+<li><a href="/recurso/noticias/admin">Novedades</a></li>
+<li><a href="#">Aprobar Docs</a>
+<ul>
+<li><a href="/recurso/solpe/liberacion">Solicitudes Mat</a></li>
+<li><a href="/recurso/Ocompra/liberacion">Compras</a></li>
+<li><a href="/recurso/Guia/liberacion">Transporte</a></li>
+<li><a href="/recurso/noticias/poraprobar">Noticias</a></li>
+</ul>
+</li>
+<li><a href="/recurso/tipocambio/admin">Tipo cambio</a></li>
+<li><a href="#">Maestros utiles</a>
+<ul>
+<li><a href="/recurso/clipro/agenda">Contactos</a></li>
+<li><a href="/recurso/trabajadores/admin">Trabajadores</a></li>
+<li><a href="/recurso/clipro/admin">Proveedores</a></li>
+</ul>
+</li>
+<li><a href="/recurso/docingresados/admin">Recepcion doc.</a></li>
+<li><a href="/recurso/cajachica/admin">Caja menor.</a></li>
+<li><a href="/recurso/Embarcaciones/admin">Vehiculos</a></li>
+<li><a href="/recurso/Periodos/admin">Periodos</a></li>
+<li><a href="/recurso/TMoneda/cambio">Monedas</a></li>
+<li><a href="/recurso/noticias/solicita">Solicitar noticia</a></li>
+<li><a href="/recurso/archivador/admin">Biblioteca</a></li>
+<li><a href="/recurso/ingfactura/admin">Recep Facturas</a></li>
+<li><a href="/recurso/cc/reporte">Costos</a></li>
+<li><a href="/recurso/ccGastos/admin">Registro Costos</a></li>
+</ul>
+</li>
+<li><a href="#">Inventario</a>
+<ul>
+<li><a href="#"><img src="/recurso/themes/temita/img/materia.png" />Existencias</a>
+<ul>
+<li><a href="/recurso/almacendocs/almacenes">Resumen</a></li>
+<li><a href="/recurso/alinventario/admin">Listado stock </a></li>
+<li><a href="/recurso/alinventario/supervision">Supervisar Stock</a></li>
+</ul>
+</li>
+<li><a href="#"><img src="/recurso/themes/temita/img/doc_table.png" />Doc Almacen</a>
+<ul>
+<li><a href="/recurso/almacendocs/crearvale">Crear movimiento</a></li>
+<li><a href="/recurso/almacendocs/admin">Vales</a></li>
+<li><a href="/recurso/alkardex/admin">Kardex</a></li>
+</ul>
+</li>
+<li><a href="#"><img src="/recurso/themes/temita/img/rq.png" />Requerimientos</a>
+<ul>
+<li><a href="/recurso/solpe/atiendesolpe">Ajuste de reservas</a></li>
+<li><a href="/recurso/almacendocs/admin">Listado de solicitudes</a></li>
+<li><a href="/recurso/despacho/admin">Despachos</a></li>
+</ul>
+</li>
+<li><a href="#"><img src="/recurso/themes/temita/img/chek.png" />Conteo</a>
+<ul>
+<li><a href="/recurso/inventariofisicopadre/admin">Inv fisico</a></li>
+<li><a href="/recurso/inventariofisicopadre/create">Crear conteo</a></li>
+</ul>
+</li>
+<li><a href="#"><img src="/recurso/themes/temita/img/noti01.png" />Reportes</a>
+<ul>
+<li><a href="/recurso/alinventario/pareto">Analisis ABC</a></li>
+<li><a href="/recurso/alinventario/adminpareto">Reporte ABC</a></li>
+<li><a href="/recurso/alinventario/repinventario">Reportes de inventario</a></li>
+</ul>
+</li>
+<li><a href="/recurso/alinventario/cargarmat">Actualizar materiales</a></li>
+</ul>
+</li>
+<li><a href="#">Aplicacion</a>
+<ul>
+<li><a href="#">Configuracion</a>
+<ul>
+<li><a href="/recurso/configuracion">Parametros Generales</a></li>
+<li><a href="/recurso/site/config">Maestros Base</a></li>
+<li><a href="/recurso/opcionescamposdocu/admin">Valores defecto</a></li>
+<li><a href="#">Reportes</a>
+<ul>
+<li><a href="/recurso/coordocs/admin">Administrar </a></li>
+<li><a href="/recurso/tenores/admin">Tenores </a></li>
+</ul>
+</li>
+<li><a href="#">Contabilidad</a>
+<ul>
+<li><a href="/recurso/contabilidad/opcontables/admin">Operadores</a></li>
+<li><a href="/recurso/contabilidad/detercuentas/admin">Determinar operadores</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#">Seguridad</a>
+<ul>
+<li><a href="/recurso/cruge/ui/usermanagementadmin">Gestion Usuarios</a></li>
+<li><a href="/recurso/cruge/ui/rbaclisttasks">Definir perfiles</a></li>
+<li><a href="/recurso/cruge/ui/rbaclistroles">Definir Roles</a></li>
+<li><a href=" /recurso/cruge/ui/systemupdate">Gestion de Acceso</a></li>
+<li><a href="/recurso/cruge/ui/rbacusersassignments">Permisologia</a></li>
+<li><a href="/recurso/Authobjetos/admin">Reglas Negocio</a></li>
+<li><a href="/recurso/backup">Backup</a></li>
+</ul>
+</li>
+<li><a href="/recurso/cargamasiva/admin">Importacion de datos</a></li>
+<li><a href="/recurso/site/bloqueos">Ediciones de usuario</a></li>
+</ul>
+</li>
+<li><a class="dropdown-toggle" data-toggle="dropdown" href="#">Transporte </a>
+<ul>
+<li><a href="/recurso/guia/creaDocumento">Crear Doc Transp</a></li>
+<li><a href="/recurso/ne/creadocumento">Crear Doc Recep</a></li>
+<li><a href="/recurso/guia/admin">Documentos</a></li>
+<li><a href="/recurso/choferes/create">Crear Conductores</a></li>
+<li><a href="/recurso/direcciones/create">Crear Direccion</a></li>
+<li><a href="/recurso/lugares/create">Crear Ubicaciones</a></li>
+<li><a href="/recurso/canales/admin">Canales de distr</a></li>
+<li><a href="/recurso/puntodespacho/admin">Centro expedicion</a></li>
+<li><a href="/recurso/despacho/admin">Expedicion</a></li>
+</ul>
+</li>
+<li><a class="dropdown-toggle" data-toggle="dropdown" href="#">G. Activos </a>
+<ul>
+<li><a href="/recurso/Inventario/admin">Inventario AF</a></li>
+<li><a href="/recurso/Inventario/create">Crear AF</a></li>
+<li><a href="/recurso/Observaciones/admin">Observaciones</a></li>
+<li><a href="/recurso/Inventario/create">Crear AF</a></li>
+<li><a href="/recurso/tipoactivos/create">Tipos AF</a></li>
+</ul>
+</li>
+<li><a href="/recurso/site/ayuda">Ayuda</a></li>
+<li><a href="/recurso/cruge/ui/logout.jsp">Salir (admin)</a></li>
+</ul>
+
+
+                            <br style="clear: left" />
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+
+
+    
+
+
+ </section><!-- /#navigation-main -->
+<section class="main-body">
+    <div class="container-fluid">
+                <div class="row-fluid">
+        <div class="span3">
+		        <div class="sidebar-nav">
+                                                 <!-- INICIO DEL WIDGET TIPO DE CAMMBIO!-->
+                                         <div>
+                    <div class="portlet" id="yw5">
+<div class="portlet-decoration">
+<div class="portlet-title"><img src="/recurso/themes/temita/img/coins.png" /> Tipo cambio  (USD)</div>
+</div>
+<div class="portlet-content">
+                                                            <div  id="zonacompra"> <a onclick="$(&#039;#cru-framegeneral&#039;).attr(&#039;src&#039;,&#039;/recurso/site/Colocatipocambio.jsp &#039;); $(&#039;#cru-dialoggeneral&#039;).dialog(&#039;open&#039;);" href="#"><img width="20" height="20" src="/recurso/themes/temita/img/dinero.png" alt="hola" /></a>                        <span class="label badge-success" >Compra : 3.26 </span>..<span class="label badge-warning " >  Venta  : 3.34</span></div>
+                    </div>
+</div>                </div>
+                <!-- FIN EL WIDGET TIPO CAMBIO !-->
+                                     		  <div>
+              <div class="portlet" id="yw6">
+<div class="portlet-decoration">
+<div class="portlet-title"><img src="/recurso/themes/temita/img/options.png" /> Opciones</div>
+</div>
+<div class="portlet-content">
+		    <ul id="yw7">
+<li><span></span>
+<ul>
+<li><a href="/recurso/ot/index.jsp">List Ot</a></li>
+<li><a href="/recurso/ot/create.jsp">Create Ot</a></li>
+<li><a href="/recurso/ot/14.jsp">View Ot</a></li>
+<li><a href="/recurso/ot/admin.jsp">Manage Ot</a></li>
+</ul>
+</li>
+</ul>              </div>
+</div>          </div>
+		        </div>
+                            <div> <!--INICIA DIV DE USUARIO -->
+                    <div class="portlet" id="yw8">
+<div class="portlet-decoration">
+<div class="portlet-title"><img src="/recurso/themes/temita/img/user_business_boss.png" /> (admin) - Conectado </div>
+</div>
+<div class="portlet-content">
+                                        <img width="15" height="15" src="/recurso/themes/temita/img/estrella.png" alt="hola" />                    Mis Accesos Directos
+                    <a onclick="$(&#039;#cru-framegeneral&#039;).attr(&#039;src&#039;,&#039;/recurso/site/agregafavorito.jsp?maccion=editadocumento&amp;mcontrolador=ot&amp;asDialog=1&amp;gridId=favoritos-grid &#039;); $(&#039;#cru-dialoggeneral&#039;).dialog(&#039;open&#039;);" href="#"><img width="15" height="15" src="/recurso/themes/temita/img/mas.png" alt="hola" /></a>                      <div id="favoritos-grid" class="grid-view">
+<div class="summary"></div>
+<table class="table table-striped table-bordered table-hover">
+<tbody>
+<tr class="odd">
+<td><a href="/recurso\maestrocompo\listadetalle">Detalle materiales</a></td><td class="button-column">  <a class="delete" title="Borrar" href="/recurso/usuariosfavoritos/borrar/1.jsp" id="yt17"><img src="/recurso/themes/temita/img/borrador.png" alt="Borrar" /></a></td></tr>
+<tr class="even">
+<td><a href="/recurso\alinventario\admin">Stocks</a></td><td class="button-column">  <a class="delete" title="Borrar" href="/recurso/usuariosfavoritos/borrar/3.jsp" id="yt18"><img src="/recurso/themes/temita/img/borrador.png" alt="Borrar" /></a></td></tr>
+<tr class="odd">
+<td><a href="/recurso\documentos\admin">DOCUMENTOS</a></td><td class="button-column">  <a class="delete" title="Borrar" href="/recurso/usuariosfavoritos/borrar/4.jsp" id="yt19"><img src="/recurso/themes/temita/img/borrador.png" alt="Borrar" /></a></td></tr>
+<tr class="even">
+<td><a href="/recurso\estado\admin">ESTADOS</a></td><td class="button-column">  <a class="delete" title="Borrar" href="/recurso/usuariosfavoritos/borrar/5.jsp" id="yt20"><img src="/recurso/themes/temita/img/borrador.png" alt="Borrar" /></a></td></tr>
+</tbody>
+</table>
+<div class="keys" style="display:none" title="/recurso/ot/editadocumento/14"><span>1</span><span>3</span><span>4</span><span>5</span></div>
+</div>                    <div id="maletin">
+                                                                        <a onclick="$(&#039;#cru-framegeneral&#039;).attr(&#039;src&#039;,&#039;/recurso/site/revisamaletin.jsp?maccion=editadocumento&amp;mcontrolador=ot&amp;asDialog=1 &#039;); $(&#039;#cru-dialoggeneral&#039;).dialog(&#039;open&#039;);" href="#"><img width="20" height="20" src="/recurso/themes/temita/img/maletin.png" alt="hola" /></a>( 0 ) - Mi maletin                    </div>
+                    <div id="documentosfavoritos">
+                        <img src="/recurso/themes/temita/img/disponible.png" alt="hola" /><a href="/recurso/listamateriales/admin">Listados de Materiales</a>                    </div>
+                        <div>
+                            <img src="/recurso/themes/temita/img/safe.png" alt="hola" /><a href="/recurso/usuariosfavoritos/misbloqueos">Doc. Bloqueados :</a>                            <span class="label badge-warning">
+                        1                        </span>
+                          </div>
+                    <div>
+                        <a href="#"><img src="/recurso/themes/temita/img/page_white_gear.png" alt="hola" /></a>                        <a href="/recurso/documentos/prefdoc">Opciones Documentos</a>                    </div>
+                    <div>
+                    <a href="/recurso/cruge/ui/usermanagementadmin.jsp"><img src="/recurso/themes/temita/img/ruler_triangle.png" alt="hola" /></a>                    <a href="/recurso/trabajadores/perfil"> Mi cuenta</a>                    </div>
+                                               <div>
+                                 <a href="/recurso/noticias/poraprobar"><img src="/recurso/themes/temita/img/sound.png" alt="hola" /></a>                                <a href="/recurso/noticias/poraprobar"> Avisos por aprobar </a>                                <span class="label badge-warning">
+                        0                        </span>
+                            </div>
+                                      <div>
+                        <a href="/recurso/noticias/adminusuariopendientes"><img src="/recurso/themes/temita/img/sound.png" alt="hola" /></a>                        <a href="/recurso/noticias/adminusuariopendientes"> Avisos pendientes </a>                        <span class="label badge-warning">
+                        0                        </span>
+                    </div>
+                    <div>
+                    <img src="/recurso/themes/temita/img/clock.png" alt="hola" />                     <a href="#"> Quedan : 280   Minutos</a>                    <div class="progress progress-success">
+                        <div class="bar" style="width: 70%"></div>
+                    </div>
+                    </div>
+                    <!--FINALIZA EL PORTLET DE USUARIO -->
+                    </div>
+</div>                </div> <!--FINALIZA EL DIV USUARIO -->
+                                                                                      <table class="table table-striped table-bordered">
+          <tbody>
+            <tr>
+              <td width="50%">Ancho de banda usado</td>
+              <td>
+              	<div class="progress progress-right">
+                  <div class="bar" style="width: 10%"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Espacio en Disco</td>
+              <td>
+                  <DIV CLASS='marco' ><img src="/recurso/assets/3cff1f91/img/semaforo-ambar.png" alt="" /></div>              </td>
+            </tr>
+            <tr>
+              <td>Ventas cerradas</td>
+              <td>
+              	<div class="progress progress-info">
+                  <div class="bar" style="width: 20%"></div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        </div><!--/span3-->
+    <div class="span9">
+
+        <div class="flash-notice">notice_No has confirmado los datos, solo has refrescado la pagina </div>
+
+
+
+
+
+            <!-- Include content pages -->
+    
+<h1>Update Ot 14</h1>
+
+<div class="form">
+    <form id="ot-form" action="/recurso/ot/editadocumento/14" method="post">	<div class="division">
+            
+	<div class="wide form">
+
+ hola buey
+            <div class="row">
+                <hola amiguitos 
+            <div id="myDivision" style="display:block;float:right;" class="flash-regular">
+.
+            </div>
+
+            </div>
+
+	
+
+	<input name="Ot[id]" id="Ot_id" type="hidden" value="14" />			
+		<div class="panelderecho">
+		<div class="row">
+		<label for="Ot_numero">Numero</label>
+			<input size="10" maxlength="10" Disabled="Disabled" name="Ot[numero]" id="Ot_numero" type="text" value="490000000005" />			<input size="30" maxlength="40" name="Ot[textocorto]" id="Ot_textocorto" type="text" value="Rectificado d eje" />			</div>
+        <div class="row">
+            		<label for="Ot_codpro" class="required">Codpro <span class="required">*</span></label>
+			<input size="6" Disabled="Disabled" name="Ot[codpro]" id="Ot_codpro" type="text" maxlength="8" value="970008" />                        <input size="36" Disabled="Disabled" type="text" value="PESQUERA EXALMAR SAA" name="despri" id="despri" />			
+            	</div>
+        <div class="row">
+            		<label for="Ot_idobjeto" class="required">Idobjeto <span class="required">*</span></label>
+			<input size="3" Disabled="Disabled" type="text" value="9" name="objetito" id="objetito" />                        <input size="36" Disabled="Disabled" type="text" value="DON ALFREDO" name="despriobjeto" id="despriobjeto" />			
+            	</div>
+                    
+                    <div class="row">
+            		
+                    <label for="Ot_idobjeto" class="required">Idobjeto <span class="required">*</span></label>			<input size="3" Disabled="Disabled" type="text" value="5470000008" name="objetito42" id="objetito42" />                        <input size="36" Disabled="Disabled" type="text" value="CAJA DE TRASMISION MARINA" name="despriobjeto2" id="despriobjeto2" />			
+            	</div>
+
+		<div class="row">
+			<label for="Ot_fechainiprog" class="required">Fechainiprog <span class="required">*</span></label>			<input style="width:80px;vertical-align:top" id="Ot_fechainiprog" name="Ot[fechainiprog]" type="text" value="2016-09-10" />					
+						<input style="width:80px;vertical-align:top" id="Ot_fechafinprog" name="Ot[fechafinprog]" type="text" value="2016-09-10" />					</div>
+
+
+		<div class="row">
+			<label for="Ot_fechainicio">Fechainicio</label>			<input style="width:80px;vertical-align:top" id="Ot_fechainicio" name="Ot[fechainicio]" type="text" value="0000-00-00" />					
+						<input style="width:80px;vertical-align:top" id="Ot_fechafin" name="Ot[fechafin]" type="text" value="0000-00-00" />					</div>
+<div class="row">
+		<label for="Ot_fechacre">Fechacre</label>		<input disabled="disabled" name="Ot[fechacre]" id="Ot_fechacre" type="text" value="2016-09-11" />			</div>
+
+		<div class="row">
+			<label for="Ot_codpro" class="required">Codpro <span class="required">*</span></label>			
+		</div>
+
+		<div class="row">
+			<label for="Ot_idobjeto" class="required">Idobjeto <span class="required">*</span></label>								</div>
+
+		<div class="row">
+			<label for="Ot_codresponsable" class="required">Codresponsable <span class="required">*</span></label>			<div style='float: left; '><input size="6" name="Ot[codresponsable]" id="Ot_codresponsable" type="text" maxlength="6" value="7001" /> </div> <div style='float: left;'><a onclick="$(&quot;#cru-frame3&quot;).attr(
+																					&quot;src&quot;,
+																					&quot;/recurso/Matchcode/recibevalor.jsp?campo=codresponsable&amp;clasesita=Trabajadores&amp;controlado=Ot&quot;); $(&quot;#cru-dialog3&quot;).data(&quot;hilo&quot;,&quot;Ot_codresponsable@fehe367dfddj&quot;).dialog(&quot;open&quot;); return false" href="#"><img src="/recurso/themes/temita/img/Search.png" alt="" /></a> </div> <div style='float: left; background-color :#FFF; padding-left:4px;  padding-right:4px; font-family: verdana,tahoma,arial,sans-serif;
+								font-size: 8pt;'  id =fehe367dfddj>RAMIREZ  </div>
+		</div>
+
+		</div>
+			<div class="panelizquierdo">
+
+
+	
+
+	<div class="row">
+		<label for="Ot_textolargo">Textolargo</label>		<textarea rows="3" cols="40" name="Ot[textolargo]" id="Ot_textolargo"></textarea>			</div>
+
+
+            
+	<div class="row">
+		<label for="Ot_codcen" class="required">Codcen <span class="required">*</span></label>		<select name="Ot[codcen]" id="Ot_codcen">
+<option value="">--Seleccione un centro--</option>
+<option value="1203" selected="selected">CENTRO LIMA</option>
+</select>                    	</div>
+
+	<div class="row">
+		<label for="Ot_iduser">Iduser</label>		<input name="Ot[iduser]" id="Ot_iduser" type="text" value="1" />			</div>
+
+	
+
+	<div class="row">
+    		<label for="Ot_codestado">Codestado</label>		<input disabled="disabled" type="text" value="CREADO" name="modeldgdgd" id="modeldgdgd" />    	
+	</div>
+
+	
+
+	<div class="row buttons">
+		<input type="submit" name="yt0" value="Save" />	</div>
+
+			</div>
+
+
+
+</div><!-- form -->
+
+	</div>
+
+
+
+
+
+<div id="MyTabi">
+<ul>
+<li><a href="#tab_" title="Labores">Labores</a></li>
+<li><a href="#tab_ui" title="Recursos">Recursos</a></li>
+<li><a href="#tab_uifre4" title="Rec externos">Rec externos</a></li>
+<li><a href="#tab_uifre5" title="Componentes rotativos">Componentes rotativos</a></li>
+<li><a href="#tab____..__" title="Auditoria">Auditoria</a></li>
+</ul>
+<div id="tab_"><div id="detalle-grid" class="grid-view">
+<div class="summary"> Total de Items : 1</div>
+<table class="table table-striped table-bordered table-hover">
+<thead>
+<tr>
+<th class="checkbox-column" id="detalle-grid_c0"><input type="checkbox" value="1" name="detalle-grid_c0_all" id="detalle-grid_c0_all" /></th><th class="button-column" id="detalle-grid_c1">&nbsp;</th><th id="detalle-grid_c2"><a class="sort-link" href="/recurso/ot/editadocumento/14.jsp?Tempdetot_sort=item">Item</a></th><th id="detalle-grid_c3"><a class="sort-link" href="/recurso/ot/editadocumento/14.jsp?Tempdetot_sort=textoactividad">Textoactividad</a></th><th id="detalle-grid_c4"><a class="sort-link" href="/recurso/ot/editadocumento/14.jsp?Tempdetot_sort=avance">Avance</a></th><th id="detalle-grid_c5"><a class="sort-link" href="/recurso/ot/editadocumento/14.jsp?Tempdetot_sort=cc">Cc</a></th><th id="detalle-grid_c6">Desgrupo</th><th id="detalle-grid_c7"><a class="sort-link" href="/recurso/ot/editadocumento/14.jsp?Tempdetot_sort=nhoras">Nhoras</a></th><th id="detalle-grid_c8"><a class="sort-link" href="/recurso/ot/editadocumento/14.jsp?Tempdetot_sort=nhombres">Nhombres</a></th><th id="detalle-grid_c9"><a class="sort-link" href="/recurso/ot/editadocumento/14.jsp?Tempdetot_sort=codmon">Codmon</a></th><th id="detalle-grid_c10"><a class="sort-link" href="/recurso/ot/editadocumento/14.jsp?Tempdetot_sort=monto">Monto</a></th><th id="detalle-grid_c11">Estado</th></tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td class="checkbox-column"><input value="227" id="detalle-grid_c0_0" type="checkbox" name="cajita[]" /></td><td width="80"><a class="view" title="Visualizar Item" href="/recurso/Ocompra/Verdetoc/12.jsp?action=editadocumento&amp;asDialog=1&amp;gridId=detalle-grid"><img src="/recurso/themes/temita\img\find.png" alt="Visualizar Item" /></a> <a class="update" title="Actualizar Item" href="/recurso/Ot/Modificadetalle/227.jsp?asDialog=1&amp;gridId=detalle-grid"><img src="/recurso/themes/temita\img\update.png" alt="Actualizar Item" /></a> </td><td width="20">001</td><td>Reparacion</td><td>&nbsp;</td><td>9010451485</td><td>MECANICOS</td><td>2</td><td>1</td><td>PEN</td><td>24.600</td><td>PREVIO</td></tr>
+</tbody>
+</table>
+<div class="keys" style="display:none" title="/recurso/ot/editadocumento/14"><span>227</span></div>
+</div>
+<div class="row">
+
+<DIV CLASS='marco' ><DIV CLASS='boton boton24' ><a onclick=" $(&#039;#cru-detalle&#039;).attr(&#039;src&#039;,&#039;/recurso/ot/creadetalle.jsp?idcabeza=14&amp;cest=10&amp;asDialog=1&amp;gridId=detalle-grid&#039;);$(&#039;#cru-dialogdetalle&#039;).dialog(&#039;open&#039;);" href="#"><img id="add" class="img_swap imagen" onMouseOver="this.src=&#039;/recurso/assets/a2e485e3/img/24/add_.png&#039;" onMouseOut="this.src=&#039;/recurso/assets/a2e485e3/img/24/add.png&#039;" width="23" height="23" src="/recurso/assets/a2e485e3/img/24/add.png" alt="" /></a></div></div><DIV CLASS='marco' ><DIV CLASS='boton boton24' ><a onclick=" $(&#039;#cru-detalle&#039;).attr(&#039;src&#039;,&#039;/recurso/ot/creaservicio.jsp?idguia=14&#039;);$(&#039;#cru-dialogdetalle&#039;).dialog(&#039;open&#039;);" href="#"><img id="tool" class="img_swap imagen" onMouseOver="this.src=&#039;/recurso/assets/a2e485e3/img/24/tool_.png&#039;" onMouseOut="this.src=&#039;/recurso/assets/a2e485e3/img/24/tool.png&#039;" width="23" height="23" src="/recurso/assets/a2e485e3/img/24/tool.png" alt="" /></a></div></div><DIV CLASS='marco' ><DIV CLASS='boton boton24' ><a href="#" id="yt1"><img id="minus" class="img_swap imagen" onMouseOver="this.src=&#039;/recurso/assets/a2e485e3/img/24/minus_.png&#039;" onMouseOut="this.src=&#039;/recurso/assets/a2e485e3/img/24/minus.png&#039;" width="23" height="23" src="/recurso/assets/a2e485e3/img/24/minus.png" alt="" /></a></div></div><DIV CLASS='marco' ><DIV CLASS='boton boton24' ><a onclick=" $(&#039;#cru-detalle&#039;).attr(&#039;src&#039;,&#039;/recurso/ot/agregardespacho/14.jsp?asDialog=1&amp;gridId=detalle-grid&#039;);$(&#039;#cru-dialogdetalle&#039;).dialog(&#039;open&#039;);" href="#"><img id="checklist" class="img_swap imagen" onMouseOver="this.src=&#039;/recurso/assets/a2e485e3/img/24/checklist_.png&#039;" onMouseOut="this.src=&#039;/recurso/assets/a2e485e3/img/24/checklist.png&#039;" width="23" height="23" src="/recurso/assets/a2e485e3/img/24/checklist.png" alt="" /></a></div></div><DIV CLASS='marco' ><DIV CLASS='boton boton24' ><a href="/recurso/ot/procesardocumento/14.jsp?ev=35"><img id="pack2" class="img_swap imagen" onMouseOver="this.src=&#039;/recurso/assets/a2e485e3/img/24/pack2_.png&#039;" onMouseOut="this.src=&#039;/recurso/assets/a2e485e3/img/24/pack2.png&#039;" width="23" height="23" src="/recurso/assets/a2e485e3/img/24/pack2.png" alt="" /></a></div></div><DIV CLASS='marco' ><DIV CLASS='boton boton24' ><a href="#" id="yt2"><img id="briefcase" class="img_swap imagen" onMouseOver="this.src=&#039;/recurso/assets/a2e485e3/img/24/briefcase_.png&#039;" onMouseOut="this.src=&#039;/recurso/assets/a2e485e3/img/24/briefcase.png&#039;" width="23" height="23" src="/recurso/assets/a2e485e3/img/24/briefcase.png" alt="" /></a></div></div><DIV CLASS='marco' ><DIV CLASS='boton boton24' ><a onclick=" $(&#039;#cru-detalle&#039;).attr(&#039;src&#039;,&#039;/recurso/ot/agregaritemsolpe.jsp?idguia=14&amp;asDialog=1&amp;gridId=detalle-grid&#039;);$(&#039;#cru-dialogdetalle&#039;).dialog(&#039;open&#039;);" href="#"><img id="join" class="img_swap imagen" onMouseOver="this.src=&#039;/recurso/assets/a2e485e3/img/24/join_.png&#039;" onMouseOut="this.src=&#039;/recurso/assets/a2e485e3/img/24/join.png&#039;" width="23" height="23" src="/recurso/assets/a2e485e3/img/24/join.png" alt="" /></a></div></div><DIV CLASS='marco' ><DIV CLASS='boton boton24' ><a onclick=" $(&#039;#cru-detalle&#039;).attr(&#039;src&#039;,&#039;/recurso/ot/agregarmasivamente.jsp?idguia=14&amp;asDialog=1&amp;gridId=detalle-grid&#039;);$(&#039;#cru-dialogdetalle&#039;).dialog(&#039;open&#039;);" href="#"><img id="pack" class="img_swap imagen" onMouseOver="this.src=&#039;/recurso/assets/a2e485e3/img/24/pack_.png&#039;" onMouseOut="this.src=&#039;/recurso/assets/a2e485e3/img/24/pack.png&#039;" width="23" height="23" src="/recurso/assets/a2e485e3/img/24/pack.png" alt="" /></a></div></div></div>
+
+
+</div>
+<div id="tab_ui">
+
+<div id="detalle-recursos-grid" class="grid-view">
+<div class="summary"> Total de Items : 11</div>
+<table class="table table-striped table-bordered table-hover">
+<thead>
+<tr>
+<th class="checkbox-column" id="detalle-recursos-grid_c0"><input type="checkbox" value="1" name="detalle-recursos-grid_c0_all" id="detalle-recursos-grid_c0_all" /></th><th class="button-column" id="detalle-recursos-grid_c1">&nbsp;</th><th id="detalle-recursos-grid_c2"><a class="sort-link" href="/recurso/ot/editadocumento/14.jsp?Tempdesolpe_sort=item">Item</a></th><th id="detalle-recursos-grid_c3">N° Solic</th><th id="detalle-recursos-grid_c4"><a class="sort-link" href="/recurso/ot/editadocumento/14.jsp?Tempdesolpe_sort=cant">Cant</a></th><th id="detalle-recursos-grid_c5"><a class="sort-link" href="/recurso/ot/editadocumento/14.jsp?Tempdesolpe_sort=hidlabor">Recurso</a></th><th id="detalle-recursos-grid_c6"><a class="sort-link" href="/recurso/ot/editadocumento/14.jsp?Tempdesolpe_sort=codart">Codart</a></th><th id="detalle-recursos-grid_c7"><a class="sort-link" href="/recurso/ot/editadocumento/14.jsp?Tempdesolpe_sort=punitplan">Plan</a></th><th id="detalle-recursos-grid_c8"><a class="sort-link" href="/recurso/ot/editadocumento/14.jsp?Tempdesolpe_sort=punitreal">Real</a></th><th id="detalle-recursos-grid_c9">st</th></tr>
+<tr class="filters">
+<td>&nbsp;</td><td>&nbsp;</td><td><input name="Tempdesolpe[item]" type="text" maxlength="3" /></td><td>&nbsp;</td><td><input name="Tempdesolpe[cant]" type="text" /></td><td><select name="Tempdesolpe[hidlabor]">
+<option value=""></option>
+<option value="1473545161858">Reparacion</option>
+</select></td><td><input name="Tempdesolpe[codart]" type="text" maxlength="12" /></td><td><input name="Tempdesolpe[punitplan]" type="text" /></td><td><input name="Tempdesolpe[punitreal]" type="text" /></td><td>&nbsp;</td></tr>
+</thead>
+<tfoot>
+<tr>
+<td class="checkbox-column">&nbsp;</td><td class="button-column">&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>934.93</td><td>0.00</td><td>&nbsp;</td></tr>
+</tfoot>
+<tbody>
+<tr class="odd">
+<td class="checkbox-column"><input value="109" id="detalle-recursos-grid_c0_0" type="checkbox" name="cajita[]" /></td><td width="80"><a class="view" title="Visualizar Item" href="/recurso/Ocompra/Verdetoc/111.jsp?action=editadocumento&amp;asDialog=1&amp;gridId=detalle-recursos-grid"><img src="/recurso/themes/temita\img\find.png" alt="Visualizar Item" /></a> <a class="update" title="Actualizar Item" href="/recurso/Ot/Modificadetallerecurso/109.jsp?asDialog=1&amp;gridId=detalle-recursos-grid"><img src="/recurso/themes/temita\img\update.png" alt="Actualizar Item" /></a> <a onClick="Loading.show();Loading.hide(); " class="delete" title="Ver detalle" href="/recurso/Solpe/cargadetalle.jsp?identi=111" id="yt3"><img src="/recurso/themes/temita/img/hand_point.png" alt="Ver detalle" /></a></td><td width="20">001</td><td width="4">3400000078</td><td width="20">1</td><td width="400">CAJA DE MADERA</td><td>12000002</td><td width="30">4.31</td><td width="40">0.00</td><td><img src="/recurso/themes/temita/img/35010.png" alt="" /></td></tr>
+<tr class="even">
+<td class="checkbox-column"><input value="110" id="detalle-recursos-grid_c0_1" type="checkbox" name="cajita[]" /></td><td width="80"><a class="view" title="Visualizar Item" href="/recurso/Ocompra/Verdetoc/112.jsp?action=editadocumento&amp;asDialog=1&amp;gridId=detalle-recursos-grid"><img src="/recurso/themes/temita\img\find.png" alt="Visualizar Item" /></a> <a class="update" title="Actualizar Item" href="/recurso/Ot/Modificadetallerecurso/110.jsp?asDialog=1&amp;gridId=detalle-recursos-grid"><img src="/recurso/themes/temita\img\update.png" alt="Actualizar Item" /></a> <a onClick="Loading.show();Loading.hide(); " class="delete" title="Ver detalle" href="/recurso/Solpe/cargadetalle.jsp?identi=112" id="yt4"><img src="/recurso/themes/temita/img/hand_point.png" alt="Ver detalle" /></a></td><td width="20">002</td><td width="4">3400000079</td><td width="20">2</td><td width="400">POLVO QUIMICO SECO NH3</td><td>12000012</td><td width="30">0.00</td><td width="40">0.00</td><td><img src="/recurso/themes/temita/img/35010.png" alt="" /></td></tr>
+<tr class="odd">
+<td class="checkbox-column"><input value="111" id="detalle-recursos-grid_c0_2" type="checkbox" name="cajita[]" /></td><td width="80"><a class="view" title="Visualizar Item" href="/recurso/Ocompra/Verdetoc/113.jsp?action=editadocumento&amp;asDialog=1&amp;gridId=detalle-recursos-grid"><img src="/recurso/themes/temita\img\find.png" alt="Visualizar Item" /></a> <a class="update" title="Actualizar Item" href="/recurso/Ot/Modificadetallerecurso/111.jsp?asDialog=1&amp;gridId=detalle-recursos-grid"><img src="/recurso/themes/temita\img\update.png" alt="Actualizar Item" /></a> <a onClick="Loading.show();Loading.hide(); " class="delete" title="Ver detalle" href="/recurso/Solpe/cargadetalle.jsp?identi=113" id="yt5"><img src="/recurso/themes/temita/img/hand_point.png" alt="Ver detalle" /></a></td><td width="20">003</td><td width="4">3400000080</td><td width="20">1</td><td width="400">CADENA DE PAOS 5656/34</td><td>12000003</td><td width="30">6.06</td><td width="40">0.00</td><td><img src="/recurso/themes/temita/img/35010.png" alt="" /></td></tr>
+<tr class="even">
+<td class="checkbox-column"><input value="113" id="detalle-recursos-grid_c0_3" type="checkbox" name="cajita[]" /></td><td width="80"><a class="view" title="Visualizar Item" href="/recurso/Ocompra/Verdetoc/114.jsp?action=editadocumento&amp;asDialog=1&amp;gridId=detalle-recursos-grid"><img src="/recurso/themes/temita\img\find.png" alt="Visualizar Item" /></a> <a class="update" title="Actualizar Item" href="/recurso/Ot/Modificadetallerecurso/113.jsp?asDialog=1&amp;gridId=detalle-recursos-grid"><img src="/recurso/themes/temita\img\update.png" alt="Actualizar Item" /></a> <a onClick="Loading.show();Loading.hide(); " class="delete" title="Ver detalle" href="/recurso/Solpe/cargadetalle.jsp?identi=114" id="yt6"><img src="/recurso/themes/temita/img/hand_point.png" alt="Ver detalle" /></a></td><td width="20">004</td><td width="4">3400000081</td><td width="20">2</td><td width="400">MONEDADEREO 45</td><td>12000005</td><td width="30">11.73</td><td width="40">0.00</td><td><img src="/recurso/themes/temita/img/35010.png" alt="" /></td></tr>
+<tr class="odd">
+<td class="checkbox-column"><input value="114" id="detalle-recursos-grid_c0_4" type="checkbox" name="cajita[]" /></td><td width="80"><a class="view" title="Visualizar Item" href="/recurso/Ocompra/Verdetoc/115.jsp?action=editadocumento&amp;asDialog=1&amp;gridId=detalle-recursos-grid"><img src="/recurso/themes/temita\img\find.png" alt="Visualizar Item" /></a> <a class="update" title="Actualizar Item" href="/recurso/Ot/Modificadetallerecurso/114.jsp?asDialog=1&amp;gridId=detalle-recursos-grid"><img src="/recurso/themes/temita\img\update.png" alt="Actualizar Item" /></a> <a onClick="Loading.show();Loading.hide(); " class="delete" title="Ver detalle" href="/recurso/Solpe/cargadetalle.jsp?identi=115" id="yt7"><img src="/recurso/themes/temita/img/hand_point.png" alt="Ver detalle" /></a></td><td width="20">005</td><td width="4">3400000078</td><td width="20">4</td><td width="400">ANILLO PLANO 1/2&quot; AC INOX </td><td>12000007</td><td width="30">4.82</td><td width="40">0.00</td><td><img src="/recurso/themes/temita/img/35010.png" alt="" /></td></tr>
+<tr class="even">
+<td class="checkbox-column"><input value="115" id="detalle-recursos-grid_c0_5" type="checkbox" name="cajita[]" /></td><td width="80"><a class="view" title="Visualizar Item" href="/recurso/Ocompra/Verdetoc/116.jsp?action=editadocumento&amp;asDialog=1&amp;gridId=detalle-recursos-grid"><img src="/recurso/themes/temita\img\find.png" alt="Visualizar Item" /></a> <a class="update" title="Actualizar Item" href="/recurso/Ot/Modificadetallerecurso/115.jsp?asDialog=1&amp;gridId=detalle-recursos-grid"><img src="/recurso/themes/temita\img\update.png" alt="Actualizar Item" /></a> <a onClick="Loading.show();Loading.hide(); " class="delete" title="Ver detalle" href="/recurso/Solpe/cargadetalle.jsp?identi=116" id="yt8"><img src="/recurso/themes/temita/img/hand_point.png" alt="Ver detalle" /></a></td><td width="20">&nbsp;</td><td width="4">3400000082</td><td width="20">1</td><td width="400">Soldaura al horbo</td><td>78000001</td><td width="30">12.00</td><td width="40">0.00</td><td><img src="/recurso/themes/temita/img/35010.png" alt="" /></td></tr>
+<tr class="odd">
+<td class="checkbox-column"><input value="117" id="detalle-recursos-grid_c0_6" type="checkbox" name="cajita[]" /></td><td width="80"><a class="view" title="Visualizar Item" href="/recurso/Ocompra/Verdetoc/117.jsp?action=editadocumento&amp;asDialog=1&amp;gridId=detalle-recursos-grid"><img src="/recurso/themes/temita\img\find.png" alt="Visualizar Item" /></a> <a class="update" title="Actualizar Item" href="/recurso/Ot/Modificadetallerecurso/117.jsp?asDialog=1&amp;gridId=detalle-recursos-grid"><img src="/recurso/themes/temita\img\update.png" alt="Actualizar Item" /></a> <a onClick="Loading.show();Loading.hide(); " class="delete" title="Ver detalle" href="/recurso/Solpe/cargadetalle.jsp?identi=117" id="yt9"><img src="/recurso/themes/temita/img/hand_point.png" alt="Ver detalle" /></a></td><td width="20">&nbsp;</td><td width="4">3400000083</td><td width="20">1</td><td width="400">Alquiler  de grua </td><td>78000001</td><td width="30">45.00</td><td width="40">0.00</td><td><img src="/recurso/themes/temita/img/35020.png" alt="" /></td></tr>
+<tr class="even">
+<td class="checkbox-column"><input value="118" id="detalle-recursos-grid_c0_7" type="checkbox" name="cajita[]" /></td><td width="80"><a class="view" title="Visualizar Item" href="/recurso/Ocompra/Verdetoc/118.jsp?action=editadocumento&amp;asDialog=1&amp;gridId=detalle-recursos-grid"><img src="/recurso/themes/temita\img\find.png" alt="Visualizar Item" /></a> <a class="update" title="Actualizar Item" href="/recurso/Ot/Modificadetallerecurso/118.jsp?asDialog=1&amp;gridId=detalle-recursos-grid"><img src="/recurso/themes/temita\img\update.png" alt="Actualizar Item" /></a> <a onClick="Loading.show();Loading.hide(); " class="delete" title="Ver detalle" href="/recurso/Solpe/cargadetalle.jsp?identi=118" id="yt10"><img src="/recurso/themes/temita/img/hand_point.png" alt="Ver detalle" /></a></td><td width="20">&nbsp;</td><td width="4">&nbsp;</td><td width="20">1</td><td width="400">Rectificado de carpeta de culata</td><td>78000001</td><td width="30">56.00</td><td width="40">0.00</td><td><img src="/recurso/themes/temita/img/35020.png" alt="" /></td></tr>
+<tr class="odd">
+<td class="checkbox-column"><input value="119" id="detalle-recursos-grid_c0_8" type="checkbox" name="cajita[]" /></td><td width="80"><a class="view" title="Visualizar Item" href="/recurso/Ocompra/Verdetoc/119.jsp?action=editadocumento&amp;asDialog=1&amp;gridId=detalle-recursos-grid"><img src="/recurso/themes/temita\img\find.png" alt="Visualizar Item" /></a> <a class="update" title="Actualizar Item" href="/recurso/Ot/Modificadetallerecurso/119.jsp?asDialog=1&amp;gridId=detalle-recursos-grid"><img src="/recurso/themes/temita\img\update.png" alt="Actualizar Item" /></a> <a onClick="Loading.show();Loading.hide(); " class="delete" title="Ver detalle" href="/recurso/Solpe/cargadetalle.jsp?identi=119" id="yt11"><img src="/recurso/themes/temita/img/hand_point.png" alt="Ver detalle" /></a></td><td width="20">&nbsp;</td><td width="4">&nbsp;</td><td width="20">1</td><td width="400">Rectificado de carpeta de culataD</td><td>78000001</td><td width="30">345.00</td><td width="40">0.00</td><td><img src="/recurso/themes/temita/img/35020.png" alt="" /></td></tr>
+<tr class="even">
+<td class="checkbox-column"><input value="120" id="detalle-recursos-grid_c0_9" type="checkbox" name="cajita[]" /></td><td width="80"><a class="view" title="Visualizar Item" href="/recurso/Ocompra/Verdetoc/120.jsp?action=editadocumento&amp;asDialog=1&amp;gridId=detalle-recursos-grid"><img src="/recurso/themes/temita\img\find.png" alt="Visualizar Item" /></a> <a class="update" title="Actualizar Item" href="/recurso/Ot/Modificadetallerecurso/120.jsp?asDialog=1&amp;gridId=detalle-recursos-grid"><img src="/recurso/themes/temita\img\update.png" alt="Actualizar Item" /></a> <a onClick="Loading.show();Loading.hide(); " class="delete" title="Ver detalle" href="/recurso/Solpe/cargadetalle.jsp?identi=120" id="yt12"><img src="/recurso/themes/temita/img/hand_point.png" alt="Ver detalle" /></a></td><td width="20">&nbsp;</td><td width="4">3400000082</td><td width="20">2</td><td width="400">Rectificado de carpeta de culata5</td><td>78000001</td><td width="30">896.00</td><td width="40">0.00</td><td><img src="/recurso/themes/temita/img/35010.png" alt="" /></td></tr>
+</tbody>
+</table>
+<div class="pager">Ir a página: <ul id="yw1" class="yiiPager"><li class="first hidden"><a href="/recurso/ot/editadocumento/14.jsp">&lt;&lt; Primero</a></li>
+<li class="previous hidden"><a href="/recurso/ot/editadocumento/14.jsp">&lt; Anterior</a></li>
+<li class="page selected"><a href="/recurso/ot/editadocumento/14.jsp">1</a></li>
+<li class="page"><a href="/recurso/ot/editadocumento/14.jsp?Tempdesolpe_page=2">2</a></li>
+<li class="next"><a href="/recurso/ot/editadocumento/14.jsp?Tempdesolpe_page=2">Siguiente &gt;</a></li>
+<li class="last"><a href="/recurso/ot/editadocumento/14.jsp?Tempdesolpe_page=2">Último &gt;&gt;</a></li></ul></div><div class="keys" style="display:none" title="/recurso/ot/editadocumento/14"><span>109</span><span>110</span><span>111</span><span>113</span><span>114</span><span>115</span><span>117</span><span>118</span><span>119</span><span>120</span></div>
+</div>
+<div id="zona"></div>
+
+<div class="row">
+
+	<DIV CLASS='marco' ><DIV CLASS='boton boton24' ><a onclick=" $(&#039;#cru-detalle&#039;).attr(&#039;src&#039;,&#039;/recurso/ot/creadetallerecurso.jsp?idcabeza=14&amp;cest=10&amp;asDialog=1&amp;gridId=detalle-grid&#039;);$(&#039;#cru-dialogdetalle&#039;).dialog(&#039;open&#039;);" href="#"><img id="add" class="img_swap imagen" onMouseOver="this.src=&#039;/recurso/assets/a2e485e3/img/24/add_.png&#039;" onMouseOut="this.src=&#039;/recurso/assets/a2e485e3/img/24/add.png&#039;" width="23" height="23" src="/recurso/assets/a2e485e3/img/24/add.png" alt="" /></a></div></div><DIV CLASS='marco' ><DIV CLASS='boton boton24' ><a onclick=" $(&#039;#cru-detalle&#039;).attr(&#039;src&#039;,&#039;/recurso/ot/creaservicio/14.jsp?asDialog=1&#039;);$(&#039;#cru-dialogdetalle&#039;).dialog(&#039;open&#039;);" href="#"><img id="tool" class="img_swap imagen" onMouseOver="this.src=&#039;/recurso/assets/a2e485e3/img/24/tool_.png&#039;" onMouseOut="this.src=&#039;/recurso/assets/a2e485e3/img/24/tool.png&#039;" width="23" height="23" src="/recurso/assets/a2e485e3/img/24/tool.png" alt="" /></a></div></div><DIV CLASS='marco' ><DIV CLASS='boton boton24' ><a href="#" id="yt13"><img id="minus" class="img_swap imagen" onMouseOver="this.src=&#039;/recurso/assets/a2e485e3/img/24/minus_.png&#039;" onMouseOut="this.src=&#039;/recurso/assets/a2e485e3/img/24/minus.png&#039;" width="23" height="23" src="/recurso/assets/a2e485e3/img/24/minus.png" alt="" /></a></div></div><DIV CLASS='marco' ><DIV CLASS='boton boton24' ><a onclick=" $(&#039;#cru-detalle&#039;).attr(&#039;src&#039;,&#039;/recurso/ot/agregardespacho/14.jsp?asDialog=1&amp;gridId=detalle-grid&#039;);$(&#039;#cru-dialogdetalle&#039;).dialog(&#039;open&#039;);" href="#"><img id="checklist" class="img_swap imagen" onMouseOver="this.src=&#039;/recurso/assets/a2e485e3/img/24/checklist_.png&#039;" onMouseOut="this.src=&#039;/recurso/assets/a2e485e3/img/24/checklist.png&#039;" width="23" height="23" src="/recurso/assets/a2e485e3/img/24/checklist.png" alt="" /></a></div></div><DIV CLASS='marco' ><DIV CLASS='boton boton24' ><a href="/recurso/ot/procesardocumento/14.jsp?ev=35"><img id="pack2" class="img_swap imagen" onMouseOver="this.src=&#039;/recurso/assets/a2e485e3/img/24/pack2_.png&#039;" onMouseOut="this.src=&#039;/recurso/assets/a2e485e3/img/24/pack2.png&#039;" width="23" height="23" src="/recurso/assets/a2e485e3/img/24/pack2.png" alt="" /></a></div></div><DIV CLASS='marco' ><DIV CLASS='boton boton24' ><a href="#" id="yt14"><img id="briefcase" class="img_swap imagen" onMouseOver="this.src=&#039;/recurso/assets/a2e485e3/img/24/briefcase_.png&#039;" onMouseOut="this.src=&#039;/recurso/assets/a2e485e3/img/24/briefcase.png&#039;" width="23" height="23" src="/recurso/assets/a2e485e3/img/24/briefcase.png" alt="" /></a></div></div><DIV CLASS='marco' ><DIV CLASS='boton boton24' ><a onclick=" $(&#039;#cru-detalle&#039;).attr(&#039;src&#039;,&#039;/recurso/ot/agregaritemsolpe.jsp?idguia=14&amp;asDialog=1&amp;gridId=detalle-grid&#039;);$(&#039;#cru-dialogdetalle&#039;).dialog(&#039;open&#039;);" href="#"><img id="join" class="img_swap imagen" onMouseOver="this.src=&#039;/recurso/assets/a2e485e3/img/24/join_.png&#039;" onMouseOut="this.src=&#039;/recurso/assets/a2e485e3/img/24/join.png&#039;" width="23" height="23" src="/recurso/assets/a2e485e3/img/24/join.png" alt="" /></a></div></div><DIV CLASS='marco' ><DIV CLASS='boton boton24' ><a onclick=" $(&#039;#cru-detalle&#039;).attr(&#039;src&#039;,&#039;/recurso/ot/agregarmasivamente.jsp?idguia=14&amp;asDialog=1&amp;gridId=detalle-grid&#039;);$(&#039;#cru-dialogdetalle&#039;).dialog(&#039;open&#039;);" href="#"><img id="pack" class="img_swap imagen" onMouseOver="this.src=&#039;/recurso/assets/a2e485e3/img/24/pack_.png&#039;" onMouseOut="this.src=&#039;/recurso/assets/a2e485e3/img/24/pack.png&#039;" width="23" height="23" src="/recurso/assets/a2e485e3/img/24/pack.png" alt="" /></a></div></div></div></div>
+<div id="tab_uifre4">
+
+<div id="detalle-consignaciones-grid" class="grid-view">
+
+<table class="table table-striped table-bordered table-hover">
+<thead>
+<tr>
+<th class="checkbox-column" id="detalle-consignaciones-grid_c0"><input type="checkbox" value="1" name="detalle-consignaciones-grid_c0_all" id="detalle-consignaciones-grid_c0_all" /></th><th class="button-column" id="detalle-consignaciones-grid_c1">&nbsp;</th><th id="detalle-consignaciones-grid_c2"><a class="sort-link" href="/recurso/ot/editadocumento/14.jsp?Tempotconsignacion_sort=item">Item</a></th><th id="detalle-consignaciones-grid_c3"><a class="sort-link" href="/recurso/ot/editadocumento/14.jsp?Tempotconsignacion_sort=cant">Cant</a></th><th id="detalle-consignaciones-grid_c4"><a class="sort-link" href="/recurso/ot/editadocumento/14.jsp?Tempotconsignacion_sort=hidetot">Recurso</a></th><th id="detalle-consignaciones-grid_c5"><a class="sort-link" href="/recurso/ot/editadocumento/14.jsp?Tempotconsignacion_sort=codart">Codart</a></th><th id="detalle-consignaciones-grid_c6">Atendido</th></tr>
+<tr class="filters">
+<td>&nbsp;</td><td>&nbsp;</td><td><input name="Tempotconsignacion[item]" type="text" /></td><td><input name="Tempotconsignacion[cant]" type="text" /></td><td><select name="Tempotconsignacion[hidetot]">
+<option value=""></option>
+<option value="1473545161858"></option>
+</select></td><td><input name="Tempotconsignacion[codart]" type="text" maxlength="12" /></td><td>&nbsp;</td></tr>
+</thead>
+<tbody>
+<tr><td colspan="7" class="empty"><span class="empty">No se encontraron resultados.</span></td></tr>
+</tbody>
+</table>
+<div class="keys" style="display:none" title="/recurso/ot/editadocumento/14"></div>
+</div>
+<div id="zona"></div>
+
+<div class="row">
+
+	<DIV CLASS='marco' ><DIV CLASS='boton boton24' ><a onclick=" $(&#039;#cru-detalle&#039;).attr(&#039;src&#039;,&#039;/recurso/ot/creaconsignacion.jsp?idcabeza=14&amp;cest=10&amp;asDialog=1&amp;gridId=detalle-grid&#039;);$(&#039;#cru-dialogdetalle&#039;).dialog(&#039;open&#039;);" href="#"><img id="add" class="img_swap imagen" onMouseOver="this.src=&#039;/recurso/assets/a2e485e3/img/24/add_.png&#039;" onMouseOut="this.src=&#039;/recurso/assets/a2e485e3/img/24/add.png&#039;" width="23" height="23" src="/recurso/assets/a2e485e3/img/24/add.png" alt="" /></a></div></div><DIV CLASS='marco' ><DIV CLASS='boton boton24' ><a onclick=" $(&#039;#cru-detalle&#039;).attr(&#039;src&#039;,&#039;/recurso/ot/creaservicio/14.jsp?asDialog=1&#039;);$(&#039;#cru-dialogdetalle&#039;).dialog(&#039;open&#039;);" href="#"><img id="tool" class="img_swap imagen" onMouseOver="this.src=&#039;/recurso/assets/a2e485e3/img/24/tool_.png&#039;" onMouseOut="this.src=&#039;/recurso/assets/a2e485e3/img/24/tool.png&#039;" width="23" height="23" src="/recurso/assets/a2e485e3/img/24/tool.png" alt="" /></a></div></div><DIV CLASS='marco' ><DIV CLASS='boton boton24' ><a href="#" id="yt15"><img id="minus" class="img_swap imagen" onMouseOver="this.src=&#039;/recurso/assets/a2e485e3/img/24/minus_.png&#039;" onMouseOut="this.src=&#039;/recurso/assets/a2e485e3/img/24/minus.png&#039;" width="23" height="23" src="/recurso/assets/a2e485e3/img/24/minus.png" alt="" /></a></div></div><DIV CLASS='marco' ><DIV CLASS='boton boton24' ><a onclick=" $(&#039;#cru-detalle&#039;).attr(&#039;src&#039;,&#039;/recurso/ot/agregardespacho/14.jsp?asDialog=1&amp;gridId=detalle-grid&#039;);$(&#039;#cru-dialogdetalle&#039;).dialog(&#039;open&#039;);" href="#"><img id="checklist" class="img_swap imagen" onMouseOver="this.src=&#039;/recurso/assets/a2e485e3/img/24/checklist_.png&#039;" onMouseOut="this.src=&#039;/recurso/assets/a2e485e3/img/24/checklist.png&#039;" width="23" height="23" src="/recurso/assets/a2e485e3/img/24/checklist.png" alt="" /></a></div></div><DIV CLASS='marco' ><DIV CLASS='boton boton24' ><a href="/recurso/ot/procesardocumento/14.jsp?ev=35"><img id="pack2" class="img_swap imagen" onMouseOver="this.src=&#039;/recurso/assets/a2e485e3/img/24/pack2_.png&#039;" onMouseOut="this.src=&#039;/recurso/assets/a2e485e3/img/24/pack2.png&#039;" width="23" height="23" src="/recurso/assets/a2e485e3/img/24/pack2.png" alt="" /></a></div></div><DIV CLASS='marco' ><DIV CLASS='boton boton24' ><a href="#" id="yt16"><img id="briefcase" class="img_swap imagen" onMouseOver="this.src=&#039;/recurso/assets/a2e485e3/img/24/briefcase_.png&#039;" onMouseOut="this.src=&#039;/recurso/assets/a2e485e3/img/24/briefcase.png&#039;" width="23" height="23" src="/recurso/assets/a2e485e3/img/24/briefcase.png" alt="" /></a></div></div><DIV CLASS='marco' ><DIV CLASS='boton boton24' ><a onclick=" $(&#039;#cru-detalle&#039;).attr(&#039;src&#039;,&#039;/recurso/ot/agregaritemsolpe.jsp?idguia=14&amp;asDialog=1&amp;gridId=detalle-grid&#039;);$(&#039;#cru-dialogdetalle&#039;).dialog(&#039;open&#039;);" href="#"><img id="join" class="img_swap imagen" onMouseOver="this.src=&#039;/recurso/assets/a2e485e3/img/24/join_.png&#039;" onMouseOut="this.src=&#039;/recurso/assets/a2e485e3/img/24/join.png&#039;" width="23" height="23" src="/recurso/assets/a2e485e3/img/24/join.png" alt="" /></a></div></div><DIV CLASS='marco' ><DIV CLASS='boton boton24' ><a onclick=" $(&#039;#cru-detalle&#039;).attr(&#039;src&#039;,&#039;/recurso/ot/agregarmasivamente.jsp?idguia=14&amp;asDialog=1&amp;gridId=detalle-grid&#039;);$(&#039;#cru-dialogdetalle&#039;).dialog(&#039;open&#039;);" href="#"><img id="pack" class="img_swap imagen" onMouseOver="this.src=&#039;/recurso/assets/a2e485e3/img/24/pack_.png&#039;" onMouseOut="this.src=&#039;/recurso/assets/a2e485e3/img/24/pack.png&#039;" width="23" height="23" src="/recurso/assets/a2e485e3/img/24/pack.png" alt="" /></a></div></div></div></div>
+<div id="tab_uifre5"><div id="detallecompo-grid" class="grid-view">
+<div class="summary">Viendo 1-4 de 4 resultados.</div>
+<table class="table table-striped table-bordered table-hover">
+<thead>
+<tr>
+<th id="detallecompo-grid_c0"><a class="sort-link" href="/recurso/ot/editadocumento/14.jsp?Neot_sort=cant">Cant</a></th><th id="detallecompo-grid_c1">Serie</th><th id="detallecompo-grid_c2">N° Ingr.</th><th id="detallecompo-grid_c3">Item</th><th id="detallecompo-grid_c4">Fecha</th><th id="detallecompo-grid_c5">Textoactividad</th><th id="detallecompo-grid_c6">User</th></tr>
+</thead>
+<tbody>
+<tr class="odd"><td>1</td><td>120</td><td rowspan="4" class="merge" style=";text-align: center; vertical-align: middle">00000004</td><td>002</td><td width="40">21.09.16</td><td rowspan="4" class="merge" style=";text-align: center; vertical-align: middle">MOTOR MECANICO</td><td>&nbsp;</td></tr>
+<tr class="even"><td>2</td><td>120</td><td>002</td><td width="40">21.09.16</td><td>&nbsp;</td></tr>
+<tr class="odd"><td>1</td><td>120</td><td>002</td><td width="40">21.09.16</td><td>&nbsp;</td></tr>
+<tr class="even"><td>3</td><td>120</td><td>002</td><td width="40">21.09.16</td><td>&nbsp;</td></tr>
+<tr><td class="extrarow" colspan="7"><span style="font-weight: bold;color: orangered;font-size:13px;"> Total OT : 7.00 </span></td></tr></tbody>
+</table>
+<div class="keys" style="display:none" title="/recurso/ot/editadocumento/14"><span>1</span><span>2</span><span>3</span><span>4</span></div>
+</div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+   </div>
+<div id="tab____..__"><div id="alkbvardex-grivvbd" class="grid-view">
+
+<table class="table table-striped table-bordered table-hover">
+<thead>
+<tr>
+<th id="alkbvardex-grivvbd_c0"><a class="sort-link" href="/recurso/ot/editadocumento/14.jsp?ActiveRecordLog_sort=action">Accion</a></th><th id="alkbvardex-grivvbd_c1">Usuario</th><th id="alkbvardex-grivvbd_c2"><a class="sort-link" href="/recurso/ot/editadocumento/14.jsp?ActiveRecordLog_sort=nombrecampo">Campo Modif</a></th><th id="alkbvardex-grivvbd_c3"><a class="sort-link" href="/recurso/ot/editadocumento/14.jsp?ActiveRecordLog_sort=creationdate">Fecha</a></th><th id="alkbvardex-grivvbd_c4"><a class="sort-link" href="/recurso/ot/editadocumento/14.jsp?ActiveRecordLog_sort=oldvalue">Val ant</a></th><th id="alkbvardex-grivvbd_c5"><a class="sort-link" href="/recurso/ot/editadocumento/14.jsp?ActiveRecordLog_sort=newvalue">Val act</a></th></tr>
+</thead>
+<tbody>
+<tr><td colspan="6" class="empty"><span class="empty">No se encontraron resultados.</span></td></tr>
+</tbody>
+</table>
+<div class="keys" style="display:none" title="/recurso/ot/editadocumento/14"></div>
+</div></div>
+</div>
+
+
+
+</form>
+</div>
+
+<div id="cru-dialog3">
+	<iframe id="cru-frame3" width="100%" height="100%"></iframe>
+</div>
+
+<div id="cru-dialogdetalle">
+	<iframe id="cru-detalle" width="100%" height="100%"></iframe>
+</div>	</div><!--/span-->
+  </div><!--/row fuid -->
+    </div>
+</section>
+
+
+
+
+<footer>
+        <div class="subnav navbar navbar-fixed-bottom">
+            <div class="navbar-inner">
+                <div class="container">
+                    Desarrollado por Neotegnia Consultores SAC ®  <a href="http://www.neotegnia.com" target="_new">www.neotegnia.com</a>. Derechos reservados.<br /><small> El diseño y las fuentes son Propiedad Intelectual
+                    de Neotegnia, según registro INDECOPI : RPI3455678 </small>
+                </div>
+            </div>
+        </div>      
+	</footer>
+
+  <script type="text/javascript" src="/recurso/assets/6fd67628/jui/js/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/recurso/assets/6fd67628/jui/js/jquery-ui-i18n.min.js"></script>
+<script type="text/javascript" src="/recurso/assets/35ca71bf/gridview/jquery.yiigridview.js"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+jQuery(function($) {
+jQuery('#Ot_fechainiprog').datepicker(jQuery.extend({showMonthAfterYear:false},jQuery.datepicker.regional['es'],{'showAnim':'fold','showOn':'both','buttonText':'...','dateFormat':'yy-mm-dd'}));
+jQuery('#Ot_fechafinprog').datepicker(jQuery.extend({showMonthAfterYear:false},jQuery.datepicker.regional['es'],{'showAnim':'fold','showOn':'both','buttonText':'...','dateFormat':'yy-mm-dd'}));
+jQuery('#Ot_fechainicio').datepicker(jQuery.extend({showMonthAfterYear:false},jQuery.datepicker.regional['es'],{'showAnim':'fold','showOn':'both','buttonText':'...','dateFormat':'yy-mm-dd'}));
+jQuery('#Ot_fechafin').datepicker(jQuery.extend({showMonthAfterYear:false},jQuery.datepicker.regional['es'],{'showAnim':'fold','showOn':'both','buttonText':'...','dateFormat':'yy-mm-dd'}));
+jQuery('body').on('change','#Ot_codresponsable',function(){jQuery.ajax({'type':'GET','url':'/recurso/Matchcode/relaciona.jsp?campo=codresponsable&ordencampo=1&clasesita=Trabajadores&contr=Ot&camporemoto=','cache':false,'data':jQuery(this).parents("form").serialize(),'success':function(html){jQuery("#fehe367dfddj").html(html)}});return false;});
+jQuery(document).on('click','#detalle-grid_c0_all',function() {
+	var checked=this.checked;
+	jQuery("input[name='cajita\[\]']:enabled").each(function() {this.checked=checked;});
+});
+jQuery(document).on('click', "input[name='cajita\[\]']", function() {
+	jQuery('#detalle-grid_c0_all').prop('checked', jQuery("input[name='cajita\[\]']").length==jQuery("input[name='cajita\[\]']:checked").length);
+});
+jQuery(document).on('click','#detalle-grid a.view',function(){
+							    $("#cru-detalle").attr("src",$(this).attr("href"));
+							    $("#cru-dialogdetalle").dialog("open");
+							     return false;
+							 });
+jQuery(document).on('click','#detalle-grid a.update',function(){
+							    $("#cru-detalle").attr("src",$(this).attr("href"));
+							    $("#cru-dialogdetalle").dialog("open");
+							     return false;
+							 });
+jQuery(document).on('click','#detalle-grid a.delete',function() {
+	if(!confirm('¿Está seguro que desea borrar este elemento?')) return false;
+	var th = this,
+		afterDelete = function(){};
+	jQuery('#detalle-grid').yiiGridView('update', {
+		type: 'POST',
+		url: jQuery(this).attr('href'),
+		success: function(data) {
+			jQuery('#detalle-grid').yiiGridView('update');
+			afterDelete(th, true, data);
+		},
+		error: function(XHR) {
+			return afterDelete(th, false, XHR);
+		}
+	});
+	return false;
+});
+jQuery('#detalle-grid').yiiGridView({'ajaxUpdate':['detalle-grid'],'ajaxVar':'ajax','pagerClass':'pager','loadingClass':'grid-view-loading','filterClass':'filters','tableClass':'table table-striped table-bordered table-hover','selectableRows':1,'enableHistory':false,'updateSelector':'{page}, {sort}','filterSelector':'{filter}','pageVar':'Tempdetot_page'});
+jQuery('body').on('click','#yt1',function(){jQuery.ajax({'type':'POST','url':'/recurso/ot/borraitems.jsp','success':function(data) {
+										$('#AjFlash').html(data).fadeIn().animate({opacity: 1.0}, 3000).fadeOut('slow');
+                                              $.fn.yiiGridView.update('detalle-grid');
+                                               $.fn.yiiGridView.update('resumenoc-grid');
+                                               return false;
+                                        },'beforeSend':function(){
+                                  				 var r = confirm("Esta seguro de Eliminar estos Items?");
+                          						 if(!r){return false;}
+                               							 }
+                               					,'cache':false,'data':jQuery(this).parents("form").serialize()});return false;});
+jQuery('body').on('click','#yt2',function(){jQuery.ajax({'type':'GET','data':{'id':'14'},'url':'/recurso/ot/Agregardelmaletin.jsp','success':function(data) {
+                            $("#AjFlash").html(data).fadeIn().animate({opacity: 1.0}, 3000).fadeOut("slow");
+                            $.fn.yiiGridView.update("detalle-grid"); alert(data);},'beforeSend':
+                               					 function(){
+                                  				 var r = confirm("¿Esta seguro de agregar los items del maletin ?");
+                          						 if(!r){return false;}
+                               							 }
+                               					,'cache':false});return false;});
+jQuery(document).on('click','#detalle-recursos-grid_c0_all',function() {
+	var checked=this.checked;
+	jQuery("input[name='cajita\[\]']:enabled").each(function() {this.checked=checked;});
+});
+jQuery(document).on('click', "input[name='cajita\[\]']", function() {
+	jQuery('#detalle-recursos-grid_c0_all').prop('checked', jQuery("input[name='cajita\[\]']").length==jQuery("input[name='cajita\[\]']:checked").length);
+});
+jQuery(document).on('click','#detalle-recursos-grid a.view',function(){
+							    $("#cru-detalle").attr("src",$(this).attr("href"));
+							    $("#cru-dialogdetalle").dialog("open");
+							     return false;
+							 });
+jQuery(document).on('click','#detalle-recursos-grid a.update',function(){
+							    $("#cru-detalle").attr("src",$(this).attr("href"));
+							    $("#cru-dialogdetalle").dialog("open");
+							     return false;
+							 });
+jQuery(document).on('click','#detalle-recursos-grid a.delete',function() {
+	if(!confirm('¿Está seguro que desea borrar este elemento?')) return false;
+	var th = this,
+		afterDelete = function(){};
+	jQuery('#detalle-recursos-grid').yiiGridView('update', {
+		type: 'POST',
+		url: jQuery(this).attr('href'),
+		success: function(data) {
+			jQuery('#detalle-recursos-grid').yiiGridView('update');
+			afterDelete(th, true, data);
+		},
+		error: function(XHR) {
+			return afterDelete(th, false, XHR);
+		}
+	});
+	return false;
+});
+jQuery('#detalle-recursos-grid').yiiGridView({'ajaxUpdate':['detalle-recursos-grid'],'ajaxVar':'ajax','pagerClass':'pager','loadingClass':'grid-view-loading','filterClass':'filters','tableClass':'table table-striped table-bordered table-hover','selectableRows':1,'enableHistory':false,'updateSelector':'{page}, {sort}','filterSelector':'{filter}','pageVar':'Tempdesolpe_page'});
+jQuery('body').on('click','#yt3',function(){jQuery.ajax({'type':'GET','url':$(this).attr("href"),'cache':false,'data':jQuery(this).parents("form").serialize(),'success':function(html){jQuery("#zona").html(html)}});return false;});
+jQuery('body').on('click','#yt4',function(){jQuery.ajax({'type':'GET','url':$(this).attr("href"),'cache':false,'data':jQuery(this).parents("form").serialize(),'success':function(html){jQuery("#zona").html(html)}});return false;});
+jQuery('body').on('click','#yt5',function(){jQuery.ajax({'type':'GET','url':$(this).attr("href"),'cache':false,'data':jQuery(this).parents("form").serialize(),'success':function(html){jQuery("#zona").html(html)}});return false;});
+jQuery('body').on('click','#yt6',function(){jQuery.ajax({'type':'GET','url':$(this).attr("href"),'cache':false,'data':jQuery(this).parents("form").serialize(),'success':function(html){jQuery("#zona").html(html)}});return false;});
+jQuery('body').on('click','#yt7',function(){jQuery.ajax({'type':'GET','url':$(this).attr("href"),'cache':false,'data':jQuery(this).parents("form").serialize(),'success':function(html){jQuery("#zona").html(html)}});return false;});
+jQuery('body').on('click','#yt8',function(){jQuery.ajax({'type':'GET','url':$(this).attr("href"),'cache':false,'data':jQuery(this).parents("form").serialize(),'success':function(html){jQuery("#zona").html(html)}});return false;});
+jQuery('body').on('click','#yt9',function(){jQuery.ajax({'type':'GET','url':$(this).attr("href"),'cache':false,'data':jQuery(this).parents("form").serialize(),'success':function(html){jQuery("#zona").html(html)}});return false;});
+jQuery('body').on('click','#yt10',function(){jQuery.ajax({'type':'GET','url':$(this).attr("href"),'cache':false,'data':jQuery(this).parents("form").serialize(),'success':function(html){jQuery("#zona").html(html)}});return false;});
+jQuery('body').on('click','#yt11',function(){jQuery.ajax({'type':'GET','url':$(this).attr("href"),'cache':false,'data':jQuery(this).parents("form").serialize(),'success':function(html){jQuery("#zona").html(html)}});return false;});
+jQuery('body').on('click','#yt12',function(){jQuery.ajax({'type':'GET','url':$(this).attr("href"),'cache':false,'data':jQuery(this).parents("form").serialize(),'success':function(html){jQuery("#zona").html(html)}});return false;});
+jQuery('body').on('click','#yt13',function(){jQuery.ajax({'type':'POST','url':'/recurso/ot/borraitemsdesolpe.jsp','success':function(data) {
+										$('#AjFlash').html(data).fadeIn().animate({opacity: 1.0}, 3000).fadeOut('slow');
+                                              $.fn.yiiGridView.update('detalle-recursos-grid');                                              
+                                               return false;
+                                        },'beforeSend':function(){
+                                  				 var r = confirm("Esta seguro de Eliminar estos Items?");
+                          						 if(!r){return false;}
+                               							 }
+                               					,'cache':false,'data':jQuery(this).parents("form").serialize()});return false;});
+jQuery('body').on('click','#yt14',function(){jQuery.ajax({'type':'GET','data':{'id':'14'},'url':'/recurso/ot/Agregardelmaletin.jsp','success':function(data) {
+                            $("#AjFlash").html(data).fadeIn().animate({opacity: 1.0}, 3000).fadeOut("slow");
+                            $.fn.yiiGridView.update("detalle-grid"); alert(data);},'beforeSend':
+                               					 function(){
+                                  				 var r = confirm("¿Esta seguro de agregar los items del maletin ?");
+                          						 if(!r){return false;}
+                               							 }
+                               					,'cache':false});return false;});
+jQuery(document).on('click','#detalle-consignaciones-grid_c0_all',function() {
+	var checked=this.checked;
+	jQuery("input[name='cajita\[\]']:enabled").each(function() {this.checked=checked;});
+});
+jQuery(document).on('click', "input[name='cajita\[\]']", function() {
+	jQuery('#detalle-consignaciones-grid_c0_all').prop('checked', jQuery("input[name='cajita\[\]']").length==jQuery("input[name='cajita\[\]']:checked").length);
+});
+jQuery(document).on('click','#detalle-consignaciones-grid a.view',function(){
+							    $("#cru-detalle").attr("src",$(this).attr("href"));
+							    $("#cru-dialogdetalle").dialog("open");
+							     return false;
+							 });
+jQuery(document).on('click','#detalle-consignaciones-grid a.update',function(){
+							    $("#cru-detalle").attr("src",$(this).attr("href"));
+							    $("#cru-dialogdetalle").dialog("open");
+							     return false;
+							 });
+jQuery(document).on('click','#detalle-consignaciones-grid a.delete',function() {
+	if(!confirm('¿Está seguro que desea borrar este elemento?')) return false;
+	var th = this,
+		afterDelete = function(){};
+	jQuery('#detalle-consignaciones-grid').yiiGridView('update', {
+		type: 'POST',
+		url: jQuery(this).attr('href'),
+		success: function(data) {
+			jQuery('#detalle-consignaciones-grid').yiiGridView('update');
+			afterDelete(th, true, data);
+		},
+		error: function(XHR) {
+			return afterDelete(th, false, XHR);
+		}
+	});
+	return false;
+});
+jQuery('#detalle-consignaciones-grid').yiiGridView({'ajaxUpdate':['detalle-consignaciones-grid'],'ajaxVar':'ajax','pagerClass':'pager','loadingClass':'grid-view-loading','filterClass':'filters','tableClass':'table table-striped table-bordered table-hover','selectableRows':1,'enableHistory':false,'updateSelector':'{page}, {sort}','filterSelector':'{filter}','pageVar':'Tempotconsignacion_page'});
+jQuery('body').on('click','#yt15',function(){jQuery.ajax({'type':'POST','url':'/recurso/ot/borraitemsdesolpe.jsp','success':function(data) {
+										$('#AjFlash').html(data).fadeIn().animate({opacity: 1.0}, 3000).fadeOut('slow');
+                                              $.fn.yiiGridView.update('detalle-recursos-grid');                                              
+                                               return false;
+                                        },'beforeSend':function(){
+                                  				 var r = confirm("Esta seguro de Eliminar estos Items?");
+                          						 if(!r){return false;}
+                               							 }
+                               					,'cache':false,'data':jQuery(this).parents("form").serialize()});return false;});
+jQuery('body').on('click','#yt16',function(){jQuery.ajax({'type':'GET','data':{'id':'14'},'url':'/recurso/ot/Agregardelmaletin.jsp','success':function(data) {
+                            $("#AjFlash").html(data).fadeIn().animate({opacity: 1.0}, 3000).fadeOut("slow");
+                            $.fn.yiiGridView.update("detalle-grid"); alert(data);},'beforeSend':
+                               					 function(){
+                                  				 var r = confirm("¿Esta seguro de agregar los items del maletin ?");
+                          						 if(!r){return false;}
+                               							 }
+                               					,'cache':false});return false;});
+jQuery('#detallecompo-grid').yiiGridView({'ajaxUpdate':['detallecompo-grid'],'ajaxVar':'ajax','pagerClass':'pager','loadingClass':'grid-view-loading','filterClass':'filters','tableClass':'table table-striped table-bordered table-hover','selectableRows':1,'enableHistory':false,'updateSelector':'{page}, {sort}','filterSelector':'{filter}','pageVar':'Neot_page'});
+jQuery('#alkbvardex-grivvbd').yiiGridView({'ajaxUpdate':['alkbvardex-grivvbd'],'ajaxVar':'ajax','pagerClass':'pager','loadingClass':'grid-view-loading','filterClass':'filters','tableClass':'table table-striped table-bordered table-hover','selectableRows':1,'enableHistory':false,'updateSelector':'{page}, {sort}','filterSelector':'{filter}','pageVar':'ActiveRecordLog_page'});
+jQuery('#MyTabi').tabs({'overflow':'auto','collapsible':false});
+jQuery('#cru-dialog3').dialog({'title':'Explorador','autoOpen':false,'modal':true,'width':800,'height':600});
+jQuery('#cru-dialogdetalle').dialog({'title':'Explorador','autoOpen':false,'modal':true,'width':800,'height':600});
+jQuery(document).on('click','#favoritos-grid a.delete',function() {
+	if(!confirm('¿Está seguro que desea borrar este elemento?')) return false;
+	var th = this,
+		afterDelete = function(){};
+	jQuery('#favoritos-grid').yiiGridView('update', {
+		type: 'POST',
+		url: jQuery(this).attr('href'),
+		success: function(data) {
+			jQuery('#favoritos-grid').yiiGridView('update');
+			afterDelete(th, true, data);
+		},
+		error: function(XHR) {
+			return afterDelete(th, false, XHR);
+		}
+	});
+	return false;
+});
+jQuery('#favoritos-grid').yiiGridView({'ajaxUpdate':['favoritos-grid'],'ajaxVar':'ajax','pagerClass':'pager','loadingClass':'grid-view-loading','filterClass':'filters','tableClass':'table table-striped table-bordered table-hover','selectableRows':1,'enableHistory':false,'updateSelector':'{page}, {sort}','filterSelector':'{filter}'});
+jQuery('body').on('click','#yt17',function(){jQuery.ajax({'type':'GET','success':function(data) { $.fn.yiiGridView.update("favoritos-grid")},'url':$(this).attr("href"),'cache':false,'data':jQuery(this).parents("form").serialize()});return false;});
+jQuery('body').on('click','#yt18',function(){jQuery.ajax({'type':'GET','success':function(data) { $.fn.yiiGridView.update("favoritos-grid")},'url':$(this).attr("href"),'cache':false,'data':jQuery(this).parents("form").serialize()});return false;});
+jQuery('body').on('click','#yt19',function(){jQuery.ajax({'type':'GET','success':function(data) { $.fn.yiiGridView.update("favoritos-grid")},'url':$(this).attr("href"),'cache':false,'data':jQuery(this).parents("form").serialize()});return false;});
+jQuery('body').on('click','#yt20',function(){jQuery.ajax({'type':'GET','success':function(data) { $.fn.yiiGridView.update("favoritos-grid")},'url':$(this).attr("href"),'cache':false,'data':jQuery(this).parents("form").serialize()});return false;});
+jQuery('#cru-dialoggeneral').dialog({'title':'','autoOpen':false,'modal':true,'width':600,'height':420,'border':0});
+});
+/*]]>*/
+</script>
+</body>
+</html>
+<div id="cru-dialoggeneral">
+<iframe id="cru-framegeneral" style="border:0px; width:100%; height:100%;" ></iframe>
+</div>

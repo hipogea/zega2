@@ -1,4 +1,4 @@
--- --------------------------------------------------------
+﻿-- --------------------------------------------------------
 -- Host:                         127.0.0.1
 -- Versión del servidor:         10.1.13-MariaDB - mariadb.org binary distribution
 -- SO del servidor:              Win32
@@ -11,9 +11,9 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 -- Volcando estructura de base de datos para nautilus
-DROP DATABASE IF EXISTS `nautilus`;
-CREATE DATABASE IF NOT EXISTS `nautilus` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `nautilus`;
+DROP DATABASE IF EXISTS `prod`;
+CREATE DATABASE IF NOT EXISTS `prod` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `prod`;
 
 
 -- Volcando estructura para tabla nautilus.activerecordlog
@@ -5239,7 +5239,7 @@ round((((`t`.`punit` * `t`.`cantlibre`) + (`t`.`punit` * `t`.`canttran`)) +
  from `public_alinventario` `t` left join
   `public_lotes` `x` on (t.id=x.hidinventario)  inner  join 
   `public_maestrocomponentes` `a`  on (`t`.`codart` = `a`.`codigo`)  inner join 
- `public_ums` `c`  on (`a`.`um` = `c`.`um`)  where x.cant is null or x.cant > 0 order by codcen,codalm, codart asc ; ;
+ `public_ums` `c`  on (`a`.`um` = `c`.`um`)  where x.cant is null or x.cant > 0 order by codcen,codalm, codart asc ;
 
 
 -- Volcando estructura para vista nautilus.vw_alinventario_resumen
@@ -5250,7 +5250,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_alinventario_resu
 sum(`vw_alinventario`.`ptlibre`) AS `stocktran`,sum(`vw_alinventario`.`ptres`) AS `stockres`,
 sum(`vw_alinventario`.`pttotal`) AS `stocktotal`,`vw_alinventario`.`codalm` AS `codalm`,
 `vw_alinventario`.`codcen` AS `codcen`,`vw_alinventario`.`codtipo` AS `codtipo` from 
-`vw_alinventario` group by `vw_alinventario`.`codalm`,`vw_alinventario`.`codcen`,`vw_alinventario`.`codtipo` ; ;
+`vw_alinventario` group by `vw_alinventario`.`codalm`,`vw_alinventario`.`codcen`,`vw_alinventario`.`codtipo` ;
 
 
 -- Volcando estructura para vista nautilus.vw_almacendocs
@@ -5278,7 +5278,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_almacendocs` AS s
  `public_documentos` `v`) where ((`s`.`id` = `t`.`hidvale`) and (`t`.`codart` = `a`.`codigo`) and 
  (`t`.`codocuref` = `b`.`coddocu`) and (`t`.`codmov` = `c`.`codmov`) and (`t`.`um` = `x`.`um`) and 
  (`s`.`codalmacen` = `w`.`codalm`) and (`s`.`codcentro` = `w`.`codcen`) and (`m`.`codcen` = `s`.`codcentro`) and 
- (`s`.`codocu` = `v`.`coddocu`)) ; ;
+ (`s`.`codocu` = `v`.`coddocu`)) ;
 
 
 -- Volcando estructura para vista nautilus.vw_alreservas
@@ -5294,14 +5294,14 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_alreservas` AS se
  join `public_ums` `d`) join `public_estado` `e`) join `public_documentos` `f`) join
   `public_solpe` `g`) where ((`a`.`hidsolpe` = `g`.`id`) and (`a`.`id` = `c`.`hidesolpe`) 
   and (`c`.`codocu` = `e`.`codocu`) and (`c`.`estadoreserva` = `e`.`codestado`) and
-   (`c`.`codocu` = `f`.`coddocu`) and (`a`.`um` = `d`.`um`)) ; ;
+   (`c`.`codocu` = `f`.`coddocu`) and (`a`.`um` = `d`.`um`)) ;
 
 
 -- Volcando estructura para vista nautilus.vw_atencionessolpe
 DROP VIEW IF EXISTS `vw_atencionessolpe`;
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `vw_atencionessolpe`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_atencionessolpe` AS select `d`.`item` AS `item`,`d`.`id` AS `iddesolpe`,`d`.`cant` AS `cantdesolpe`,`h`.`numvale` AS `numvale`,`k`.`desum` AS `desumsolpe`,`d`.`hidsolpe` AS `idsolpe`,`d`.`um` AS `umsolpe`,`u`.`cant` AS `cantreserva`,`u`.`codocu` AS `codocu`,`u`.`numreserva` AS `numreserva`,`u`.`estadoreserva` AS `estadoreserva`,`t`.`id` AS `id`,`s`.`cant` AS `cant`,`t`.`hidreserva` AS `hidreserva`,`t`.`hidkardex` AS `hidkardex`,`t`.`estadoatencion` AS `estadoatencion`,`s`.`codmov` AS `codmov`,`s`.`um` AS `um`,`s`.`numkardex` AS `numkardex`,`s`.`usuario` AS `usuario`,`s`.`codart` AS `codart`,`s`.`preciounit` AS `preciounit`,`s`.`fecha` AS `fecha`,`g`.`monto` AS `monto`,`g`.`ceco` AS `ceco`,`d`.`txtmaterial` AS `txtmaterial`,`j`.`desum` AS `desumkardex`,`f`.`movimiento` AS `movimiento`,`s`.`iduser` AS `iduser` from (((((((((`public_solpe` `x` join `public_desolpe` `d` on((`x`.`id` = `d`.`hidsolpe`))) join `public_alkardex` `s` on(((`s`.`idref` = `d`.`id`) and (`s`.`codocuref` = `x`.`codocu`)))) left join `public_atencionreserva` `t` on((`s`.`id` = `t`.`hidkardex`))) left join `public_alreserva` `u` on((`u`.`id` = `t`.`hidreserva`))) left join `public_ums` `k` on((`k`.`um` = `d`.`um`))) left join `public_ccgastos` `g` on((`g`.`idref` = `s`.`id`))) left join `public_almacendocs` `h` on((`h`.`id` = `s`.`hidvale`))) left join `public_almacenmovimientos` `f` on((`f`.`codmov` = `s`.`codmov`))) left join `public_ums` `j` on((`j`.`um` = `s`.`um`))) ; ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_atencionessolpe` AS select `d`.`item` AS `item`,`d`.`id` AS `iddesolpe`,`d`.`cant` AS `cantdesolpe`,`h`.`numvale` AS `numvale`,`k`.`desum` AS `desumsolpe`,`d`.`hidsolpe` AS `idsolpe`,`d`.`um` AS `umsolpe`,`u`.`cant` AS `cantreserva`,`u`.`codocu` AS `codocu`,`u`.`numreserva` AS `numreserva`,`u`.`estadoreserva` AS `estadoreserva`,`t`.`id` AS `id`,`s`.`cant` AS `cant`,`t`.`hidreserva` AS `hidreserva`,`t`.`hidkardex` AS `hidkardex`,`t`.`estadoatencion` AS `estadoatencion`,`s`.`codmov` AS `codmov`,`s`.`um` AS `um`,`s`.`numkardex` AS `numkardex`,`s`.`usuario` AS `usuario`,`s`.`codart` AS `codart`,`s`.`preciounit` AS `preciounit`,`s`.`fecha` AS `fecha`,`g`.`monto` AS `monto`,`g`.`ceco` AS `ceco`,`d`.`txtmaterial` AS `txtmaterial`,`j`.`desum` AS `desumkardex`,`f`.`movimiento` AS `movimiento`,`s`.`iduser` AS `iduser` from (((((((((`public_solpe` `x` join `public_desolpe` `d` on((`x`.`id` = `d`.`hidsolpe`))) join `public_alkardex` `s` on(((`s`.`idref` = `d`.`id`) and (`s`.`codocuref` = `x`.`codocu`)))) left join `public_atencionreserva` `t` on((`s`.`id` = `t`.`hidkardex`))) left join `public_alreserva` `u` on((`u`.`id` = `t`.`hidreserva`))) left join `public_ums` `k` on((`k`.`um` = `d`.`um`))) left join `public_ccgastos` `g` on((`g`.`idref` = `s`.`id`))) left join `public_almacendocs` `h` on((`h`.`id` = `s`.`hidvale`))) left join `public_almacenmovimientos` `f` on((`f`.`codmov` = `s`.`codmov`))) left join `public_ums` `j` on((`j`.`um` = `s`.`um`))) ;
 
 
 -- Volcando estructura para vista nautilus.vw_contactos
@@ -5312,7 +5312,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_contactos` AS sel
 `b`.`correlativo` AS `correlativo`,`b`.`c_hcod` AS `c_hcod`,
 `a`.`despro` AS `despro`,`b`.`c_cargo` AS `c_cargo`,
 `b`.`c_mail` AS `c_mail`,`b`.`c_tel` AS `c_tel` from 
-(`public_contactos` `b` join `public_clipro` `a`) where (`a`.`codpro` = `b`.`c_hcod`) ; ;
+(`public_contactos` `b` join `public_clipro` `a`) where (`a`.`codpro` = `b`.`c_hcod`) ;
 
 
 -- Volcando estructura para vista nautilus.vw_costos
@@ -5339,14 +5339,14 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_costos` AS select
  `public_documentos` `b`) join `public_almacenmovimientos` `c`) join `public_ums` `x`) join
   `public_almacendocs` `s`) join `public_ccgastos` `z`) where ((`s`.`id` = `t`.`hidvale`) 
   and (`t`.`codart` = `a`.`codigo`) and (`t`.`codocuref` = `b`.`coddocu`) and (`t`.`codmov` = `c`.`codmov`)
-   and (`t`.`um` = `x`.`um`) and (`t`.`id` = `z`.`idref`)) ; ;
+   and (`t`.`um` = `x`.`um`) and (`t`.`id` = `z`.`idref`)) ;
 
 
 -- Volcando estructura para vista nautilus.vw_despacho
 DROP VIEW IF EXISTS `vw_despacho`;
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `vw_despacho`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_despacho` AS select `t`.`id` AS `id`,`t`.`hidpunto` AS `hidpunto`,`t`.`hidkardex` AS `hidkardex`,`t`.`fechacreac` AS `fechacreac`,`t`.`fechaprog` AS `fechaprog`,`t`.`descripcion` AS `descripcion`,`t`.`responsable` AS `responsable`,`t`.`iduser` AS `iduser`,`t`.`vigente` AS `vigente`,`k`.`codart` AS `codart`,`v`.`codcentro` AS `codcentro`,`k`.`um` AS `um`,`p`.`nombrepunto` AS `nombrepunto`,`v`.`codalmacen` AS `codalmacen`,`mm`.`descripcion` AS `descripmaterial`,`k`.`cant` AS `cant`,`u`.`desum` AS `desum`,`k`.`id` AS `idkardex`,`k`.`numdocref` AS `numdocref`,`v`.`numvale` AS `numvale`,`k`.`hidvale` AS `hidvale`,`m`.`movimiento` AS `movimiento`,`s`.`ap` AS `ap`,`s`.`am` AS `am`,`s`.`nombres` AS `nombres`,`k`.`codocuref` AS `codocuref`,`l`.`desdocu` AS `desdocu` from ((((((((`public_despacho` `t` join `public_ums` `u`) join `public_maestrocomponentes` `mm`) join `public_almacendocs` `v`) join `public_almacenmovimientos` `m`) join `public_alkardex` `k`) join `public_puntodespacho` `p`) join `public_trabajadores` `s`) join `public_documentos` `l`) where ((`t`.`hidkardex` = `k`.`id`) and (`s`.`codigotra` = `t`.`responsable`) and (`l`.`coddocu` = `k`.`codocuref`) and (`k`.`codart` = `mm`.`codigo`) and (`k`.`um` = `u`.`um`) and (`k`.`hidvale` = `v`.`id`) and (`v`.`codmovimiento` = `m`.`codmov`) and (`t`.`hidpunto` = `p`.`id`)) ; ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_despacho` AS select `t`.`id` AS `id`,`t`.`hidpunto` AS `hidpunto`,`t`.`hidkardex` AS `hidkardex`,`t`.`fechacreac` AS `fechacreac`,`t`.`fechaprog` AS `fechaprog`,`t`.`descripcion` AS `descripcion`,`t`.`responsable` AS `responsable`,`t`.`iduser` AS `iduser`,`t`.`vigente` AS `vigente`,`k`.`codart` AS `codart`,`v`.`codcentro` AS `codcentro`,`k`.`um` AS `um`,`p`.`nombrepunto` AS `nombrepunto`,`v`.`codalmacen` AS `codalmacen`,`mm`.`descripcion` AS `descripmaterial`,`k`.`cant` AS `cant`,`u`.`desum` AS `desum`,`k`.`id` AS `idkardex`,`k`.`numdocref` AS `numdocref`,`v`.`numvale` AS `numvale`,`k`.`hidvale` AS `hidvale`,`m`.`movimiento` AS `movimiento`,`s`.`ap` AS `ap`,`s`.`am` AS `am`,`s`.`nombres` AS `nombres`,`k`.`codocuref` AS `codocuref`,`l`.`desdocu` AS `desdocu` from ((((((((`public_despacho` `t` join `public_ums` `u`) join `public_maestrocomponentes` `mm`) join `public_almacendocs` `v`) join `public_almacenmovimientos` `m`) join `public_alkardex` `k`) join `public_puntodespacho` `p`) join `public_trabajadores` `s`) join `public_documentos` `l`) where ((`t`.`hidkardex` = `k`.`id`) and (`s`.`codigotra` = `t`.`responsable`) and (`l`.`coddocu` = `k`.`codocuref`) and (`k`.`codart` = `mm`.`codigo`) and (`k`.`um` = `u`.`um`) and (`k`.`hidvale` = `v`.`id`) and (`v`.`codmovimiento` = `m`.`codmov`) and (`t`.`hidpunto` = `p`.`id`)) ;
 
 
 -- Volcando estructura para vista nautilus.vw_despachogeneral
@@ -5359,7 +5359,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_despachogeneral` 
 `vw_despacho`.`movimiento` AS `movimiento`,count(`vw_despacho`.`id`) AS `items` 
 from `vw_despacho` group by `vw_despacho`.`codcentro`,`vw_despacho`.`codalmacen`,
 `vw_despacho`.`nombrepunto`,`vw_despacho`.`numvale`,`vw_despacho`.`movimiento`,
-`vw_despacho`.`hidvale` ; ;
+`vw_despacho`.`hidvale` ;
 
 
 -- Volcando estructura para vista nautilus.vw_detalleingresofactura
@@ -5378,7 +5378,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_detalleingresofac
      (`a`.`hidalentrega` = `b`.`id`) and
       (`b`.`iddetcompra` = `c`.`id`) and 
       (`c`.`um` = `d`.`um`) and 
-       (x.idguia=y.hidguia ) and y.id=b.iddetcompra ; ;
+       (x.idguia=y.hidguia ) and y.id=b.iddetcompra ;
 
 
 -- Volcando estructura para vista nautilus.vw_detalleingresofacturafirme
@@ -5399,7 +5399,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_detalleingresofac
  `public_docompra` `c`) join `public_ums` `d`) join `public_ingfactura` `w`) join 
  `public_ocompra` `xx`) join `public_clipro` `cc`) where ((`a`.`hidalentrega` = `b`.`id`) 
  and (`b`.`iddetcompra` = `c`.`id`) and (`c`.`um` = `d`.`um`) and (`w`.`id` = `a`.`hidfactura`)
-  and (`xx`.`idguia` = `c`.`hidguia`) and (`xx`.`codpro` = `cc`.`codpro`)) ; ;
+  and (`xx`.`idguia` = `c`.`hidguia`) and (`xx`.`codpro` = `cc`.`codpro`)) ;
 
 
 -- Volcando estructura para vista nautilus.vw_detalle_guia
@@ -5431,7 +5431,7 @@ public_catvaloracion  b  ON a.codcatval=b.codcatval INNER JOIN
 public_opcontables c ON a.codop=c.codop LEFT JOIN 
 public_cuentas d  ON a.cuentadebe=d.codcuenta LEFT JOIN 
 public_cuentas e ON a.cuentahaber=e.codcuenta
-ORDER BY a.codcatval, a.codop ASC ; ;
+ORDER BY a.codcatval, a.codop ASC ;
 
 
 -- Volcando estructura para vista nautilus.vw_entregas
@@ -5457,14 +5457,14 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_entregas` AS sele
  `public_almacendocs` `s` on((`s`.`id` = `t`.`hidvale`))) join 
  `public_docompra` `d` on(((`d`.`id` = `t`.`idref`) and (`d`.`coddocu` = `t`.`codocuref`)))) join 
  `public_ocompra` `o` on((`d`.`hidguia` = `o`.`idguia`))) join
-  `public_clipro` `c` on((`c`.`codpro` = `o`.`codpro`))) ; ;
+  `public_clipro` `c` on((`c`.`codpro` = `o`.`codpro`))) ;
 
 
 -- Volcando estructura para vista nautilus.vw_eventos
 DROP VIEW IF EXISTS `vw_eventos`;
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `vw_eventos`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_eventos` AS select `eventos`.`id` AS `id`,`eventos`.`codocu` AS `codocu`,`eventos`.`estadofinal` AS `estadofinal`,`eventos`.`estadoinicial` AS `estadoinicial`,`eventos`.`descripcion` AS `descripcion`,`eventos`.`creadopor` AS `creadopor`,`eventos`.`creadoel` AS `creadoel`,`estadoinicial`.`estado` AS `einicial`,`documentos`.`desdocu` AS `desdocu`,`estadofinal`.`estado` AS `efinal` from (((`public_eventos` `eventos` join `public_documentos` `documentos`) join `public_estado` `estadoinicial`) join `public_estado` `estadofinal`) where ((`eventos`.`codocu` = `documentos`.`coddocu`) and (`eventos`.`estadofinal` = `estadofinal`.`codestado`) and (`estadoinicial`.`codestado` = `eventos`.`estadoinicial`) and (`estadoinicial`.`codocu` = `eventos`.`codocu`) and (`estadofinal`.`codocu` = `eventos`.`codocu`)) ; ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_eventos` AS select `eventos`.`id` AS `id`,`eventos`.`codocu` AS `codocu`,`eventos`.`estadofinal` AS `estadofinal`,`eventos`.`estadoinicial` AS `estadoinicial`,`eventos`.`descripcion` AS `descripcion`,`eventos`.`creadopor` AS `creadopor`,`eventos`.`creadoel` AS `creadoel`,`estadoinicial`.`estado` AS `einicial`,`documentos`.`desdocu` AS `desdocu`,`estadofinal`.`estado` AS `efinal` from (((`public_eventos` `eventos` join `public_documentos` `documentos`) join `public_estado` `estadoinicial`) join `public_estado` `estadofinal`) where ((`eventos`.`codocu` = `documentos`.`coddocu`) and (`eventos`.`estadofinal` = `estadofinal`.`codestado`) and (`estadoinicial`.`codestado` = `eventos`.`estadoinicial`) and (`estadoinicial`.`codocu` = `eventos`.`codocu`) and (`estadofinal`.`codocu` = `eventos`.`codocu`)) ;
 
 
 -- Volcando estructura para vista nautilus.vw_guia
@@ -5548,7 +5548,7 @@ x.codtipo=a.codtipo ;
 DROP VIEW IF EXISTS `vw_imputaciones`;
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `vw_imputaciones`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_imputaciones` AS select a.desceco as desimputa, a.* from  public_cc a ; ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_imputaciones` AS select a.desceco as desimputa, a.* from  public_cc a ;
 
 
 -- Volcando estructura para vista nautilus.vw_inventariosimple
@@ -5564,7 +5564,7 @@ round((((`c`.`punit` * `c`.`cantlibre`) + (`c`.`punit` * `c`.`canttran`)) +
  (`c`.`punit` * `c`.`cantres`)),3) AS `pttotal` 
 from public_alinventario c
 , public_ums b, public_maestrocomponentes a  where 
-a.codigo=c.codart and a.um=b.um ; ;
+a.codigo=c.codart and a.um=b.um ;
 
 
 -- Volcando estructura para vista nautilus.vw_kardex
@@ -5586,7 +5586,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_kardex` AS select
 `x`.`desum` AS `desum` from (((((`public_alkardex` `t` join `public_maestrocomponentes` `a`) join 
 `public_documentos` `b`) join `public_almacenmovimientos` `c`) join `public_ums` `x`) join
  `public_almacendocs` `s`) where ((`s`.`id` = `t`.`hidvale`) and (`t`.`codart` = `a`.`codigo`) 
- and (`t`.`codocuref` = `b`.`coddocu`) and (`t`.`codmov` = `c`.`codmov`) and (`t`.`um` = `x`.`um`)) ; ;
+ and (`t`.`codocuref` = `b`.`coddocu`) and (`t`.`codmov` = `c`.`codmov`) and (`t`.`um` = `x`.`um`)) ;
 
 
 -- Volcando estructura para vista nautilus.vw_lugares
@@ -5606,7 +5606,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_lugares` AS selec
   `public_inventario` `x` on((`x`.`codlugar` = `b`.`codlugar`)))
    group by `a`.`despro`,`b`.`codlugar`,`b`.`deslugar`,`b`.`claselugar`,
 	`b`.`codpro`,`b`.`n_direc`,`c`.`c_direc`,`d`.`departamento`,
-	`d`.`provincia`,`d`.`distrito` ; ;
+	`d`.`provincia`,`d`.`distrito` ;
 
 
 -- Volcando estructura para vista nautilus.vw_maestrodetalle
@@ -5621,7 +5621,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_maestrodetalle` A
 `b`.`cantreorden` AS `cantreorden`,`b`.`catval` AS `catval`,`b`.`codal` AS `codal`,
 `b`.`codcentro` AS `codcentro`,`b`.`controlprecio` AS `controlprecio`,`b`.`sujetolote` AS `sujetolote`,
 `b`.`tolerancia` AS `tolerancia` from ((`public_maestrocomponentes` `a` join `public_ums` `c`) join 
-`public_maestrodetalle` `b`) where ((`a`.`codigo` = `b`.`codart`) and (`a`.`um` = `c`.`um`)) ; ;
+`public_maestrodetalle` `b`) where ((`a`.`codigo` = `b`.`codart`) and (`a`.`um` = `c`.`um`)) ;
 
 
 -- Volcando estructura para vista nautilus.vw_movimientos
@@ -5736,7 +5736,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_ocompra` AS selec
 	  (`coti`.`codsociedad` = `tenores1`.`sociedad`)))) join `public_trabajadores` `trabajadores` on
 	  ((`coti`.`codresponsable` = `trabajadores`.`codigotra`))) join `public_direcciones` `direcciones` on
 	  ((`coti`.`direcentrega` = `direcciones`.`n_direc`))) join `public_ums` `ums` on((`x`.`um` = `ums`.`um`))) 
-	  order by `x`.`hidguia`,`x`.`item` ; ;
+	  order by `x`.`hidguia`,`x`.`item` ;
 
 
 -- Volcando estructura para vista nautilus.vw_ocomprasimple
@@ -5777,7 +5777,7 @@ sum(`n`.`cant`) AS `entregado` from ((((((((`public_ocompra` `coti` join `public
  ((`x`.`punit` * `x`.`cant`) * (1 - (`coti`.`descuento` / 100))),
  `x`.`codservicio`,`x`.`tipoimputacion`,`x`.`punitdes`,
  (`x`.`punit` * `x`.`cant`),`t_moneda`.`desmon`,`t_moneda`.`simbolo`,
- `estado`.`estado`,`ums`.`desum` order by `x`.`hidguia`,`x`.`item` ; ;
+ `estado`.`estado`,`ums`.`desum` order by `x`.`hidguia`,`x`.`item` ;
 
 
 -- Volcando estructura para vista nautilus.vw_opcionesdocumentos
@@ -5798,7 +5798,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_opcionesdocumento
 	 `public_opcionesdocumentos` `opcionesdocumentos`) where 
 	 ((`documentos`.`coddocu` = `opcionescamposdocu`.`codocu`) and 
 	 (`opcionesdocumentos`.`idopdoc` = `opcionescamposdocu`.`id`) and 
-	 (`opcionesdocumentos`.`idusuario` = `cruge_user`.`iduser`)) ; ;
+	 (`opcionesdocumentos`.`idusuario` = `cruge_user`.`iduser`)) ;
 
 
 -- Volcando estructura para vista nautilus.vw_otdetalle
@@ -5849,7 +5849,7 @@ round(`t`.`ptlibre`,2) AS `ptlibre`,`t`.`ubicacion` AS `ubicacion`,`t`.`codalm` 
 `t`.`codcen` AS `codcen`,`t`.`cantlibre` AS `cantlibre`,`w`.`ranking` AS `ranking`,`w`.`clase` AS `clase`,
 round(`w`.`acumulado`,1) AS `acumulado`,`w`.`porcentaje` AS `porcentaje`,`w`.`hinventario` AS `hinventario`,
 `w`.`idsesion` AS `idsesion`,`w`.`column_7` AS `column_7`,`w`.`porcentajeac` AS `porcentajeac` 
-from (`public_pareto` `w` join `vw_inventariosimple` `t`) where (`t`.`id` = `w`.`hinventario`) ; ;
+from (`public_pareto` `w` join `vw_inventariosimple` `t`) where (`t`.`id` = `w`.`hinventario`) ;
 
 
 -- Volcando estructura para vista nautilus.vw_reservaspendientes2
@@ -5879,7 +5879,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_reservaspendiente
 	`b`.`fechaent`,`b`.`codart`,`b`.`item`,`b`.`codal`,`b`.`centro`,
 	`b`.`txtmaterial`,`d`.`desum`,`c`.`hidesolpe`,`c`.`fechares`,
 	`b`.`cant`,`b`.`imputacion`,`c`.`id`,`c`.`codocu`,`c`.`cant`,
-	`c`.`usuario`,`x`.`desdocu` ; ;
+	`c`.`usuario`,`x`.`desdocu` ;
 
 
 -- Volcando estructura para vista nautilus.vw_solpe
@@ -5903,7 +5903,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_solpe` AS select 
  (
  (`a`.`id` = `t`.`hidsolpe`) and (`t`.`um` = `x`.`um`) and (`t`.`est` <> '99')
  and (`s`.`coddocu` = a.codocu) and  (`g`.`codtipo` = a.escompra)
- ) ; ;
+ ) ;
 
 
 -- Volcando estructura para vista nautilus.vw_solpeatencion
@@ -5920,14 +5920,14 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_solpeatencion` AS
 `public_ums` `s`) join `public_alinventario` `r`) join `public_ums` `u`) join
  `public_maestrocomponentes` `m`) where ((`t`.`hidsolpe` = `q`.`id`) and 
  (`t`.`um` = `s`.`um`) and (`t`.`centro` = `r`.`codcen`) and (`t`.`codal` = `r`.`codalm`) 
- and (`t`.`codart` = `r`.`codart`) and (`r`.`codart` = `m`.`codigo`) and (`m`.`um` = `u`.`um`)) ; ;
+ and (`t`.`codart` = `r`.`codart`) and (`r`.`codart` = `m`.`codigo`) and (`m`.`um` = `u`.`um`)) ;
 
 
 -- Volcando estructura para vista nautilus.vw_solpeparacomprar
 DROP VIEW IF EXISTS `vw_solpeparacomprar`;
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `vw_solpeparacomprar`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_solpeparacomprar` AS select `a`.`escompra` AS `escompra`,b.textodetalle,`a`.`numero` AS `numero`,`a`.`estado` AS `estado`,`b`.`item` AS `item`,`b`.`id` AS `id`,`b`.`est` AS `est`,`b`.`tipimputacion` AS `tipimputacion`,`b`.`punitplan` AS `punitplan`,`a`.`id` AS `identidad`,`b`.`fechaent` AS `fechaent`,`b`.`fechacrea` AS `fechacrea`,`b`.`usuario` AS `usuario`,`b`.`um` AS `um`,`b`.`tipsolpe` AS `tipsolpe`,`b`.`centro` AS `centro`,`b`.`codal` AS `codal`,`b`.`codart` AS `codart`,`b`.`imputacion` AS `imputacion`,`b`.`cant` AS `cant`,`d`.`desum` AS `desum`,`b`.`txtmaterial` AS `txtmaterial`,sum(`c`.`cant`) AS `cantatendida`,(`b`.`cant` - sum(`c`.`cant`)) AS `cant_pendiente` from (((`public_solpe` `a` join `public_desolpe` `b` on((`a`.`id` = `b`.`hidsolpe`))) left join `public_desolpecompra` `c` on((`b`.`id` = `c`.`iddesolpe`))) join `public_ums` `d` on((`d`.`um` = `b`.`um`))) where (`a`.`escompra` = '1') group by `a`.`escompra`,`a`.`numero`,`a`.`fechanec`,`b`.`centro`,`b`.`txtmaterial`,`b`.`codal`,`b`.`codart`,`b`.`imputacion`,`b`.`cant`,`d`.`desum` having ((sum(`c`.`cant`) < `cant`) or isnull(sum(`c`.`cant`))) ; ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_solpeparacomprar` AS select `a`.`escompra` AS `escompra`,b.textodetalle,`a`.`numero` AS `numero`,`a`.`estado` AS `estado`,`b`.`item` AS `item`,`b`.`id` AS `id`,`b`.`est` AS `est`,`b`.`tipimputacion` AS `tipimputacion`,`b`.`punitplan` AS `punitplan`,`a`.`id` AS `identidad`,`b`.`fechaent` AS `fechaent`,`b`.`fechacrea` AS `fechacrea`,`b`.`usuario` AS `usuario`,`b`.`um` AS `um`,`b`.`tipsolpe` AS `tipsolpe`,`b`.`centro` AS `centro`,`b`.`codal` AS `codal`,`b`.`codart` AS `codart`,`b`.`imputacion` AS `imputacion`,`b`.`cant` AS `cant`,`d`.`desum` AS `desum`,`b`.`txtmaterial` AS `txtmaterial`,sum(`c`.`cant`) AS `cantatendida`,(`b`.`cant` - sum(`c`.`cant`)) AS `cant_pendiente` from (((`public_solpe` `a` join `public_desolpe` `b` on((`a`.`id` = `b`.`hidsolpe`))) left join `public_desolpecompra` `c` on((`b`.`id` = `c`.`iddesolpe`))) join `public_ums` `d` on((`d`.`um` = `b`.`um`))) where (`a`.`escompra` = '1') group by `a`.`escompra`,`a`.`numero`,`a`.`fechanec`,`b`.`centro`,`b`.`txtmaterial`,`b`.`codal`,`b`.`codart`,`b`.`imputacion`,`b`.`cant`,`d`.`desum` having ((sum(`c`.`cant`) < `cant`) or isnull(sum(`c`.`cant`))) ;
 
 
 -- Volcando estructura para vista nautilus.vw_stocktotal_almacenes
@@ -5941,7 +5941,7 @@ sum(((`b`.`punit` + `b`.`punitdif`) * `b`.`cantres`)) AS `stockreservado`,
 sum(((`b`.`punit` + `b`.`punitdif`) * `b`.`canttran`)) AS `stocktransito` 
 from (`public_alinventario` `b` join `public_almacenes` `a`) 
 where ((`a`.`codalm` = `b`.`codalm`) and (`a`.`codcen` = `b`.`codcen`)) 
-group by `a`.`codcen`,`a`.`codsoc`,`a`.`nomal` ; ;
+group by `a`.`codcen`,`a`.`codsoc`,`a`.`nomal` ;
 
 
 -- Volcando estructura para vista nautilus.vw_stock_por_tipos
@@ -5958,7 +5958,7 @@ from (((`public_alinventario` `b` join `public_almacenes` `a`) join
  `public_maestrocomponentes` `m`) join `public_maestrotipos` `n`) where
   ((`a`.`codalm` = `b`.`codalm`) and (`a`.`codcen` = `b`.`codcen`) and
    (`b`.`codart` = `m`.`codigo`) and (`m`.`codtipo` = `n`.`codtipo`)) 
-	group by `n`.`destipo`,`n`.`codtipo`,`a`.`codcen`,`a`.`codsoc`,`a`.`nomal` ; ;
+	group by `n`.`destipo`,`n`.`codtipo`,`a`.`codcen`,`a`.`codsoc`,`a`.`nomal` ;
 
 
 -- Volcando estructura para vista nautilus.vw_stock_supervision
@@ -5973,7 +5973,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_stock_supervision
 `b`.`punit` AS `punit`,`b`.`id` AS `idinventario` from (((`public_maestrodetalle` `a` join 
 `public_maestrocomponentes` `d`) join `public_ums` `c`) join `public_alinventario` `b`) where
  ((`a`.`codart` = `b`.`codart`) and (`a`.`codcentro` = `b`.`codcen`) and (`a`.`codal` = `b`.`codalm`) 
- and (`a`.`codart` = `d`.`codigo`) and (`d`.`um` = `c`.`um`) and (`a`.`supervisionautomatica` = '1')) ; ;
+ and (`a`.`codart` = `d`.`codigo`) and (`d`.`um` = `c`.`um`) and (`a`.`supervisionautomatica` = '1')) ;
 
 
 -- Volcando estructura para vista nautilus.vw_trabajadores
@@ -5985,7 +5985,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_trabajadores` AS 
  `nombrecompleto`,`trabajadores`.`codpuesto` AS `codpuesto`,`trabajadores`.`ap` AS 
  `ap`,`trabajadores`.`am` AS `am`,`trabajadores`.`nombres` AS `nombres`,`trabajadores`.`dni` AS
   `dni`,`oficios`.`oficio` AS `oficio` from (`public_trabajadores` `trabajadores` join 
-  `public_oficios` `oficios`) where (`trabajadores`.`codpuesto` = `oficios`.`codof`) ; ;
+  `public_oficios` `oficios`) where (`trabajadores`.`codpuesto` = `oficios`.`codof`) ;
 
 
 -- Volcando estructura para vista nautilus.vw_trazabilidad_reservas
@@ -6015,14 +6015,14 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_trazabilidad_rese
 	  `public_docompra` `z` on((`z`.`id` = `y`.`iddocompra`))) left join 
 	  `public_ocompra` `j` on((`j`.`idguia` = `z`.`hidguia`))) left join 
 	  `public_alkardex` `s` on((`s`.`idref` = `x`.`id`)  and s.codocuref=x.codocu    )) left join 
-	  `public_almacendocs` `k` on((`k`.`id` = `s`.`hidvale`))) ; ;
+	  `public_almacendocs` `k` on((`k`.`id` = `s`.`hidvale`))) ;
 
 
 -- Volcando estructura para vista nautilus.vw_trazabilidad_solpe_1
 DROP VIEW IF EXISTS `vw_trazabilidad_solpe_1`;
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `vw_trazabilidad_solpe_1`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_trazabilidad_solpe_1` AS select `a`.`numero` AS `numero`,`b`.`centro` AS `centro`,`b`.`codal` AS `codal`,`b`.`codart` AS `codart`,`b`.`txtmaterial` AS `txtmaterial`,`b`.`fechaent` AS `fechaent`,`b`.`cant` AS `cant`,`b`.`item` AS `item`,`b`.`um` AS `um`,`c`.`desum` AS `desum`,`d`.`iddesolpe` AS `iddesolpe`,`d`.`iddocompra` AS `iddocompra`,`d`.`cant` AS `cantaten`,`d`.`fecha` AS `featencion`,`d`.`user` AS `user`,`e`.`cant` AS `cantcompras`,`e`.`item` AS `itemcompra`,`x`.`desum` AS `umcompra`,`f`.`numcot` AS `numcot`,`s`.`fecha` AS `fecha`,`s`.`cant` AS `cantkardex`,`s`.`codmov` AS `codmov`,`t`.`numvale` AS `numvale`,`u`.`movimiento` AS `movimiento` from (((((((((`public_solpe` `a` join `public_desolpe` `b` on((`a`.`id` = `b`.`hidsolpe`))) join `public_ums` `c` on((`c`.`um` = `b`.`um`))) join `public_desolpecompra` `d` on((`d`.`iddesolpe` = `b`.`id`))) join `public_docompra` `e` on((`e`.`id` = `d`.`iddocompra`))) join `public_ums` `x` on((`x`.`um` = `e`.`um`))) join `public_ocompra` `f` on((`f`.`idguia` = `e`.`hidguia`))) left join `public_alkardex` `s` on((`s`.`idref` = `e`.`id`))) left join `public_almacendocs` `t` on((`t`.`id` = `s`.`hidvale`))) left join `public_almacenmovimientos` `u` on((`t`.`codmovimiento` = `u`.`codmov`))) ; ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `vw_trazabilidad_solpe_1` AS select `a`.`numero` AS `numero`,`b`.`centro` AS `centro`,`b`.`codal` AS `codal`,`b`.`codart` AS `codart`,`b`.`txtmaterial` AS `txtmaterial`,`b`.`fechaent` AS `fechaent`,`b`.`cant` AS `cant`,`b`.`item` AS `item`,`b`.`um` AS `um`,`c`.`desum` AS `desum`,`d`.`iddesolpe` AS `iddesolpe`,`d`.`iddocompra` AS `iddocompra`,`d`.`cant` AS `cantaten`,`d`.`fecha` AS `featencion`,`d`.`user` AS `user`,`e`.`cant` AS `cantcompras`,`e`.`item` AS `itemcompra`,`x`.`desum` AS `umcompra`,`f`.`numcot` AS `numcot`,`s`.`fecha` AS `fecha`,`s`.`cant` AS `cantkardex`,`s`.`codmov` AS `codmov`,`t`.`numvale` AS `numvale`,`u`.`movimiento` AS `movimiento` from (((((((((`public_solpe` `a` join `public_desolpe` `b` on((`a`.`id` = `b`.`hidsolpe`))) join `public_ums` `c` on((`c`.`um` = `b`.`um`))) join `public_desolpecompra` `d` on((`d`.`iddesolpe` = `b`.`id`))) join `public_docompra` `e` on((`e`.`id` = `d`.`iddocompra`))) join `public_ums` `x` on((`x`.`um` = `e`.`um`))) join `public_ocompra` `f` on((`f`.`idguia` = `e`.`hidguia`))) left join `public_alkardex` `s` on((`s`.`idref` = `e`.`id`))) left join `public_almacendocs` `t` on((`t`.`id` = `s`.`hidvale`))) left join `public_almacenmovimientos` `u` on((`t`.`codmovimiento` = `u`.`codmov`))) ;
 
 
 -- Volcando estructura para vista nautilus.vw_usuarios

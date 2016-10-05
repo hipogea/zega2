@@ -104,7 +104,7 @@ private function prepara() {
                     
                                                                     
                                                 }else{
-                                                    Yii::log(' ejecutandosfssfsfsfs '.$this->_rutabas.DIRECTORY_SEPARATOR.$this->_codocu.DIRECTORY_SEPARATOR.$this->_extensionatrabajar,'error');
+                                                   // Yii::log(' ejecutandosfssfsfsfs '.$this->_rutabas.DIRECTORY_SEPARATOR.$this->_codocu.DIRECTORY_SEPARATOR.$this->_extensionatrabajar,'error');
                                                   // var_dump($this->_rutabas.DIRECTORY_SEPARATOR.$this->_codocu.DIRECTORY_SEPARATOR.$this->_extensionatrabajar);die();
                                                     if(mkdir($this->_rutabas.DIRECTORY_SEPARATOR.$this->_codocu.DIRECTORY_SEPARATOR.$this->_extensionatrabajar,0777)){
                                                                                      $this->creacarpeta();
@@ -141,6 +141,7 @@ private function prepara() {
         $fullFileName=$this->limpiaruta($fullFileName);
         
         $filename=$fullFileName;
+          var_dump($filename);die();
         $this->prepara();
         $this->creacarpeta();
         // var_dump($filename);
@@ -150,17 +151,22 @@ private function prepara() {
            {
            // $this->creacarpeta();
           IF (is_file($filename)) {
-             
+            // var_dump($filename);
               $nombrec= trim((string)ceil($this->_id/$this->_numerofotosporcarpeta)).DIRECTORY_SEPARATOR;
        $ruta=$this->_rutabas.DIRECTORY_SEPARATOR.$this->_codocu.DIRECTORY_SEPARATOR.$this->_extensionatrabajar.DIRECTORY_SEPARATOR.$nombrec;
       // var_dump($ruta);
       //  var_dump($this->colocanombre());die();
              if(copy($filename,$ruta.$this->colocanombre())){
+                 var_dump($ruta.$this->colocanombre());die();
+                  yii::log('error','jajaja  se pudo copiar con la funcion copy  : '.$filename.'  ,  '.$ruta.$this->colocanombre());
                  return true;
              }else{
+                   var_dump($ruta.$this->colocanombre());die();
+                 yii::log('error','no se pudo copiar con la funcion copy  : '.$filename.'  ,  '.$ruta.$this->colocanombre());
                  return false;
              }
           }else{
+               yii::log('error','pucha se pudo copiar con la funcion copy  : '.$filename.'  ,  '.$ruta.$this->colocanombre());
               return false;
           }
        }else{
@@ -303,18 +309,18 @@ private function prepara() {
     
     private function limpiaruta ($cadena){
            $varso=strtolower($_SERVER['HTTP_USER_AGENT']);
-           yii::log('yii   es lerroe '.$cadena,'error');
+           //yii::log('yii   es lerroe '.$cadena,'error');
            $cadena=str_replace ( "/" ,DIRECTORY_SEPARATOR , $cadena );
-            yii::log('yii   es lerroe '.$cadena,'error');
+           // yii::log('yii   es lerroe '.$cadena,'error');
         $cadena=str_replace ( "\\" ,DIRECTORY_SEPARATOR , $cadena );
-         yii::log('yii   es lerroe '.$cadena,'error');
+         //yii::log('yii   es lerroe '.$cadena,'error');
         $cadena=str_replace ( "//" ,DIRECTORY_SEPARATOR , $cadena );
-         yii::log('yii   es lerroe '.$cadena,'error');
+         //yii::log('yii   es lerroe '.$cadena,'error');
         $cadena=str_replace ( "\\\\" ,DIRECTORY_SEPARATOR , $cadena); 
-         yii::log('yii   es lerroe '.$cadena,'error');
+        // yii::log('yii   es lerroe '.$cadena,'error');
        if(strpos($varso,'windows')>=0){ //si e swindows
               $cadena=str_replace ( "\\" ,"/" , $cadena);
-               yii::log('yii   si es window '.$cadena,'error');
+               //yii::log('yii   si es window '.$cadena,'error');
               }else{
                   
               }

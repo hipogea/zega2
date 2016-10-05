@@ -11,12 +11,12 @@ $this->widget('ext.coco.CocoWidget'
 			// this arguments are used to send a notification
 			// on a specific class when a new file is uploaded,
 		'buttonText'=>'Subir Imagen',
-		'receptorClassName'=>'application.models.Maestrocompo',
-                 'modelin'=> $model,
+		'receptorClassName'=>'application.models.',
+                // 'modelin'=> $model,
                                                                                        // 'modeli'=>23,
                                                                                     //'receptorClassName'=>'application.models.Tempdetot',
 										//'methodName'=>'FileReceptor',
-                 'methodName'=>'colocaarchivox',
+                 'methodName'=>'colocaarchivo',
 		//'userdata'=>$model->codigo,
 			// controls how many files must be uploaded
 		'maxUploads'=>3, // defaults to -1 (unlimited)

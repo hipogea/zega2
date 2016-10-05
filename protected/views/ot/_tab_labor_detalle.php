@@ -152,14 +152,42 @@ $this->widget('zii.widgets.jui.CJuiSliderInput', array(
         </div>
 
     </div> 
-	<div class="row">
-		<?php echo $form->labelEx($model,'textoactividad'); ?>
-		<?php echo $form->textField($model,'textoactividad',array('disabled'=>($editable)?'':'disabled')); ?>
-		<?php echo $form->error($model,'textoactividad'); ?>
+	
+    <div class="row">
+		<?php echo $form->labelEx($model,'idlabor'); ?>
+		
+		<?php 
+						
+			$this->widget('ext.matchcode1.MatchCode1',array(		
+												'nombrecampo'=>'idlabor',
+												'pintarcaja'=>1, ///indica si debe de pintar el textbox al iniciar 
+												'ordencampo'=>1,
+												'controlador'=>'Tempdetot',
+												'relaciones'=>$model->relations(),
+												'tamano'=>8,
+												'habilitado'=>true,
+												'model'=>$model,
+												'form'=>$form,
+												'nombredialogo'=>'cru-dialog3',
+												'nombreframe'=>'cru-frame3',
+												'nombrearea'=>'mifvfuufu',
+											'nombrecampoareemplazar'=>'textoactividad',
+											//'comopintar'=>'c_descri',//Significa que va a ha reemplazar al imput del campo
+													));
+				?>
+                                    
+                        <?php echo $form->error($model,'idlabor'); ?>
+	
+		
 	</div>
+
+    
+    
+    
+    
 	<div class="row">
 		<?php echo $form->labelEx($model,'txt'); ?>
-		<?php echo $form->textArea($model,'txt',array('disabled'=>($editable)?'':'disabled')); ?>
+		<?php echo $form->textArea($model,'txt',array('rows'=>3,'cols'=>50,'disabled'=>($editable)?'':'disabled')); ?>
 		<?php echo $form->error($model,'txt'); ?>
 	</div>
 
@@ -282,10 +310,7 @@ $this->widget('zii.widgets.jui.CJuiSliderInput', array(
 							)
 						);?>
 		
-					</div>
-
-    <div class="row">
-						<?php echo $form->labelEx($model,'fechafin'); ?>
+					
 
 						<?php $this->widget('zii.widgets.jui.CJuiDatePicker',
 							array(
@@ -341,9 +366,7 @@ $this->widget('zii.widgets.jui.CJuiSliderInput', array(
 							)
 						);?>
 		
-					</div>
-    <div class="row">
-						<?php echo $form->labelEx($model,'fechafinprog'); ?>
+					
 
 						<?php $this->widget('zii.widgets.jui.CJuiDatePicker',
 							array(

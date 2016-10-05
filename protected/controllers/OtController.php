@@ -73,10 +73,12 @@ class OtController extends ControladorBase
 		$model=MiFactoria::CargaModelo($this->modelopadre,$id);
 		$modelolabor=new Tempdesolpe('search_por_ot');
 		$modelolabor->unsetAttributes();  // clear any default values
+               
                 
                 
                 $modeloconsi=new Tempotconsignacion('search_por_ot');
 		$modeloconsi->unsetAttributes();  // clear any default values
+                
                 
 		if(isset($_GET['Tempdesolpe'])){
 			$modelolabor->attributes=$_GET['Tempdesolpe'];
@@ -85,6 +87,7 @@ class OtController extends ControladorBase
 
 		if($model->{$this->campoestado}==ESTADO_PREVIO)
 			$model->{$this->campoestado}=ESTADO_CREADO;
+                       
 		if($this->itsFirsTime($id))
 		{
 			$uintruso=$this->getUsersWorkingNow($id);
@@ -94,9 +97,14 @@ class OtController extends ControladorBase
 				$this->out($id);
 				$this->redirect(array('VerDocumento','id'=>$model->idguia));
 			} else { // Si no lo esta renderizar sin mas
-				$this->setBloqueo($id) ; 	///bloquea
+				
+                            $this->setBloqueo($id) ; 	///bloquea
+                           
 				$this->ClearBuffer($id); //Limpia temporal antes de levantar
+                                   
 				$this->IniciaBuffer($id); //Levanta temporales
+                                 
+                                
 				$this->render('update',array('modeloconsi'=>$modeloconsi,'modelolabor'=>$modelolabor,'model'=>$model,'editable'=>true));
 				yii::app()->end();
 			}
@@ -109,6 +117,7 @@ class OtController extends ControladorBase
 			} else { // Si no lo es  tenemos que analizar los dos casos que quedan
 				if($this->IsRefreshUrlWithoutSubmit($id))
 				{ ///Solo refreso la pagina
+                                   
 					MiFactoria::Mensaje('notice', "No has confirmado los datos, solo has refrescado la pagina ");
 					$this->render('update',array('modeloconsi'=>$modeloconsi,'modelolabor'=>$modelolabor,'model'=>$model,'editable'=>true));
 					yii::app()->end();
@@ -190,9 +199,12 @@ class OtController extends ControladorBase
 
 	public function actionCreadetalle($idcabeza,$cest)
 	{
-		$modelopadre=$this->loadModel($idcabeza);
+		
+            $modelopadre=$this->loadModel($idcabeza);
+              
 		//$descuento=(is_null($modelopadre->descuento))?0:(1-$modelopadre->descuento/100);
 		$model=new Tempdetot();
+              // die();
 		$model->hidorden=$idcabeza;
 		$model->codestado=ESTADO_PREVIO;
 		$model->idusertemp=Yii::app()->user->id;
@@ -200,6 +212,7 @@ class OtController extends ControladorBase
 		$model->codocu=$this->documentohijo; ///detalle guia
 		$model->valorespordefecto($this->documentohijo);
 		//$model->tipoitem='M';
+               
 		if(isset($_POST['Tempdetot']))		{
 			$model->attributes=$_POST['Tempdetot'];
 
@@ -230,6 +243,7 @@ class OtController extends ControladorBase
 		}
 		// if (!empty($_GET['asDialog']))
 		$this->layout = '//layouts/iframe';
+                
 		$this->render('_form_detalle',array(
 			'model'=>$model, 'idcabeza'=>$idcabeza,'editable'=>true
 		));
@@ -2699,6 +2713,7 @@ public function borraitemdesolpe($autoId) //Borra un registro de solpe
       if(!is_null($detalle)){          
           if(isset($_FILES['webcam']['tmp_name']))
               {
+                var_dump($_FILES['webcam']['tmp_name']);die();
               $nombretemp= Yii::getPathOfAlias('webroot').
                       yii::app()->settings->get('general','general_directorioimg').DIRECTORY_SEPARATOR;
               $nombretemp.=(microtime(true)*10000).yii::app()->user->id.'.jpg';
@@ -2720,7 +2735,7 @@ public function borraitemdesolpe($autoId) //Borra un registro de solpe
 				
                                 yii::app()->end();
                 }            
-                                
+                    // var_dump('ahora que ');die();           
           if (!empty($_GET['asDialog']))
 		$this->layout = '//layouts/iframe';
 		$this->render('//site/subefotos',array('model'=>$detalle));

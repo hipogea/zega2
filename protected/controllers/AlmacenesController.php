@@ -96,9 +96,10 @@ if(isset($_POST['Almacenes']))
 				$this->redirect(array('admin'));
 				yii::app()->end();
 			}ELSE{
-				PRINT_R($model->geterrors());die();
+				//PRINT_R($model->geterrors());die();
+                                MiFactoria::Mensaje('error', 'Se detectaron los errores '.yii::app()->mensajes->geterroresItem($model->geterrors()));
 			}
-			yii::app()->end();
+			//yii::app()->end();
 		}
 
 		$this->render('create',array(
