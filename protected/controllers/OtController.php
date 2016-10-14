@@ -126,6 +126,13 @@ class OtController extends ControladorBase
 					IF(isset($_POST[$this->modelopadre])) {
 						$model->attributes=$_POST[$this->modelopadre];
 						//$model->validate();
+                                               /* var_dump($model->oldAttributes);
+                                                ECHO "<BR>"; ECHO "<BR>";
+                                                var_dump($model->attributes);
+                                                 ECHO "<BR>";
+                                                 var_dump($model->hacambiado());
+                                                 ECHO "<BR>"; ECHO "<BR>";
+                                                die();*/
 						if($this->hubocambiodetalle($id) OR  $model->hacambiado()) {
 							$transacc=Yii::app()->db->beginTransaction();
 							if($model->save()){

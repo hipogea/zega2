@@ -400,6 +400,10 @@ class SiteController extends Controller
 	}
 
 
+        public function colectavalores(){
+            $registro=New Tabular();
+            
+        }
 
 }
 

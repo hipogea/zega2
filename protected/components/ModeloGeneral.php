@@ -406,21 +406,21 @@ public function etiquetascampos (){
 	public function  hacambiado()
 {
 			  $cambio=false;
-				 ///verificNDSO PRIMERO SI TINENE EL COMPRAQTAMIENTO CACTIVERECORDLOG
-   				 if(array_key_exists('ActiveRecordLogableBehavior',$this->behaviors()))
-		{
-	   						 return  $this->hubocambio();
-   		 } else {
+				
        				 foreach($this->oldAttributes as $nombre =>$anterior)
 						{
 							$nuevo = $this->Attributes[$nombre];
-								 if($nuevo != $anterior )
-								 $cambio=true;
-			      				break;
+								 if($nuevo != $anterior ){
+                                                                      $cambio=true; 
+                                                                      RETURN $cambio;
+                                                                 }
+								
+			      				
 		 					}
+                                                        return $cambio;
     		}
-   				 return $cambio;
-			}
+   				 
+			
 
 	///Deveuel el valor del cmapo antes del cambio ,
 	//valido solo paramodelos cabecera , para modelos detalle

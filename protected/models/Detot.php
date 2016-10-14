@@ -142,6 +142,13 @@ class Detot extends ModeloGeneral
 		Tempdesolpe::model()->updateAll(array("hidlabor"=>$this->id),"hidlabor=:viden",array(":viden"=>$this->idtemp));
 		return parent::afterSave();
     }
+    
+    public function afterfind(){
+        if($this->idlabor==0)
+            $this->idlabor=null;
+		return parent::afterfind();
+    }
+    
 
 PUBLIC FUNCTION nrecursos(){
         return count($this->recursos);
