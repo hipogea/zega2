@@ -78,12 +78,15 @@ input.ui-button::-moz-focus-inner,button.ui-button::-moz-focus-inner{border:0;pa
 .ui-tabs{position:relative;padding:.2em}
 .ui-tabs .ui-tabs-nav{margin:0;padding:.2em .2em 0}
 .ui-tabs .ui-tabs-nav li{list-style:none;float:left;position:relative;top:0;margin:1px .2em 0 0;border-bottom-width:0;padding:0;white-space:nowrap}
-.ui-tabs .ui-tabs-nav .ui-tabs-anchor{float:left;padding:.2em .8em;text-decoration:none;}
+.ui-tabs .ui-tabs-nav .ui-tabs-anchor{
+    float:left;padding:.2em .8em;text-decoration:none;
+     text-shadow: #ccc 1px 0px 1px;
+}
 .ui-tabs .ui-tabs-nav li.ui-tabs-active{margin-bottom:-1px;padding-bottom:1px}
 .ui-tabs .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor,.ui-tabs .ui-tabs-nav li.ui-state-disabled .ui-tabs-anchor,
 .ui-tabs .ui-tabs-nav li.ui-tabs-loading .ui-tabs-anchor{cursor:text}
 .ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor{cursor:pointer}
-.ui-tabs .ui-tabs-panel{display:block;border-width:0;padding:0 0;background:#ebf1fc;overflow: auto;}
+.ui-tabs .ui-tabs-panel{display:block;border-width:0;padding:0 0;background:#eff0f0;overflow: auto;}
 .ui-tooltip{padding:8px;position:absolute;z-index:9999;max-width:300px;-webkit-box-shadow:0 0 5px #aaa;box-shadow:0 0 5px #aaa}
 
 body .ui-tooltip{border-width:2px}.ui-widget{font-family:Verdana,Arial,sans-serif;font-size:1.1em}
@@ -100,8 +103,9 @@ body .ui-tooltip{border-width:2px}.ui-widget{font-family:Verdana,Arial,sans-seri
 .ui-widget-header a{color:#222}
 .ui-state-default,.ui-widget-content .ui-state-default,.ui-widget-header .ui-state-default
 {
-    border:1px solid #98E4FA;
-    background:#f1f1f1 ;
+    border:1px solid #216c82;
+   /*background:#f1f1f1 ;*/
+   background:  url(images/sprite.png) repeat-x 0 0;
     font-weight:normal;
     color:#134194
 }
