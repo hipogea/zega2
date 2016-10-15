@@ -34,7 +34,7 @@ class Tempdetot extends ModeloGeneral
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-                    array('idlabor','exist','allowEmpty' => true, 'attributeName' => 'id', 'className' => 'Listamateriales','message'=>'Esta actividad no está registrada'),
+                    array('idlabor','exist','allowEmpty' => true, 'attributeName' => 'id', 'className' => 'Listamateriales','message'=>'Esta actividad no está registrada : '.gettype($this->idlabor)),
 			array('idlabor', 'checkcamposdefecto'),
 			//array('id, hidorden, item, textoactividad, codresponsable, fechainic, fechafinprog, fechacre, flaginterno, codocu, codestado, codmaster, idinventario, iduser, idusertemp, idstatus', 'required'),
 			array('idinventario, iduser, idusertemp, idstatus', 'numerical', 'integerOnly'=>true),
@@ -169,6 +169,8 @@ class Tempdetot extends ModeloGeneral
         
         
         public function beforeSave() {
+            IF($this->idlabor==0)
+                $this->idlabor=null;
             if($this->isNewRecord) {
                  $this->codmon = yii::app()->settings->get('general', 'general_monedadef');
                 }

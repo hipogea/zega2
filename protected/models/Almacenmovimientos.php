@@ -1,30 +1,14 @@
 <?php
 
-/**
- * This is the model class for table "almacenmovimientos".
- *
- * The followings are the available columns in table 'almacenmovimientos':
- * @property string $codmov
- * @property string $movimiento
- * @property integer $signo
- * @property string $codigo_objeto
- * @property string $ingreso
- */
 class Almacenmovimientos extends CActiveRecord
 {
-	/**
-	 * Returns the static model of the specified AR class.
-	 * @param string $className active record class name.
-	 * @return Almacenmovimientos the static model class
-	 */
+	
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
 	}
 
-	/**
-	 * @return string the associated database table name
-	 */
+	
 	public function tableName()
 	{
 		return Yii::app()->params['prefijo'].'almacenmovimientos';

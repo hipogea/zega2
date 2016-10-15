@@ -404,21 +404,35 @@ public function etiquetascampos (){
 
 
 	public function  hacambiado()
-{
+                            {
 			  $cambio=false;
 				 ///verificNDSO PRIMERO SI TINENE EL COMPRAQTAMIENTO CACTIVERECORDLOG
-   				 if(array_key_exists('ActiveRecordLogableBehavior',$this->behaviors()))
-		{
-	   						 return  $this->hubocambio();
-   		 } else {
+   				// if(array_key_exists('ActiveRecordLogableBehavior',$this->behaviors()))
+		//{
+	   						 //return  $this->hubocambio();
+   		 //} else {
        				 foreach($this->oldAttributes as $nombre =>$anterior)
 						{
 							$nuevo = $this->Attributes[$nombre];
-								 if($nuevo != $anterior )
-								 $cambio=true;
-			      				break;
+                                                       /* ECHO "VERIFICANDO EN ESCENARIO  (  ".$this->getScenario() .  " )      [".$nombre."]  -->  Nuevo  : ( ".$nuevo.")         Anterior  (".$anterior." )<br> ";
+							print_r($this->getSafeAttributeNames());
+                                                        echo "<br>";
+                                                        var_dump($nuevo);
+                                                        echo "<br>";
+                                                        var_dump($anterior);
+                                                         echo "<br>";*/
+                                                        	 if($nuevo == $anterior ){
+                                                                    //echo " no cambio <br>";
+                                                                 }else {
+                                                                     //echo "cambio <br>  ";
+                                                                     $cambio=true; 
+                                                                     break;
+                                                                     
+                                                                 }
+								 
+			      				
 		 					}
-    		}
+    		//}
    				 return $cambio;
 			}
 

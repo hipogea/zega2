@@ -204,10 +204,18 @@ class VwOpcionesdocumentos extends CActiveRecord
 		$nombreclase=get_class($model);
 
 		$criteria=new CDbCriteria;
-		$criteria->addCondition(" nombredelmodelo=:vnamemodelo and idusuario=:vidusuario and nombrecampo=:vnombrecampo");
-		$criteria->params=array(":vnamemodelo"=>$nombreclase ,":vidusuario"=>yii::app()->user->id,":vnombrecampo"=>$campo);
-		$registros=self::model()->find($criteria);
-               return (is_null($registros))?false:true;
+               // $criteria->addCondition(" 1=1");
+		$criteria->addCondition(" nombredelmodelo=:vnamemodelo and idusuario=:vidusuario and campo=:vnombrecampo");
+		$criteria->params=array(
+                            ":vnamemodelo"=>trim($nombreclase) ,
+                            ":vidusuario"=>yii::app()->user->id,
+                               ":vnombrecampo"=>trim($campo)
+                    );
+		$registros=self::model()->findAll($criteria);
+                /* var_dump($criteria->condition); var_dump($criteria->params);var_dump(yii::app()->user->id);
+                var_dump($nombreclase); var_dump($campo);
+                var_dump($registros); die();*/
+               return (count($registros)==0)?false:true;
 		//echo "<br><br>";
       //print_r($model->attributes);yii::app()->end();
 	}
