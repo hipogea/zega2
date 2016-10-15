@@ -360,9 +360,11 @@ return array_values($arraycolumnas);
 		//$numeropaginas=3;
 		$proveedorestilo=$modelo->hijos;
 		$proveedordatos->camposasumar=Coordreporte::totalizables($id);
+               
 		$mpdf=Yii::app()->ePdf->mpdf(
 			'',trim($modelo->tamanopapel));
         $hojaestilo='';
+         
 		if(!is_null($modelo->estilo)) {
 			$hojaestilo = file_get_contents ( $this->rutaestilos . DIRECTORY_SEPARATOR . $modelo->estilo );
 			//$hojaestilo=file_get_contents('themes/abound/css'.DIRECTORY_SEPARATOR.'estilovale.css');

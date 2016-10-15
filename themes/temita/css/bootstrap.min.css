@@ -486,14 +486,24 @@ rgba(0,0,0,0.125);box-shadow:inset 0 3px 8px rgba(0,0,0,0.125)}.navbar .btn-navb
 .dropdown-menu{right:100%;left:auto;margin-right:-1px;margin-left:0;
                                                                                                                                                                                                                                                                                                                           -webkit-border-radius:6px 0 6px 6px;-moz-border-radius:6px 0 6px 6px;border-radius:6px 0 6px 6px}.navbar-inverse{color:#999}
 
-.navbar-inverse .navbar-inner{background-color:#0F75B0;background-image:-moz-linear-gradient(top,#0F75B0,#0F75B0);
-    background-image:-webkit-gradient(linear,0 0,0 100%,from(#222),to(#111));background-image:-webkit-linear-gradient(top,#0F75B0,#0F75B0);
-    background-image:-o-linear-gradient(top,#0F75B0,#0F75B0);background-image:linear-gradient(to bottom,#0F75B0,#0F75B0);
-    background-repeat:repeat-x;border-color:#0F75B0;
-    filter:progid:dximagetransform.microsoft.gradient(startColorstr='#ff222222',endColorstr='#ff111111',GradientType=0);
+.navbar-inverse .navbar-inner {
+     background-image: url(images/puntitos.png);
+    background-repeat: no-repeat;
+    background-position: 0.1% 20%; 
+    background-color: #f5f6f7;
+   /* background-image: -moz-linear-gradient(top,#0F75B0,#0F75B0);
+    background-image: -webkit-gradient(linear,0 0,0 100%,from(#222),to(#111));
+    background-image: -webkit-linear-gradient(top,#0F75B0,#0F75B0);
+    background-image: -o-linear-gradient(top,#0F75B0,#0F75B0);
+    background-image: linear-gradient(to bottom,#e5e5e6,#fdfdfd);
+    background-repeat: repeat-x;*/
+   
+    border-color: #efeeee;
+    
+    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ff222222',endColorstr='#ff111111',GradientType=0);
     -webkit-box-shadow: 13px 11px 21px 12px rgba(0,0,0,0.75);
     -moz-box-shadow: 13px 11px 21px 12px rgba(0,0,0,0.75);
-    box-shadow: 13px 11px 21px -15px rgba(0,0,0,0.75);
+    box-shadow: 1px 1px 1px 1px rgba(234, 234, 234, 0.25);
 }
 .navbar-inverse .brand,.navbar-inverse .nav>li>a{color:#999;text-shadow:0 -1px 0 rgba(0,0,0,0.25)}
 .navbar-inverse .brand:hover,.navbar-inverse .nav>li>a:hover{color:#fff}.navbar-inverse .nav>li>a:focus,
@@ -639,7 +649,7 @@ div.form select
     /*font-weight:bold;*/
    /* padding:4px 4px;*/
     text-decoration:none;
-    /*text-shadow:1px 1px 0px #1570cd;*/
+    text-shadow: #ccc 1px 0px 1px;
     
     
     border-radius: 5px;

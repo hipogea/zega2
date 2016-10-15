@@ -13,35 +13,20 @@ class ConfiguracionController extends Controller
 	 */
 	public function filters()
 	{
-		return array(
-			'accessControl', // perform access control for CRUD operations
-			'postOnly + delete', // we only allow deletion via POST request
-		);
+		return array('accessControl',array('CrugeAccessControlFilter'));
 	}
 
-	/**
-	 * Specifies the access control rules.
-	 * This method is used by the 'accessControl' filter.
-	 * @return array access control rules
-	 */
 	public function accessRules()
 	{
+		Yii::app()->user->loginUrl = array("/cruge/ui/login");
 		return array(
-			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
-				'users'=>array('*'),
-			),
+			
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('index','ver'),
 				'users'=>array('@'),
 			),
-			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
-				'users'=>array('admin'),
-			),
-			array('deny',  // deny all users
-				'users'=>array('*'),
-			),
+			
+			
 		);
 	}
 
@@ -112,8 +97,7 @@ private function pasadatos($model){
 
 	}
 	//$this->redirect(yii::app()->getBaseUrl(true));
-	$this->redirect($this->createUrl("ejemplos/config"));
-
+	
 }
 
 	private function sacadatos($model){
@@ -131,13 +115,7 @@ private function pasadatos($model){
 	public function actionIndex()
 	{
 		$model=New Configuraciongeneral();
-
-		if(isset($_POST['ajax']) && $_POST['ajax']==='settings-form')
-		{
-			//echo CActiveForm::validate($model);
-			//Yii::app()->end();
-		}
-
+		
 		if(isset($_POST['Configuraciongeneral']))
 		{
 
@@ -146,6 +124,9 @@ private function pasadatos($model){
 			if(!$model->validate())
 			{
 				$this->pasadatos($model);
+                                $this->render("ver",array("model"=>$model));
+                                //$this->redirect(array($this->id."/ver"));
+                                
 			}
 		} else {
 			$this->sacadatos($model);
@@ -154,26 +135,29 @@ private function pasadatos($model){
 			));
 
 		}
-
-
-   /*print_r($model->rules());
-		Yii::app()->end();*/
-
-
-
-
-
-
-
-
-
-
-
-
 	}
 
 
-
+public function actionver(){
+    print_r(Yii::app()->settings->get('email'));
+	echo "<br>";
+	print_r(Yii::app()->settings->get('af'));
+	echo "<br>";
+	print_r(Yii::app()->settings->get('materiales'));
+	echo "<br>";
+	print_r(Yii::app()->settings->get('colectores'));
+	echo "<br>";
+	print_r(Yii::app()->settings->get('compras'));
+	echo "<br>";
+	print_r(Yii::app()->settings->get('Inventario'));
+	echo "<br>";
+	print_r(Yii::app()->settings->get('transporte'));
+	echo "<br>";
+	print_r(Yii::app()->settings->get('general'));
+	echo "<br>";
+	print_r(Yii::app()->settings->get('documentos'));
+	echo "<br>";
+}
 
 
 
