@@ -59,7 +59,7 @@ class ValumsFileUploader {
      */
     function handleUpload($uploadDirectory, $replaceOldFile = FALSE){
         if (!is_writable($uploadDirectory)){
-            return array('error' => CocoWidget::t("Server error. Upload directory isn't writable."));
+            return array('error' => CocoWidget::t("Server error. Upload directory isn't writable.".$uploadDirectory));
         }
 
         if (!$this->file){

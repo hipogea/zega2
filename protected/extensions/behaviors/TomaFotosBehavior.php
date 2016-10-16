@@ -139,9 +139,10 @@ private function prepara() {
     public function colocaarchivo($fullFileName) {
         
         $fullFileName=$this->limpiaruta($fullFileName);
-        
+         Yii::log(' okix  '.serialize($fullFileName),'error');
+         //die();
         $filename=$fullFileName;
-          var_dump($filename);die();
+          //var_dump($filename);die();
         $this->prepara();
         $this->creacarpeta();
         // var_dump($filename);
@@ -291,6 +292,7 @@ private function prepara() {
     
     
     public function getulpoaddirectory(){
+        //echo rtrim($this->_ruta,DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR; die();
         return rtrim($this->_ruta,DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
     }
     

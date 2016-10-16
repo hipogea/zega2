@@ -228,7 +228,7 @@ class Tempdetot extends ModeloGeneral
        // $filename=$fullFileName;
         
        // $path_parts = pathinfo($fullFileName);
-      // Yii::log(' ejecutando '.serialize($fullFileName),'error');
+       Yii::log(' ejecutando '.serialize($fullFileName),'error');
         $this->colocaarchivo($fullFileName);
     }
     

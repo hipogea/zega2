@@ -106,7 +106,8 @@ class MatchCode extends CWidget
 
 	public function relaciona($nombrecampo,$valorcampo,$ordencampo=null){
 
-		$nombreclase=$this->getModelParent($nombrecampo);
+           
+                $nombreclase=$this->getModelParent($nombrecampo);
 		//si no  devolver valor
 		$cvn=(gettype($valorcampo)=='string')?"'":"";
 		if (!($valorcampo===null )) {
@@ -147,6 +148,8 @@ class MatchCode extends CWidget
 			return $moki->{$moki->attributeNames()[is_null($ordencampo)?1:$ordencampo]};
 			// return get_class($moki)."->".$camposotros[is_null($ordencampo)?4:$ordencampo];
 		}
+            
+		
 	}
 
 
@@ -213,12 +216,12 @@ class MatchCode extends CWidget
 
 
 		// if (!is_null($this->nombrearea)) {
-		$modelorel=$this->nombreclase;
+		//$modelorel=$this->nombreclase;
 		if (!is_null($this->nombrearea)) {
 						echo " <div style='float: left; background-color :#FFF; padding-left:4px;  padding-right:4px; font-family: verdana,tahoma,arial,sans-serif;
 								font-size: 8pt;'  id =".$this->nombrearea.">";
 		                                                             //var_dump($this->model->attributes);
-						echo $this->relaciona($this->nombrecampo,$this->model->{$this->nombrecampo},$this->ordencampo);
+						echo (!$this->model->isNewRecord)?$this->relaciona($this->nombrecampo,$this->model->{$this->nombrecampo},$this->ordencampo):'.                       .';
 
 		echo " </div>";
 															unset($modelorel);

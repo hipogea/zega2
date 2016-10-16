@@ -139,7 +139,10 @@ private function pasadatos($model){
 
 
 public function actionver(){
-    print_r(Yii::app()->settings->get('email'));
+    $model=New Configuraciongeneral();
+    $this->sacadatos($model);
+    $this->render("ver",array("model"=>$model));
+    /*print_r(Yii::app()->settings->get('email'));
 	echo "<br>";
 	print_r(Yii::app()->settings->get('af'));
 	echo "<br>";
@@ -156,7 +159,7 @@ public function actionver(){
 	print_r(Yii::app()->settings->get('general'));
 	echo "<br>";
 	print_r(Yii::app()->settings->get('documentos'));
-	echo "<br>";
+	echo "<br*/
 }
 
 

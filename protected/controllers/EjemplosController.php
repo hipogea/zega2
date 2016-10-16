@@ -399,8 +399,18 @@ $mo=New Alinventario();
 
 
 	public function actionPio() {
-            //($_SERVER['HTTP_USER_AGENT']);
-            
+         echo '/home/neotegni/public_html/recurso/carpeta'; 
+         var_dump(is_writable('/home/neotegni/public_html/recurso/carpeta'));
+         
+         echo "<br>";
+            echo '/carpeta'; 
+         var_dump(is_writable('/carpeta'));
+         die();
+         //($_SERVER['HTTP_USER_AGENT']);
+            $reg=new Tempdetot();
+            $reg->colocaarchivox('/home/neotegni/public_html/recurso');
+       
+            die();
             $archivo="/recurso/images/210/jpg/3/14_14744927089492_1.jpg";
             $pare=  pathinfo($archivo);
             echo $archivo; echo "<br>";
