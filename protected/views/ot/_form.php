@@ -508,6 +508,11 @@ $this->widget('zii.widgets.jui.CJuiTabs', array(
 				'content'=>$this->renderPartial('tab_images', array('modelopadre'=>$model),TRUE)
 			),
                     
+                     'Imputaciones Caja Menor'=>array('id'=>'tab_imgghty454',
+				'content'=>$this->renderPartial('tab_cajachica', array('modelopadre'=>$model),TRUE)
+			),
+                    
+                    
 			'Auditoria'=>array('id'=>'tab____..__',
 				'content'=>$this->renderPartial('//site/tab_auditoria', array('form'=>$form,'model'=>$model),TRUE)
 			),

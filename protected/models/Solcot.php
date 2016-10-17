@@ -155,7 +155,7 @@ class Solcot extends ModeloGeneral
 			$this->codocu='421';
 			$this->codestado=ESTADO_CREADO;
 			//$this->fecdoc=date("Y-m-d");	}
-			$this->numero=$this->correlativo('numero',$criteria=null,$prefijo='421',10);
+			$this->numero=$this->correlativo('numero');
 
 		}
 

@@ -16,6 +16,6 @@ $this->menu=array(
 );
 ?>
 
-<h1> <?php MiFactoria::titulo('Modificar Orden','page_white_gear') ?></h1>
+ <?php MiFactoria::titulo('Modificar Orden','page_white_gear') ?>
 
 <?php $this->renderPartial('_form', array('modeloconsi'=>$modeloconsi,'modelolabor'=>$modelolabor,'model'=>$model)); ?>

@@ -20,17 +20,25 @@
 
 	<?php echo $form->errorSummary($model); ?>
 	<div class="row">
-		<?php echo $form->labelEx($model,'tipoflujo'); ?>
-		<?php  $datos1 = CHtml::listData(Tipoflujocaja::model()->findAll(),'codtipo','destipo');
-		echo $form->DropDownList($model,'tipoflujo',$datos1, array('empty'=>'--Seleccione el tipo--') ) ;
+		<?php echo $form->labelEx($model,'hidcaja'); ?>
+		<?php  $datos1 = CHtml::listData(Cajachica::model()->findAll(),'id','descripcion');
+		echo $form->DropDownList($model,'hidcaja',$datos1, array('empty'=>'--Seleccione la caja--') ) ;
 		?>
-		<?php echo $form->error($model,'tipoflujo'); ?>
+		<?php echo $form->error($model,'hidcaja'); ?>
+	</div>
+
+<div class="row">
+		
+		<?php  
+		echo $form->hiddenField($model,'tipoflujo', array('value'=>'101') ) ;
+		?>
+    
+                
+		
 	</div>
 
 
-
-
-	<?php echo $form->hiddenField($model,'hidcaja',array('value'=>$idcabeza)); ?>
+	
 
 
 	<div class="row">
@@ -92,59 +100,9 @@
 	</div>
 
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'codtra'); ?>
-		<?php
-		$this->widget('ext.matchcode.MatchCode',array(
-			'nombrecampo'=>'codtra',
-			'ordencampo'=>1,
-			'controlador'=>'Dcajachica',
-			'relaciones'=>$model->relations(),
-			'tamano'=>6,
-			'model'=>$model,
-			'form'=>$form,
-			'nombredialogo'=>'cru-dialog3',
-			'nombreframe'=>'cru-frame3',
-			'nombrearea'=>'fernfa3gt4jfdxxsfdf',
-		)); ?>
-		<?php echo $form->error($model,'codtra'); ?>
-	</div>
 
-<div class="row">
-		<?php echo $form->labelEx($model,'tipimputacion'); ?>
-		<?php  $datos = CHtml::listData(Tipimputa::model()->findAll(array('order'=>'desimputa')),'codimpu','desimputa');
-		  echo $form->DropDownList($model,'tipimputacion',$datos, array(  'ajax' => array('type' => 'POST', 
-									    'url' => CController::createUrl($this->id.'/cargaimputacion'),
-                                                                                'data'=>array(
-                                                                                    
-                                                                                ),//  la acción que va a cargar el segundo div 
-									    'update' => '#colector' // el div que se va a actualizar
-											  ),
-									  'empty'=>'--Seleccione imputacion--',) ) ;
-		?>
-		<?php echo $form->error($model,'tipimputacion'); ?>
-	</div>
-    <div id="colector"></div>
-    
-    
-    
-	<div class="row">
-		<?php echo $form->labelEx($model,'ceco'); ?>
-		<?php
-		$this->widget('ext.matchcode.MatchCode',array(
-	'nombrecampo'=>'ceco',
-	'ordencampo'=>3,
-	'controlador'=>'Dcajachica',
-	'relaciones'=>$model->relations(),
-	'tamano'=>6,
-	'model'=>$model,
-	'form'=>$form,
-	'nombredialogo'=>'cru-dialog3',
-	'nombreframe'=>'cru-frame3',
-	'nombrearea'=>'fhdfjfgery',
-	)); ?>
-		<?php echo $form->error($model,'ceco'); ?>
-	</div>
+
+	
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'codocu'); ?>

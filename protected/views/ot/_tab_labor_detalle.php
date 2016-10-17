@@ -72,17 +72,20 @@
 
                         ),
             
-            'last' => array(
-		'type' => 'D', //AJAX LINK
-		'ruta' => array($this->id.'/colocaloteultimo', array('idlote' => $model->id)),
-		'opajax' => array(
-		'type' => 'GET',
-		'success' => 'function(){
-                $("#sss").value=3333378;
-                      }'
-		),
-            'visiblex' => array('10'),
-                ),  
+              'money' => array(
+                            'type' => 'C',
+                            'ruta' => array($this->id . '/imputa', array(
+                                'id' => $model->idtemp,
+                                //"id"=>$model->n_direc,
+                                "asDialog" => 1,
+                                "gridId" => 'detalle-grid',
+                            )
+                            ),
+                            'dialog' => 'cru-dialog3',
+                            'frame' => 'cru-frame3',
+                            'visiblex' => array('10'),
+
+                        ),
             
 	);
 

@@ -64,7 +64,7 @@ class Tempdetot extends ModeloGeneral
 		// class name for the relations automatically generated below.
 		return array(
 			'ot' => array(self::BELONGS_TO, 'Ot', 'hidorden'),
-			'ceco'=> array(self::BELONGS_TO, 'Cc', 'cc'),
+			'cecosto'=> array(self::BELONGS_TO, 'Cc', 'cc'),
 			'trabajadores' => array(self::BELONGS_TO, 'Trabajadores', 'codresponsable'),
 			'masterequipo' => array(self::BELONGS_TO, 'Masterequipo', 'codmaster'),
 			'grupoplan' => array(self::BELONGS_TO, 'Grupoplan', 'codgrupoplan'),

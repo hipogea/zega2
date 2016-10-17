@@ -269,6 +269,7 @@ class Bloqueos extends CActiveRecord
 
 
 	public static function conteo($iduser){
+                      
 		$iduser=(int)MiFactoria::cleanInput($iduser);
 		$numerobloqueos=Yii::app()->db->createCommand()
 			->select('count(a.id)')

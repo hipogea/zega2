@@ -27,10 +27,10 @@ $('.search-form form').submit(function(){
 ?>
 
 <?php
-MiFactoria::titulo("Ordenes de servicio", "sociedad")
+MiFactoria::titulo("Ordenes de servicio", "asterix")
 ?>
 
-<?php echo CHtml::link('Ocultar','#',array('class'=>'search-button')); ?>
+
 <div class="search-form" style="">
 <?php $this->renderPartial('_search',array(
 	'model'=>$model,

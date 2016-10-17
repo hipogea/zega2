@@ -368,7 +368,7 @@ class OtController extends ControladorBase
 		return array(
 
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('cargagaleria','tomafoto','creaconsignacion','borraitemsdesolpe','nadax','creaservicio','modificadetallerecurso','creadetallerecurso','verprecios','crearpdf','verDetoc','firmar','aprobar','cargaprecios','enviarpdf','admin','borrarimpuesto','reporte','agregarmasivamente','cargadirecciones','borraitems','sacaitem','sacaum','salir','agregaimpuesto','agregaritemsolpe','procesardocumento','refrescadescuento','VerDocumento','EditaDocumento','creadocumento','Agregardelmaletin','borraitem','imprimirsolo','cargaentregas','agregarsolpe','agregarsolpetotal','pasaatemporal','create','imprimirsolo','imprimir','imprimir2','enviarmail',
+				'actions'=>array('imputa','cargagaleria','tomafoto','creaconsignacion','borraitemsdesolpe','nadax','creaservicio','modificadetallerecurso','creadetallerecurso','verprecios','crearpdf','verDetoc','firmar','aprobar','cargaprecios','enviarpdf','admin','borrarimpuesto','reporte','agregarmasivamente','cargadirecciones','borraitems','sacaitem','sacaum','salir','agregaimpuesto','agregaritemsolpe','procesardocumento','refrescadescuento','VerDocumento','EditaDocumento','creadocumento','Agregardelmaletin','borraitem','imprimirsolo','cargaentregas','agregarsolpe','agregarsolpetotal','pasaatemporal','create','imprimirsolo','imprimir','imprimir2','enviarmail',
 					'procesaroc','hijo','Aprobaroc','Reporteoc','Anularoc','Configuraop','Revertiroc', ///acciones de proceso
 					'libmasiva','creadetalle','Verdetalle','muestraimput','update','nada','Modificadetalle'),
 				'users'=>array('@'),
@@ -2776,7 +2776,42 @@ public function borraitemdesolpe($autoId) //Borra un registro de solpe
     }
     
     
-    
+    public function actionimputa ($id){ ///ojo es el idtemp
+        $idtemp=(integer)MiFactoria::cleanInput($id);        
+        $modelodetalle=Tempdetot::model()->findByPk($idtemp);
+		//$descuento=(is_null($modelopadre->descuento))?0:(1-$modelopadre->descuento/100);
+        $model=new Dcajachica();
+		$model->hidref=$modelodetalle->id;
+                $model->codocuref=$modelodetalle->codocu;
+                $model->codtra=$modelodetalle->codresponsable;
+                  $model->ceco=$modelodetalle->cc;
+		if(isset($_POST['Dcajachica']))		{
+			$model->attributes=$_POST['Dcajachica'];
+			if($model->save()){
+				if (!empty($_GET['asDialog']))
+				{
+					//Close the dialog, reset the iframe and update the grid
+					echo CHtml::script("window.parent.$('#cru-dialog3').dialog('close');
+                                                            window.parent.$('#cru-frame3').attr('src','');
+							window.parent.$.fn.yiiGridView.update('detalle-consignaciones-grid');
+							");
+
+				}
+			}else {
+                          echo "fallo";die();
+                            print_r($model->geterrors());
+                        }
+
+		}
+		// if (!empty($_GET['asDialog']))
+		$this->layout = '//layouts/iframe';
+		$this->render('_cajachica',array('model'=>$model,
+			'modelodetalle'=>$modelodetalle
+		));
+        
+        
+        
+    }
     
     
     

@@ -24,11 +24,10 @@ const ESTADO_DETALLE_CAJA_CREADO='10';
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('hidcaja, fecha, glosa, monto,monedahaber,referencia, debe,tipoflujo,  codtra, ceco,  codocu', 'safe'),
+			array('hidcaja, fecha, glosa, monto,monedahaber,referencia, debe,tipoflujo,  codtra, ceco,  codocu,codocuref,hidref,tipimputacion', 'safe'),
 			array('fecha', 'checkfecha','on'=>'insert,update'),
 			array('monto', 'checktolerancia','on'=>'insert,update'),
             array('ceco','exist','allowEmpty' => false, 'attributeName' => 'codc', 'className' => 'Cc','message'=>'Este ceco no existe'),
-
             array('fecha', 'checkfecha_detalle','on'=>'upd_rencidiontrabajador,ins_rendiciontrabajador'),
 			//array('tipoflujo', 'checkflujo','on'=>'upd_rencidiontrabajador,ins_rendiciontrabajador'),
 			array('hidcaja, fecha, glosa, referencia, debe, tipoflujo,  codtra, ceco,  codocu', 'required'),

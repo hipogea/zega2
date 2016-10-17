@@ -59,7 +59,7 @@ class Detot extends ModeloGeneral
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'ceco'=> array(self::BELONGS_TO, 'Cc', 'cc'),
+			'cecosto'=> array(self::BELONGS_TO, 'Cc', 'cc'),
 			'ot' => array(self::BELONGS_TO, 'Ot', 'hidorden'),
 			'trabajadores' => array(self::BELONGS_TO, 'Trabajadores', 'codresponsable'),
 		  'tempdetot'=>array(self::HAS_ONE, 'Tempdetot', 'id'),
