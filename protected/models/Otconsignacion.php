@@ -36,7 +36,7 @@ class Otconsignacion extends CActiveRecord
 		// will receive user inputs.
 		return array(
                    array('id, hidetot, cant, um, codart, fecnec, 
-                         dusertemp, idtemp, identificador,
+                         idusertemp, idtemp, identificador,
                          hidot, descripcion, textolargo,item,est,centro,codal,codcli', 
                         'safe', 'on'=>'buffer'),
 			//array('idtemp', 'required'),

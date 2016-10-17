@@ -37,7 +37,7 @@ class Tempotconsignacion extends CActiveRecord
 		return array(
 			//array('idtemp', 'required'),
                     array('id, hidetot, cant, um, codart, fecnec, 
-                         dusertemp, idtemp, identificador,
+                         idusertemp, idtemp, identificador,
                          hidot, descripcion, textolargo,item,est,centro,codal,codcli', 
                         'safe', 'on'=>'buffer'),
 		

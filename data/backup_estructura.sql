@@ -11,9 +11,9 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 -- Volcando estructura de base de datos para nautilus
-DROP DATABASE IF EXISTS `prod`;
-CREATE DATABASE IF NOT EXISTS `prod` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `prod`;
+DROP DATABASE IF EXISTS `nautilus`;
+CREATE DATABASE IF NOT EXISTS `nautilus` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `nautilus`;
 
 
 -- Volcando estructura para tabla nautilus.activerecordlog

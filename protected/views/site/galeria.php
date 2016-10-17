@@ -2,6 +2,7 @@
 $arrayimagenes=$model->recuperaarchivos(false);
 //var_dump($arrayimagenes);
 //$auditoria=$model->getauditoria
+
      $this->widget('ext.imagegallery1.ImageGallery1',array(
 
 	'images'=>$arrayimagenes,

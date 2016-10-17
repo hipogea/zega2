@@ -259,16 +259,17 @@ class OtController extends ControladorBase
 
 	public function actionCreadetallerecurso($idcabeza,$cest)
 	{
-		$modelopadre=$this->loadModel($idcabeza);
+		
+            $modelopadre=$this->loadModel($idcabeza);
 		//$descuento=(is_null($modelopadre->descuento))?0:(1-$modelopadre->descuento/100);
-		$model=new Tempdesolpe();
+		$model=new Tempdesolpe('buffer');
 		$model->hidot=$idcabeza;
 		$model->est=ESTADO_PREVIO;
 		$model->idusertemp=Yii::app()->user->id;
 		$model->hcodoc=$this->documento; //
                 $model->codocu='350'; //
 		$model->tipsolpe='M';
-		$model->setScenario('buffer');
+		
 		$model->imputacion=$modelopadre->objetosmaster->objetoscliente->cebe;
 
 		$model->valorespordefecto('350');
@@ -367,7 +368,7 @@ class OtController extends ControladorBase
 		return array(
 
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('tomafoto','creaconsignacion','borraitemsdesolpe','nadax','creaservicio','modificadetallerecurso','creadetallerecurso','verprecios','crearpdf','verDetoc','firmar','aprobar','cargaprecios','enviarpdf','admin','borrarimpuesto','reporte','agregarmasivamente','cargadirecciones','borraitems','sacaitem','sacaum','salir','agregaimpuesto','agregaritemsolpe','procesardocumento','refrescadescuento','VerDocumento','EditaDocumento','creadocumento','Agregardelmaletin','borraitem','imprimirsolo','cargaentregas','agregarsolpe','agregarsolpetotal','pasaatemporal','create','imprimirsolo','imprimir','imprimir2','enviarmail',
+				'actions'=>array('cargagaleria','tomafoto','creaconsignacion','borraitemsdesolpe','nadax','creaservicio','modificadetallerecurso','creadetallerecurso','verprecios','crearpdf','verDetoc','firmar','aprobar','cargaprecios','enviarpdf','admin','borrarimpuesto','reporte','agregarmasivamente','cargadirecciones','borraitems','sacaitem','sacaum','salir','agregaimpuesto','agregaritemsolpe','procesardocumento','refrescadescuento','VerDocumento','EditaDocumento','creadocumento','Agregardelmaletin','borraitem','imprimirsolo','cargaentregas','agregarsolpe','agregarsolpetotal','pasaatemporal','create','imprimirsolo','imprimir','imprimir2','enviarmail',
 					'procesaroc','hijo','Aprobaroc','Reporteoc','Anularoc','Configuraop','Revertiroc', ///acciones de proceso
 					'libmasiva','creadetalle','Verdetalle','muestraimput','update','nada','Modificadetalle'),
 				'users'=>array('@'),
@@ -2650,7 +2651,7 @@ public function borraitemdesolpe($autoId) //Borra un registro de solpe
                                 
 				} else {
                             
-                            $command = Yii::app()->db->createCommand("delete from  {{Tempdesolpe}}   where idtemp =".$autoId."   ");
+                            $command = Yii::app()->db->createCommand("delete from  {{tempdesolpe}}   where idtemp =".$autoId."   ");
 				$command->execute();
 				Yii::app()->user->setFlash('succcess', "El registro de solicitud ".$modelito1->solpe->numero."-".$modelito1->item. " se ha borrado");
 			   
@@ -2753,8 +2754,34 @@ public function borraitemdesolpe($autoId) //Borra un registro de solpe
     }
     
    
+    public function actionCargagaleria(){
+        IF(yii::app()->request->isAjaxrequest){
+            if(isset($_GET['id'])){
+                $id= (integer)MiFactoria::cleanInput($_GET['id']);
+                 $detalle= Tempdetot::model()->findByPk($id);
+                 if(!is_null($detalle)){
+                      $this->renderpartial('//site/galeria',array('model'=>$detalle));
+         
+                 }else{
+                    throw new CHttpException(500,'No se encontro el registro de la OT PARA ESTE ID'.$id); 
+         
+                 }
+            }else{
+               throw new CHttpException(500,'No se encontro el item id del item de la Ot'); 
+       
+            }
+           
+           
+        }
+    }
+    
+    
+    
+    
+    
     
     }
+    
     
     
 ?>

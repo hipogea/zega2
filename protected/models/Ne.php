@@ -42,6 +42,9 @@ class Ne extends ModeloGeneral
 			array('d_fecgui', 'required','message'=>'Llene la fecha del documento'),
 			array('d_fectra', 'required','message'=>'Llene la fecha del ingreso'),
 			array('d_fectra', 'checkfechas'),
+                    array('c_codtra', 'checkvalores'),
+                        array('c_coclig', 'checkvalores'),
+                        array('c_rsguia', 'checkvalores'),
 			array('n_direc,n_dirsoc','checkdirecciones'),
 			array('n_direc, n_direcformaldes, n_directran, n_dirsoc, n_agencia', 'numerical', 'integerOnly'=>true),
 			array('c_coclig, c_codtra', 'length', 'max'=>6),
@@ -108,6 +111,7 @@ class Ne extends ModeloGeneral
 
 	public function checkdirecciones($attribute,$params) {
 		if ($this->n_direc==$this->n_dirsoc )
+                    
 			$this->adderror('n_direc','El punto de emision no puede ser igual al punto de recepcion');
 
 		//luego verificamos que el puno de recepcion tenga le flag de esrecepcion
@@ -291,7 +295,7 @@ class Ne extends ModeloGeneral
 
 			///$this->usuario=Yii::app()->user->name;
 
-
+                        $this->sacadireccion();
 			$this->c_salida='0';
 			//$command = Yii::app()->db->createCommand(" select nextval('sq_guias') ");
 			//$this->n_guia= $command->queryScalar();
@@ -430,6 +434,27 @@ class Ne extends ModeloGeneral
 			'criteria'=>$criteria,
 		));
 	}
+        
+      public function sacadireccion(){
+		$criteria=new CDbCriteria;
+		$criteria->addCondition(" c_hcod='".$this->c_coclig."' ");
+		$row=Direcciones::model()->findall($criteria);
+		/*VAR_DUMP($this->c_coclig);
+		ECHO "<BR>";
+		VAR_DUMP($row[0]->n_direc);
+		YII::APP()->END();*/
+		//if (!is_null($row[0])) {
+			$this->n_direcformaldes=$row[0]->n_direc;
+		$criteria=new CDbCriteria;
+		$criteria->addCondition(" c_hcod='".$this->c_codtra."' ");
+		$row=Direcciones::model()->findall($criteria);
+		$this->n_directran=$row[0]->n_direc;
+
+
+		//}
+	}  
+        
+        
         
         
 }

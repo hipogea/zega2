@@ -59,6 +59,8 @@ class Guia extends ModeloGeneral
 			array('d_fectra', 'checkfechas','message'=>'Llene la fecha del trasnporte'),
 			array('c_numgui', 'match', 'pattern'=>'/[0-9]/','message'=>'Numero errado'),
 			array('c_codtra', 'checkvalores'),
+                        array('c_coclig', 'checkvalores'),
+                        array('c_rsguia', 'checkvalores'),
 			//array('c_numgui', 'match', 'pattern'=>'/[0-9]/','message'=>'Numero errado'),
 			array('c_numgui', 'checknumero','on'=>'insert'),
 			array('n_direc,n_dirsoc','checkdirecciones'),

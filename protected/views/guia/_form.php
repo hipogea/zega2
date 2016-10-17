@@ -1,8 +1,4 @@
-<?php
-
-?>
-
-
+<?PHP MiFactoria::titulo('Documento de transporte','truck'); ?>
 <div class="division">
 	<div class="wide form">
 
@@ -18,13 +14,7 @@
 
 		)); ?>
 
-	   	<div class="barrasup barrasup-simple">
-
-	   		<?php echo CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'compra.png',"hola",array('width'=>'15','height'=>'8')); ?>
-	   		<span class="badge titulosup-simple ">Guia de Remision
-	            </span>
-	   		<div class="botonsup"><?php echo CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'cerrar.png',"hola",array('width'=>'16','height'=>'16')); ?></div>
-	   	</div>
+	   	
 
 
 		<?php  echo $form->errorSummary($model); ?>

@@ -17,8 +17,6 @@
 						'content'=>$this->renderPartial('//site/galeria', array('model'=>$model),TRUE)
 					),
 
-
-
 				),
 				'options' => array('overflow'=>'auto','collapsible' => false,),
 				'id'=>'MyTabi',)

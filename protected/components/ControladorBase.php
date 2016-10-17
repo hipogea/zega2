@@ -107,12 +107,10 @@ private function relacionesnietas(){
 	public function IniciaBuffer($id)
 	{ ///Levanta la tabal temporal
 		//$nametablapadre=$this->modelopadre;
-
 		/*var_dump($this->modeloshijos);
 		yii::app()->end();*/
 		Bloqueos::clearbloqueos();
-		foreach($this->modeloshijos as $nametablaoriginal => $nametablatemporal)
-		  {
+		foreach($this->modeloshijos as $nametablaoriginal => $nametablatemporal)		  {
 				 $campoenlace=$this->getFieldLink($nametablaoriginal);
 			//  var_dump( $campoenlace);die();
 			  if(is_array($campoenlace)){
@@ -121,18 +119,19 @@ private function relacionesnietas(){
 			  } else{
 				  $aid=$id;
 			  }
-
 			  $registroshijos=MiFactoria::getRegistrosHijos($nametablaoriginal,$campoenlace,$aid);
-
-
-			 foreach  ($registroshijos as $row)
+			 
+                         
+                          foreach  ($registroshijos as $row)
 			  {
 				  ///Evitamos levantar items duplicados
 				$existeregistro=MiFactoria::ExisteRegistro($nametablatemporal,$row->id);
-				// echo  " exist eregistro de  ".$nametablatemporal."<br>";
+				 
 				if(is_null($existeregistro))
 				  {  ///Solo si no existe
-					$modelotempdpeticion=new $nametablatemporal;
+					//if($nametablatemporal=='Tempdesolpe')
+                                   //echo "no existe registro para el id ".$row->id;
+                                    $modelotempdpeticion=new $nametablatemporal;
 					 $modelotempdpeticion->setScenario("buffer");
 					  $row->setScenario("buffer");
 					$modelotempdpeticion->attributes=$row->attributes;
@@ -147,8 +146,14 @@ private function relacionesnietas(){
 						print_r($modelotempdpeticion->getErrors()); yii::app()->end();
 					}
 					//array_push($registrostemporales,$modelotempdpeticion);
-				   }
+				      
+                                        } else{
+                                       //if($nametablatemporal=='Tempdesolpe')
+                                    //echo "ya existe registro para el id ".$row->id." el ditemp es   ".$existeregistro->idtemp;
+                                   }
 			 }
+                          /*if($nametablatemporal=='Tempdesolpe')
+                                    die();*/
 	        }
 		//yii::app()->end();
 	}
@@ -178,7 +183,7 @@ private function relacionesnietas(){
 				//$row->setScenario('buffer');
 				$modelooriginal=NULL;
 
-				IF(!IS_NULL($row->id))
+				IF($row->id >0 )
 				$modelooriginal=$nametablaoriginal::model()->findByPk($row->id);
 				if(is_null($modelooriginal)) {
 					$modelooriginal=new $nametablaoriginal;

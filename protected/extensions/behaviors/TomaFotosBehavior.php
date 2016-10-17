@@ -140,8 +140,9 @@ private function prepara() {
         
         $fullFileName=$this->limpiaruta($fullFileName);
         
+         //die();
         $filename=$fullFileName;
-          var_dump($filename);die();
+          //var_dump($filename);die();
         $this->prepara();
         $this->creacarpeta();
         // var_dump($filename);
@@ -151,18 +152,20 @@ private function prepara() {
            {
            // $this->creacarpeta();
           IF (is_file($filename)) {
-            // var_dump($filename);
+               // var_dump($filename);
               $nombrec= trim((string)ceil($this->_id/$this->_numerofotosporcarpeta)).DIRECTORY_SEPARATOR;
        $ruta=$this->_rutabas.DIRECTORY_SEPARATOR.$this->_codocu.DIRECTORY_SEPARATOR.$this->_extensionatrabajar.DIRECTORY_SEPARATOR.$nombrec;
       // var_dump($ruta);
       //  var_dump($this->colocanombre());die();
+        Yii::log(' ya llegamos    '.serialize($fullFileName),'error');
+           
              if(copy($filename,$ruta.$this->colocanombre())){
-                 var_dump($ruta.$this->colocanombre());die();
-                  yii::log('error','jajaja  se pudo copiar con la funcion copy  : '.$filename.'  ,  '.$ruta.$this->colocanombre());
+                 //var_dump($ruta.$this->colocanombre());die();
+                  yii::log('mas   error','jajaja  se pudo copiar con la funcion copy  : '.$filename.'  ,  '.$ruta.$this->colocanombre());
                  return true;
              }else{
-                   var_dump($ruta.$this->colocanombre());die();
-                 yii::log('error','no se pudo copiar con la funcion copy  : '.$filename.'  ,  '.$ruta.$this->colocanombre());
+                   //var_dump($ruta.$this->colocanombre());die();
+                 yii::log('  mens   error','no se pudo copiar con la funcion copy  : '.$filename.'  ,  '.$ruta.$this->colocanombre());
                  return false;
              }
           }else{
@@ -184,8 +187,8 @@ private function prepara() {
     }
     
     private function colocanombre(){
-       
-            return $this->_id."_".((microtime(true))*10000)."_".yii::app()->user->id.".".$this->_extensionatrabajar;
+         Yii::log(' estamos dentrp    '.serialize($fullFileName),'error');
+            return $this->_id."_".(  (integer)((microtime(true))*10000)    )."_".yii::app()->user->id.".".$this->_extensionatrabajar;
        
        
     }
@@ -226,9 +229,12 @@ private function prepara() {
                                                   'subidopor'=>$this->getquiensubio($nombre),
                                                   'subidoel'=>$this->getcreado($nombre),
                                                   'tamano'=>$this->getSize($nombrearchivo),
-                                                  'rutacorta'=>($rutasabsolutas)?trim($this->rutarelativa(),DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR:trim($this->limpiaruta($datosruta['dirname']),DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR,
-                                                   'rutalarga'=>($rutasabsolutas)?$this->limpiaruta(trim($datosruta['dirname'],DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR):
-                                                  $this->limpiaruta(trim(Yii::getPathOfAlias('webroot'))).
+                                                  'rutacorta'=>($rutasabsolutas)?
+                                                  DIRECTORY_SEPARATOR.trim($this->rutarelativa(),DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR:
+                                                  DIRECTORY_SEPARATOR.trim($this->limpiaruta($datosruta['dirname']),DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR,
+                                                   'rutalarga'=>($rutasabsolutas)?
+                                                  DIRECTORY_SEPARATOR.$this->limpiaruta(trim($datosruta['dirname'],DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR):
+                                                  DIRECTORY_SEPARATOR.$this->limpiaruta(trim(Yii::getPathOfAlias('webroot'))).
                                                   $this->limpiaruta($this->rutarelativa()),
                                                                                         
                                               );
@@ -291,6 +297,7 @@ private function prepara() {
     
     
     public function getulpoaddirectory(){
+        //echo rtrim($this->_ruta,DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR; die();
         return rtrim($this->_ruta,DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
     }
     
@@ -326,5 +333,7 @@ private function prepara() {
               }
               return $cadena;
     }
+    
+    
     
 }

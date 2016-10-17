@@ -42,6 +42,8 @@
 		  $criteriox = New CDBcriteria;
 		  $criteriox->addcondition ( "c_hcod=:vc_hcod" );
 		  $criteriox->params = array ( ":vc_hcod" => $model->sociedades->proveedor()->codpro );
+		  //VAR_DUMP($model->sociedades->proveedor()->codpro );
+                  ?>
 		  ?>
 		  <?php $datos11 = CHtml::listData ( Direcciones::model ()->findAll ( $criteriox ) , 'n_direc' , 'c_direc' );
 	     // print_r($datos11);
