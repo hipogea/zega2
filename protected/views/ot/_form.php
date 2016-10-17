@@ -505,7 +505,7 @@ $this->widget('zii.widgets.jui.CJuiTabs', array(
 			),
                     
                     'Registro visual'=>array('id'=>'tab_img',
-				'content'=>$this->renderPartial('tab_images', array(),TRUE)
+				'content'=>$this->renderPartial('tab_images', array('modelopadre'=>$model),TRUE)
 			),
                     
 			'Auditoria'=>array('id'=>'tab____..__',

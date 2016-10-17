@@ -24,7 +24,7 @@ class Tempdesolpe extends ModeloGeneral
 			array('tipsolpe,centro, codal,hidot,hcodoc, codart,item,codservicio,
 			fechaent,est, txtmaterial,hidlabor,iduser,idusertemp,punitreal,idstatus,id,idtemp', 'safe','on'=>'buffer'),
 			array('codart', 'checkvalores'),
-
+                        array('codart', 'chkcatval'),
 			array('codal', 'checkal'),
 			array('posicion, iduser, idusertemp, idstatus', 'numerical', 'integerOnly'=>true),
 			array('cant, cantaten, punitplan, punitreal', 'numerical'),
@@ -326,5 +326,11 @@ class Tempdesolpe extends ModeloGeneral
 
 		return parent::afterfind();
 	}
+        
+        public function chkcatval($attribute,$params){
+ if(!Maestrodetalle::tienecatvaloracion($this->codart,$this->codal,$this->centro))
+	 $this->adderror('codart','Este material no tiene grupo de valor válido, complete este valor en los datos maestros del material para este centro y almacen');
+
+      }
 
 }

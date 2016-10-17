@@ -135,6 +135,7 @@ echo
 ",
 			CClientScript::POS_LOAD
 		);
+          //echo $this->uploadDir;die();
 	}
 
 	public function registerCoreScripts(){

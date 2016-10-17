@@ -35,9 +35,9 @@ class Tempdetot extends ModeloGeneral
 		// will receive user inputs.
 		return array(
                     array('idlabor','exist','allowEmpty' => true, 'attributeName' => 'id', 'className' => 'Listamateriales','message'=>'Esta actividad no está registrada : '.gettype($this->idlabor)),
-			array('idlabor', 'checkcamposdefecto'),
+		array('idlabor', 'checkcamposdefecto'),
 			//array('id, hidorden, item, textoactividad, codresponsable, fechainic, fechafinprog, fechacre, flaginterno, codocu, codestado, codmaster, idinventario, iduser, idusertemp, idstatus', 'required'),
-			array('idinventario, iduser, idusertemp, idstatus', 'numerical', 'integerOnly'=>true),
+		array('idinventario, iduser, idusertemp, idstatus', 'numerical', 'integerOnly'=>true),
 			array('idlabor,codocu,avance,codestado,nhoras,fechainic,fechafinprog,fechafin,'
                             . 'fechainiprog,idaux,nhombres,codmon,monto,codmaster,tipo,cc,txt,codgrupoplan', 'safe'),
 				array('id, hidorden', 'length', 'max'=>20),
@@ -228,31 +228,47 @@ class Tempdetot extends ModeloGeneral
        // $filename=$fullFileName;
         
        // $path_parts = pathinfo($fullFileName);
+       // var_dump($fullFileName); die();
        Yii::log(' ejecutando '.serialize($fullFileName),'error');
-        $this->colocaarchivo($fullFileName);
+      // var_dump(self::model()->findByPk((integer)$userdata)->id); die();
+       self::model()->findByPk($userdata)->colocaarchivo($fullFileName);
+       
     }
     
     //7carga los materiales relacinados a la tabla tempdesolpe a al actividad de la lista materiales 
     private function cargarecursos(){
         ///devuelve primero los registros hijos para ver si tiene hijos 
-        $registros=  Listamateriales::model()->hijos;
+        $registros=  Listamateriales::model()->findByPk($this->idlabor)->hijos;
         foreach($registros as $fila){
-            $recurso=New Tempdesolpe('hojaruta');
+            $recurso=New Tempdesolpe('buffer');
+            $recurso->valorespordefecto();
              $recurso->setAttributes(
                             array(
-                                'codcen'=>$recurso->getvaluedefault('centro'),
-                                'codal'=>$recurso->getvaluedefault('codal'),
+                               // 'centro'=>$recurso->getvaluedefault('centro'),
+                                //'codal'=>$recurso->getvaluedefault('codal'),
                                 'idusertemp'=>yii::app()->user->id,
                                 'hcodoc'=>$this->ot->codocu,
                                 'codart'=>$fila->codigo,
                                 'um'=>$fila->um,
                                 'cant'=>$fila->cant,
                                 'txtmaterial'=>$fila->maestro->descripcion,
-                                
+                                'codocu'=>'350',
+                                 'tipsolpe'=>'M',
+                                'est'=>'99',
+                                'hidot'=>$this->ot->id,
+                                'hidlabor'=>$this->idaux,
+                                 'tipsolpe'=>'M',
+                                'idstatus'=>1,
                             )
                      );
+            if(!$recurso->save())
+                MiFactoria::Mensaje ('error',
+                        Yii::app()->mensajes->
+                        getErroresItem($recurso->geterrors())
+                        );
             
         }
+        
         
     }
     
