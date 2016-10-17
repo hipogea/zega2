@@ -193,12 +193,7 @@ class Tempdetot extends ModeloGeneral
                                 
              public function afterSave() {
             
-                if(!is_null($this->idlabor)){
-                   
-                      $this->cargarecursos(); 
-                   
-                }            
-                               return parent::afterSave();
+                
 	}                    
                                 
                                 
