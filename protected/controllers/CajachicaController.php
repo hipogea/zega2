@@ -149,7 +149,7 @@ class CajachicaController extends ControladorBase
 	{
 		$modelocabeza=Cajachica::model()->findByPk($_GET['idcabeza']);
      //VERIFICANDO QUE NO EXCEDA EL % DE TOLERNACIA
-
+echo "adad";
 			if ( is_null ( $modelocabeza ) )
 				throw new CHttpException( 500 , 'No existe esta solicitud con este ID    ' . $_GET[ 'idcabeza' ] . '    ' );
 
@@ -335,7 +335,8 @@ private function buscasaldoanterior ($id){
 	 */
 	public function actionAdmin()
 	{
-		//var_dump(yii::app()->settings->get('general_monedadef'));yii::app()->end();
+		
+//var_dump(yii::app()->settings->get('general_monedadef'));yii::app()->end();
 		$model=new Cajachica('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['Cajachica']))
@@ -376,5 +377,10 @@ private function buscasaldoanterior ($id){
 
 	/*  Veriicamosa que nadie entre q actualizar si no es su propiedad */
 
-
+PUBLIC FUNCTION actioncargaimputacion (){
+    
+}
+        
+        
+        
 }
