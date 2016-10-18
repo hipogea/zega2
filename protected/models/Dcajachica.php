@@ -57,10 +57,12 @@ const ESTADO_DETALLE_CAJA_CREADO='10';
 			'trabajadores' => array(self::BELONGS_TO, 'Trabajadores', 'codtra'),
 			'estado'=> array(self::BELONGS_TO, 'Estado', array('codestado'=>'codestado', 'coddocu'=>'codocu')),			
 			'cco' => array(self::BELONGS_TO, 'VwImputaciones', 'ceco'),
-			'moneda' => array(self::BELONGS_TO, 'Monedas', 'codmon'),
+			'ot'=>array(self::BELONGS_TO, 'Detot', 'hidref'),
+                    'moneda' => array(self::BELONGS_TO, 'Monedas', 'codmon'),
 			'flujos' => array(self::BELONGS_TO, 'Tipoflujocaja', 'tipoflujo'),
 			'rendido'=>array(self::STAT, 'Dcajachica', 'hidcargo','select'=>'sum(t.monto)','condition'=>"codestado <> '".ESTADO_DETALLE_CAJA_ANULADO."'  "),//el campo foraneo
 
+                    
 		);
 	}
 
@@ -322,7 +324,8 @@ const ESTADO_DETALLE_CAJA_CREADO='10';
 
 		}
 		
-
+ //verificando consistencia de tipimputacion
+                if
 		
 		
 		return parent::beforesave();
@@ -337,4 +340,8 @@ const ESTADO_DETALLE_CAJA_CREADO='10';
 	{
 		return parent::model($className);
 	}
+        
+        public function checktipimputaciones(){
+            
+        }
 }

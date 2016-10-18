@@ -116,8 +116,10 @@
 		  echo $form->DropDownList($model,'tipimputacion',$datos, array(  'ajax' => array('type' => 'POST', 
 									    'url' => CController::createUrl($this->id.'/cargaimputacion'),
                                                                                 'data'=>array(
-                                                                                    
-                                                                                ),//  la acción que va a cargar el segundo div 
+                                                                                    'tipo'=>'js:Dcajachica_tipimputacion.value',
+                                                                                   'formula'=>base64_encode(serialize($form)), 
+                                                                                ),
+                                                                                //  la acción que va a cargar el segundo div 
 									    'update' => '#colector' // el div que se va a actualizar
 											  ),
 									  'empty'=>'--Seleccione imputacion--',) ) ;

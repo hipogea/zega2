@@ -7,6 +7,8 @@ const TIPO_DE_FLUJO_A_RENDIR='102';
 
 
 class CajachicaController extends ControladorBase
+
+
 {
 
 	public function __construct() {
@@ -35,7 +37,7 @@ class CajachicaController extends ControladorBase
 		return array(
 
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('admin','view','create','borraitems','aprobaritem','update','creadetalle','actualizadetalle'),
+				'actions'=>array('cargaimputacion','admin','view','create','borraitems','aprobaritem','update','creadetalle','actualizadetalle'),
 				'users'=>array('@'),
 			),
 
@@ -149,7 +151,7 @@ class CajachicaController extends ControladorBase
 	{
 		$modelocabeza=Cajachica::model()->findByPk($_GET['idcabeza']);
      //VERIFICANDO QUE NO EXCEDA EL % DE TOLERNACIA
-echo "adad";
+
 			if ( is_null ( $modelocabeza ) )
 				throw new CHttpException( 500 , 'No existe esta solicitud con este ID    ' . $_GET[ 'idcabeza' ] . '    ' );
 
@@ -379,7 +381,36 @@ private function buscasaldoanterior ($id){
 
 PUBLIC FUNCTION actioncargaimputacion (){
     
-}
+    IF(yii::app()->request->isAjaxRequest){
+       $tipo=MiFactoria::cleanInput($_POST['tipo']);
+   /* $modelo= Dcajachica::model()->findByPk(
+            (Integer)MiFactoria::cleanInput($_POST['Dcajachica']['id']));
+    */
+       $modelo=new Dcajachica;
+       /*$mode= serialize($modelo);
+       $mode= unserialize($mode);
+       var_dump($mode);die();*/
+       $formulario= unserialize(base64_decode($_POST['formula']));
+       //var_dump($formulario);die();
+       $registros=Tipimputa::model()->findAll("codimpu=:v",array(":v"=>$tipo));
+    foreach($registros as $record){
+        if(is_null($record->validacion) or empty($record->validacion)){
+            //var_dump($registro);die();
+             //echo "error "; die();
+            throw new CHttpException(500,'Este tipo de imputacion '.$record->desimputa.' no tiene un modelo asociado  '.gettype($record->validacion));
+		
+        }else{
+            //echo "jajaja"; die();
+          echo $this->renderpartial('imputacion_'.trim($record->validacion),array('form'=>$formulario,'model'=>$modelo),true); 
+        } 
+     }
+        
+         }  else{
+             echo "no salu ecompare";
+         } 
+    
+    
+        }
         
         
         
