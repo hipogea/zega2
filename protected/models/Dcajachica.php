@@ -27,10 +27,10 @@ const ESTADO_DETALLE_CAJA_CREADO='10';
 			array('hidcaja, fecha, glosa, monto,monedahaber,referencia, debe,tipoflujo,  codtra, ceco,  codocu,codocuref,hidref,tipimputacion', 'safe'),
 			array('fecha', 'checkfecha','on'=>'insert,update'),
 			array('monto', 'checktolerancia','on'=>'insert,update'),
-            array('ceco','exist','allowEmpty' => false, 'attributeName' => 'codc', 'className' => 'Cc','message'=>'Este ceco no existe'),
+            //array('ceco','exist','allowEmpty' => false, 'attributeName' => 'codc', 'className' => 'Cc','message'=>'Este ceco no existe'),
             array('fecha', 'checkfecha_detalle','on'=>'upd_rencidiontrabajador,ins_rendiciontrabajador'),
 			//array('tipoflujo', 'checkflujo','on'=>'upd_rencidiontrabajador,ins_rendiciontrabajador'),
-			array('hidcaja, fecha, glosa, referencia, debe, tipoflujo,  codtra, ceco,  codocu', 'required'),
+			array('hidcaja, fecha, glosa, referencia, debe, tipoflujo,  codtra, codocu', 'required'),
 			array('hidcaja, iduser', 'numerical', 'integerOnly'=>true),
 			array('glosa, referencia', 'length', 'max'=>60),
 			array('debe, haber, saldo', 'length', 'max'=>10),
@@ -325,7 +325,9 @@ const ESTADO_DETALLE_CAJA_CREADO='10';
 		}
 		
  //verificando consistencia de tipimputacion
-                if
+              
+           $this->trataimputacion();
+             
 		
 		
 		return parent::beforesave();
@@ -342,6 +344,53 @@ const ESTADO_DETALLE_CAJA_CREADO='10';
 	}
         
         public function checktipimputaciones(){
+            
+        }
+        
+        private function trataimputacion(){
+            //IF ($this->cambiocampo('tipimputacion')){
+               if($this->tipimputacion=='T')
+                   { //SI ES UNA ORDEN
+                       //VERIFICAR SI ESTA IMPUTADO YA A UNA ORDEN
+                     $criterio=New CDBCriteria;
+                     $criterio->addCondition("hidcaja=:vcaja and codocucaja=:vcodocu");
+                     $criterio->params=array(
+                         ':vcaja' => $this->id,
+			':vcodocu' => $this->codocu,
+                     );
+                      $impu=Imputaciones::model()->find($criterio);
+                      if(is_null($impu)){
+                          $regi=New Imputaciones();
+                          $regi->setAttributes(
+                                  array(
+                                      
+			'hidcaja' =>$this->id,
+			'codocucaja' => $this->codocu,
+			'monto' => (($this->monedahaber!=yii::app()->settings->get('general','general_monedadef'))?
+			yii::app()->tipocambio->getcambio($this->monedahaber,yii::app()->settings->get('general','general_monedadef')):
+			1)*$this->debe,
+			'codmon' => $this->monedahaber,
+			'tipimputacion' => $this->tipimputacion,
+			'idcolector' => $this->hidref,
+			'numerocolector' => Detot::model()->findByPK($this->hidref)->ot->numero,
+			'codocuref' => '891', //detalle ot
+                         'numerocolector' => Detot::model()->findByPK($this->hidref)->ot->id,
+			             
+                                  )
+                                  );
+                        $regi->save();
+                             RETURN TRUE;
+                          
+                      }else{
+                          return false;
+                      }
+                      
+                      
+                        
+                    }  else{
+                        return false;
+                    }
+            //}
             
         }
 }

@@ -1,47 +1,30 @@
 <?php
 $this->widget('ext.groupgridview.GroupGridView', array(
       'id' => 'detallecompo-grid',
-      'dataProvider'=>Neot::model()->search_por_ot(16),
-      'mergeColumns' => array('numero','textoactividad'),
+      'dataProvider'=> Imputaciones::model()->search_por_ot($modelopadre->id),
+     'mergeColumns' => array('idcolector'),
 	 'itemsCssClass'=>'table table-striped table-bordered table-hover',
-	  'extraRowColumns' => array('numero'),
+	  'extraRowColumns' => array('idcolector'),
 	 'extraRowTotals' => function($data, $row, &$totals) {
-		 if(!isset($totals['sum_cant'])) $totals['sum_cant'] = 0;
-		 $totals['sum_cant']+=$data['cant'];
+		 if(!isset($totals['sum_monto'])) $totals['sum_monto'] = 0;
+		 $totals['sum_monto']+=$data['monto'];
 
 	 },
-	 'extraRowExpression' => '"<span style=\"font-weight: bold;color: orangered;font-size:13px;\"> Total OT : ".MiFactoria::decimal($totals["sum_cant"],2)." </span>"',
+	 'extraRowExpression' => '"<span style=\"font-weight: bold;color: orangered;font-size:13px;\"> Asignaciones por actividad : ".MiFactoria::decimal($totals["sum_monto"],2)." </span>"',
 	 'extraRowPos'=>'below',
                  
 	
 	//'filter'=>$model,
 	'columns'=>array(
-                'cant',
-            array('name'=>'serie','header'=>'Serie','value'=>'$data->detgui->ne->c_serie'),
-		array('name'=>'numero','header'=>'N° Ingr.','value'=>'$data->detgui->ne->c_numgui'),
-            array('name'=>'item','header'=>'Item','value'=>'$data->detgui->c_itguia'),
-            array(
-			'name'=>'fechatra',
-			//array('name'=>'fechaent','header'=>'Para'),
-			'header'=>'Fecha',
-			'value'=>'date("d.m.y", strtotime($data->detgui->ne->d_fectra))',
-			'htmlOptions'=>array('width'=>40),
-		),
-               // 'detgui.item',
-             array('name'=>'textoactividad','value'=>'$data->detgui->c_descri'),
-             // array('name'=>'textoactividad','value'=>'$data->detgui->c_descri'),
-              array('name'=>'user','value'=>'yii::app()->user->um->loadUserById($data->iduser)->username'),
-            // array('name'=>'creado','value'=>'yii::app()->user->um->loadUserById($data->iduser)->username'),
-           // 'detalleot.ot.objetosmaster.masterequipo.descripcion',
-           // 'detalleot.ot.objetosmaster.identificador',
-
-            /*
-            'detot.textocorto',
-                ' detot.codobjeto',
-               'detot.nombreobjeto',
-              'detot.descripcion',*/
-         
-				
+              //array('name'=>'glosa','header'=>'Glosa','value'=>'$data->dcajachica->glosa'),                
+            array('name'=>'glosa','header'=>'Glosa','value'=>'$data->dcajachica->glosa'),
+                array('name'=>'desdocu','header'=>'Tip Doc','value'=>'$data->dcajachica->documentos->desdocu'),
+               array('name'=>'referencia','header'=>'Numero','value'=>'$data->dcajachica->referencia'),
+             array('name'=>'fecha','header'=>'Fecha','value'=>'$data->dcajachica->fecha'),
+            array('name'=>'monto','header'=>'Monto','value'=>'$data->monto'),
+           // array('name'=>'monto','header'=>'Monto','value'=>'$data->monto'),
+            
+            		
 	),
 )); ?>
 

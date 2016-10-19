@@ -128,25 +128,22 @@
 	</div>
     <div id="colector"></div>
     
+    <?PHP
+      IF(!$model->isNewRecord){
+          if($model->tipimputacion=='T'){
+              $this->renderpartial('imputacion_Ot',array('form'=>$form,'model'=>$model));
+          }
+          if($model->tipimputacion=='K'){
+              $this->renderpartial('imputacion_Cc',array('form'=>$form,'model'=>$model));
+          }
+          if($model->tipimputacion=='B'){
+              $this->renderpartial('imputacion_Cc',array('form'=>$form,'model'=>$model));
+          }
+          
+           }
+    ?>
     
-    
-	<div class="row">
-		<?php echo $form->labelEx($model,'ceco'); ?>
-		<?php
-		$this->widget('ext.matchcode.MatchCode',array(
-	'nombrecampo'=>'ceco',
-	'ordencampo'=>3,
-	'controlador'=>'Dcajachica',
-	'relaciones'=>$model->relations(),
-	'tamano'=>6,
-	'model'=>$model,
-	'form'=>$form,
-	'nombredialogo'=>'cru-dialog3',
-	'nombreframe'=>'cru-frame3',
-	'nombrearea'=>'fhdfjfgery',
-	)); ?>
-		<?php echo $form->error($model,'ceco'); ?>
-	</div>
+	
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'codocu'); ?>
