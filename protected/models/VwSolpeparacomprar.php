@@ -100,7 +100,7 @@ $criteria->addBetweenCondition('fechaent', ''.$this->fechaent.'', ''.$this->fech
 		$criteria->compare('cantatendida',$this->cantatendida);
 		$criteria->compare('cant_pendiente',$this->cant_pendiente);
 		$criteria->addcondition(" txtmaterial like '%".MiFactoria::cleanInput($this->txtmaterial)."%' ");
-		$criteria->addcondition("tipsolpe='S'");
+		$criteria->addcondition("tipsolpe='S' ");
 		$criteria->addBetweenCondition('fechaent', ''.$this->fechaent.'', ''.$this->fechaent1.'');
 		$criteria->addBetweenCondition('fechacrea', ''.$this->fechacrea.'', ''.$this->fechacrea1.'');
 

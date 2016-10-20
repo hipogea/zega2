@@ -353,6 +353,7 @@ class Alkardex extends ModeloGeneral
 
 			case "68": //Ingreso de actividad
 				$this->InsertaAlentregasCompras();
+                            $this->InsertaCcGastosServ();
 				$this->InsertaCcGastos($this->getcolector());
 				//$this->alkardex_alinventario->actualiza_stock($this->codmov,abs($this->cantidadbase()));
 				$codop='575'; //Comsumo par aventyas

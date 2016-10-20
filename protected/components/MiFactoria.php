@@ -401,8 +401,13 @@ public static function InsertaCcGastos($filakardex){
 
     public static function InsertaCcGastosServ($idkardex){
         $row=self::CargaModelo('Alkardex',$idkardex);
+         $docompra=self::CargaModelo('Docompra',$row->idref);
+         $desolpe=self::CargaModelo('Desolpe',$docompra->iddesolpe);      
+        $desolpe->setScenario('punitreal');
+        $desolpe->punitreal=$docompra->alkardex_gastos;
+        $desolpe->save();unset($desolpe);unset($docompra);
         $model=new CcGastos();
-        $model->ceco=self::CargaModelo('Desolpe',self::CargaModelo('Docompra',$row->idref)->iddesolpe)->imputacion;
+        $model->ceco=$desolpe->imputacion;
         $model->fechacontable=$row->fecha;
         $model->monto=-1*$row->getMonto(); ///Es el opuesto de todo
         $model->iduser=Yii::app()->user->id;

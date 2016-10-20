@@ -1,28 +1,14 @@
 <?php
-
-
-
 class ModeloGeneral extends CActiveRecord
-
-
 {
-
 	PRIVATE $_venumModels=null;
 	private $_modelPath=null;
-
 	public $oldAttributes=array(); //arayu ara guaradar los atributos viejos
 	public $documento=NULL;
 	//public $campodenumero=NULL; //Nombre de campo que guarda el valor del numero del doc
 	public $mensajes=array(); //ARRAY PARA UARADAR LOS MENSAKESW
 	public $campoprecio=null; //nobre del campo precio del modelo
-	public $isdocParent=true; ///Si es modelo padre TRUE , FALSE  SI es un item
-
-	
-	
-	
-	
-	
-	
+	public $isdocParent=true; ///Si es modelo padre TRUE , FALSE  SI es un item	
 	public function insertamensaje($nivel,$mensaje){
 	//	$ingreso= array_push($this->mensajes,array($nivel=>$mensaje));
 		/* print_r($this->mensajes);
@@ -32,10 +18,7 @@ class ModeloGeneral extends CActiveRecord
 		array_push($this->mensajes,$mensaje);
 		return 1;
 	}
-
-
 	public function valorespordefecto(){
-
 		VwOpcionesdocumentos::valorespordefecto($this);
 		/*//Vamos a cargar los valores por defecto
 		$matriz=VwOpcionesdocumentos::Model()->search_d($documento)->getData();
@@ -59,10 +42,6 @@ class ModeloGeneral extends CActiveRecord
         public function hasvaluedefault($namefield){
             return VwOpcionesdocumentos::tienevalorpordefecto($this, $namefield);
         }
-
-
-
-
 	public function devuelveimpuestos(){
 
 		if($this->isdocParent) {
@@ -83,9 +62,6 @@ class ModeloGeneral extends CActiveRecord
 			return array();
 		}
 	}
-
-
-
 	public function hasScenario($escena) {
 		 return in_array($escena,$this->getScenarios());
 	}
@@ -105,13 +81,7 @@ class ModeloGeneral extends CActiveRecord
 			}
 		}
 		return array_unique(explode(",",$cadena));
-
-
 	}
-
-
-
-
 
 	public  function getModelPath()
 	{
@@ -120,8 +90,6 @@ class ModeloGeneral extends CActiveRecord
 		else
 			return Yii::app()->getBasePath().DIRECTORY_SEPARATOR.'models';
 	}
-
-
 	/**
 	 * enumControllers
 	 *    lista los nombres de los controllers declarados.
@@ -289,7 +257,7 @@ public function etiquetascampos (){
                                                                                     ' El prefijo especificado [  '.$prefijo.'  ] en esta funcion como parametro, no coincide con los valores almacenados en eta columna , por ejemplo el ultimo valor  dela columan es : ['.$valor.'  ]   ');
                                                                          if(is_null($ancho))  {
                                                                             $ancho=strlen(trim($valor));
-                                                                                    if(strlen(trim($ancho)) <= strlen(trim($prefijo)))
+                                                                                    if($ancho <= strlen(trim($prefijo)))
                                                                                          throw new CHttpException(500, __CLASS__ . '   ' . __FUNCTION__ . '   ' . __LINE__ .
                                                                                     ' El prefijo especificado [  '.$prefijo.'  ] en esta funcion como parametro, es mayor o igual  al ancho del ultimo valor  dela columan es : ['.$valor.'  ]   ');
                                                                                    

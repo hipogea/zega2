@@ -324,9 +324,13 @@ const ESTADO_DESOLPE_RESERVADO='60';
 				$detallesolpe->cant = $alreserva->cant; ///iMPORTANTE, AQUIE ES LA CANTOIDAD DE LA RESERVA
 				$detallesolpe->codart = $detalle->codart;
 				$detallesolpe->idreserva = $id;
-				$detallesolpe->save ();
-				$mensaje.="OK: Se genero la solicitud de compra ".$detallesolpe->desolpe_solpe->numero."  item ".$detallesolpe->item."  con exito <br>";
-
+				if($detallesolpe->save ()){
+                                  $mensaje.="OK: Se genero la solicitud de compra ".$detallesolpe->desolpe_solpe->numero."  item ".$detallesolpe->item."  con exito <br>";
+   
+                                }else{
+                                   $mensaje.=Yii::app()->mensajes->getErroresItem($detallesolpe->geterrors());
+                                }
+				
 
 			}
 
