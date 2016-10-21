@@ -121,7 +121,7 @@
 					<div style="float: left; ">
 			        		<?php echo $form->labelEx($model,'c_codep'); ?>
 							<?php  $datos = CHtml::listData(Embarcaciones::model()->findAll(array('order'=>'nomep')),'codep','nomep');
-							echo $form->DropDownList($model,'c_codep',$datos, array('empty'=>'--Seleccione una Embarcacion --')  )
+							echo $form->DropDownList($model,'c_codep',$datos, array('empty'=>'--Seleccione un Objeto --')  )
 							?>
 					</div>
 	

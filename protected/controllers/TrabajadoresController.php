@@ -26,21 +26,13 @@ class TrabajadoresController extends Controller
 	{
 		 Yii::app()->user->loginUrl = array("/cruge/ui/login");
 		return array(
-			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','admin'),
-				'users'=>array('*'),
-			),
+			
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
 				'actions'=>array('prueba','create','update','actualizadetalle','creadetallecaja','rendicion','caja','admin','view','perfil'),
 				'users'=>array('@'),
 			),
-			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
-				'users'=>array('admin'),
-			),
-			array('deny',  // deny all users
-				'users'=>array('*'),
-			),
+			
+			
 		);
 	}
 
@@ -50,8 +42,23 @@ class TrabajadoresController extends Controller
 		$modelo=Dcajachica::model()->findByPk($id);
 		if(is_null($modelo))
 			throw new CHttpException(500,' El id al que haces referencia de la caja menor no existe');
-		$this->render('prueba',array('model'=>$modelo,'modelocabecera'=>$modelo->cabecera));
-
+		$regtra=Trabajadores::model()->findByPK($modelo->codtra);
+                if($regtra->iduser==yii::app()->user->id){
+                    if(trim((string)$modelo->tipoflujo)=='102'){
+                       $this->render('prueba',array('model'=>$modelo,'modelocabecera'=>$modelo->cabecera));
+   
+                    }else{
+                        //var_dump(trim((string)$modelo->tipoflujo));var_dump('102');die();
+                       $this->render('//site/otrousuario',array('mensaje'=>'Esta rendicion no es imputable ,no es un cargo '));
+     
+                    }
+                   
+                } else {
+                   $this->render('//site/otrousuario',array('mensaje'=>'Estas accediendo a la rendicion de otro usuario'));
+    
+                }
+                
+               
 	}
 
 	public function actionCaja() {
@@ -151,7 +158,7 @@ class TrabajadoresController extends Controller
 							}
 					}			// if (!empty($_GET['asDialog']))
 					$this->layout = '//layouts/iframe';
-					$this->render('_form_detalle',array(
+					$this->render('//cajachica/_form_detalle',array(
 						'model'=>$model, 'idcabeza'=>$model->hidcaja
 					));
 
@@ -328,4 +335,7 @@ class TrabajadoresController extends Controller
 			Yii::app()->end();
 		}
 	}
+        
+        
+        
 }

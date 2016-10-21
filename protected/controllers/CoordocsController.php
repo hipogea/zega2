@@ -341,7 +341,8 @@ return array_values($arraycolumnas);
 
 	public function actionhacereporte($id,$idfiltrodocu,$file=0){ //id del reporte y el ID del modelo a reportar
 
-		$this->layout="";
+		//echo "skdks";
+            $this->layout="";
 		$id=MiFactoria::cleanInput((int)$id);
 		$idfiltrodocu=MiFactoria::cleanInput((int)$idfiltrodocu);
 		$modelo=$this->loadModel($id);
@@ -354,6 +355,8 @@ return array_values($arraycolumnas);
 		$criterio->params=ARRAY(":vidifiltrodocu"=>$idfiltrodocu);
 		$proveedordatos=new Miproveedor($nombremodelo,array('pagination' => false,"criteria"=>$criterio));
         $filasdatos=$proveedordatos->getdata();
+       // var_dump($filasdatos);die();
+       //cabec echo "filadatos";var_dump($filadatos);die();
 		$filamuestracabecera=$filasdatos[0]; ///una fila de datos para la cabcerea
 		$registrostotales=count($filasdatos);
 		$numeropaginas=ceil($registrostotales/$modelo->registrosporpagina);
@@ -364,11 +367,12 @@ return array_values($arraycolumnas);
 		$mpdf=Yii::app()->ePdf->mpdf(
 			'',trim($modelo->tamanopapel));
         $hojaestilo='';
-         
+         //var_dump($mpdf);die();
 		if(!is_null($modelo->estilo)) {
 			$hojaestilo = file_get_contents ( $this->rutaestilos . DIRECTORY_SEPARATOR . $modelo->estilo );
 			//$hojaestilo=file_get_contents('themes/abound/css'.DIRECTORY_SEPARATOR.'estilovale.css');
 			$mpdf->WriteHTML ( $hojaestilo , 1 );
+                        
 		}
 		$mpdf->pagenumPrefix = 'Página  ';
 		$mpdf->pagenumSuffix = ' ';
@@ -384,8 +388,8 @@ return array_values($arraycolumnas);
 		/*foreach($arraycamposasumar as $mclave => $mvalor){
 			$amontobase[$mvalor]=0;
 		}*/
-      /*echo $this->cabecera($filamuestracabecera,$proveedorestilo,$modelo);
-		yii::app()->end();*/
+      //echo $this->cabecera($filamuestracabecera,$proveedorestilo,$modelo);die();
+		//var_dump($numeropaginas);die();
 $cadena="";
 		   for($i = 1; $i <= $numeropaginas; $i++)
 		   {
@@ -428,7 +432,9 @@ $cadena="";
 			   $mpdf->AddPage();
 
 		   }
-
+                   
+                   
+//echo $cadena;yii::app()->end();
 
 
 

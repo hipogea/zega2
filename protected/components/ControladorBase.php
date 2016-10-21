@@ -200,7 +200,7 @@ private function relacionesnietas(){
 				if($modelooriginal->save())
 
 				{
-					MiFactoria::Mensaje('success', "se gravixx el registro  ".get_class($modelooriginal)." Con wescenario  ".$modelooriginal->getScenario()."    ".yii::app()->mensajes->getErroresItem($modelooriginal->geterrors()));
+					//MiFactoria::Mensaje('success', "se gravixx el registro  ".get_class($modelooriginal)." Con wescenario  ".$modelooriginal->getScenario()."    ".yii::app()->mensajes->getErroresItem($modelooriginal->geterrors()));
 
 					//MiFactoria::Mensaje('success', "Se grabo el documento  ".$nametablaoriginal);
 					//echo "<BR><BR><BR><BR><BR>   grabo mal   ".get_class($modelooriginal);

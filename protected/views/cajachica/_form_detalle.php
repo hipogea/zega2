@@ -19,6 +19,12 @@
 
 
 	<?php echo $form->errorSummary($model); ?>
+    
+    <?php if($model->hidcargo >0) {  
+         echo $form->hiddenField($model,'tipoflujo', array('value'=>'100') ) ;
+		  
+    ?>
+    <?php }else{  ?>
 	<div class="row">
 		<?php echo $form->labelEx($model,'tipoflujo'); ?>
 		<?php  $datos1 = CHtml::listData(Tipoflujocaja::model()->findAll(),'codtipo','destipo');
@@ -26,7 +32,7 @@
 		?>
 		<?php echo $form->error($model,'tipoflujo'); ?>
 	</div>
-
+ <?php }  ?>
 
 
 
@@ -92,6 +98,12 @@
 	</div>
 
 
+    <?php if($model->hidcargo >0) {  
+         echo $form->hiddenField($model,'codtra', array('value'=>Yii::app()->user->getField('codtra')) ) ;
+		  
+    ?>
+    <?php }else{  ?>
+    
 	<div class="row">
 		<?php echo $form->labelEx($model,'codtra'); ?>
 		<?php
@@ -109,6 +121,7 @@
 		)); ?>
 		<?php echo $form->error($model,'codtra'); ?>
 	</div>
+    <?php } ?>
 
 <div class="row">
 		<?php echo $form->labelEx($model,'tipimputacion'); ?>

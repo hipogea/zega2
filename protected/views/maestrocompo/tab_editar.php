@@ -235,3 +235,5 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
 $this->endWidget();
 //--------------------- end new code --------------------------
 ?>
+
+            

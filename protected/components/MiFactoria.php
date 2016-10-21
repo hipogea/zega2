@@ -694,8 +694,8 @@ const CAMPO_COLECTOR='mf_colector';
                                                              t.cant AS ".self::CAMPO_CANTIDAD_MATERIAL.",
                                                             0 AS ".self::CAMPO_PRECIO_UNITARIO_MATERIAL.",
                                                               sum(x.cant) as n_sumita
- 									from {{Otconsignacion}} t
- 									INNER JOIN {{Ot}}  w  ON  t.hidot=w.id
+ 									from {{otconsignacion}} t
+ 									INNER JOIN {{ot}}  w  ON  t.hidot=w.id
  									LEFT JOIN {{atencionconsignaciones}} x ON t.id=x.hidconsi
  									WHERE ( (t.centro='".$centro."'   and t.codal='".$almacen."') and "
                 . "                                                      ( t.codart <> '".yii::app()->settings->get('materiales','materiales_codigoservicio')."' AND  t.hidot=".$idot." )

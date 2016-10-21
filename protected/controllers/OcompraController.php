@@ -2253,7 +2253,7 @@ public function actionReporte($id){
         $model=$this->loadModel($id);
         if($this->sepuedeprocesar($id)){
            // $this->insertamensaje($id,'C',NULL);
-            echo "Se ha generado el PDF";
+            //echo "Se ha generado el PDF";
             $this->redirect($this->createUrl("coordocs/hacereporte/",array("id"=>$model->idreporte,"idfiltrodocu"=>$id,"file"=>1)));
 
         }else{

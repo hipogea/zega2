@@ -12,7 +12,7 @@ $this->breadcrumbs=array(
 $this->menu=array(
 	//array('label'=>'List Temporadas', 'url'=>array('index')),
 	array('label'=>'Crear Temporada', 'url'=>array('create')),
-	array('label'=>'Administrar embarcaciones', 'url'=>array('embarcaciones/admin')),
+            array('label'=>'Administrar Objetos', 'url'=>array('embarcaciones/admin')),
 	array('label'=>'Administrar plantas', 'url'=>array('plantas/admin')),
 	array('label'=>'Administrar zarpes', 'url'=>array('tipozarpe/admin')),
 );

@@ -368,7 +368,7 @@ class OtController extends ControladorBase
 		return array(
 
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('imputa','cargagaleria','tomafoto','creaconsignacion','borraitemsdesolpe','nadax','creaservicio','modificadetallerecurso','creadetallerecurso','verprecios','crearpdf','verDetoc','firmar','aprobar','cargaprecios','enviarpdf','admin','borrarimpuesto','reporte','agregarmasivamente','cargadirecciones','borraitems','sacaitem','sacaum','salir','agregaimpuesto','agregaritemsolpe','procesardocumento','refrescadescuento','VerDocumento','EditaDocumento','creadocumento','Agregardelmaletin','borraitem','imprimirsolo','cargaentregas','agregarsolpe','agregarsolpetotal','pasaatemporal','create','imprimirsolo','imprimir','imprimir2','enviarmail',
+				'actions'=>array('view','imputa','cargagaleria','tomafoto','creaconsignacion','borraitemsdesolpe','nadax','creaservicio','modificadetallerecurso','creadetallerecurso','verprecios','crearpdf','verDetoc','firmar','aprobar','cargaprecios','enviarpdf','admin','borrarimpuesto','reporte','agregarmasivamente','cargadirecciones','borraitems','sacaitem','sacaum','salir','agregaimpuesto','agregaritemsolpe','procesardocumento','refrescadescuento','VerDocumento','EditaDocumento','creadocumento','Agregardelmaletin','borraitem','imprimirsolo','cargaentregas','agregarsolpe','agregarsolpetotal','pasaatemporal','create','imprimirsolo','imprimir','imprimir2','enviarmail',
 					'procesaroc','hijo','Aprobaroc','Reporteoc','Anularoc','Configuraop','Revertiroc', ///acciones de proceso
 					'libmasiva','creadetalle','Verdetalle','muestraimput','update','nada','Modificadetalle'),
 				'users'=>array('@'),
