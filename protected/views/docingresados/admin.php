@@ -1,13 +1,8 @@
 <?php
-/* @var $this DocingresadosController */
-/* @var $model Docingresados */
-
-
 $this->menu=array(
 	//array('label'=>'List Docingresados', 'url'=>array('index')),
 	array('label'=>'Nuevo', 'url'=>array('create')),
 );
-
 Yii::app()->clientScript->registerScript('search', "
 $('.search-button').click(function(){
 	$('.search-form').toggle();
@@ -21,25 +16,23 @@ $('.search-form form').submit(function(){
 });
 ");
 ?>
-    <span class="summary-icon2">
-           <img src="<?php echo Yii::app()->theme->baseUrl ;?>/img/folder_page.png" width="25" height="25" alt="">
-</span>
-
-<h1>Ingreso de Documentos</h1>
+  
+ 
+<?php Mifactoria::titulo('Ingreso de Documentos','attach'); ?>
 
 
 
-<?php echo CHtml::link('Busqueda','#',array('class'=>'search-button')); ?>
-<div class="search-form" style="display:none">
+<div class="search-form" >
 <?php $this->renderPartial('_search',array(
 	'model'=>$model,
 )); ?>
-</div><!-- search-form -->
+</div>
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'docingresados-grid',
 	'dataProvider'=>$model->search(),
-	'cssFile' => ''.Yii::app()->getTheme()->baseUrl.'grid_pyy.css',  // your version of css file
+    'itemsCssClass'=>'table table-striped table-bordered table-hover',
+	//'cssFile' => ''.Yii::app()->getTheme()->baseUrl.'grid_pyy.css',  // your version of css file
 	
 	//'filter'=>$model,
 	'columns'=>array(
@@ -60,7 +53,7 @@ $('.search-form form').submit(function(){
 		'docref',	
 		
 		'responsable',
-		'apoderado',
+		//'apoderado',
 		'estado',
 	
 		/*
@@ -126,7 +119,7 @@ $('.search-form form').submit(function(){
     ),
     ));
 ?>
-<iframe id="cru-frame1" width="100%" height="100%"></iframe>
+<iframe id="cru-frame1" ></iframe>
 <?php
  
 $this->endWidget();

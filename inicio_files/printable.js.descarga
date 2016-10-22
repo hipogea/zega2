@@ -1,0 +1,131 @@
+
+
+function printablePagePopup(title, subPageTitle, username, timestamp, copyrightMsg, publicMsg, alias)
+{
+	var disp_setting="toolbar=no,location=no,directories=no,menubar=no,scrollbars=yes"; 
+//	disp_setting+="scrollbars=yes,width=650, height=600, left=100, top=25"; 
+
+	var content_value = document.getElementById("printable_content").innerHTML; 
+
+	var docprint = window.open("","",disp_setting);
+
+	docprint.document.open();
+	docprint.document.write('<html>\n');
+	docprint.document.write('<head>\n');
+	docprint.document.write('<title>' + title + ' - Printable Page</title>\n');
+	docprint.document.write('<link rel="stylesheet" type="text/css" href="' + alias + '/styles' + alias + '.css">\n');
+	docprint.document.write('<style type="text/css">\n');
+	docprint.document.write('A, A:ACTIVE, A:FOCUS, A:HOVER, A:LINK, A:VISITED\n');
+	docprint.document.write('{\n');
+	docprint.document.write('	text-decoration: none;\n');
+	docprint.document.write('}\n');
+	docprint.document.write('</style>\n');
+	docprint.document.write('<script language="JavaScript">\n');
+	docprint.document.write('function doPrint()\n');
+	docprint.document.write('{\n');
+	docprint.document.write('\tdocument.getElementById("buttons").style.visibility = "hidden";\n');
+	docprint.document.write('\tself.print();\n');
+	docprint.document.write('\tdocument.getElementById("buttons").style.visibility = "visible";\n');
+	docprint.document.write('}\n\n');
+	docprint.document.write('function disablePage()\n');
+	docprint.document.write('{\n');
+	docprint.document.write('\tvar formTags = ["input", "select", "button", "textarea"];\n');
+	docprint.document.write('\tfor (var i = 0; i < formTags.length; i++)\n');
+	docprint.document.write('\t{\n');
+	docprint.document.write('\t\tvar inputArray = document.getElementsByTagName(formTags[i]);\n');
+	docprint.document.write('\t\tfor (var j = 0; j < inputArray.length; j++)\n');
+	docprint.document.write('\t\t{\n');
+	docprint.document.write('\t\t\tif (inputArray[j].id != "printButton" && inputArray[j].id != "closeButton")\n');
+	docprint.document.write('\t\t\t{\n');
+	docprint.document.write('\t\t\t\tinputArray[j].disabled = true;\n');
+	docprint.document.write('\t\t\t}\n');
+	docprint.document.write('\t\t}\n');
+	docprint.document.write('\t}\n\n');
+	docprint.document.write('\tvar link = document.getElementsByTagName("a");\n');
+	docprint.document.write('\tfor(i = 0; i < link.length; i++)\n');
+	docprint.document.write('\t{\n');
+	docprint.document.write('\t\tlink[i].removeAttribute("href");\n');
+	docprint.document.write('\t\tlink[i].setAttribute("class", "staticBody");\n');
+	docprint.document.write('\t\tlink[i].setAttribute("className", "staticBody");\n');
+	docprint.document.write('\t}\n\n');
+
+	docprint.document.write('\tvar tareas = document.getElementsByTagName("textarea");\n');
+	docprint.document.write('\twhile (tareas.length != 0)\n');
+	docprint.document.write('\t{\n');
+	docprint.document.write('\t\telem = document.createElement("p");\n');
+	docprint.document.write('\t\telem.setAttribute("class", "staticBody");\n');
+	docprint.document.write('\t\telem.setAttribute("className", "staticBody");\n');
+	docprint.document.write('\t\tvar textLines = tareas[0].innerHTML.split(/\\n/);\n');
+	docprint.document.write('\t\tfor (var i = 0; i < textLines.length; i++)\n');
+	docprint.document.write('\t\t{\n');
+	docprint.document.write('\t\t\telem.appendChild(document.createTextNode(textLines[i].replace(/\&amp;/g, "&").replace(/\&lt;/g, "<").replace(/\&gt;/g, ">")));\n');
+	docprint.document.write('\t\t\telem.appendChild(document.createElement("br"));\n');
+	docprint.document.write('\t\t}\n\n');
+	docprint.document.write('\t\ttareas[0].parentNode.replaceChild(elem, tareas[0]);\n');
+	docprint.document.write('\t}\n');
+	docprint.document.write('}\n');
+
+	docprint.document.write('</script>\n');
+	docprint.document.write('</head>\n\n');
+	docprint.document.write('<body onLoad="disablePage();">\n');
+	docprint.document.write('<table cellpadding="3" style="background-color: #DDDDDD; border: 1px solid #999999;" id="buttons">\n');
+	docprint.document.write('<tr>\n');
+	docprint.document.write('\t<td class="staticBody">\n');
+	docprint.document.write('<input id="printButton" type="button" value="Print Page" class="staticBody" onClick="parent.doPrint()">\n');
+	docprint.document.write('\t</td>\n');
+	docprint.document.write('\t<td class="staticBody">\n');
+	docprint.document.write('<input id="closeButton" type="button" value="Close Window" class="staticBody" onClick="window.close()">\n');
+	docprint.document.write('\t</td>\n');
+	docprint.document.write('</tr>\n');
+	docprint.document.write('</table>\n');
+	docprint.document.write('<br />\n');
+
+	docprint.document.write('<table border="0" cellpadding="10">\n');
+	docprint.document.write('<tr>\n');
+	docprint.document.write('<td><img src="' + alias + '/images/logoOnWhiteMedium.gif" alt="" width="160" height="50" border="0"></td>\n');
+	docprint.document.write('<td class="subPageTitle">Donaldson DYNAMIC&trade; Printable Page</td>\n');
+	docprint.document.write('</tr>\n');
+	docprint.document.write('</table>\n');
+	docprint.document.write('<table cellpadding="3" width="100%" style="border: 1px solid #999999;">\n');
+	docprint.document.write('<tr>\n');
+	docprint.document.write('\t<td>\n\n');
+	
+	docprint.document.write('<!-- # Start content here # -->\n');
+
+	docprint.document.write('<p class="subPageTitle">' + subPageTitle + '</p>\n');
+
+	docprint.document.write(content_value);
+
+	docprint.document.write('\t</td>\n');
+	docprint.document.write('</tr>\n');
+	docprint.document.write('</table>\n');
+
+	docprint.document.write('<br />\n');
+
+	docprint.document.write('<p class="staticBody">\n');
+
+	if (username != "GUEST")
+	{
+		docprint.document.write('Username: ' + username + '\n');
+		docprint.document.write('<br />\n');
+		docprint.document.write('Date: ' + timestamp + '\n');
+	    docprint.document.write('</p>\n');
+	    docprint.document.write('<p class="staticBody">\n');
+	    docprint.document.write(copyrightMsg + '\n');
+	    docprint.document.write('</p>\n');
+	}
+	
+	else
+	{
+		docprint.document.write('Date: ' + timestamp + '\n');
+		docprint.document.write('</p>\n');
+		docprint.document.write('<p class="staticBody">\n');
+		docprint.document.write(publicMsg + '\n');
+		docprint.document.write('</p>\n');
+	}
+	
+	docprint.document.write('</body>\n');
+	docprint.document.write('</html>\n');
+	docprint.document.close();
+	docprint.focus();
+}

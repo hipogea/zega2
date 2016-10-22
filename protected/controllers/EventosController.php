@@ -158,7 +158,7 @@ public function actionCreadestinatario($id)
 												"estado"
 											
 												); 
-			echo CHtml::tag('option', array('value'=>null),CHtml::encode('Escoja un material'),true);
+			echo CHtml::tag('option', array('value'=>null),CHtml::encode('Escoja un estado'),true);
 			foreach($data as $value=>$name) { 
 			    echo CHtml::tag('option', array('value'=>$value),CHtml::encode($name),true);
 			   } 
@@ -177,7 +177,7 @@ public function actionCreadestinatario($id)
 												"estado"
 											
 												); 
-			echo CHtml::tag('option', array('value'=>null),CHtml::encode('Escoja una direccion'),true);
+			echo CHtml::tag('option', array('value'=>null),CHtml::encode('Escoja un estado'),true);
 			foreach($data as $value=>$name) { 
 			    echo CHtml::tag('option', array('value'=>$value),CHtml::encode($name),true);
 			   } 

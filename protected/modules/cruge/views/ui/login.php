@@ -1,7 +1,7 @@
 
 <div style="position: fixed;
 	top: 60px;
-	left: 180px;
+	left: 180px;padding:50px;
 	margin: auto; width:900px; height:500px; background-image: url(<?php echo Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'inicio.png';?>);background-repeat: no-repeat;">
 <br>
 	<br>
@@ -13,7 +13,7 @@
 	<br>
 	<br>
 	<br>
-<h1><?php echo CrugeTranslator::t('logon',"Login"); ?></h1>
+<?php echo CrugeTranslator::t('logon',"Login"); ?>
 <?php if(Yii::app()->user->hasFlash('loginflash')): ?>
 <div class="flash-error">
 	<?php echo Yii::app()->user->getFlash('loginflash'); ?>

@@ -3,8 +3,8 @@
 /* @var $model Cajachica */
 /* @var $form CActiveForm */
 ?>
-<div class="division">
-<div class="wide form">
+
+
 
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'action'=>Yii::app()->createUrl($this->route),
@@ -78,5 +78,3 @@
 
 <?php $this->endWidget(); ?>
 
-</div><!-- search-form -->
-	</div>

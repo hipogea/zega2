@@ -1,26 +1,5 @@
 <?php
 
-/**
- * This is the model class for table "docu_ingresados".
- *
- * The followings are the available columns in table 'docu_ingresados':
- * @property integer $id
- * @property string $codprov
- * @property string $fecha
- * @property string $fechain
- * @property string $correlativo
- * @property string $tipodoc
- * @property string $moneda
- * @property string $descorta
- * @property string $codepv
- * @property double $monto
- * @property string $codgrupo
- * @property string $codresponsable
- * @property string $creadopor
- * @property string $creadoel
- * @property string $texv
- * @property string $docref
- */
 class Docingresados extends CActiveRecord
 {
 	/**
@@ -41,6 +20,27 @@ class Docingresados extends CActiveRecord
 		return '{{docu_ingresados}}';
 	}
 
+        public function behaviors()
+	{
+		return array(
+			// Classname => path to Class
+			'ActiveRecordLogableBehavior'=>
+				'application.behaviors.ActiveRecordLogableBehavior',
+                    
+                    'imagenesjpg'=>array(
+				'class'=>'ext.behaviors.TomaFotosBehavior',
+                            '_codocu'=>'210',
+                            '_ruta'=>yii::app()->settings->get('general','general_directorioimg'),
+                            '_numerofotosporcarpeta'=>yii::app()->settings->get('general','general_nregistrosporcarpeta')+0,
+                            '_extensionatrabajar'=>'.jpg',
+                            '_id'=>$this->getPrimarykey(),
+                                ));
+                    
+                   
+                
+	}
+        
+        
 	/**
 	 * @return array validation rules for model attributes.
 	 */
@@ -64,7 +64,7 @@ class Docingresados extends CActiveRecord
 			array('codprov', 'checkvalores'),
 			array('correlativo', 'length', 'max'=>8),
 			array('tipodoc, codepv, codgrupo', 'length', 'max'=>3),
-			array('moneda', 'length', 'max'=>1),
+			array('moneda', 'length', 'max'=>3),
 			array('descorta', 'length', 'max'=>25),
 			array('codresponsable', 'length', 'max'=>4),
 			array('creadopor', 'length', 'max'=>23),
@@ -169,7 +169,7 @@ class Docingresados extends CActiveRecord
 										
 										//$this->ultimares=" ".strtoupper(trim($this->usuario=Yii::app()->user->name))." ".date("H:i")." :".$this->ultimares;
 									}
-									return parent::beforeSave();
+									return parent::afterSave();
 				}
 	
 	

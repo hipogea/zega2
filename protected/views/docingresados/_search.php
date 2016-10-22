@@ -1,30 +1,39 @@
-
-
-
 <div class="division">
-
 <div class="wide form">
-
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'action'=>Yii::app()->createUrl($this->route),
 	'method'=>'get',
 )); ?>
-  <FIELDSET>
+  
+   
 	<div class="row">
-		<?php //echo $form->label($model,'idinventario'); ?>
-		<?php //echo $form->textField($model,'idinventario'); ?>
-	</div>
+		<?php
+		$botones=array(
+			'search'=>array(
+				'type'=>'A',
+				'ruta'=>array(),
+				'visiblex'=>array('10'),
+			),
+			'clear'=>array(
+				'type'=>'E',
+				'ruta'=>array(),
+				'visiblex'=>array('10'),
+			),
+		);
+		$this->widget('ext.toolbar.Barra',
+			array(
+				//'botones'=>MiFactoria::opcionestoolbar($model->id,$this->documento,$model->codestado),
+				'botones'=>$botones,
+				'size'=>24,
+				'extension'=>'png',
+				'status'=>'10',
 
-	<div class="row">
-		<?php //echo $form->label($model,'codigo'); ?>
-		<?php //echo $form->textField($model,'codigo',array('size'=>6,'maxlength'=>6)); ?>
-	</div>
+			)
+		); ?>
 
-	<div class="row">
-		<?php // echo $form->label($model,'c_estado'); ?>
-		<?php //echo $form->textField($model,'c_estado',array('size'=>1,'maxlength'=>1)); ?>
 	</div>
-	
+    
+     <div class="panelizquierdo">
 	<div class="row">
 		<?php echo $form->label($model,'despro'); ?>
 		<?php echo $form->textField($model,'despro',array('size'=>40,'maxlength'=>40)); ?>
@@ -32,75 +41,63 @@
 	
 	
 	
-	<div style="height: 25px;margin:0;">
+	
 		
-		<div style="float: left;">
+		
+	<div class="row">
 		<?php echo $form->label($model,'descorta'); ?>
-		</div>
 		
-		<div style="float: left;  clear right;">
 		<?php echo $form->textField($model,'descorta',array('size'=>20,'maxlength'=>40)); ?>
 		</div>
 
 	
-		<div style="float: left; ">
+		<div class="row">
 		<?php echo $form->label($model,'codep'); ?>
-		</div>
 		
-		<div style="float: left; ">
 				<?php  $datos = CHtml::listData(Embarcaciones::model()->findAll(array('order'=>'nomep')),'codep','nomep');
 					echo $form->DropDownList($model,'codepv',$datos, array('empty'=>'--Seleccione una Embarcacion --')  )
 					?>
 		</div>
-	</div>
-	<div class="row">
-		<?php //echo $form->label($model,'comentario'); ?>
-		<?php //echo $form->textArea($model,'comentario',array('rows'=>6, 'cols'=>50)); ?>
-	</div>
+	
+	
 
 	
-	<div class="row">
-		<?php //echo $form->label($model,'coddocu'); ?>
-		
-		<?php //echo $form->textField($model,'coddocu',array('size'=>3,'maxlength'=>3)); ?>
-	</div>
-
-	
-   <div style="height: 25px;margin:0;">
-		
-		<div style="float: left;">	
+   
+		<div class="row">
+			
 		<?php echo $form->label($model,'numero'); ?>
-		</div>
-		<div style="float: left;  clear right;">
+		
+	
 		<?php echo $form->textField($model,'numero',array('size'=>20,'maxlength'=>20)); ?>
-	    </div>
-
-	   <div style="float: left; ">
-		<?php echo $form->label($model,'docref'); ?>
-		 </div>
-		 <div style="float: left;  ">
-		<?php echo $form->textField($model,'docref',array('size'=>30,'maxlength'=>14)); ?>
-	   </div>
 	   
-	 </div>   
+            </div>
+	  <div class="row">
+		<?php echo $form->label($model,'docref'); ?>
+		
+		
+		<?php echo $form->textField($model,'docref',array('size'=>30,'maxlength'=>14)); ?>
+	
+	   
+	
 
-	
-<div style="height: 25px;margin:0; ">
-	<div style="float: left;">	
+
+	  </div>
+	  <div class="row">
 		<?php echo $form->label($model,'responsable'); ?>
-	</div>	
 	
-	<div style="float: left; clear right;">	
+          
+        
+	
 		<?php echo $form->textField($model,'responsable',array('size'=>15,'maxlength'=>15)); ?>
 	</div>
-
-		<div style="float: left;">	
-				<?php echo $form->label($model,'rucpro'); ?>
-		</div>
-		<div style="float: left;">	
+    </div>
+      <div class="panelderecho">
+	  <div class="row">
+			<?php echo $form->label($model,'rucpro'); ?>
+			
 				<?php echo $form->textField($model,'rucpro',array('size'=>11,'maxlength'=>11)); ?>
-		</div>
-</div>	
+	
+            </div>
 	
 
 	<div class="row">
@@ -139,10 +136,7 @@
 );?>
 	
 	
-	</div>
-	<div class="row">
-		<?php echo $form->labelEx($model,'fechain'); ?>
-		
+	
 		
 		<?php $this->widget('zii.widgets.jui.CJuiDatePicker',
  array(
@@ -196,21 +190,17 @@
 	</div>
 	
 	
+      </div>
 	
 	
-	<div class="row">
-   	</div>
-	
-	
-	<div class="row buttons">
-		<?php echo CHtml::submitButton('Filtrar'); ?>
-	</div>
- </FIELDSET>
+ 
 <?php $this->endWidget(); ?>
 
 
+
+        </div>
 </div>
-</div>
+
 
 
 
