@@ -16,6 +16,6 @@ $this->menu=array(
 );
 ?>
 
-<h1>Actualizar ingreso <?php echo $model->correlativo; ?></h1>
+ <?php MiFactoria::titulo('Actualizar ingreso', 'gear') ; ?>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

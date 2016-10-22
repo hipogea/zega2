@@ -111,4 +111,7 @@ class VwTrabajadores extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+        
+        
+                
 }

@@ -1,0 +1,116 @@
+/*
+ * This code creates a collapsible set of paragraphs.
+ */
+
+var maxLength = 0;
+var curCount = 0;
+var appendedLength = 0;
+var origDiv;
+var origDivHtml;
+var lang;
+
+
+function collapse(div, maximumLength, language)
+{
+	// Reset all the variables in case this was used twice in one page...
+	curCount = 0;
+	appendedLength = 0;
+
+	origDiv = div;
+	maxLength = maximumLength;
+	lang = language;
+
+	origDivHtml = origDiv.innerHTML;
+	climbDom(origDiv);
+}
+
+
+function climbDom(parent)
+{
+	var children = parent.childNodes;
+
+	for (var i = 0; i < children.length; i++)
+	{
+		if (curCount > maxLength)
+		{
+			if (children[i].id != "moreLink")
+			{
+				parent.removeChild(children[i]);
+				i--;
+			}
+		}
+		else if (children[i].nodeType == 3)
+		{
+			// This is a text Node...
+			if (children[i].nodeValue.match(/\S+/))
+			{
+				// This text node is more than just whitespace...
+				curCount += children[i].length;
+
+				if (curCount > maxLength)
+				{
+					children[i].nodeValue = children[i].nodeValue.substring(0, (maxLength - appendedLength));
+
+					// Get rid of the last bit of text in case it's in the middle of a word
+					children[i].nodeValue =  children[i].nodeValue.replace(/\w+$/, '');
+
+					// And trim the end too...
+					children[i].nodeValue =  children[i].nodeValue.replace(/\s+$/, '');
+
+					// Add the "more" link...
+					appendMoreLink(children[i]);
+				}
+				else
+				{
+					// Keep counting up the appended length...
+					appendedLength += children[i].length;
+				}
+			}
+		}
+		else if (children[i].nodeType == 1)
+		{
+			// Recurse when the node is an element instead of text...
+			climbDom(children[i]);
+		}
+	}
+}
+
+
+/*
+ * Adds the [more] link to the end of the first paragraph it finds when
+ * climbing up the DOM.
+ */
+function appendMoreLink(element)
+{
+	var parent = element.parentNode;
+
+	if (parent.tagName == 'P' || parent.nodeName == 'P')
+	{
+		var newSpan = document.createElement('SPAN');
+
+		// Give it a special ID so our code avoids removing it later...
+		newSpan.id = "moreLink";
+		newSpan.appendChild(document.createTextNode(" "));
+
+		var newAnchor = document.createElement('A');
+		newAnchor.href = "#";
+		if (lang == "ES")
+		{
+			newAnchor.appendChild(document.createTextNode("m\u00E1s..."));
+		}
+		else
+		{
+			newAnchor.appendChild(document.createTextNode("more..."));
+		}
+		newAnchor.onclick = function() { origDiv.innerHTML = origDivHtml; return false; }
+
+		newSpan.appendChild(newAnchor);
+
+		parent.appendChild(newSpan);
+	}
+	else if (parent)
+	{
+		appendMoreLink(parent);
+	}
+}
+

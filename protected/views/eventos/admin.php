@@ -1,11 +1,5 @@
 <?php
-/* @var $this EventosController */
-/* @var $model Eventos */
 
-$this->breadcrumbs=array(
-	'Eventoses'=>array('index'),
-	'Manage',
-);
 
 $this->menu=array(
 	//array('label'=>'List Eventos', 'url'=>array('index')),
@@ -27,8 +21,8 @@ $('.search-form form').submit(function(){
 ?>
 
 
-<?php echo CHtml::link('Buscar','#',array('class'=>'search-button')); ?>
-<div class="search-form" style="display:none">
+
+<div class="search-form" >
 <?php $this->renderPartial('_search',array(
 	'model'=>$model,
 )); ?>
@@ -37,6 +31,7 @@ $('.search-form form').submit(function(){
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'eventos-grid',
 	'dataProvider'=>$model->search(),
+     'itemsCssClass'=>'table table-striped table-bordered table-hover',
 	'filter'=>$model,
 	'columns'=>array(
 		'id',

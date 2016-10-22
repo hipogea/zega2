@@ -42,7 +42,7 @@
 																		'url' => CController::createUrl('Eventos/cargaestadodestino'), //  la acción que va a cargar el segundo div 
 																		'update' => '#Eventos_estadofinal' // el div que se va a actualizar
 																		),
-																	'prompt' => 'Seleccione una organizacion' // Valor por defecto 
+																	'prompt' => 'Seleccione estado inicial' // Valor por defecto 
 																	) 
 									); 
 		 ?>
@@ -58,7 +58,7 @@
 		      $criterial->params=array(':docu'=>$model->codocu);
 		      $datos = CHtml::listData(Estado::model()->findAll( $criterial),'codestado','estado');
 		      }
-		 echo $form->dropDownList($model,'estadofinal', ($model->isNewRecord)?array():$datos, array('prompt' => 'Seleccione una organizacion' // Valor por defecto 
+		 echo $form->dropDownList($model,'estadofinal', ($model->isNewRecord)?array():$datos, array('prompt' => 'Seleccione un estado' // Valor por defecto 
 																	) 
 									); 
 		 ?>
@@ -73,17 +73,7 @@
 		<?php echo $form->error($model,'descripcion'); ?>
 	</div>
 
-	<div class="row">
-
-		<?php echo $form->textField($model,'creadopor',array('size'=>20,'maxlength'=>20)); ?>
-
-	</div>
-
-	<div class="row">
-
-		<?php echo $form->textField($model,'creadoel',array('size'=>15,'maxlength'=>15)); ?>
-
-	</div>
+	
 
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
