@@ -22,10 +22,10 @@ return array(
 	'import'=>array(
 		//'application.nusoap.*',
 		//'ext.editable.*',
+            'application.components.*',
 		'application.extensions.phpmailer.*',
             'application.extensions.behaviors.TomaFotosBehavior',
 		'application.models.*',
-		'application.components.*',
 		'application.interfaces.*',
 		'application.modules.contabilidad.models.*',
 		'application.modules.cruge.components.*',
@@ -325,13 +325,14 @@ return array(
         'charset' => 'utf8',
         ),*/
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=nautilus',
+			'connectionString' => 'mysql:host=localhost;dbname=neotegni_base1',
 			'emulatePrepare' => true,
-			'username' => 'root',
-			'password' => '',
+			'username' => 'neotegni_recurso',
+			'password' => 'juliancito',
 			'tablePrefix' => 'public_',
 			'charset' => 'utf8',
 		),
+		
 		
 		
 		

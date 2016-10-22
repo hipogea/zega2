@@ -278,3 +278,5 @@ class TenenciasController extends Controller
         }
         
 }
+
+}
