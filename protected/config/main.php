@@ -86,7 +86,7 @@ return array(
 
 				// manejo del layout con cruge.
 				//
-				'loginLayout'=>'//layouts/column1',
+				'loginLayout'=>'//layouts/inicio',
 				'registrationLayout'=>'//layouts/column1',
 				'activateAccountLayout'=>'//layouts/column1',
 				'editProfileLayout'=>'//layouts/column1',

@@ -20,11 +20,12 @@
 	<?php echo "el escenario es : ".$model->getScenario(); ?>
 	<div class="row">
 		<?php
+                VAR_DUMP(ESTADO_PREVIO);DIE();
 		$botones=array(
 			'go'=>array(
 				'type'=>'A',
 				'ruta'=>array(),
-				'visiblex'=>array(ESTADO_PREVIO,NUll),
+				'visiblex'=>array('99'   ,NUll),
 			),
 			'save'=>array(
 				'type'=>'A',

@@ -22,6 +22,7 @@
 
 	<div class="row">
 		<?php
+                
 		$botones=array(
 			'go'=>array(
 				'type'=>'A',

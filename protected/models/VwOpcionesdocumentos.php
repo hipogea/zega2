@@ -215,7 +215,9 @@ class VwOpcionesdocumentos extends CActiveRecord
                 /* var_dump($criteria->condition); var_dump($criteria->params);var_dump(yii::app()->user->id);
                 var_dump($nombreclase); var_dump($campo);
                 var_dump($registros); die();*/
-               return (count($registros)==0)?false:true;
+                
+               if (count($registros)==0) return false;
+               return (is_null($registros[0]->valor) or empty($registros[0]->valor))?false:true;
 		//echo "<br><br>";
       //print_r($model->attributes);yii::app()->end();
 	}

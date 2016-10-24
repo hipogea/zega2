@@ -4,7 +4,8 @@ const CODIGO_MOVIMIENTO_ANULAR_INGRESO_ACTIVIDAD='86';
 const CODIGO_DOC_VALE_ALMACEN='101';
 const ESTADO_EFECTUADO='20';
 const ESTADO_CREADO='10';
-const ESTADO_ANULADO='30';
+const ESTADO_PREVIO='99';
+
 
 class MaestroserviciosController extends ControladorBase
 {
@@ -65,7 +66,7 @@ class MaestroserviciosController extends ControladorBase
 		return array(
 
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('conformidades','borraitems','admin','editar','ver','anular','listado','confirmar','creaconformidad','create','update'),
+				'actions'=>array('anulaconformidad','conformidades','borraitems','admin','editar','ver','anular','listado','confirmar','creaconformidad','create','update'),
 				'users'=>array('@'),
 			),
 
@@ -409,13 +410,15 @@ class MaestroserviciosController extends ControladorBase
 		$model->setEscenarioMov();
 		$model->setScenario($model->getEscenarioMov());
 		$model->codocuref=Almacenmovimientos::model()->findByPk($model->codmovimiento)->codocu;
-		/*echo "<br><br><br><br> El escenario es   ".$model->getScenario()."<BR>";
+		
+                /*echo "<br><br><br><br> El escenario es   ".$model->getScenario()."<BR>";
         PRINT_R($model->rules());
         YII::APP()->END();*/
 		$this->ClearBuffer($id);
 		$model->iduser=Yii::app()->user->id;
 		if(isset($_POST['Almacendocs']))
 		{$model->attributes=$_POST['Almacendocs'];
+                
 			if($model->save()){
 				$this->redirect(array('confirmar','id'=>$model->id));
 			}
@@ -425,7 +428,40 @@ class MaestroserviciosController extends ControladorBase
 	}
 
 
-
+public function actionAnulaConformidad()
+	{
+		$model=new Almacendocs;
+                //var_dump($model->hasValueDefault('codalmacen'));die();
+                if(!$model->hasValueDefault('codalmacen'))
+                   throw new CHttpException(500,'Para hacer esta op, configure los valores por defecto de este modelo');
+		 
+                $model->valorespordefecto();
+		$this->Verificamov(CODIGO_MOVIMIENTO_INGRESO_ACTIVIDAD);
+		$model->codmovimiento=CODIGO_MOVIMIENTO_ANULAR_INGRESO_ACTIVIDAD;
+		$model->setEscenarioMov();
+		$model->setScenario($model->getEscenarioMov());
+		$model->codocuref=Almacenmovimientos::model()->findByPk($model->codmovimiento)->codocu;
+		/*echo "<br><br><br><br> El escenario es   ".$model->getScenario()."<BR>";
+        *//*
+                 * );
+        YII::APP()->END();*/
+		$this->ClearBuffer($id);
+		$model->iduser=Yii::app()->user->id;
+		if(isset($_POST['Almacendocs']))
+		{$model->attributes=$_POST['Almacendocs'];
+                 //var_dump($_POST['Almacendocs']['numdocref']);die();
+              // PRINT_R($model->attributes);die();
+               // var_dump(Almacendocs::valepornumero($_POST['Almacendocs']['numdocref'])->codalmacen);die();
+                //$model->codalmacen=Almacendocs::valepornumero($_POST['Almacendocs']['numdocref'])->codalmacen;
+		
+			if($model->save()){
+                            
+				$this->redirect(array('confirmar','id'=>$model->id));
+			}
+		}
+		//echo "<br><br><br><br> al final   ".($model->isnewRecord)?"ES NUEVO ":"YA NO ES NUVEO";
+		$this->render('n_create',array('model'=>$model));
+	}
 
 	public function Borraitem($id) {
 		//$identidad=$_GET["id"];

@@ -399,6 +399,13 @@ $mo=New Alinventario();
 
 
 	public function actionPio() {
+            $model =new Almacendocs;
+            $registro=$model->find("numvale=:vnumvale",array(":vnumvale"=>'507000000008'));
+           var_dump($registro);  die();          
+            VAR_DUMP(Almacendocs::valepornumero('507000000008'));die();
+            $registro= Tempdesolpe::model()->findByPk(244);
+            //$var_dump($registro);
+            var_dump($registro->numeroitem);die();
          echo '/home/neotegni/public_html/recurso/carpeta'; 
          var_dump(is_writable('/home/neotegni/public_html/recurso/carpeta'));
          

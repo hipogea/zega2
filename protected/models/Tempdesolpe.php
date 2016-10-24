@@ -68,7 +68,7 @@ class Tempdesolpe extends ModeloGeneral
 			'desolpe_alinventario'=> array(self::BELONGS_TO, 'Alinventario', array('codal'=>'codalm','centro'=>'codcen','codart'=>'codart')),
 			'alkardex_gastos'=>array(self::STAT, 'Alkardex', 'idref','select'=>'sum(montomovido*-1)','condition'=>"codocuref in('890','891')"),//el campo foraneo
 			//'ot'=>array(self::STAT, 'Alkardex', 'idref','select'=>'sum(montomovido*-1)','condition'=>"codocuref in('340','350')"),//el campo foraneo
-
+           // 'numeroitem'=>array(self::STAT, 'Tempdesolpe','hidot','select'=>'max(t.item)','condition'=>"iduser=".yii::app()->user->id),
 
 
 		);
@@ -257,7 +257,9 @@ class Tempdesolpe extends ModeloGeneral
 	}
 
 	public function beforeSave() {
+             //$this->item=$this->numeroitem;
 		if ($this->isNewRecord) {
+                     
 			if($this->tipsolpe=='M'){
 				$registroinventario = $this->desolpe_alinventario;
 				$this->punitplan = $this->cant*$registroinventario->getprecio(abs($this->cant)) *
