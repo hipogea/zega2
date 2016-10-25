@@ -119,6 +119,7 @@ h1{
     line-height: 35px !important;
     font-weight: bold;
     color: #345da9;
+    overflow:auto;
     text-shadow: #6198d9 1px 0px 1px;
    
 }

@@ -50,6 +50,7 @@ class Opcionescamposdocu extends ModeloGeneral
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+                        'documentos'=>array(self::BELONGS_TO, 'Documentos', 'codocu'),
 			'opcionesdocumentos' => array(self::HAS_MANY, 'Opcionesdocumentos', 'idopdoc'),
 			'cuantasopcioneshay' => array(self::STAT, 'Opcionesdocumentos', 'idopdoc'),
 

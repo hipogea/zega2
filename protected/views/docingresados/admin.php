@@ -1,8 +1,10 @@
-<?php
+<?php 
+
 $this->menu=array(
 	//array('label'=>'List Docingresados', 'url'=>array('index')),
 	array('label'=>'Nuevo', 'url'=>array('create')),
 );
+
 Yii::app()->clientScript->registerScript('search', "
 $('.search-button').click(function(){
 	$('.search-form').toggle();
@@ -15,17 +17,23 @@ $('.search-form form').submit(function(){
 	return false;
 });
 ");
+
 ?>
   
  
-<?php Mifactoria::titulo('Ingreso de Documentos','attach'); ?>
+<?php MiFactoria::titulo('Ingreso de Documentos','attach');
+  ?>
 
 
 
 <div class="search-form" >
-<?php $this->renderPartial('_search',array(
+<?php
+
+$this->renderPartial('_search',array(
 	'model'=>$model,
-)); ?>
+)); 
+
+?>
 </div>
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
@@ -123,5 +131,6 @@ $('.search-form form').submit(function(){
 <?php
  
 $this->endWidget();
-//--------------------- end new code --------------------------
+
+
 ?>

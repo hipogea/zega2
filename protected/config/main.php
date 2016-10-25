@@ -325,13 +325,10 @@ return array(
         'charset' => 'utf8',
         ),*/
 		'db'=>array(
-			//'connectionString' => 'mysql:host=localhost;dbname=neotegni_base1',
-			'connectionString' => 'mysql:host=localhost;dbname=nautilus',
-			 'emulatePrepare' => true,
-			//'username' => 'neotegni_recurso',
-			//'password' => 'juliancito',
-                    'username' => 'root',
-		'password' => '',
+			'connectionString' => 'mysql:host=localhost;dbname=neotegni_base1',
+			'emulatePrepare' => true,
+			'username' => 'neotegni_recurso',
+			'password' => 'juliancito',
 			'tablePrefix' => 'public_',
 			'charset' => 'utf8',
 		),

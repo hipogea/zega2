@@ -1,6 +1,6 @@
 <?php
 
-class Docingresados extends CActiveRecord
+class Docingresados extends ModeloGeneral
 {
 	/**
 	 * Returns the static model of the specified AR class.

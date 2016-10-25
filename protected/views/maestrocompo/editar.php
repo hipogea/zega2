@@ -30,11 +30,6 @@ MiFactoria::titulo('Editar material  '.$model->codigo,'color_swatch_2')
 		);
 		?>
 
-<input type="submit" value="" />
-
-
-
-
 
 <?php 
 $this->widget('ext.adGallery.AdGallery',

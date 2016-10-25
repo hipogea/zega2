@@ -1,8 +1,8 @@
 
 <div style="position: fixed;
-	top: 60px;
-	left: 180px;padding:50px;
-	margin: auto; width:900px; height:500px; background-image: url(<?php echo Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'inicio.png';?>);background-repeat: no-repeat;">
+	
+	
+	 width:100%; height:100%; background-image: url(<?php echo Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'inicio.png';?>);background-repeat: no-repeat;">
 <br>
 	<br>
 	<br>
@@ -82,6 +82,6 @@ $form=$this->beginWidget('CActiveForm', array(
 </div>
 <?php endif; ?>
 
-</div>
+
 
 

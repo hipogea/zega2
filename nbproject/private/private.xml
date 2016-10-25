@@ -4,46 +4,35 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/D:/zega1/themes/temita/css/pager.css</file>
-            <file>file:/D:/zega1/protected/views/site/celular.php</file>
-            <file>file:/D:/zega1/protected/models/Listamateriales.php</file>
-            <file>file:/D:/zega1/protected/extensions/flashes/assets/img/security.png</file>
+            <file>file:/D:/zega1/protected/models/Guia.php</file>
+            <file>file:/D:/zega1/protected/extensions/adGallery/AdGallery.php</file>
             <file>file:/D:/zega1/protected/models/Tempdetot.php</file>
-            <file>file:/D:/zega1/protected/views/maestrocompo/tab_detalle.php</file>
-            <file>file:/D:/zega1/protected/views/maestrocompo/tab_general.php</file>
+            <file>file:/D:/zega1/protected/views/trabajadores/_form.php</file>
+            <file>file:/D:/zega1/protected/components/Miproveedor.php</file>
+            <file>file:/D:/zega1/protected/controllers/OcompraController.php</file>
+            <file>file:/D:/zega1/protected/controllers/CoordocsController.php</file>
+            <file>file:/D:/zega1/protected/extensions/adGallery/assets/jquery.ad-gallery/jquery.ad-gallery.js</file>
             <file>file:/D:/zega1/protected/extensions/coco/messages/es/coco.php</file>
+            <file>file:/D:/zega1/protected/extensions/adGallery/views/adGallery.php</file>
             <file>file:/D:/zega1/protected/components/MensajesCompo.php</file>
-            <file>file:/D:/zega1/protected/views/ocompra/_form_detalle.php</file>
-            <file>file:/D:/zega1/protected/models/Desolpe.php</file>
-            <file>file:/D:/zega1/protected/components/ControladorBase.php</file>
             <file>file:/D:/zega1/protected/views/ot/_tab_recursos_detalle.php</file>
-            <file>file:/D:/zega1/protected/extensions/behaviors/TomaFotosBehavior.php</file>
-            <file>file:/D:/zega1/protected/extensions/flashes/Flashes.php</file>
-            <file>file:/D:/zega1/protected/views/ot/tab_images.php</file>
-            <file>file:/D:/zega1/assets/1f6b5558/css/flash.css</file>
-            <file>file:/D:/zega1/protected/extensions/coco/ValumsFileUploader.php</file>
-            <file>file:/D:/zega1/protected/models/Otconsignacion.php</file>
+            <file>file:/D:/zega1/protected/views/trabajadores/profile.php</file>
+            <file>file:/D:/zega1/protected/controllers/CajachicaController.php</file>
             <file>file:/D:/zega1/themes/temita/css/images/sprite.png</file>
+            <file>file:/D:/zega1/protected/controllers/TrabajadoresController.php</file>
             <file>file:/D:/zega1/themes/temita/css/bootstrap.min.css</file>
-            <file>file:/D:/zega1/protected/models/Tempotconsignacion.php</file>
-            <file>file:/D:/zega1/protected/controllers/OtController.php</file>
+            <file>file:/D:/zega1/protected/views/site/otrousuario.php</file>
             <file>file:/D:/zega1/protected/views/maestrocompo/tab_editar.php</file>
-            <file>file:/D:/zega1/protected/components/ModeloGeneral.php</file>
-            <file>file:/D:/zega1/themes/temita/css/abound.css</file>
-            <file>file:/D:/zega1/protected/extensions/coco/CocoWidget.php</file>
-            <file>file:/D:/zega1/protected/controllers/EjemplosController.php</file>
-            <file>file:/D:/zega1/protected/extensions/behaviors/XTreeBehavior.php</file>
-            <file>file:/D:/zega1/assets/671c1464/jui/css/base/jquery-ui.css</file>
+            <file>file:/D:/zega1/protected/views/maestrocompo/_form.php</file>
             <file>file:/D:/zega1/protected/extensions/flashes/assets/css/flash.css</file>
-            <file>file:/D:/zega1/themes/temita/css/grilla_naranja.css</file>
             <file>file:/D:/zega1/protected/models/Ot.php</file>
             <file>file:/D:/zega1/protected/views/ot/_form.php</file>
-            <file>file:/D:/zega1/protected/components/MiFactoria.php</file>
-            <file>file:/D:/zega1/themes/temita/views/layouts/main.php</file>
+            <file>file:/D:/zega1/protected/extensions/adGallery/readme.txt</file>
             <file>file:/D:/zega1/protected/views/ocompra/_tab_gen_detalle.php</file>
-            <file>file:/D:/zega1/protected/extensions/coco/assets/fileuploader.js</file>
-            <file>file:/D:/zega1/protected/views/site/subefotos.php</file>
+            <file>file:/D:/zega1/protected/views/maestrocompo/editar.php</file>
             <file>file:/D:/zega1/themes/temita/css/jquery-ui.css</file>
-            <file>file:/D:/zega1/protected/views/site/galeria.php</file>
+            <file>file:/D:/zega1/protected/models/Trabajadores.php</file>
+            <file>file:/D:/zega1/protected/views/cajachica/_form_detalle.php</file>
             <file>file:/D:/zega1/protected/models/Tempdesolpe.php</file>
         </group>
     </open-files>

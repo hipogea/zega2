@@ -98,9 +98,11 @@ class Documentos extends CActiveRecord
 	 */
 	public function relations()
 	{
-		// NOTE: you may need to adjust the relation name and the related
-		// class name for the relations automatically generated below.
 		return array(
+                    
+                    //Cantidad de campos configurados para opcioes por defecto 
+                       'nconfiguser'=>array(self::STAT, 'Opcionescamposdocu', 'codocu'),
+			
 		);
 	}
 

@@ -11,16 +11,22 @@ $this->menu=array(
 
 
 
-<?php $this->widget('zii.widgets.grid.CGridView', array(
-	'id'=>'documentos-grid',
-	'dataProvider'=>$model->search_por_tipo(),
-	'cssFile' => Yii::app()->getTheme()->baseUrl.'/css/grilla_naranja.css',
-	'filter'=>$model,
+<?php $this->widget('ext.groupgridview.GroupGridView', array(
+      	'id'=>'documentos-grid',
+	'dataProvider'=> Opcionescamposdocu::model()->search(),
+	 'mergeColumns' => array('codocu'),
+	 'itemsCssClass'=>'table table-striped table-bordered table-hover','filter'=>$model,
 	'columns'=>array(
-		'coddocu',
-		
-		'desdocu',
-
+		'codocu',
+            array('name'=>'codocu','value'=>'$data->documentos->desdocu'),
+		//'campo',
+                'nombrecampo',
+            'cuantasopcioneshay',
+             array('name'=>'codocu','value'=>'$data->documentos->nconfiguser'),
+	
+            
+                // 'nombrecampo',
+                 // 'documentos.desdocu',
 		/*
 		'modificadopor',
 		'modificadoel',
@@ -38,7 +44,7 @@ $this->menu=array(
                                 'update' => array
                                 (
                                        // 'url'=>'yii::app()->createUrl("configuraop/",array("codocupadre"=>$data->coddocu))',
-                                         'url'=>'$this->grid->controller->createUrl("/documentos/configuraop", array("codocupadre"=>$data->coddocu))',
+                                         'url'=>'$this->grid->controller->createUrl("/documentos/configuraop", array("codocupadre"=>$data->codocu))',
                                        
                                 ),
                         ),

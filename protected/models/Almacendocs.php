@@ -444,7 +444,7 @@ class Almacendocs extends ModeloGeneral
 				$this->codalmacen=$this->codcentro->almacenes[0]->codalm;
 			}else{
 
-				$this->adderror('codcentro','Verificar el centro y el almacen no son consistentes');
+				$this->adderror('codcentro','Verificar el centro ['.$this->codcentro .'] y el almacen  ['.$this->codalmacen .'] no son consistentes');
 			}
 
 		}
@@ -901,11 +901,15 @@ public $maximovalor;
 								}
 								if($this->codmovimiento==CODIGO_MOVIMIENTO_ANULAR_INGRESO_ACTIVIDAD){
 									$criterio=New CDBCriteria();
-									$criterio->addcondition('codcentro=:vcentro and codmovimiento=:vmovimiento');
-									$criterio->params=array(':vcentro'=>$this->codcentro,':vmovimiento'=>$this->codmovimiento);
+									$criterio->addcondition('codcentro=:vcentro');
+                                                                        $criterio->params=array(':vcentro'=>$this->codcentro);
+                                                                        $criterio->addInCondition('codmovimiento',array(
+                                                                            CODIGO_MOVIMIENTO_ANULAR_INGRESO_ACTIVIDAD,
+                                                                            CODIGO_MOVIMIENTO_INGRESO_ACTIVIDAD));
+									
 									/*$criterio->addcondition(' codmovimiento=:vmovimiento');
                                     $criterio->params=array(':vmovimiento'=>$this->codmovimiento);*/
-									$this->numvale=$this->correlativo('numvale',$criterio,'5007',null);
+									$this->numvale=$this->correlativo('numvale',$criterio,'507',null);
 
 								}
 
@@ -927,11 +931,13 @@ public $maximovalor;
 
 										if($this->codmovimiento==CODIGO_MOVIMIENTO_INGRESO_ACTIVIDAD ){
 											$criterio=New CDBCriteria();
-											$criterio->addcondition('codcentro=:vcentro and codmovimiento=:vmovimiento');
-											$criterio->params=array(':vcentro'=>$this->codcentro,':vmovimiento'=>$this->codmovimiento);
-											/*$criterio->addcondition(' codmovimiento=:vmovimiento');
-                                            $criterio->params=array(':vmovimiento'=>$this->codmovimiento);*/
-											$this->numvale=$this->correlativo('numvale',$criterio,'5007',null);
+									$criterio->addcondition('codcentro=:vcentro');
+                                                                        $criterio->params=array(':vcentro'=>$this->codcentro);
+                                                                        $criterio->addInCondition('codmovimiento',array(
+                                                                            CODIGO_MOVIMIENTO_ANULAR_INGRESO_ACTIVIDAD,
+                                                                            CODIGO_MOVIMIENTO_INGRESO_ACTIVIDAD));
+									
+											$this->numvale=$this->correlativo('numvale',$criterio,'507',null);
 
 										}else {
 											if($this->oldAttributes['cestadovale']<> $this->cestadovale  and $this->cestadovale==ESTADO_VALE_CREADO )
