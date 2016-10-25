@@ -35,9 +35,13 @@
     $cs->registerCssFile($baseUrl.'/css/abound.css'); 
     $cs->registerCssFile($baseUrl.'/css/miestilo.css');///sas
     $cs->registerScriptFile($baseUrl.'/js/plugins/blockuiplugin.js',CClientScript::POS_HEAD);
+    $cs->registerScriptFile($baseUrl.'/js/loading.js');
     ?>
 </head>
 <body>
+     <div id="preloader">
+                <div id="loader">&nbsp;</div>
+        </div>  
 <?php echo CHtml::script("
 $(document).ajaxStart(function () {
  $.blockUI(
