@@ -15,7 +15,7 @@
  * @property integer $iduser
  * @property integer $longitud
  */
-class Config extends CActiveRecord {
+class Configuracion extends CActiveRecord {
 
     /**
      * @return string the associated database table name
