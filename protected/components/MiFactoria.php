@@ -1040,11 +1040,14 @@ if(!$mensaje->save())
                 //var_dump($id);
                 $registros=self::DevuelveReingresospendientes ($id);
                 break;
-            case '20':
+                 case '20':
+                case'86':
             /* echo "salio el mv";
              yii::app()->end();*/
+                   // var_dump($numdoc);die();
             $id=Almacendocs::model()->find("numvale=:vnumvale",array(":vnumvale"=>trim($numdoc)))->id;
-            $registros=self::DevuelveKardexHijosconalias($id);
+            //var_dump($id);die();
+                    $registros=self::DevuelveKardexHijosconalias($id);
             break;
 
             case '40': //anular ingreso de compras

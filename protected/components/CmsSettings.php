@@ -521,5 +521,6 @@ class CmsSettings extends CApplicationComponent
         $command=$connection->createCommand($sql);
         $command->execute();
 	}
+        
     
 }

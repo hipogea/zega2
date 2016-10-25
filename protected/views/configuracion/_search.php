@@ -11,24 +11,18 @@
 	'method'=>'get',
 )); ?>
 
-	<div class="row">
-		<?php echo $form->label($model,'id'); ?>
-		<?php echo $form->textField($model,'id'); ?>
-	</div>
+	
 
 	<div class="row">
-		<?php echo $form->label($model,'category'); ?>
-		<?php echo $form->textField($model,'category',array('size'=>60,'maxlength'=>64)); ?>
+		<?php echo $form->label($model,'codparam'); ?>
+		<?php echo $form->textField($model,'codparam',array('size'=>60,'maxlength'=>64)); ?>
 	</div>
 
-	<div class="row">
-		<?php echo $form->label($model,'key'); ?>
-		<?php echo $form->textField($model,'key',array('size'=>60,'maxlength'=>255)); ?>
-	</div>
+	
 
 	<div class="row">
-		<?php echo $form->label($model,'value'); ?>
-		<?php echo $form->textArea($model,'value',array('rows'=>6, 'cols'=>50)); ?>
+		<?php echo $form->label($model,'valor'); ?>
+		<?php echo $form->textField($model,'valor'); ?>
 	</div>
 
 	<div class="row buttons">

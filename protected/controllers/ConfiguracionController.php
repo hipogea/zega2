@@ -22,7 +22,7 @@ class ConfiguracionController extends Controller
 		return array(
 			
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('index','ver'),
+				'actions'=>array('index','ver','creaconfig'),
 				'users'=>array('@'),
 			),
 			
@@ -185,7 +185,7 @@ public function actionver(){
 	 */
 	public function actionAdmin()
 	{
-		$model=new Settings('search');
+		$model=new Config('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['Settings']))
 			$model->attributes=$_GET['Settings'];
@@ -222,4 +222,18 @@ public function actionver(){
 			Yii::app()->end();
 		}
 	}
+        
+        public function actioncreaparametro(){
+            $model = new Config();
+        if (isset($_POST['Config'])) {
+            $model->attributes = $_POST['Config'];
+            if ($model->save())
+                $this->redirect(array('admin'));
+        }
+
+        $this->render('_form_config', array(
+            'model' => $model,
+        ));
+    }
+        
 }

@@ -134,10 +134,10 @@ class DocumentosController extends Controller
 	
 	public function actionprefdoc()
 	{
-		$model=new Documentos('search');
+		$model=new Opcionescamposdocu('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Documentos']))
-			$model->attributes=$_GET['Documentos'];
+		if(isset($_GET['Opcionescamposdocu']))
+			$model->attributes=$_GET['Opcionescamposdocu'];
 
 		$this->render('admin_conf',array(
 			'model'=>$model,

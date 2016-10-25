@@ -47,7 +47,6 @@ class Guia extends ModeloGeneral
 			array('c_rsguia', 'required','message'=>'Llene la sociedad'),
             array('idreporte', 'safe'),
 			array('c_coclig', 'required','message'=>'El destinatario es un dato obligatorio'),
-			array('c_coclig,c_codtra','exist','allowEmpty' => false, 'attributeName' => 'codpro', 'className' => 'Clipro','message'=>'Esta empresa no existe'),
 			array('c_codtra', 'required','message'=>'Indique la empresa que transporta'),
 			array('n_direc', 'required','message'=>'...y el punto de llegada?'),
 			array('n_dirsoc', 'required','message'=>'...y el punto de partida?'),

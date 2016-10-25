@@ -229,11 +229,15 @@ public function etiquetascampos (){
                                                                                                     }
                                                                             }
                                                                             
-                                                                             if(strlen(trim($ancho)) <= strlen(trim($prefijo)))
-                                                                                         throw new CHttpException(500, __CLASS__ . '   ' . __FUNCTION__ . '   ' . __LINE__ .
-                                                                                    ' El prefijo especificado [  '.$prefijo.'  ] en esta funcion como parametro, es mayor o igual  al ancho del ultimo valor  dela columan es : ['.$valor.'  ]   ');
-                                                                                   
+                                                                             if($ancho <= strlen(trim($prefijo))){
+                                                                                //VAR_DUMP($ancho); VAR_DUMP($params); VAR_DUMP($condition);die();
+                                                                                   throw new CHttpException(500, __CLASS__ . '   ' . __FUNCTION__ . '   ' . __LINE__ .
+                                                                                    ' El prefijo especificado [  '.$prefijo.'  ] en esta funcion como parametro, es mayor o igual  al ancho  [  '.$ancho.'  ]  del ultimo valor  dela columan es : ['.$valor.'  ]   ');
+                                                           
+                                                                             }
+                                                                                                               
                                                                         $colita=substr($valor,strlen(trim($prefijo)));
+                                                                        // var_dump($colita);die();
                                                                            return trim($prefijo).str_pad(trim((string)($colita+1)),$ancho,'0',STR_PAD_LEFT);
                                                        
                                                                     }
@@ -274,11 +278,12 @@ public function etiquetascampos (){
                                                   }
                                                  
                                                 $colita=substr($valor,strlen(trim($prefijo)));
-                                                //var_dump($ancho);
-                                               // var_dump($prefijo);
-                                                // var_dump($colita);
-                                                $retorno=trim($prefijo).str_pad(trim((string)($colita+1)),$ancho,'0',STR_PAD_LEFT); 
-                                                // var_dump($colita+1);
+                                               /* var_dump($valor);
+                                                var_dump($ancho);
+                                               var_dump($prefijo);
+                                                var_dump($colita);*/
+                                                $retorno=trim($prefijo).str_pad(trim((string)($colita+1)),$ancho-strlen(trim($prefijo)),'0',STR_PAD_LEFT); 
+                                               // var_dump($retorno);die();
                                                // var_dump(trim((string)((integer)($colita)+1)));
                                                // var_dump($retorno);die();
                                                 if(  (integer)substr($retorno,0,strlen(trim($prefijo)))  > (integer)$prefijo ) ///Si ya excedio el limite de la tabla

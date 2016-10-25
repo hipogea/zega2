@@ -2532,7 +2532,7 @@ class OtController extends ControladorBase
 		$model->idusertemp=Yii::app()->user->id;
 		$model->hcodoc=$this->documento; ///detalle guia
 		$model->tipsolpe='S';
-
+                    
 		//$model->imputacion=$modelocabeza->objetosmaster->objetoscliente->cebe;
 
 		$model->valorespordefecto('350');

@@ -22,10 +22,10 @@ return array(
 	'import'=>array(
 		//'application.nusoap.*',
 		//'ext.editable.*',
+            'application.components.*',
 		'application.extensions.phpmailer.*',
             'application.extensions.behaviors.TomaFotosBehavior',
 		'application.models.*',
-		'application.components.*',
 		'application.interfaces.*',
 		'application.modules.contabilidad.models.*',
 		'application.modules.cruge.components.*',
@@ -86,7 +86,7 @@ return array(
 
 				// manejo del layout con cruge.
 				//
-				'loginLayout'=>'//layouts/column1',
+				'loginLayout'=>'//layouts/inicio',
 				'registrationLayout'=>'//layouts/column1',
 				'activateAccountLayout'=>'//layouts/column1',
 				'editProfileLayout'=>'//layouts/column1',
@@ -325,13 +325,17 @@ return array(
         'charset' => 'utf8',
         ),*/
 		'db'=>array(
+			//'connectionString' => 'mysql:host=localhost;dbname=neotegni_base1',
 			'connectionString' => 'mysql:host=localhost;dbname=nautilus',
-			'emulatePrepare' => true,
-			'username' => 'root',
-			'password' => '',
+			 'emulatePrepare' => true,
+			//'username' => 'neotegni_recurso',
+			//'password' => 'juliancito',
+                    'username' => 'root',
+		'password' => '',
 			'tablePrefix' => 'public_',
 			'charset' => 'utf8',
 		),
+		
 		
 		
 		
