@@ -59,7 +59,8 @@ class Configuracion extends CActiveRecord {
         // class name for the relations automatically generated below.
         return array(
             'parametros' => array(self::BELONGS_TO, 'Parametros', 'codparam'),
-		 'documentos' => array(self::BELONGS_TO, 'Documentos', 'codocu'),	
+		 'documentos' => array(self::BELONGS_TO, 'Documentos', 'codocu'),
+            'tenencias' => array(self::BELONGS_TO, 'Tenencias', 'codte'),
         );
     }
 
@@ -173,4 +174,20 @@ class Configuracion extends CActiveRecord {
                         
                 }
     }
+    
+    public static function devuelveconfiguracion($codocu,$codcen,$codparam,$iduser=null)
+            {
+            $cri=NEW CDBCriteria();
+            $cri->addCondition("codocu=:vcodocu and "
+                .           "codcen=:vcodcen and "
+                .             "iduser=:viduser and "
+                .           "codparam=:vcodparam ");
+            $cri->params=array(
+             ":vcodocu"=>$codocu,
+               ":vcodcen"=>$codcen,
+              ":viduser"=>(is_null($iduser))?-1:$iduser,
+               ":vcodparam"=>$codparam,
+                 );
+       return  self::model()->find($criteria);
+            }
 }

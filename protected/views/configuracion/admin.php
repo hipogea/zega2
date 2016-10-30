@@ -8,8 +8,8 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'List Settings', 'url'=>array('index')),
-	array('label'=>'Create Settings', 'url'=>array('create')),
+	//array('label'=>'List Settings', 'url'=>array('index')),
+	array('label'=>'Crear', 'url'=>array('/configuracion/creaparametro')),
 );
 
 Yii::app()->clientScript->registerScript('search', "
@@ -26,7 +26,7 @@ $('.search-form form').submit(function(){
 ");
 ?>
 
-<h1>Parametros de configuracion especificos</h1>
+<?php MiFactoria::titulo('Objetos de configuracion', 'ruler_triangle');?>
 
 <?php echo CHtml::link('Advanced Search','#',array('class'=>'search-button')); ?>
 <div class="search-form" style="display:none">
@@ -38,15 +38,16 @@ $('.search-form form').submit(function(){
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'settings-grid',
 	'dataProvider'=>$model->search(),
+    'itemsCssClass'=>'table table-striped table-bordered table-hover',
 	'filter'=>$model,
 	'columns'=>array(
 		'codcen',
             'codparam',
-		'parametros.desparam',
+		array('name'=>'codparam','header'=>'Parametro','value'=>'$data->parametros->desparam', 'htmlOptions'=>array('width'=>400),),
 		'iduser',
-		'codocu',
-            'documentos.desdocu',
-            array('name'=>'valor','type'=>'raw','value'=>'substr(trim($data->valor),0,4)'),
+		 array('name'=>'codocu','header'=>'Documento','value'=>'$data->documentos->desdocu','filter'=>CHTml::listData(Documentos::model()->findAll(),'coddocu','desdocu'), 'htmlOptions'=>array('width'=>400),),
+		// 'documentos.desdocu',
+            array('name'=>'valor','type'=>'raw','value'=>'substr(trim($data->valor),0,4)', 'htmlOptions'=>array('width'=>60)),
 		
 	),
 )); ?>

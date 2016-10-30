@@ -145,7 +145,7 @@ class OtController extends ControladorBase
 								MiFactoria::Mensaje('success', "Se grabo el documento  ".$this->SQL);
 								$this->out($id);
 								//$this->redirect(array('VerDocumento','id'=>$model->id));
-								$this->redirect(array('view','id'=>$model->id));
+								$this->redirect(array('verdocumento','id'=>$model->id));
 							}else{
 								$transacc->rollback();
 								$this->render('update',array('modeloconsi'=>$modeloconsi,'modelolabor'=>$modelolabor,'model'=>$model,'editable'=>true));
@@ -175,7 +175,7 @@ class OtController extends ControladorBase
 		$model= $this->loadModel((int)$id);
 		// $this->ClearBuffer($id); //Limpia temporal antes de levantar
 		//  $this->IniciaBuffer($id); //Levanta temporales
-		$this->render('_view',array(
+		$this->render('view',array(
 			'model'=>$model,'editable'=>$editable,
 		));
 
@@ -292,11 +292,11 @@ class OtController extends ControladorBase
 				if (!empty($_GET['asDialog']))
 				{
 					//Close the dialog, reset the iframe and update the grid
-					echo CHtml::script("window.parent.$('#cru-dialogdetalle').dialog('close');
-													                    window.parent.$('#cru-detalle').attr('src','');
-																		window.parent.$.fn.yiiGridView.update('detalle-grid-recursos');
-																		window.parent.$.fn.yiiGridView.update('resumenoc-grid');
-																		");
+					echo CHtml::script(
+                                                "window.parent.$('#cru-dialogdetalle').dialog('close');
+							window.parent.$('#cru-detalle').attr('src','');
+                                                        window.parent.$.fn.yiiGridView.update('detalle-recursos-grid');	
+                                                        ");
 
 				}
 			}
@@ -330,11 +330,11 @@ class OtController extends ControladorBase
 				if (!empty($_GET['asDialog']))
 				{
 					//Close the dialog, reset the iframe and update the grid
-					echo CHtml::script("window.parent.$('#cru-dialogdetalle').dialog('close');
-													                    window.parent.$('#cru-detalle').attr('src','');
-																		window.parent.$.fn.yiiGridView.update('detalle-recursos-grid');
-																		window.parent.$.fn.yiiGridView.update('resumenoc-grid');
-																		");
+			echo CHtml::script("window.parent.$('#cru-dialogdetalle').dialog('close');
+				window.parent.$('#cru-detalle').attr('src','');
+                                window.parent.$.fn.yiiGridView.update('detalle-recursos-grid');
+				
+			");
 
 				}
 			}
@@ -1837,7 +1837,11 @@ class OtController extends ControladorBase
 				if (!empty($_GET['asDialog']))
 				{
 					//Close the dialog, reset the iframe and update the grid
-					echo CHtml::script("window.parent.$('#cru-dialogdetalle').dialog('close');");
+					echo CHtml::script("
+                window.parent.$('#cru-dialogdetalle').dialog('close');
+		window.parent.$('#cru-detalle').attr('src','');                            
+                window.parent.$('#cru-detalle').attr('src','');                                            
+                window.parent.$.fn.yiiGridView.update('detalle-grid');");
 					Yii::app()->end();
 				}
 			}else{

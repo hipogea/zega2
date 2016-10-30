@@ -96,7 +96,7 @@ class TrabajadoresController extends Controller
                 }
         }			// if (!empty($_GET['asDialog']))
         $this->layout = '//layouts/iframe';
-        $this->render('_form_detalle',array(
+        $this->render('//cajachica/_form_detalle',array(
             'model'=>$model, 'idcabeza'=>$model->hidcaja
         ));
 
@@ -336,6 +336,42 @@ class TrabajadoresController extends Controller
 		}
 	}
         
+  PUBLIC FUNCTION actioncargaimputacion (){
+   
+      
+    IF(yii::app()->request->isAjaxRequest){
+       $tipo=MiFactoria::cleanInput($_POST['tipo']);
+   /* $modelo= Dcajachica::model()->findByPk(
+            (Integer)MiFactoria::cleanInput($_POST['Dcajachica']['id']));
+    */
+       
+       $modelo=new Dcajachica;
+       /*$mode= serialize($modelo);
+       $mode= unserialize($mode);
+       var_dump($mode);die();*/
+       // var_dump(unserialize(base64_decode($_POST['formula'])));die();
+       $formulario= unserialize(base64_decode($_POST['formula']));
+    
+       $registros=Tipimputa::model()->findAll("codimpu=:v",array(":v"=>$tipo));
+    foreach($registros as $record){
+        if(is_null($record->validacion) or empty($record->validacion)){
+            //var_dump($registro);die();
+             //echo "error "; die();
+            throw new CHttpException(500,'Este tipo de imputacion '.$record->desimputa.' no tiene un modelo asociado  '.gettype($record->validacion));
+		
+        }else{
+            //echo "jajaja"; die();f
+          echo $this->renderpartial('//cajachica/imputacion_'.trim($record->validacion),array('form'=>$formulario,'model'=>$modelo),true); 
+        } 
+     }
         
+         }  else{
+             echo " ";
+         } 
+    
+    
+        }
+        
+         
         
 }

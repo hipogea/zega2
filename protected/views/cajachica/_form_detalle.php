@@ -21,13 +21,15 @@
 	<?php echo $form->errorSummary($model); ?>
     
     <?php if($model->hidcargo >0) {  
-         echo $form->hiddenField($model,'tipoflujo', array('value'=>'100') ) ;
+         echo $form->hiddenField($model,'tipoflujo', array('value'=>'101') ) ;
 		  
     ?>
     <?php }else{  ?>
 	<div class="row">
 		<?php echo $form->labelEx($model,'tipoflujo'); ?>
-		<?php  $datos1 = CHtml::listData(Tipoflujocaja::model()->findAll(),'codtipo','destipo');
+		<?php  $datos1 = CHtml::listData(
+                        Tipoflujocaja::model()->findAll(),
+                        'codtipo','destipo');
 		echo $form->DropDownList($model,'tipoflujo',$datos1, array('empty'=>'--Seleccione el tipo--') ) ;
 		?>
 		<?php echo $form->error($model,'tipoflujo'); ?>
@@ -126,16 +128,19 @@
 <div class="row">
 		<?php echo $form->labelEx($model,'tipimputacion'); ?>
 		<?php  $datos = CHtml::listData(Tipimputa::model()->findAll(array('order'=>'desimputa')),'codimpu','desimputa');
-		  echo $form->DropDownList($model,'tipimputacion',$datos, array(  'ajax' => array('type' => 'POST', 
-									    'url' => CController::createUrl($this->id.'/cargaimputacion'),
-                                                                                'data'=>array(
-                                                                                    'tipo'=>'js:Dcajachica_tipimputacion.value',
-                                                                                   'formula'=>base64_encode(serialize($form)), 
-                                                                                ),
+		  echo $form->DropDownList($model,
+                          'tipimputacion',
+                          $datos, array(  
+                              'ajax' => array('type' => 'POST', 
+				'url' => CController::createUrl($this->id.'/cargaimputacion'),
+                          'data'=>array(
+                                 'tipo'=>'js:Dcajachica_tipimputacion.value',
+                                   'formula'=>base64_encode(serialize($form)), 
+                                    ),
                                                                                 //  la acción que va a cargar el segundo div 
-									    'update' => '#colector' // el div que se va a actualizar
+				'update' => '#colector' // el div que se va a actualizar
 											  ),
-									  'empty'=>'--Seleccione imputacion--',) ) ;
+				'empty'=>'--Seleccione imputacion--',) ) ;
 		?>
 		<?php echo $form->error($model,'tipimputacion'); ?>
 	</div>
@@ -144,13 +149,13 @@
     <?PHP
       IF(!$model->isNewRecord){
           if($model->tipimputacion=='T'){
-              $this->renderpartial('imputacion_Ot',array('form'=>$form,'model'=>$model));
+              $this->renderpartial('//cajachica/imputacion_Ot',array('form'=>$form,'model'=>$model));
           }
           if($model->tipimputacion=='K'){
-              $this->renderpartial('imputacion_Cc',array('form'=>$form,'model'=>$model));
+              $this->renderpartial('//cajachica/imputacion_Cc',array('form'=>$form,'model'=>$model));
           }
           if($model->tipimputacion=='B'){
-              $this->renderpartial('imputacion_Cc',array('form'=>$form,'model'=>$model));
+              $this->renderpartial('//cajachica/imputacion_Cc',array('form'=>$form,'model'=>$model));
           }
           
            }

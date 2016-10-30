@@ -57,7 +57,7 @@ const ESTADO_DETALLE_CAJA_CREADO='10';
 			'trabajadores' => array(self::BELONGS_TO, 'Trabajadores', 'codtra'),
 			'estado'=> array(self::BELONGS_TO, 'Estado', array('codestado'=>'codestado', 'coddocu'=>'codocu')),			
 			'cco' => array(self::BELONGS_TO, 'VwImputaciones', 'ceco'),
-			'ot'=>array(self::BELONGS_TO, 'Detot', 'hidref'),
+			'ot'=>array(self::BELONGS_TO, 'VwOtdetalle', 'hidref'),
                     'moneda' => array(self::BELONGS_TO, 'Monedas', 'codmon'),
 			'flujos' => array(self::BELONGS_TO, 'Tipoflujocaja', 'tipoflujo'),
 			'rendido'=>array(self::STAT, 'Dcajachica', 'hidcargo','select'=>'sum(t.monto)','condition'=>"codestado <> '".ESTADO_DETALLE_CAJA_ANULADO."'  "),//el campo foraneo
@@ -373,8 +373,9 @@ const ESTADO_DETALLE_CAJA_CREADO='10';
 			'tipimputacion' => $this->tipimputacion,
 			'idcolector' => $this->hidref,
 			'numerocolector' => Detot::model()->findByPK($this->hidref)->ot->numero,
+                       'idcolectorpadre' => Detot::model()->findByPK($this->hidref)->ot->id,
 			'codocuref' => '891', //detalle ot
-                         'numerocolector' => Detot::model()->findByPK($this->hidref)->ot->id,
+                        // 'numerocolector' => Detot::model()->findByPK($this->hidref)->ot->id,
 			             
                                   )
                                   );

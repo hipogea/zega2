@@ -1,7 +1,7 @@
 <?php
 $this->widget('ext.groupgridview.GroupGridView', array(
       'id' => 'detallecompo-grid',
-      'dataProvider'=>Neot::model()->search_por_ot(16),
+      'dataProvider'=>Neot::model()->search_por_ot($model->id),
       'mergeColumns' => array('numero','textoactividad'),
 	 'itemsCssClass'=>'table table-striped table-bordered table-hover',
 	  'extraRowColumns' => array('numero'),

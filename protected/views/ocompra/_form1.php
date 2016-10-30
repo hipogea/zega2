@@ -97,31 +97,26 @@
 
                         ),
 
-
-                        'camera' => array(
-                            'type' => 'D', //AJAX LINK
-                             'ruta' => array($this->id.'/reporte', array('id' => $model->idguia)),
-                            'opajax'=>array(
-                                'url'=> array($this->id.'/reporte', array('id' => $model->idguia)),
-                                'success'=>"function(data) {
-										$('#myDivision').html(data).fadeIn().animate({opacity: 1.0}, 900).fadeOut('slow');
-                                        }",
+                    'camera' => array(
+                            'type' => 'C',
+                            'ruta' => array('coordocs/hacereporte', array(
+                                'id' => $model->idreporte,
+                                     'idfiltrodocu' => $model->idguia,
+                                'file' => 0,
+                                //"id"=>$model->n_direc,
+                                "asDialog" => 1,
+                                "gridId" => 'detalle-grid',
+                            )
                             ),
-                          /*  'opajax' => array(
-                                'type' => 'POST',
-                                'ruta' => array($this->id.'/reporte', array('id' => $model->idguia)),
-                               // 'update' => '#myDivision',
-                                'complete' =>'function(data){
-                                         $("#myDivision").removeClass("procesandoajax");
-                                         $("#myDivision").html(data).fadeIn().animate({opacity: 1.0}, 300).fadeOut("slow");
-                                        $("#myDivision").append(".");
-                                         }'
-                            ),*/
-
-                            'visiblex' => array(ESTADO_ACEPTADO, ESTADO_PREVIO, ESTADO_CREADO),
+                            'dialog' => 'cru-dialogdetalle',
+                            'frame' => 'cru-detalle',
+                            'visiblex' => array(ESTADO_ACEPTADO, ESTADO_MODIFICADO,
+                                ESTADO_CONFIRMADO, ESTADO_FACTURADO_PARCIAL, ESTADO_ACEPTADO,
+                                ESTADO_CON_ENTREGAS, ESTADO_FACTURADO_TOTAL),
 
                         ),
-
+                        
+                        
                         'config' => array(
                             'type' => 'B',
                             'ruta' => array($this->id . '/procesardocumento', array('id' => $model->idguia, 'ev' => 64)),
@@ -151,6 +146,9 @@
                             'visiblex' => array(ESTADO_CREADO),
 
                         ),
+                        
+                        
+                       
 
 
                         'out' => array(
@@ -177,9 +175,10 @@
 
 
 
-                        'camera' => array(
+                       /* 'camera' => array(
                             'type' => 'D', //AJAX LINK
-                            'ruta' => array('coordocs/hacereporte', array('id' => $model->idreporte, 'idfiltrodocu' => $model->idguia, 'file' => 0)),
+                            'ruta' => array('coordocs/hacereporte', array('id' => $model->idreporte,
+                                'idfiltrodocu' => $model->idguia, 'file' => 0)),
 
                             'opajax' => array(
                                 'type' => 'POST',
@@ -191,7 +190,29 @@
                                 ESTADO_CONFIRMADO, ESTADO_FACTURADO_PARCIAL, ESTADO_ACEPTADO,
                                 ESTADO_CON_ENTREGAS, ESTADO_FACTURADO_TOTAL),
 
+                        ),*/
+                        
+                         'camera' => array(
+                            'type' => 'C',
+                            'ruta' => array('coordocs/hacereporte', array(
+                                'id' => $model->idreporte,
+                                     'idfiltrodocu' => $model->idguia,
+                                'file' => 0,
+                                //"id"=>$model->n_direc,
+                                "asDialog" => 1,
+                                "gridId" => 'detalle-grid',
+                            )
+                            ),
+                            'dialog' => 'cru-dialogdetalle',
+                            'frame' => 'cru-detalle',
+                            'visiblex' => array(ESTADO_ACEPTADO, ESTADO_MODIFICADO,
+                                ESTADO_CONFIRMADO, ESTADO_FACTURADO_PARCIAL, ESTADO_ACEPTADO,
+                                ESTADO_CON_ENTREGAS, ESTADO_FACTURADO_TOTAL),
+
                         ),
+                        
+                        
+                        
                         'out' => array(
                             'type' => 'B',
                             'ruta' => array($this->id . '/admin',array()),

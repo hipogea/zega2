@@ -281,9 +281,7 @@
 	</div>
 
 
-	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'CreateSD' : 'SavSe'); ?>
-	</div>
+	
 	
 
 
@@ -314,7 +312,7 @@
 		
 			'add'=>array(
 				'type'=>'C',
-				'ruta'=>array($this->id.'/creadetalle',array(
+				'ruta'=>array('cajachica/creadetalle',array(
 					'idcabeza'=>$model->id,
 					'cest'=>$model->{$this->campoestado},
 					'asDialog'=>1,

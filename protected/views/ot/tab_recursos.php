@@ -82,7 +82,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 		//array('htmlOptions'=>array('width'=>10),'name'=>'codigoalma','visible'=>(yii::app()->settings->get("materiales","materiales_codigoservicio")==$data->codart)?true:false),
 		//array('htmlOptions'=>array('width'=>5),'header'=>'um','value'=>'$data->ums->desum'),
 		//array('htmlOptions'=>array('width'=>5), 'type'=>'raw','name'=>'codart','value'=>'$data->codart','visible'=>(!yii::app()->settings->get("materiales","materiales_codigoservicio")==$data->codart)?true:false),
-		array('header'=>'N° Solic','value'=>'$data->solpe->numero', 'htmlOptions'=>array('width'=>4),),
+		array('header'=>'N° Solic','type'=>'raw','value'=>'CHTml::link($data->solpe->numero,yii::app()->createUrl("/solpe/update/",array("id"=>$data->hidsolpe)), array("target"=>"_blank" ))', 'htmlOptions'=>array('width'=>4),),
 		array('name'=>'cant', 'type'=>'raw','header'=>'Cant','htmlOptions'=>array('width'=>20) ),
 		array('name'=>'codart', 'type'=>'raw','header'=>'Cod','value'=>'($data->tipsolpe=="M")?$data->codart:CHtml::image(Yii::app()->getTheme()->baseUrl."/img/hammer.png") ','htmlOptions'=>array('width'=>20) ),
 		

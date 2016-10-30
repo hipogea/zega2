@@ -8,8 +8,8 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'List Ot', 'url'=>array('index')),
-	array('label'=>'Create Ot', 'url'=>array('create')),
+	array('label'=>'Nueva orden', 'url'=>array('creadocumento')),
+	
 );
 
 Yii::app()->clientScript->registerScript('search', "

@@ -1,9 +1,4 @@
 
-<div style="position: fixed;
-	
-	
-	 width:100%; height:100%; background-image: url(<?php echo Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'inicio.png';?>);background-repeat: no-repeat;">
-<br>
 	<br>
 	<br>
 	<br>

@@ -380,18 +380,21 @@ private function buscasaldoanterior ($id){
 	/*  Veriicamosa que nadie entre q actualizar si no es su propiedad */
 
 PUBLIC FUNCTION actioncargaimputacion (){
-    
+   
+      
     IF(yii::app()->request->isAjaxRequest){
        $tipo=MiFactoria::cleanInput($_POST['tipo']);
    /* $modelo= Dcajachica::model()->findByPk(
             (Integer)MiFactoria::cleanInput($_POST['Dcajachica']['id']));
     */
+       
        $modelo=new Dcajachica;
        /*$mode= serialize($modelo);
        $mode= unserialize($mode);
        var_dump($mode);die();*/
+       // var_dump(unserialize(base64_decode($_POST['formula'])));die();
        $formulario= unserialize(base64_decode($_POST['formula']));
-       //var_dump($formulario);die();
+    
        $registros=Tipimputa::model()->findAll("codimpu=:v",array(":v"=>$tipo));
     foreach($registros as $record){
         if(is_null($record->validacion) or empty($record->validacion)){

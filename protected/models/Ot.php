@@ -29,6 +29,7 @@ class Ot extends  ModeloGeneral
                     array('codpro','exist','allowEmpty' => false, 'attributeName' => 'codpro', 'className' => 'Clipro','message'=>'Esta empresa no existe'),
 			   array('codpro1','exist','allowEmpty' => true, 'attributeName' => 'codpro', 'className' => 'Clipro','message'=>'Esta empresa no existe'),
 		                    array('idobjeto', 'checkobjeto','on'=>'insert'),
+                            array('textolargo','safe','on'=>'insert,update'),
 			array('idobjeto, iduser', 'numerical', 'integerOnly'=>true),
 			array('numero', 'length', 'max'=>12),
 			array('codpro', 'length', 'max'=>8),

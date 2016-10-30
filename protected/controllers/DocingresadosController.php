@@ -140,7 +140,8 @@ class DocingresadosController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new Docingresados;
+		
+            $model=new Docingresados;
                 $model->valorespordefecto();
 		// Uncomment the following line if AJAX validation is needed
 		 $this->performAjaxValidation($model);

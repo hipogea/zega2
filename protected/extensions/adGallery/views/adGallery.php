@@ -1,18 +1,13 @@
-<div class="<?php echo $this->cssClass; ?>" id="<?php echo $this->cssId; ?>">
-   hola 1
-    <div class="ad-gallery">
-         hola 2
-       <div class="ad-image-wrapper">
-           hola 3
+<div class="<?php echo $this->cssClass; ?>" id="<?php echo $this->cssId; ?>"> 
+    <div class="ad-gallery">         
+       <div class="ad-image-wrapper">           
 	</div>
                <div class="ad-controls">
-                   
-                 hola 4
 		</div>
 		<div class="ad-nav">
-                    hola 5
+                    
                   <div class="ad-thumbs">
-                      hola 6
+                      
                     <ul class="ad-thumb-list">
                          <?php
                              foreach ($imageList as $image) :

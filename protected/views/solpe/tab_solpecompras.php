@@ -14,8 +14,8 @@ $this->widget('ext.groupgridview.GroupGridView', array('id'=>'detalleresex-grid'
         'itemsCssClass'=>'table table-striped table-bordered table-hover',
         'columns'=>array(
             'txtmaterial',
-                        'numcot',
-'itemcompra',
+                  'numcot',
+                'itemcompra',
             'cantkardex',
             'umcompra',
             'fecha',
