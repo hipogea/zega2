@@ -111,7 +111,19 @@
 
 				?>
 			</div>
-	
+	<div class="row">
+			        <?php echo $form->labelEx($model,'codobjeto'); ?>
+					<?php  
+                                        $existefiltro=ISSET($_SESSION['sesion_Clipro']);
+                                          if($existefiltro){
+                                              $datosm = CHtml::listData(ObjetosCliente::model()->findAll($criterio),'codobjeto','nombreobjeto');
+					
+                                          }else{
+                                              $datosm=array();
+                                          }
+                                        echo $form->DropDownList($model,'codobjeto',$datosm, array('empty'=>'--Seleccione una Referencia --')  )
+					?>
+	</div>
 	<div class="row">
 		<?php echo $form->label($model,'c_codactivo'); ?>
 		<?php echo $form->textField($model,'c_codactivo',array('size'=>14,'maxlength'=>14)); ?>

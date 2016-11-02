@@ -1,5 +1,11 @@
 <?php
-CONST ESTADO_OC_PREVIO='99';
+
+class Almacendocs extends ModeloGeneral
+{
+	CONST ESTADO_EFECTUADO='20';
+        CONST ESTADO_OC_PREVIO='99';
+        CONST CODIGO_MOVIMIENTO_ANULA_SALIDA_AUTOMATICA_RQ='12';
+        CONST CODIGO_MOVIMIENTO_SALIDA_AUTOMATICA_RQ='11';
 CONST ESTADO_OC_MODIFICADA='20';
 CONST ESTADO_OC_CREADA='10';
 CONST ESTADO_OC_ANULADA='50';
@@ -13,11 +19,7 @@ CONST CODIGO_MOVIMIENTO_AJUSTE_FALTANTES='67';
 CONST CODIGO_MOVIMIENTO_ANULA_AJUSTE_FALTANTES='18';
 CONST CODIGO_MOVIMIENTO_AJUSTE_SOBRANTES='75';
 CONST CODIGO_MOVIMIENTO_ANULA_AJUSTE_SOBRANTES='19';
-
-
-class Almacendocs extends ModeloGeneral
-{
-	public  $identificadorpost;
+    public  $identificadorpost;
 	public $fechavale1;
 	public $fechacre1;
 	public $fechacont1;
@@ -891,32 +893,41 @@ public $maximovalor;
 	public function beforeSave() {
 							if ($this->isNewRecord) {
 
-								if(in_array($this->codmovimiento,array( CODIGO_MOVIMIENTO_ANULA_SALIDA_AUTOMATICA_RQ, CODIGO_MOVIMIENTO_SALIDA_AUTOMATICA_RQ,
-									CODIGO_MOVIMIENTO_AJUSTE_FALTANTES,CODIGO_MOVIMIENTO_ANULA_AJUSTE_FALTANTES,
-									CODIGO_MOVIMIENTO_AJUSTE_SOBRANTES,CODIGO_MOVIMIENTO_ANULA_AJUSTE_SOBRANTES,
+								if(in_array($this->codmovimiento,array( 
+                                                                    self::CODIGO_MOVIMIENTO_ANULA_SALIDA_AUTOMATICA_RQ, 
+                                                                    self::CODIGO_MOVIMIENTO_SALIDA_AUTOMATICA_RQ,
+									self::CODIGO_MOVIMIENTO_AJUSTE_FALTANTES,
+                                                                    self::CODIGO_MOVIMIENTO_ANULA_AJUSTE_FALTANTES,
+									self::CODIGO_MOVIMIENTO_AJUSTE_SOBRANTES,
+                                                                    self::CODIGO_MOVIMIENTO_ANULA_AJUSTE_SOBRANTES,
 									))){
 								$this->numvale = Numeromaximo::numero ( $this , 'correlativo' , 'maximovalor' , 8 , 'codcentro' );
 								$this->fechacre = date ( "Y-m-d H:i:s" );
-									$this->cestadovale=ESTADO_EFECTUADO;
+									$this->cestadovale=self::ESTADO_EFECTUADO;
 								}
-								if($this->codmovimiento==CODIGO_MOVIMIENTO_ANULAR_INGRESO_ACTIVIDAD){
+								elseif($this->codmovimiento==self::CODIGO_MOVIMIENTO_ANULAR_INGRESO_ACTIVIDAD){
 									$criterio=New CDBCriteria();
 									$criterio->addcondition('codcentro=:vcentro');
                                                                         $criterio->params=array(':vcentro'=>$this->codcentro);
                                                                         $criterio->addInCondition('codmovimiento',array(
-                                                                            CODIGO_MOVIMIENTO_ANULAR_INGRESO_ACTIVIDAD,
-                                                                            CODIGO_MOVIMIENTO_INGRESO_ACTIVIDAD));
+                                                                            self::CODIGO_MOVIMIENTO_ANULAR_INGRESO_ACTIVIDAD,
+                                                                            self::CODIGO_MOVIMIENTO_INGRESO_ACTIVIDAD));
 									
 									/*$criterio->addcondition(' codmovimiento=:vmovimiento');
                                     $criterio->params=array(':vmovimiento'=>$this->codmovimiento);*/
 									$this->numvale=$this->correlativo('numvale',$criterio,'507',null);
 
-								}
+								}else{
+                                                                    $this->cestadovale='99';
+                                                                }
 
-									$this->codtrabajador=yii::app()->user->um->getFieldValue(Yii::app()->user->id,'codtra');
+									
+                                                                
+                                                                
+                                                                $this->codtrabajador=yii::app()->user->um->getFieldValue(Yii::app()->user->id,'codtra');
 									//$this->codigo='34343434';
 									$this->codocu='101';
-									$this->cestadovale='99';
+									
 
 
 
@@ -929,18 +940,18 @@ public $maximovalor;
 									} else
 									{
 
-										if($this->codmovimiento==CODIGO_MOVIMIENTO_INGRESO_ACTIVIDAD ){
+										if($this->codmovimiento==self::CODIGO_MOVIMIENTO_INGRESO_ACTIVIDAD ){
 											$criterio=New CDBCriteria();
 									$criterio->addcondition('codcentro=:vcentro');
                                                                         $criterio->params=array(':vcentro'=>$this->codcentro);
                                                                         $criterio->addInCondition('codmovimiento',array(
-                                                                            CODIGO_MOVIMIENTO_ANULAR_INGRESO_ACTIVIDAD,
-                                                                            CODIGO_MOVIMIENTO_INGRESO_ACTIVIDAD));
+                                                                            self::CODIGO_MOVIMIENTO_ANULAR_INGRESO_ACTIVIDAD,
+                                                                            self::CODIGO_MOVIMIENTO_INGRESO_ACTIVIDAD));
 									
 											$this->numvale=$this->correlativo('numvale',$criterio,'507',null);
 
 										}else {
-											if($this->oldAttributes['cestadovale']<> $this->cestadovale  and $this->cestadovale==ESTADO_VALE_CREADO )
+											if($this->oldAttributes['cestadovale']<> $this->cestadovale  and $this->cestadovale==self::ESTADO_VALE_CREADO )
 											{
 												$this->numvale = Numeromaximo::numero ( $this , 'correlativo' , 'maximovalor' , 8 , 'codcentro' );
 												$this->fechacre = date ( "Y-m-d H:i:s" );

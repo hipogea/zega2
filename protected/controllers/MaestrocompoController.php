@@ -61,7 +61,7 @@ class MaestrocompoController extends Controller
 		return array(
 
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('listadetalle','conversiones','editadetalle','editarmaterial','nuevomaterial','muestraums','muestradetalle','admin','ver','ampliar','extender','create','import','borraimagen','configuraop','update','prueba','pinta', 'cargaalmacen','modificaconversion','creaconversion'),
+				'actions'=>array('galeria','listadetalle','conversiones','editadetalle','editarmaterial','nuevomaterial','muestraums','muestradetalle','admin','ver','ampliar','extender','create','import','borraimagen','configuraop','update','prueba','pinta', 'cargaalmacen','modificaconversion','creaconversion'),
 				'users'=>array('@'),
 			),
 
@@ -1076,5 +1076,11 @@ public function actionModificaconversion($id)
 		}
 
 	}
+        
+        
+   public function actiongaleria(){
+       $this->render('galeria');
+           
+       }     
 
 }

@@ -1,9 +1,19 @@
 <?php
-$arrayimagenes=$model->recuperaarchivos(false);
+//$arrayimagenes=$model->fotosparagaleria();
 //var_dump($arrayimagenes);
 //$auditoria=$model->getauditoria
+$this->widget('ext.galeriafirme.GaleriaFirme',
+					array(
+                                            'titulo'=>$titulo,
+                                            'mensajegeneral'=>$mensajegeneral,
+                                             'fotos'=>$fotos,	
 
-     $this->widget('ext.imagegallery1.ImageGallery1',array(
+					)
+				);
+
+
+
+    /* $this->widget('ext.imagegallery1.ImageGallery1',array(
 
 	'images'=>$arrayimagenes,
 
@@ -17,7 +27,7 @@ $arrayimagenes=$model->recuperaarchivos(false);
 
 	'onError'=>'function(e){ alert(e);  }',
 
-));                                           
+));    */                                       
                                                 
   ?>
 

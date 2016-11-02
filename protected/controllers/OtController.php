@@ -2764,7 +2764,13 @@ public function borraitemdesolpe($autoId) //Borra un registro de solpe
                 $id= (integer)MiFactoria::cleanInput($_GET['id']);
                  $detalle= Tempdetot::model()->findByPk($id);
                  if(!is_null($detalle)){
-                      $this->renderpartial('//site/galeria',array('model'=>$detalle));
+                      $this->renderpartial('//site/galeria',
+                              array(
+                                    'titulo'=>$detalle->ot->textocorto,
+                                     'mensajegeneral'=>$detalle->textoactividad,
+                                   'fotos'=>$detalle->fotosparagaleria(),
+                              )
+                              );
          
                  }else{
                     throw new CHttpException(500,'No se encontro el registro de la OT PARA ESTE ID'.$id); 

@@ -20,7 +20,8 @@ class Tempdesolpe extends ModeloGeneral
 		return array(
 			//
                     array('est',  'safe','on'=>'Atencionreserva'),
-			array('centro, codal,cant, codart, txtmaterial,um,hidlabor', 'required','on'=>'buffer'),
+			array('centro, codal,cant, codart, txtmaterial,'
+                            . 'um,hidlabor', 'required','on'=>'buffer'),
 			array('tipsolpe,centro, codal,hidot,hcodoc, codart,item,codservicio,
 			fechaent,est, txtmaterial,hidlabor,iduser,idusertemp,punitreal,idstatus,id,idtemp', 'safe','on'=>'buffer'),
 			array('codart', 'checkvalores'),
@@ -67,7 +68,8 @@ class Tempdesolpe extends ModeloGeneral
 			'almac' => array(self::BELONGS_TO, 'Almacenes', 'codal'),
 			'desolpe_alinventario'=> array(self::BELONGS_TO, 'Alinventario', array('codal'=>'codalm','centro'=>'codcen','codart'=>'codart')),
 			'alkardex_gastos'=>array(self::STAT, 'Alkardex', 'idref','select'=>'sum(montomovido*-1)','condition'=>"codocuref in('890','891')"),//el campo foraneo
-			//'ot'=>array(self::STAT, 'Alkardex', 'idref','select'=>'sum(montomovido*-1)','condition'=>"codocuref in('340','350')"),//el campo foraneo
+			//'alkardex_gastos'=>array(self::STAT, 'Alkardex', 'idref','select'=>'sum(montomovido*-1)','condition'=>"1=1"),//el campo foraneo
+//'ot'=>array(self::STAT, 'Alkardex', 'idref','select'=>'sum(montomovido*-1)','condition'=>"codocuref in('340','350')"),//el campo foraneo
            // 'numeroitem'=>array(self::STAT, 'Tempdesolpe','hidot','select'=>'max(t.item)','condition'=>"iduser=".yii::app()->user->id),
 
 
@@ -266,7 +268,7 @@ class Tempdesolpe extends ModeloGeneral
 					Alconversiones::convierte($this->codart, $this->um) *
 					yii::app()->tipocambio->getcambio($registroinventario->almacen->codmon,
 						yii::app()->settings->get('general', 'general_monedadef'));//}
-				$this->punitreal = 0;
+				//$this->punitreal = 0;
 				$this->cantaten = 0;
 
 			}ELSE {
@@ -313,7 +315,8 @@ class Tempdesolpe extends ModeloGeneral
 
 	public function afterfind(){
 		if($this->tipsolpe=='M'){
-			$this->punitreal=$this->alkardex_gastos;
+			//$this->punitreal=$this->desolpe->alkardex_gastos;
+                        //$this->punitreal=14.73;
 		}else{ //Si es un servicio
 
 			$this->punitreal=Yii::app()->db->createCommand()

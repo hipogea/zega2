@@ -60,13 +60,20 @@ class Desolpe extends ModeloGeneral
 			//array('hidsolpe', 'required'),
 			//array('numero, codart', 'length', 'max'=>10),
 			array('centro, codal, codart,cant, txtmaterial,um,hidlabor', 'required','on'=>'buffer'),
-			array('tipsolpe,centro, codal,hidot,hcodoc, codart,item,
-			codservicio,est,fechaent,txtmaterial,hidlabor,iduser,punitreal,punitplan,idusertemp,idstatus,id,idtemp', 'safe','on'=>'buffer'),
+			array('tipsolpe,centro, 
+                            codal,hidot,hcodoc, 
+                            codart,item,
+			codservicio,est,fechaent,
+                        txtmaterial,hidlabor,
+                        iduser,punitreal,punitplan,
+                        idusertemp,idstatus,id,idtemp',
+                            'safe','on'=>'buffer'),
 
 
 
 
 			array('punitreal','safe','on'=>'preciounitreal'),
+                    array('punitreal','safe'),
 			array('punitreal','chkcatval'),
 
 			array('est','safe','on'=>'aprobacion'),
@@ -597,6 +604,7 @@ public function checkvalores1($attribute,$params) {
 												//$registroinventario=Alinventario::model()->encontrarregistro($this->centro,$this->codal,$this->codart);
 												//$registroinventario=Alinventario::model()->encontrarregistro($this->centro,$this->codal,$this->codart);
 												$this->punitplan=$this->getcosto();//}
+                                                                                                $this->punitreal=$this->alkardex_gastos;
 
 											}
 
@@ -605,7 +613,9 @@ public function checkvalores1($attribute,$params) {
 										//echo "se cumlpio carajo";
 										//yii::app()->end();
 										//$this->ultimares=" ".strtoupper(trim($this->usuario=Yii::app()->user->name))." ".date("H:i")." :".$this->ultimares;
-									}
+									$this->punitreal=$this->alkardex_gastos;
+                                                                                
+                                                                                        }
 
 
 
@@ -930,6 +940,7 @@ private function getcosto(){
 	public function afterfind(){
 		if($this->tipsolpe=='M'){
 			$this->punitreal=$this->alkardex_gastos;
+                        //$this->punitreal=23.56;
 		}else{ //Si es un servicio
 
 			$this->punitreal=Yii::app()->db->createCommand()

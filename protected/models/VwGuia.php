@@ -330,6 +330,7 @@ class VwGuia extends CActiveRecord
 		$criteria->compare('hidref',$this->hidref,true);
 		$criteria->compare('docref',$this->docref,true);
 		$criteria->compare('codocu',$this->codocu,true);
+                $criteria->compare('c_salida',$this->c_salida,true);
 		if(isset($_SESSION['sesion_Maestrocompo'])) {
 			$criteria->addInCondition('c_codgui', $_SESSION['sesion_Maestrocompo'], 'AND');
 		} ELSE {

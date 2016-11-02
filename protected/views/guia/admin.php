@@ -92,14 +92,4 @@ $('.search-form form').submit(function(){
 )); ?>
 
 
-<?php
-$this->widget('ext.camara.Camara',
-					array(
-                                            'accion'=>'subearchivo'
-					)
-				);
-                                                
-                                                
-  ?>
-
 
