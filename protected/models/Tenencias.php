@@ -52,7 +52,7 @@ class Tenencias extends CActiveRecord
 		return array(
 			'codcen0' => array(self::BELONGS_TO, 'Centros', 'codcen'),
 			'tenenciasprocs' => array(self::HAS_MANY, 'Tenenciasproc', 'codte'),
-			'tenenciastrabas' => array(self::HAS_MANY, 'Tenenciastraba', 'codte'),
+			'tenenciastraba' => array(self::HAS_MANY, 'Tenenciastraba', 'codte'),
 		);
 	}
 

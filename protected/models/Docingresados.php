@@ -2,7 +2,9 @@
 
 class Docingresados extends ModeloGeneral
 {
-	/**
+	
+    CONST PARAM_TENENCIA_POR_DEFECTO='1012';
+    /**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
 	 * @return Docingresados the static model class
@@ -34,7 +36,14 @@ class Docingresados extends ModeloGeneral
                             '_numerofotosporcarpeta'=>yii::app()->settings->get('general','general_nregistrosporcarpeta')+0,
                             '_extensionatrabajar'=>'.jpg',
                             '_id'=>$this->getPrimarykey(),
+                                ),
+                
+                'parametros'=>array(
+				'class'=>'ext.behaviors.ParametrosBehavior',
+                            'nombrecampodocu'=>'tipodoc',
+                             'nombrecampocentro'=>'codlocal',
                                 ));
+                
                     
                    
                 
@@ -55,6 +64,7 @@ class Docingresados extends ModeloGeneral
 			array('numero', 'required','message'=>'Debes de llenar el numero'),
 			array('codprov', 'required','message'=>'Llena el proveedor'),
 			array('tipodoc', 'required','message'=>'Ingresa el tipo de documento'),
+                    array('tipodoc', 'chkparametros'),
 			array('codresponsable', 'required','message'=>'...Quien es el responsable?'),
 			array('fecha', 'required','message'=>'...La fecha del documento?'),
 			array('fechain', 'required','message'=>'...La fecha de ingreso?'),
@@ -69,7 +79,7 @@ class Docingresados extends ModeloGeneral
 			array('codresponsable', 'length', 'max'=>4),
 			array('creadopor', 'length', 'max'=>23),
 			array('creadoel', 'length', 'max'=>15),
-			array('fecha,codteniente,docref,numero,codlocal, fechain,conservarvalor, texv', 'safe'),
+			array('fecha,codteniente,docref,numero,codlocal, fechain,conservarvalor,codteniente, codtenencia, texv', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, codprov,conservarvalor, fecha, fechain, correlativo, tipodoc, moneda, descorta, codepv, monto, codgrupo, codresponsable, creadopor, creadoel, texv, docref', 'safe', 'on'=>'search'),
@@ -139,20 +149,19 @@ class Docingresados extends ModeloGeneral
 	public $maximovalor;
 	public $conservarvalor=0; //Opcionpa reaverificar si se quedan lo valores predfindos en sesiones 
 	public function beforeSave() {
-							if ($this->isNewRecord) {
-									
-
-										// $this->creadoel=Yii::app()->user->name;
-									    $this->correlativo=Numeromaximo::numero($this->model(),'correlativo','maximovalor',8);
-										$this->cod_estado='10';
-								$this->codocu='280';
-											//$this->c_salida='1';
-									} else
-									{
-										
-										//$this->ultimares=" ".strtoupper(trim($this->usuario=Yii::app()->user->name))." ".date("H:i")." :".$this->ultimares;
-									}
-									return parent::beforeSave();
+		if ($this->isNewRecord) {	// $this->creadoel=Yii::app()->user->name;
+		$this->correlativo=Numeromaximo::numero($this->model(),'correlativo','maximovalor',8);
+		$this->cod_estado='10';
+		$this->codocu='280';
+                $this->codtenencia=$this->getparametro(self::PARAM_TENENCIA_POR_DEFECTO);
+                Yii::app()->user->getField('codtra');
+                    }
+                else{
+                    
+                                    
+                    
+                }
+	return parent::beforeSave();
 				}
 	
 	
@@ -205,4 +214,24 @@ class Docingresados extends ModeloGeneral
 			'criteria'=>$criteria,
 		));
 	}
+        
+        
+        /* funcio que verifica que exista un valor predefinoido por defual 
+         * para TENENCIAS  en el momento de crear un documento
+         *
+         */
+        public function checktenencias($attribute,$params) {
+            $configuracion=Configuracion::devuelveconfiguracion($this->tipodoc,
+                    $this->codlocal, 
+                    self::PARAM_TENENCIA_POR_DEFECTO);
+            if(is_null($configuracion))
+            {
+                $this->aderror('No existe una tenencia configurada para este centro y documento, agregue una por favor');
+            }else{
+               if(count($configuracion->tenencias->tenenciastraba)==0)
+                  $this->aderror('No existe una persona asignada para la tenencia ['.$configuracion->tenencias->codte.']     '.$configuracion->tenencias->deste.' agregue una por favor');
+             
+            }
+            
+        }
 }
