@@ -360,7 +360,7 @@ return array(
 					'levels'=>'error,warning', //agreagamos aqui el mail para probar los correos en modo DEBUG 
 					//'enableParamLogging'=>true,
 				),
-                          /*  array(
+                            /*array(
                     'class'=>'CEmailLogRoute',
                     'levels'=>'error, warning',
                     'emails'=>'neotegnia@gmail.com',

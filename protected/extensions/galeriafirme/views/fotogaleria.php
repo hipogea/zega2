@@ -16,7 +16,18 @@ $nombrecompleto=$foto['archivo'];
   </p>" 
 data-pinterest-text="Pin it1" 
  data-tweet-text="share on twitter 1">
-   <a href="">
+    
+    
+   <a href=<?php echo($this->modo==3)?
+   yii::app()->createUrl($this->rutadefault,
+           array('fotos'=>base64_encode(serialize($this->fotos)),
+               'titulo'=>$this->titulo,
+               'mensajegeneral'=>$this->mensajegeneral)           
+           ) :"";?>  
+      <?php echo($this->modo==3)?"target=\"_blank\"":""; ?>
+      >
       <img class="img-responsive" src="<?php echo $nombrecompleto;?>" alt="Thumb-1">
    </a>
+   
+    
 </li>

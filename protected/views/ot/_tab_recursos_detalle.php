@@ -78,8 +78,10 @@
 </div>
 	<div class="row">
 		<?php echo $form->labelEx($model,'cant'); ?>
-		<?php echo $form->textField($model,'cant',array('size'=>8,'maxlength'=>8, 'disabled'=>$this->eseditable($modelopadre->codestado) )); ?>
-		<?php echo $form->error($model,'cant'); ?>
+		<?php echo $form->textField($model,'cant',array('size'=>8,'maxlength'=>8, 'disabled'=>$model->disabledcampo('cant') )); ?>
+		<?php 
+                
+                echo $form->error($model,'cant'); ?>
 	</div>
 
 
@@ -87,7 +89,8 @@
 	<div class="row">
 		<?php echo $form->labelEx($model,'codart'); ?>
 		<?php
-		if ($this->eseditable($modelopadre->codestado)=='' )
+               
+		if ($model->escampohabilitado('codart') )
 		{	$this->widget('ext.matchcode1.MatchCode1',array(
 			'nombrecampo'=>'codart',
 			'pintarcaja'=>1, ///indica si debe de pintar el textbox al iniciar
@@ -137,8 +140,10 @@
 			$datos=array();
 			echo $form->DropDownList($model,'um',$datos, array('disabled'=>$this->eseditable($modelopadre->codestado), 'maxlength'=>4)  )  ;
 			?>
-		<?php }  else { ?>
-			<?php echo $form->DropDownList($model,'um',Alconversiones::Listadoums($model->codart), array('empty'=>'--Um--', 'disabled'=>$this->eseditable($modelopadre->codestado), 'maxlength'=>4)  )  ; ?>
+		<?php }  else { 
+                     ?>
+                               
+			<?php echo $form->DropDownList($model,'um',Alconversiones::Listadoums($model->codart), array('empty'=>'--Um--', 'disabled'=>$model->disabledcampo('um'), 'maxlength'=>4)  )  ; ?>
 
 
 		<?php   } ?>
@@ -246,16 +251,21 @@
 
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'centro'); ?>
+		<?php echo $form->labelEx($model,'centro'); 
+                
+                   
+                ?>
 		<?php  $datos1 = CHtml::listData(Centros::model()->findAll(array('order'=>'nomcen')),'codcen','nomcen');
-		echo $form->DropDownList($model,'centro',$datos1, array('empty'=>'--Seleccione una referencia--',  'disabled'=>$this->eseditable($modelopadre->codestado),
+		echo $form->DropDownList($model,'centro',$datos1, array('empty'=>'--Seleccione una referencia--',  'disabled'=>$model->disabledcampo('centro'),
 		) ) ;
 		?>
 		<?php echo $form->error($model,'centro'); ?>
 	</div>
 	<div class="row">
-		<?php echo $form->labelEx($model,'codal'); ?>
-		<?php echo $form->textField($model,'codal',array('size'=>3,'maxlength'=>3, 'disabled'=>$this->eseditable($modelopadre->codestado))); ?>
+		<?php echo $form->labelEx($model,'codal');
+                
+                ?>
+		<?php echo $form->textField($model,'codal',array('size'=>3,'maxlength'=>3,'disabled'=>$model->disabledcampo('codal'))); ?>
 		<?php echo $form->error($model,'codal'); ?>
 	</div>
 

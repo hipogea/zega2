@@ -15,6 +15,30 @@ class Ot extends  ModeloGeneral
 		$this->documento='890';
 
 	}
+        
+        public function behaviors()
+	{
+		return array(
+			// Classname => path to Class
+			'ActiveRecordLogableBehavior'=>
+				'application.behaviors.ActiveRecordLogableBehavior',
+                    
+                   
+                
+               /* 'parametros'=>array(
+				'class'=>'ext.behaviors.ParametrosBehavior',
+                            'nombrecampodocu'=>'codocu',
+                             'nombrecampocentro'=>'codcen',
+                                )   */  );
+                
+                    
+                   
+                
+	}
+        
+        
+        
+        
 	/**
 	 * @return array validation rules for model attributes.
 	 */
