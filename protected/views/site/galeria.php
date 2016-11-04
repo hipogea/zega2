@@ -6,7 +6,8 @@ $this->widget('ext.galeriafirme.GaleriaFirme',
 					array(
                                             'titulo'=>$titulo,
                                             'mensajegeneral'=>$mensajegeneral,
-                                             'fotos'=>$fotos,	
+                                             'fotos'=>$fotos,
+                                            'modo'=>$modo
 
 					)
 				);

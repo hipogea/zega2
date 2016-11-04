@@ -237,7 +237,7 @@ private function prepara() {
                                                   'subidoel'=>$this->getcreado($archivo),
                                                   'tamano'=>$this->getSize($this->_carpetadestino.substr($archivo,$posic)),
                                                   'rutacorta'=>$this->limpiaruta(DIRECTORY_SEPARATOR.trim($this->rutarelativa(),DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR),
-                                                  'rutalarga'=>$this->limpiaruta(Yii::getPathOfAlias('webroot').$this->rutarelativa()),
+                                                  //'rutalarga'=>$this->limpiaruta(Yii::getPathOfAlias('webroot').$this->rutarelativa()),
                                                  
                                                  /* 'rutacorta'=>($rutasabsolutas)?$this->limpiaruta(
                                                   DIRECTORY_SEPARATOR.trim($this->rutarelativa(),DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR):
@@ -375,7 +375,7 @@ private function prepara() {
        $nuevoarray=array();
        $i=0;
        foreach($fotos as $foto){
-           $nuevoarray[$i]['archivo']=$this->limpiaruta(rtrim(yii::app()->baseUrl,DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$foto['rutacorta'].$foto['nombrecompleto']);
+           $nuevoarray[$i]['archivo']=$this->limpiaruta($foto['rutacorta'].$foto['nombrecompleto']);
            $nuevoarray[$i]['textocorto']=null;
            $nuevoarray[$i]['metadatos']=" Creado el ".$foto['subidoel']." Subido por ".yii::app()->user->um->loadUserById((integer)$foto['subidopor'])->username."  Tamano  ".$foto['tamano']."  ";
       $i++;

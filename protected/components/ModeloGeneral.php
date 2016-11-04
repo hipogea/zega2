@@ -1,7 +1,10 @@
 <?php
 class ModeloGeneral extends CActiveRecord
 {
-	PRIVATE $_venumModels=null;
+const HTML_DESHABILITADO='disabled';
+const ESTADO_REGISTRO_NUEVO='00'; ///ESTO SOLO PARA INCLUIR LA CONDICION isNewRecord()
+    
+    PRIVATE $_venumModels=null;
 	private $_modelPath=null;
 	public $oldAttributes=array(); //arayu ara guaradar los atributos viejos
 	public $documento=NULL;
@@ -9,6 +12,10 @@ class ModeloGeneral extends CActiveRecord
 	public $mensajes=array(); //ARRAY PARA UARADAR LOS MENSAKESW
 	public $campoprecio=null; //nobre del campo precio del modelo
 	public $isdocParent=true; ///Si es modelo padre TRUE , FALSE  SI es un item	
+        public $campoestado='';
+        public $campossensibles=array();///Esta propiedad guarda los campos sensisble del modelo para veriifcacion si se pueden 
+   //editar o no de acuerdo a si ya tieen compromisos
+   
 	public function insertamensaje($nivel,$mensaje){
 	//	$ingreso= array_push($this->mensajes,array($nivel=>$mensaje));
 		/* print_r($this->mensajes);
@@ -494,4 +501,93 @@ public static function model($className=__CLASS__)
 		return null; //ESTO SE COLOCO PARA EVADR UN ERROR
 	}
 
+        
+    /******************************
+     * Esta funcion, vetirica los compromisos de un modelo con sus hijos
+     * a travez de la propiedad relations del modelo.
+     * De este modo revisa los campos sensibles antes de habilitar su edicion
+     * permitiendo o no su eidcion en las vistas de los forms,
+     * del mismo modo para borrar, si tiene compromisos ya nos peude borrar
+     * 
+     * 
+     ******************************/    
+   public function checkcompromisos (){
+       //verificando la propedad relatriosn
+       $relaciones =$this->relations();
+       $puentes=array();
+       foreach($relaciones as $clave=>$valor){
+           if(in_array($valor[0],array(self::STAT,self::HAS_ONE))){
+               $puentes[]=$clave;
+           }
+       }
+        $retorno=false;
+      foreach($puentes as $clave=>$valore){
+         
+          if(!is_null($this->{$valore})){
+             $retorno=true;break; 
+          }
+          
+          /*if(  is_array($this->{$valore})  )
+           if(count($this->{$valore})>0)
+             return true;*/
+           if(in_array(gettype($this->{$valore}),array('string','integer','float'))  ){
+                $retorno=true;break; 
+           }
+           IF(gettype($this->{$valore})=='object'){ //HAS_ONE
+               
+               
+           }
+           
+          
+      }//FIN DEL FOR
+     return $retorno;
+          
+      }
+      
+      public function escampohabilitado($nombrecampo){
+           if($this->isNewRecord){
+                  return true;
+              }else{
+                if(in_array($nombrecampo,array_keys($this->campossensibles)))
+                                 {
+                                    // isnewrecord =false; verificando si es un campo que solo sepudee ingersar una osla vez y ya no s emodifica 
+                                         if(in_array(self::ESTADO_REGISTRO_NUEVO,array($this->campossensibles[$nombrecampo]))){
+                                             Yii::log(' campossensibles primer criterioel campo '.$nombrecampo.'   '.self::ESTADO_REGISTRO_NUEVO,'error');
+                                             return false;
+                                            
+                                         } else{ //isnewrecord =false; ahora toca revisar  segun el estado
+                                              if(in_array($this->{$this->campoestado},array($this->campossensibles[$nombrecampo]))){
+                                                 Yii::log(' campossensibles segundo criteiro '.$nombrecampo.'   ','error');
+                                            
+                                                  return false; 
+                                                } else{///muy bien ahora que ya paso los 2 criterios (1) ingreso unica vez y 2) estado del documento)
+                                                         // ahora toca revisar el criterio 3) de los compromisos, a nivel BASE DE DATOS de las tablas hijas relacionadas
+                                                     if($this->checkcompromisos()) {//sis tiene compromisos  ya no  puede ser editable
+                                                          Yii::log(' ahora que ya paso los 2 criterios '.$nombrecampo.'   ','error');
+                                                         return false;
+                                                     }else{ //en este caso despues de haber pasado los 3 criterios recien puede 
+                                                           //decirse que es editable
+                                                          Yii::log(' ahora ya p`sso los 3 croterios y es editable '.$nombrecampo.'   ','error');
+                                                         
+                                                         return true;
+                                                     }
+                                                }
+      
+                                             }
+                                 
+                                            } else{
+                                                var_dump($nombrecampo);var_dump(array_keys($this->campossensibles));die();
+                                                Yii::log(' campossensibles el campo '.$nombrecampo.'   no esta en los campos sensibles ','error');
+                                            
+                                        return true;
+                                }  
+              }
+      
+           }   
+       
+   
+   public function disabledcampo($nombrecampo){
+       return ($this->escampohabilitado($nombrecampo))?'':self::HTML_DESHABILITADO;
+   }
+        
 }

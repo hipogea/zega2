@@ -404,6 +404,24 @@ class SiteController extends Controller
             $registro=New Tabular();
             
         }
+        
+        public function actionmuestragaleria(){
+            if(isset($_GET['fotos'])){
+                $this->layout='//layouts/fotos';
+                $fotos=unserialize(base64_decode($_GET['fotos']));
+                $mensajegeneral=unserialize(base64_decode($_GET['mensajegeneral']));
+                $this->render('galeria',
+                              array(
+                                    'titulo'=>$_GET['titulo'],
+                                        'modo'=>1,
+                                     'mensajegeneral'=>$mensajegeneral,                                   
+                                   'fotos'=>$fotos,
+                              )
+                              );
+                
+                
+            }
+        }
 
 }
 

@@ -2763,11 +2763,14 @@ public function borraitemdesolpe($autoId) //Borra un registro de solpe
             if(isset($_GET['id'])){
                 $id= (integer)MiFactoria::cleanInput($_GET['id']);
                  $detalle= Tempdetot::model()->findByPk($id);
+                 
                  if(!is_null($detalle)){
+               
                       $this->renderpartial('//site/galeria',
                               array(
                                     'titulo'=>$detalle->ot->textocorto,
-                                     'mensajegeneral'=>$detalle->textoactividad,
+                                   'modo'=>3,
+                                     'mensajegeneral'=>$detalle->textoactividad,                                   
                                    'fotos'=>$detalle->fotosparagaleria(),
                               )
                               );

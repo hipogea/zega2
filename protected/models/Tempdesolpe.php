@@ -2,13 +2,36 @@
 
 class Tempdesolpe extends ModeloGeneral
 {
-	/**
+	
+    const ESTADO_PREVIO='99';
+    const ESTADO_CREADO='10';
+    
+    
+    /**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
 		return '{{tempdesolpe}}';
 	}
+        
+        
+        public function init() {
+            $this->campoestado='est';
+            
+            $this->campossensibles=array(
+                'centro'=>array(SELF::ESTADO_REGISTRO_NUEVO,SELF::ESTADO_PREVIO,SELF::ESTADO_CREADO),
+                'codal'=>array(SELF::ESTADO_REGISTRO_NUEVO,SELF::ESTADO_PREVIO,SELF::ESTADO_CREADO),
+            'codart'=>array(SELF::ESTADO_PREVIO,SELF::ESTADO_CREADO),
+                'cant'=>array(SELF::ESTADO_REGISTRO_NUEVO,SELF::ESTADO_PREVIO,SELF::ESTADO_CREADO),
+            'um'=>array(SELF::ESTADO_REGISTRO_NUEVO,SELF::ESTADO_PREVIO,SELF::ESTADO_CREADO),
+               // 'txtmaterial'=>array(SELF::ESTADO_PREVIO,SELF::ESTADO_CREADO),
+            
+                
+                );
+            
+        }
+        
 
 	/**
 	 * @return array valhistion rules for model attributes.

@@ -18,7 +18,7 @@ class Tempdetot extends ModeloGeneral
 			// Classname => path to Class
 			'adjuntos'=>array(
 				'class'=>'ext.behaviors.TomaFotosBehavior',
-                            '_codocu'=>'210',
+                            '_codocu'=>'891',
                             '_ruta'=>yii::app()->settings->get('general','general_directorioimg'),
                             '_numerofotosporcarpeta'=>yii::app()->settings->get('general','general_nregistrosporcarpeta')+0,
                             '_extensionatrabajar'=>'.jpg',
