@@ -1,6 +1,6 @@
 <?php
 $this->widget('ext.groupgridview.GroupGridView', array(
-      'id' => 'detallecompo-grid',
+      'id' => 'cajachica-grid',
       'dataProvider'=> Imputaciones::model()->search_por_ot($modelopadre->id),
      'mergeColumns' => array('idcolector'),
 	 'itemsCssClass'=>'table table-striped table-bordered table-hover',

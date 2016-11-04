@@ -27,7 +27,7 @@ class CliproController extends Controller
 		return array(
 
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('Excel','muestraofertas','Actualizamateriales','actualizaobjeto','admin','cargaums','creamaterial','creaobjeto','agenda','actualizadirecciones','creacontacto','creadireccion','create','update'),
+				'actions'=>array('view','Excel','muestraofertas','Actualizamateriales','actualizaobjeto','admin','cargaums','creamaterial','creaobjeto','agenda','actualizadirecciones','creacontacto','creadireccion','create','update'),
 				'users'=>array('@'),
 			),
 

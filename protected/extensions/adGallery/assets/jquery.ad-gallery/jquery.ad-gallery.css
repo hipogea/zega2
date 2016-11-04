@@ -2,6 +2,11 @@
   margin: 0;
   padding: 0;
 }
+
+.ad-gallery, .img {
+  width: 500px !important;
+  height: 500px !important;
+}
   .ad-gallery .ad-image-wrapper {
     width: 100%;
     margin-bottom: 10px;
@@ -51,6 +56,7 @@
       }
       .ad-gallery .ad-image-wrapper .ad-next .ad-next-image {
         background: url(ad_next.png);
+        border: #ff333;
         width: 30px;
         height: 30px;
         right: 0;

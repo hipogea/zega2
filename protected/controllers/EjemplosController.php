@@ -399,7 +399,49 @@ $mo=New Alinventario();
 
 
 	public function actionPio() {
+            
+            $horaac=(Integer)(microtime(true)*10000);
+            echo "hora a actual copn microtime <br>";
+            var_dump($horaac);
+            $horaacx=time();
+            echo "hora a actual copn time <br>";
+            var_dump($horaacx);
+            echo "<br>";
+             echo "fecha con  dato  microtime<br>";
+            $fechaactual=date("Y-m-d H:i:s",$horaac/10000);
+            var_dump($fechaactual);
+            echo "<br>";
+             echo "fecha con  dato  time<br>";
+            $fechaactual=date("Y-m-d H:i:s",$horaacx);
+             var_dump($fechaactual);
+            die();
+            
+            
+            
+              echo "Comprobar el directorio con la funcio is_dir()    :     is_dir(".Yii::getPathOfAlias('webroot').")  <br> ";
+   var_dump( is_dir(Yii::getPathOfAlias('webroot')));
+	 echo "<br><br><br>";
+	 echo "Archivos del directorio ". Yii::app()->getTheme()->basePath."  <br>";
+	 $archivos=CFileHelper::findFiles(		Yii::app()->getTheme()->basePath.DIRECTORY_SEPARATOR,
+		   									array(
+			   									'fileTypes'=>array('css','php'),
+												'exclude'=>array(),
+												'level'=>-1,
+												'absolutePaths'=>true
+		  									 )
+	 									);
+	 print_r($archivos);DIE();
+
+            
+            
+            
             $model =new Almacendocs;
+            $registro= Desolpe::model()->findAll("id=268");
+            var_dump($registro[0]->punitreal);die();
+            echo "<br>";
+            $registro->setScenario('buffer');
+            var_dump($registro->save()); echo "<br>";
+            print_r($registro->attributes);die();
             $registro=$model->find("numvale=:vnumvale",array(":vnumvale"=>'507000000008'));
            var_dump($registro);  die();          
             VAR_DUMP(Almacendocs::valepornumero('507000000008'));die();

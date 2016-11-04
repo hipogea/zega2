@@ -13,9 +13,9 @@
 					'Webcam'=>array('id'=>'tab___._..__',
 						'content'=>$this->renderPartial('//site/camara', array('model'=>$model),TRUE)
 					),
-                                    'Galeria'=>array('id'=>'tab___._....__',
-						'content'=>$this->renderPartial('//site/galeria', array('model'=>$model),TRUE)
-					),
+                                    //'Galeria'=>array('id'=>'tab___._....__',
+						//'content'=>$this->renderPartial('//site/galeria', array('model'=>$model),TRUE)
+					//),
 
 				),
 				'options' => array('overflow'=>'auto','collapsible' => false,),

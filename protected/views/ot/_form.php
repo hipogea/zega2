@@ -451,11 +451,7 @@
                     <?php echo $form->error($model,'codcen'); ?>
 	</div>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'iduser'); ?>
-		<?php echo $form->textField($model,'iduser'); ?>
-		<?php echo $form->error($model,'iduser'); ?>
-	</div>
+	
 
 	
 
@@ -468,9 +464,7 @@
 
 	
 
-	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
-	</div>
+	
 
 			</div>
 

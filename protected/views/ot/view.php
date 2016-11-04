@@ -8,11 +8,9 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'List Ot', 'url'=>array('index')),
-	array('label'=>'Create Ot', 'url'=>array('create')),
-	array('label'=>'Update Ot', 'url'=>array('update', 'id'=>$model->id)),
-	array('label'=>'Delete Ot', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
-	array('label'=>'Manage Ot', 'url'=>array('admin')),
+	array('label'=>'Nueva orden', 'url'=>array('creadocumento')),
+	array('label'=>'Modificar','url'=>array('editadocumento','id'=>$model->id)),
+	array('label'=>'Listado', 'url'=>array('admin')),
 );
 ?>
 

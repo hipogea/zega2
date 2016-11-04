@@ -72,7 +72,7 @@ class NeController extends ControladorBase
 
 	public function actionsalir($id){
 		MiFactoria::getDesbloqueo($id,$this->documento);
-		$this->redirect(array('admin'));
+		$this->redirect(array('/guia/admin'));
 	}
 
 
@@ -648,9 +648,14 @@ class NeController extends ControladorBase
 			throw new CHttpException(404,'No se encontro la guia especificada');
 
 		$model=$model=$this->loadModel($id);
-		$this->render('update',array(
-			'model'=>$model,
-		));
+		
+                
+                //$this->setBloqueo($id) ; 	///bloquea
+				$this->ClearBuffer($id); //Limpia temporal antes de levantar
+				$this->IniciaBuffer($id); //Levanta temporales
+				$this->render('update',array('model'=>$model));
+				yii::app()->end();
+                
 	}
 
 
@@ -1079,27 +1084,7 @@ class NeController extends ControladorBase
 
 	public function actionAdmin()
 	{
-		$model=new VwGuia('search');
-		$model->unsetAttributes();  // clear any default values
-
-		$this->performAjaxValidation($model);
-		if(isset($_GET['VwGuia'])) {
-			//EN EL CASO DE QUE SEA UNA BUSQUEDA MEDIANTE EL FOMRUALARIO
-			//if ($model->validate()) {
-			$model->attributes=$_GET['VwGuia'];
-			$model->validate();
-			$proveedor=$model->search();
-			//  } else {
-			// echo "que carajo";
-			// }
-		} else {
-			// $model->validate();
-			$proveedor=$model->search();
-		}
-
-		$this->render('admin',array(
-			'model'=>$model,'proveedor'=>$proveedor,
-		));
+		$this->redirect(yii::app()->baseUrl.'/guia/admin');
 	}
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.

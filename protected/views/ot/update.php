@@ -9,10 +9,10 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'List Ot', 'url'=>array('index')),
-	array('label'=>'Create Ot', 'url'=>array('create')),
-	array('label'=>'View Ot', 'url'=>array('view', 'id'=>$model->id)),
-	array('label'=>'Manage Ot', 'url'=>array('admin')),
+	//array('label'=>'List Ot', 'url'=>array('index')),
+	array('label'=>'Nueva orden', 'url'=>array('creadocumento')),
+	array('label'=>'salir','url'=>array('salir')),
+	array('label'=>'Listado', 'url'=>array('admin')),
 );
 ?>
 

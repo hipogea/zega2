@@ -185,10 +185,11 @@ public function actionver(){
 	 */
 	public function actionAdmin()
 	{
-		$model=new Config('search');
+		$model=new Configuracion('search');
+                //var_dump($model);die();
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Settings']))
-			$model->attributes=$_GET['Settings'];
+		if(isset($_GET['Configuracion']))
+			$model->attributes=$_GET['Configuracion'];
 
 		$this->render('admin',array(
 			'model'=>$model,
@@ -224,9 +225,9 @@ public function actionver(){
 	}
         
         public function actioncreaparametro(){
-            $model = new Config();
-        if (isset($_POST['Config'])) {
-            $model->attributes = $_POST['Config'];
+            $model = new Configuracion();
+        if (isset($_POST['Configuracion'])) {
+            $model->attributes = $_POST['Configuracion'];
             if ($model->save())
                 $this->redirect(array('admin'));
         }
