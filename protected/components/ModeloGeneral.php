@@ -511,7 +511,7 @@ public static function model($className=__CLASS__)
      * 
      * 
      ******************************/    
-   public function checkcompromisos (){
+   public function checkcompromisos ($final=false){
        //verificando la propedad relatriosn
        $relaciones =$this->relations();
        $puentes=array();
@@ -534,7 +534,11 @@ public static function model($className=__CLASS__)
                 $retorno=true;break; 
            }
            IF(gettype($this->{$valore})=='object'){ //HAS_ONE
-               
+               if (!$final){ ///Si no es final entonces evaluar a su gemelo
+                   $retorno=$this->{$valore}->checkcompromisos(true);//pero evitar mas recursiones con final=true
+                    $retorno=true;break; 
+                   
+                   }
                
            }
            
@@ -589,5 +593,8 @@ public static function model($className=__CLASS__)
    public function disabledcampo($nombrecampo){
        return ($this->escampohabilitado($nombrecampo))?'':self::HTML_DESHABILITADO;
    }
+   
+   
+   
         
 }

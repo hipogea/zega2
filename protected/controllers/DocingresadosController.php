@@ -7,7 +7,7 @@ class DocingresadosController extends Controller
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
 	public $layout='//layouts/column2';
-
+const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
 	/**
 	 * @return array action filters
 	 */
@@ -24,18 +24,12 @@ class DocingresadosController extends Controller
 	public function accessRules()
 	{
 		return array(
-			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','admin'),
-				'users'=>array('*'),
-			),
+			
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('relaciona','recibevalor','create','update'),
+				'actions'=>array('admin','ajaxcargaformtenencia','view','creaproceso','relaciona','recibevalor','create','update'),
 				'users'=>array('@'),
 			),
-			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin'),
-				'users'=>array('@'),
-			),
+			
 			array('deny',  // deny all users
 				'users'=>array('*'),
 			),
@@ -143,6 +137,7 @@ class DocingresadosController extends Controller
 		
             $model=new Docingresados;
                 $model->valorespordefecto();
+                $model->codocu=self::CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS;
 		// Uncomment the following line if AJAX validation is needed
 		 $this->performAjaxValidation($model);
 
@@ -150,6 +145,7 @@ class DocingresadosController extends Controller
 		{
 			$model->attributes=$_POST['Docingresados'];
 			if($model->save()) {
+                            MiFactoria::Mensaje('sucess','Se creó un nuevo registro');
 			// if ($model->conservarvalor==0 ) 
 						$this->enviacorreo($model);
 				$this->Creasesiones($model);
@@ -184,6 +180,7 @@ class DocingresadosController extends Controller
 			$model->attributes=$_POST['Docingresados'];
 			if($model->save())  {
 			       //verificando si se slecciono la opcion de conservarlos valores 
+                               MiFactoria::Mensaje('success', 'Se actualizaron los datos');
 						if ($model->conservarvalor=='0' ) 
 						 $this->Destruyesesiones();
 					 if (!empty($_GET['asDialog']))
@@ -200,7 +197,7 @@ class DocingresadosController extends Controller
 		   
 		                       }
 		}
-		$this->layout = '//layouts/iframe';
+		//$this->layout = '//layouts/iframe';
 		$this->render('update',array(
 				'model'=>$model,
 						));
@@ -272,10 +269,11 @@ class DocingresadosController extends Controller
 	public function actionAdmin()
 	{
 		//print_r(get_declared_classes ( )); echo "<br><br><br>";
-            $model=new VwDocuIngresados('search');
+            ///$model=new VwDocuIngresados('search');
+            $model=new VwDoci('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['VwDocuIngresados']))
-			$model->attributes=$_GET['VwDocuIngresados'];
+		if(isset($_GET['VwDoci']))
+			$model->attributes=$_GET['VwDoci'];
 
 		$this->render('admin',array(
 			'model'=>$model,
@@ -307,4 +305,90 @@ class DocingresadosController extends Controller
 			Yii::app()->end();
 		}
 	}
+        
+  public function actioncreaproceso ($id){
+      $id=(integer) MiFactoria::cleanInput($id);
+      if(isset($_GET['codtenencia'])){
+           $codtenencia=MiFactoria::cleanInput($_GET['codtenencia']);
+           //var_dump($codtenencia);die();
+           $registro=Tenencias::model()->findByPk($codtenencia);
+           if(is_null($registro))
+           throw new CHttpException(500,'El paraqmetro pasado para las tneencias no existe en el sistema ');
+      }else{
+           $codtenencia=null;
+      }
+     
+     $modelopadre=$this->loadModel($id);
+     if($modelopadre->procesoactivo[0]->tenenciasproc->final=='1')
+     {
+         throw new CHttpException(500,'No puede procesar mas este documento, el ultimo proceso ha sido marcado como final, consulte con el damisnitrador ');
+      
+     }else{
+        
+		//$descuento=(is_null($modelopadre->descuento))?0:(1-$modelopadre->descuento/100);
+		if(!is_null($codtenencia)){
+                    $model=new Procesosdocu('cambiotenencia');
+                    $model->codte=$codtenencia;
+                }else{
+                    $model=new Procesosdocu();
+                    $model->codte=null;
+                }
+     
+              // die();
+                $model->hiddoci=$modelopadre->id;
+		if(isset($_POST['Procesosdocu']))		{
+                    // var_dump($_POST['Procesosdocu']);
+			$model->attributes=$_POST['Procesosdocu'];
+                        //var_dump($model->attributes);die();
+                        //$this->performAjaxValidationdetalle($model);
+			if($model->save()){
+				if (!empty($_GET['asDialog']))
+				{
+					//Close the dialog, reset the iframe and update the grid
+					echo CHtml::script("window.parent.$('#cru-dialog31').dialog('close');
+							window.parent.$('#cru-frame31').attr('src','');						
+					window.parent.$.fn.yiiGridView.update('resumenoc-grid');
+					");
+
+				}
+			}else{
+                           // print_r($model->geterrors());
+                           /* MiFactoria::Mensaje('error',
+                              yii::app()->mensajes->getErroresItem($model->geterrors())
+                                    );  */                                  
+
+                        }
+
+		}
+		// if (!empty($_GET['asDialog']))
+		$this->layout = '//layouts/iframe';                
+		$this->render(
+                        (is_null($codtenencia))?
+                        'form_proceso_carcaza':
+                        'form_cambiotenencia',
+                        array(
+			'model'=>$model, 'id'=>$id,'codtenencia'=>$codtenencia,
+		)); 
+     }
+     
+	}
+
+    public function actionajaxcargaformtenencia(){
+        
+        if(yii::app()->request->isAjaxRequest){
+            $id=(integer) MiFactoria::cleanInput($_GET['id']);
+            $codtenencia=(integer) MiFactoria::cleanInput($_GET['codtenencia']);
+            if(is_null(Docingresados::model()->findByPk($id)))
+             // throw new CHttpException(500,'El paraqmetro pasado para las tneencias no existe en el sistema ');
+               die();
+            $model=New Procesosdocu();
+            $formi=New CActiveForm;
+            echo $this->renderpartial('form_proceso',
+                    array(
+			'model'=>$model, 'id'=>$id,'codtenencia'=>$codtenencia,'form'=>$formi
+		),false,true);
+            
+        }
+    }   
+        
 }

@@ -38,8 +38,34 @@
             <?php echo $form->error($model,'hidevento'); ?>
 	</div>
     
-    
-    
+    <div class="row">
+		<?php echo $form->labelEx($model,'nhorasverde'); ?>
+		<?php echo $form->textField($model,'nhorasverde',array('size'=>6,'maxlength'=>6)); ?>
+		<?php echo $form->error($model,'nhorasverde'); ?>
+	</div>
+
+     <div class="row">
+		<?php echo $form->labelEx($model,'nhorasnaranja'); ?>
+		<?php echo $form->textField($model,'nhorasnaranja',array('size'=>6,'maxlength'=>6)); ?>
+		<?php echo $form->error($model,'nhorasnaranja'); ?>
+	</div>
+     <div class="row">
+		<?php echo $form->labelEx($model,'final'); ?>
+		<?php echo $form->CheckBox($model,'final'); ?>
+		<?php echo $form->error($model,'final'); ?>
+	</div>
+    <div class="row">
+		<?php echo $form->labelEx($model,'automatico'); ?>
+		<?php echo $form->CheckBox($model,'automatico'); ?>
+		<?php echo $form->error($model,'automatico'); ?>
+	</div>
+    <div class="row">
+		<?php echo $form->labelEx($model,'hidprevio'); ?>
+		<?php 
+                echo $form->DropDownList($model,'hidprevio',$datos, array( 'empty'=>'--Seleccione un evento--',) ) ;
+                ?>
+		<?php echo $form->error($model,'hidprevio'); ?>
+	</div>
     
     <div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Crear' : 'Actualizar'); ?>

@@ -1358,7 +1358,7 @@ if(!$mensaje->save())
     }
 
     public static function titulo($titulo,$imagen){
-        echo  CHtml::openTag("h1")."  ".CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"].$imagen.".png")."  ".$titulo.CHtml::closeTag("h1");
+        echo  CHtml::openTag("h2")."  ".CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"].$imagen.".png")."  ".$titulo.CHtml::closeTag("h1");
 
     }
 

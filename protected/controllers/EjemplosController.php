@@ -400,6 +400,16 @@ $mo=New Alinventario();
 
 	public function actionPio() {
             
+            $registro= Tenencias::model()->findByPk('100');
+            
+          
+           var_dump($registro);die();
+           var_dump($proceso->tenenciastraba);die();
+        
+       // ->eventos->descripcion
+           
+           
+            $this->render('//site/mensajes');die();
             $horaac=(Integer)(microtime(true)*10000);
             echo "hora a actual copn microtime <br>";
             var_dump($horaac);

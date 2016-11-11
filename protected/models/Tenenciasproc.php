@@ -20,8 +20,11 @@ class Tenenciasproc extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('hidevento', 'numerical', 'integerOnly'=>true),
-                     array('codte, hidevento', 'required', 'on'=>'insert,update'),
+                     array('codte,nhorasnaranja,final,automatico,nhorasverde,hidprevio, hidevento', 'safe', 'on'=>'insert,update'),
+			
+                     array('codte,nhorasnaranja,nhorasverde, hidevento', 'required', 'on'=>'insert,update'),
 			array('codte', 'length', 'max'=>4),
+                    array('hidprevio', 'chkvalores'),
                     array('hidevento+codte', 'application.extensions.uniqueMultiColumnValidator','on'=>'insert,update'),
 			
 			// The following rule is used by search().
@@ -40,7 +43,7 @@ class Tenenciasproc extends CActiveRecord
 		return array(
 			'eventos' => array(self::BELONGS_TO, 'Eventos', 'hidevento'),
 			'tenencias' => array(self::BELONGS_TO, 'Tenencias', 'codte'),
-                     'naccionesdocumentos'=>array(self::STAT, 'Accionesdocumentos', 'hidne'),
+                     'nprocesosdocu'=>array(self::STAT, 'Procesosdocu', 'hidproc'),
 		);
 	}
 
@@ -94,4 +97,23 @@ class Tenenciasproc extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        
+        
+      public function beforesave(){
+          if($this->automatico=='1'){ //Solo uno puede tener le heck actuivo por default 
+              $this->updateAll(array('automatico'=>'0'),"codte=:vcodte",array(":vcodte"=>$this->codte));
+          }
+          $this->automatico='1';
+          if(is_null($this->final))
+              $this->final='0';
+          return parent::beforesave();
+      }  
+      
+      
+      
+	public function chkvalores($attribute,$params) {
+		if($this->hidprevio==$this->hidevento )
+			$this->adderror('hidprevio','No puede ser igual al  proceso original');
+	}
+        
 }

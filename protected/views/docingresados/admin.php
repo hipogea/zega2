@@ -45,24 +45,33 @@ $this->renderPartial('_search',array(
 	//'filter'=>$model,
 	'columns'=>array(
 		//'id',
+		   array(
+            'class'=>'CCheckBoxColumn',
+           'selectableRows' => 120,
+            'value'=>'$data->id',
+            'checkBoxHtmlOptions' => array(
+                'name' => 'cajita[]'),
+            // 'id'=>'cajita' // the columnID for getChecked
+                      ),
 		
-		'correlativo',
-		'desdocu',
+		//'desdocu',
+		array('name'=>'correlativo','type'=>'raw','value'=>'CHTml::openTag("span",array("style"=>"border-radius:3px;padding:4px;background-color:$data->color"))."     ".CHTml::closeTag("span")." .".$data->correlativo'),
 		'numero',
 		'moneda',
 		'monto',
 		//'codprov',
 		'despro',			
-		'nomep',
+		//'barcos.nomep',
 		
 		
 		'fecha',
 		'fechain',	
-		'docref',	
-		
-		'responsable',
+		'numdocref',		
+		'ap',
+            'descripcion',
+           // array('name'=>'ad','type'=>'raw','value'=>'$data->procesoactivo[0]->tenenciasproc->eventos->descripcion'),
 		//'apoderado',
-		'estado',
+		//'estado',
 	
 		/*
 		'moneda',
@@ -89,18 +98,14 @@ $this->renderPartial('_search',array(
 						 
                         'update'=>
                             array(
-                                    'url'=>'$this->grid->controller->createUrl("/Docingresados/update",
-																					array("id"=>$data->id,																					      
-																							"asDialog"=>1,
-																								"gridId"=>$this->grid->id
-																							)
-																				)',
-                                    'click'=>(!(Yii::app()->user->isGuest))?'function(){ 
-									                     $("#cru-frame1").attr("src",$(this).attr("href")); 
-									                     $("#cru-dialog1").dialog("open");  
-														 return false;
-														 }':'function() {alert("Debes de inicar sesion primero")}',
-								//'imageUrl'=>''.Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemagrid'].'mas.png', 
+                                    'url'=>'$this->grid->controller->createUrl(
+                                        "/Docingresados/update",
+                                          array(
+                                             "id"=>$data->id,"asDialog"=>1,"gridId"=>$this->grid->id
+						),
+                                            array("target"=>"_blank")
+                                            )',
+                                    
 								'label'=>'Modificar', 
                                 ),
 								'delete'=>
@@ -117,7 +122,7 @@ $this->renderPartial('_search',array(
 //--------------------- begin new code --------------------------
    // add the (closed) dialog for the iframe
     $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
-    'id'=>'cru-dialog1',
+    'id'=>'cru-dialog3',
     'options'=>array(
         'title'=>'Actualizar Ingreso',
         'autoOpen'=>false,
@@ -127,7 +132,7 @@ $this->renderPartial('_search',array(
     ),
     ));
 ?>
-<iframe id="cru-frame1" ></iframe>
+<iframe id="cru-frame3" width="100%" height="100%"></iframe>
 <?php
  
 $this->endWidget();

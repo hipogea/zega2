@@ -20,16 +20,16 @@ class Tempdesolpe extends ModeloGeneral
             $this->campoestado='est';
             
             $this->campossensibles=array(
-                'centro'=>array(SELF::ESTADO_REGISTRO_NUEVO,SELF::ESTADO_PREVIO,SELF::ESTADO_CREADO),
-                'codal'=>array(SELF::ESTADO_REGISTRO_NUEVO,SELF::ESTADO_PREVIO,SELF::ESTADO_CREADO),
-            'codart'=>array(SELF::ESTADO_PREVIO,SELF::ESTADO_CREADO),
-                'cant'=>array(SELF::ESTADO_REGISTRO_NUEVO,SELF::ESTADO_PREVIO,SELF::ESTADO_CREADO),
-            'um'=>array(SELF::ESTADO_REGISTRO_NUEVO,SELF::ESTADO_PREVIO,SELF::ESTADO_CREADO),
+                'centro'=>array(self::ESTADO_REGISTRO_NUEVO,self::ESTADO_PREVIO,self::ESTADO_CREADO),
+                'codal'=>array(self::ESTADO_REGISTRO_NUEVO,self::ESTADO_PREVIO,self::ESTADO_CREADO),
+            'codart'=>array(self::ESTADO_PREVIO,self::ESTADO_CREADO),
+                'cant'=>array(self::ESTADO_REGISTRO_NUEVO,self::ESTADO_PREVIO,self::ESTADO_CREADO),
+            'um'=>array(self::ESTADO_REGISTRO_NUEVO,self::ESTADO_PREVIO,self::ESTADO_CREADO),
                // 'txtmaterial'=>array(SELF::ESTADO_PREVIO,SELF::ESTADO_CREADO),
             
                 
                 );
-            
+            //var_dump($this->campossensibles);die();
         }
         
 

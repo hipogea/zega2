@@ -726,7 +726,7 @@ public function getstockTotalmaterial($codmaterial,$adatos=null){
 
 
 
- public function stock($codmov,$cant,$punitnuevo=null,$idkardex=null)
+ public function actualiza_stock($codmov,$cant,$punitnuevo=null,$idkardex=null)
  {
 
 

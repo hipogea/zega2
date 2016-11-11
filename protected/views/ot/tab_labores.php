@@ -119,10 +119,9 @@ if ($this->estasEnsesion($model->id)) {
                 'type' => 'POST',
                 'url' => Yii::app()->createUrl($this->id . '/borraitems', array()),
                 'success' => "function(data) {
-										$('#AjFlash').html(data).fadeIn().animate({opacity: 1.0}, 3000).fadeOut('slow');
-                                              $.fn.yiiGridView.update('detalle-grid');
-                                               $.fn.yiiGridView.update('resumenoc-grid');
-                                               return false;
+					      $.fn.yiiGridView.update('detalle-grid');
+                                              $.growlUI('Growl Notification', data,24000); 
+                                              
                                         }",
                 'beforeSend' => 'js:function(){
                                   				 var r = confirm("Esta seguro de Eliminar estos Items?");

@@ -54,8 +54,8 @@
                                // 'url'=>array('coordocs/hacereporte', array('id' => $model->idreporte, 'idfiltrodocu' => $model->idguia, 'file' => 1)),
                                 'ruta' => array($this->id . '/crearpdf', array('id' => $model->id)),
                                 'success'=>"function(data) {
-										$('#myDivision').html(data).fadeIn().animate({opacity: 1.0}, 900).fadeOut('slow');
-                                        }",
+					$.growlUI('Growl Notification', data); 
+                                    }",
                             ),                           
                             'visiblex' => array('10'),
 

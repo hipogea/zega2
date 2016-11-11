@@ -1192,7 +1192,7 @@ class OtController extends ControladorBase
 		$mensaje="";
 		if(!is_null($detalletemp)) {
 			///verificamos primero si es un registro agregado
-			if (is_null($detalletemp->id)) { ///quier decir que no existe una imagen en la tabla opriginal, osea se ha agregado recientemente
+			if (is_null($detalletemp->id) or $detalletemp->id==0 ) { ///quier decir que no existe una imagen en la tabla opriginal, osea se ha agregado recientemente
 				//si es un registro agergado 
                         ///puede tener recursos asociados veamos...
                             IF($detalletemp->nrecursos > 0 ){
@@ -1209,10 +1209,7 @@ class OtController extends ControladorBase
 			} else {// si ya se ha grabado o confirmado en la tabla original
 				//buscar en le registro orignal el firma
 				$detallefirme=Detot::model()->findByPk($detalletemp->id);
-				// primero verificamos si ha abido entragas
-                                echo "<br><br><br>";
-                                var_dump($detallefirme->tempdetot->nrecursos());
-                                echo "<br><br><br>";
+				
 				if ($detallefirme->tempdetot->nrecursos() > 0) {
 					$mensaje .= " El item  " . $detalletemp->item . "  Ya tiene recursos y no puede ser anulado <br>";
 
@@ -1241,77 +1238,16 @@ class OtController extends ControladorBase
 
 	public function borraitem($id) { //ojo es el id de la tabla temporal Docomprat
 		//para borrar u item hay varias escenarios
-		$detalletemp=Docompratemp::model()->findByPk($id);
+		$detalletemp=Tempdetot::model()->findByPk($id);
 		if($detalletemp===null) {
 			throw new CHttpException(500,'No se encontro el item id del item de la compra');
 		} else{
-			$transaccion=$detalletemp->dbConnection->beginTransaction();
-			$modelocompra=Ocompra::model()->findByPk( $detalletemp->hidguia);
-			if($modelocompra===null)
-				throw new CHttpException(500,'No se encontro un documento padre de compras para este registro');
-			/***********ESCENARIO 1 ***********************************************
-			 *   PRIMERO QUE SEA UN ITEM RECIEN AGREGADO ES DECIR  IDDOCOMPRA < 0      *
-			 *********************************************************************/
-			//En este caso borrar sin asco y desaparecer el registro
-			if($detalletemp->iddocompra < 0 ) { //registro recien agregado
-				$detalletemp->delete();
+			
+                       if($detalletemp->checkcompromisos())
+                           $detalletemp->delete();
 
-				if( !$detalletemp->save() ) {
-					$transaccion->rollback();
-					throw new CHttpException(500,'Por alguna razon no se pudo borrar el registro de la solpe ');
-				}
-			}  else {
-				$detalleoc=Docompra::model()->findByPk($detalletemp->iddocompra);
-				$detalleoc->setscenario('anulaitemcompra');
-				//verificando la consistgencia de los datos para evitar que lo hagan por medio del URL
-
-				/***********ESCENARIO 2 ***********************************************
-				 *   SEGUNDO, QUE SEA UN ITEM  PREEXISTENTE  IDDOCOMPRA > 0      *
-				 *********************************************************************/
-				//En este caso Tenemos que averiguar en los dos extremos :
-				// Extremo de las SOLPE TABLA PUENTE DESOLPECOMPRA
-				//Extremo de la INGRESOS TABLA PUENTE ALENTREGAS
-
-				///EXTREMO DEL PUENTE ENTREGAS , PRIMERO LO MAS RESTRICTIVO, SI HYA RESTRICION AQUI, EL OTR EXTREMO(DESOLPE) YA NI SE ANALIZA
-				$cantidadentregada=$detalleoc->cantidadentregada; ///SUM de cantidades entregadas al alamcen
-				$cantidadsolicitada=$detalleoc->cantsolpes;  ///SUM de cantidades de solpes tomadas en este item
-				if(  $cantidadentregada > 0) { //si ya hay cantidad recbida x el almacen
-					MiFactoria::Mensaje('error', 'El item '.$detalleoc->docompra_ocompra->numcot.'-'.$detalleoc->item.'  ya tiene entregas or lo tanto no se puede eliminar');
-					// throw new CHttpException(500,'El item '.$detalleoc->docompra_ocompra->numcot.'-'.$detalleoc->item.'  ya tiene entregas or lo tanto no se puede eliminar');
-
-
-				}  else {
-					//EN EL OTRO CASO EL EXTREMO DEL TABLA PUENTE DESOLPECOMPRA
-					if(  $cantidadsolicitada > 0) { //Si hay solpes amarradas a este item
-						$detalleoc->estadodetalle='40';  ////SI SE PUEDE , AUQNUE TENGAS QUE BORRAR LOS PUENTES
-						//borrar tambien los puentes PERO ESTA TAREA LA HAREMOS AL GRABAR/CONFIRMAR O HACER EL UPDATE TOTAL (PASACOMPRA)
-						// $command = Yii::app()->db->createCommand("DELETE FROM  ".Yii::app()->params['prefijo']."desolpecompra WHERE iddocompra= ".$detalleoc->id." ");
-						// $command->execute();
-						//Esto significa tambien actualizar las SOLPES, RESERVAS Y DETALLES DE SOLPE
-
-
-					} else {  //Si no hay solpes amarradas, entonces proceder a anular
-						$detalleoc->estadodetalle='40';
-
-					}
-
-
-				}
-
-
-
-			}
-
-			if( !$detalleoc->save() ) {
-				$transaccion->rollback();
-				MiFactoria::Mensaje('error', 'Por alguna razon no se pudo grabar el status del item '.$detalleoc->docompra_ocompra->numcot.'-'.$detalleoc->item.' ');
-			}
-
-
-			$transaccion->commit();
-
+			
 		}
-
 	}
 
 
@@ -2826,7 +2762,30 @@ public function borraitemdesolpe($autoId) //Borra un registro de solpe
         
     }
     
-    
+    public function sepuedeanular($id){
+        $id= (integer)MiFactoria::cleanInput($id);
+        $registroot=$this->loadModel($id);
+        
+        
+        //verificndo primero qu este en sesion y 
+       
+        if($this->estasEnSesion($id)){ //Si esta en sesion primeramente
+            //no se haya modiifcado nada del cenxaezado y el detalle 
+            if(!$this->hubocambio($registroot)){
+                if(!$this->hubocambiodetalle($id)){
+                    
+                }else{
+                    
+                }
+            }else{
+                
+            }
+        }else{
+            
+        }
+        
+        
+    }
     
     }
     

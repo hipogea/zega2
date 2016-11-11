@@ -10,10 +10,31 @@
 	'action'=>Yii::app()->createUrl($this->route),
 	'method'=>'get',
 )); ?>
-	<div class="row">
-	   <div class='botones'>
-		   <?php echo CHtml::imageButton(Yii::app()->getTheme()->baseUrl.'/img/bino.png',array('value'=>'Buscar','onClick'=>'Loading.show();Loading.hide();'));?>
-	   </div>
+	 <div class="row">
+		<?php
+		$botones=array(
+			'search'=>array(
+				'type'=>'A',
+				'ruta'=>array(),
+				'visiblex'=>array('10'),
+			),
+			'clear'=>array(
+				'type'=>'E',
+				'ruta'=>array(),
+				'visiblex'=>array('10'),
+			),
+		);
+		$this->widget('ext.toolbar.Barra',
+			array(
+				//'botones'=>MiFactoria::opcionestoolbar($model->id,$this->documento,$model->codestado),
+				'botones'=>$botones,
+				'size'=>24,
+				'extension'=>'png',
+				'status'=>'10',
+
+			)
+		); ?>
+
 	</div>
 	<DIV class="panelizquierdo">
 

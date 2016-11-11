@@ -29,6 +29,7 @@ class GaleriaFirme extends CWidget
 	public $tema_li="col-xs-6 col-sm-4 col-md-3";
         public $rutadefault='site/muestragaleria';
         public $id=null;
+        public $ruta=null;
         public $modo=null; /***********************
          *               *    Para usar este widget en llamadas Ajax , debe de insertar primero
          *               *     un Widget en el modo 2 (Para cargar los css y los js el POS_END )
@@ -52,7 +53,7 @@ class GaleriaFirme extends CWidget
          
            
 	$asset=Yii::app()->assetManager->publish(dirname(__FILE__).'/assets');
-	//$this->ruta=$asset;
+	$this->ruta=$asset;
     	$cs=Yii::app()->clientScript;
     	$cs->registerCssFile($asset."/css/principal.css");
         $cs->registerCssFile($asset."/css/lightgallery.css");
