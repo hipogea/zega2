@@ -3,76 +3,20 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/zega1/protected/controllers/MatchcodeController.php</file>
-            <file>file:/D:/zega1/protected/extensions/explorador/views/vw_ObjetosCliente.php</file>
-            <file>file:/D:/zega1/protected/controllers/TenenciasController.php</file>
-            <file>file:/D:/zega1/protected/models/Guia.php</file>
-            <file>file:/D:/zega1/protected/controllers/DocingresadosController.php</file>
-            <file>file:/D:/zega1/protected/models/Alkardex.php</file>
-            <file>file:/D:/zega1/protected/models/Tempdetot.php</file>
-            <file>file:/D:/zega1/protected/models/VwDocuIngresados.php</file>
-            <file>file:/D:/zega1/protected/controllers/AlinventarioController.php</file>
-            <file>file:/D:/zega1/protected/views/alinventario/_search.php</file>
-            <file>file:/D:/zega1/protected/extensions/explorador/views/vw_multi_Embarcaciones.php</file>
-            <file>file:/D:/zega1/protected/models/VwAlinventario.php</file>
-            <file>file:/D:/zega1/protected/views/site/camara.php</file>
-            <file>file:/D:/zega1/protected/views/docingresados/_form.php</file>
-            <file>file:/D:/zega1/protected/extensions/galeriafirme/views/fotogaleria.php</file>
-            <file>file:/D:/zega1/protected/views/inventario/_search.php</file>
-            <file>file:/D:/zega1/protected/views/solpe/tomarsolpe.php</file>
-            <file>file:/D:/zega1/protected/models/Docingresados.php</file>
-            <file>file:/D:/zega1/protected/views/solpe/vistamaterial.php</file>
-            <file>file:/D:/zega1/protected/views/docingresados/admin.php</file>
-            <file>file:/D:/zega1/protected/config/main.php</file>
-            <file>file:/D:/zega1/protected/views/ot/_search.php</file>
-            <file>file:/D:/zega1/protected/models/Tenenciastraba.php</file>
-            <file>file:/D:/zega1/protected/views/ot/_tab_labor_detalle.php</file>
-            <file>file:/D:/zega1/protected/views/cargamasiva/_cargamasiva.php</file>
-            <file>file:/D:/zega1/protected/controllers/AlmacendocsController.php</file>
-            <file>file:/D:/zega1/protected/views/ot/update.php</file>
-            <file>file:/D:/zega1/protected/controllers/CargamasivaController.php</file>
-            <file>file:/D:/zega1/protected/controllers/OtController.php</file>
-            <file>file:/D:/zega1/protected/components/ModeloGeneral.php</file>
-            <file>file:/D:/zega1/protected/controllers/EjemplosController.php</file>
-            <file>file:/D:/zega1/protected/extensions/explorador/views/vw_multi_Inventario.php</file>
-            <file>file:/D:/zega1/protected/views/cargamasiva/_form.php</file>
-            <file>file:/D:/zega1/protected/views/coordocs/update.php</file>
-            <file>file:/D:/zega1/protected/views/coordocs/_form.php</file>
-            <file>file:/D:/zega1/protected/views/ot/create.php</file>
-            <file>file:/D:/zega1/protected/views/docingresados/tab_adjuntos.php</file>
-            <file>file:/D:/zega1/protected/views/site/mensajes.php</file>
-            <file>file:/D:/zega1/protected/views/almacendocs/adminalmacenes.php</file>
-            <file>file:/D:/zega1/protected/views/site/subefotos.php</file>
-            <file>file:/D:/zega1/protected/models/Tempdesolpe.php</file>
-            <file>file:/D:/zega1/protected/views/site/celular.php</file>
-            <file>file:/D:/zega1/protected/models/VwSolpe.php</file>
-            <file>file:/D:/zega1/protected/views/solpe/adminsolpe.php</file>
-            <file>file:/D:/zega1/protected/views/alinventario/admin.php</file>
-            <file>file:/D:/zega1/protected/views/docingresados/tab_general.php</file>
-            <file>file:/D:/zega1/protected/views/tenencias/detalle_procesos.php</file>
-            <file>file:/D:/zega1/protected/extensions/matchcode/MatchCode.php</file>
-            <file>file:/D:/zega1/protected/views/coordocs/detalle_grid.php</file>
-            <file>file:/D:/zega1/protected/views/tenencias/eventos.php</file>
-            <file>file:/D:/zega1/protected/views/docingresados/form_cambiotenencia.php</file>
             <file>file:/D:/zega1/protected/models/Procesosdocu.php</file>
-            <file>file:/D:/zega1/themes/temita/img/gear.png</file>
-            <file>file:/D:/zega1/protected/models/Tenencias.php</file>
             <file>file:/D:/zega1/protected/models/VwDoci.php</file>
-            <file>file:/D:/zega1/protected/views/tenencias/propietarios.php</file>
-            <file>file:/D:/zega1/protected/controllers/SolpeController.php</file>
-            <file>file:/D:/zega1/protected/views/docingresados/form_proceso_carcaza.php</file>
-            <file>file:/D:/zega1/protected/models/Tenenciasproc.php</file>
-            <file>file:/D:/zega1/protected/views/site/capitulos.php</file>
-            <file>file:/D:/zega1/protected/extensions/toolbar/Barra.php</file>
-            <file>file:/D:/zega1/protected/views/tenencias/detalle_propietarios.php</file>
-            <file>file:/D:/zega1/protected/extensions/galeriafirme/GaleriaFirme.php</file>
-            <file>file:/D:/zega1/protected/models/Configuracion.php</file>
-            <file>file:/D:/zega1/protected/views/maestrocompo/detallesmaterial.php</file>
-            <file>file:/D:/zega1/protected/views/docingresados/form_proceso.php</file>
-            <file>file:/D:/zega1/protected/views/inventario/_search2.php</file>
-            <file>file:/D:/zega1/protected/views/coordocs/reporte.php</file>
+            <file>file:/D:/zega1/protected/models/Logprocesosdocu.php</file>
+            <file>file:/D:/zega1/protected/components/MaletinCompo.php</file>
+            <file>file:/D:/zega1/protected/controllers/DocingresadosController.php</file>
+            <file>file:/D:/zega1/protected/views/docingresados/form_proceso_masa.php</file>
+            <file>file:/D:/zega1/protected/components/ModeloGeneral.php</file>
+            <file>file:/D:/zega1/protected/views/docingresados/tab_general.php</file>
+            <file>file:/D:/zega1/protected/modules/cruge/components/CrugeUser.php</file>
+            <file>file:/D:/zega1/protected/views/docingresados/logproceso.php</file>
+            <file>file:/D:/zega1/protected/views/docingresados/admin.php</file>
+            <file>file:/D:/zega1/protected/modules/cruge/models/data/CrugeSession.php</file>
+            <file>file:/D:/zega1/protected/models/CrugeUser.php</file>
             <file>file:/D:/zega1/protected/views/docingresados/_search.php</file>
-            <file>file:/D:/zega1/protected/views/site/galeria.php</file>
         </group>
     </open-files>
 </project-private>

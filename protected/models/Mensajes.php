@@ -42,7 +42,7 @@ class Mensajes extends CActiveRecord
 			array('usuario', 'length', 'max'=>50),
 			array('codocu', 'length', 'max'=>3),
 			array('nombrefichero', 'length', 'max'=>400),
-			array('cuando,tipo,nombrefichero, hidocu,enviadoel', 'safe'),
+			array('cuando,tipo,nombrefichero,titulo, hidocu,enviadoel', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, hidocu,usuario, cuando, codocu, enviadoel, nombrefichero', 'safe', 'on'=>'search'),

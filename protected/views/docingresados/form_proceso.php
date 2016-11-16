@@ -78,31 +78,28 @@
 		<?php echo $form->error($model,'hidproc'); ?>
 	</div>
     
-    <div class="row">
-		<?php echo $form->labelEx($model,'fechanominal'); ?>
-		<?php  $this->widget('zii.widgets.jui.CJuiDatePicker', array(
-			//'name'=>'my_date',
-			'model'=>$model,										
-			'attribute'=>'fechanominal',
-			'language'=>Yii::app()->language=='es' ? 'es' : null,
-			'options'=>array(
-													
-			'showAnim'=>'fold', // 'show' (the default), 'slideDown', 'fadeIn', 'fold'
-				'showOn'=>'button', // 'focus', 'button', 'both'
-				'buttonText'=>Yii::t('ui','...'),													
-				'dateFormat'=>'dd-mm-yy',
-							),
-					'htmlOptions'=>array(
-						//'value'=>(  ($model->isNewRecord ) and    isset(Yii::app()->session["fechain"]) ) ?Yii::app()->session["fechain"]:$model->fechain,
-						'style'=>'width:80px;vertical-align:top',
-							'readonly'=>'readonly',					 
-							),
-					));
-
-		?>	
-		<?php echo $form->error($model,'fechanominal'); ?>
-	</div>
-    
+   <div class="row">
+        <?php echo $form->labelEx($model,'fechanominal'); ?>
+        <?php Yii::import('application.extensions.CJuiDateTimePicker.CJuiDateTimePicker');
+        $this->widget('CJuiDateTimePicker',array(
+            'model'=>$model, //Model object
+            'attribute'=>'fechanominal', //attribute name
+            'language'=>'es',
+            'mode'=>'datetime', //use "time","date" or "datetime" (default)
+            'options'=>array( 'dateFormat'=>'yy-mm-dd',
+                'showOn'=>'button', // 'focus', 'button', 'both'
+                'buttonText'=>Yii::t('ui',' ... '),
+                //'buttonImage'=>Yii::app()->request->baseUrl.'/images/calendar.png',
+                //'buttonImageOnly'=>true,
+            ),
+            'htmlOptions'=>array(
+                'style'=>'width:150px;vertical-align:top',
+                //'readonly'=>'readonly',
+            ),				// jquery plugin options
+        ));
+        ?>
+        <?php echo $form->error($model,'fechanominal'); ?>
+    </div>
     
     
     

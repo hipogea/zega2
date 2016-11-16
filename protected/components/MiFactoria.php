@@ -582,9 +582,14 @@ const CAMPO_COLECTOR='mf_colector';
         return $items;
     }
 
-   public static function tiempopasado($fecha){
+   public static function tiempopasado($fecha,$fechafinal=null){
       $tinicial= strtotime($fecha);
-       $tfinal=time();
+      if(is_null($fechafinal)){
+         $tfinal=time(); 
+      }else{
+         $tfinal=strtotime($fechafinal); 
+      }
+       
          $diferencia=$tfinal-$tinicial;
          $segano=60*60*24*7*30*12;
          $segmes=60*60*24*7*30;

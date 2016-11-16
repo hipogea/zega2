@@ -46,7 +46,28 @@ $form=$this->beginWidget('CActiveForm', array(
 	echo $form->DropDownList($model,'final',$datos, array('empty'=>'--Indique el status--')  )  ;	?>
 	</div>
          
-         
+         <div class="row">
+		<?php echo $form->labelEx($model,'id'); ?>
+		<?php
+				$this->widget('ext.matchcode1.Seleccionavarios',array(		
+												'nombrecampo'=>'id',												
+												//'ordencampo'=>1,
+												'controlador'=>'VwDoci',
+												'relaciones'=>$model->relations(),
+												'tamano'=>4,
+												'model'=>$model,
+												'nombremodelo'=>'Docingresados',
+												'form'=>$form,
+												'nombredialogo'=>'cru-dialog3',
+												'nombreframe'=>'cru-frame3',
+												//'nombrearea'=>'fehdfj',
+													)
+													
+								);
+
+						
+			   ?>
+	</div>
 	
 	 <div class="row">
 		<?php echo $form->labelEx($model,'codprov'); ?>

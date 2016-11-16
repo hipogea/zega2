@@ -1,6 +1,6 @@
 <?php
 $nombrecompleto=$foto['archivo'];
-$extension=strtolower(trim(strrev(substr(strrev($nombrecompleto),0,3))));
+//$extension=strtolower(trim(strrev(substr(strrev($nombrecompleto),0,3))));
 ?>
 <li class="<?php echo $this->tema_li;?>" 
   data-responsive="
@@ -19,7 +19,7 @@ data-pinterest-text="Pin it1"
  data-tweet-text="share on twitter 1">
     
   <?php
-    if(in_array($extension,array('jpg','jpeg','png','bmp','png'))){
+    if($this->esimagen()){
     ?>
     
    <a href=<?php echo($this->modo==3)?

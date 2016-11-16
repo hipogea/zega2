@@ -594,7 +594,48 @@ public static function model($className=__CLASS__)
        return ($this->escampohabilitado($nombrecampo))?'':self::HTML_DESHABILITADO;
    }
    
-   
-   
+  public function insertamensajes($tipo,$listadestinatarios=null,$titulo=null){
+      $clave=$this->getTableSchema()->primaryKey;
+      if(is_array($clave))
+          throw new CHttpException(500,__CLASS__.'   '.__FUNCTION__.'   '.__LINE__.' El modelo '.get_class($this).' Tiene calve primaria compuesta y no puede insertr mensajes  ');
+    $mensa=New Mensajes();
+    $mensa->usuario=Yii::app()->user->name;
+    $mensa->cuando= date("Y-m-d H:i:s");
+    if(!is_null($listadestinatarios)){
+        $mensa->nombrefichero= substr($listadestinatarios,0,300);
+    }else{
+        $mensa->nombrefichero= null;
+    }
+    $mensa->codocu=$this->documento;
+    $mensa->hidocu=$this->{$clave};
+    $mensa->tipo=$tipo;
+    $mensa->titulo=$titulo;
+    
+   IF(!$mensa->save())
+       ECHO "FALLO ";
+}
+  
+
+// Registra el log de proceso en la tabla log procesos 
+public function  registralog ($notice, $mensaje){
+    $registrolog= New Logprocesosdocu();
+    /*$controlador=yii::app()->controller->id;
+    $accion=yii::app()->controller->action->id;*/
+    $registrolog->setAttributes(
+            array(
+               'codocu'=>$this->documento,
+                'notice'=>$notice,
+                //'idsession'=>''
+                'mensaje'=>$mensaje,
+                'proceso'=>yii::app()->controller->id.DIRECTORY_SEPARATOR.yii::app()->controller->action->id,
+                   'hidref'=> $this->{$this->getTableSchema()->primaryKey}
+                )
+            );
+    $registrolog->save();
+}
+
+
+
+
         
 }

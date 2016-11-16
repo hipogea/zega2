@@ -35,6 +35,9 @@ $this->renderPartial('_search',array(
 
 ?>
 </div>
+<?php $form=$this->beginWidget('CActiveForm', array(
+	'id'=>'docingresados-admin'	
+)); ?>
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'docingresados-grid',
@@ -117,6 +120,43 @@ $this->renderPartial('_search',array(
 				),
 			),
 ))); ?>
+
+<div class="row">
+		<?php
+				$botones=array(
+					
+					 'briefcase' => array(
+                            'type' => 'D', //AJAX LINK
+                          //  'ruta' => array('coordocs/hacereporte', array('id' => $model->idreporte, 'idfiltrodocu' => $model->idguia, 'file' => 1)),
+                            'ruta' => array($this->id . '/poneralcarro', array()),
+                            'opajax'=>array(
+                                'type'=>'POST',
+                               // 'url'=>array('coordocs/hacereporte', array('id' => $model->idreporte, 'idfiltrodocu' => $model->idguia, 'file' => 1)),
+                                'ruta' => array($this->id . '/poneralcarro', array()),
+                                'success'=>"function(data) {
+					$.growlUI('Growl Notification', data); 
+                                    }",
+                            ),                           
+                            'visiblex' => array('10'),
+
+                        ),		
+
+			);
+				$this->widget('ext.toolbar.Barra',
+					array(
+						//'botones'=>MiFactoria::opcionestoolbar($model->id,$this->documento,$model->codestado),
+						'botones'=>$botones,
+						'size'=>24,
+						'extension'=>'png',
+						'status'=>'10',
+
+					)
+				); ?>	
+
+
+</div>
+
+<?php $this->endWidget(); ?>
 
 <?php
 //--------------------- begin new code --------------------------

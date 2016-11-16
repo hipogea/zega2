@@ -97,7 +97,7 @@ class SiteController extends Controller
         if (Yii::app()->user->isGuest) {
             $this->redirect(Yii::app()->user->ui->loginUrl);
         }else {
-            $this->layout = '//layouts/iframe';
+           /* $this->layout = '//layouts/iframe';
 
             //preparando el array de solpes;
             $arraysolpes=array();
@@ -124,7 +124,20 @@ class SiteController extends Controller
 
                 }
             }
-            $this->render('treeviewdocs',array('items'=>$items,'arraycompras'=>$arraycompras,'arraysolpes'=>$arraysolpes));
+            * 
+            * */
+            
+            $this->layout = '//layouts/iframe';
+            $model=New Maletin('search_por_usuario');
+            
+            $model->unsetAttributes();  // clear any default values
+		if(isset($_GET['Maletin']))
+			$model->attributes=$_GET['Maletin'];
+
+		$this->render('treeviewdocs',array(
+			'model'=>$model,
+		));
+            //$this->render('treeviewdocs',array('items'=>$items,'arraycompras'=>$arraycompras,'arraysolpes'=>$arraysolpes));
             //$this->redirect('/verificar');
         }
         //$this->render('index');
@@ -423,6 +436,18 @@ class SiteController extends Controller
             }
         }
 
+        
+    public function actionborrafilamaletin()
+    {
+       
+         if(yii::app()->request->isAjaxRequest){
+             $id=(integer) MiFactoria::cleanInput($_GET['id']);
+             yii::app()->maletin->borrafila($id);
+             echo "Se saco el registro del maletin de usuario";
+         }
+
+    }     
+        
 }
 
 

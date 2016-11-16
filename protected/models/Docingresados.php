@@ -4,6 +4,7 @@ class Docingresados extends ModeloGeneral
 {
 	
     CONST PARAM_TENENCIA_POR_DEFECTO='1012';
+    CONST PARAMETRO_TITULO_CORREO_PEDIDO='1247';
     /**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -17,6 +18,7 @@ class Docingresados extends ModeloGeneral
         
         public function init(){
             $this->campoestado='cod_estado';
+            $this->documento='280';
             
            /* $this->campossensibles=array(
                 'tipodoc'=>array(self::ESTADO_REGISTRO_NUEVO,self::ESTADO_PREVIO,self::ESTADO_CREADO),
@@ -135,7 +137,8 @@ class Docingresados extends ModeloGeneral
                         'tenencias'=>array(self::BELONGS_TO, 'Tenencias', 'codtenencia'),
                         'procesosdocu'=>array(self::HAS_MANY, 'Procesosdocu', 'hiddoci'),
                      'procesoactivo'=>array(self::HAS_MANY, 'Procesosdocu','hiddoci','limit'=>'1','order'=>'id DESC'),
-                    
+                    'tenores' => array(self::BELONGS_TO, 'Tenores', array('codsoc'=>'sociedad','codocu'=>'coddocu') ),
+           
                     
                     
                     

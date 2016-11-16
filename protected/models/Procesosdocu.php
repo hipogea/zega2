@@ -1,22 +1,5 @@
 <?php
-/**
- * This is the model class for table "{{procesosdocu}}".
- *
- * The followings are the available columns in table '{{procesosdocu}}':
- * @property integer $id
- * @property integer $hiddoci
- * @property string $fechacrea
- * @property string $fechanominal
- * @property integer $hidtra
- * @property integer $hidproc
- * @property string $codocuref
- * @property string $numdocref
- *
- * The followings are the available model relations:
- * @property DocuIngresados $hiddoci0
- * @property Tenenciasproc $hidproc0
- * @property Tenenciastraba $hidtra0
- */
+
 class Procesosdocu extends CActiveRecord
 {
     /**
@@ -27,6 +10,8 @@ class Procesosdocu extends CActiveRecord
         return '{{procesosdocu}}';
     }
 
+    
+    //public $codtefalsa; //7ATRIBUTO DE L ACODRTEENCIA PARA VALIDAR EL FORM MASIVO NADA MAS 
     /**
      * @return array validation rules for model attributes.
      */
@@ -35,13 +20,20 @@ class Procesosdocu extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-             array('hiddoci,hidproc','required'),
+            
+            ///Escenario para proceso masivo   MASIVO
+             array('hidproc,hidtra,fechanominal,codte','required','on'=>'masivo'),
+             array('hiddoci,hidproc,hidtra,fechanominal,codte,codocuref,numdocref','safe','on'=>'masivo'),
+            array('fechanominal','chkfecha','on'=>'masivo'),
+            
+             array('hiddoci,hidproc','required', 'on'=>'insert,update'),
+            array('fechafinal','safe','on'=>'fechafinal'),
             array('hidproc','chkrequisitos'),
             array('hiddoci,'
                 . ' fechanominal,'
                 . ' hidtra, hidproc'
                 , 'required', 'on'=>'insert,cambiotenencia'),
-            array('id, hiddoci, fechanominal, hidtra, hidproc, codocuref, numdocref,codte', 'safe', 'on'=>'insert,update,cambiotenencia'),
+            array('id, hiddoci, fechanominal,fechafin,iduser, hidtra, hidproc, codocuref, numdocref,codte', 'safe', 'on'=>'insert,update,cambiotenencia'),
             array('id, hiddoci,'
                 . ' fechacrea, fechanominal,'
                 . ' hidtra, hidproc'
@@ -120,6 +112,21 @@ class Procesosdocu extends CActiveRecord
         ));
     }
 
+    public function search_por_docu($id)
+    {
+        // @todo Please modify the following code to remove attributes that should not be searched.
+
+        $criteria=new CDbCriteria;
+
+        
+        $criteria->addCondition("hiddoci=".$id);
+
+        return new CActiveDataProvider($this, array(
+            'criteria'=>$criteria,
+        ));
+    }
+    
+    
     /**
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
@@ -133,8 +140,23 @@ class Procesosdocu extends CActiveRecord
     
     
     public function beforesave(){
-        if($this->isNewRecord)
-        $this->fechacrea=date("Y-m-d H:i:s");
+        if($this->isNewRecord){
+            $esfinal= Tenenciasproc::model()->findByPk($this->hidproc)->final;
+            
+            if($esfinal=='1') //si es un proceso final hay que matar el proceso
+                $this->fechafin=date("Y-m-d H:i:s"); 
+            
+             $this->fechacrea=date("Y-m-d H:i:s");
+                $this->iduser=yii::app()->user->name;
+                $procesoactual= Docingresados::model()->findByPk($this->hiddoci)->procesoactivo[0];
+                if(!is_null( $procesoactual)){ // ..y mataer el proceso anterior tambien
+                    $procesoactual->setScenario("fechafinal");
+                  $procesoactual->fechafin=date("Y-m-d H:i:s"); 
+                  $procesoactual->save();
+                }
+                
+        }
+       
         return parent::beforesave();
     }
     
@@ -216,5 +238,26 @@ class Procesosdocu extends CActiveRecord
         }
         return parent::aftersave();
     }
+    
+    public function tiempopasado(){
+        
+       return MiFactoria::tiempopasado($this->fechanominal,$this->fechafin);
+    }
+   
+    
+    public function chkfecha($attribute,$params) {
+        ///que la fecha sea mayor a la fecha de ingreso del doci
+        $docu=Docingresados::model()->findByPk($this->hiddoci);
+        $fechaingreso= $docu->fechain;
+		if(!yii::app()->periodo->verificafechas($fechaingreso,$this->fechanominal))
+                    $this->adderror('fechanominal','La fecha de proceso es  anterior a la fecha de ingreso del Documento ');
+        if(!yii::app()->periodo->verificafechas($docu->procesoactivo[0]->fechanominal,$this->fechanominal))
+                    $this->adderror('fechanominal','La fecha de proceso es  anterior a la fecha del proceso activo a reemplazar ');
+        
+        if(!yii::app()->periodo->verificafechas($this->fechanominal,date("Y-m-d H:i:s",time()+60*15)))
+                    $this->adderror('fechanominal','La fecha de proceso es  anterior a la fecha del proceso activo a reemplazar ');
+        
+    }
+    
     
 }

@@ -44,7 +44,7 @@
                             ),
                             'dialog' => 'cru-dialog31',
                             'frame' => 'cru-frame31',
-                            'visiblex' => array('10'),
+                            'visiblex' => array(!$esfinal),
 
                         ),
                                     
@@ -60,7 +60,7 @@
                             ),
                             'dialog' => 'cru-dialog31',
                             'frame' => 'cru-frame31',
-                            'visiblex' => array('10'),
+                            'visiblex' => array(!$esfinal),
 
                         ),
 						
@@ -92,14 +92,14 @@
 				'theme' => 'default',
 				'tabs' => array(
 					'Inicio'=>array('id'=>'tab_',
-						'content'=>$this->renderPartial('tab_general', array('form'=>$form,'model'=>$model),TRUE)
+						'content'=>$this->renderPartial('tab_general', array('form'=>$form,'model'=>$model,'esfinal'=>$esfinal),TRUE)
 					),
                                     'Adjuntos'=>array('id'=>'tab_g',
-						'content'=>$this->renderPartial('tab_adjuntos', array('form'=>$form,'model'=>$model),TRUE)
+						'content'=>$this->renderPartial('tab_adjuntos', array('form'=>$form,'model'=>$model,'esfinal'=>$esfinal),TRUE)
 					),
 
 					'Auditoria'=>array('id'=>'tab___._..__',
-						'content'=>$this->renderPartial('//site/tab_auditoria', array('model'=>$model),TRUE)
+						'content'=>$this->renderPartial('//site/tab_auditoria', array('model'=>$model,'esfinal'=>$esfinal),TRUE)
 					),
 
 

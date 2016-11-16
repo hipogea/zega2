@@ -83,13 +83,21 @@
                     echo Chtml::label("Proceso Actual:","4nfkg85");
                 echo Chtml::textField('idtextyyenencfia',$model->procesoactivo[0]->tenenciasproc->eventos->descripcion,array('size'=>30,'disabled'=>'disabled')); 
                    echo Chtml::textField('ivbgetcfia',$model->procesoactivo[0]->tenenciastrab->trabajadores->ap,array('size'=>30,'disabled'=>'disabled')); 
-                      $this->widget('ext.semaforo.Semaforo',
+                      if(!$esfinal) ///si no es final enornce spina semaforo
+                      {$this->widget('ext.semaforo.Semaforo',
                       array(
                           'valores'=>ARRAY(0,$model->procesoactivo[0]->tenenciasproc->nhorasverde,$model->procesoactivo[0]->tenenciasproc->nhorasnaranja),
                               'asc'=>-1,
                              'valor'=>$model->procesoactivo[0]->horaspasadas(),
                       )
-                  ); 
+                        ); 
+                       echo Chtml::textField('idtex45encfia',$model->procesoactivo[0]->tiempopasado(),array('size'=>9,'disabled'=>'disabled')); 
+                  
+                      }else{ //en caso de ser final
+                        echo Chtml::image(Yii::app()->getTheme()->baseUrl.'/img/'.'45070.png','',array('width'=>25,'height'=>25)); 
+                     
+                      }
+                    
                 }
                		
                 ?>
@@ -233,6 +241,7 @@
 	</div>
         
         <?php 
+        if(!$esfinal) 
        echo  $this->renderPartial('//site/celular', array('form'=>$form,'model'=>$model),TRUE);
         ?>
         
@@ -370,7 +379,7 @@
 
     <div class="row">
 		<?php echo $form->labelEx($model,'texv'); ?>
-		<?php echo $form->textArea($model,'texv',array('rows'=>6, 'cols'=>100)); ?>
+		<?php echo $form->textArea($model,'texv',array('rows'=>4, 'cols'=>100)); ?>
 		<?php echo $form->error($model,'texv'); ?>
 	</div>
     
@@ -380,6 +389,48 @@
 </div><!-- form -->
 
 </div>
+
+
+<?php
+   if(!$model->isNewRecord){
+       $this->widget('zii.widgets.grid.CGridView', array(
+            'id'=>'procesos-grid',
+            'dataProvider'=> Procesosdocu::model()->search_por_docu($model->id),
+             'itemsCssClass'=>'table table-striped table-bordered table-hover',
+           'columns'=>array(
+               // 'fechanominal',
+               array(
+			'name'=>'fechanominal',
+			'value'=>'date("d/m/y H:i", strtotime($data->fechanominal))','htmlOptions'=>array('width'=>'50')
+		),
+                //array('name'=>'tipo','type'=>'raw','value'=>'($data->tipo=="M")?CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."email.png"):$data->tipo','htmlOptions'=>array('width'=>50)),
+            array('name'=>'proc','type'=>'raw','value'=>'($data->tenenciasproc->eventos->descripcion)','htmlOptions'=>array('width'=>250)),
+             array('name'=>'trab','type'=>'raw','value'=>'($data->tenenciastrab->trabajadores->ap)','htmlOptions'=>array('width'=>30)),
+             array('name'=>'codocuref','type'=>'raw','value'=>'$data->codocuref','htmlOptions'=>array('width'=>1)),
+            array('name'=>'numdocref','type'=>'raw','value'=>'$data->numdocref','htmlOptions'=>array('width'=>10)),
+            array(
+			'name'=>'fechafin',
+			'value'=>'date("d/m/y H:i", strtotime($data->fechafin))','htmlOptions'=>array('width'=>'50')
+		),
+               array('name'=>'tiempo','type'=>'raw','value'=>'($data->tiempopasado())','htmlOptions'=>array('width'=>160)),
+            array('name'=>'iduser', 'type'=>'html','value'=>'$data->iduser.CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."user_business.png","",array())'),
+        
+                //'titulo',
+              //  array('htmlOptions'=>array('width'=>24),'name'=>'st.','header'=>'st', 'type'=>'raw','value'=>'CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"].$data->coddocu.$data->estadodetalle.".png")'),
+
+                // 'tipo',
+                //array('name'=>'nombrefichero','htmlOptions'=>array('width'=>50)),
+                // 'enviadoel',
+            ),
+        )
+    ) ; 
+   }
+
+   
+
+
+?>
+
 
 
 <?php

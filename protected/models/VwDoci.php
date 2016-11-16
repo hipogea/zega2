@@ -1,42 +1,5 @@
 <?php
 
-/**
- * This is the model class for table "vw_doci".
- *
- * The followings are the available columns in table 'vw_doci':
- * @property integer $id
- * @property string $codprov
- * @property string $fecha
- * @property string $fechain
- * @property string $correlativo
- * @property string $tipodoc
- * @property string $moneda
- * @property string $descorta
- * @property string $codepv
- * @property double $monto
- * @property string $codgrupo
- * @property string $codresponsable
- * @property string $creadopor
- * @property string $creadoel
- * @property string $texv
- * @property string $docref
- * @property string $codteniente
- * @property string $codlocal
- * @property string $numero
- * @property string $cod_estado
- * @property string $codocu
- * @property string $codtenencia
- * @property string $fechacrea
- * @property string $codocuref
- * @property integer $nhorasnaranja
- * @property integer $nhorasverde
- * @property string $numdocref
- * @property string $descripcion
- * @property string $ap
- * @property string $despro
- * @property string $rucpro
- * @property string $final
- */
 class VwDoci extends CActiveRecord
 {
 	/**
@@ -153,7 +116,7 @@ class VwDoci extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('id',$this->id);
+		//$criteria->compare('id',$this->id);
 		//$criteria->compare('codepv',$this->codepv,true);
 		$criteria->compare('fecha',$this->fecha,true);
 		//$criteria->compare('fechain',$this->fechain,true);
@@ -189,6 +152,16 @@ class VwDoci extends CActiveRecord
 			  } ELSE {
 				$criteria->compare('codprov',$this->codprov,true);
                       }
+                      
+                if(isset($_SESSION['sesion_Docingresados']))
+                    {
+			$criteria->addInCondition('id', $_SESSION['sesion_Docingresados'], 'AND');
+			  } ELSE {
+				$criteria->compare('id',$this->codprov,true);
+                      }      
+                      
+                      
+                      
                if(isset($_SESSION['sesion_Embarcaciones']))
                     {
 			$criteria->addInCondition('codepv', $_SESSION['sesion_Embarcaciones'], 'AND');
@@ -207,6 +180,22 @@ class VwDoci extends CActiveRecord
 		));
 	}
 
+        
+        public function search_por_proceso($arrayvalores)
+	{
+		// @todo Please modify the following code to remove attributes that should not be searched.
+
+		$criteria=new CDbCriteria;
+            $criteria->addInCondition('id',$arrayvalores);
+		
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
+	}
+        
+        
+        
+        
 	/**
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!

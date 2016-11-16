@@ -60,7 +60,7 @@ $this->menu=array(
 		'serie',		
 		//'comentario',
 		'fecha',
-		'documentox.desdocu',
+		//'documentox.desdocu',
 		'lugares.deslugar',
 				'posicion',
 				'estado.estado',
@@ -117,7 +117,8 @@ $this->menu=array(
 										*/
 								?> 
 								
-<?php							
+<?php	
+//print_r($fotos);
   $this->widget('ext.galeria.Galeria',array(
 			'images'=>$fotos,
 			'rutaimagenes'=>'',

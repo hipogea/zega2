@@ -102,8 +102,11 @@ class Tenenciasproc extends CActiveRecord
       public function beforesave(){
           if($this->automatico=='1'){ //Solo uno puede tener le heck actuivo por default 
               $this->updateAll(array('automatico'=>'0'),"codte=:vcodte",array(":vcodte"=>$this->codte));
+           $this->automatico='1';
+              
           }
-          $this->automatico='1';
+          
+         
           if(is_null($this->final))
               $this->final='0';
           return parent::beforesave();
