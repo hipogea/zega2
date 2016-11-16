@@ -14,7 +14,7 @@
         'validateOnSubmit'=>true,
         // 'validateOnChange'=>true       
     ),
-	'enableAjaxValidation'=>true,
+	'enableAjaxValidation'=>false,
 	
 )); ?>
 
@@ -23,11 +23,7 @@
 	<div class="row">
 		<?php
 				$botones=array(
-					'go'=>array(
-						'type'=>'A',
-						'ruta'=>array(),
-                                            'visiblex'=>array('10'),
-						),
+					
 					'save'=>array(
 						'type'=>'A',
 						'ruta'=>array(),
@@ -35,55 +31,39 @@
 						),
 
 
-					'ok'=>array(
-						'type'=>'B',
-						'ruta'=>array($this->id.'/procesardocumento',array('id'=>$model->id,'ev'=>2)),//apreuba guia
-						'visiblex'=>array('10'),
-                                            ),
-					'tacho'=>array(
-						'type'=>'B',
-						'ruta'=>array($this->id.'/procesardocumento',array('id'=>$model->id,'ev'=>35)),//anula guia
-						'visiblex'=>array('10'),
-					),
-					'undo'=>array(
-						'type'=>'B',
-						'ruta'=>array($this->id.'/procesardocumento',array('id'=>$model->id,'ev'=>64)),//reveiree liberacion
-						'visiblex'=>array('10'),
-					),
-					'truck'=>array(
-						'type'=>'B',
-						'ruta'=>array($this->id.'/procesardocumento',array('id'=>$model->id,'ev'=>36)), //confirma trasladoa
-						'visiblex'=>array('10'),
-					),
+                                    
+                                    
+					 'ok' => array(
+                            'type' => 'C',
+                            'ruta' => array($this->id . '/creaproceso', array(
+                                'id' => $model->id,
+                                //"id"=>$model->n_direc,
+                                "asDialog" => 1,
+                                "gridId" => 'detalle-grid',
+                            )
+                            ),
+                            'dialog' => 'cru-dialog31',
+                            'frame' => 'cru-frame31',
+                            'visiblex' => array(!$esfinal),
 
-					'pack1'=>array(
-						'type'=>'B',
-						'ruta'=>array($this->id.'/procesardocumento',array('id'=>$model->id,'ev'=>37)), //confirma entrega
-						'visiblex'=>array('10'),
-					),
-					'pack'=>array(
-						'type'=>'B',
-						'ruta'=>array($this->id.'/procesardocumento',array('id'=>$model->id,'ev'=>69)), //revertir  entrega
-						'visiblex'=>array('10'),
-					),
-					'print'=>array(
-						'type'=>'B',
-						'ruta'=>array($this->id.'/imprimir/',array('id'=>$model->id)),
-						'visiblex'=>array('10'),
-                                                        ),
+                        ),
+                                    
+                                    'camera' => array(
+                            'type' => 'C',
+                            'ruta' => array($this->id . '/creaproceso', array(
+                                'id' => $model->id,
+                                //"id"=>$model->n_direc,
+                                "codtenencia" => $model->codtenencia,
+                                "asDialog" => 1,
+                                "gridId" => 'detalle-grid',
+                            )
+                            ),
+                            'dialog' => 'cru-dialog31',
+                            'frame' => 'cru-frame31',
+                            'visiblex' => array(!$esfinal),
 
-					'edit'=>array(
-						'type'=>'B',
-						'ruta'=>array($this->id.'/editadocumento',array('id'=>$model->id)), //confirma trasladoa
-						'visiblex'=>array('10'),
-                                            ),
-
-
-						'out'=>array(
-						'type'=>'B',
-						'ruta'=>array($this->id.'/salir',array('id'=>$model->id)),
-						'visiblex'=>array('10'),
-					),
+                        ),
+						
 
 				);
 
@@ -112,12 +92,14 @@
 				'theme' => 'default',
 				'tabs' => array(
 					'Inicio'=>array('id'=>'tab_',
-						'content'=>$this->renderPartial('tab_general', array('form'=>$form,'model'=>$model),TRUE)
+						'content'=>$this->renderPartial('tab_general', array('form'=>$form,'model'=>$model,'esfinal'=>$esfinal),TRUE)
+					),
+                                    'Adjuntos'=>array('id'=>'tab_g',
+						'content'=>$this->renderPartial('tab_adjuntos', array('form'=>$form,'model'=>$model,'esfinal'=>$esfinal),TRUE)
 					),
 
-
 					'Auditoria'=>array('id'=>'tab___._..__',
-						'content'=>$this->renderPartial('//site/tab_auditoria', array('model'=>$model),TRUE)
+						'content'=>$this->renderPartial('//site/tab_auditoria', array('model'=>$model,'esfinal'=>$esfinal),TRUE)
 					),
 
 
@@ -135,3 +117,19 @@
 
 </div>
 
+<?php
+//--------------------- begin new code --------------------------
+   // add the (closed) dialog for the iframe
+    $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
+    'id'=>'cru-dialog31',
+    'options'=>array(
+        'title'=>'Explorador',
+        'autoOpen'=>false,
+        'modal'=>true,
+        'width'=>600,
+        'height'=>500,
+    ),
+    ));
+?>
+<iframe id="cru-frame31" width="100%" height="100%"></iframe>
+<?php $this->endWidget(); ?>

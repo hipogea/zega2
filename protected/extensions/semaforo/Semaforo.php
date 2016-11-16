@@ -10,10 +10,9 @@ class Semaforo extends CWidget
 	* @var options for gauge options
 	*/
 	
-	public $valores=array(); ///clave de boton y como valor un array que contiene el enlace (otro artray)  y un flag para determonar
-	//si el boton es SUBMIT  array['save'=> 'S' ]
+	public $valores=array(); 
 	// O ENLACE  			array['print'=>array( '/recurso/', array('id'=>23))  ]   SE DEBE DE ESPECIFICAR LE ENELACE CON UN ARRAY
-	public $asc; /// 1 Si el orden es   verde-amarillo-rojo segun los valores, -1 si el orden es rojo-amarillo-verde
+	public $asc=1; /// 1 Si el orden es   verde-amarillo-rojo segun los valores, -1 si el orden es rojo-amarillo-verde
   public $color;
 	public $valor;
 	public $ruta;

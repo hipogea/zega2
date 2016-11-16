@@ -18,4 +18,4 @@ $this->menu=array(
 
  <?php MiFactoria::titulo('Actualizar ingreso', 'gear') ; ?>
 
-<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
+<?php echo $this->renderPartial('_form', array('model'=>$model,'esfinal'=>$esfinal)); ?>

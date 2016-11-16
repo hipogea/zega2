@@ -19,8 +19,95 @@
 )); ?>
 
     
+<?php echo $form->hiddenField($model,'codocu',array('value'=>$model->codocu)); ?>
+		
+	   
+    <div class="row">        
+                <?php 			
+	echo $form->textField($model,'id',array('disabled'=>'disabled','size'=>3,'maxlength'=>3));
+		?>
+		<?php 
+		         if (!$model->isNewRecord ) {						
+				echo $form->textField($model,'correlativo',array('disabled'=>'disabled','size'=>5,'maxlength'=>8));
+				 }
+		?>
+	
+		<?php echo $form->labelEx($model,'codtenencia'); ?>
+		<?php  
+                if($model->isNewRecord){
+                   // var_dump($model::PARAM_TENENCIA_POR_DEFECTO);
+                   
+                }else{
+                   
+                    if(is_null(Configuracion::valor(
+                                    $model->codocu,
+                                     $model->codlocal, 
+                                    $model::PARAM_TENENCIA_POR_DEFECTO))){
+                     $this->widget('ext.matchcode.MatchCode',array(		
+					'nombrecampo'=>'codtenencia',
+					'ordencampo'=>1,
+					//'defol'=>(isset(Yii::app()->session['codprov']))?Yii::app()->session['codprov']:'',
+					//'defol2'=>isset(Yii::app()->session['desprov'])?Yii::app()->session['desprov']:'',
+					'controlador'=>$this->id,
+					'relaciones'=>$model->relations(),
+					'tamano'=>2,
+					'model'=>$model,
+					'form'=>$form,
+					'nombredialogo'=>'cru-dialog3',
+					'nombreframe'=>'cru-frame3',
+					'nombrearea'=>'cocity',
+					)
 
-	   <div class="row">
+					);
+                     
+                     }else{
+                    
+                    echo $form->textField($model,'codtenencia',array('size'=>2,'disabled'=>'disabled')); 
+                        echo Chtml::textField('idtextenencfia',$model->tenencias->deste,array('size'=>30,'disabled'=>'disabled')); 
+                         
+                }
+                  }
+                
+                ?>
+		<?php echo $form->error($model,'codtenencia'); ?>
+	</div>
+    
+    
+    
+    
+    
+     <div class="row">
+		
+		<?php  
+                if(!$model->isNewRecord and count($model->procesoactivo)>0){
+                    echo Chtml::label("Proceso Actual:","4nfkg85");
+                echo Chtml::textField('idtextyyenencfia',$model->procesoactivo[0]->tenenciasproc->eventos->descripcion,array('size'=>30,'disabled'=>'disabled')); 
+                   echo Chtml::textField('ivbgetcfia',$model->procesoactivo[0]->tenenciastrab->trabajadores->ap,array('size'=>30,'disabled'=>'disabled')); 
+                      if(!$esfinal) ///si no es final enornce spina semaforo
+                      {$this->widget('ext.semaforo.Semaforo',
+                      array(
+                          'valores'=>ARRAY(0,$model->procesoactivo[0]->tenenciasproc->nhorasverde,$model->procesoactivo[0]->tenenciasproc->nhorasnaranja),
+                              'asc'=>-1,
+                             'valor'=>$model->procesoactivo[0]->horaspasadas(),
+                      )
+                        ); 
+                       echo Chtml::textField('idtex45encfia',$model->procesoactivo[0]->tiempopasado(),array('size'=>9,'disabled'=>'disabled')); 
+                  
+                      }else{ //en caso de ser final
+                        echo Chtml::image(Yii::app()->getTheme()->baseUrl.'/img/'.'45070.png','',array('width'=>25,'height'=>25)); 
+                     
+                      }
+                    
+                }
+               		
+                ?>
+		
+	</div>
+    
+    
+    <div class="panelizquierdo">
+        
+        <div class="row">
 		<?php echo $form->labelEx($model,'codlocal'); ?>
 		<?php  $datos = CHtml::listData(Centros::model()->findAll(array('order'=>'nomcen')),'codcen','nomcen');
 		echo $form->DropDownList($model,'codlocal',$datos, array('empty'=>'--Llene el centro--',
@@ -30,6 +117,9 @@
 					?>
 		<?php echo $form->error($model,'codlocal'); ?>
 	</div>
+        
+        
+        
 	<div class="row">
 		<?php echo $form->labelEx($model,'codprov'); ?>
 		<?php $this->widget('ext.matchcode.MatchCode',array(		
@@ -80,25 +170,23 @@
 	<div class="row">
 		<?php echo $form->labelEx($model,'fechain'); ?>
 		<?php  $this->widget('zii.widgets.jui.CJuiDatePicker', array(
-										//'name'=>'my_date',
-										'model'=>$model,
-										
-										'attribute'=>'fechain',
-										'language'=>Yii::app()->language=='es' ? 'es' : null,
-											'options'=>array(
-													
-													'showAnim'=>'fold', // 'show' (the default), 'slideDown', 'fadeIn', 'fold'
-													'showOn'=>'button', // 'focus', 'button', 'both'
-													'buttonText'=>Yii::t('ui','...'),													
-													'dateFormat'=>'dd-mm-yy',
-														),
-												'htmlOptions'=>array(
-															'value'=>(  ($model->isNewRecord ) and    isset(Yii::app()->session["fechain"]) ) ?Yii::app()->session["fechain"]:$model->fechain,
-															'style'=>'width:80px;vertical-align:top',
-															'readonly'=>'readonly',
-															 
-															),
-															));
+			//'name'=>'my_date',
+				'model'=>$model,
+				'attribute'=>'fechain',
+				'language'=>Yii::app()->language=='es' ? 'es' : null,
+                                'options'=>array(
+					'showAnim'=>'fold', // 'show' (the default), 'slideDown', 'fadeIn', 'fold'
+					'showOn'=>'button', // 'focus', 'button', 'both'
+					'buttonText'=>Yii::t('ui','...'),													
+					'dateFormat'=>'yy-mm-dd',
+					),
+					'htmlOptions'=>array(
+							'value'=>(  ($model->isNewRecord ) and    isset(Yii::app()->session["fechain"]) ) ?Yii::app()->session["fechain"]:$model->fechain,
+						'style'=>'width:80px;vertical-align:top',
+						'readonly'=>'readonly',
+				 
+					),
+				));
 
 		?>	
 		<?php echo $form->error($model,'fechain'); ?>
@@ -108,20 +196,8 @@
 		<?php echo $form->checkBox($model,'conservarvalor',array('value'=>'1')); ?>
 		
 	</div>
-	<div class="row">
-		<?php echo $form->labelEx($model,'numero'); ?>
-		<?php echo $form->textField($model,'numero',array('size'=>20,'maxlength'=>20)); ?>
-		<?php echo $form->error($model,'numero'); ?>
-	</div>
-	<div class="row">
-		<?php 
-		         if (!$model->isNewRecord ) {
-						echo $form->labelEx($model,'correlativo'); 
-						echo $form->textField($model,'correlativo',array('didabled'=>'disabled','size'=>8,'maxlength'=>8));
-				 }
-		?>
-		
-	</div>
+	
+	
 
 	
 	<div class="row">
@@ -157,7 +233,23 @@
 		?>
 		<?php echo $form->error($model,'tipodoc'); ?>
 	</div>
-
+        
+        <div class="row">
+		<?php echo $form->labelEx($model,'numero'); ?>
+		<?php echo $form->textField($model,'numero',array('size'=>20,'maxlength'=>20)); ?>
+		<?php echo $form->error($model,'numero'); ?>
+	</div>
+        
+        <?php 
+        if(!$esfinal) 
+       echo  $this->renderPartial('//site/celular', array('form'=>$form,'model'=>$model),TRUE);
+        ?>
+        
+        
+        
+        
+    </div>
+    <div class="panelderecho">
 	<div class="row">
 		<?php echo $form->labelEx($model,'moneda'); ?>
 		<?php  
@@ -273,11 +365,7 @@
 	</div>
 	
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'texv'); ?>
-		<?php echo $form->textArea($model,'texv',array('rows'=>6, 'cols'=>50)); ?>
-		<?php echo $form->error($model,'texv'); ?>
-	</div>
+	
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'docref'); ?>
@@ -287,13 +375,62 @@
 
 	
 
-	<
+    </div>
 
+    <div class="row">
+		<?php echo $form->labelEx($model,'texv'); ?>
+		<?php echo $form->textArea($model,'texv',array('rows'=>4, 'cols'=>100)); ?>
+		<?php echo $form->error($model,'texv'); ?>
+	</div>
+    
+    
 <?php $this->endWidget(); ?>
 
 </div><!-- form -->
 
 </div>
+
+
+<?php
+   if(!$model->isNewRecord){
+       $this->widget('zii.widgets.grid.CGridView', array(
+            'id'=>'procesos-grid',
+            'dataProvider'=> Procesosdocu::model()->search_por_docu($model->id),
+             'itemsCssClass'=>'table table-striped table-bordered table-hover',
+           'columns'=>array(
+               // 'fechanominal',
+               array(
+			'name'=>'fechanominal',
+			'value'=>'date("d/m/y H:i", strtotime($data->fechanominal))','htmlOptions'=>array('width'=>'50')
+		),
+                //array('name'=>'tipo','type'=>'raw','value'=>'($data->tipo=="M")?CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."email.png"):$data->tipo','htmlOptions'=>array('width'=>50)),
+            array('name'=>'proc','type'=>'raw','value'=>'($data->tenenciasproc->eventos->descripcion)','htmlOptions'=>array('width'=>250)),
+             array('name'=>'trab','type'=>'raw','value'=>'($data->tenenciastrab->trabajadores->ap)','htmlOptions'=>array('width'=>30)),
+             array('name'=>'codocuref','type'=>'raw','value'=>'$data->codocuref','htmlOptions'=>array('width'=>1)),
+            array('name'=>'numdocref','type'=>'raw','value'=>'$data->numdocref','htmlOptions'=>array('width'=>10)),
+            array(
+			'name'=>'fechafin',
+			'value'=>'date("d/m/y H:i", strtotime($data->fechafin))','htmlOptions'=>array('width'=>'50')
+		),
+               array('name'=>'tiempo','type'=>'raw','value'=>'($data->tiempopasado())','htmlOptions'=>array('width'=>160)),
+            array('name'=>'iduser', 'type'=>'html','value'=>'$data->iduser.CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."user_business.png","",array())'),
+        
+                //'titulo',
+              //  array('htmlOptions'=>array('width'=>24),'name'=>'st.','header'=>'st', 'type'=>'raw','value'=>'CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"].$data->coddocu.$data->estadodetalle.".png")'),
+
+                // 'tipo',
+                //array('name'=>'nombrefichero','htmlOptions'=>array('width'=>50)),
+                // 'enviadoel',
+            ),
+        )
+    ) ; 
+   }
+
+   
+
+
+?>
+
 
 
 <?php

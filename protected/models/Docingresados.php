@@ -4,6 +4,7 @@ class Docingresados extends ModeloGeneral
 {
 	
     CONST PARAM_TENENCIA_POR_DEFECTO='1012';
+    CONST PARAMETRO_TITULO_CORREO_PEDIDO='1247';
     /**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -13,6 +14,23 @@ class Docingresados extends ModeloGeneral
 	{
 		return parent::model($className);
 	}
+        public $d_fechain1=null;
+        
+        public function init(){
+            $this->campoestado='cod_estado';
+            $this->documento='280';
+            
+           /* $this->campossensibles=array(
+                'tipodoc'=>array(self::ESTADO_REGISTRO_NUEVO,self::ESTADO_PREVIO,self::ESTADO_CREADO),
+                'codlocal'=>array(self::ESTADO_REGISTRO_NUEVO,self::ESTADO_PREVIO,self::ESTADO_CREADO),
+            'numero'=>array(self::ESTADO_PREVIO,self::ESTADO_CREADO),
+                'cant'=>array(self::ESTADO_REGISTRO_NUEVO,self::ESTADO_PREVIO,self::ESTADO_CREADO),
+            'um'=>array(self::ESTADO_REGISTRO_NUEVO,self::ESTADO_PREVIO,self::ESTADO_CREADO),
+               // 'txtmaterial'=>array(SELF::ESTADO_PREVIO,SELF::ESTADO_CREADO),
+           
+                
+                ); */
+        }
 
 	/**
 	 * @return string the associated database table name
@@ -31,10 +49,10 @@ class Docingresados extends ModeloGeneral
                     
                     'imagenesjpg'=>array(
 				'class'=>'ext.behaviors.TomaFotosBehavior',
-                            '_codocu'=>'210',
+                            '_codocu'=>'280',
                             '_ruta'=>yii::app()->settings->get('general','general_directorioimg'),
                             '_numerofotosporcarpeta'=>yii::app()->settings->get('general','general_nregistrosporcarpeta')+0,
-                            '_extensionatrabajar'=>'.jpg',
+                            '_extensionatrabajar'=>'.pdf',
                             '_id'=>$this->getPrimarykey(),
                                 ),
                 
@@ -64,7 +82,10 @@ class Docingresados extends ModeloGeneral
 			array('numero', 'required','message'=>'Debes de llenar el numero'),
 			array('codprov', 'required','message'=>'Llena el proveedor'),
 			array('tipodoc', 'required','message'=>'Ingresa el tipo de documento'),
-                    array('tipodoc', 'chkparametros'),
+                   array('tipodoc', 'checktenencias'),
+                    array('codtenencia', 'safe','on'=>'cambiotenencia'),
+                   
+                   // checktenencias
 			array('codresponsable', 'required','message'=>'...Quien es el responsable?'),
 			array('fecha', 'required','message'=>'...La fecha del documento?'),
 			array('fechain', 'required','message'=>'...La fecha de ingreso?'),
@@ -113,6 +134,15 @@ class Docingresados extends ModeloGeneral
 			'trabajador' => array(self::BELONGS_TO, 'Trabajadores', 'codresponsable'),
 			'trabajador1' => array(self::BELONGS_TO, 'Trabajadores', 'codteniente'),
 			'barcos'=> array(self::BELONGS_TO, 'Embarcaciones', 'codepv'),
+                        'tenencias'=>array(self::BELONGS_TO, 'Tenencias', 'codtenencia'),
+                        'procesosdocu'=>array(self::HAS_MANY, 'Procesosdocu', 'hiddoci'),
+                     'procesoactivo'=>array(self::HAS_MANY, 'Procesosdocu','hiddoci','limit'=>'1','order'=>'id DESC'),
+                    'tenores' => array(self::BELONGS_TO, 'Tenores', array('codsoc'=>'sociedad','codocu'=>'coddocu') ),
+           
+                    
+                    
+                    
+                    
 		);
 		
 	}
@@ -153,9 +183,17 @@ class Docingresados extends ModeloGeneral
 		$this->correlativo=Numeromaximo::numero($this->model(),'correlativo','maximovalor',8);
 		$this->cod_estado='10';
 		$this->codocu='280';
-                $this->codtenencia=$this->getparametro(self::PARAM_TENENCIA_POR_DEFECTO);
-                Yii::app()->user->getField('codtra');
-                    }
+                //$this->codtenencia=$this->getparametro(self::PARAM_TENENCIA_POR_DEFECTO);
+              // VAR_DUMP( $this->codtenencia);DIE();
+               // if(is_null($this->codteniente))
+               $this->codteniente= Yii::app()->user->getField('codtra');
+                   
+                $this->codtenencia=Configuracion::valor($this->codocu,
+                    $this->codlocal, 
+                    self::PARAM_TENENCIA_POR_DEFECTO);
+              
+                
+                 }
                 else{
                     
                                     
@@ -166,18 +204,31 @@ class Docingresados extends ModeloGeneral
 	
 	
 	public function afterSave() {
-							if ($this->isNewRecord) {
-									
-									    //
-										// $this->creadoel=Yii::app()->user->name;
-									   // $this->correlativo=Numeromaximo::numero($this->model(),'correlativo','maximovalor',8);
-										
-											//$this->c_salida='1';
-									} else
-									{
+	     if ($this->isNewRecord) {
+		  $tenencia= Tenencias::model()->findByPk($this->codtenencia);
+                 if(count($tenencia->tenenciaprocauto) >0 
+                        and count($tenencia->tenenciastraba)>0)
+                {
+                   foreach($tenencia->tenenciastraba as $fila){
+                       
+                       if($fila->codtra==$this->codteniente){
+                          if( !$this->procesarcorto(
+                                   $fila->id,
+                                   $tenencia->tenenciaprocauto[0]->id, 
+                                   date("Y-m-d")))
+                                  //die();
+                           break;
+                       }
+                       
+                   } 
+                    
+                }
+									   		//$this->c_salida='1';
+		} else
+			{
 										
 										//$this->ultimares=" ".strtoupper(trim($this->usuario=Yii::app()->user->name))." ".date("H:i")." :".$this->ultimares;
-									}
+			}
 									return parent::afterSave();
 				}
 	
@@ -221,17 +272,56 @@ class Docingresados extends ModeloGeneral
          *
          */
         public function checktenencias($attribute,$params) {
-            $configuracion=Configuracion::devuelveconfiguracion($this->tipodoc,
+            $configuracion=Configuracion::valor($this->codocu,
                     $this->codlocal, 
                     self::PARAM_TENENCIA_POR_DEFECTO);
             if(is_null($configuracion))
             {
-                $this->aderror('No existe una tenencia configurada para este centro y documento, agregue una por favor');
-            }else{
-               if(count($configuracion->tenencias->tenenciastraba)==0)
-                  $this->aderror('No existe una persona asignada para la tenencia ['.$configuracion->tenencias->codte.']     '.$configuracion->tenencias->deste.' agregue una por favor');
-             
+                $this->adderror('tipodoc','No existe una tenencia configurada para este centro  ( '.$this->codlocal.' )  y documento  (  '.$this->codocu.'    )  , agregue una por favor');
             }
             
+            
+            
+           
+            
+            
+            
         }
+        
+        
+        public function procesarcorto($hidtra, $hidproc, $fecha){
+            if(!$this->isNewRecord)
+                $this->refresh();
+                 $registro=New Procesosdocu('rapido');
+            $registro->setAttributes(
+                    array(
+                        'hiddoci'=>$this->id,
+         'fechanominal' =>$fecha,
+	'hidtra'=>$hidtra,
+	'hidproc'=>$hidproc,
+                            )
+                    );
+            //ECHO "SALIO4";DIE();
+           return ($registro->save());
+           /* }else{
+                ECHO "SALIO";DIE();
+               return false; 
+            }*/
+           
+            
+        }
+        
+         public function colocaarchivox($fullFileName,$userdata=null) {
+       // $filename=$fullFileName;
+        
+       // $path_parts = pathinfo($fullFileName);
+       // var_dump($fullFileName); die();
+      // Yii::log(' ejecutando '.serialize($fullFileName),'error');
+      // var_dump(self::model()->findByPk((integer)$userdata)->id); die();
+       self::model()->findByPk($userdata)->colocaarchivo($fullFileName);
+       
+    }
+        
+        
+        
 }

@@ -1,5 +1,3 @@
-
-
    <div class="division">
         <div class="wide form">
             <div class="barrasup barrasup-simple">
@@ -88,8 +86,9 @@
                             'ruta' => array($this->id . '/enviarpdf', array('id' => $model->idguia)),
                             'opajax'=>array(
                                 'url'=> array($this->id . '/enviarpdf', array('id' => $model->idguia)),
-                                'success'=>"function(data) {
-										$('#myDivision').html(data).fadeIn().animate({opacity: 1.0}, 900).fadeOut('slow');
+                                    'success'=>"function(data) {
+                                     $.growlUI('Growl Notification', data,24000);
+                                     alert(data);
                                         }",
                             ),
 

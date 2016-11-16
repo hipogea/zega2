@@ -31,7 +31,7 @@ class TenenciasController extends Controller
 			
 			
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('borrapropietario','borraevento','creaevento','admin','delete','create','update','view','creapropietario'),
+				'actions'=>array('activapropietario','modificaevento','borrapropietario','borraevento','creaevento','admin','delete','create','update','view','creapropietario'),
 				'users'=>array('@'),
 			
 		));
@@ -181,7 +181,7 @@ class TenenciasController extends Controller
 				 if (!empty($_GET['asDialog']))
 						{
 						//Close the dialog, reset the iframe and update the grid
-						echo CHtml::script("window.parent.$('#cru-dialog3').dialog('close3');
+						echo CHtml::script("window.parent.$('#cru-dialog3').dialog('close');
                                                     window.parent.$('#cru-frame').attr('src','');
 						window.parent.$.fn.yiiGridView.update('propietarios-grid');
 						");
@@ -212,9 +212,9 @@ class TenenciasController extends Controller
 				 if (!empty($_GET['asDialog']))
 						{
 						//Close the dialog, reset the iframe and update the grid
-						echo CHtml::script("window.parent.$('#cru-dialog3').dialog('close3');
+						echo CHtml::script("window.parent.$('#cru-dialog3').dialog('close');
                                                     window.parent.$('#cru-frame').attr('src','');
-						window.parent.$.fn.yiiGridView.update('procesos-grid');
+						window.parent.$.fn.yiiGridView.update('tenencias-grid');
 						");
 						Yii::app()->end();
 				}
@@ -226,31 +226,93 @@ class TenenciasController extends Controller
 		));
 		
 	}
-      
-        public function actionborrapropietario(){
+       public function actionmodificaevento($id){
+            $model= Tenenciasproc::model()->findByPk($id);
+            
+            if(is_null($model))
+                throw new CHttpException(500,'NO existe una tenencia para el id   -> '.$id);
+            	
+		
+		//$model=new Tenenciasproc();
+		//$model->setScenario('INS_ACTIVO');
+		//$model->valorespordefecto($this->documentohijo);
+			//$model->codte=$registro->codte;
+			
+		if(isset($_POST['Tenenciasproc']))		{
+			$model->attributes=$_POST['Tenenciasproc'];			
+			if($model->save())
+				 if (!empty($_GET['asDialog']))
+						{
+						//Close the dialog, reset the iframe and update the grid
+						echo CHtml::script("window.parent.$('#cru-dialog31').dialog('close');
+                                                    window.parent.$('#cru-frame31').attr('src','');
+						window.parent.$.fn.yiiGridView.update('tenencias-grid');
+						");
+						Yii::app()->end();
+				}
+		}
+		// if (!empty($_GET['asDialog']))
+		$this->layout = '//layouts/iframe';
+		$this->render('detalle_procesos',array(
+			'model'=>$model, 'documento'=>$model->tenencias->codocu
+		));
+		
+	}
+        public function actionactivapropietario(){
             if(yii::app()->request->isAjaxRequest){
                 
                 $id= (integer) MiFactoria::cleanInput($_GET['id']);
                 $registro=Tenenciastraba::model()->findByPk($id);
                 if(is_null($registro)){
-                    MiFactoria::Mensaje('error', 'No se encontro el registro para este id');
-                    return;
+                   // MiFactoria::Mensaje('error', 'No se encontro el registro para este id');
+                    return 'No se encontro el registro para este id';
                 }
                   //throw new CHttpException(500,'NO se econtro el registro para el id   -> '.$id);   
-                  if($registro->accionesdocumentos >0){
-                      MiFactoria::Mensaje('error', 'No se epued elimianr este registro , tiene acciones registradas');
-                    return;
-                      
+                  $registro->setScenario('estado');
+                       $registro->activo='1';
+                       $registro->save();                     
+                       return 'Se ha Activado esta persona en la tenencia';
+            
+                  }
+        }
+        
+        
+        
+         public function actionborrapropietario(){
+            if(yii::app()->request->isAjaxRequest){
+                
+                $id= (integer) MiFactoria::cleanInput($_GET['id']);
+                $registro=Tenenciastraba::model()->findByPk($id);
+                if(is_null($registro)){
+                   // MiFactoria::Mensaje('error', 'No se encontro el registro para este id');
+                    return 'No se encontro el registro para este id';
+                }
+                  //throw new CHttpException(500,'NO se econtro el registro para el id   -> '.$id);   
+                  if($registro->nprocesosdocu >0){
+                     // MiFactoria::Mensaje('error', 'No se epued elimianr este registro , tiene acciones registradas');
+                    //return 'No se epued elimianr este registro , tiene acciones registradas';
+                      $registro->setScenario('estado');
+                       $registro->activo='0';
+                       $registro->save();
+                       
+                       
+                       return 'Se ha desactivado esta persona en la tenencia';
+                  } else{
+                      if($registro->delete()){
+                   //MiFactoria::Mensaje('succes', 'Se elimino el registro sin problemas');
+                      return 'Se elimino el registro';
+                   
+                         }
                   }
                      
-               if($registro->delete()){
-                   MiFactoria::Mensaje('succes', 'Se elimino el registro sin problemas');
-               }
+               
                    
                 
             
         }
         }
+        
+        
         
         
         public function actionborraevento(){
@@ -259,18 +321,18 @@ class TenenciasController extends Controller
                 $id= (integer) MiFactoria::cleanInput($_GET['id']);
                 $registro=  Tenenciasproc::model()->findByPk($id);
                 if(is_null($registro)){
-                    MiFactoria::Mensaje('error', 'No se encontro el registro para este id');
-                    return;
+                   // MiFactoria::Mensaje('error', 'No se encontro el registro para este id');
+                    return 'No se encontro el registro para este id';
                 }
                   //throw new CHttpException(500,'NO se econtro el registro para el id   -> '.$id);   
-                  if($registro->accionesdocumentos >0){
-                      MiFactoria::Mensaje('error', 'No se epued elimianr este registro , tiene acciones registradas');
-                    return;
+                  if($registro->nprocesosdocu >0){
+                     // MiFactoria::Mensaje('error', 'No se epued elimianr este registro , tiene acciones registradas');
+                    return 'No se epued eliminar este registro , tiene acciones registradas';
                       
                   }
                      
                if($registro->delete()){
-                   MiFactoria::Mensaje('succes', 'Se elimino el registro sin problemas');
+                  return  'Se elimino el registro sin problemas';
                }
                    
                 

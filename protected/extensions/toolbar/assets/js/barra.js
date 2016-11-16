@@ -25,10 +25,18 @@ function(){
             color: '#fff' 
         } }); 
  
-        setTimeout($.unblockUI, 2000);
+        setTimeout($.unblockUI, 0);
            /* $(this).css("display", "none");*/
 
     }
 
     );
-});
+    
+    
+    
+    
+    
+    
+    
+}
+        );

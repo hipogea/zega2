@@ -19,6 +19,7 @@ public $_tableName='{{config}}';
 
 
 public function init(){
+    die();
     if(is_null($this->nombrecampodocu))
       throw new CHttpException(500,
                     __CLASS__.'  '.__FUNCTION__.'    => '
@@ -29,7 +30,8 @@ public function init(){
                     . 'no esta definido el campo centro  del modelo '.get_class($this->owner));	  
     $this->_centro=$this->owner->{$this->nombrecampocentro};
     $this->_documento=$this->owner->{$this->nombrecampodocu};
-
+    
+RETURN parent::init();
         
 }
 
@@ -75,13 +77,14 @@ public function getTableName()
 
 
 public function getParametro($codparametro,$iduser=null){
+  // return 3;
             $result=yii::app()->db->
             createCommand()->
             select('valor')->from($this->getTableName())->
              where($this->getCondition($iduser),
                    $this->getparams($codparametro,$iduser))->
             queryScalar();
-            
+            var_dump($result);
             if(empty($result!=false)){
                 return $result;
             }else{

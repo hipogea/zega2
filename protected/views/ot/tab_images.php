@@ -48,6 +48,7 @@ var_dump($modelopadre->tempdetot[0]->fotosparagaleria());*/
                                             'titulo'=>'',
                                             'id'=>$identificadorwidget,
                                             'modo'=>2,
+                                            'ext'=>'jpg',
                                             'zonaAjax'=>'ZONA_GALERIA',
                                             'mensajegeneral'=>'',
                                              'fotos'=>array(),	

@@ -150,7 +150,7 @@ class Contactos extends CActiveRecord
 		$registroshijos=$modelocontacto->contactos_mail;
 		$listacorreos=$modelocontacto->c_mail.",";
 		foreach($registroshijos as $fila ){
-			if($fila->codocu==$codocu)
+			if($fila->codocu==$codocu and $fila->activo=='1')
 				$listacorreos.=$fila->mail.",";
 		}
 		// $listacorreos=substr($listacorreos,1).""; //quitar el primer slash
@@ -164,23 +164,33 @@ class Contactos extends CActiveRecord
 	}
 
 	public static  function getListMailEmpresa($codempresa,$codocu) {
-		$modeloempresa=self::model()->findAll("c_hcod=:vcodempresa", array(":vcodempresa"=>$codempresa));
+		$modeloempresa=Clipro::model()->findAll("codpro=:vcodempresa", array(":vcodempresa"=>$codempresa));
 		//echo "esta es la empresa". $codempresa;
 		//yii::app()->end();
 		$listacorreos="";
-		foreach($modeloempresa as $fila ){
-
-				$listacorreos.=$fila->c_mail.",";
-		}
-		// $listacorreos=substr($listacorreos,1).""; //quitar el primer slash
-		$listacorreos=str_replace(",,",",",$listacorreos);//quitamos los slashes
+		
+                
+                foreach($modeloempresa[0]->contactoses as $filax )
+                    {
+                     $listacorreos.=$filax->c_mail.","; 
+                     foreach($filax->contactos_mail as $contacto )
+                         {
+                            if($contacto->codocu==$codocu and $contacto->activo=='1'){
+                                    $listacorreos.=$contacto->mail.","; 
+                                    }
+                            }
+                    }
+                    
+               $listacorreos=str_replace(",,",",",$listacorreos);//quitamos los slashes
 		if(substr($listacorreos,strlen($listacorreos)-1,1)==",")
 			$listacorreos=substr($listacorreos,0,strlen($listacorreos)-1); //quitar el tultimo slash si lo tuviera
-     /* echo "esta es la lista". $listacorreos;
-		yii::app()->end();*/
+
 
 
 		return $listacorreos;
+                
+                
+		
 	}
 
 

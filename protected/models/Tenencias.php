@@ -27,7 +27,7 @@ class Tenencias extends CActiveRecord
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('codte, deste, codcen', 'safe', 'on'=>'search'),
-                    array('codte, deste, codcen', 'safe', 'on'=>'insert,update'),
+                    array('codte, deste,codocu, codcen', 'safe', 'on'=>'insert,update'),
 		);
 	}
 
@@ -51,8 +51,10 @@ class Tenencias extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'codcen0' => array(self::BELONGS_TO, 'Centros', 'codcen'),
-			'tenenciasprocs' => array(self::HAS_MANY, 'Tenenciasproc', 'codte'),
+			'tenenciasproc' => array(self::HAS_MANY, 'Tenenciasproc', 'codte'),
 			'tenenciastraba' => array(self::HAS_MANY, 'Tenenciastraba', 'codte'),
+                        'tenenciaprocauto' => array(self::HAS_MANY, 'Tenenciasproc', 'codte','condition'=>"automatico='1'"),
+                       
 		);
 	}
 
@@ -107,14 +109,8 @@ class Tenencias extends CActiveRecord
 	}
         
         
-        public function beforeSave() {
-						
-									return parent::beforeSave();
-				}
+       
 	
 	
-	public function afterSave() {
-							
-									return parent::afterSave();
-				}
+	
 }

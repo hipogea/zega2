@@ -221,7 +221,9 @@ class MatchCode extends CWidget
 						echo " <div style='float: left; background-color :#FFF; padding-left:4px;  padding-right:4px; font-family: verdana,tahoma,arial,sans-serif;
 								font-size: 8pt;'  id =".$this->nombrearea.">";
 		                                                             //var_dump($this->model->attributes);
-						echo (!$this->model->isNewRecord)?$this->relaciona($this->nombrecampo,$this->model->{$this->nombrecampo},$this->ordencampo):'.                       .';
+						echo (!$this->model->isNewRecord or 
+                                                       strlen(trim($this->model->{$this->nombrecampo}))>0
+                                                        )?$this->relaciona($this->nombrecampo,$this->model->{$this->nombrecampo},$this->ordencampo):'.                       .';
 
 		echo " </div>";
 															unset($modelorel);

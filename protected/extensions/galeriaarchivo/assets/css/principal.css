@@ -1,0 +1,23 @@
+.marcogaleria{
+  border:1px solid #aaa;
+  height: 92px;
+   width: 400px;
+  background: #bbb;  
+  border-radius:3px;
+  margin : 1px;
+  padding: 1px; 
+  display: block;
+  overflow:auto;
+}
+
+.marquito{
+  border:1px solid #aaa;
+  height: 55px;
+   width:  80px;
+  background: #fff;  
+  border-radius:2px;
+  margin : 1px;
+  padding: 1px; 
+  display:inline;
+  float:left;
+}

@@ -31,6 +31,8 @@ class Configuracion extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
+             array('valor', 'safe'),
+           
             array('codparam, valor', 'required', 'on' => 'parametro'),
             array('codparam,  valor, explicacion', 'safe', 'on' => 'parametro'),
             //  array('codcen, codocu, codparam, desparam, valor, tipodato, explicacion, lista, iduser, longitud', 'required'),
@@ -175,7 +177,7 @@ class Configuracion extends CActiveRecord {
                 }
     }
     
-    public static function devuelveconfiguracion($codocu,$codcen,$codparam,$iduser=null)
+    public static function valor($codocu,$codcen,$codparam,$iduser=null)
             {
             $cri=NEW CDBCriteria();
             $cri->addCondition("codocu=:vcodocu and "
@@ -188,6 +190,13 @@ class Configuracion extends CActiveRecord {
               ":viduser"=>(is_null($iduser))?-1:$iduser,
                ":vcodparam"=>$codparam,
                  );
-       return  self::model()->find($criteria);
+      $resultado= self::model()->find($cri);
+      //return $resultado->attributes;
+        if(is_null($resultado)){
+            return null;
+        }else{
+            return $resultado->valor;
+        }
+      
             }
 }

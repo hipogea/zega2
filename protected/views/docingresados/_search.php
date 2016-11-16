@@ -36,12 +36,83 @@ $form=$this->beginWidget('CActiveForm', array(
 	</div>
     
      <div class="panelizquierdo">
-	<div class="row">
-		<?php echo $form->label($model,'despro'); ?>
-		<?php echo $form->textField($model,'despro',array('size'=>40,'maxlength'=>40)); ?>
+         
+         <div class="row">
+	<?php echo $form->label($model,'final'); ?>
+	<?php  
+        $datos = array('1' => 'Archivados ','0'=> 'En proceso');
+	//$datos = CHtml::listData(Tipoactivos::model()->findAll(),'codtipo','destipo');
+
+	echo $form->DropDownList($model,'final',$datos, array('empty'=>'--Indique el status--')  )  ;	?>
+	</div>
+         
+         <div class="row">
+		<?php echo $form->labelEx($model,'id'); ?>
+		<?php
+				$this->widget('ext.matchcode1.Seleccionavarios',array(		
+												'nombrecampo'=>'id',												
+												//'ordencampo'=>1,
+												'controlador'=>'VwDoci',
+												'relaciones'=>$model->relations(),
+												'tamano'=>4,
+												'model'=>$model,
+												'nombremodelo'=>'Docingresados',
+												'form'=>$form,
+												'nombredialogo'=>'cru-dialog3',
+												'nombreframe'=>'cru-frame3',
+												//'nombrearea'=>'fehdfj',
+													)
+													
+								);
+
+						
+			   ?>
 	</div>
 	
-	
+	 <div class="row">
+		<?php echo $form->labelEx($model,'codprov'); ?>
+		<?php
+				$this->widget('ext.matchcode1.Seleccionavarios',array(		
+												'nombrecampo'=>'codprov',												
+												//'ordencampo'=>1,
+												'controlador'=>'VwDoci',
+												'relaciones'=>$model->relations(),
+												'tamano'=>8,
+												'model'=>$model,
+												'nombremodelo'=>'Clipro',
+												'form'=>$form,
+												'nombredialogo'=>'cru-dialog3',
+												'nombreframe'=>'cru-frame3',
+												//'nombrearea'=>'fehdfj',
+													)
+													
+								);
+
+						
+			   ?>
+	</div>
+	<div class="row">
+		<?php echo $form->labelEx($model,'codepv'); ?>
+		<?php
+				$this->widget('ext.matchcode1.Seleccionavarios',array(		
+												'nombrecampo'=>'codepv',												
+												//'ordencampo'=>1,
+												'controlador'=>'VwDoci',
+												'relaciones'=>$model->relations(),
+												'tamano'=>3,
+												'model'=>$model,
+												'nombremodelo'=>'Embarcaciones',
+												'form'=>$form,
+												'nombredialogo'=>'cru-dialog3',
+												'nombreframe'=>'cru-frame3',
+												//'nombrearea'=>'fehdfj',
+													)
+													
+								);
+
+						
+			   ?>
+	</div>
 	
 	
 		
@@ -84,22 +155,10 @@ $form=$this->beginWidget('CActiveForm', array(
 
 
 	  </div>
-	  <div class="row">
-		<?php echo $form->label($model,'responsable'); ?>
-	
-          
-        
-	
-		<?php echo $form->textField($model,'responsable',array('size'=>15,'maxlength'=>15)); ?>
-	</div>
+	  
     </div>
       <div class="panelderecho">
-	  <div class="row">
-			<?php echo $form->label($model,'rucpro'); ?>
-			
-				<?php echo $form->textField($model,'rucpro',array('size'=>11,'maxlength'=>11)); ?>
-	
-            </div>
+	  
 	
 
 	<div class="row">
@@ -143,13 +202,13 @@ $form=$this->beginWidget('CActiveForm', array(
 		<?php $this->widget('zii.widgets.jui.CJuiDatePicker',
  array(
  'model'=>$model,
- 'attribute'=>'d_fectra1',
- 'value'=>$model->d_fectra1,
+ 'attribute'=>'d_fechain1',
+ 'value'=>$model->d_fechain1,
  'language' => 'es',
  'htmlOptions' => array('readonly'=>"readonly"),
  'options'=>array(
  'autoSize'=>true,
- 'defaultDate'=>$model->d_fectra1,
+ 'defaultDate'=>$model->d_fechain1,
  'dateFormat'=>'yy-mm-dd',
  'showAnim'=>'fold', 
  'selectOtherMonths'=>true,

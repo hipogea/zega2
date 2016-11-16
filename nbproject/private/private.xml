@@ -3,12 +3,20 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/zega1/protected/controllers/OtController.php</file>
-            <file>file:/D:/zega1/protected/config/main.php</file>
+            <file>file:/D:/zega1/protected/models/Procesosdocu.php</file>
+            <file>file:/D:/zega1/protected/models/VwDoci.php</file>
+            <file>file:/D:/zega1/protected/models/Logprocesosdocu.php</file>
+            <file>file:/D:/zega1/protected/components/MaletinCompo.php</file>
+            <file>file:/D:/zega1/protected/controllers/DocingresadosController.php</file>
+            <file>file:/D:/zega1/protected/views/docingresados/form_proceso_masa.php</file>
             <file>file:/D:/zega1/protected/components/ModeloGeneral.php</file>
-            <file>file:/D:/zega1/protected/runtime/application.log</file>
-            <file>file:/D:/zega1/protected/views/ot/_tab_recursos_detalle.php</file>
-            <file>file:/D:/zega1/protected/models/Tempdesolpe.php</file>
+            <file>file:/D:/zega1/protected/views/docingresados/tab_general.php</file>
+            <file>file:/D:/zega1/protected/modules/cruge/components/CrugeUser.php</file>
+            <file>file:/D:/zega1/protected/views/docingresados/logproceso.php</file>
+            <file>file:/D:/zega1/protected/views/docingresados/admin.php</file>
+            <file>file:/D:/zega1/protected/modules/cruge/models/data/CrugeSession.php</file>
+            <file>file:/D:/zega1/protected/models/CrugeUser.php</file>
+            <file>file:/D:/zega1/protected/views/docingresados/_search.php</file>
         </group>
     </open-files>
 </project-private>

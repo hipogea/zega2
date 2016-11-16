@@ -48,6 +48,8 @@ class Maletin extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+                   'documentos' => array(self::BELONGS_TO, 'Documentos', 'codocu'),
+         
 		);
 	}
 
@@ -78,7 +80,7 @@ class Maletin extends CActiveRecord
 	 * @return CActiveDataProvider the data provider that can return the models
 	 * based on the search/filter conditions.
 	 */
-	public function search()
+	public function search_por_usuario()
 	{
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
@@ -90,6 +92,7 @@ class Maletin extends CActiveRecord
 		$criteria->compare('idsession',$this->idsession);
 		$criteria->compare('codocu',$this->codocu,true);
 		$criteria->compare('id',$this->id,true);
+                $criteria->addCondition("iduser=".yii::app()->user->id);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

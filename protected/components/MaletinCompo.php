@@ -111,6 +111,20 @@ solo pasar los valores almacendaos en el  maletin
        return is_null( $nombremod::model()->find($criteria))?false:true;
 
     }
+    
+    public function borrafila($id){
+        
+        $id=(int)MiFactoria::cleanInput($id);       
+        $filas=yii::app()->db->createCommand()->delete($this->_tabla,
+                "id=:idregistro and iduser=".yii::app()->user->id." ",
+                array(":idregistro"=>$id)
+                );
+     return $filas;
+
+    }
+    
+    
+    
     public function insertafila($id,$clase,$documento=null){
        if(!$this->existefila($id,$clase)){
            $maletin=new $this->_modelo;
@@ -127,9 +141,29 @@ solo pasar los valores almacendaos en el  maletin
 
     }
 
+public function cuantoshay(){
+   return  yii::app()->db->createCommand()->select('count(id)')->from($this->_tabla)->where(
+            " iduser=".yii::app()->user->id."  ",
+            array()
+        )->queryScalar(); 
+}
 
-
-
+public function valoresid($codigodoc){
+    return  yii::app()->db->createCommand()->
+            select('idregistro')->
+            from($this->_tabla)->
+            where(
+            "iduser=".yii::app()->user->id." AND codocu=:vcodocu  AND idsession=".$this->_sesion,
+            array(":vcodocu"=>$codigodoc)
+        )->queryColumn();
+    
+    
+    
+   return  yii::app()->db->createCommand()->select('count(id)')->from($this->_tabla)->where(
+            " iduser=".yii::app()->user->id."  ",
+            array()
+        )->queryScalar(); 
+}
 
 }
 ?>

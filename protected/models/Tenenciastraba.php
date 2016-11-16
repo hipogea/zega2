@@ -33,6 +33,7 @@ class Tenenciastraba extends CActiveRecord
 			array('codte, codtra', 'length', 'max'=>4),
                     array('codte, codtra', 'required', 'on'=>'insert,update'),
                      array('codtra+codte', 'application.extensions.uniqueMultiColumnValidator','on'=>'insert,update'),
+		array('activo', 'safe','on'=>'estado'),
 		
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
@@ -50,7 +51,7 @@ class Tenenciastraba extends CActiveRecord
 		return array(
 			'tenencias' => array(self::BELONGS_TO, 'Tenencias', 'codte'),
 			'trabajadores' => array(self::BELONGS_TO, 'Trabajadores', 'codtra'),
-                    'naccionesdocumentos' => array(self::STAT, 'Accionesdocumentos', 'codtra'),
+                    'nprocesosdocu' => array(self::STAT, 'Procesosdocu', 'hidtra'),
 		);
 	}
 
@@ -103,4 +104,10 @@ class Tenenciastraba extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        
+        public function beforesave(){
+            if($this->isNewRecord)
+            $this->activo='1';
+            return parent::beforesave();
+        }
 }

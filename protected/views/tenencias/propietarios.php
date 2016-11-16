@@ -9,8 +9,56 @@
 		array('name'=>'Nombre','value'=>'$data->trabajadores->ap'),
 		array('name'=>'Nombre','value'=>'$data->trabajadores->am'),
             array('name'=>'Nombre','value'=>'$data->trabajadores->nombres'),
+             array('name'=>'activo','type'=>'raw','value'=>'CHTml::checkbox("hdjs",($data->activo=="1")?true:false,array("disabled"=>"disabled"))'),
+       
 		array(
 			'class'=>'CButtonColumn',
+                    
+                      'template'=>'{delete}{update}',
+                    'buttons'=>array( 
+                        'delete' => array(
+                             'visible'=>'($data->activo=="1")?true:false',
+                    'label'=>' Eliminar',
+                   // 'imageUrl'=>''.Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'22060.png',
+                    'click'=>"function(){
+                                    $.fn.yiiGridView.update('propietarios-grid', {
+                                        type:'GET',
+                                        url:$(this).attr('href'),
+                                        success:function(data) {
+                                              $.growlUI('Growl Notification', data); 
+                                              $.fn.yiiGridView.update('propietarios-grid');
+                                        }
+                                    })
+                                    return false;
+                              }
+                     ",
+                    'url'=>'$this->grid->controller->createUrl("/tenencias/borrapropietario",array("id"=>$data->id))',
+
+                ),
+                        		 
+                  'update' => array(
+                      'visible'=>'($data->activo=="0")?true:false',
+                    'label'=>' Restablecer',
+                   // 'imageUrl'=>''.Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'22060.png',
+                    'click'=>"function(){
+                                    $.fn.yiiGridView.update('propietarios-grid', {
+                                        type:'GET',
+                                        url:$(this).attr('href'),
+                                        success:function(data) {
+                                              $.growlUI('Growl Notification', data); 
+                                              $.fn.yiiGridView.update('propietarios-grid');
+                                        }
+                                    })
+                                    return false;
+                              }
+                     ",
+                    'url'=>'$this->grid->controller->createUrl("/tenencias/activapropietario",array("id"=>$data->id))',
+
+                ),      
+                        
+                        
+                    ),
+		
 		),
 	),
 )); ?>

@@ -125,7 +125,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                                         url:$(this).attr('href'),
                                         success:function(data) {
                                               $('#AjFlash').html(data).fadeIn().animate({opacity: 1.0}, 3000).fadeOut('slow');
-
+$.growlUI('Growl Notification', data); 
                                               $.fn.yiiGridView.update('solpe-gridex');
                                         }
                                     })
