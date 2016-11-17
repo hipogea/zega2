@@ -27,7 +27,7 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
 		return array(
 			
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('borrafilamaletin',      'poneralcarro',   'procesavarios','cargatenencias','cargatrabajadores','cargaprocesos','borraarchivo','adjuntaarchivo','admin','ajaxcargaformtenencia','view','creaproceso','relaciona','recibevalor','create','update'),
+				'actions'=>array('limpiarcarro','borrafilamaletin','poneralcarro',   'procesavarios','cargatenencias','cargatrabajadores','cargaprocesos','borraarchivo','adjuntaarchivo','admin','ajaxcargaformtenencia','view','creaproceso','relaciona','recibevalor','create','update'),
 				'users'=>array('@'),
 			),
 			
@@ -469,18 +469,23 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
                                 { ///si el proceso actual es final
                                          $registrodoc->registralog ('red',' Este documento ya tiene un proceso marcado '.$procesoactual->tenenciasproc->eventos->descripcion.'como final.., no puede procesarlo mas ');
                                         }else{ //aca si se puede y comenzamos a verificar 
-                                                     if($procesoactual->codte==$registro->codte)
-                                                                   { //Si esta 
+                                                     $marcador="";
+                                            if($registrodoc->codtenencia==$registro->codte)
+                                                                   { //Si esta PROCESANDO EN LA MISMA TENENCIA 
                                                                      $model=new Procesosdocu();
-                                                                       $model->codte=$procesoactual->codte;
+                                                                      $marcador=" Tenencia procesosactual : [".$registrodoc->codtenencia."]  Tenencia regsitro [".$registro->codte."]";
+                                                                        
+                                                                       $model->codte=$registrodoc->codtenencia;
                                                                          if($registro->hidproc==$procesoactual->hidproc){ 
                                                                             //Si esta intentando procesar  lo misom DOS VEECES EGUIDAS 
                                                                              ///SE DEBE DE PARAR EL PROCESO CON UN ERROR 
                                                                              $registrodoc->registralog('red','Esta intentando registrar un proceso repetido y consecutivo en la misma tenencia');
                                                                             }
-                                                                     }else{
+                                                                     }else{ //SI ES CAMBIOPD  ETENCNIA 
+                                                                         $marcador=" Tenencia Anterior : [".$registrodoc->codtenencia."]  Tenencia Actual [".$registro->codte."]";
                                                                          $model=new Procesosdocu('cambiotenencia');
                                                                         $model->codte=$registro->codte;
+                                                                        $registrodoc->codtenencia==$registro->codte;
                                                                     }
                                                         $model->hiddoci=$registrodoc->id;
                                                         $model->fechanominal=$registro->fechanominal;
@@ -489,9 +494,10 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
                                                         $model->codocuref=$registro->codocuref;
                                                         $model->numdocref=$registro->numdocref;
                                                   if($model->save()){
-                                                      $registrodoc->registralog('green', 'proceso exitoso'  );
+                                                      MiFactoria::Mensaje('notice', 'grabando');
+                                                      $registrodoc->registralog('green', 'proceso exitoso '.$marcador  );
                                                   }else{
-                                                      $registrodoc->registralog('red', yii::app()->mensajes->getErroresItem($model->geterrors())); 
+                                                      $registrodoc->registralog('red', yii::app()->mensajes->getErroresItem($model->geterrors()).'   -   '.$marcador); 
                                                   }
                                              }         
          
@@ -499,7 +505,7 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
                            } //fin del foreach
                            
                            
-                           MiFactoria::mensaje('notice','Se realizo el proceso masivo sin inconvenietes, favor revise el log de procesos para verificar los mensajes');
+                           MiFactoria::mensaje('notice','Se realizo el proceso masivo , favor revise el log de procesos para verificar los mensajes');
                              $this->render(
                                         'logproceso',                
                                             array( 
@@ -606,5 +612,13 @@ public function actionborrafilamaletin()
 
     }   
   
-  
+  public function actionlimpiarcarro()
+    {
+       
+         if(yii::app()->request->isAjaxRequest){
+             yii::app()->maletin->flush();
+             echo "Se limpio del maletin de usuario";
+         }
+
+    } 
 }

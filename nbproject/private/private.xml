@@ -6,16 +6,16 @@
             <file>file:/D:/zega1/protected/models/Procesosdocu.php</file>
             <file>file:/D:/zega1/protected/models/VwDoci.php</file>
             <file>file:/D:/zega1/protected/models/Logprocesosdocu.php</file>
+            <file>file:/D:/zega1/protected/models/Logcargamasiva.php</file>
             <file>file:/D:/zega1/protected/components/MaletinCompo.php</file>
             <file>file:/D:/zega1/protected/controllers/DocingresadosController.php</file>
+            <file>file:/D:/zega1/index.php</file>
             <file>file:/D:/zega1/protected/views/docingresados/form_proceso_masa.php</file>
-            <file>file:/D:/zega1/protected/components/ModeloGeneral.php</file>
-            <file>file:/D:/zega1/protected/views/docingresados/tab_general.php</file>
-            <file>file:/D:/zega1/protected/modules/cruge/components/CrugeUser.php</file>
+            <file>file:/D:/zega1/protected/extensions/toolbar/Barra.php</file>
             <file>file:/D:/zega1/protected/views/docingresados/logproceso.php</file>
+            <file>file:/D:/zega1/protected/models/Docingresados.php</file>
             <file>file:/D:/zega1/protected/views/docingresados/admin.php</file>
-            <file>file:/D:/zega1/protected/modules/cruge/models/data/CrugeSession.php</file>
-            <file>file:/D:/zega1/protected/models/CrugeUser.php</file>
+            <file>file:/D:/zega1/protected/extensions/explorador/views/vw_multi_Eventos.php</file>
             <file>file:/D:/zega1/protected/views/docingresados/_search.php</file>
         </group>
     </open-files>

@@ -41,7 +41,7 @@
 				); ?>
 
 			
-
+                    
 
 		</div>
 
@@ -174,6 +174,7 @@ $this->endWidget();
 		'numero',
 		'moneda',
 		'monto',
+            'codtenencia',
 		//'codprov',
 		'despro',			
 		//'barcos.nomep',

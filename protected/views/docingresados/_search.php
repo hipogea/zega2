@@ -114,8 +114,34 @@ $form=$this->beginWidget('CActiveForm', array(
 			   ?>
 	</div>
 	
-	
-		
+	<div class="row">
+		<?php echo $form->labelEx($model,'hidproc'); ?>
+		<?php  $datos = CHtml::listData(Tenenciasproc::model()->findAll(),'id','eventos.descripcion');
+					echo $form->DropDownList($model,'hidproc',$datos, array('empty'=>'--Seleccione un proceso --')  )
+					?>
+	</div>
+	<div class="row">
+		<?php echo $form->labelEx($model,'codtenencia'); ?>
+		<?php
+				$this->widget('ext.matchcode1.Seleccionavarios',array(		
+												'nombrecampo'=>'codtenencia',												
+												//'ordencampo'=>1,
+												'controlador'=>'VwDoci',
+												'relaciones'=>$model->relations(),
+												'tamano'=>3,
+												'model'=>$model,
+												'nombremodelo'=>'Tenencias',
+												'form'=>$form,
+												'nombredialogo'=>'cru-dialog3',
+												'nombreframe'=>'cru-frame3',
+												//'nombrearea'=>'fehdfj',
+													)
+													
+								);
+
+						
+			   ?>
+	</div>	
 		
 	<div class="row">
 		<?php echo $form->label($model,'descorta'); ?>

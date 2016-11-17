@@ -59,9 +59,11 @@ $this->renderPartial('_search',array(
 		
 		//'desdocu',
 		array('name'=>'correlativo','type'=>'raw','value'=>'CHTml::openTag("span",array("style"=>"border-radius:3px;padding:4px;background-color:$data->color"))."     ".CHTml::closeTag("span")." .".$data->correlativo'),
-		'numero',
+		'id',
+            'numero',
 		'moneda',
 		'monto',
+            'codtenencia',
 		//'codprov',
 		'despro',			
 		//'barcos.nomep',
@@ -133,6 +135,21 @@ $this->renderPartial('_search',array(
                                 'type'=>'POST',
                                // 'url'=>array('coordocs/hacereporte', array('id' => $model->idreporte, 'idfiltrodocu' => $model->idguia, 'file' => 1)),
                                 'ruta' => array($this->id . '/poneralcarro', array()),
+                                'success'=>"function(data) {
+					$.growlUI('Growl Notification', data); 
+                                    }",
+                            ),                           
+                            'visiblex' => array('10'),
+
+                        ),		
+'clear' => array(
+                            'type' => 'D', //AJAX LINK
+                          //  'ruta' => array('coordocs/hacereporte', array('id' => $model->idreporte, 'idfiltrodocu' => $model->idguia, 'file' => 1)),
+                            'ruta' => array($this->id . '/limpiarcarro', array()),
+                            'opajax'=>array(
+                                'type'=>'POST',
+                               // 'url'=>array('coordocs/hacereporte', array('id' => $model->idreporte, 'idfiltrodocu' => $model->idguia, 'file' => 1)),
+                                'ruta' => array($this->id . '/limpiarcarro', array()),
                                 'success'=>"function(data) {
 					$.growlUI('Growl Notification', data); 
                                     }",
