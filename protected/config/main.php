@@ -325,10 +325,10 @@ return array(
         'charset' => 'utf8',
         ),*/
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=neotegni_base1',
+			'connectionString' => 'mysql:host=localhost;dbname=nautilus',
 			'emulatePrepare' => true,
-			'username' => 'neotegni_julian',
-			'password' => 'luchito',
+			'username' => 'root',
+			'password' => '',
 			'tablePrefix' => 'public_',
 			'charset' => 'utf8',
                      'enableParamLogging'=>true,//desactivarlo en produccion
