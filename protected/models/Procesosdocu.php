@@ -28,7 +28,7 @@ class Procesosdocu extends CActiveRecord
             
              array('hiddoci,hidproc','required', 'on'=>'insert,update'),
             array('fechafinal','safe','on'=>'fechafinal'),
-            array('hidproc','chkrequisitos'),
+            array('hidproc','chkrequisitos' ,'on'=>'insert,update,cambiotenencia'),
             array('hiddoci,'
                 . ' fechanominal,'
                 . ' hidtra, hidproc'
@@ -41,7 +41,7 @@ class Procesosdocu extends CActiveRecord
             
            // array('id, hiddoci, fechacrea, fechanominal, hidtra, hidproc, codocuref', 'required'),
             array('hiddoci, hidtra, hidproc', 'numerical', 'integerOnly'=>true),
-             array('hiddoci+hidtra+hidproc', 'application.extensions.uniqueMultiColumnValidator','on'=>'insert,update,cambiotenencia'),
+            // array('hiddoci+hidtra+hidproc', 'application.extensions.uniqueMultiColumnValidator','on'=>'insert,update,cambiotenencia'),
 		
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
@@ -228,14 +228,25 @@ class Procesosdocu extends CActiveRecord
     }
       
     public function aftersave(){
-        if(!is_null($this->codte) and strlen($this->codte)>0){
+        if(!is_null($this->codte) and strlen($this->codte)>0 
+                and !($this->getScenario()=="fechafinal")
+                ){
             //hay que cambiar de tenencia 
             $registro= $this->docingresados;
           $registro->setScenario('cambiotenencia');
           $registro->codtenencia=$this->codte;
-          $registro->save();
-          unset($registro);
+         if( $registro->save()){
+              MiFactoria::Mensaje('success', $registro->id.'     Actualzio tenencia  '.$registro->codtenencia);
+         
+         }else{
+             MiFactoria::Mensaje('notice', $registro->id.'    NO  Actualzio tenencia  '.$registro->codtenencia.'   errroes '.yii::app()->mensajes->getErroresItem($registro->geterrors()));
+         
+         }
+           //unset($registro);
+        }else{
+            MiFactoria::Mensaje('error', $registro->id.'     Paso de largo ');
         }
+        unset($registro);
         return parent::aftersave();
     }
     
@@ -250,12 +261,12 @@ class Procesosdocu extends CActiveRecord
         $docu=Docingresados::model()->findByPk($this->hiddoci);
         $fechaingreso= $docu->fechain;
 		if(!yii::app()->periodo->verificafechas($fechaingreso,$this->fechanominal))
-                    $this->adderror('fechanominal','La fecha de proceso es  anterior a la fecha de ingreso del Documento ');
+                    $this->adderror('fechanominal','La fecha 1 de proceso es  anterior a la fecha de ingreso del Documento ');
         if(!yii::app()->periodo->verificafechas($docu->procesoactivo[0]->fechanominal,$this->fechanominal))
-                    $this->adderror('fechanominal','La fecha de proceso es  anterior a la fecha del proceso activo a reemplazar ');
+                    $this->adderror('fechanominal','La fecha 2 de proceso es  anterior a la fecha del proceso activo a reemplazar ');
         
         if(!yii::app()->periodo->verificafechas($this->fechanominal,date("Y-m-d H:i:s",time()+60*15)))
-                    $this->adderror('fechanominal','La fecha de proceso es  anterior a la fecha del proceso activo a reemplazar ');
+                    $this->adderror('fechanominal','La fecha de proceso '.$this->fechanominal.'  es  POSTERIOR AL  a la fecha actual  '.date("Y-m-d H:i:s",time()+60*15));
         
     }
     

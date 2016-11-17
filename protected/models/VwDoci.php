@@ -42,7 +42,7 @@ class VwDoci extends CActiveRecord
 			array('texv, fechacrea', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id,d_fechain1, codprov, fecha, fechain, correlativo, tipodoc, moneda, descorta, codepv, monto, codgrupo, codresponsable, creadopor, creadoel, texv, docref, codteniente, codlocal, numero, cod_estado, codocu, codtenencia, fechacrea, codocuref, nhorasnaranja, nhorasverde, numdocref, descripcion, ap, despro, rucpro, final', 'safe', 'on'=>'search'),
+			array('id,d_fechain1,codtenencia,hidproc, codprov, fecha, fechain, correlativo, tipodoc, moneda, descorta, codepv, monto, codgrupo, codresponsable, creadopor, creadoel, texv, docref, codteniente, codlocal, numero, cod_estado, codocu, codtenencia, fechacrea, codocuref, nhorasnaranja, nhorasverde, numdocref, descripcion, ap, despro, rucpro, final', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -135,7 +135,7 @@ class VwDoci extends CActiveRecord
 		$criteria->compare('numero',$this->numero,true);
 		$criteria->compare('cod_estado',$this->cod_estado,true);
 		$criteria->compare('codocu',$this->codocu,true);
-		$criteria->compare('codtenencia',$this->codtenencia,true);
+		//$criteria->compare('codtenencia',$this->codtenencia,true);
 		$criteria->compare('fechacrea',$this->fechacrea,true);
 		$criteria->compare('codocuref',$this->codocuref,true);
 		$criteria->compare('nhorasnaranja',$this->nhorasnaranja);
@@ -152,6 +152,29 @@ class VwDoci extends CActiveRecord
 			  } ELSE {
 				$criteria->compare('codprov',$this->codprov,true);
                       }
+                      
+                     if(isset($_SESSION['sesion_Tenencias']))
+                    {
+			$criteria->addInCondition('codtenencia', $_SESSION['sesion_Tenencias'], 'AND');
+			  } ELSE {
+				$criteria->compare('codtenencia',$this->codtenencia,true);
+                      }  
+                      
+                      
+                       if(isset($_SESSION['sesion_Eventos']))
+                    {
+			$criteria->addInCondition('hidproc', $_SESSION['sesion_Eventos'], 'AND');
+			  } ELSE {
+				$criteria->compare('hidproc',$this->hidproc,true);
+                      }  
+                      
+                      
+                      if(isset($_SESSION['sesion_Tenencias']))
+                    {
+			$criteria->addInCondition('codtenencia', $_SESSION['sesion_Tenencias'], 'AND');
+			  } ELSE {
+				$criteria->compare('codtenencia',$this->codprov,true);
+                      }  
                       
                 if(isset($_SESSION['sesion_Docingresados']))
                     {
