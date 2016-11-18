@@ -11,12 +11,13 @@ class TomaFotosBehavior extends CActiveRecordBehavior
 {
     
 public $_codocu=null;
-public $_id=null;
-public $_numerofotosporcarpeta=null;
+public $_id=null; ///Es elo id  del registro
+public $_numerofotosporcarpeta=null; ///NUmero de fotos por carpeta este valor no varia para nada , es un parametro  nada es parte de la configruacion general del sisitema
 public $_ruta=null;
 public $_rutabas=null;
 public $_carpetadestino=null;
 public $_extensionatrabajar=null;
+public $_nombrearchivopredef=null;
 
 
 private function prepara() {
@@ -165,7 +166,7 @@ private function prepara() {
                  //var_dump($ruta.$this->colocanombre());die();
                    @unlink($filename);
                  yii::log('mas   error','jajaja  se pudo copiar con la funcion copy  : '.$filename.'  ,  '.$ruta.$this->colocanombre());
-                 return true;
+                 return $ruta.$this->colocanombre();
              }else{
                   @unlink($filename);
                    //var_dump($ruta.$this->colocanombre());die();
@@ -191,13 +192,20 @@ private function prepara() {
     
     private function extension($nombrearchivo){
         //echo $nombrearchivo;die();
-        return strtolower(trim(strrev(substr(strrev($nombrearchivo),0,3))));
+        $posic=strpos(strrev($nombrearchivo),'.');
+       return substr($nombrearchivo,strlen($nombrearchivo)-$posic);
+        //return strtolower(trim(strrev(substr(strrev($nombrearchivo),0,3))));
     }
     
     private function colocanombre(){
        //  Yii::log(' estamos dentrp    '.serialize($fullFileName),'error');
-            return $this->_id."_".( ((microtime(true))*10000)    )."_".yii::app()->user->id.".".$this->_extensionatrabajar;
+        if(is_null($this->_nombrearchivopredef)){
+             return $this->_id."_0_".( ((microtime(true))*10000)    )."_".yii::app()->user->id.".".$this->_extensionatrabajar;
        
+        }else{
+            return $this->_id."_".$this->_nombrearchivopredef."_".( ((microtime(true))*10000)    )."_".yii::app()->user->id.".".$this->_extensionatrabajar;
+        
+        }          
        
     }
     
@@ -211,22 +219,30 @@ private function prepara() {
                 'level'=>0,
                 'absolutePaths'=>$rutasabsolutas,
                 ));
+         
         $archivosfiltrados=array(); //nuevo array apra guaradar los datos 
    foreach($archivos as $clave=>$archivo)
      {
-        $posic=strpos($archivo,$this->_id.'_');
-       $numeroregistro=substr($archivo,$posic,strlen(trim($this->_id)));
-       if($posic>=0){                                                        
-                if($numeroregistro===trim($this->_id)){
-                                     if($rutasabsolutas){
+       //$posic=strpos($archivo,$this->_id.'_');
+     //  var_dump($this->nombrecortado($archivo));die();
+       //$numeroregistro=substr($archivo,$posic,strlen(trim($this->_id)));
+         if(!$rutasabsolutas){
+             $nombrearchivo=$archivo;
+         }else{
+             $nombrearchivo=$this->getnombre($archivo);
+         }
+      //var_dump($this->nombrecortado($archivo));die();
+       if((string)$this->_id==$this->nombrecortado($archivo)[0])
+           {  
+                        if($rutasabsolutas){
                                          //formar la ruta absoluta del archivo
-                                       $rutaarchivo=$this->_carpetadestino.substr($archivo,$posic);                                      
+                                       $rutaarchivo=$this->_carpetadestino.$nombrearchivo;                                      
                                          
                                      }else{
-                                          $rutaarchivo=$this->rutarelativa().$archivo;
+                                          $rutaarchivo=$this->rutarelativa().$nombrearchivo;
                                      }
                                      $rutaarchivo=$this->limpiaruta($rutaarchivo);
-                                     $datosruta= pathinfo($this->_carpetadestino.substr($archivo,$posic));
+                                     $datosruta= pathinfo($this->_carpetadestino.$nombrearchivo);
                                      
                                               $archivosfiltrados[]=array(
                                                   'nombre'=>$datosruta['filename'],
@@ -235,7 +251,7 @@ private function prepara() {
                                                   'directorio'=>$this->limpiaruta($datosruta['dirname']),
                                                   'subidopor'=>$this->getquiensubio($archivo),
                                                   'subidoel'=>$this->getcreado($archivo),
-                                                  'tamano'=>$this->getSize($this->_carpetadestino.substr($archivo,$posic)),
+                                                  'tamano'=>$this->getSize($this->_carpetadestino.$nombrearchivo),
                                                   'rutacorta'=>$this->limpiaruta(DIRECTORY_SEPARATOR.trim($this->rutarelativa(),DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR),
                                                   //'rutalarga'=>$this->limpiaruta(Yii::getPathOfAlias('webroot').$this->rutarelativa()),
                                                  
@@ -250,12 +266,8 @@ private function prepara() {
                                               );
                                       
                                 }
-                            }
-                                   
-             }
-             
-             
-        
+                           }
+
         return $archivosfiltrados;
         
     }
@@ -383,6 +395,41 @@ private function prepara() {
        return $nuevoarray;
    } 
    
+  private function nombrecortado($ruta){
+      //encontradno la extension
+      $posicion=strpos(strrev($ruta),'.');
+      $ruta=substr($ruta,0,strlen($ruta)-$posicion-1);
+     
+       $posicion=strpos(strrev($ruta),DIRECTORY_SEPARATOR);
+       if($posicion===false) ///Si es solo nombre de archivo
+       {
+          return explode("_",$ruta); 
+       }else{
+           return explode("_",substr($ruta,strlen($ruta)-$posicion));
+       }
+           
+       
+  }
+  
+  private function getnombre($ruta){
+      //encontradno la extension
+     // $posicion=strpos(strrev($ruta),'.');
+    //  $ruta=substr($ruta,0,strlen($ruta)-$posicion-1);
+       $posicion=strpos(strrev($ruta),DIRECTORY_SEPARATOR);
+       $nombre=substr($ruta,strlen($ruta)-$posicion);
+       return $nombre;
+  }
+  
+  public function renombraarchivo($filename,$nuevonombre){
+       $datosruta= pathinfo($filename);
+       $nombrecortado=$this->nombrecortado($filename);
+       $nuevonombre=$nombrecortado[0]."_".
+               str_replace("","_",$nuevonombre). ///nos aseguramos que no haya ningun  caracter: '_'
+               "_".$nombrecortado[2].
+               "_".$nombrecortado[3].
+               $datosruta['extension'];
+      return rename($filename,$datosruta['dirname'].DIRECTORY_SEPARATOR.$nuevonombre);
+  }
   
    
 }

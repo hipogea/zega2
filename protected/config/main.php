@@ -325,10 +325,10 @@ return array(
         'charset' => 'utf8',
         ),*/
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=nautilus',
+			'connectionString' => 'mysql:host=localhost;dbname=neotegni_base1',
 			'emulatePrepare' => true,
-			'username' => 'root',
-			'password' => '',
+			'username' => 'neotegni_julian',
+			'password' => 'luchito',
 			'tablePrefix' => 'public_',
 			'charset' => 'utf8',
                      'enableParamLogging'=>true,//desactivarlo en produccion
@@ -362,9 +362,9 @@ return array(
 					//'enabledParamLogging'=>true,
 				),
                             array(
-                    'class'=>'CEmailLogRoute',
-                    'levels'=>'error, warning',
-                    'emails'=>'neotegnia@gmail.com',
+                   'class'=>'CEmailLogRoute',
+                   'levels'=>'error, warning',
+                   'emails'=>'neotegnia@gmail.com',
                                 
                                 ),
                             

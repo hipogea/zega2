@@ -111,9 +111,9 @@
 		<?php echo $form->labelEx($model,'codlocal'); ?>
 		<?php  $datos = CHtml::listData(Centros::model()->findAll(array('order'=>'nomcen')),'codcen','nomcen');
 		echo $form->DropDownList($model,'codlocal',$datos, array('empty'=>'--Llene el centro--',
-                'options'=>array(
+               /* 'options'=>array(
 		 isset(Yii::app()->session['codlocal'])?Yii::app()->session['codlocal']:''=>array('selected'=>true)
-		)  ));
+		) */ ));
 					?>
 		<?php echo $form->error($model,'codlocal'); ?>
 	</div>
@@ -122,10 +122,11 @@
         
 	<div class="row">
 		<?php echo $form->labelEx($model,'codprov'); ?>
+            
 		<?php $this->widget('ext.matchcode.MatchCode',array(		
 												'nombrecampo'=>'codprov',
 												'ordencampo'=>1,
-												'defol'=>(isset(Yii::app()->session['codprov']))?Yii::app()->session['codprov']:'',
+												//'defol'=>(isset(Yii::app()->session['codprov']))?Yii::app()->session['codprov']:'',
 												//'defol2'=>isset(Yii::app()->session['desprov'])?Yii::app()->session['desprov']:'',
 												'controlador'=>$this->id,
 												'relaciones'=>$model->relations(),
@@ -139,6 +140,7 @@
 
 								);
 		?>
+            
             <?php echo $form->error($model,'codprov'); ?>
 	</div>
 
@@ -181,7 +183,7 @@
 					'dateFormat'=>'yy-mm-dd',
 					),
 					'htmlOptions'=>array(
-							'value'=>(  ($model->isNewRecord ) and    isset(Yii::app()->session["fechain"]) ) ?Yii::app()->session["fechain"]:$model->fechain,
+							//'value'=>(  ($model->isNewRecord ) and    isset(Yii::app()->session["fechain"]) ) ?Yii::app()->session["fechain"]:$model->fechain,
 						'style'=>'width:80px;vertical-align:top',
 						'readonly'=>'readonly',
 				 
@@ -206,7 +208,7 @@
                     <?php $this->widget('ext.matchcode.MatchCode',array(		
                                             'nombrecampo'=>'tipodoc',
 						'ordencampo'=>1,
-						'defol'=>(isset(Yii::app()->session['tipodoc']))?Yii::app()->session['codprov']:'',
+						//'defol'=>(isset(Yii::app()->session['tipodoc']))?Yii::app()->session['codprov']:'',
 						//'defol2'=>isset(Yii::app()->session['desprov'])?Yii::app()->session['desprov']:'',
 						'controlador'=>$this->id,
 						'relaciones'=>$model->relations(),
@@ -260,11 +262,11 @@
                          'codmoneda','desmon'); 
 		 echo $form->DropdownList(
                                     $model,'moneda',$datos,array('empty'=>'--Seleccione moneda--',
-                                    'options'=>array(
+                                    /*'options'=>array(
                                                         isset(Yii::app()->session['moneda'])?
                                                          Yii::app()->session['moneda']:
                                                         ''=>array('selected'=>true)
-                                                      ) )); 
+                                                      )*/ )); 
 		 echo $form->error($model,'moneda'); 
                  
 		  
@@ -293,9 +295,7 @@
 	<div class="row">
 		<?php echo $form->labelEx($model,'codepv'); ?>
 		<?php  $datos = CHtml::listData(Embarcaciones::model()->findAll(array('order'=>'nomep')),'codep','nomep');
-					echo $form->DropDownList($model,'codepv',$datos, array('empty'=>'--Seleccione una Embarcacion --','options'=>array(
-													          isset(Yii::app()->session['codepv'])?Yii::app()->session['codepv']:''=>array('selected'=>true)
-																		) 
+					echo $form->DropDownList($model,'codepv',$datos, array('empty'=>'--Seleccione una Embarcacion --' 
 																		
 																)  )
 					?>
@@ -401,7 +401,7 @@
                // 'fechanominal',
                array(
 			'name'=>'fechanominal',
-			'value'=>'date("d/m/y H:i", strtotime($data->fechanominal))','htmlOptions'=>array('width'=>'50')
+			'value'=>'date("d.m.y", strtotime($data->fechanominal))','htmlOptions'=>array('width'=>'50')
 		),
                 //array('name'=>'tipo','type'=>'raw','value'=>'($data->tipo=="M")?CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."email.png"):$data->tipo','htmlOptions'=>array('width'=>50)),
             array('name'=>'proc','type'=>'raw','value'=>'($data->tenenciasproc->eventos->descripcion)','htmlOptions'=>array('width'=>250)),
@@ -410,7 +410,7 @@
             array('name'=>'numdocref','type'=>'raw','value'=>'$data->numdocref','htmlOptions'=>array('width'=>10)),
             array(
 			'name'=>'fechafin',
-			'value'=>'date("d/m/y H:i", strtotime($data->fechafin))','htmlOptions'=>array('width'=>'50')
+			'value'=>'(!is_null($data->fechafin))?date("d/m/y", strtotime($data->fechafin)):"--"','htmlOptions'=>array('width'=>'50')
 		),
                array('name'=>'tiempo','type'=>'raw','value'=>'($data->tiempopasado())','htmlOptions'=>array('width'=>160)),
             array('name'=>'iduser', 'type'=>'html','value'=>'$data->iduser.CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."user_business.png","",array())'),

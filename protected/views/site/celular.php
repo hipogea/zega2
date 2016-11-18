@@ -1,5 +1,5 @@
 <?php
-echo $model->getulpoaddirectory();
+//echo $model->getulpoaddirectory();
 $campoclave=$model->getMetadata()->tableSchema->primaryKey;
 $this->widget('ext.coco.CocoWidget'
               ,array(

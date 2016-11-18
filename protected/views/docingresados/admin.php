@@ -58,19 +58,26 @@ $this->renderPartial('_search',array(
                       ),
 		
 		//'desdocu',
-		array('name'=>'correlativo','type'=>'raw','value'=>'CHTml::openTag("span",array("style"=>"border-radius:3px;padding:4px;background-color:$data->color"))."     ".CHTml::closeTag("span")." .".$data->correlativo'),
+		array('name'=>'correlativo','type'=>'raw','value'=>'CHTml::openTag("span",array("style"=>"border-radius:3px;padding:4px;background-color:$data->color"))."     ".CHTml::closeTag("span")." .".CHTml::link($data->correlativo,yii::app()->createUrl("docingresados/update",array("id"=>$data->id)),array("target"=>"_blank"))'),
 		'id',
             'numero',
 		'moneda',
 		'monto',
-            'codtenencia',
+           array('name'=>'codtenencia','type'=>'raw','value'=>'CHTml::openTag("span",array("class"=>"label label-1504")).$data->codtenencia.CHTml::closeTag("span")'),
+		
 		//'codprov',
 		'despro',			
 		//'barcos.nomep',
 		
 		
-		'fecha',
-		'fechain',	
+		array(
+			'name'=>'fecha',
+			'value'=>'date("d.m.y", strtotime($data->fecha))','htmlOptions'=>array('width'=>'30')
+		),
+		array(
+			'name'=>'fechain',
+			'value'=>'date("d.m.y", strtotime($data->fechain))','htmlOptions'=>array('width'=>'30')
+		),	
 		'numdocref',		
 		'ap',
             'descripcion',
@@ -105,9 +112,7 @@ $this->renderPartial('_search',array(
                             array(
                                     'url'=>'$this->grid->controller->createUrl(
                                         "/Docingresados/update",
-                                          array(
-                                             "id"=>$data->id,"asDialog"=>1,"gridId"=>$this->grid->id
-						),
+                                          array("id"=>$data->id),
                                             array("target"=>"_blank")
                                             )',
                                     

@@ -191,7 +191,7 @@ class Docingresados extends ModeloGeneral
                 $this->codtenencia=Configuracion::valor($this->codocu,
                     $this->codlocal, 
                     self::PARAM_TENENCIA_POR_DEFECTO);
-              
+                MiFactoria::Mensaje('error', 'DOCINGFRESADO-BEFORESAVE   , COLOCANDO VALORES POR DEFAULT');
                 
                  }
                 else{
@@ -212,10 +212,12 @@ class Docingresados extends ModeloGeneral
                    foreach($tenencia->tenenciastraba as $fila){
                        
                        if($fila->codtra==$this->codteniente){
+                            MiFactoria::Mensaje('error', 'DOCINGFRESADO-AFTERSAVE   , PROCESANDO CORTO');
+                
                           if( !$this->procesarcorto(
                                    $fila->id,
                                    $tenencia->tenenciaprocauto[0]->id, 
-                                   date("Y-m-d")))
+                                   date("Y-m-d H:i:s")))
                                   //die();
                            break;
                        }
@@ -223,10 +225,10 @@ class Docingresados extends ModeloGeneral
                    } 
                     
                 }
-									   		//$this->c_salida='1';
+		MiFactoria::Mensaje('error','DOCINGFRESADO-AFTERSAVE se detecto nuevo')	;						   		//$this->c_salida='1';
 		} else
 			{
-										
+			MiFactoria::Mensaje('error','DOCINGFRESADO-AFTERSAVE   se dertecto ggrabado')	;							
 										//$this->ultimares=" ".strtoupper(trim($this->usuario=Yii::app()->user->name))." ".date("H:i")." :".$this->ultimares;
 			}
 									return parent::afterSave();
@@ -303,6 +305,7 @@ class Docingresados extends ModeloGeneral
                     );
             //ECHO "SALIO4";DIE();
            return ($registro->save());
+           MiFactoria::mensaje('error','procesarcorto');
            /* }else{
                 ECHO "SALIO";DIE();
                return false; 
@@ -318,8 +321,22 @@ class Docingresados extends ModeloGeneral
        // var_dump($fullFileName); die();
       // Yii::log(' ejecutando '.serialize($fullFileName),'error');
       // var_dump(self::model()->findByPk((integer)$userdata)->id); die();
-       self::model()->findByPk($userdata)->colocaarchivo($fullFileName);
+             $registro=self::model()->findByPk($userdata);
+       $registro->colocaarchivo($fullFileName);
+       $procesoactivo=$registro->procesoactivo[0];
+       var_dump($procesoactivo);
+       if(!is_null($procesoactivo)){
+            $nombredocumento=$procesoactivo->documentos->desdocu."-".(is_null($procesoactivo->numdocref))?"":$procesoactivo->numdocref;
+            var_dump($nombredocumento);die();
+            $registro->renombraarchivo($archivo,$nombredocumento);
+       }else{
+           echo "fallo";die();
+       }
+      
+      
        
+       
+       //$this->colocaarchivo($fullFileName);
     }
         
         

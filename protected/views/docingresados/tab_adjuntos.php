@@ -2,7 +2,7 @@
 
 
 <?php	
-
+//var_dump($model->fotosparagaleria());
   $this->widget('ext.galeria.Galeria',array(
       'idregistro'=>$model->id,  //Es id de un registro o de laguna referencia 
 			'images'=>$model->fotosparagaleria(),
