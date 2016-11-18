@@ -138,6 +138,18 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
 		
             $model=new Docingresados;
                 $model->valorespordefecto();
+                $model->setAttributes(
+                        array(
+                            $model->codprov=Yii::app()->session['codprov'],
+			// Yii::app()->session['desprov'] = $model->clipro->despro;
+			 $model->codlocal=Yii::app()->session['codlocal'],		
+			$model->fechain=Yii::app()->session['fechain'],  
+			$model->tipodoc=Yii::app()->session['tipodoc'] ,
+			$model->moneda=Yii::app()->session['moneda'] ,   
+			$model->codepv=Yii::app()->session['codepv'] ,
+		$model->codresponsable=Yii::app()->session['codresponsable'],
+                        )
+                        );
                 $model->codocu=self::CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS;
 		// Uncomment the following line if AJAX validation is needed
 		 $this->performAjaxValidation($model);
@@ -148,7 +160,7 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
 			if($model->save()) {
                             MiFactoria::Mensaje('sucess','Se creó un nuevo registro');
 			// if ($model->conservarvalor==0 ) 
-						$this->enviacorreo($model);
+						//$this->enviacorreo($model);
 				$this->Creasesiones($model);
 				if ($model->conservarvalor==0 )
 				 $this->Destruyesesiones();

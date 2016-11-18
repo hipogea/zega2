@@ -60,6 +60,7 @@ class Procesosdocu extends CActiveRecord
             'docingresados' => array(self::BELONGS_TO, 'Docingresados', 'hiddoci'),
             'tenenciasproc' => array(self::BELONGS_TO, 'Tenenciasproc', 'hidproc'),
             'tenenciastrab' => array(self::BELONGS_TO, 'Tenenciastraba', 'hidtra'),
+            'documentos'=> array(self::BELONGS_TO, 'Documentos', 'codocu'),
         );
     }
 
@@ -149,10 +150,16 @@ class Procesosdocu extends CActiveRecord
              $this->fechacrea=date("Y-m-d H:i:s");
                 $this->iduser=yii::app()->user->name;
                 $procesoactual= Docingresados::model()->findByPk($this->hiddoci)->procesoactivo[0];
-                if(!is_null( $procesoactual)){ // ..y mataer el proceso anterior tambien
+                MiFactoria::mensaje('error',' procesosdocu -beforesave El id del proceso activo      '.$procesoactual->id.'  el  id del doci '.$procesoactual->hiddoci);
+                if(!is_null( $procesoactual) ){ // ..y mataer el proceso anterior tambien
                     $procesoactual->setScenario("fechafinal");
                   $procesoactual->fechafin=date("Y-m-d H:i:s"); 
                   $procesoactual->save();
+                  MiFactoria::mensaje('error',' procesosdocu -beforesave  se coloco fecha fin , se coloco escenario fechafinal  ');
+                
+                  
+                }else{
+                    MiFactoria::Mensaje('error','procesosdocu -beforesave  no existe proceso actual');
                 }
                 
         }
@@ -236,23 +243,27 @@ class Procesosdocu extends CActiveRecord
           $registro->setScenario('cambiotenencia');
           $registro->codtenencia=$this->codte;
          if( $registro->save()){
-              MiFactoria::Mensaje('success', $registro->id.'     Actualzio tenencia  '.$registro->codtenencia);
+              MiFactoria::Mensaje('success','  procesosdocu -aftersave  '. $registro->id.'     Actualzio tenencia  '.$registro->codtenencia);
          
          }else{
-             MiFactoria::Mensaje('notice', $registro->id.'    NO  Actualzio tenencia  '.$registro->codtenencia.'   errroes '.yii::app()->mensajes->getErroresItem($registro->geterrors()));
+             MiFactoria::Mensaje('notice','procesosdocu -aftersave '.$registro->id.'    NO  Actualzio tenencia  '.$registro->codtenencia.'   errroes '.yii::app()->mensajes->getErroresItem($registro->geterrors()));
          
          }
            //unset($registro);
         }else{
-            MiFactoria::Mensaje('error', $registro->id.'     Paso de largo ');
+          MiFactoria::Mensaje('error', 'procesosdocu -aftersave'.$registro->id.'     Paso de largo ');
         }
         unset($registro);
         return parent::aftersave();
     }
     
     public function tiempopasado(){
-        
-       return MiFactoria::tiempopasado($this->fechanominal,$this->fechafin);
+        if(is_null($this->fechafin)){
+             return MiFactoria::tiempopasado($this->fechanominal,$this->fechafin);
+        }else{
+             return MiFactoria::tiempopasado($this->fechanominal);
+        }
+      
     }
    
     

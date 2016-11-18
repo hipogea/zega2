@@ -3,46 +3,19 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
-            <file>file:/C:/xampp/htdocs/recurso/protected/views/ot/tab_recursos.php</file>
-            <file>file:/C:/xampp/htdocs/recurso/protected/views/inventariofisicopadre/tab_listado.php</file>
-            <file>file:/C:/xampp/htdocs/recurso/protected/views/trabajadores/profile.php</file>
-            <file>file:/C:/xampp/htdocs/recurso/protected/components/ModeloGeneral.php</file>
+            <file>file:/C:/xampp/htdocs/recurso/protected/models/Tenencias.php</file>
             <file>file:/C:/xampp/htdocs/recurso/protected/config/main.php</file>
-            <file>file:/C:/xampp/htdocs/recurso/protected/extensions/explorador/views/vw_Choferes.php</file>
-            <file>file:/C:/xampp/htdocs/recurso/protected/views/guia/admin.php</file>
-            <file>file:/C:/xampp/htdocs/recurso/protected/models/VwTrabajadores.php</file>
-            <file>file:/C:/xampp/htdocs/recurso/protected/views/ot/_tab_recursos_detalle.php</file>
-            <file>file:/C:/xampp/htdocs/recurso/protected/behaviors/AlmacenafotoBehavior.php</file>
-            <file>file:/C:/xampp/htdocs/recurso/protected/views/trabajadores/_form.php</file>
-            <file>file:/C:/xampp/htdocs/recurso/protected/models/Tempdetot.php</file>
-            <file>file:/C:/xampp/htdocs/recurso/protected/views/cajachica/_form_detalle.php</file>
-            <file>file:/C:/xampp/htdocs/recurso/protected/views/trabajadores/cajamenor.php</file>
-            <file>file:/C:/xampp/htdocs/recurso/protected/views/parametros/_form.php</file>
-            <file>file:/C:/xampp/htdocs/recurso/protected/models/Tempdesolpe.php</file>
-            <file>file:/C:/xampp/htdocs/recurso/protected/controllers/ConfiguracionController.php</file>
+            <file>file:/C:/xampp/htdocs/recurso/protected/runtime/application.log</file>
+            <file>file:/C:/xampp/htdocs/recurso/protected/controllers/DocingresadosController.php</file>
+            <file>file:/C:/xampp/htdocs/recurso/protected/views/docingresados/tab_adjuntos.php</file>
+            <file>file:/C:/xampp/htdocs/recurso/protected/components/MiFactoria.php</file>
+            <file>file:/C:/xampp/htdocs/recurso/protected/views/docingresados/admin.php</file>
+            <file>file:/C:/xampp/htdocs/recurso/protected/extensions/behaviors/TomaFotosBehavior.php</file>
             <file>file:/C:/xampp/htdocs/recurso/protected/models/Docingresados.php</file>
-            <file>file:/C:/xampp/htdocs/recurso/protected/extensions/galeriafirme/GaleriaFirme.php</file>
-            <file>file:/C:/xampp/htdocs/recurso/protected/controllers/TrabajadoresController.php</file>
-            <file>file:/C:/xampp/htdocs/recurso/protected/extensions/behaviors/ParametrosBehavior</file>
-            <file>file:/C:/xampp/htdocs/recurso/protected/models/Detot.php</file>
-            <file>file:/C:/xampp/htdocs/recurso/protected/extensions/explorador/views/vw_Parametros.php</file>
-=======
-            <file>file:/D:/zega1/protected/models/Procesosdocu.php</file>
-            <file>file:/D:/zega1/protected/models/VwDoci.php</file>
-            <file>file:/D:/zega1/protected/models/Logprocesosdocu.php</file>
-            <file>file:/D:/zega1/protected/models/Logcargamasiva.php</file>
-            <file>file:/D:/zega1/protected/components/MaletinCompo.php</file>
-            <file>file:/D:/zega1/protected/controllers/DocingresadosController.php</file>
-            <file>file:/D:/zega1/index.php</file>
-            <file>file:/D:/zega1/protected/views/docingresados/form_proceso_masa.php</file>
-            <file>file:/D:/zega1/protected/extensions/toolbar/Barra.php</file>
-            <file>file:/D:/zega1/protected/views/docingresados/logproceso.php</file>
-            <file>file:/D:/zega1/protected/models/Docingresados.php</file>
-            <file>file:/D:/zega1/protected/views/docingresados/admin.php</file>
-            <file>file:/D:/zega1/protected/extensions/explorador/views/vw_multi_Eventos.php</file>
-            <file>file:/D:/zega1/protected/views/docingresados/_search.php</file>
->>>>>>> c55457ea7e552e3a29c7b577c6cb4dbf91b34657
+            <file>file:/C:/xampp/htdocs/recurso/protected/views/site/celular.php</file>
+            <file>file:/C:/xampp/htdocs/recurso/themes/temita/css/bootstrap.min.css</file>
+            <file>file:/C:/xampp/htdocs/recurso/protected/models/Procesosdocu.php</file>
+            <file>file:/C:/xampp/htdocs/recurso/protected/views/docingresados/tab_general.php</file>
         </group>
     </open-files>
 </project-private>

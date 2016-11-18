@@ -580,7 +580,9 @@ a.label:hover,a.badge:hover{color:#fff;text-decoration:none;cursor:pointer}
 .badge-warning{background-color:#f89406}
 .label-warning[href],
  .badge-warning[href]{background-color:#c67605}
-
+.label-1504{
+background-color:#B5116D
+ }
 .label-error,
 .badge-error{background-color:red}
 .label-error[href],
