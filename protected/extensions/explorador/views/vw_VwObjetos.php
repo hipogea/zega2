@@ -7,7 +7,10 @@
 )); ?>
 
 
-<?php $this->widget('zii.widgets.grid.CGridView', array(
+<?php 
+
+/*
+$this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'objetos-grid',
 	'dataProvider'=>$model->search(),
 	'cssFile' => Yii::app()->getTheme()->baseUrl.'/css/grilla_naranja.css',
@@ -34,7 +37,25 @@
 		
 		
 	),
-)); ?>
+)); */
+
+$identificador=Clipro::model()->findBYpk('970008')->creaarboltabla();
+//echo " el idnetiifcaor ".$identificador;
+$this->widget('CTreeView',array(
+    'id'=>'menu-treeview',
+    'data'=> Arbolobjetosmaster::model()->getTreeItems($identificador,false),
+    'control'=>'#treecontrol',   
+    'animated'=>'fast',
+    'collapsed'=>true,
+    'htmlOptions'=>array(
+        'class'=>'filetree'
+    )
+));
+
+
+
+
+?>
 <div class="row buttons">
 		<?php echo CHtml::submitButton('Seleccionar'); ?>
 	</div>

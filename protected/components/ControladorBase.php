@@ -254,25 +254,18 @@ private function relacionesnietas(){
 
 	public function ClearBuffer($id=null)
 	{
-		Bloqueos::clearbloqueos();
-               
-		$docbloqueados = Yii::app()->db->createCommand()
+		Bloqueos::clearbloqueos();               
+		/*$docbloqueados = Yii::app()->db->createCommand()
 			->select('iddocu')
 			->from('{{bloqueos}}')
 			->where("codocu=:vcodocu AND iduser=:videuser",
 				array(":vcodocu" => $this->documento, ":videuser" => yii::app()->user->id)
-			)->queryColumn();
-
+			)->queryColumn();*/
 		if(is_null($id)) {
-
-		}else{
-                   
-			foreach($this->modeloshijos as $clave=>$valor ){
-                           
+		}else{                   
+			foreach($this->modeloshijos as $clave=>$valor ){                           
 				$campoenlace=$this->camposlink[$valor];
                                  //var_dump($campoenlace);echo "<br>";
-                               
-                                
 				$clase=new $valor;
 				if(is_array($campoenlace)){
 					$id=array($id,$this->documento);

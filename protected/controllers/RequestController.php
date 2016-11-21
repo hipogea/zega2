@@ -17,6 +17,7 @@ return array(
 	public function actions()
 	{
 		return array(
+                    'prueba',
 			'suggestMaestrocompo'=>array(
 				'class'=>'application.extensions.actions.XSuggestAction',
 				'modelName'=>'Maestrocompo',
@@ -46,7 +47,7 @@ return array(
                 'class'=>'ext.actions.XFillTreeAction',
                 'modelName'=>'Masterequipo',
 	'rootId'=>$_GET['rootId'],
-	            'showRoot'=>TRUE
+	            'showRoot'=>false
 
  ),
 
@@ -122,7 +123,17 @@ return array(
 );
 }
 
+
+public function actionprueba(){
+    echo "este ees el nodo ";
+  yii::app()->maletin->insertafila(3,'Clipro', null);
+  
+}
+
+
 	
+        
+        
 	/**
 	 * Specifies the access control rules.
 	 * This method is used by the 'accessControl' filter.
@@ -132,8 +143,7 @@ return array(
 	{
 		return array(
 			array('allow',
-				'actions'=>array(
-					'otroMaestrocompo','suggestMaestrocompo',
+				'actions'=>array('prueba',  'otroMaestrocompo','suggestMaestrocompo',
 'suggestCountry','legacySuggestCountry','fillTree','treePath','llenaEquipos','loadContent','suggestAuPlaces',
 'suggestAuHierarchy','suggestLastname','fillAuTree','viewUnitPath','viewUnitLabel','initPerson',
 'suggestPerson','suggestPersonGroupCountry','listPersonsWithSameFirstname',

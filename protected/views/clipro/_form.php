@@ -126,7 +126,15 @@
 							      )
 									  ),  
 
-
+                                                                'Estructura'=>array('id'=>'renderid5x',
+                             						'content'=>$this->renderPartial(
+													'vw_arbol',
+								 					 array('model'=>$model,
+								 					 'codpro'=>$model->codpro
+								 	 				),
+								 					TRUE
+								 				          )
+									  				),  
 
 							'Materiales'=>array('id'=>'renderid5',
                              						'content'=>$this->renderPartial(

@@ -1,29 +1,19 @@
 <?PHP
+//var_dump($modeloruta->search_por_codigo($model->codigo)->getdata());
 //$modelo=New VwHojaruta();
 $this->widget('ext.groupgridview.GroupGridView', array(
 	'id' => 'detallelista-grid',
      'filter'=>$modeloruta,
-    'summaryText' => '->',
+    'summaryText' => '',
 	'dataProvider' => $modeloruta->search_por_codigo($model->codigo),
 	'mergeColumns' => array('codtipo','nombrelista'),
 	'itemsCssClass'=>'table table-striped table-bordered table-hover',
-	//'extraRowColumns' => array('ceco'),
-	/*'extraRowTotals' => function($data, $row, &$totals) {
-		if(!isset($totals['sum_monto'])) $totals['sum_monto'] = 0;
-		$totals['sum_monto']+=$data['monto'];
-
-	},*/
-	//'extraRowExpression' => '"<span style=\"font-weight: bold;color: orangered;font-size:13px;\"> Total Ceco : ".MiFactoria::decimal($totals["sum_monto"],2)." </span>"',
-	//'extraRowPos'=>'below',          
-		
-		// 'cssFile'=>Yii::app()->getTheme()->baseUrl.'/css/style-grid.css',  // your version of css file
-		
-		'columns' => array(
+			'columns' => array(
                     array('name'=>'codtipo',
 		
 		'value'=>'$data->codtipo','htmlOptions'=>array('width'=>10),
                         'filter'=>  
-              CHtml::listData(Tipolista::model()->findAll(),'codtipo','destipo')
+              CHtml::listData(Tipolista::model()->findAll(),"codtipo","destipo"),   
 		
 		),
 			array('name'=>'nombrelista','header'=>'Hoja de ruta','value'=>'$data->nombrelista','htmlOptions'=>array('width'=>300)),
@@ -73,8 +63,6 @@ $this->widget('ext.groupgridview.GroupGridView', array(
 		),
 	));
 
-
-
 $createUrl = $this->createUrl ( '/masterequipo/crealista' ,
 	array (
 		//"id"=>$model->n_direc,
@@ -86,19 +74,4 @@ $createUrl = $this->createUrl ( '/masterequipo/crealista' ,
 echo CHtml::link ( 'Agregar ' , '#' , array ( 'onclick' => "$('#cru-frame3').attr('src','$createUrl '); $('#cru-dialog3').dialog('open');" ) );
 
 
-
-
 ?>
-
-
-
-
-
-
-
-
-
-
-
-
-

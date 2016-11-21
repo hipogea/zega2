@@ -1,11 +1,4 @@
 <?PHP
-
-?>
-<DIV>
-    
-</DIV>
-
-<?PHP
 	$this->widget('zii.widgets.grid.CGridView', array(
 		'id' => 'detalle-grid',
 		'itemsCssClass' => 'table table-striped table-bordered table-hover',
@@ -51,14 +44,13 @@
 							'options' => array('ajax' => array('type' => 'GET', 'success' => 'js:function() { $.fn.yiiGridView.update("detalle-grid");}', 'url' => 'js:$(this).attr("href")'),
 								'onClick' => 'Loading.show();Loading.hide(); ',
 							),
-							'imageUrl' => '' . Yii::app()->getTheme()->baseUrl . Yii::app()->params['rutatemaimagenes'] . 'borrador.png',
+							//'imageUrl' => '' . Yii::app()->getTheme()->baseUrl . Yii::app()->params['rutatemaimagenes'] . 'borrador.png',
 							'label' => 'Ver detalle',
 						),
 				),
 			),
 		),
 	));
-
 
 
 
@@ -79,20 +71,8 @@ echo CHtml::link ( 'Agregar ' , '#' , array ( 'onclick' => "$('#cru-frame3').att
 
 
 
-if($model->canthijos > 0){
- $this->widget('CTreeView',array(
-		'id'=>'unitX-treeview',
-		'url'=>yii::app()->createUrl('request/llenaEquipos',array('rootId'=>$model->id)),
-		'htmlOptions'=>array(
-			'class'=>''
-		)
-	));
-}
+
+ 
+
 
 ?>
-
-
-
-
-
-

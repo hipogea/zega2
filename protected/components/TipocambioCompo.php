@@ -48,7 +48,7 @@ class TipocambioCompo extends CApplicationComponent
 
     ///es el cambio de $MONEDA->PEN
     public function getcompra($moneda){
-        $citer=New CDBCriteria;
+        $citer=New CDbCriteria;
         $citer->addCondition("codmon1=:monedaacomprar AND codmon2=:monedadef");
         $citer->params=array(":monedadef"=>$this->monedadefault,":monedaacomprar"=>$moneda);
         $compra= yii::app()->db->createCommand()->select('cambio')->

@@ -26,6 +26,7 @@ class MatchCode extends CWidget
 	public $defol='';
 	public $defol2='';
 	private $caden='';
+        public $filtro=null;//filtro cireiotr para filtrar datos 
 	public $comopintar;
 	public $nombrearea=''; //nombre del Id del DIV donde se pintaran los resultados de la busqueda
 	public $modosimple=false;
@@ -205,7 +206,12 @@ class MatchCode extends CWidget
 			   				echo CHtml::link(CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."Search.png"),'#' ,array('onclick'=>'$("#'.$this->nombreframe.'").attr(
 																					"src",
 																					"'.Yii::app()->createurl('/Matchcode/recibevalor', 
-																												array("campo"=> $this->nombrecampo, "clasesita"=> $this->nombreclase, "controlado"=> $this->controlador ) 
+                                                                                                                                                                                        array(
+                                                                                                                                                                                            "campo"=> $this->nombrecampo,
+                                                                                                                                                                                            "clasesita"=> $this->nombreclase,
+                                                                                                                                                                                            "controlado"=> $this->controlador ,
+                                                                                                                                                                                            "filtro"=> $this->filtro ,
+                                                                                                                                                                                                ) 
 																											)
 																					.'"); $("#'.$this->nombredialogo.'").data("hilo","'.get_class($this->model).'_'.$this->nombrecampo.'@'.$this->nombrearea.'").dialog("open"); return false',
 												)

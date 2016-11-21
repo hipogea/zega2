@@ -40,7 +40,9 @@ $('.search-form form').submit(function(){
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'masterequipo-grid',
 	'dataProvider'=>$model->search(),
-	'filter'=>$model,
+    'itemsCssClass'=>'table table-striped table-bordered table-hover',
+  
+	//'filter'=>$model,
 	'columns'=>array(
 		'codigo',
 		'descripcion',

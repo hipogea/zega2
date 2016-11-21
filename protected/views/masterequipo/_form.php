@@ -155,7 +155,8 @@ if(!$model->isNewRecord) {
 
 				),
 				'options' => array('overflow'=>'auto','collapsible' => false,),
-				'id'=>'MyTabi',)
+				//'id'=>'MyTabi',
+                              )
 		);
 		
 }
@@ -186,3 +187,5 @@ $this->endWidget();
 
 //--------------------- end new code --------------------------
 ?>
+
+    

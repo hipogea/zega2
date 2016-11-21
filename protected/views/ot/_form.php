@@ -382,12 +382,13 @@
 				echo $form->labelEx($model,'idobjeto');
                             $this->widget('ext.matchcode.MatchCode',array(
 						'nombrecampo'=>'idobjeto',
-						'ordencampo'=>4,
+						'ordencampo'=>5,
 						'controlador'=>$this->id,
 						'relaciones'=>$model->relations(),
 						'tamano'=>6,
 						'model'=>$model,
 						'form'=>$form,
+                                'filtro'=>'codpro@js:Ot_codpro.value',
 						'nombredialogo'=>'cru-dialog3',
 						'nombreframe'=>'cru-frame3',
 						'nombrearea'=>'feh77dfddj',
@@ -408,10 +409,10 @@
 			{
 				$this->widget('ext.matchcode.MatchCode',array(
 						'nombrecampo'=>'codresponsable',
-						'ordencampo'=>1,
+						'ordencampo'=>2,
 						'controlador'=>$this->id,
 						'relaciones'=>$model->relations(),
-						'tamano'=>6,
+						'tamano'=>5,
 						'model'=>$model,
 						'form'=>$form,
 						'nombredialogo'=>'cru-dialog3',

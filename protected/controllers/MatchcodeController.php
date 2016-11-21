@@ -220,6 +220,7 @@ public function actionRelaciona1()
 	{
 		
 		$autoIdAll=array();
+               
 		if(  isset($_GET['checkselected'])   ) //If user had posted the form with records selected
 				{
 				$autoIdAll = $_GET['checkselected']; ///The records selecteds 
@@ -263,27 +264,29 @@ public function actionRelaciona1()
 	
 	public function actionRecibevalor1()
 	{
-		
+		// VAR_DUMP(COUNT($_GET['checkselected']));
 		$autoIdAll=array();
 		if(  isset($_GET['checkselected'])   ) //If user had posted the form with records selected
 				{
 				$autoIdAll = $_GET['checkselected']; ///The records selecteds 
 				};
 				if(count($autoIdAll)>0)
-										{
-												echo CHtml::script("window.parent.$('#cru-dialog3').dialog('close');													                    
-																		window.parent.$('#cru-frame3').attr('src','');
-																		var caja=window.parent.$('#cru-dialog3').data('hilo');	15
-																		var valoresclave= new Array();
-																		var controles=new Array();
-																		var cadenita='{$autoIdAll[0]}';
-																		var valoresclave=cadenita.split('_');	
-																		var controles=caja.split('@');	
-																		window.parent.$('#'+controles[0]+'').val(valoresclave[0]);
-																		window.parent.$('#'+controles[1]+'').attr('value',valoresclave[1]);
-																		window.parent.$('#pio').attr('src','".Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes']."filter.png');
-																		");
-														Yii::app()->end();
+					{ ECHO "YA ESTA ";
+                                           echo CHtml::script("window.parent.$('#cru-dialog3').dialog('close');													                    
+							window.parent.$('#cru-frame3').attr('src','');
+							var caja=window.parent.$('#cru-dialog3').data('hilo');	
+							var valoresclave= new Array();
+							var controles=new Array();
+							var cadenita='".CJavaScript::quote($autoIdAll[0])."';
+                                        		var valoresclave=cadenita.split('_');	
+							var controles=caja.split('@');	
+							window.parent.$('#'+controles[0]+'').val(valoresclave[0]);
+							window.parent.$('#'+controles[1]+'').attr('value',valoresclave[1]);
+								window.parent.$('#pio').attr('src','".Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes']."filter.png');
+							");
+                                                        
+                                                        ECHO "EJECUTO EL SCRIPT";
+							Yii::app()->end();
 										} else{
 												$campo=$_GET['campo'];
 												//$relaciones=$_GET['relaciones'];

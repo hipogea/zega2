@@ -77,7 +77,7 @@ class Clipro extends ModeloGeneral
 		return array(
 			'contactoses' => array(self::HAS_MANY, 'Contactos', 'c_hcod'),
 			'direcciones' => array(self::HAS_MANY, 'Direcciones', 'c_hcod'),
-			'objetos' => array(self::HAS_MANY, 'Objetos', 'codpro'),
+			'objetos' => array(self::HAS_MANY, 'ObjetosCliente', 'codpro'),
 			'nobjetos' => array(self::STAT, 'ObjetosCliente', 'codpro'),
 			'ndirecciones' => array(self::HAS_MANY, 'Direcciones', 'c_hcod'),
 			'guias' => array(self::HAS_MANY, 'Guia', 'c_codtra'),
@@ -189,5 +189,167 @@ class Clipro extends ModeloGeneral
 
 
 	}
+        
+        
+       public function creaarboltabla($actualizar=false){
+           if($actualizar){
+                $listas=yii::app()->db->createCommand()->
+                delete("{{arbolobjetosmaster}}",
+                        "codpro=:vcodpro",
+                        array(":vcodpro"=>$this->codpro)
+                        );
+           $idclipro=$this->arbolinsertaclipro(); ///Inserta el registro de clipor primero
+         //ahora recorreindo los objetos de esrte clipor
+           foreach($this->objetos as $filaobjeto){
+               //insertando lo oobjetos primero
+               
+               //logramos un id recurrente que se actuaiza cada insercion
+             $idobjeto= $this->arbolinsertaobjeto($filaobjeto,$idclipro);
+              //ahora los equipos 
+              foreach($filaobjeto->objetosmaster as $filaequipo)
+                  {
+                  $idmaster= $this->arbolinsertaequipo($filaequipo,$idobjeto);
+                  ///ahora las listas de materiales  y los subequipos
+                    // foreach($filaobjeto->objetosmaster as $filaequipo1)
+                       //{
+                      //los subequipos primero
+                                             foreach($filaequipo->masterequipo->masterrelacion as $filahijo)
+                                                 {
+                                                 $idsubequipo=$this->arbolinsertasubequipo($filahijo->hijo,$idmaster);
+                                                  } 
+                        $listas=yii::app()->db->createCommand()->
+                                select("a.id,a.nombrelista")->
+                                from("{{listamateriales}} a, "
+                                        . " {{masterlistamateriales}} b, "
+                                        . "{{masterequipo}} c ")->
+                                where(" b.codigo=c.codigo and"
+                                        . " a.id=b.hidlista and "
+                                        . "c.codigo='".$filaequipo->masterequipo->codigo."'"
+                                        )->queryAll();
+                          /*echo "La listas de materiales para el equipo  ".$filaequipo->masterequipo->codigo."    ".$filaequipo->masterequipo->descripcion;
+                          echo "<br>";
+                      print_r($listas);echo "<br><br><br><br>";*/
+                       // $datos= Dlisistamateriales::model()->findAll();
+                         foreach($listas as $filalista){
+                            $idlista= $this->arbolinsertalistamaterial($filalista,$idmaster);
+                           //ahora si insertamos los materiales
+                            $registrolista= Listamateriales::model()->findByPk($filalista['id']);
+                             /* var_dump($filalista);
+                            var_dump($filalista['id']);
+                             var_dump($registromaterial);*/
+                            //var_dump($registromaterial->hijos);die();
+                            foreach($registrolista->hijos as $clave=>$filadlista){
+                               $this->arbolinsertamaterial($filadlista->maestro,$idlista); 
+                            }
+                           // unset($registromaterial);
+                         }
+                         //unset( $listas);
+                  //}
+              }
+              
+          }
+               return $idclipro;
+           }else{
+              return yii::app()->db->createCommand()->
+                                select("min(id)")->
+                                from("{{arbolobjetosmaster}} a")->
+                                where("codpro=:vcodpro",array(":vcodpro"=>$this->codpro))->queryScalar();
+           }
+         
+           }
+           
+           
+        private function arbolinsertaclipro(){
+            $arbol=New Arbolobjetosmaster();
+            $arbol->setAttributes(
+                    array(
+                        'codpro'=>$this->codpro,
+                        'codigo'=>$this->codpro,
+                        'descripcion'=>$this->despro,
+                        'parent_id'=>null,
+                    )
+                    );
+            $arbol->save();
+            $valor=$arbol->id;unset($arbol);
+            return $valor;
+        } 
+        
+        private function arbolinsertaobjeto($filaobjeto,$idclipro){
+            $arbol=New Arbolobjetosmaster();
+            $arbol->setAttributes(
+                    array(
+                        'codpro'=>$this->codpro,
+                          'codigo'=>$filaobjeto->codobjeto,
+                        'descripcion'=>$filaobjeto->nombreobjeto,
+                        'parent_id'=>$idclipro,
+                    )
+                    );
+            $arbol->save();$arbol->refresh();
+            $valor=$arbol->id;unset($arbol);
+            return $valor;
+        } 
+        
+         private function arbolinsertaequipo($filamaster,$idclipro){
+            $arbol=New Arbolobjetosmaster();
+            $arbol->setAttributes(
+                    array(
+                        'codpro'=>$this->codpro,
+                          'codigo'=>$filamaster->hcodobmaster,
+                        'descripcion'=>$filamaster->masterequipo->descripcion,
+                        'identificador'=>$filamaster->id,
+                        'parent_id'=>$idclipro,
+                    )
+                    );
+            $arbol->save();$arbol->refresh();
+            $valor=$arbol->id;unset($arbol);
+            return $valor;
+        } 
+        
+        
+        private function arbolinsertalistamaterial($filalista,$idlista){
+            $arbol=New Arbolobjetosmaster();
+            $arbol->setAttributes(
+                    array(
+                        'codpro'=>$this->codpro,
+                          'codigo'=>'',
+                        'descripcion'=>$filalista['nombrelista'],
+                        'parent_id'=>$idlista,
+                    )
+                    );
+            $arbol->save();$arbol->refresh();
+            $valor=$arbol->id;unset($arbol);
+            return $valor;
+        } 
+        
+         private function arbolinsertamaterial($filamaterial,$idlista){
+            $arbol=New Arbolobjetosmaster();
+            $arbol->setAttributes(
+                    array(
+                        'codpro'=>$this->codpro,
+                          'codigo'=>$filamaterial->codigo,
+                        'descripcion'=>$filamaterial->descripcion,
+                        'parent_id'=>$idlista,
+                    )
+                    );
+            $arbol->save();$arbol->refresh();
+            $valor=$arbol->id;unset($arbol);
+            return $valor;
+        } 
+        
+        
+         private function arbolinsertasubequipo($filahijo,$idlista){
+            $arbol=New Arbolobjetosmaster();
+            $arbol->setAttributes(
+                    array(
+                        'codpro'=>$this->codpro,
+                          'codigo'=>$filahijo->codigo,
+                        'descripcion'=>$filahijo->descripcion,
+                        'parent_id'=>$idlista,
+                    )
+                    );
+            $arbol->save();$arbol->refresh();
+            $valor=$arbol->id;unset($arbol);
+            return $valor;
+        } 
 }
 

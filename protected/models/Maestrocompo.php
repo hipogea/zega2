@@ -459,7 +459,8 @@ public function Sepuedecambiarum() {
 	public $maximovalor;
 	//public $conservarvalor=0; //Opcionpa reaverificar si se quedan lo valores predfindos en sesiones 
 	public function beforeSave() {
-							if ($this->isNewRecord) {
+			$this->descripcion= addslashes($this->descripcion);				
+            if ($this->isNewRecord) {
 									
 									    //
 								        $this->codocu='901';
@@ -482,7 +483,12 @@ public function Sepuedecambiarum() {
 				}
 	
 	
-	
+	public function afterfind(){
+            $this->descripcion= stripslashes($this->descripcion);
+            return parent::afterfind();
+				
+        }
+            
 
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.

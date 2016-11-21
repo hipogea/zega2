@@ -1,0 +1,1 @@
+<?php$identificador=$model->creaarboltabla(true);//echo " el idnetiifcaor ".$identificador;$this->widget('CTreeView',array(    'id'=>'menu-treeview',    'data'=> Arbolobjetosmaster::model()->getTreeItems($identificador,false),    'control'=>'#treecontrol',       'animated'=>'fast',    'collapsed'=>true,    'htmlOptions'=>array(        'class'=>'filetree'    )));?>

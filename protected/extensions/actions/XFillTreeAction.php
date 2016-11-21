@@ -57,17 +57,20 @@ class XFillTreeAction extends CAction
         //ECHO "5656cvcvcv"; yii::app()->end();
         if(!isset($_GET['root'])||$_GET['root']=='source')
         {
-           // ECHO "cvcvcv"; yii::app()->end();
+           // ECHO "cvcvcv"; yii::app()->end();die();
             $rootId=$this->rootId;
             $showRoot=$this->showRoot;
+                yi::log('error', '  hola  Mundo sin root  ');
         }
         else
         {
-          // ECHO "ADADAD"; yii::app()->end();
+           //ECHO "ADADtAD"; yii::app()->end();die();
+                yi::log('error', '  hola mundo     ');
             $rootId=$_GET['root'];
             $showRoot=false;
         }
         $dataTree=$this->getModel()->{$this->methodName}($rootId,$showRoot);
+        echo "arbiendo   ";
         echo CTreeView::saveDataAsJson($dataTree);
     }
     /**

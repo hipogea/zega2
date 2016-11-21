@@ -68,7 +68,8 @@ class Masterequipo extends ModeloGeneral
 			'children' => array(self::HAS_MANY, 'Masterequipo', 'parent_id'),
 			'childCount' => array(self::STAT, 'Masterequipo', 'parent_id'),
                     'nobjetosmaster' => array(self::STAT, 'Objetosmaster', 'id'),
-                    
+                    'masterrelacion' => array(self::HAS_MANY, 'Masterrelacion', 'hidpadre'),
+			
 		);
 	}
 

@@ -50,3 +50,33 @@ $('.search-form form').submit(function(){
 	),
 )); ?>
 </div>
+
+
+<?php
+$this->widget('CTreeView',array(
+    'id'=>'menu-treeview',
+    'data'=>Menu::model()->getTreeItems(),
+    'control'=>'#treecontrol',
+    'animated'=>'fast',
+    'collapsed'=>true,
+    'htmlOptions'=>array(
+        'class'=>'filetree'
+    )
+));
+
+
+
+$this->widget('CTreeView',array(
+    'id'=>'unit-treeview',
+    'url'=>array('request/fillTree'),
+    'htmlOptions'=>array(
+        'class'=>'treeview-red'
+    )
+));
+
+
+
+
+
+
+?>

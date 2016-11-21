@@ -6,7 +6,7 @@
 // This is the main Web application configuration. Any writable
 // CWebApplication properties can be configured here.
 return array(
-
+      'charset' => 'ISO-8859-1',
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'',
 	'language'=>'es',
@@ -55,7 +55,7 @@ return array(
 				'availableAuthMethods'=>array('default'),
 				'availableAuthModes'=>array('username','email'),
                                 // url base para los links de activacion de cuenta de usuario
-				'baseUrl'=>'/recurso',
+				'baseUrl'=>'',
 
 				 // NO OLVIDES PONER EN FALSE TRAS INSTALAR
 				 'debug'=>false,
@@ -361,12 +361,12 @@ return array(
 					'levels'=>'error,warning', //agreagamos aqui el mail para probar los correos en modo DEBUG 
 					//'enabledParamLogging'=>true,
 				),
-                            array(
+                          /*  array(
                    'class'=>'CEmailLogRoute',
                    'levels'=>'error, warning',
                    'emails'=>'neotegnia@gmail.com',
                                 
-                                ),
+                                ),*/
                             
                            
 				// uncomment the following to show log messages on web pages

@@ -29,7 +29,7 @@ class MasterequipoController extends Controller
 		return array(
 
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('crealista','borralista','modificalista','borradetalle','modificadetalle','admin','creaadicional','create','update'),
+				'actions'=>array('data','crealista','borralista','modificalista','borradetalle','modificadetalle','admin','creaadicional','create','update'),
 				'users'=>array('@'),
 			),
 
@@ -67,6 +67,7 @@ class MasterequipoController extends Controller
 			if($model->save()){
 				yii::app()->user->setFlash('success','Se creo el equipo '.$model->codigo);
 				$this->render('view',array('model'=>$model));
+                                yii::app()->end();
 			}
 		}
 
@@ -83,7 +84,7 @@ class MasterequipoController extends Controller
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
-
+//yii::app()->maletin->insertafila(10,'Clipro', null);
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
@@ -94,6 +95,7 @@ class MasterequipoController extends Controller
 			if($model->save()){
 				yii::app()->user->setFlash('success','Se grabo el equipo '.$model->codigo);
 				$this->render('view',array('model'=>$model));
+                                yii::app()->end();
 			} else{
 				
 			}
@@ -188,7 +190,7 @@ class MasterequipoController extends Controller
 		$model->cant=1;
 		$id=MiFactoria::cleanInput($idcabeza);
 		$registro=$this->loadModel($id);
-		$model->hidpadre=$registro->codigo;
+		$model->hidpadre=$registro->id;
 	//	$model->hidcontacto=$idcabeza;
 		if(isset($_POST['Masterrelacion']))		{
 			$model->attributes=$_POST['Masterrelacion'];
@@ -299,4 +301,33 @@ public function actioncrealista($idcabeza){
 		//echo "salio";
 		$model->delete();
 	}
+        
+        
+        public function actiondata(){
+            return array(
+
+			// ROLES  TREENODE
+			array(
+				'text'=>"<b>".CrugeTranslator::t("Roles")."</b>", 
+				'expanded'=>true, 
+				//'children'=>$treeDataRoles,
+			),//end roles treenode
+
+			// TAREAS TREENODE
+			array(
+				'text'=>"<b>".CrugeTranslator::t("Tareas")."</b>", 
+				'expanded'=>true, 
+				//'children'=>$arrayTareas,
+			),//end tareas treenode
+
+			// OPERATIONS  TREENODE
+			array(
+				'text'=>"<b>".CrugeTranslator::t(
+					"Operaciones Organizadas por Tipo")."</b>", 
+				'expanded'=>true, 
+				//'children'=>$treeDataOps,
+			),//end operations treenode
+			
+		);
+        }
 }

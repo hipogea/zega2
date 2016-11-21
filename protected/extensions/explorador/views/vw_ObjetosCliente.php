@@ -30,7 +30,10 @@
 		
 		
 	),
-)); ?>
+)); 
+
+
+?>
 <div class="row buttons">
 		<?php echo CHtml::submitButton('Seleccionar'); ?>
 	</div>

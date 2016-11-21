@@ -278,7 +278,9 @@ class XTreeBehavior extends CActiveRecordBehavior
     public function getTreeItems($id=null,$showRoot=true)
     {
         $owner=$this->getOwner();
+        //var_dump($owner);die();
         $rootId=($id===null) ? $this->getRootId() : $id;
+       // var_dump($rootId);die();
         $items=array();
         if ($showRoot===false)
         {
@@ -498,7 +500,22 @@ class XTreeBehavior extends CActiveRecordBehavior
         else
             $url='#';
         return array(
-            'text'=>CHtml::link($label, $url, array('id'=>$model->getAttribute($this->id))),
+            'text'=>CHtml::tag("input",
+                    array(
+                        'value'=>$model->getAttribute($this->id).'_'.$label,
+                        'type'=>"checkbox",
+                        'name'=>"checkselected[]"
+                        )
+                    ).            
+            CHtml::closeTag("input").
+            CHtml::link(
+                    $label,
+                    $url,
+                    array(
+                        'id'=>$model->getAttribute($this->id),
+                        'onclick'=>'js:alert("El valor seleccionado es '.$model->getAttribute($this->id).' ");',
+                        )
+                    ),
             'id'=>$model->getAttribute($this->id),
             'hasChildren'=>$model->childCount==0 ? false : true,
         );
@@ -509,5 +526,16 @@ class XTreeBehavior extends CActiveRecordBehavior
     protected function getWidth()
     {
         return $this->with===array() ? 'childCount' : CMap::mergeArray(array('childCount'),$this->with);
+    
+        
+       echo CHtml::script("window.parent.$('#cru-dialog3').dialog('close');
+			                 window.parent.$('#cru-frame3').attr('src','');
+					window.parent.$.fn.yiiGridView.update('detalle-grid');
+			");
+       
+       
+        
     }
+    
+    
 }

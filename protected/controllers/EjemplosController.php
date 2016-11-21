@@ -399,9 +399,20 @@ $mo=New Alinventario();
 
 
 	public function actionPio() {
-            
-            $registro= Tenencias::model()->findByPk('100');
-            
+           ECHO  CHtml::encode(utf8_encode(" PERNO  1/2 ' <> &&& "));DIE();
+      $this->layout='//layouts/column2';
+       
+        
+        $this->widget('CTreeView',array(
+    'id'=>'unit-treeview',
+    'url'=>array('request/fillTree'),
+    'htmlOptions'=>array(
+        'class'=>'treeview-red'
+    )
+));
+        
+  
+            die();
           
            var_dump($registro);die();
            var_dump($proceso->tenenciastraba);die();

@@ -26,7 +26,7 @@ class Tempalkardex extends ModeloGeneral
 	public function rules()
 	{
 			return array(
-			array('id,hidvale,textolargo,idref,codocuref,colector,idotrokardex,preciounit,alemi,codcentro,numdocref,codmoneda', 'safe'),
+			array('id,hidvale,textolargo,idref,codocuref,um,colector,idotrokardex,preciounit,alemi,codcentro,numdocref,codmoneda', 'safe'),
 			array('iduser, idusertemp, idstatus', 'numerical', 'integerOnly'=>true),
 			array('cant, preciounit', 'numerical'),
 				array('codart','chkcatval'),
@@ -208,12 +208,12 @@ public function chkcantpeticion(){
 	public function campoeditable(){
 		if(in_array($this->alkardex_almacendocs->cestadovale,array('99','10'))){
 			$arraycant=array('14','10','30','50','13','41','43','77','78','70','79','98','97','68');
-			$arrayum=array('10','43','50','77','79','98');
-			$arraycodart=array('50','77','98','79');
+			$arrayum=array('14','10','43','50','77','79','98');
+			$arraycodart=array('14','50','77','98','79');
 			$arraycolector=array('50','77','79');
 			$arraypreciounit=array('98');
-			$arraytextolargo=array('10','30','50','13','41','43','77','78','70','79','98','97');
-			$arraylote=array('10','30','50','13','41','43','77','78','70','79','98','97');
+			$arraytextolargo=array('14','10','30','50','13','41','43','77','78','70','79','98','97');
+			$arraylote=array('14','10','30','50','13','41','43','77','78','70','79','98','97');
 		} elseif($this->alkardex_almacendocs->cestadovale=='20') {  //Si se quieren hacer modificaciones despues de efectuado el vale pero solo para algunos campos
 			$arraycant=array();
 			$arrayum=array();

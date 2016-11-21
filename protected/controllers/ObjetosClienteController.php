@@ -218,4 +218,7 @@ public function actionajaxpintadescripcion(){
 	echo $reg->descripcion."-".$idet;
 }
 
+
+
+
 }

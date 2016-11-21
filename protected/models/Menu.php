@@ -82,7 +82,7 @@ class Menu extends CActiveRecord
      */
     public function getTreeLabel()
     {
-        return $this->label . ':' . $this->childCount;
+        return $this->title . ':' . $this->childCount;
     }
     /**
      * @return array menu url

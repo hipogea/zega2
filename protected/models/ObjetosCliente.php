@@ -31,7 +31,7 @@ class ObjetosCliente extends ModeloGeneral
 			array('codpro',  'required'),
 			array('cebe',  'required','message'=>'El centro de beneficio es obligatorio'),
 			array('cebe','exist','allowEmpty' => false, 'attributeName' => 'codc', 'className' => 'Cc','message'=>'Este Centro Beneficio no existe'),
-			array('cebe','chkcebe','on'=>'update'),
+			//array('cebe','chkcebe','on'=>'update'),
 
 			//	array('codobjeto', 'required'),
 			//array('codobjeto', 'unique'),
@@ -131,7 +131,7 @@ class ObjetosCliente extends ModeloGeneral
 
 	public function chkcebe($attribute,$params) {
 		//verificando que pno existsa ncoistencia con los cebes hijos
-		foreach($this->master as $fila){
+		foreach($this->objetosmaster as $fila){
 			if($fila->cebe <> $this->cebe){
 				$this->adderror('cebe','No puede cambiar el CEBE, hay objetos hijos con este valor');
 				break;

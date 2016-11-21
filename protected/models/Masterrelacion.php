@@ -15,7 +15,11 @@
  */
 class Masterrelacion extends CActiveRecord
 {
-	/**
+	
+    
+    public $codigoficticio;  ///propiedad para usarse para recibir el valor en el form 
+    
+    /**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
@@ -34,6 +38,7 @@ class Masterrelacion extends CActiveRecord
 			array('cant, hidhijo, hidpadre', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
+                    array('codigoficticio,id, cant, hidhijo, hidpadre,codigopadre,codigohijo', 'safe', 'on'=>'insert,update'),
 			array('id, cant, hidhijo, hidpadre', 'safe', 'on'=>'search'),
 		);
 	}
@@ -48,6 +53,7 @@ class Masterrelacion extends CActiveRecord
 		return array(
 			'padre' => array(self::BELONGS_TO, 'Masterequipo', 'hidpadre'),
 			'hijo' => array(self::BELONGS_TO, 'Masterequipo', 'hidhijo'),
+                    //'masterficticio' => array(self::BELONGS_TO, 'Masterequipo', 'codigoficticio'),
 		);
 	}
 
@@ -100,7 +106,7 @@ class Masterrelacion extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 
-		$criteria->addCondition("hidpadre=:vid");
+		$criteria->addCondition("codigopadre=:vid");
 		$criteria->params=Array(":vid"=>$codigo);
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -121,12 +127,15 @@ class Masterrelacion extends CActiveRecord
         
         
             public function beforeSave() {
-                
                 $registrohijo=  Masterequipo::model()->findByCodigo($this->hidhijo);
+                $this->hidhijo=$registrohijo->id;
+                $registropadre=Masterequipo::model()->findByPk($this->hidpadre);
+                $this->codigopadre=$registropadre->codigo;
+                $this->codigohijo=$registrohijo->codigo;
                 $registrohijo->setScenario('herencia');
-                $registrohijo->codigopadre=$this->hidpadre;
-                 $registrohijo->parent_id=$registro->parent->id;
-			$registrohijo->save();
+                $registrohijo->codigopadre=$registropadre->codigo;
+                 $registrohijo->parent_id=$registropadre->id;
+			$registrohijo->save();unset($registropadre);unset($registrohijo);
                     
                             return parent::beforeSave();
                             }
