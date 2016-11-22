@@ -88,7 +88,7 @@ class TenoresController extends Controller
         if(isset($_POST['Tenores']))
         {
             $model->attributes=$_POST['Tenores'];
-            if($model->save())
+            if($model->save()){
                 if (!empty($_GET['asDialog']))
                 {
                     //Close the dialog, reset the iframe and update the grid
@@ -98,6 +98,15 @@ class TenoresController extends Controller
 																		");
                     Yii::app()->end();
                 }
+            }else{
+               /*print_r($_POST['Tenores']);
+                print_r($model->attributes);*/
+                echo $model->getScenario();
+                 print_r($model->geterrors());
+                die();  
+            }
+                
+               
 
             $this->redirect(array('view','id'=>$model->id));
         }

@@ -4,7 +4,8 @@ class Docingresados extends ModeloGeneral
 {
 	
     CONST PARAM_TENENCIA_POR_DEFECTO='1012';
-    CONST PARAMETRO_TITULO_CORREO_PEDIDO='1247';
+    CONST PARAMETRO_TITULO_CORREO_PEDIDO='1248';
+    CONST PARAMETRO_CONFIRMAR_LECTURA_CORREO='1247';
     /**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -129,6 +130,7 @@ class Docingresados extends ModeloGeneral
 		// class name for the relations automatically generated below.
 		
 		return array(
+			'centros'=>array(self::BELONGS_TO, 'Centros', 'codlocal'),
 			'clipro' => array(self::BELONGS_TO, 'Clipro', 'codprov'),
 			'docus' => array(self::BELONGS_TO, 'Documentos', 'tipodoc'),
 			'trabajador' => array(self::BELONGS_TO, 'Trabajadores', 'codresponsable'),
@@ -322,13 +324,22 @@ class Docingresados extends ModeloGeneral
       // Yii::log(' ejecutando '.serialize($fullFileName),'error');
       // var_dump(self::model()->findByPk((integer)$userdata)->id); die();
              $registro=self::model()->findByPk($userdata);
-       $registro->colocaarchivo($fullFileName);
+       $archivo=$registro->colocaarchivo($fullFileName);
        $procesoactivo=$registro->procesoactivo[0];
-       var_dump($procesoactivo);
+       //var_dump($procesoactivo);
        if(!is_null($procesoactivo)){
-            $nombredocumento=$procesoactivo->documentos->desdocu."-".(is_null($procesoactivo->numdocref))?"":$procesoactivo->numdocref;
-            var_dump($nombredocumento);die();
-            $registro->renombraarchivo($archivo,$nombredocumento);
+           if($procesoactivo->essubible()){
+               $nombredocumento= Documentos::model()->findByPk($procesoactivo->codocuref)->desdocu."-";
+                $nombredocumento.= $procesoactivo->numdocref;               
+                if( $registro->renombraarchivo($archivo,$nombredocumento)){
+                    yii::log('    SI TUVO EXITO  el renombarnieto  ','error');
+                }else{
+                   yii::log('    fallo el renombramnieto    ','error');  
+                }
+                }
+           // $nombredocumento=$procesoactivo->documentos->desdocu."-".(is_null($procesoactivo->numdocref))?"":$procesoactivo->numdocref;
+           // var_dump($nombredocumento);die();
+           
        }else{
            echo "fallo";die();
        }
@@ -339,6 +350,38 @@ class Docingresados extends ModeloGeneral
        //$this->colocaarchivo($fullFileName);
     }
         
+     //funcion que devuelve el cuerpo de l mensaje de correo 
+    //desde la tabla TENORES 
+    //$token: Id del mensaje a enviar para link de conrimacion de lectura
+    public function getmensajemail($token=null){
+       $this->centros->sociedades->codsoc;
+       $this->codocu;
+       $this->codtenor;
+        $conf=Configuracion::valor(
+               $this->codocu,
+               $this->codlocal, 
+               self::PARAMETRO_CONFIRMAR_LECTURA_CORREO
+               ); 
         
+         $confirmarecepcion=false; 
+       if($conf=="1")
+           if(!is_null($token))
+          $confirmarecepcion=true; 
+           
+       
+       
+           
+        //  var_dump( $conf);
+             return yii::app()->getController()->renderpartial(
+                       'vw_mail',
+                       array(
+                           'docu'=> $this->codocu,
+                           'pos'=>$this->codtenor,
+                           'sociedad'=> $this->centros->codsoc,
+                           'confirmarecepcion'=>$confirmarecepcion,
+                       ), true,false
+                       );
+    }
+    
         
 }

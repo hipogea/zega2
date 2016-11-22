@@ -35,8 +35,11 @@ private function abrepanel(){
 }
 
 
-private function abreborde($imagen){
+private function abreborde($imagen=null){
+    if(is_null($imagen))
 	echo "<div class='bordeimagen' id='division_".$imagen."'>";
+    if(!is_null($imagen))
+        echo "<div class='bordeimagen'>";
    
 }
 	
@@ -102,13 +105,21 @@ private function abreborde($imagen){
                   
 		 $this->cierradiv();
 		$this->abreborde($imagensola);
-	   echo CHTml::link(CHTml::image(  ($this->esimagen($extension))?$imagen:$this->_baseUrl.DIRECTORY_SEPARATOR.'img'.DIRECTORY_SEPARATOR.$extension.'.png'           ,
-                   $imagensola,
-                   array('class'=>'imagen')),
-	   '#',
-	   array('onclick'=>"document.images['".$this->idimagen."'].src='".$this->rutaimagenes.$imagen."';")
-	   );
-	   $this->cierradiv();	   
+	   echo CHTml::link(
+                                CHTml::image(  ($this->esimagen($extension))?$imagen:$this->_baseUrl.DIRECTORY_SEPARATOR.'img'.DIRECTORY_SEPARATOR.$extension.'.png'           ,
+                                                    $imagensola,
+                                                    array('class'=>'imagen')
+                                        ),
+                                    '#',                               
+                                        //array('onclick'=>"document.images['".$this->idimagen."'].src='".$this->rutaimagenes.$imagen."';")
+	   array('onclick'=>"js:document.getElementById('vitrina').src='".$rutita."' ;")
+	   
+                   );
+	   $this->cierradiv();	
+           
+           $this->abreborde(null);
+           echo $imagensola;
+           $this->cierradiv();	
    }
 	/*	
 		$this->_prepararAssets();

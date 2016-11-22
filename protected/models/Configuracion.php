@@ -195,7 +195,9 @@ class Configuracion extends CActiveRecord {
         if(is_null($resultado)){
             return null;
         }else{
-            return $resultado->valor;
+            if (is_null($resultado->valor) )return null;
+           if(trim($resultado->valor)=='') return null;
+            return trim($resultado->valor);
         }
       
             }

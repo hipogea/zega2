@@ -273,7 +273,9 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Docingresados');
+		
+            
+            $dataProvider=new CActiveDataProvider('Docingresados');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
@@ -284,7 +286,10 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
 	 */
 	public function actionAdmin()
 	{
-		//print_r(get_declared_classes ( )); echo "<br><br><br>";
+		$registro= Docingresados::model()->findByPk(26);
+          echo   $registro->getmensajemail('confirmar'); die();
+
+//print_r(get_declared_classes ( )); echo "<br><br><br>";
             ///$model=new VwDocuIngresados('search');
             $model=new VwDoci('search');
 		$model->unsetAttributes();  // clear any default values
@@ -433,23 +438,28 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
       if(yii::app()->request->isAjaxRequest){
           if(Isset($_GET['archivoaatratar'])){
             $ruta=unserialize(base64_decode($_GET['archivoaatratar']));
+           
             if(Isset($_GET['idregistro'])){
                    $registro=$this->loadModel((integer) MiFactoria::cleanInput($_GET['idregistro']));
-                     //preaprando para enviar el correo 
-                  $resultadocorreo="";
+                     
+                 //insertadno lo emnejaes primero para obtener el id el mensaje esto para generalun tojken para conifirmar la alectura del correo envciado 
+            $idmensaje=$registro->insertamensajes('M',
+                             Contactos::getListMailEmpresa($registro->codprov,$registro->codocu),
+                              Configuracion::valor($registro->codocu, $registro->codlocal, $registro::PARAMETRO_TITULO_CORREO_PEDIDO)                  
+                             );
+             //preaprando para enviar el correo
+                   $resultadocorreo="";
                    $resultadocorreo= yii::app()->correo->correo_adjunto(
                    Contactos::getListMailEmpresa($registro->codprov,$registro->codocu),
                    Yii::app()->user->email,
                    Configuracion::valor($registro->codocu, $registro->codlocal, $registro::PARAMETRO_TITULO_CORREO_PEDIDO),
-                   $registro->tenores->mensaje,
+                   $registro->getmensajemail($idmensaje),
+                           //'hola miaguitos',
                    $ruta
                );
-                 if(strlen($resultadocorreo)==0)  
-                 {//insertar emnsaje 
-                     $registro->insertamensajes('M',
-                             Contactos::getListMailEmpresa($registro->codprov,$registro->codocu),
-                              Configuracion::valor($registro->codocu, $registro->codlocal, $registro::PARAMETRO_TITULO_CORREO_PEDIDO)                  
-                             );
+                 if(strlen($resultadocorreo)>0)   //si hubo erroes 
+                 {//borrar el mensaje 
+                     $registro->borramensaje($idmensaje);
                  }
                    
             }else{
@@ -464,7 +474,7 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
   }  
   
   public function actionprocesavarios(){
-     
+    
          $registro=New Procesosdocu('masivo');
          
          

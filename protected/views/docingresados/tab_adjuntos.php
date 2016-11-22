@@ -21,7 +21,7 @@
 			'idimagen'=>'gatito',//ID del a miagen para e intercambiar
 	));
 ?>
-
+<div id="vitrina" ></div>
 <?php	
 if (!$model->isNewRecord) {
   $this->renderpartial('//site/mensajesdocumentos',

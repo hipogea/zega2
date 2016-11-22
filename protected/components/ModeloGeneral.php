@@ -611,10 +611,24 @@ public static function model($className=__CLASS__)
     $mensa->tipo=$tipo;
     $mensa->titulo=$titulo;
     
-   IF(!$mensa->save())
-       ECHO "FALLO ";
+   IF(!$mensa->save()){
+       return -1;
+   }else{
+      $mensa->refresh();
+      return $mensa->id;
+   }
+       
+   
+   
 }
   
+
+ public function borramensaje($idmensaje){
+     return yii::app()->db->delete("{{mensajes}}","id=:vid",array(":vid"=>$idmensaje));
+         
+   
+}
+
 
 // Registra el log de proceso en la tabla log procesos 
 public function  registralog ($notice, $mensaje){

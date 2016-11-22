@@ -32,6 +32,37 @@
 		<?php echo $form->textArea($model,'mensaje',array('rows'=>6, 'cols'=>50)); ?>
 		<?php echo $form->error($model,'mensaje'); ?>
 	</div>
+        
+        <div class="row">
+		<?php echo $form->labelEx($model,'estilomail'); ?>
+		<?php echo $form->textArea($model,'estilomail',array('rows'=>6, 'cols'=>50)); ?>
+		<?php echo $form->error($model,'estilomail'); ?>
+	</div>
+        <div class="row">
+		<?php echo $form->labelEx($model,'css_body'); ?>
+		<?php echo $form->textArea($model,'css_body',array('rows'=>2, 'cols'=>50)); ?>
+		<?php echo $form->error($model,'css_body'); ?>
+	</div>
+         <div class="row">
+		<?php echo $form->labelEx($model,'css_table'); ?>
+		<?php echo $form->textArea($model,'css_table',array('rows'=>2, 'cols'=>50)); ?>
+		<?php echo $form->error($model,'css_table'); ?>
+	</div>
+        <div class="row">
+		<?php echo $form->labelEx($model,'css_tr'); ?>
+		<?php echo $form->textArea($model,'css_tr',array('rows'=>2, 'cols'=>50)); ?>
+		<?php echo $form->error($model,'css_tr'); ?>
+	</div>
+        <div class="row">
+		<?php echo $form->labelEx($model,'css_td'); ?>
+		<?php echo $form->textArea($model,'css_td',array('rows'=>2, 'cols'=>50)); ?>
+		<?php echo $form->error($model,'css_td'); ?>
+	</div>
+        <div class="row">
+		<?php echo $form->labelEx($model,'css_th'); ?>
+		<?php echo $form->textArea($model,'css_th',array('rows'=>2, 'cols'=>50)); ?>
+		<?php echo $form->error($model,'css_th'); ?>
+	</div>
 
 	<?php echo $form->labelEx($model,'sociedad'); ?>
 		<?php  $datos1 = CHtml::listData(Sociedades::model()->findAll(array('order'=>'dsocio')),'socio','dsocio');

@@ -399,6 +399,13 @@ $mo=New Alinventario();
 
 
 	public function actionPio() {
+            var_dump((integer)microtime(true)*10000);die();
+            
+                                    echo "/public_html/recurso/carpeta/280/pdf/6/26_0_1.47976117335E+13_1.pdf";
+           var_dump(rename(
+                   '/home/neotegni/public_html/recurso/carpeta/280/pdf/6/26_0_1.47976435572E+13_1.pdf' ,
+                   '/home/neotegni/public_html/recurso/carpeta/280/pdf/6/26_ORDEN_DE_COMPRA_4500078027_1.47976435572E+13_1.pdf' )); die();
+            
            ECHO  CHtml::encode(utf8_encode(" PERNO  1/2 ' <> &&& "));DIE();
       $this->layout='//layouts/column2';
        

@@ -32,7 +32,7 @@ class Tenores extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return Yii::app()->params['prefijo'].'tenores';
+		return '{{tenores}}';
 	}
 
 	/**
@@ -52,8 +52,13 @@ class Tenores extends CActiveRecord
 			array('mensaje,sociedad', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('coddocu, mensaje, posicion, activo, logo, id', 'safe', 'on'=>'search'),
-		);
+			array('coddocu, estilomail,mensaje, posicion, activo, logo, id', 'safe', 'on'=>'search'),
+		array('coddocu, estilomail,mensaje, posicion, activo,'
+                    . ' logo,css_th,css_body,css_h1,css_p,css_table,css_td,css_tr'
+                    , 'safe', 'on'=>'insert,update'),
+		
+                    
+                    );
 	}
 
 	/**
@@ -142,8 +147,8 @@ class Tenores extends CActiveRecord
         $pos = MiFactoria::cleanInput($pos);
         $sociedad = MiFactoria::cleanInput($sociedad);
         $crite = New CDbCriteria;
-        $crite->addCondition("docu=:vdocu", 'AND');
-        $crite->addCondition("pos=:vpos",'AND');
+        $crite->addCondition("coddocu=:vdocu", 'AND');
+        $crite->addCondition("posicion=:vpos",'AND');
         $crite->addCondition("sociedad=:vsociedad",'AND');
         $crite->params=array(
             ":vpos"=>$pos,
@@ -153,5 +158,38 @@ class Tenores extends CActiveRecord
         return self::model()->find($crite);
 
     }
+    
+    public static function buscaestilo($docu,$pos,$sociedad,$etiqueta)
+    {
+       $registro= self::buscatenor($docu, $pos, $sociedad);
+       $campo='css_'.$etiqueta;
+      // var_dump($campo);die();
+       return (is_null($registro->{$campo}))?'':$registro->{$campo};
 
+    }
+
+    public function beforesave(){
+        $this->estilomail=CHtml::encode($this->estilomail);
+        $this->css_h1=CHtml::encode($this->css_h1);
+        $this->css_p=CHtml::encode($this->css_p);
+        $this->css_table=CHtml::encode($this->css_table);
+        $this->css_td=CHtml::encode($this->css_td);
+        $this->css_tr=CHtml::encode($this->css_tr);
+        $this->css_body=CHtml::encode($this->css_body);
+        $this->css_th=CHtml::encode($this->css_th);
+        return parent::beforeSave();
+    }
+    public function afterfind(){
+        $this->estilomail=CHtml::decode($this->estilomail);
+        $this->css_h1=CHtml::decode($this->css_h1);
+        $this->css_p=CHtml::decode($this->css_p);
+        $this->css_table=CHtml::decode($this->css_table);
+        $this->css_td=CHtml::decode($this->css_td);
+        $this->css_tr=CHtml::decode($this->css_tr);
+        $this->css_body=CHtml::decode($this->css_body);
+         $this->css_th=CHtml::decode($this->css_th);
+        
+        return parent::beforeSave();
+    }
+    
 }

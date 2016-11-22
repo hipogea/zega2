@@ -60,7 +60,7 @@ class Procesosdocu extends CActiveRecord
             'docingresados' => array(self::BELONGS_TO, 'Docingresados', 'hiddoci'),
             'tenenciasproc' => array(self::BELONGS_TO, 'Tenenciasproc', 'hidproc'),
             'tenenciastrab' => array(self::BELONGS_TO, 'Tenenciastraba', 'hidtra'),
-            'documentos'=> array(self::BELONGS_TO, 'Documentos', 'codocu'),
+            //'documentos'=> array(self::BELONGS_TO, 'Documentos', 'codocu'),
         );
     }
 
@@ -279,6 +279,13 @@ class Procesosdocu extends CActiveRecord
         if(!yii::app()->periodo->verificafechas($this->fechanominal,date("Y-m-d H:i:s",time()+60*15)))
                     $this->adderror('fechanominal','La fecha de proceso '.$this->fechanominal.'  es  POSTERIOR AL  a la fecha actual  '.date("Y-m-d H:i:s",time()+60*15));
         
+    }
+    
+  // Esta funcion verifica si el cmpo codu, y coduref estan llenos para subir los archivo adjunts con nombre referenciado 
+    PUBLIC function essubible(){
+        if(!is_null($this->codocuref) and !is_null($this->numdocref))
+            return true;
+        return false;
     }
     
     

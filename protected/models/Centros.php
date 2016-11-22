@@ -73,7 +73,9 @@ class Centros extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'usuarioses' => array(self::HAS_MANY, 'Usuarios', 'centrodefault'),
+			'sociedades'=>array(self::BELONGS_TO, 'Sociedades', 'codsoc'),
+			
+                    'usuarioses' => array(self::HAS_MANY, 'Usuarios', 'centrodefault'),
 			'almacenes' => array(self::HAS_MANY, 'Almacenes', 'codcen'),
 			'almacenes_agrega_auto' => array(self::STAT, 'Almacenes', 'codcen','condition'=>'agregarauto="1"'),
 		);

@@ -200,7 +200,7 @@ private function prepara() {
     private function colocanombre(){
        //  Yii::log(' estamos dentrp    '.serialize($fullFileName),'error');
         if(is_null($this->_nombrearchivopredef)){
-             return $this->_id."_0_".( ((microtime(true))*10000)    )."_".yii::app()->user->id.".".$this->_extensionatrabajar;
+             return $this->_id."_0_".((integer)microtime(true)*10000)."_".yii::app()->user->id.".".$this->_extensionatrabajar;
        
         }else{
             return $this->_id."_".$this->_nombrearchivopredef."_".( ((microtime(true))*10000)    )."_".yii::app()->user->id.".".$this->_extensionatrabajar;
@@ -427,7 +427,10 @@ private function prepara() {
                str_replace("","_",$nuevonombre). ///nos aseguramos que no haya ningun  caracter: '_'
                "_".$nombrecortado[2].
                "_".$nombrecortado[3].
+               ".".
                $datosruta['extension'];
+       yii::log('Este es el filename '.$filename,'error');
+       yii::log(' este es l nuevo file    '.$datosruta['dirname'].DIRECTORY_SEPARATOR.$nuevonombre,'error');
       return rename($filename,$datosruta['dirname'].DIRECTORY_SEPARATOR.$nuevonombre);
   }
   
