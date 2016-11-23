@@ -13,6 +13,24 @@ class VwDoci extends CActiveRecord
 		return 'vw_doci';
 	}
 
+        public function behaviors()
+	{
+		return array(
+			// Classname => path to Class
+			'imagenesjpg'=>array(
+				'class'=>'ext.behaviors.TomaFotosBehavior',
+                            '_codocu'=>'280',
+                            '_ruta'=>yii::app()->settings->get('general','general_directorioimg'),
+                            '_numerofotosporcarpeta'=>yii::app()->settings->get('general','general_nregistrosporcarpeta')+0,
+                            '_extensionatrabajar'=>'.pdf',
+                            '_id'=>$this->getPrimarykey(),
+                                ),
+                    );
+                
+	}
+        
+        
+        
 	/**
 	 * @return array validation rules for model attributes.
 	 */
@@ -42,7 +60,7 @@ class VwDoci extends CActiveRecord
 			array('texv, fechacrea', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id,d_fechain1,codtenencia,hidproc, codprov, fecha, fechain, correlativo, tipodoc, moneda, descorta, codepv, monto, codgrupo, codresponsable, creadopor, creadoel, texv, docref, codteniente, codlocal, numero, cod_estado, codocu, codtenencia, fechacrea, codocuref, nhorasnaranja, nhorasverde, numdocref, descripcion, ap, despro, rucpro, final', 'safe', 'on'=>'search'),
+			array('id,color,d_fechain1,codtenencia,hidproc, codprov, fecha, fechain, correlativo, tipodoc, moneda, descorta, codepv, monto, codgrupo, codresponsable, creadopor, creadoel, texv, docref, codteniente, codlocal, numero, cod_estado, codocu, codtenencia, fechacrea, codocuref, nhorasnaranja, nhorasverde, numdocref, descripcion, ap, despro, rucpro, final', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -51,10 +69,16 @@ class VwDoci extends CActiveRecord
 	 */
 	public function relations()
 	{
-		// NOTE: you may need to adjust the relation name and the related
-		// class name for the relations automatically generated below.
 		return array(
+			'docingresados'=>array(self::HAS_ONE, 'Docingresados', 'id'),
+			// 'tenores' => array(self::BELONGS_TO, 'Tenores', array('codsoc'=>'sociedad','codocu'=>'coddocu') ),
+           
+                    
+                    
+                    
+                    
 		);
+		
 	}
 
 	/**
@@ -122,6 +146,7 @@ class VwDoci extends CActiveRecord
 		//$criteria->compare('fechain',$this->fechain,true);
 		$criteria->compare('correlativo',$this->correlativo,true);
 		$criteria->compare('tipodoc',$this->tipodoc,true);
+                $criteria->compare('color',$this->color,true);
 		//$criteria->compare('moneda',$this->moneda,true);
 		$criteria->compare('descorta',$this->descorta,true);
 		$criteria->compare('codepv',$this->codepv,true);
@@ -255,5 +280,9 @@ class VwDoci extends CActiveRecord
          $this->color=$this->getcolor();
          return parent::afterfind();
      }
-        
+     
+    public function getPrimarykey(){
+        return $this->id;
+    }
+     
 }

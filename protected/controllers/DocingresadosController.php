@@ -22,15 +22,31 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
 	 * This method is used by the 'accessControl' filter.
 	 * @return array access control rules
 	 */
-	public function accessRules()
+	
+        public function behaviors() {
+		return array(
+
+			'exportableGrid' => array(
+				'class' => 'application.components.ExportableGridBehavior',
+				'filename' => 'Inventariomareriles.csv',
+				'csvDelimiter' =>(Yii::app()->user->isGuest)?",":Yii::app()->user->getField('delimitador') , //i.e. Excel friendly csv delimiter
+			));
+	}
+        
+        
+        
+        public function accessRules()
 	{
 		return array(
 			
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('limpiarcarro','borrafilamaletin','poneralcarro',   'procesavarios','cargatenencias','cargatrabajadores','cargaprocesos','borraarchivo','adjuntaarchivo','admin','ajaxcargaformtenencia','view','creaproceso','relaciona','recibevalor','create','update'),
+				'actions'=>array('modificaproceso','confirmalectura','limpiarcarro','borrafilamaletin','poneralcarro',   'procesavarios','cargatenencias','cargatrabajadores','cargaprocesos','borraarchivo','adjuntaarchivo','admin','ajaxcargaformtenencia','view','creaproceso','relaciona','recibevalor','create','update'),
 				'users'=>array('@'),
 			),
-			
+			array('allow', // allow authenticated user to perform 'create' and 'update' actions
+				'actions'=>array('confirmalectura'),
+				'users'=>array('*'),
+			),
 			array('deny',  // deny all users
 				'users'=>array('*'),
 			),
@@ -286,19 +302,41 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
 	 */
 	public function actionAdmin()
 	{
-		$registro= Docingresados::model()->findByPk(26);
-          echo   $registro->getmensajemail('confirmar'); die();
-
-//print_r(get_declared_classes ( )); echo "<br><br><br>";
-            ///$model=new VwDocuIngresados('search');
+		
             $model=new VwDoci('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['VwDoci']))
 			$model->attributes=$_GET['VwDoci'];
+                if ($this->isExportRequest()) { //<==== [[ADD THIS BLOCK BEFORE RENDER]]
+			//ECHO "SALIO";DIE();
+			$this->exportCSV($model->search(), array(
+					'nomep',
+					'codep',
+					'numdocref',
+					'descripcion',
+					'ap',
+					'despro',
+					'rucpro',
+					'textv',
+					'codlocal',
+					'monto',
+					'moneda',
+					'descorta',
+					'correlativo',
+					'id',
+                            'fecha',
+					'fechain',
+					'numero',
+                            
+				)
+
+			);
+		} else {
 
 		$this->render('admin',array(
 			'model'=>$model,
 		));
+                }
 	}
 
 	/**
@@ -438,21 +476,29 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
       if(yii::app()->request->isAjaxRequest){
           if(Isset($_GET['archivoaatratar'])){
             $ruta=unserialize(base64_decode($_GET['archivoaatratar']));
+            
+            
+            
            
             if(Isset($_GET['idregistro'])){
                    $registro=$this->loadModel((integer) MiFactoria::cleanInput($_GET['idregistro']));
                      
+                   //preparando el titulo del mensaje 
+                   
+                   $titulo=$registro->nombrecortado($ruta)[1].'   '.Configuracion::valor($registro->codocu, $registro->codlocal, $registro::PARAMETRO_TITULO_CORREO_PEDIDO);
+                   
                  //insertadno lo emnejaes primero para obtener el id el mensaje esto para generalun tojken para conifirmar la alectura del correo envciado 
             $idmensaje=$registro->insertamensajes('M',
                              Contactos::getListMailEmpresa($registro->codprov,$registro->codocu),
-                              Configuracion::valor($registro->codocu, $registro->codlocal, $registro::PARAMETRO_TITULO_CORREO_PEDIDO)                  
+                          $titulo    
+//Configuracion::valor($registro->codocu, $registro->codlocal, $registro::PARAMETRO_TITULO_CORREO_PEDIDO)                  
                              );
              //preaprando para enviar el correo
                    $resultadocorreo="";
                    $resultadocorreo= yii::app()->correo->correo_adjunto(
                    Contactos::getListMailEmpresa($registro->codprov,$registro->codocu),
                    Yii::app()->user->email,
-                   Configuracion::valor($registro->codocu, $registro->codlocal, $registro::PARAMETRO_TITULO_CORREO_PEDIDO),
+                   $titulo,
                    $registro->getmensajemail($idmensaje),
                            //'hola miaguitos',
                    $ruta
@@ -476,7 +522,8 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
   public function actionprocesavarios(){
     
          $registro=New Procesosdocu('masivo');
-         
+         Logprocesosdocu::model()->deleteAll("iduser=".yii::app()->user->id);
+            
          
         if(isset($_POST['Procesosdocu']))
 		{
@@ -533,6 +580,7 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
                                             array( 
                                                 'codigodocu'=>self::CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS,)
                                                     );
+                              yii::app()->maletin->flush();
                            yii::app()->end();
                            
                          } else{//si no valido
@@ -542,7 +590,7 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
                                                     ); 
                              yii::app()->end();
                          }
-                         
+                    yii::app()->maletin->flush();     
                 }
          
          $this->render(
@@ -643,4 +691,89 @@ public function actionborrafilamaletin()
          }
 
     } 
+    
+    //Esta function verifica que el destinatario 
+    // a presionado el link de "confirmar lectura" del correo encviado 
+    // $token: es el id del link 
+    private function  confirmalecturacorreo($token){
+        $descifrado= base64_decode($token);
+        //bscar eln los mensajes enviados */
+        $descifrado=(integer) MiFactoria::cleanInput($descifrado);
+        //$descifrado=(integer) MiFactoria::cleanInput($token);
+        //var_dump($descifrado);die();
+       $registro= Mensajes::model()->findByPk($descifrado);
+        if(is_null($registro))
+            return false;
+        $registro->leido=date("Y-m-d H:i:s");
+        $registro->setScenario('lectura');
+        return  $registro->save();
+        /* print_r($registro->geterrors());
+         return 1;*/
+        
+    }
+  
+   public function actionconfirmalectura(){
+       $token=$_GET['token'];
+        $this->layout="//layouts/iframe";
+       if($this->confirmalecturacorreo($token)){
+           echo "se confirmo  la lectura";
+       }else{
+          echo "no se pudo confirmar"; 
+          
+       }
+      
+       
+       //$this->render('//site/confirmalectura');
+       yii::app()->end();
+   } 
+   
+   
+          
+  public function actionmodificaproceso ($id){
+      $id=(integer) MiFactoria::cleanInput($id); 
+      $model= Procesosdocu::model()->findByPk($id);
+      $model->setScenario('documentosreferencia');
+     if($model->tenenciasproc->final=='1' or !is_null($model->fechafin))
+     {
+         throw new CHttpException(500,'No puede procesar mas este documento, el ultimo proceso ha sido marcado como final, consulte con el damisnitrador ');
+      
+     }else{        
+		if(isset($_POST['Procesosdocu']))		{
+                    // var_dump($_POST['Procesosdocu']);
+			$model->attributes=$_POST['Procesosdocu'];
+                        //var_dump($model->attributes);die();
+                        //$this->performAjaxValidationdetalle($model);
+			if($model->save()){
+				
+				
+					//Close the dialog, reset the iframe and update the grid
+					echo CHtml::script("window.parent.$('#cru-dialog3').dialog('close');
+							window.parent.$('#cru-frame3').attr('src','');						
+					window.parent.$.fn.yiiGridView.update('procesos-grid');
+					");
+
+			
+			}else{
+                           // print_r($model->geterrors());
+                           /* MiFactoria::Mensaje('error',
+                              yii::app()->mensajes->getErroresItem($model->geterrors())
+                                    );  */                                  
+
+                        }
+
+		}
+		// if (!empty($_GET['asDialog']))
+		$this->layout = '//layouts/iframe';                
+		$this->render(
+                        'form_proceso_docurefs',
+                        array(
+			'model'=>$model,
+		)); 
+     }
+     
+	}
+
+     
+   
+   
 }

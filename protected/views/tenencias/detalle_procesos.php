@@ -61,8 +61,13 @@
 	</div>
     <div class="row">
 		<?php echo $form->labelEx($model,'hidprevio'); ?>
-		<?php 
-                echo $form->DropDownList($model,'hidprevio',$datos, array( 'empty'=>'--Seleccione un evento--',) ) ;
+		<?php
+                $criteriob=New CDBCriteria;
+                $criteriob->addCondition("id <> :vid");
+                $criteriob->params=array(":vid"=>$model->id);
+                 $datos = CHtml::listData(Tenenciasproc::model()->findAll($criteriob),'id','eventos.descripcion');
+		
+                echo $form->DropDownList($model,'hidprevio',$datos, array( 'empty'=>'--Seleccione un proceso requisito--',) ) ;
                 ?>
 		<?php echo $form->error($model,'hidprevio'); ?>
 	</div>

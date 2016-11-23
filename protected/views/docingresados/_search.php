@@ -120,6 +120,18 @@ $form=$this->beginWidget('CActiveForm', array(
 					echo $form->DropDownList($model,'hidproc',$datos, array('empty'=>'--Seleccione un proceso --')  )
 					?>
 	</div>
+         
+         <div class="row">
+		<?php echo $form->labelEx($model,'color'); ?>
+		<?php  $datos = array('#07a204'=>'verde','#f1bd02'=>'Naranja','#f5143e'=>'Rojo','#d8d5d2'=>'Plomo');
+                
+                
+                
+					echo $form->DropDownList($model,'color',$datos, array('empty'=>'--Seleccione un estado --')  )
+					?>
+	</div>
+         
+         
 	<div class="row">
 		<?php echo $form->labelEx($model,'codtenencia'); ?>
 		<?php

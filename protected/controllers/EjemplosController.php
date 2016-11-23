@@ -399,6 +399,11 @@ $mo=New Alinventario();
 
 
 	public function actionPio() {
+            echo MiFactoria::tiempopasado('2016-11-22 18:34:42'); die();
+            $cifrax= base64_encode($cifra);
+           echo "encriptado  ". var_dump($cifrax)."<br>";
+            $cifran= base64_decode($cifrax);
+            var_dump($cifran); die();
             var_dump((integer)microtime(true)*10000);die();
             
                                     echo "/public_html/recurso/carpeta/280/pdf/6/26_0_1.47976117335E+13_1.pdf";

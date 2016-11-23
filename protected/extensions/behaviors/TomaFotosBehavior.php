@@ -395,7 +395,7 @@ private function prepara() {
        return $nuevoarray;
    } 
    
-  private function nombrecortado($ruta){
+  public function nombrecortado($ruta){
       //encontradno la extension
       $posicion=strpos(strrev($ruta),'.');
       $ruta=substr($ruta,0,strlen($ruta)-$posicion-1);
@@ -411,7 +411,7 @@ private function prepara() {
        
   }
   
-  private function getnombre($ruta){
+  public function getnombre($ruta){
       //encontradno la extension
      // $posicion=strpos(strrev($ruta),'.');
     //  $ruta=substr($ruta,0,strlen($ruta)-$posicion-1);
@@ -434,5 +434,7 @@ private function prepara() {
       return rename($filename,$datosruta['dirname'].DIRECTORY_SEPARATOR.$nuevonombre);
   }
   
-   
+   public function cuantosfileshay(){
+      return count($this->recuperaarchivos(false));
+   }
 }

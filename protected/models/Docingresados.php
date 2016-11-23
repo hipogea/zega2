@@ -57,11 +57,8 @@ class Docingresados extends ModeloGeneral
                             '_id'=>$this->getPrimarykey(),
                                 ),
                 
-                'parametros'=>array(
-				'class'=>'ext.behaviors.ParametrosBehavior',
-                            'nombrecampodocu'=>'tipodoc',
-                             'nombrecampocentro'=>'codlocal',
-                                ));
+               );
+                
                 
                     
                    
@@ -379,9 +376,17 @@ class Docingresados extends ModeloGeneral
                            'pos'=>$this->codtenor,
                            'sociedad'=> $this->centros->codsoc,
                            'confirmarecepcion'=>$confirmarecepcion,
+                           'token'=>$token,
                        ), true,false
                        );
     }
     
-        
+   public static function reporteclipro(){
+      return yii::app()->db->createCommand()->select(
+              "count(t.id) as cantidad,t.codprov "
+              )->from("{{".$this->tableName()."}} t, {{procesosdocu}} a"
+                      )->where(
+                              ""
+                              )->group("codprov")->queryAll();
+   }     
 }

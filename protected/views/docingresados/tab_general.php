@@ -236,22 +236,38 @@
 		<?php echo $form->error($model,'tipodoc'); ?>
 	</div>
         
-        <div class="row">
-		<?php echo $form->labelEx($model,'numero'); ?>
-		<?php echo $form->textField($model,'numero',array('size'=>20,'maxlength'=>20)); ?>
-		<?php echo $form->error($model,'numero'); ?>
-	</div>
+        
+            
+       
         
         <?php 
-        if(!$esfinal) 
-       echo  $this->renderPartial('//site/celular', array('form'=>$form,'model'=>$model),TRUE);
-        ?>
+        if(!$esfinal) {
+            if(strlen($model->procesoactivo[0]->codocuref)>0){
+               echo  $this->renderPartial('//site/celular', array('form'=>$form,'model'=>$model),TRUE);
+             
+             }else{  ?>
+            <div style="font-family:verdana;color:#000; font-size: 13px; text-shadow: #aaa 1px 0px 1px;border-style:solid;border-radius:8px; margin:6px;padding:6px;width:350px;background-color:#f3f3eb; border-color:#ffce08;border-width:1px;">
+		No puede subir archivos, mientras no especifique el tipo y el 
+                 Número de documento en el proceso activo  <?php
+                echo $model->procesoactivo[0]->tenenciasproc->eventos->descripcion
+                ?>
+	    </div>
+         <?php  } 
+        }?>
         
         
         
         
     </div>
-    <div class="panelderecho">
+    <div class= "panelderecho"> 
+        
+         <div class="row">
+		<?php echo $form->labelEx($model,'numero'); ?>
+		<?php echo $form->textField($model,'numero',array('size'=>20,'maxlength'=>20)); ?>
+		<?php echo $form->error($model,'numero'); ?>
+	    </div>
+        
+        
 	<div class="row">
 		<?php echo $form->labelEx($model,'moneda'); ?>
 		<?php  
@@ -379,7 +395,7 @@
 
     <div class="row">
 		<?php echo $form->labelEx($model,'texv'); ?>
-		<?php echo $form->textArea($model,'texv',array('rows'=>4, 'cols'=>100)); ?>
+		<?php echo $form->textArea($model,'texv',array('rows'=>2, 'cols'=>100)); ?>
 		<?php echo $form->error($model,'texv'); ?>
 	</div>
     
@@ -396,23 +412,27 @@
        $this->widget('zii.widgets.grid.CGridView', array(
             'id'=>'procesos-grid',
             'dataProvider'=> Procesosdocu::model()->search_por_docu($model->id),
-             'itemsCssClass'=>'table table-striped table-bordered table-hover',
+             'itemsCssClass'=>'table table-striped table-bordered table-hover', 
            'columns'=>array(
                // 'fechanominal',
+              
+                
+               ARRAY('name'=>'iduser','type'=>'raw','value'=>'CHtml::link(CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."page_white_edit.png"),"#", array("onclick"=>\'$("#cru-frame3").attr("src","\'.Yii::app()->createurl(\'/docingresados/modificaproceso\', array(\'id\'=> $data->id ) ).\'");$("#cru-dialog3").dialog("open"); return false;\' ) )','htmlOptions'=>array('width'=>3)),
+
                array(
 			'name'=>'fechanominal',
-			'value'=>'date("d.m.y", strtotime($data->fechanominal))','htmlOptions'=>array('width'=>'50')
+			'value'=>'date("d.m.y", strtotime($data->fechanominal))','htmlOptions'=>array('width'=>10)
 		),
                 //array('name'=>'tipo','type'=>'raw','value'=>'($data->tipo=="M")?CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."email.png"):$data->tipo','htmlOptions'=>array('width'=>50)),
             array('name'=>'proc','type'=>'raw','value'=>'($data->tenenciasproc->eventos->descripcion)','htmlOptions'=>array('width'=>250)),
              array('name'=>'trab','type'=>'raw','value'=>'($data->tenenciastrab->trabajadores->ap)','htmlOptions'=>array('width'=>30)),
-             array('name'=>'codocuref','type'=>'raw','value'=>'$data->codocuref','htmlOptions'=>array('width'=>1)),
+             array('name'=>'codocuref','type'=>'raw','value'=>'$data->documentos->desdocu','htmlOptions'=>array('width'=>150)),
             array('name'=>'numdocref','type'=>'raw','value'=>'$data->numdocref','htmlOptions'=>array('width'=>10)),
             array(
 			'name'=>'fechafin',
-			'value'=>'(!is_null($data->fechafin))?date("d/m/y", strtotime($data->fechafin)):"--"','htmlOptions'=>array('width'=>'50')
+			'value'=>'(!is_null($data->fechafin))?date("d/m/y", strtotime($data->fechafin)):"--"','htmlOptions'=>array('width'=>10)
 		),
-               array('name'=>'tiempo','type'=>'raw','value'=>'($data->tiempopasado())','htmlOptions'=>array('width'=>160)),
+               array('name'=>'tiempo','type'=>'raw','value'=>'($data->tiempopasado())','htmlOptions'=>array('width'=>120)),
             array('name'=>'iduser', 'type'=>'html','value'=>'$data->iduser.CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."user_business.png","",array())'),
         
                 //'titulo',

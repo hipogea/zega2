@@ -24,7 +24,14 @@ class Procesosdocu extends CActiveRecord
             ///Escenario para proceso masivo   MASIVO
              array('hidproc,hidtra,fechanominal,codte','required','on'=>'masivo'),
              array('hiddoci,hidproc,hidtra,fechanominal,codte,codocuref,numdocref','safe','on'=>'masivo'),
-            array('fechanominal','chkfecha','on'=>'masivo'),
+            array('fechanominal','chkfecha','on'=>'masivo,insert,update,documentosreferencia'),
+            
+            
+            //escenaripo solo para cambiar documentos y numero de referencia 
+              array('codocuref,numdocref','required','on'=>'documentosreferencia'),
+            
+            array('codocuref,numdocref','safe','on'=>'documentosreferencia'),
+            
             
              array('hiddoci,hidproc','required', 'on'=>'insert,update'),
             array('fechafinal','safe','on'=>'fechafinal'),
@@ -60,7 +67,7 @@ class Procesosdocu extends CActiveRecord
             'docingresados' => array(self::BELONGS_TO, 'Docingresados', 'hiddoci'),
             'tenenciasproc' => array(self::BELONGS_TO, 'Tenenciasproc', 'hidproc'),
             'tenenciastrab' => array(self::BELONGS_TO, 'Tenenciastraba', 'hidtra'),
-            //'documentos'=> array(self::BELONGS_TO, 'Documentos', 'codocu'),
+            'documentos'=> array(self::BELONGS_TO, 'Documentos', 'codocuref'),
         );
     }
 
@@ -109,7 +116,7 @@ class Procesosdocu extends CActiveRecord
         $criteria->compare('numdocref',$this->numdocref,true);
 
         return new CActiveDataProvider($this, array(
-            'criteria'=>$criteria,
+            
         ));
     }
 
@@ -124,6 +131,10 @@ class Procesosdocu extends CActiveRecord
 
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
+            'criteria'=>$criteria,
+            'sort'=>array(
+            'defaultOrder'=>'id desc',
+        ),
         ));
     }
     
@@ -182,16 +193,16 @@ class Procesosdocu extends CActiveRecord
     private function cumplerequisitoprevio(){
         if($this->isNewRecord){
             //El proceso que s equiere efectuar 
-            $proaefectuar= Tenenciasproc::model()->findByPk($this->hidproc);
+            $teneproaefectuar= Tenenciasproc::model()->findByPk($this->hidproc);
             //el proceso actual
-            $proactual= Docingresados::model()->findByPk($this->hiddoci)->procesoactivo[0]->tenenciasproc;
+            $teneproactual= Docingresados::model()->findByPk($this->hiddoci)->procesoactivo[0]->tenenciasproc;
              //comparadnod si es requisito 
            //  var_dump($proactual->tenenciasproc);die();
-             if($proaefectuar->hidprevio >0) //si tiene requisito 
+             if($teneproaefectuar->hidprevio >0) //si tiene requisito 
              {
-                 /*var_dump($proactual->tenenciasproc->hidprevio);
-                 var_dump($proaefectuar->hidevento);die();*/
-                 return ($proactual->hidevento==$proaefectuar->hidprevio)?true:false;
+               //  var_dump($teneproactual);
+                // var_dump($teneproaefectuar);
+                 return ($teneproactual->id==$teneproaefectuar->hidprevio)?true:false;
              }else{//SI NOHAY REQUSITO COMO SI LAS HUEVAS
                 RETURN  true;
              }
@@ -230,7 +241,8 @@ class Procesosdocu extends CActiveRecord
     
     public function chkrequisitos($attribute,$params) {
 		if(!$this->cumplerequisitoprevio())
-                    $this->adderror('hidproc','Este proceso no se puede efectuar porque hay un requisidto previo que cumplir ');
+                    $this->adderror('hidproc','Este proceso no se puede efectuar porque hay un requisidto previo que cumplir :'.  Docingresados::model()->findByPk($this->hiddoci)->procesoactivo[0]->tenenciasproc->eventos->descripcion);
+           
         
     }
       

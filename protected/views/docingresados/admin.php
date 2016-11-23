@@ -39,7 +39,7 @@ $this->renderPartial('_search',array(
 	'id'=>'docingresados-admin'	
 )); ?>
 
-<?php $this->widget('zii.widgets.grid.CGridView', array(
+<?php $gridWidget=$this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'docingresados-grid',
 	'dataProvider'=>$model->search(),
     'itemsCssClass'=>'table table-striped table-bordered table-hover',
@@ -78,9 +78,14 @@ $this->renderPartial('_search',array(
 			'name'=>'fechain',
 			'value'=>'date("d.m.y", strtotime($data->fechain))','htmlOptions'=>array('width'=>'30')
 		),	
-		'numdocref',		
+		'numdocref',
+            array(
+			'name'=>'cuantoshay','type'=>'raw',
+			'value'=>'Chtml::image(Yii::app()->getTheme()->baseUrl.DIRECTORY_SEPARATOR."img".DIRECTORY_SEPARATOR."attach_2.png").$data->cuantosfileshay()','htmlOptions'=>array('width'=>'30')
+		),
 		'ap',
             'descripcion',
+            
            // array('name'=>'ad','type'=>'raw','value'=>'$data->procesoactivo[0]->tenenciasproc->eventos->descripcion'),
 		//'apoderado',
 		//'estado',
@@ -179,6 +184,14 @@ $this->renderPartial('_search',array(
 </div>
 
 <?php $this->endWidget(); ?>
+
+
+<?php
+//Capture your CGridView widget on a variable
+//$gridWidget=$this->widget('bootstrap.widgets.TbGridView', array( . . .
+$this->renderExportGridButton($gridWidget,'Exportar resultados',array('class'=>'btn btn-info pull-right'));
+?>
+
 
 <?php
 //--------------------- begin new code --------------------------

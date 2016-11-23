@@ -7,8 +7,11 @@ echo Tenores::buscatenor($docu, $pos, $sociedad)->mensaje;
 <?php 
   if($confirmarecepcion){
       echo "<br>".CHtml::link('CONFIRMAR RECEPCION ',
-              //yii::app()->createUrl($this->id.'',array('token'=>$token)),
-              'hola',
+              CHtml::normalizeUrl(yii::app()->createAbsoluteUrl($this->id.'/confirmalectura',array('token'=>base64_encode($token)   ))),
+             //yii::app()->createAbsoluteUrl($this->id.'/confirmalectura',array('token'=>$token)),
+            
+              
+// 'hola',
               array(                 
                   "target"=>"_blank")
               );

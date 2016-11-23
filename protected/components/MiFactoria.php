@@ -589,7 +589,10 @@ const CAMPO_COLECTOR='mf_colector';
       }else{
          $tfinal=strtotime($fechafinal); 
       }
-       
+       /*var_dump($fecha);echo "fechainicial   <br>";
+       var_dump($fechafinal);echo "fecha final <br>";
+      var_dump($tinicial);echo "tiniicial   <br>";
+       var_dump($tfinal);echo "tfinal <br>";*/
          $diferencia=$tfinal-$tinicial;
          $segano=60*60*24*7*30*12;
          $segmes=60*60*24*7*30;

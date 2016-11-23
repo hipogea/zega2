@@ -68,6 +68,7 @@ private function abreborde($imagen=null){
    }
    
    private function pintaimagen($imagen) {
+       //echo $imagen;
 	     $this->abrepanel();
 	      $rutita=Yii::getPathOfAlias('webroot').str_replace(yii::app()->baseUrl,'',$imagen);
               $nombreimagen=array_pop(explode(DIRECTORY_SEPARATOR,$imagen));
@@ -110,16 +111,14 @@ private function abreborde($imagen=null){
                                                     $imagensola,
                                                     array('class'=>'imagen')
                                         ),
-                                    '#',                               
+                                    $imagen,                               
                                         //array('onclick'=>"document.images['".$this->idimagen."'].src='".$this->rutaimagenes.$imagen."';")
-	   array('onclick'=>"js:document.getElementById('vitrina').src='".$rutita."' ;")
-	   
+	   array('target'=>'_blank','alt'=>$imagensola,'title'=>$imagensola,'onclick'=>"js:document.getElementById('vitrina').src='".$rutita."' ;")
+	         
                    );
 	   $this->cierradiv();	
            
-           $this->abreborde(null);
-           echo $imagensola;
-           $this->cierradiv();	
+           
    }
 	/*	
 		$this->_prepararAssets();
