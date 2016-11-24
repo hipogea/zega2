@@ -19,24 +19,44 @@
 )); ?>
 
 				
-		<?php  echo $form->errorSummary($model); ?>		
-	<div class="row">
-		<?php echo $form->labelEx($model,'hidevento'); ?>
-		
-		
-		<?php  
-                $criterio=New CDBCriteria;
-                $criterio->addCondition("codocu=:vcodocu");
-                $criterio->params=array(":vcodocu"=>$documento);
-                //var_dump($documento);die();
-                $datos = CHtml::listData(Eventos::model()->findAll($criterio),'id','descripcion');
-		  echo $form->DropDownList($model,'hidevento',$datos, array('disabled'=>(!$model->isNewRecord)?'disabled':'',
-									  'empty'=>'--Seleccione un evento--',) ) ;
+		<?php  echo $form->errorSummary($model); ?>	
+    
+    <div class="row">
+		<?php echo $form->labelEx($model,'codocu'); ?>
+		<?php  $datos = CHtml::listData(Documentos::model()->findAll(array('order'=>'desdocu')),'coddocu','referencia');
+		  echo $form->DropDownList($model,'codocu',$datos, array(  'ajax' => array('type' => 'POST', 
+									    'url' => CController::createUrl('Tenencias/ajaxcargaeventos'), //  la acción que va a cargar el segundo div 
+									    'update' => '#Tenenciasproc_hidevento' // el div que se va a actualizar
+											  ),
+									  'empty'=>'--Seleccione un documento--', 'disabled'=>($model->nprocesosdocu >0)?'disabled':'',) ) ;
 		?>
-		
-	
-            <?php echo $form->error($model,'hidevento'); ?>
+		<?php echo $form->error($model,'codocu'); ?>
 	</div>
+    
+    
+    <div class="row">
+		<?php echo $form->labelEx($model,'hidevento'); ?>
+		 <?php 
+		     if (!$model->isNewRecord) {
+		      $criterio=New CDBCriteria;
+                $criterio->addCondition("codocu=:vcodocu");
+                $criterio->params=array(":vcodocu"=>$model->codocu);
+                //var_dump($documento);die();
+                $datosx = CHtml::listData(Eventos::model()->findAll($criterio),'id','descripcion');
+		  }
+		 echo $form->dropDownList($model,'hidevento', ($model->isNewRecord)?array():$datosx, array(
+                                                                        'ajax' => array('type' => 'POST', 
+									    'url' => CController::createUrl('Tenencias/ajaxcargaprevios'), //  la acción que va a cargar el segundo div 
+									    'update' => '#Tenenciasproc_hidprevio' // el div que se va a actualizar
+											  ),
+                                                        'prompt' => 'Seleccione proceso previo', // Valor por defecto 
+                                                            'disabled'=>($model->nprocesosdocu >0)?'disabled':'',
+                                                        )); 
+		 ?>
+		<?php echo $form->error($model,'hidevento'); ?>
+	</div>
+    
+    
     
     <div class="row">
 		<?php echo $form->labelEx($model,'nhorasverde'); ?>
@@ -62,11 +82,14 @@
     <div class="row">
 		<?php echo $form->labelEx($model,'hidprevio'); ?>
 		<?php
+                 if (!$model->isNewRecord) {
                 $criteriob=New CDBCriteria;
-                $criteriob->addCondition("id <> :vid");
-                $criteriob->params=array(":vid"=>$model->id);
-                 $datos = CHtml::listData(Tenenciasproc::model()->findAll($criteriob),'id','eventos.descripcion');
-		
+                $criteriob->addCondition("id <> :vid and codocu=:vcodocu and final <> '1' ");
+                $criteriob->params=array(":vid"=>$model->id,":vcodocu"=>$model->codocu);
+                 $datos = CHtml::listData(Tenenciasproc::model()->findAll($criteriob),'id','auxiliar');
+                 }else{
+                     $datos=array();
+                 }
                 echo $form->DropDownList($model,'hidprevio',$datos, array( 'empty'=>'--Seleccione un proceso requisito--',) ) ;
                 ?>
 		<?php echo $form->error($model,'hidprevio'); ?>

@@ -10,7 +10,8 @@ class Tenenciasproc extends CActiveRecord
 	{
 		return '{{tenenciasproc}}';
 	}
-
+public $auxiliar;
+public $nombrecompleto;
 	/**
 	 * @return array validation rules for model attributes.
 	 */
@@ -20,12 +21,12 @@ class Tenenciasproc extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('hidevento', 'numerical', 'integerOnly'=>true),
-                     array('codte,nhorasnaranja,final,automatico,nhorasverde,hidprevio, hidevento', 'safe', 'on'=>'insert,update'),
+                     array('codte,nhorasnaranja,final,codocu,automatico,nhorasverde,hidprevio, hidevento', 'safe', 'on'=>'insert,update'),
 			
-                     array('codte,nhorasnaranja,nhorasverde, hidevento', 'required', 'on'=>'insert,update'),
+                     array('codte,nhorasnaranja,codocu,nhorasverde, hidevento', 'required', 'on'=>'insert,update'),
 			array('codte', 'length', 'max'=>4),
-                    array('hidprevio', 'chkvalores'),
-                    array('hidevento+codte', 'application.extensions.uniqueMultiColumnValidator','on'=>'insert,update'),
+                   // array('hidprevio', 'chkvalores'),
+                    array('hidevento+codte+codocu', 'application.extensions.uniqueMultiColumnValidator','on'=>'insert,update'),
 			
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
@@ -41,6 +42,8 @@ class Tenenciasproc extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+                    
+                    'documentos' => array(self::BELONGS_TO, 'Documentos', 'codocu'),
 			'eventos' => array(self::BELONGS_TO, 'Eventos', 'hidevento'),
 			'tenencias' => array(self::BELONGS_TO, 'Tenencias', 'codte'),
                      'nprocesosdocu'=>array(self::STAT, 'Procesosdocu', 'hidproc'),
@@ -115,8 +118,16 @@ class Tenenciasproc extends CActiveRecord
       
       
 	public function chkvalores($attribute,$params) {
-		if($this->hidprevio==$this->hidevento )
+		/*if($this->hidprevio==$this->hidevento )
 			$this->adderror('hidprevio','No puede ser igual al  proceso original');
+                 * */
+                 
 	}
+     public function afterfind(){
+    $this->auxiliar=$this->eventos->descripcion.'  -  [ '.$this->tenencias->deste.' ]';
+    $this->nombrecompleto='[ '.$this->documentos->desdocu.' ] - '.$this->eventos->descripcion;
+    return parent::afterfind();
+}
+        
         
 }

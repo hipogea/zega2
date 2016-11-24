@@ -16,6 +16,7 @@ class Configuraciongeneral extends CFormModel
 	public $general_userauto; ///porcenytaje de exceso para la caja chica
         public $general_directorioimg; ///porcenytaje de exceso para la caja chica
          public $general_nregistrosporcarpeta; ///porcenytaje de exceso para la caja chica
+          public $general_codigomanualempresa; ///indinca si el codigo proveedor es manual o automatico
 
 	/*****documentos***/
 	public $documentos_numeromaxbloqueos;
@@ -70,7 +71,7 @@ public $materiales_verpresolpe;
 	public $email_smtpauth;  //=true
 	public $email_cuentahost;//jramirez@neotegnia.com
 	public $email_passwordhost;//pawd
-
+         public $email_nombrewebmaster;//pawd
 
 
 
@@ -116,10 +117,15 @@ public $materiales_verpresolpe;
 
 					email_smtpdebug,
 					email_servemail,
-					email_cuentahost',
+					email_cuentahost,email_nombrewebmaster',
 				'required','message'=>'Este dato es obligatorio'
 			),
-			array('transporte_umdefault,transporte_motivoot,general_nregistrosporcarpeta,transporte_rutafotos,general_directorioimg,transporte_objenguia,general_userauto,inventario_auto,inventario_bloqueado,inventario_mascaraubicaciones,materiales_contabilidad,materiales_verpresolpe,documentos_selloagua,documentos_controlrecepcion,transporte_lugares','safe'),
+			array('email_passwordhost,email_nombrewebmaster,general_codigomanualempresa,transporte_umdefault,'
+                            . 'transporte_motivoot,general_nregistrosporcarpeta,transporte_rutafotos,'
+                            . 'general_directorioimg,transporte_objenguia,general_userauto,inventario_auto,'
+                            . 'inventario_bloqueado,inventario_mascaraubicaciones,materiales_contabilidad,'
+                            . 'materiales_verpresolpe,documentos_selloagua,documentos_controlrecepcion,'
+                            . 'transporte_lugares','safe'),
 			array(
 				// array('transporte_tiempopermitidohastaentrega','numerical', 'integerOnly'=>true, 'min'=>0, 'max'=>100),
 				'general_nregistrosporcarpeta,transporte_tiempopermitidohastaentrega', 'numerical', 'integerOnly'=>true,
@@ -151,7 +157,7 @@ public $materiales_verpresolpe;
 			'general_userauto'=>'Uusario para operaciones automaticas',
                     'general_directorioimg'=>'Directorio de almacenamiento de Imagenes',
                     'general_nregistrosporcarpeta'=>'Cantidad registros por carpeta',
-                   
+                   'general_codigomanualempresa'=>'Cod manual Empresas',
 	'documentos_numeromaxbloqueos'=>'Cant Max Documentos abiertos por usuario',
 			'documentos_selloagua'=>'Sello de agua',
 			'documentos_archivo_sello_agua'=>'Archivo sello agua',
@@ -185,6 +191,7 @@ public $materiales_verpresolpe;
 			'email_servemail'=>'Servidor de correo',
 			'email_cuentahost'=>'Cuenta de correo motor',
 			'email_passwordhost'=>'Password de la cuenta',
+                    'email_nombrewebmaster'=>'Nombre Webmaster',
 			'inventario_bloqueado'=>'Bloquear en Conteo'
 
 

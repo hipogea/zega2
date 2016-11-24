@@ -1,4 +1,3 @@
-
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'tenencias-grid',
 	'dataProvider'=>  Tenenciasproc::model()->search_por_tenencia($model->codte),
@@ -6,6 +5,9 @@
 	//'filter'=>$model,
 	'columns'=>array(
 		'codte',
+            'documentos.desdocu',
+            'final',
+            array('name'=>'hidprevio','header'=>'Previo','value'=>'($data->hidprevio>0)?$data->hidprevio:""'),
             'nhorasverde',
            'nhorasnaranja',
 		array('name'=>'hidevento','header'=>'Procedimiento','value'=>'$data->eventos->descripcion'),

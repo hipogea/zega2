@@ -22,7 +22,7 @@ class ConfiguracionController extends Controller
 		return array(
 			
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('index','ver','creaconfig'),
+				'actions'=>array('editar','index','ver','creaconfig'),
 				'users'=>array('@'),
 			),
 			
@@ -235,6 +235,35 @@ public function actionver(){
         $this->render('_form_config', array(
             'model' => $model,
         ));
-    }
+        
+        
+        
+        }
+        
+        public function actioneditar($id){
+            $id=(integer)  MiFactoria::cleanInput($id);
+            
+		$model=  Configuracion::model()->findByPk($id);
+                if(is_null($model))
+                      throw new CHttpException(500,'No se encontro un registro para este Id.');
+		// Uncomment the following line if AJAX validation is needed
+		// $this->performAjaxValidation($model);
+
+		if(isset($_POST['Configuracion']))
+		{
+			$model->attributes=$_POST['Configuracion'];
+			if($model->save()){
+                            MiFactoria::Mensaje('success', 'Se modifico el parametro');
+                            $this->redirect(array('view','id'=>$model->id));
+                        }
+				
+		}
+
+		$this->render('edicion',array(
+			'model'=>$model,
+		));
+            
+        
+             }
         
 }

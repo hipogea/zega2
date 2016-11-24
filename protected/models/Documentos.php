@@ -25,6 +25,8 @@ class Documentos extends CActiveRecord
 	 * @param string $className active record class name.
 	 * @return Documentos the static model class
 	 */
+    
+    public $referencia;
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
@@ -239,6 +241,9 @@ class Documentos extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
-
+public function afterfind(){
+    $this->referencia='['.$this->coddocu.']-'.$this->desdocu;
+    return parent::afterfind();
+}
 
 }

@@ -41,13 +41,14 @@ $('.search-form form').submit(function(){
     'itemsCssClass'=>'table table-striped table-bordered table-hover',
 	'filter'=>$model,
 	'columns'=>array(
+            array('name'=>'id','type'=>'raw','header'=>'Id','value'=>'CHtml::link("editar",yii::app()->createUrl("configuracion/editar",array("id"=>$data->id )   )  )', 'htmlOptions'=>array('width'=>10),),
 		'codcen',
             'codparam',
 		array('name'=>'codparam','header'=>'Parametro','value'=>'$data->parametros->desparam', 'htmlOptions'=>array('width'=>400),),
 		'iduser',
 		 array('name'=>'codocu','header'=>'Documento','value'=>'$data->documentos->desdocu','filter'=>CHTml::listData(Documentos::model()->findAll(),'coddocu','desdocu'), 'htmlOptions'=>array('width'=>400),),
 		// 'documentos.desdocu',
-            array('name'=>'valor','type'=>'raw','value'=>'substr(trim($data->valor),0,4)', 'htmlOptions'=>array('width'=>60)),
+            array('name'=>'valor','type'=>'raw','value'=>'substr(trim($data->valor),0,40)', 'htmlOptions'=>array('width'=>60)),
 		
 	),
 )); ?>

@@ -27,13 +27,14 @@
 		<?php echo $form->error($model,'codte'); ?>
 	</div>
 
+        
         <div class="row">
-		<?php echo $form->labelEx($model,'codocu'); ?>
-		<?php  $datos = CHtml::listData(Documentos::model()->findAll(array('order'=>'desdocu')),'coddocu','desdocu');
-		  echo $form->DropDownList($model,'codocu',$datos, array('disabled'=>(!$model->isNewRecord)?'disabled':'',
-									  'empty'=>'--Seleccione un documento--',) ) ;
+		<?php // echo $form->labelEx($model,'codocu'); ?>
+		<?php // $datos = CHtml::listData(Documentos::model()->findAll(array('order'=>'desdocu')),'coddocu','desdocu');
+		 // echo //$form->DropDownList($model,'codocu',$datos, array('disabled'=>(!$model->isNewRecord)?'disabled':'',
+									//  'empty'=>'--Seleccione un documento--',) ) ;
 		?>
-		<?php echo $form->error($model,'codocu'); ?>
+		<?php  //echo $form->error($model,'codocu'); ?>
 	</div>
         
         

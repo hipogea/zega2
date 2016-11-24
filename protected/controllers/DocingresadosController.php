@@ -316,6 +316,7 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
 					'descripcion',
 					'ap',
 					'despro',
+                            'codprov',
 					'rucpro',
 					'textv',
 					'codlocal',
@@ -425,7 +426,7 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
                         (is_null($codtenencia))?
                         'form_proceso_carcaza':
                         'form_cambiotenencia',
-                        array(
+                        array('modelopadre'=>$modelopadre,
 			'model'=>$model, 'id'=>$id,'codtenencia'=>$codtenencia,
 		)); 
      }
@@ -444,14 +445,15 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
         if(yii::app()->request->isAjaxRequest){
             $id=(integer) MiFactoria::cleanInput($_GET['id']);
             $codtenencia=(integer) MiFactoria::cleanInput($_GET['codtenencia']);
-            if(is_null(Docingresados::model()->findByPk($id)))
+            $modelopadre=Docingresados::model()->findByPk($id);
+            if(is_null($modelopadre))
              // throw new CHttpException(500,'El paraqmetro pasado para las tneencias no existe en el sistema ');
                die();
             $model=New Procesosdocu();
             $formi=New CActiveForm;
             echo $this->renderpartial('form_proceso',
                     array(
-			'model'=>$model, 'id'=>$id,'codtenencia'=>$codtenencia,'form'=>$formi
+			'modelopadre'=>$modelopadre,'model'=>$model, 'id'=>$id,'codtenencia'=>$codtenencia,'form'=>$formi
 		),false,true);
             
         }
@@ -520,23 +522,24 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
   }  
   
   public function actionprocesavarios(){
-    
+      $idsenmaletin=yii::app()->maletin->valoresid(self::CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS);            
+      if(count($idsenmaletin)){
          $registro=New Procesosdocu('masivo');
-         Logprocesosdocu::model()->deleteAll("iduser=".yii::app()->user->id);
-            
-         
+         Logprocesosdocu::model()->deleteAll("iduser=".yii::app()->user->id); 
         if(isset($_POST['Procesosdocu']))
 		{
-             $registro->attributes=$_POST['Procesosdocu'];
+             $registro->attributes=$_POST['Procesosdocu']; 
                if($registro->validate()){
-                       foreach(yii::app()->maletin->valoresid(self::CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS) as $valor)
+                       foreach($idsenmaletin as $valor)
                          {
                        
                             $registrodoc= Docingresados::model()->findByPk($valor);
+                             $identificador='[ '.$registrodoc->id.'] - [ '.$registrodoc->correlativo.' ] - [ '.$registrodoc->docus->desdocu.'] - [ '.$registrodoc->clipro->despro.' ]- [ '.$registrodoc->numero.']';
+                                
                             $procesoactual=$registrodoc->procesoactivo[0];
                             if($procesoactual->tenenciasproc->final=='1')
                                 { ///si el proceso actual es final
-                                         $registrodoc->registralog ('red',' Este documento ya tiene un proceso marcado '.$procesoactual->tenenciasproc->eventos->descripcion.'como final.., no puede procesarlo mas ');
+                                        $registrodoc->registralog ('error',$identificador.' Este documento ya tiene un proceso marcado '.$procesoactual->tenenciasproc->eventos->descripcion.'como final.., no puede procesarlo mas ');
                                         }else{ //aca si se puede y comenzamos a verificar 
                                                      $marcador="";
                                             if($registrodoc->codtenencia==$registro->codte)
@@ -545,11 +548,11 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
                                                                       $marcador=" Tenencia procesosactual : [".$registrodoc->codtenencia."]  Tenencia regsitro [".$registro->codte."]";
                                                                         
                                                                        $model->codte=$registrodoc->codtenencia;
-                                                                         if($registro->hidproc==$procesoactual->hidproc){ 
+                                                                        /* if($registro->hidproc==$procesoactual->hidproc){ 
                                                                             //Si esta intentando procesar  lo misom DOS VEECES EGUIDAS 
                                                                              ///SE DEBE DE PARAR EL PROCESO CON UN ERROR 
-                                                                             $registrodoc->registralog('red','Esta intentando registrar un proceso repetido y consecutivo en la misma tenencia');
-                                                                            }
+                                                                             $registrodoc->registralog('error','Esta intentando registrar un proceso repetido y consecutivo en la misma tenencia');
+                                                                            }*/
                                                                      }else{ //SI ES CAMBIOPD  ETENCNIA 
                                                                          $marcador=" Tenencia Anterior : [".$registrodoc->codtenencia."]  Tenencia Actual [".$registro->codte."]";
                                                                          $model=new Procesosdocu('cambiotenencia');
@@ -564,9 +567,9 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
                                                         $model->numdocref=$registro->numdocref;
                                                   if($model->save()){
                                                       MiFactoria::Mensaje('notice', 'grabando');
-                                                      $registrodoc->registralog('green', 'proceso exitoso '.$marcador  );
+                                                      $registrodoc->registralog('success',$identificador.'  proceso exitoso '.$marcador  );
                                                   }else{
-                                                      $registrodoc->registralog('red', yii::app()->mensajes->getErroresItem($model->geterrors()).'   -   '.$marcador); 
+                                                      $registrodoc->registralog('error',$identificador.' '.yii::app()->mensajes->getErroresItem($model->geterrors()).'   -   '.$marcador); 
                                                   }
                                              }         
          
@@ -587,17 +590,23 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
                             $this->render(
                                         'form_proceso_masa',                
                                             array('model'=>$registro, 'codigodocu'=>self::CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS,)
-                                                    ); 
+                                                    );
+                            yii::app()->maletin->flush();
                              yii::app()->end();
+                             
                          }
-                    yii::app()->maletin->flush();     
+                         
                 }
          
          $this->render(
                  'form_proceso_masa',
                 
                  array('model'=>$registro, 'codigodocu'=>self::CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS,)
-                 );    
+                 );   
+     }else{
+         MiFactoria::mensaje('notice','No ha colocado ningun documento en el maletin');
+         $this->redirect('admin');
+     }
       }
                 
   
@@ -627,7 +636,7 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
 	$criteria->addCondition("codte=:vcodte");
          $criteria->params=array(":vcodte"=>$codte);
 	//$valor=$_POST['Eventos']['codocu'];
-	$data=CHtml::listData(Tenenciasproc::model()->findAll($criteria),"id","eventos.descripcion"); 
+	$data=CHtml::listData(Tenenciasproc::model()->findAll($criteria),"id","nombrecompleto"); 
 			echo CHtml::tag('option', array('value'=>null),CHtml::encode('--Escoja un proceso--'),true);
 			foreach($data as $value=>$name) { 
 			    echo CHtml::tag('option', array('value'=>$value),CHtml::encode($name),true);

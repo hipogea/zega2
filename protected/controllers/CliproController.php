@@ -113,8 +113,10 @@ class CliproController extends Controller
 					//yii::app()->end();
 				}
 			   $model2=$model->find('rucpro=:rukis', array(':rukis'=>$ruc));
-				Yii::app()->user->setFlash('success','Se ha creado el proveedor  '.$model2->despro);
-				$this->redirect(array('update','id'=>$model2->codpro));
+				//Yii::app()->user->setFlash('success','Se ha creado el proveedor  '.$model2->despro);
+				MiFactoria::mensaje('success','Se ha creado el proveedor, complete los datos si lo desea');
+                           $this->redirect(array('view','id'=>$model2->codpro));
+                           yii::app()->end();
 				//return true;
 				}
 			//$this->refresh();

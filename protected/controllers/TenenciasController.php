@@ -307,7 +307,7 @@ class TenenciasController extends Controller
                      
                
                    
-                
+           
             
         }
         }
@@ -340,5 +340,52 @@ class TenenciasController extends Controller
         }
         
 }
+
+ public function actionajaxcargaeventos(){
+     if(yii::app()->request->isAjaxRequest){
+         $valor=  MiFactoria::cleanInput($_POST['Tenenciasproc']['codocu']);
+          $criteria = new CDbCriteria();
+		$criteria->addCondition("codocu=:vcodocu");
+                $criteria->params=array(":vcodocu"=>$valor);
+		
+		$data=CHtml::listData(	Eventos::model()->findAll($criteria),
+		  //$data=CHtml::listData(	Direcciones::model()->findAll(),
+												"id",
+												"descripcion"
+											
+												); 
+			echo CHtml::tag('option', array('value'=>null),CHtml::encode('Escoja un evento'),true);
+			foreach($data as $value=>$name) { 
+			    echo CHtml::tag('option', array('value'=>$value),CHtml::encode($name),true);
+			   } 
+     }
+               
+            }    
+
+
+            
+    public function actionajaxcargaprevios(){
+     if(yii::app()->request->isAjaxRequest){
+         $valor=  MiFactoria::cleanInput($_POST['Tenenciasproc']['codocu']);
+          $criteria = new CDbCriteria();
+          echo "valor es ".$valor;
+		$criteria->addCondition("codocu=:vcodocu");
+                $criteria->params=array(":vcodocu"=>$valor);
+		
+		$data=CHtml::listData(Tenenciasproc::model()->findAll($criteria),
+		  //$data=CHtml::listData(	Direcciones::model()->findAll(),
+												"id",
+												"auxiliar"
+											
+												); 
+			echo CHtml::tag('option', array('value'=>null),CHtml::encode('Escoja un evento'),true);
+			foreach($data as $value=>$name) { 
+			    echo CHtml::tag('option', array('value'=>$value),CHtml::encode($name),true);
+			   } 
+     }
+               
+            }            
+            
+            
 
 }

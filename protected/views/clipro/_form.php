@@ -13,7 +13,7 @@
        //  'validateOnSubmit'=>true,
        //  'validateOnChange'=>true       
     // ),
-	'enableAjaxValidation'=>true,
+	'enableAjaxValidation'=>false,
 	
 )); ?>
 
@@ -42,8 +42,11 @@
 	
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'codpro'); ?>
-		<?php echo $form->textField($model,'codpro',array('size'=>6,'maxlength'=>6,'disabled'=>'disabled')); ?>
+		<?php echo $form->labelEx($model,'codpro'); 
+               // var_dump(yii::app()->settings->get('general','general_codigomanualempresa'));
+                $confx=(yii::app()->settings->get('general','general_codigomanualempresa')=='1');
+                ?>
+		<?php echo $form->textField($model,'codpro',array('size'=>6,'maxlength'=>6,'disabled'=>($confx)?'':'disabled')); ?>
 		<?php echo $form->error($model,'codpro'); ?>
 	</div>
 

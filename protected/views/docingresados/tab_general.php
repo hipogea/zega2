@@ -81,17 +81,17 @@
 		<?php  
                 if(!$model->isNewRecord and count($model->procesoactivo)>0){
                     echo Chtml::label("Proceso Actual:","4nfkg85");
-                echo Chtml::textField('idtextyyenencfia',$model->procesoactivo[0]->tenenciasproc->eventos->descripcion,array('size'=>30,'disabled'=>'disabled')); 
-                   echo Chtml::textField('ivbgetcfia',$model->procesoactivo[0]->tenenciastrab->trabajadores->ap,array('size'=>30,'disabled'=>'disabled')); 
+                echo Chtml::textField('idtextyyenencfia',$procesoactivo->tenenciasproc->eventos->descripcion,array('size'=>30,'disabled'=>'disabled')); 
+                   echo Chtml::textField('ivbgetcfia',$procesoactivo->tenenciastrab->trabajadores->ap,array('size'=>30,'disabled'=>'disabled')); 
                       if(!$esfinal) ///si no es final enornce spina semaforo
                       {$this->widget('ext.semaforo.Semaforo',
                       array(
-                          'valores'=>ARRAY(0,$model->procesoactivo[0]->tenenciasproc->nhorasverde,$model->procesoactivo[0]->tenenciasproc->nhorasnaranja),
+                          'valores'=>ARRAY(0,$procesoactivo->tenenciasproc->nhorasverde,$procesoactivo->tenenciasproc->nhorasnaranja),
                               'asc'=>-1,
-                             'valor'=>$model->procesoactivo[0]->horaspasadas(),
+                             'valor'=>$procesoactivo->horaspasadas(),
                       )
                         ); 
-                       echo Chtml::textField('idtex45encfia',$model->procesoactivo[0]->tiempopasado(),array('size'=>9,'disabled'=>'disabled')); 
+                       echo Chtml::textField('idtex45encfia',$procesoactivo->tiempopasado(),array('size'=>9,'disabled'=>'disabled')); 
                   
                       }else{ //en caso de ser final
                         echo Chtml::image(Yii::app()->getTheme()->baseUrl.'/img/'.'45070.png','',array('width'=>25,'height'=>25)); 
@@ -242,14 +242,14 @@
         
         <?php 
         if(!$esfinal) {
-            if(strlen($model->procesoactivo[0]->codocuref)>0){
+            if(strlen($procesoactivo->codocuref)>0){
                echo  $this->renderPartial('//site/celular', array('form'=>$form,'model'=>$model),TRUE);
              
              }else{  ?>
             <div style="font-family:verdana;color:#000; font-size: 13px; text-shadow: #aaa 1px 0px 1px;border-style:solid;border-radius:8px; margin:6px;padding:6px;width:350px;background-color:#f3f3eb; border-color:#ffce08;border-width:1px;">
 		No puede subir archivos, mientras no especifique el tipo y el 
                  Número de documento en el proceso activo  <?php
-                echo $model->procesoactivo[0]->tenenciasproc->eventos->descripcion
+                echo $procesoactivo->tenenciasproc->eventos->descripcion
                 ?>
 	    </div>
          <?php  } 

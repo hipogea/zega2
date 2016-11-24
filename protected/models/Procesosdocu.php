@@ -240,8 +240,33 @@ class Procesosdocu extends CActiveRecord
     
     
     public function chkrequisitos($attribute,$params) {
-		if(!$this->cumplerequisitoprevio())
-                    $this->adderror('hidproc','Este proceso no se puede efectuar porque hay un requisidto previo que cumplir :'.  Docingresados::model()->findByPk($this->hiddoci)->procesoactivo[0]->tenenciasproc->eventos->descripcion);
+           $cumple=$this->cumplerequisitoprevio();
+		if(!$cumple){
+                    
+                    $requisito= Eventos::model()->findByPk(
+                                                            Tenenciasproc::model()->findByPk(
+                                                                                            Tenenciasproc::model()->findByPk($this->hidproc)->hidprevio
+                                                                                            )->hidevento
+                                                        )->descripcion;
+                    /* var_dump( Tenenciasproc::model()->findByPk(
+                               Tenenciasproc::model()->findByPk($this->hidproc)->hidprevio
+                                                                                            )->id);die();*/
+                   // var_dump(Tenenciasproc::model()->findByPk($this->hidproc)->hidprevio);die();
+                   // var_dump(Tenencias::model()->findByPk($this->hidproc));die();
+                   // var_dump($requisito);die();
+                    $this->adderror('hidproc',' Hay un requisito previo que  cumplir :'.$requisito.'  Revise la configuracion de las reglas');
+                }
+                
+                //ahora veamos si algun chistoso esta intennado procesar 
+                // con un TENENCIAS PROC DISTINTO AL DOCUMENTO ACTUAL
+                $regten=  Tenenciasproc::model()->findByPk($this->hidproc);
+                $doci=Docingresados::model()->findByPk($this->hiddoci);
+               /* var_dump($this->hidproc);
+                var_dump($regten->codocu);var_dump($doci->tipodoc);
+                var_dump(!$regten->codocu==$doci->tipodoc);*/
+                if(!($regten->codocu==$doci->tipodoc))
+                     $this->adderror('hidproc',' Este proceso de '.$regten->eventos->descripcion."  pertenece al documento ".$regten->documentos->desdocu."  Mientras que el documento a procesar es un documento ".$doci->docus->desdocu);
+               
            
         
     }

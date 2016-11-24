@@ -594,7 +594,8 @@ const CAMPO_COLECTOR='mf_colector';
       var_dump($tinicial);echo "tiniicial   <br>";
        var_dump($tfinal);echo "tfinal <br>";*/
          $diferencia=$tfinal-$tinicial;
-         $segano=60*60*24*7*30*12;
+         IF($diferencia >0){
+              $segano=60*60*24*7*30*12;
          $segmes=60*60*24*7*30;
          $segdia=60*60*24;
          $seghora=60*60;
@@ -614,8 +615,13 @@ const CAMPO_COLECTOR='mf_colector';
        $tiempopasad.=($horas > 0)?" ".$horas."h ":"";
        $tiempopasad.=($minutos > 0)?" ".$minutos."min ":"";
        $tiempopasad.=($segundos > 0)?" ".$segundos."s ":"";
-
        Return $tiempopasad;
+         }else{
+             return "  ";
+         }
+        
+
+       
 
 
 
@@ -1422,6 +1428,29 @@ if(!$mensaje->save())
         return 'M';
     }
     
+    //Esta fduncion es una capa para estabelcer dirfencias entre fecha 
+    //en los difernertes motores de Base de Datos  sqlserver, MYSQL, POSTGRES ..etc DATEDIFF, DATE MIN ETC 
+    public static function dbExpresionTiempoPasado($nombrecampofecha){
+        $dri=yii::app()->db->getDriverName();
+        //revisar la propeiedad     " yii::app()->db->driverMap"  que contiene las abreciatua de odoas las bases de datos
+         $expresion="";
+        switch ( $dri ){
+                case "mysql":
+                    $expresion=" TIMESTAMPDIFF(HOUR,".$nombrecampofecha.",now()) ";
+                    break;
+                case "pgsql":
+                   throw new CHttpException(500,__CLASS__."---".__FUNCTION__." No se encontraron expresiones apra este tipo de MOTOR DE BASE DE DATPOS  ".$dri);
+     break;
+                case "image/png":
+                    throw new CHttpException(500,__CLASS__."---".__FUNCTION__." No se encontraron expresiones apra este tipo de MOTOR DE BASE DE DATPOS  ".$dri);
+      break;
+                default:
+                    throw new CHttpException(500,__CLASS__."---".__FUNCTION__." No se encontraron expresiones apra este tipo de MOTOR DE BASE DE DATPOS  ".$dri);
+     
+                    break;
+            }
+            return $expresion;
+    }
     
 
 }//fin de la clase Mifactoria

@@ -30,7 +30,7 @@ class Clipro extends ModeloGeneral
 	{
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
-		return array(
+		$reglas= array(
 			//array('codpro', 'required'),
 			// array('codpro', 'length', 'max'=>6),
 			array('codpro,despro,codestado, codocu, direcciontemp,nombrecomercial,telpro, rucpro,socio', 'safe', 'on'=>'insert,update'),
@@ -56,6 +56,15 @@ class Clipro extends ModeloGeneral
 			// Please remove those attributes that should not be searched.
 			array('codpro, despro, rucpro,socio', 'safe', 'on'=>'search'),
 		);
+               
+               IF(yii::app()->settings->get('general','general_codigomanualempresa')=='1'){
+                  $reglas[]=array('codpro', 'match', 'pattern'=>"/^[0-9]+$/",'message'=>'El codigo del proveedor no es el correcto','on'=>'insert,BATCH_INS');			
+		 $reglas[]=array('codpro', 'required','message'=>'El codigo del proveedor es obligatorio','on'=>'insert,BATCH_INS');			
+		  
+               }
+                      
+               
+               return  $reglas;	  
 	}
 
 
@@ -99,8 +108,14 @@ class Clipro extends ModeloGeneral
 			$this->prefijo='97';
 			$this->codocu='360';
 			$this->codestado='10'; //creado
-			$gg=new Numeromaximo;
-			$this->codpro=$gg->numero($this,'correlativo','maximovalor',4,'prefijo');
+                        IF(!yii::app()->settings->get('general','general_codigomanualempresa')=='1'){
+                           $gg=new Numeromaximo;
+			 $this->codpro=$gg->numero($this,'correlativo','maximovalor',4,'prefijo');
+			    
+                        }
+                        
+                         
+                        
 			//  $this->codpro='97'.Numeromaximo::numero($this,'correlativo','maximovalor',4);
 			// $this->codpro='97'.Numeromaximo::numero($this->model(),'codpro','maximovalor',4);
 			//$this->cod_estado='01';

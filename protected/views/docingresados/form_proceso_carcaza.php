@@ -49,6 +49,7 @@
 		<?php
                echo $this->renderpartial('form_proceso',array(
                     'model'=>$model,
+                   'modelopadre'=>$modelopadre,
                     'codtenencia'=>$codtenencia,
                     'id'=>$id,
                    'form'=>$form

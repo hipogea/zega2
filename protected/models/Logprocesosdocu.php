@@ -35,7 +35,7 @@ class Logprocesosdocu extends CActiveRecord
             array('notice', 'required'),
             array('iduser, idsesion', 'numerical', 'integerOnly'=>true),
             array('codocu', 'length', 'max'=>3),
-            array('notice', 'length', 'max'=>6),
+            array('notice', 'length', 'max'=>10),
             array('fechacre', 'length', 'max'=>18),
             array('proceso', 'length', 'max'=>100),
             array('hidref', 'length', 'max'=>20),

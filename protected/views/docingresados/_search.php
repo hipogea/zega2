@@ -121,15 +121,7 @@ $form=$this->beginWidget('CActiveForm', array(
 					?>
 	</div>
          
-         <div class="row">
-		<?php echo $form->labelEx($model,'color'); ?>
-		<?php  $datos = array('#07a204'=>'verde','#f1bd02'=>'Naranja','#f5143e'=>'Rojo','#d8d5d2'=>'Plomo');
-                
-                
-                
-					echo $form->DropDownList($model,'color',$datos, array('empty'=>'--Seleccione un estado --')  )
-					?>
-	</div>
+         
          
          
 	<div class="row">
@@ -162,14 +154,7 @@ $form=$this->beginWidget('CActiveForm', array(
 		</div>
 
 	
-		<div class="row">
-		<?php echo $form->label($model,'codep'); ?>
 		
-				<?php  $datos = CHtml::listData(Embarcaciones::model()->findAll(array('order'=>'nomep')),'codep','nomep');
-					echo $form->DropDownList($model,'codepv',$datos, array('empty'=>'--Seleccione una Embarcacion --')  )
-					?>
-		</div>
-	
 	
 
 	
@@ -281,7 +266,7 @@ $form=$this->beginWidget('CActiveForm', array(
 	
 	<div class="row">
 			<?php echo $form->label($model,'tipodoc'); ?>
-			<?php  $datos = CHtml::listData(Documentos::model()->findAll(array("condition"=>"clase='D' ",'order'=>'desDOCU')),'coddocu','desdocu');
+			<?php  $datos = CHtml::listData(Documentos::model()->findAll(array("condition"=>"clase='D' ",'order'=>'desDOCU')),'coddocu','referencia');
 					echo $form->DropDownList($model,'tipodoc',$datos, array('empty'=>'--Seleccione un documento --')  );
 					//ECHO CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."nuevo.gif","",array("width"=>30,"height"=>15));
 			?>

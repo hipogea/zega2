@@ -60,7 +60,12 @@ class VwDoci extends CActiveRecord
 			array('texv, fechacrea', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id,color,d_fechain1,codtenencia,hidproc, codprov, fecha, fechain, correlativo, tipodoc, moneda, descorta, codepv, monto, codgrupo, codresponsable, creadopor, creadoel, texv, docref, codteniente, codlocal, numero, cod_estado, codocu, codtenencia, fechacrea, codocuref, nhorasnaranja, nhorasverde, numdocref, descripcion, ap, despro, rucpro, final', 'safe', 'on'=>'search'),
+			array('id,color,d_fechain1,codtenencia,hidproc, codprov, fecha,'
+                            . ' fechain, correlativo, tipodoc, moneda, descorta, codepv,'
+                            . ' monto,  codresponsable, '
+                            . ' docref, codteniente, codlocal, numero, codocu,'
+                            . ' codtenencia, fechacrea, codocuref, nhorasnaranja, nhorasverde,'
+                            . ' numdocref, descripcion, ap, despro, rucpro, final', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -87,37 +92,36 @@ class VwDoci extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'codprov' => 'Codprov',
+			//'id' => 'ID',
+			'codprov' => 'Empresa',
 			'fecha' => 'Fecha',
-			'fechain' => 'Fechain',
-			'correlativo' => 'Correlativo',
-			'tipodoc' => 'Tipodoc',
+			'fechain' => 'F Ing.',
+			'correlativo' => 'N. Correl',
+			'tipodoc' => 'T Doc',
 			'moneda' => 'Moneda',
-			'descorta' => 'Descorta',
-			'codepv' => 'Codepv',
+			'descorta' => 'Descr',
+			'codepv' => 'Referencia',
 			'monto' => 'Monto',
-			'codgrupo' => 'Codgrupo',
-			'codresponsable' => 'Codresponsable',
-			'creadopor' => 'Creadopor',
-			'creadoel' => 'Creadoel',
-			'texv' => 'Texv',
-			'docref' => 'Docref',
+			'codgrupo' => 'Cod Gr',
+			'codresponsable' => 'Responsable',
+			'texv' => 'Tex',
+			'docref' => 'Doc. R',
 			'codteniente' => 'Codteniente',
-			'codlocal' => 'Codlocal',
+			'codlocal' => 'Centro',
 			'numero' => 'Numero',
-			'cod_estado' => 'Cod Estado',
+			'cod_estado' => 'Est',
 			'codocu' => 'Codocu',
-			'codtenencia' => 'Codtenencia',
-			'fechacrea' => 'Fechacrea',
-			'codocuref' => 'Codocuref',
-			'nhorasnaranja' => 'Nhorasnaranja',
-			'nhorasverde' => 'Nhorasverde',
-			'numdocref' => 'Numdocref',
+			'codtenencia' => 'Tenencia',
+			'fechacrea' => 'F. Cr',
+			'codocuref' => 'Cod Ref',
+			'nhorasnaranja' => 'Nh Naranja',
+			'nhorasverde' => 'Nh Verde',
+			'numdocref' => 'Num Ref',
 			'descripcion' => 'Descripcion',
-			'ap' => 'Ap',
-			'despro' => 'Despro',
-			'rucpro' => 'Rucpro',
+			'ap' => 'Apellido',
+			'despro' => 'Empresa',
+                        'hidproc'=>'Proceso',
+			'rucpro' => 'RUC',
 			'final' => 'Final',
 		);
 	}
@@ -194,18 +198,13 @@ class VwDoci extends CActiveRecord
                       }  
                       
                       
-                      if(isset($_SESSION['sesion_Tenencias']))
-                    {
-			$criteria->addInCondition('codtenencia', $_SESSION['sesion_Tenencias'], 'AND');
-			  } ELSE {
-				$criteria->compare('codtenencia',$this->codprov,true);
-                      }  
+                      
                       
                 if(isset($_SESSION['sesion_Docingresados']))
                     {
 			$criteria->addInCondition('id', $_SESSION['sesion_Docingresados'], 'AND');
 			  } ELSE {
-				$criteria->compare('id',$this->codprov,true);
+				$criteria->compare('id',$this->id,true);
                       }      
                       
                       

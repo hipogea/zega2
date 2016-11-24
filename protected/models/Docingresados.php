@@ -98,7 +98,7 @@ class Docingresados extends ModeloGeneral
 			array('codresponsable', 'length', 'max'=>4,'on'=>'insert,update'),
 			array('creadopor', 'length', 'max'=>23,'on'=>'insert,update'),
 			array('creadoel', 'length', 'max'=>15,'on'=>'insert,update'),
-			array('fecha,codteniente,docref,numero,codlocal, fechain,conservarvalor,codteniente, codtenencia, texv', 'safe','on'=>'insert,update'),
+			array('fecha,montomoneda,codteniente,docref,numero,codlocal, fechain,conservarvalor,codteniente, codtenencia, texv', 'safe','on'=>'insert,update'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, codprov,conservarvalor, fecha, fechain, correlativo, tipodoc, moneda, descorta, codepv, monto, codgrupo, codresponsable, creadopor, creadoel, texv, docref', 'safe', 'on'=>'search'),
@@ -153,25 +153,26 @@ class Docingresados extends ModeloGeneral
 	{
 		return array(
 			'id' => 'ID',
-			'codprov' => 'Remitente',
-			'fecha' => 'Fecha Doc',
-			'fechain' => 'Fecha ingreso',
-			'correlativo' => ' Numero de ingreso',
-			'tipodoc' => 'Documento',
+			'codprov' => 'Empresa',
+			'fecha' => 'F. Doc',
+			'fechain' => 'F. ingr',
+			'correlativo' => 'Correlativo',
+			'tipodoc' => 'Docum',
 			'moneda' => 'Moneda',
 			'descorta' => 'Descripcion',
-			'codepv' => 'Referencia',
+			'codepv' => 'Ref',
 			'monto' => 'Monto',
 			'codgrupo' => 'Grupo',
-			'codresponsable' => 'Responsable',
+			'codresponsable' => 'Resp',
 			'creadopor' => 'Creadopor',
 			'creadoel' => 'Creadoel',
 			'texv' => 'Detalle',
-			'docref' => 'Referencia u OM',
+			'docref' => 'Ref.',
 			'codlocal' => 'Centro',
-			'codteniente' => 'Apoderado',
+			'codteniente' => 'Pers.',
+                    'codtenencia' => 'Tenencia',
 				'conservarvalor' => 'Preservar valores ',
-			'numero'=>'Numero Doc.',
+			'numero'=>'Numero',
 		);
 	}
 
@@ -198,6 +199,11 @@ class Docingresados extends ModeloGeneral
                                     
                     
                 }
+                if(!($this->moneda==yii::app()->setings->get('moneda','moneda_default')))
+                        $this->montomoneda=yii::app()->tipocambio->getCambio(
+                                $this->moneda,
+                                yii::app()->setings->get('moneda','moneda_default')
+                                )*$this->monto;
 	return parent::beforeSave();
 				}
 	
@@ -388,5 +394,9 @@ class Docingresados extends ModeloGeneral
                       )->where(
                               ""
                               )->group("codprov")->queryAll();
-   }     
+   } 
+   
+   
+   
+   
 }

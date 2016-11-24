@@ -92,7 +92,7 @@
 				'theme' => 'default',
 				'tabs' => array(
 					'Inicio'=>array('id'=>'tab_',
-						'content'=>$this->renderPartial('tab_general', array('form'=>$form,'model'=>$model,'esfinal'=>$esfinal),TRUE)
+						'content'=>$this->renderPartial('tab_general', array('form'=>$form,'procesoactivo'=>$model->procesoactivo[0],'model'=>$model,'esfinal'=>$esfinal),TRUE)
 					),
                                     'Adjuntos'=>array('id'=>'tab_g',
 						'content'=>$this->renderPartial('tab_adjuntos', array('form'=>$form,'model'=>$model,'esfinal'=>$esfinal),TRUE)

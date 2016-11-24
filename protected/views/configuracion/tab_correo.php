@@ -26,12 +26,16 @@
 	<?php echo $form->textField($model,'email_cuentahost',array('size'=>40,'maxlength'=>40)); ?>
 	<?php echo $form->error($model,'email_cuentahost'); ?>
 </div>
-
+<div class="row">
+	<?php echo $form->labelEx($model,'email_nombrewebmaster'); ?>
+	<?php echo $form->textField($model,'email_nombrewebmaster',array('size'=>60,'maxlength'=>60)); ?>
+	<?php echo $form->error($model,'email_nombrewebmaster'); ?>
+</div>
 
 <div class="row">
-	<?php //echo $form->labelEx($model,'email_passwordhost'); ?>
-	<?php //echo $form->textField($model,'email_passwordhost',array('value'=>'','size'=>20,'maxlength'=>20)); ?>
-	<?php //echo $form->error($model,'email_passwordhost'); ?>
+	<?php echo $form->labelEx($model,'email_passwordhost'); ?>
+	<?php echo $form->passwordField($model,'email_passwordhost',array('value'=>'','size'=>20,'maxlength'=>20)); ?>
+	<?php echo $form->error($model,'email_passwordhost'); ?> 
 </div>
 
 <div class="row">

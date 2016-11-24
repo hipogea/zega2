@@ -399,6 +399,14 @@ $mo=New Alinventario();
 
 
 	public function actionPio() {
+            $registro=New VwDocuIngresados;
+            $datos=$registro->datosParaLineaTiempo(19);
+            $cuantos=count($datos);
+            print_r($registro->datosParaLineaTiempo(19)[0]);
+            echo "<br>";
+             print_r($registro->datosParaLineaTiempo(19)[$cuantos-1]);die();
+            
+            
             echo MiFactoria::tiempopasado('2016-11-22 18:34:42'); die();
             $cifrax= base64_encode($cifra);
            echo "encriptado  ". var_dump($cifrax)."<br>";

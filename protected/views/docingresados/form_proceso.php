@@ -20,7 +20,7 @@
 		<?php echo $form->labelEx($model,'hidtra'); ?>
 		<?php  
                 //$criterio=
-                 $criteriox=New CDbCriteria;
+                $criteriox=New CDbCriteria;
                 $criteriox->addCondition("codte=:vcodte");
                 if(is_null($codtenencia)){
                     $criteriox->params=array(":vcodte"=>$model->docingresados->codtenencia);
@@ -29,29 +29,29 @@
                    
                 }
                // var_dump($codtenencia);var_dump($criteriox->condition);var_dump($criteriox->params);die();
-                $datosfilas=Tenenciastraba::model()->
+               $datosfilas=Tenenciastraba::model()->
                         findAll($criteriox);
                 $datos =CHtml::listData($datosfilas,
                         'id','trabajadores.ap');
-                $trabajadorpordefecto=yii::app()->user->getField('codtra');
-              $claveencontrada=null;
-                foreach(  $datosfilas as $fila     ){
+              //  $trabajadorpordefecto=yii::app()->user->getField('codtra');
+              //$claveencontrada=null;
+               /* foreach(  $datosfilas as $fila     ){
                    if($fila['codtra']==$trabajadorpordefecto){
                        $claveencontrada=$fila['id'];
                    }
                }
-                unset($datosfilas);
+                unset($datosfilas);*/
                 //$claveencontrada=12;
-               if(is_null($claveencontrada)) {
+              // if(is_null($claveencontrada)) {
                    echo $form->DropDownList($model,'hidtra',$datos, array('empty'=>'--Llene el apoderado--'
-                  ));
+                  ));/*
                }else{
                   echo $form->DropDownList($model,'hidtra',$datos, array('empty'=>'--Llene el apoderado--','options'=>
                              array(
                                $claveencontrada=>array('selected'=>true)
                                  )
                   )); 
-               }
+               }*/
 		
 					?>
 		<?php echo $form->error($model,'hidtra'); ?>
@@ -62,13 +62,15 @@
 		<?php echo $form->labelEx($model,'hidproc'); ?>
 		<?php  
                 $criterio=New CDbCriteria;
-                $criterio->addCondition("codte=:vcodte");
+                $criterio->addCondition("codte=:vcodte and codocu=:vcodocu");
                 if(is_null($codtenencia)){
-                    $criterio->params=array(":vcodte"=>$model->docingresados->codtenencia);
+                    $criterio->params=array(":vcodocu"=>$modelopadre->tipodoc,":vcodte"=>$model->docingresados->codtenencia);
                 }else{
-                   $criterio->params=array(":vcodte"=>$codtenencia);
+                   $criterio->params=array(":vcodocu"=>$modelopadre->tipodoc,":vcodte"=>$codtenencia);
                    
                 }
+              /*  echo $criterio->condition;
+                print_r($criterio->params);*/
                 $datos = CHtml::listData(Tenenciasproc::model()->
                         findAll($criterio),
                         'id','eventos.descripcion');

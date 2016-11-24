@@ -21,6 +21,7 @@ $this->menu=array(
 	'general_userauto', ///porcenytaje de exceso para la caja chica
         'general_directorioimg', ///porcenytaje de exceso para la caja chica
          'general_nregistrosporcarpeta', ///porcenytaje de exceso para la caja chica
+            'general_codigomanualempresa',
 'documentos_numeromaxbloqueos',
 	'documentos_docmascara',
 	'documentos_selloagua',
@@ -54,7 +55,8 @@ $this->menu=array(
 	'email_servemail',///mail.neotegnia.com
 	'email_smtpauth',  //=true
 	'email_cuentahost',//jramirez@neotegnia.com
-	
+	'email_nombrewebmaster',
+            'email_passwordhost',
             
 
 	),

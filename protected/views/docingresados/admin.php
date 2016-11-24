@@ -58,6 +58,7 @@ $this->renderPartial('_search',array(
                       ),
 		
 		//'desdocu',
+            'tipodoc',
 		array('name'=>'correlativo','type'=>'raw','value'=>'CHTml::openTag("span",array("style"=>"border-radius:3px;padding:4px;background-color:$data->color"))."     ".CHTml::closeTag("span")." .".CHTml::link($data->correlativo,yii::app()->createUrl("docingresados/update",array("id"=>$data->id)),array("target"=>"_blank"))'),
 		'id',
             'numero',
@@ -81,7 +82,7 @@ $this->renderPartial('_search',array(
 		'numdocref',
             array(
 			'name'=>'cuantoshay','type'=>'raw',
-			'value'=>'Chtml::image(Yii::app()->getTheme()->baseUrl.DIRECTORY_SEPARATOR."img".DIRECTORY_SEPARATOR."attach_2.png").$data->cuantosfileshay()','htmlOptions'=>array('width'=>'30')
+			'value'=>'Chtml::image(Yii::app()->getTheme()->baseUrl.DIRECTORY_SEPARATOR."img".DIRECTORY_SEPARATOR."attach_2.png").CHtml::openTag("span",array("class"=>"label badge-warning"),true).$data->cuantosfileshay()','htmlOptions'=>array('width'=>'30')
 		),
 		'ap',
             'descripcion',
@@ -133,7 +134,7 @@ $this->renderPartial('_search',array(
 			),
 ))); ?>
 
-<div class="row">
+
 		<?php
 				$botones=array(
 					
@@ -166,7 +167,14 @@ $this->renderPartial('_search',array(
                             ),                           
                             'visiblex' => array('10'),
 
-                        ),		
+                        ),
+                                    
+                            'ok'=>array(
+						'type'=>'B',
+						'ruta'=>array($this->id.'/procesavarios',array()),//apreuba guia
+						'visiblex'=>array('10'),
+                                            ),        
+                                    
 
 			);
 				$this->widget('ext.toolbar.Barra',
@@ -181,7 +189,7 @@ $this->renderPartial('_search',array(
 				); ?>	
 
 
-</div>
+
 
 <?php $this->endWidget(); ?>
 

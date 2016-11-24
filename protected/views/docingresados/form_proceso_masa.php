@@ -6,7 +6,7 @@
 
 <div class="division">
 <div class="wide form">
-
+<?php MiFactoria::titulo("Procesar documentos","gear");   ?>
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'docingresados-form',
 	'enableClientValidation'=>false,
@@ -46,7 +46,7 @@
 		</div>
 
    <div class="row">
-		<?php echo CHtml::label(uniqid(),'Centro'); ?>
+		<?php //echo CHtml::label(uniqid(),'Centro'); ?>
 		<?php  $datos = CHtml::listData(Centros::model()->findAll(),'codcen','nomcen');
 		  echo  CHtml::DropDownList(ucfirst(get_class($model)).'[codprov]','',$datos, array(  'ajax' => array('type' => 'POST', 
 						'url' => CController::createUrl($this->id.'/cargatenencias'), //  la acción que va a cargar el segundo div 
@@ -172,6 +172,7 @@ $this->endWidget();
 		
 		array('name'=>'correlativo','type'=>'raw','value'=>'CHTml::openTag("span",array("style"=>"border-radius:3px;padding:4px;background-color:$data->color"))."     ".CHTml::closeTag("span")." .".$data->correlativo'),
 		'numero',
+              'tipodoc',
 		'moneda',
 		'monto',
             'codtenencia',

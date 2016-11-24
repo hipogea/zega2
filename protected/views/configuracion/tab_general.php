@@ -65,6 +65,13 @@
 		<?php echo $form->error($model,'general_nregistrosporcarpeta'); ?>
 	</div>
         
+        <div class="row">
+		<?php echo $form->labelEx($model,'general_codigomanualempresa'); ?>
+		<?php echo $form->checkBox($model,'general_codigomanualempresa'); ?>
+                    <?php // echo $form->error($model,'general_codigomanualempresa'); ?>
+	</div>
+        
+        
         
 	<BR>
 

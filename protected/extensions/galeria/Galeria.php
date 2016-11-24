@@ -109,7 +109,7 @@ private function abreborde($imagen=null){
 	   echo CHTml::link(
                                 CHTml::image(  ($this->esimagen($extension))?$imagen:$this->_baseUrl.DIRECTORY_SEPARATOR.'img'.DIRECTORY_SEPARATOR.$extension.'.png'           ,
                                                     $imagensola,
-                                                    array('class'=>'imagen')
+                                                    array('class'=>'imagenmia')
                                         ),
                                     $imagen,                               
                                         //array('onclick'=>"document.images['".$this->idimagen."'].src='".$this->rutaimagenes.$imagen."';")
