@@ -417,7 +417,7 @@
                // 'fechanominal',
               
                 
-               ARRAY('name'=>'iduser','type'=>'raw','value'=>'CHtml::link(CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."page_white_edit.png"),"#", array("onclick"=>\'$("#cru-frame3").attr("src","\'.Yii::app()->createurl(\'/docingresados/modificaproceso\', array(\'id\'=> $data->id ) ).\'");$("#cru-dialog3").dialog("open"); return false;\' ) )','htmlOptions'=>array('width'=>3)),
+               ARRAY('name'=>'iduser','type'=>'raw','value'=>'CHtml::link(CHtml::openTag("span",array("class"=>"icon icon-pencil icon-blue icon-fuentesize16"),true),"#", array("onclick"=>\'$("#cru-frame3").attr("src","\'.Yii::app()->createurl(\'/docingresados/modificaproceso\', array(\'id\'=> $data->id ) ).\'");$("#cru-dialog3").dialog("open"); return false;\' ) )','htmlOptions'=>array('width'=>3)),
 
                array(
 			'name'=>'fechanominal',
@@ -433,7 +433,7 @@
 			'value'=>'(!is_null($data->fechafin))?date("d/m/y", strtotime($data->fechafin)):"--"','htmlOptions'=>array('width'=>10)
 		),
                array('name'=>'tiempo','type'=>'raw','value'=>'($data->tiempopasado())','htmlOptions'=>array('width'=>120)),
-            array('name'=>'iduser', 'type'=>'html','value'=>'$data->iduser.CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."user_business.png","",array())'),
+            array('name'=>'iduser', 'type'=>'html','value'=>'$data->iduser.CHtml::openTag("span",array("class"=>"icon icon-user icon-blue icon-fuentesize16"),true)'),
         
                 //'titulo',
               //  array('htmlOptions'=>array('width'=>24),'name'=>'st.','header'=>'st', 'type'=>'raw','value'=>'CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"].$data->coddocu.$data->estadodetalle.".png")'),

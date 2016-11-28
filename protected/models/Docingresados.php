@@ -74,6 +74,8 @@ class Docingresados extends ModeloGeneral
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
+                      array('numero+tipodoc+codprov', 'application.extensions.uniqueMultiColumnValidator','on'=>'insert,update'),
+		
 			array('monto', 'numerical','on'=>'insert,update'),
 			array('monto', 'required','message'=>'Debes de llenar el monto','on'=>'insert,update'),
 			array('codlocal', 'required','message'=>'Debes de llenar el centro','on'=>'insert,update'),
@@ -199,10 +201,10 @@ class Docingresados extends ModeloGeneral
                                     
                     
                 }
-                if(!($this->moneda==yii::app()->setings->get('moneda','moneda_default')))
+                if(!($this->moneda==yii::app()->settings->get('general','general_monedadef')))
                         $this->montomoneda=yii::app()->tipocambio->getCambio(
                                 $this->moneda,
-                                yii::app()->setings->get('moneda','moneda_default')
+                                yii::app()->settings->get('general','general_monedadef')
                                 )*$this->monto;
 	return parent::beforeSave();
 				}
@@ -217,12 +219,14 @@ class Docingresados extends ModeloGeneral
                    foreach($tenencia->tenenciastraba as $fila){
                        
                        if($fila->codtra==$this->codteniente){
-                            MiFactoria::Mensaje('error', 'DOCINGFRESADO-AFTERSAVE   , PROCESANDO CORTO');
+                          //  MiFactoria::Mensaje('error', 'DOCINGFRESADO-AFTERSAVE   , PROCESANDO CORTO');
                 
-                          if( !$this->procesarcorto(
+                         if(
+                                  !$this->procesarcorto(
                                    $fila->id,
                                    $tenencia->tenenciaprocauto[0]->id, 
-                                   date("Y-m-d H:i:s")))
+                                   $this->fechain)
+                                          )
                                   //die();
                            break;
                        }
@@ -230,10 +234,10 @@ class Docingresados extends ModeloGeneral
                    } 
                     
                 }
-		MiFactoria::Mensaje('error','DOCINGFRESADO-AFTERSAVE se detecto nuevo')	;						   		//$this->c_salida='1';
+		//MiFactoria::Mensaje('error','DOCINGFRESADO-AFTERSAVE se detecto nuevo')	;						   		//$this->c_salida='1';
 		} else
 			{
-			MiFactoria::Mensaje('error','DOCINGFRESADO-AFTERSAVE   se dertecto ggrabado')	;							
+			//MiFactoria::Mensaje('error','DOCINGFRESADO-AFTERSAVE   se dertecto ggrabado')	;							
 										//$this->ultimares=" ".strtoupper(trim($this->usuario=Yii::app()->user->name))." ".date("H:i")." :".$this->ultimares;
 			}
 									return parent::afterSave();

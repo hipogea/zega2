@@ -325,13 +325,13 @@ return array(
         'charset' => 'utf8',
         ),*/
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=neotegni_base1',
+			'connectionString' => 'mysql:host=localhost;dbname=gearmari_flota',
 			'emulatePrepare' => true,
-			'username' => 'neotegni_julian',
+			'username' => 'gearmari_julian',
 			'password' => 'luchito',
 			'tablePrefix' => 'public_',
 			'charset' => 'utf8',
-                     'enableParamLogging'=>true,//desactivarlo en produccion
+                   //  'enableParamLogging'=>true,//desactivarlo en produccion
 		),
 		
 		
@@ -353,7 +353,7 @@ return array(
 		),
 		'log'=>array(
 			'class'=>'CLogRouter',
-
+/*
 			'routes'=>array(
 				array(
 					'class'=>'CFileLogRoute',
@@ -361,7 +361,12 @@ return array(
 					'levels'=>'error,warning', //agreagamos aqui el mail para probar los correos en modo DEBUG 
 					//'enabledParamLogging'=>true,
 				),
-                          /*  array(
+                        
+                            
+                            
+                            
+                            
+                              array(
                    'class'=>'CEmailLogRoute',
                    'levels'=>'error, warning',
                    'emails'=>'neotegnia@gmail.com',
@@ -374,8 +379,8 @@ return array(
 				array(
 					'class'=>'CWebLogRoute',
 				),
-				*/
-			),
+				
+			),*/
 		),
 	),
 

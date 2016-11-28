@@ -20,7 +20,7 @@ $('.search-button').click(function(){
 	return false;
 });
 $('.search-form form').submit(function(){
-	$.fn.yiiGridView.update('clipro-grid', {
+	$('#cliprogrid').yiiGridView('update', {
 		data: $(this).serialize()
 	});
 	return false;
@@ -37,7 +37,7 @@ $('.search-form form').submit(function(){
 </div><!-- search-form -->
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
-	'id'=>'clipro-grid',
+	'id'=>'cliprogrid',
 	'dataProvider'=>$model->search(),
 	  'itemsCssClass'=>'table table-striped table-bordered table-hover',
 	//'filter'=>$model,

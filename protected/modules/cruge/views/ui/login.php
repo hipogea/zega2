@@ -1,20 +1,13 @@
 
+	
 	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-<?php echo CrugeTranslator::t('logon',"Login"); ?>
+<?php //echo CrugeTranslator::t('logon',"Login"); ?>
 <?php if(Yii::app()->user->hasFlash('loginflash')): ?>
 <div class="flash-error">
 	<?php echo Yii::app()->user->getFlash('loginflash'); ?>
 </div>
 <?php else: ?>
-<div class="wide form">
+<div style="height:500px;margin-left:200px; padding-left:50px; display:block; background-image:url('<?php echo Yii::app()->getTheme()->baseUrl.DIRECTORY_SEPARATOR."img".DIRECTORY_SEPARATOR."inicio.png"; ?>');background-repeat: no-repeat;padding-top: 300px;">
 <?php
 $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'logon-form',
@@ -24,19 +17,19 @@ $form=$this->beginWidget('CActiveForm', array(
 	),
 )); ?>
 
-	<div class="row">
+	<div style="display:block;margin-left:10px;text-align: left;">
 		<?php echo $form->labelEx($model,'username'); ?>
 		<?php echo $form->textField($model,'username'); ?>
 		<?php echo $form->error($model,'username'); ?>
 	</div>
 
-	<div class="row">
+	<div style="display:block;margin-left:10px;text-align: left;">
 		<?php echo $form->labelEx($model,'password'); ?>
 		<?php echo $form->passwordField($model,'password'); ?>
 		<?php echo $form->error($model,'password'); ?>
 	</div>
 
-	<div class="row rememberMe">
+	<div style="display:block;margin-left:10px;text-align: left;">
 		<?php echo $form->checkBox($model,'rememberMe'); ?>
 		<?php echo $form->label($model,'rememberMe'); ?>
 		<?php echo $form->error($model,'rememberMe'); ?>

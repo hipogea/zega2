@@ -302,7 +302,9 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
 	 */
 	public function actionAdmin()
 	{
-		
+	 
+            
+            
             $model=new VwDoci('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['VwDoci']))

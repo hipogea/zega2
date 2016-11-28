@@ -235,7 +235,8 @@ class TrabajadoresController extends Controller
 			$model->attributes=$_POST['Trabajadores'];
 			if($model->save()) {
                // Yii::app()->user->setFlash('success', "..La carga inicial se ha anulado!");
-				$this->redirect(array('admin'));
+				 MiFactoria::mensaje('success','Se creo el trabajador');
+                            $this->redirect(array('admin'));
             }
 		}
 
@@ -260,7 +261,7 @@ class TrabajadoresController extends Controller
 		{
 			$model->attributes=$_POST['Trabajadores'];
             if($model->save()) {
-                Yii::app()->user->setFlash('success', "..Los datos se han grabado!");
+                MiFactoria::mensaje('success','Se actualizaron los datos');
                 $this->redirect(array('update','id'=>$model->codigotra));
             }
 		}

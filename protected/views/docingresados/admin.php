@@ -1,5 +1,4 @@
 <?php 
-
 $this->menu=array(
 	//array('label'=>'List Docingresados', 'url'=>array('index')),
 	array('label'=>'Nuevo', 'url'=>array('create')),
@@ -35,7 +34,10 @@ $this->renderPartial('_search',array(
 
 ?>
 </div>
-<?php $form=$this->beginWidget('CActiveForm', array(
+<?php
+//echo  CHtml::openTag("span",array("class"=>"icon icon-man icon-blue icon-fuentesize32")).'hola amiguito'.CHtml::closeTag("span");
+
+$form=$this->beginWidget('CActiveForm', array(
 	'id'=>'docingresados-admin'	
 )); ?>
 

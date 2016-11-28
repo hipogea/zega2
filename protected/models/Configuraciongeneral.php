@@ -110,7 +110,6 @@ public $materiales_verpresolpe;
 					materiales_rutaimagenesmateriales,
 					materiales_codigoservicio,
 					email_adminemail,
-					email_usamaildeusuario,
 					email_rutaficherosdeplantillas,
 					email_tiempodeespera,
 
@@ -120,7 +119,7 @@ public $materiales_verpresolpe;
 					email_cuentahost,email_nombrewebmaster',
 				'required','message'=>'Este dato es obligatorio'
 			),
-			array('email_passwordhost,email_nombrewebmaster,general_codigomanualempresa,transporte_umdefault,'
+			array('email_smptauth,email_usamaildeusuario,email_passwordhost,email_nombrewebmaster,general_codigomanualempresa,transporte_umdefault,'
                             . 'transporte_motivoot,general_nregistrosporcarpeta,transporte_rutafotos,'
                             . 'general_directorioimg,transporte_objenguia,general_userauto,inventario_auto,'
                             . 'inventario_bloqueado,inventario_mascaraubicaciones,materiales_contabilidad,'

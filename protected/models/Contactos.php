@@ -3,7 +3,7 @@
 /**
 
  */
-class Contactos extends CActiveRecord
+class Contactos extends ModeloGeneral
 {
 	/**
 	 * Returns the static model of the specified AR class.
@@ -20,7 +20,7 @@ class Contactos extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return Yii::app()->params['prefijo'].'contactos';
+		return '{{contactos}}';
 	}
 
 	/**
@@ -31,18 +31,23 @@ class Contactos extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('c_nombre', 'required','message'=>'Debes de colocar el nombre'),
-			array('c_hcod', 'length', 'max'=>6),
-			array('c_nombre, c_cargo, c_tel, c_mail', 'length','min'=>10, 'max'=>30),
-			array('c_mail', 'required','message'=>'El correo es un dato obligatorio'),
-			array('c_mail', 'match','pattern'=>'/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/','message'=>'El correo no es el apropiado'),
+			array('c_nombre', 'required','message'=>'Debes de colocar el nombre','on'=>'insert,update,BATCH_INS'),
+                         array('c_hcod', 'required', 'message'=>'El codigo de la empresa','on'=>'BATCH_INS'),
+                    array('c_hcod','exist','allowEmpty' => false, 'attributeName' => 'codpro', 'className' => 'Clipro','message'=>'Este proveedor no existe','on'=>'BATCH_INS'),
+			
+			array('c_hcod', 'length', 'max'=>6,'on'=>'insert,update,BATCH_INS'),
+			array('c_nombre, c_cargo, c_tel, c_mail', 'length','min'=>10, 'max'=>40,'on'=>'insert,update,BATCH_INS'),
+			array('c_mail', 'required','message'=>'El correo es un dato obligatorio','on'=>'insert,update,BATCH_INS'),
+			array('c_mail', 'match','pattern'=>'/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/','message'=>'El correo no es el apropiado','on'=>'insert,update,BATCH_INS'),
 			//array('creadopor, modificadopor', 'length', 'max'=>25),
 			//array('creadoel, modificadoel', 'length', 'max'=>20),
 			//array('correlativo', 'length', 'max'=>5),
 			//array('calificacion', 'length', 'max'=>1),
-			array('fecnacimiento', 'required','message'=>'Llenar la fecha de cumplea�os'),
+			array('fecnacimiento', 'required','message'=>'Llenar la fecha de cumplea�os','on'=>'insert,update'),
 			array('fecnacimiento', 'safe','on'=>'update'),
-			array('c_hcod', 'required','on'=>'creasolo'),
+        array('c_hcod', 'required','on'=>'creasolo'),
+        array('c_hcod, c_nombre, c_cargo, c_tel, c_mail,  correlativo, fecnacimiento, calificacion,c_nombre', 'safe', 'on'=>'insert,update,BATCH_INS'),
+		
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('c_hcod, c_nombre, c_cargo, c_tel, c_mail, creadopor, creadoel, modificadopor, modificadoel, correlativo, fecnacimiento, calificacion', 'safe', 'on'=>'search'),

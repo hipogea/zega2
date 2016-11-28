@@ -72,7 +72,7 @@ class TipocambioCompo extends CApplicationComponent
         from('{{tipocambio}}')->
         where($citer->condition,$citer->params)->queryScalar();
 
-
+//var_dump($citer->condition);var_dump($citer->params);die();
         if($compra!=false)
         {return $compra;}else{  throw new CHttpException(500,__CLASS__.' '.__FUNCTION__.'  '.__LINE__.'  No se ha registrado tipo de cambio compra para la moneda '.$moneda);
         }

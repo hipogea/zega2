@@ -397,8 +397,13 @@ $mo=New Alinventario();
 
 }
 
-
+public $layout='//layouts/column2';
 	public function actionPio() {
+           $this->layout='//layouts/column2';
+           echo  CHtml::openTag("span",array("class"=>"icon icon-man"),true);die();
+            
+            
+            
             $registro=New VwDocuIngresados;
             $datos=$registro->datosParaLineaTiempo(19);
             $cuantos=count($datos);

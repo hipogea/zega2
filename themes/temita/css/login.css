@@ -3,16 +3,17 @@ body {
     margin: 0px;
     padding:0px;
     overflow: hidden;
-    background-image: url('../img/inicio.png');
+   /* background-image: url('../img/inicio.png');*/
     
 }
 
 
-div.wide.form .row {
+row {
     clear: left;
 }
-div.wide.form label {
-    font-weight: bold;
+label {
+   
+    font-family: verdana;
     color: #fff;
     text-shadow: #ccc 1px 0px 1px;
     float: left;
@@ -20,26 +21,30 @@ div.wide.form label {
     margin-left: 10px;
     position: relative;
     text-align: left;
-    width: 100px;
+    width: 250px;
 }
-
-div.form input {
-    margin: 0.1em 0 0.1em 0;
-    -moz-box-shadow: inset 0px 1px 0px 0px #cae3fc;
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#79bbff', endColorstr='#0749ad');
-    background-color: rgba(242, 253, 255, 0.62);
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-    border: 3px solid rgba(188, 193, 204, 0.96);
+label {
+   
+    font-family: verdana;
+    color: #fff;
+    text-shadow: #ccc 1px 0px 1px;
+    float: left;
+    margin-right: 10px;
+    margin-left: 10px;
+    position: relative;
+    text-align: left;
+    width: 250px;
+}
+ .errorMessage {
+   
     display: inline-block;
     /* color: #469df5; */
     font-family: helvetica;
-    font-size: 12px;
+    font-size: 16px;
     /* font-weight: bold; */
     /* padding: 4px 4px; */
     text-decoration: none;
-    text-shadow: #ccc 1px 0px 1px;
-    border-radius: 5px;
-    border-radius: 5px;
+    text-shadow: #f00 1px 0px 1px;
+    color: red;
+   
 }
