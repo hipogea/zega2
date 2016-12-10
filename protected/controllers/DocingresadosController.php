@@ -9,6 +9,7 @@ class DocingresadosController extends Controller
 	public $layout='//layouts/column2';
 const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
 
+
 	/**
 	 * @return array action filters
 	 */
@@ -35,12 +36,12 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
         
         
         
-        public function accessRules()
+        public function accessRules() 
 	{
 		return array(
 			
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('modificaproceso','confirmalectura','limpiarcarro','borrafilamaletin','poneralcarro',   'procesavarios','cargatenencias','cargatrabajadores','cargaprocesos','borraarchivo','adjuntaarchivo','admin','ajaxcargaformtenencia','view','creaproceso','relaciona','recibevalor','create','update'),
+				'actions'=>array('indicadores',   'detalles','ajaxenviacorreoproceso','ajaxanulacion','certificadosdicapi',  'modificaproceso','confirmalectura','limpiarcarro','borrafilamaletin','poneralcarro',   'procesavarios','cargatenencias','cargatrabajadores','cargaprocesos','borraarchivo','adjuntaarchivo','admin','ajaxcargaformtenencia','view','creaproceso','relaciona','recibevalor','create','update'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -59,7 +60,8 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
 	 */
 	public function actionView($id)
 	{
-		$this->render('view',array(
+		//$this->layout = '//layouts/grafico';    
+            $this->render('view',array(
 			'model'=>$this->loadModel($id),
 		));
 	}
@@ -130,6 +132,9 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
 											Yii::app()->session['moneda'] = $model->moneda;  
 											Yii::app()->session['codepv'] = $model->codepv; 
 											Yii::app()->session['codresponsable'] = $model->codresponsable; 
+                                                                                        Yii::app()->session['codtenencia'] = $model->codtenencia; 
+                                                                                        Yii::app()->session['codgrupo'] = $model->codgrupo;
+                                                                                        Yii::app()->session['espeabierto'] = $model->espeabierto;
 											
 	}
 	
@@ -143,7 +148,8 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
 											unset(Yii::app()->session['tipodoc'] ); 
 											unset(Yii::app()->session['moneda'] ); 
 											unset(Yii::app()->session['codepv'] ); 
-											unset(Yii::app()->session['codresponsable'] ); 
+											unset(Yii::app()->session['codresponsable'] );
+                                                                                                unset(Yii::app()->session['espeabierto'] ); 
 	}
 	/**
 	 * Creates a new model.
@@ -164,6 +170,9 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
 			$model->moneda=Yii::app()->session['moneda'] ,   
 			$model->codepv=Yii::app()->session['codepv'] ,
 		$model->codresponsable=Yii::app()->session['codresponsable'],
+                            $model->codgrupo=Yii::app()->session['codgrupo'],
+                            $model->codtenencia=Yii::app()->session['codtenencia'],
+                             $model->espeabierto=(isset(Yii::app()->session['espeabierto']))?Yii::app()->session['espeabierto']:'0',
                         )
                         );
                 $model->codocu=self::CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS;
@@ -174,16 +183,17 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
 		{
 			$model->attributes=$_POST['Docingresados'];
 			if($model->save()) {
-                            MiFactoria::Mensaje('sucess','Se creó un nuevo registro');
+                            $model->refresh();
+                            MiFactoria::Mensaje('sucess','Se creó un nuevo registro con Id ( '.$model->id.' )  Correlativo :  [ '.$model->correlativo.'  ]' );
 			// if ($model->conservarvalor==0 ) 
 						//$this->enviacorreo($model);
 				$this->Creasesiones($model);
 				if ($model->conservarvalor==0 )
 				 $this->Destruyesesiones();
 			   
-				$this->redirect(array('view','id'=>$model->id));
+				$this->redirect(array('update','id'=>$model->id));
 				} ELSE {
-				   throw new CHttpException(404,'No se pudo grabar ');
+				   //PRINT_R($model->geterrors());
 				}
 		}
 
@@ -409,7 +419,7 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
 					//Close the dialog, reset the iframe and update the grid
 					echo CHtml::script("window.parent.$('#cru-dialog31').dialog('close');
 							window.parent.$('#cru-frame31').attr('src','');						
-					window.parent.$.fn.yiiGridView.update('resumenoc-grid');
+					window.parent.$.fn.yiiGridView.update('procesos-grid');
 					");
 
 				}
@@ -455,7 +465,11 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
             $formi=New CActiveForm;
             echo $this->renderpartial('form_proceso',
                     array(
-			'modelopadre'=>$modelopadre,'model'=>$model, 'id'=>$id,'codtenencia'=>$codtenencia,'form'=>$formi
+			'modelopadre'=>$modelopadre,
+                        'model'=>$model, 
+                        'id'=>$id,
+                        'codtenencia'=>$codtenencia,
+                        'form'=>$formi
 		),false,true);
             
         }
@@ -544,6 +558,7 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
                                         $registrodoc->registralog ('error',$identificador.' Este documento ya tiene un proceso marcado '.$procesoactual->tenenciasproc->eventos->descripcion.'como final.., no puede procesarlo mas ');
                                         }else{ //aca si se puede y comenzamos a verificar 
                                                      $marcador="";
+                                                     $todook=true;
                                             if($registrodoc->codtenencia==$registro->codte)
                                                                    { //Si esta PROCESANDO EN LA MISMA TENENCIA 
                                                                      $model=new Procesosdocu();
@@ -555,28 +570,107 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
                                                                              ///SE DEBE DE PARAR EL PROCESO CON UN ERROR 
                                                                              $registrodoc->registralog('error','Esta intentando registrar un proceso repetido y consecutivo en la misma tenencia');
                                                                             }*/
-                                                                     }else{ //SI ES CAMBIOPD  ETENCNIA 
+                                                         }else{ //SI ES CAMBIOPD  ETENCNIA 
                                                                          $marcador=" Tenencia Anterior : [".$registrodoc->codtenencia."]  Tenencia Actual [".$registro->codte."]";
+                                                                        //verificando que lanueva tenencia tengoa registradpo algun procedimietno con este codigo de docum,ento
+                                                                         //siquiera debe de haber uno
+                                                                         //ahora veamos si la tenencia actual tiene siquiera ´proceso con este codigod edocumetno
+                                                                            if(!count(Tenenciasproc::model()->findAll(
+                                                                                            "codte=:vcdote and codocu=:vcodocu",
+                                                                                                array(":vcdote"=>$registro->codte,
+                                                                                                    ":vcodocu"=>$registrodoc->tipodoc
+                                                                                                        )
+                                                                                                ))>0
+                                                                                    ){
+                                                                                $marcador=" Tenencia Actual [".$registro->codte."]  no tiene registrado ningun documento  del tipo [".$registrodoc->tipodoc."]";
+                                                                                $registrodoc->registralog('error',$identificador.'  Proceso con errores  '.$marcador  );
+                                                                                $todook=false;  
+                                                                            }
+                                                                                  
+        
+                                                                         
+                                                                         
                                                                          $model=new Procesosdocu('cambiotenencia');
                                                                         $model->codte=$registro->codte;
                                                                         $registrodoc->codtenencia==$registro->codte;
                                                                     }
-                                                        $model->hiddoci=$registrodoc->id;
-                                                        $model->fechanominal=$registro->fechanominal;
-                                                        $model->hidtra=$registro->hidtra;
-                                                        $model->hidproc=$registro->hidproc;
-                                                        $model->codocuref=$registro->codocuref;
-                                                        $model->numdocref=$registro->numdocref;
-                                                  if($model->save()){
-                                                      MiFactoria::Mensaje('notice', 'grabando');
-                                                      $registrodoc->registralog('success',$identificador.'  proceso exitoso '.$marcador  );
-                                                  }else{
-                                                      $registrodoc->registralog('error',$identificador.' '.yii::app()->mensajes->getErroresItem($model->geterrors()).'   -   '.$marcador); 
-                                                  }
-                                             }         
+                                                                    
+                                                        if($todook)  {
+                                                            
+                                                               
+                                                                $model->hiddoci=$registrodoc->id;
+                                                                $model->fechanominal=$registro->fechanominal;
+                                                                $model->hidtra=$registro->hidtra;
+                                                                $model->hidproc=$registro->hidproc;
+                                                                 $model->codocuref=$registro->codocuref;
+                                                                $model->numdocref=$registro->numdocref;
+                                                                                        if(yii::app()->user->id==1) {
+                                                                                                     $registrodoc->registralog('success',$identificador.'  proceso exitoso '.$marcador  );
+                                                                                                       
+                                                                                            }else{
+                                                                                                if($model->save()){
+                                                                                                        $registrodoc->registralog('success',$identificador.'  proceso exitoso '.$marcador  );
+                                                                                                            }else{
+                                                                                                                 $registrodoc->registralog('error',$identificador.' '.yii::app()->mensajes->getErroresItem($model->geterrors()).'   -   '.$marcador); 
+                                                                                                                } 
+                                                                                                    }
+                                                     
+                                                   
+                                                                 }
+                                         } ///fin de si es final         
          
   
-                           } //fin del foreach
+                           } //fin del foreach del maletin
+                           
+                           ///aqui enviar le mail de confirmacion del proceso
+                          
+                           if(Tenenciasproc::model()->findByPk($registro->hidproc)->esmensaje=='1' and yii::app()->user->id==1){
+                            //echo "murio";die();
+                               $arrayids=$registro::getIdsLog ('success',self::CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS);
+                             $proveedores=  Docingresados::clipro_from_ids( $arrayids);
+                            // var_dump($proveedores);die();
+                             
+                            $regview=new VwDoci;
+                             foreach($proveedores as $clave=>$valor){
+                                       //echo "<br>ddirecciones<br>" ;
+                                 $direcciones=Contactos::getListMailEmpresa($valor, self::CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS);
+                              // echo $direcciones;
+                             //  echo "<br>responder<br>" ;
+                              
+                                 $reply=yii::app()->user->email;
+                                //  echo $reply;
+                                 $titulo=Tenenciasproc::model()->findByPk($registro->hidproc)->eventos->descripcion;
+                                 // echo "<br>Titulo<br>" ;
+                                // echo $titulo;
+                               //  echo "<br>" ;
+                                //var_dump($regview->search_por_filtro_array($arrayids,$valor));die();
+                                 $prove=$regview->search_por_filtro_array($arrayids,$valor);
+                                 $columnas=$regview->array_columnas_proveedores();
+                                 $mensaje=Tenenciasproc::model()->findByPk($registro->hidproc)->msgexterno.
+                                         CHtml::openTag("br").
+                                         $this->renderPartial('listadomail',
+                                                 array(
+                                                     'proveedor'=>$prove,
+                                                     'arraycolumnas'=>$columnas,
+                                                 ),
+                                                 
+                                                 true,false);
+                                  // echo "<br>Mensaje<br>" ;
+                                
+                                // echo $mensaje;
+                                /// echo "<br>" ;
+                                  yii::app()->correo->correo_simple(
+                                           $direcciones,
+                                           $reply,
+                                           $titulo,
+                                           $mensaje
+                                           ) ;             
+                                               
+                                //echo "<br><br><br>Se acabo el bucle  <br><br><br>" ; 
+                                $direcciones="";
+                             }
+                           }
+                           
                            
                            
                            MiFactoria::mensaje('notice','Se realizo el proceso masivo , favor revise el log de procesos para verificar los mensajes');
@@ -785,6 +879,168 @@ public function actionborrafilamaletin()
 	}
 
      
+   public function actioncertificadosdicapi(){
+        $model=new Docingresados('search');
+		$model->unsetAttributes();  // clear any default values
+		if(isset($_GET['Docingresados']))
+			$model->attributes=$_GET['Docingresados'];
+                if ($this->isExportRequest()) { //<==== [[ADD THIS BLOCK BEFORE RENDER]]
+			//ECHO "SALIO";DIE();
+			$this->exportCSV($model->search(), array(
+					'nomep',
+					'codep',
+					'numdocref',
+					'descripcion',
+					'ap',
+					'despro',
+                            'codprov',
+					'rucpro',
+					'textv',
+					'codlocal',
+					'monto',
+					'moneda',
+					'descorta',
+					'correlativo',
+					'id',
+                            'fecha',
+					'fechain',
+					'numero',
+                            
+				)
+
+			);
+		} else {
+
+		$this->render('reportedicapi',array(
+			'model'=>$model,
+		));
+                }
+	}
    
+   public function actionajaxanulacion(){
+       if(yii::app()->request->isAjaxRequest){
+           if(isset($_POST['id'])){
+                $id=(integer)  MiFactoria::cleanInput($_POST['id']); 
+                $regi=Procesosdocu::model()->findByPk($id);  
+                if(!is_null($regi)){ 
+                    $regi->setScenario('anulacion');
+                    $regi->anulado="1";
+                   if( $regi->save()){
+                       echo "Se anuló este Proceso ";
+                   }else{
+                      echo "No se pudo anular este proceso : ".yii::app()->mensajes->getErroresItem($regi->errors()); 
+                   }
+                      
+                }else{
+                    echo " No se encontro registro con ese ID";
+                }
+           }
+           
+       }
+   }
    
+   public function actiondetalles()
+	{
+	 
+            
+            
+            $model=new VwDocuIngresados('search');
+		$model->unsetAttributes();  // clear any default values
+		if(isset($_GET['VwDocuIngresados']))
+			$model->attributes=$_GET['VwDocuIngresados'];
+                if ($this->isExportRequest()) { //<==== [[ADD THIS BLOCK BEFORE RENDER]]
+			//ECHO "SALIO";DIE();
+			$this->exportCSV($model->search(), array(
+					'nomep',
+					'codep',
+					'numdocref',
+					'descripcion',
+					'ap',
+					'despro',
+                            'codprov',
+					'rucpro',
+					'textv',
+					'codlocal',
+					'monto',
+					'moneda',
+					'descorta',
+					'correlativo',
+					'id',
+                            'fecha',
+					'fechain',
+					'numero',
+                            
+				)
+
+			);
+		} else {
+
+		$this->render('admindetalle',array(
+			'model'=>$model,
+		));
+                }
+	}
+   
+   public function actionajaxenviacorreoproceso(){
+       if(yii::app()->request->isAjaxRequest){ 
+          if(Isset($_GET['id'])){ 
+                   $registro= Procesosdocu::Model()->findByPk( (integer)MiFactoria::cleanInput($_GET['id']));
+                    if($registro->tenenciasproc->esmensaje=='1' and strlen(trim($registro->tenenciasproc->msgexterno))> 0 and yii::app()->user->id==1 ){
+                       $titulo=$registro->tenenciasproc->eventos->descripcion;
+                         $mensaje=$registro->msgexterno;
+                         $idmensaje=$registro->insertamensajes('M',
+                             Contactos::getListMailEmpresa($registro->codprov,$registro->codocu),
+                          $titulo    
+                         );
+                   $resultadocorreo="";
+                   $resultadocorreo= yii::app()->correo->correo_simple(
+                   Contactos::getListMailEmpresa($registro->codprov,$registro->codocu),
+                   Yii::app()->user->email,
+                   $titulo 
+                 
+               );  
+                   if(strlen($resultadocorreo)>0)   //si hubo erroes 
+                                {//borrar el mensaje 
+                                    $registro->borramensaje($idmensaje);
+                                    echo " No se pudo enviar el correo por las razones : ".$resultadocorreo;
+                            }   else{
+                                echo " Se envió el correo con exito  ";
+                            }   
+                    
+                 
+                 
+                 } else{
+                        echo " No se envió el mensaje por que este proceso no esta configurado para esto, o no tiene ningun texto de mensaje que mostrar, modifique las configuraciones";
+                    }
+                   
+                
+                   
+            }else{
+                
+            }
+          } else{
+              
+          }
+              
+              
+      }
+  
+   public function  actionindicadores(){
+       $arrayvalores=VwDoci::kpiprovdocu('145','100');
+       function ciento($v){
+            return 1000*$v;
+            }
+            $horas=array_map("ciento",$arrayvalores['horasprom']);
+            
+            
+         $this->render('resumen',array(
+             'proveedores'=>$arrayvalores['codprov'],
+             'montodinero'=>$arrayvalores['tiempodinero'],
+              'cantidades'=>$arrayvalores['cantidad'],
+              'horas'=>$horas,
+                 ),false,true); 
+   }
+    
 }
+
+

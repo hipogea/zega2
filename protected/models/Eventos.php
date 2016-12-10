@@ -19,7 +19,9 @@ class Eventos extends CActiveRecord
 	 * @param string $className active record class name.
 	 * @return Eventos the static model class
 	 */
-	public static function model($className=__CLASS__)
+	public $descripcioncompleta;
+    
+    public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
 	}
@@ -29,7 +31,7 @@ class Eventos extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'public_eventos';
+		return '{{eventos}}';
 	}
 
 	/**
@@ -141,6 +143,15 @@ public function Sepuedecambiarestado($docum,$estado1,$estado2) {
 					return false;
 				}
 
-							}	
+
+                                
+                                
+                                }
+                                
+                                
+                                
+   public function afterfind(){
+       $this->descripcioncompleta="[".$this->codocu."]-".$this->docume->desdocu."-".$this->descripcion;
+   }                             
 
 }

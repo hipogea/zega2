@@ -399,6 +399,38 @@ $mo=New Alinventario();
 
 public $layout='//layouts/column2';
 	public function actionPio() {
+                        VwDoci::kpiprovdocuhoras('145','100');die();
+            //Yii::app()->user->um->getFieldValue(5,'codtra');die();
+            echo Trabajadores::getNombresFromIdUsuario(5); echo "<br>";
+            echo Trabajadores::getNombresFromIdUsuario(2);echo "<br>";
+              echo Trabajadores::getNombresFromIdUsuario(3);echo "<br>";
+               echo Trabajadores::getNombresFromIdUsuario(4);echo "<br>";
+                echo Trabajadores::getNombresFromIdUsuario(5);echo "<br>";
+                DIE();
+                
+            
+            var_dump(Docingresados::clipro_from_ids(array(702,703,704,705,706)));die();
+            var_dump(Configuracion::valor('280',
+                    '1203', 
+                    '1238',
+                        '6'));die();
+            
+            print_r(Docingresados::model()->findBypK(67)->recuperaarchivos(true));
+             print_r(Docingresados::model()->findBypK(67)->recuperaarchivos(false));
+            die();
+            echo "erer";
+            print_r(Tenencias::model()->findByPk('400')->tenenciaprocauto);die();
+             echo   Procesosdocu::model()->findByPk(276)->tiempopasado(); die();
+            echo MiFactoria::tiempopasado('2016-11-30 00:00:00'); die();
+            
+            VAR_dump(Configuracion::valor(
+                                    '280',
+                                     '1203', 
+                                    '1012' ));die();
+                                    
+            echo   Procesosdocu::model()->findByPk(276)->tiempopasado(); die();
+            
+            
            $this->layout='//layouts/column2';
            echo  CHtml::openTag("span",array("class"=>"icon icon-man"),true);die();
             

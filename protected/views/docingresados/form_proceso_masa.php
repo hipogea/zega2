@@ -6,7 +6,7 @@
 
 <div class="division">
 <div class="wide form">
-<?php MiFactoria::titulo("Procesar documentos","gear");   ?>
+<?php MiFactoria::titulo("Procesar documentos","gear","svg");   ?>
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'docingresados-form',
 	'enableClientValidation'=>false,
@@ -23,7 +23,7 @@
 		<?php
 				$botones=array(
 					
-					'save'=>array(
+					'go'=>array(
 						'type'=>'A',
 						'ruta'=>array(),
                                             'visiblex'=>array('10'),
@@ -46,7 +46,7 @@
 		</div>
 
    <div class="row">
-		<?php //echo CHtml::label(uniqid(),'Centro'); ?>
+		<?php echo CHtml::label('Centro',uniqid()); ?>
 		<?php  $datos = CHtml::listData(Centros::model()->findAll(),'codcen','nomcen');
 		  echo  CHtml::DropDownList(ucfirst(get_class($model)).'[codprov]','',$datos, array(  'ajax' => array('type' => 'POST', 
 						'url' => CController::createUrl($this->id.'/cargatenencias'), //  la acción que va a cargar el segundo div 
@@ -104,6 +104,8 @@
             'options'=>array( 'dateFormat'=>'yy-mm-dd',
                 'showOn'=>'button', // 'focus', 'button', 'both'
                 'buttonText'=>Yii::t('ui',' ... '),
+                'changeMonth'=>true,
+        'changeYear'=>true,  
                 //'buttonImage'=>Yii::app()->request->baseUrl.'/images/calendar.png',
                 //'buttonImageOnly'=>true,
             ),
@@ -123,7 +125,7 @@
 		<?php  
                 //$criterio=
                 $datosp = CHtml::listData(Documentos::model()->
-                        findAll(),
+                        findAll("controlfisico='1'"),
                         'coddocu','desdocu');
 		echo $form->DropDownList($model,'codocuref',$datosp, array('empty'=>'--Llene el doc referencia--',
                   ));

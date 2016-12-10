@@ -50,10 +50,10 @@ class Tenencias extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'codcen0' => array(self::BELONGS_TO, 'Centros', 'codcen'),
+			'centros' => array(self::BELONGS_TO, 'Centros', 'codcen'),
 			'tenenciasproc' => array(self::HAS_MANY, 'Tenenciasproc', 'codte'),
 			'tenenciastraba' => array(self::HAS_MANY, 'Tenenciastraba', 'codte'),
-                        'tenenciaprocauto' => array(self::HAS_MANY, 'Tenenciasproc', 'codte','condition'=>"automatico='1'"),
+                        'tenenciaprocauto' => array(self::HAS_MANY, 'Tenenciasproc','codte','condition'=>" automatico='1'  "),
                        
 		);
 	}

@@ -9,13 +9,13 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'List Docingresados', 'url'=>array('index')),
-	array('label'=>'Create Docingresados', 'url'=>array('create')),
-	array('label'=>'View Docingresados', 'url'=>array('view', 'id'=>$model->id)),
-	array('label'=>'Manage Docingresados', 'url'=>array('admin')),
+	//array('label'=>'List Docingresados', 'url'=>array('index')),
+	array('label'=>'Nuevo Ingreso', 'url'=>array('create')),
+	//array('label'=>'View Docingresados', 'url'=>array('view', 'id'=>$model->id)),
+	array('label'=>'Listado', 'url'=>array('admin')),
 );
 ?>
 
- <?php MiFactoria::titulo('Actualizar ingreso', 'gear') ; ?>
+ <?php MiFactoria::titulo('Actualizar ingreso', 'gear','svg') ; ?>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model,'esfinal'=>$esfinal)); ?>

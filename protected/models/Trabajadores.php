@@ -189,4 +189,21 @@ class Trabajadores extends CActiveRecord
 			'sort'=>$sort,
 		));
 	}
+        
+        public static function getNombresFromIdUsuario($id){
+            if(yii::app()->user->id==$id){
+                $codi=Yii::app()->user->getField('codtra');
+            }else{
+                $codi=Yii::app()->user->um->getFieldValue(Yii::app()->user->um->loadUserById($id,true),'codtra');
+                //yii::app()->user->um->getFieldValue(yii::app()->user->id,'codpro');
+            }
+            
+             
+            $regtrabajador=self::model()->findByPk($codi);
+            if(strlen(trim($codi))>0 and !is_null($codi) and !is_null( $regtrabajador)  ){
+               return $regtrabajador->ap.' - '.$regtrabajador->nombres;
+            }else{
+                return '';
+            }
+        }
 }

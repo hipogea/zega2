@@ -468,12 +468,12 @@ Public function recorro($matriz)
 
 
 
-  public function afterfind() {
+  /*public function afterfind() {
 	 ///Copiar los valores originales
 	$this->oldAttributes=$this->Attributes;
 
 	  Return parent::afterfind();
-  }
+  }*/
 
 
 
@@ -648,6 +648,21 @@ public function  registralog ($notice, $mensaje){
     $registrolog->save();
 }
 
+// Devuelve un array con los IDS, de los documentos 
+//procesadsos del log de procesos , 
+// @$flag: indicador de estado : 'green', 'red', 'notice' segun el estado del resultado del proceso
+// @$codocu: codigo del documento procesado
+// @$codocu: codigo del documento procesado
+
+public static function  getIdsLog ($flag, $codocu){
+    $criterio=New CDBCriteria();
+    $criterio->addCondition("notice=:vflag and codocu=:vcodocu and iduser=:viduser");
+     $criterio->params=array(":vflag"=>$flag,":vcodocu"=>$codocu,":viduser"=>yii::app()->user->id);
+  return  yii::app()->db->createCommand()->
+		select('c.hidref')->from('{{logprocesosdocu}} c')
+			->where($criterio->condition,$criterio->params)->queryColumn();
+    
+}
 
 
 

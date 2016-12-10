@@ -33,25 +33,18 @@
                         findAll($criteriox);
                 $datos =CHtml::listData($datosfilas,
                         'id','trabajadores.ap');
-              //  $trabajadorpordefecto=yii::app()->user->getField('codtra');
-              //$claveencontrada=null;
-               /* foreach(  $datosfilas as $fila     ){
-                   if($fila['codtra']==$trabajadorpordefecto){
-                       $claveencontrada=$fila['id'];
-                   }
-               }
-                unset($datosfilas);*/
-                //$claveencontrada=12;
-              // if(is_null($claveencontrada)) {
+                $claveencontrada=  Tenenciastraba::getIdHidtraByTrabajador($codtenencia);
+                             
+              if(is_null($claveencontrada)) {
                    echo $form->DropDownList($model,'hidtra',$datos, array('empty'=>'--Llene el apoderado--'
-                  ));/*
+                  ));
                }else{
                   echo $form->DropDownList($model,'hidtra',$datos, array('empty'=>'--Llene el apoderado--','options'=>
                              array(
                                $claveencontrada=>array('selected'=>true)
-                                 )
+                                 ) 
                   )); 
-               }*/
+               }
 		
 					?>
 		<?php echo $form->error($model,'hidtra'); ?>
@@ -69,8 +62,11 @@
                    $criterio->params=array(":vcodocu"=>$modelopadre->tipodoc,":vcodte"=>$codtenencia);
                    
                 }
-              /*  echo $criterio->condition;
-                print_r($criterio->params);*/
+                //echo $criterio->condition;
+              //  echo " este es el id   ".$id."<br>";
+                //print_r($modelopadre->attributes);
+              //  var_dump($modelopadre);
+                //print_r($criterio->params);
                 $datos = CHtml::listData(Tenenciasproc::model()->
                         findAll($criterio),
                         'id','eventos.descripcion');
@@ -82,15 +78,18 @@
     
    <div class="row">
         <?php echo $form->labelEx($model,'fechanominal'); ?>
-        <?php Yii::import('application.extensions.CJuiDateTimePicker.CJuiDateTimePicker');
+       <?php Yii::import('application.extensions.CJuiDateTimePicker.CJuiDateTimePicker');
         $this->widget('CJuiDateTimePicker',array(
             'model'=>$model, //Model object
+            'value'=>date($modelopadre->fechain),
             'attribute'=>'fechanominal', //attribute name
             'language'=>'es',
             'mode'=>'datetime', //use "time","date" or "datetime" (default)
             'options'=>array( 'dateFormat'=>'yy-mm-dd',
                 'showOn'=>'button', // 'focus', 'button', 'both'
                 'buttonText'=>Yii::t('ui',' ... '),
+                'changeMonth'=>true,
+        'changeYear'=>true,
                 //'buttonImage'=>Yii::app()->request->baseUrl.'/images/calendar.png',
                 //'buttonImageOnly'=>true,
             ),
@@ -108,9 +107,9 @@
      <div class="row">
 		<?php echo $form->labelEx($model,'codocuref'); ?>
 		<?php  
-                //$criterio=
+              
                 $datosp = CHtml::listData(Documentos::model()->
-                        findAll(),
+                        findAll("controlfisico='1'"),
                         'coddocu','desdocu');
 		echo $form->DropDownList($model,'codocuref',$datosp, array('empty'=>'--Llene el doc referencia--',
                   ));

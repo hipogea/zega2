@@ -7,7 +7,8 @@ class VwDoci extends CActiveRecord
 	 */
     
     public  $d_fechain1;
-    public $color;
+   public $color;
+   public $fechanominal1;
 	public function tableName()
 	{
 		return 'vw_doci';
@@ -60,12 +61,12 @@ class VwDoci extends CActiveRecord
 			array('texv, fechacrea', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id,color,d_fechain1,codtenencia,hidproc, codprov, fecha,'
+			array('id,color,d_fechain1,fechanominal1,fechanominal,fechavencimiento,fechavencimiento1,codtenencia,hidproc, codprov, fecha,'
                             . ' fechain, correlativo, tipodoc, moneda, descorta, codepv,'
                             . ' monto,  codresponsable, '
                             . ' docref, codteniente, codlocal, numero, codocu,'
                             . ' codtenencia, fechacrea, codocuref, nhorasnaranja, nhorasverde,'
-                            . ' numdocref, descripcion, ap, despro, rucpro, final', 'safe', 'on'=>'search'),
+                            . ' numdocref, descripcion, ap, despro,espeabierto, rucpro, final,codigotra', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -100,7 +101,7 @@ class VwDoci extends CActiveRecord
 			'tipodoc' => 'T Doc',
 			'moneda' => 'Moneda',
 			'descorta' => 'Descr',
-			'codepv' => 'Referencia',
+			'codepv' => 'Embarca',
 			'monto' => 'Monto',
 			'codgrupo' => 'Cod Gr',
 			'codresponsable' => 'Responsable',
@@ -109,6 +110,7 @@ class VwDoci extends CActiveRecord
 			'codteniente' => 'Codteniente',
 			'codlocal' => 'Centro',
 			'numero' => 'Numero',
+                    'fechanominal' => 'F. Proc.',
 			'cod_estado' => 'Est',
 			'codocu' => 'Codocu',
 			'codtenencia' => 'Tenencia',
@@ -123,6 +125,8 @@ class VwDoci extends CActiveRecord
                         'hidproc'=>'Proceso',
 			'rucpro' => 'RUC',
 			'final' => 'Final',
+                    'codigotra' => 'Apoderado',
+                    'fechavencimiento' => 'F. Venci',
 		);
 	}
 
@@ -147,6 +151,7 @@ class VwDoci extends CActiveRecord
 		//$criteria->compare('id',$this->id);
 		//$criteria->compare('codepv',$this->codepv,true);
 		$criteria->compare('fecha',$this->fecha,true);
+                $criteria->compare('color',$this->color,true);
 		//$criteria->compare('fechain',$this->fechain,true);
 		$criteria->compare('correlativo',$this->correlativo,true);
 		$criteria->compare('tipodoc',$this->tipodoc,true);
@@ -155,7 +160,7 @@ class VwDoci extends CActiveRecord
 		$criteria->compare('descorta',$this->descorta,true);
 		$criteria->compare('codepv',$this->codepv,true);
 		$criteria->compare('monto',$this->monto);
-		//$criteria->compare('codgrupo',$this->codgrupo,true);
+		//$criteria->compare('fechavencimiento',$this->codgrupo,true);
 		$criteria->compare('codresponsable',$this->codresponsable,true);
 		$criteria->compare('texv',$this->texv,true);
 		$criteria->compare('docref',$this->docref,true);
@@ -164,7 +169,7 @@ class VwDoci extends CActiveRecord
 		$criteria->compare('numero',$this->numero,true);
 		$criteria->compare('cod_estado',$this->cod_estado,true);
 		$criteria->compare('codocu',$this->codocu,true);
-		//$criteria->compare('codtenencia',$this->codtenencia,true);
+		$criteria->compare('codigotra',$this->codigotra,true);
 		$criteria->compare('fechacrea',$this->fechacrea,true);
 		$criteria->compare('codocuref',$this->codocuref,true);
 		$criteria->compare('nhorasnaranja',$this->nhorasnaranja);
@@ -175,11 +180,19 @@ class VwDoci extends CActiveRecord
 		$criteria->compare('despro',$this->despro,true);
 		$criteria->compare('rucpro',$this->rucpro,true);
 		$criteria->compare('final',$this->final,true);
+                $criteria->compare('espeabierto',$this->espeabierto,true);
                 if(isset($_SESSION['sesion_Clipro']))
                     {
 			$criteria->addInCondition('codprov', $_SESSION['sesion_Clipro'], 'AND');
 			  } ELSE {
 				$criteria->compare('codprov',$this->codprov,true);
+                      }
+                      
+                      if(isset($_SESSION['sesion_Trabajadores']))
+                    {
+			$criteria->addInCondition('codigotra', $_SESSION['sesion_Trabajadores'], 'AND');
+			  } ELSE {
+				$criteria->compare('codigotra',$this->codigotra,true);
                       }
                       
                      if(isset($_SESSION['sesion_Tenencias']))
@@ -221,6 +234,20 @@ class VwDoci extends CActiveRecord
                         $criteria->addBetweenCondition('fechain', ''.$this->fechain.'', ''.$this->d_fechain1.''); 
 						//VAR_DUMP($criteria->params);DIE();
 						}
+                                                
+                                                
+                            if((isset($this->fechanominal) && trim($this->fechanominal) != "") && (isset($this->fechanominal1) && trim($this->fechanominal1) != ""))  {
+		           
+                        $criteria->addBetweenCondition('fechanominal', ''.$this->fechanominal.'', ''.$this->fechanominal1.''); 
+						//VAR_DUMP($criteria->params);DIE();
+						}   
+                                                
+                                                if((isset($this->fechavencimiento) && trim($this->fechavencimiento) != "") && (isset($this->fechavencimiento1) && trim($this->fechavencimiento1) != ""))  {
+		           
+                        $criteria->addBetweenCondition('fechavencimiento', ''.$this->fechavencimiento.'', ''.$this->fechavencimiento1.''); 
+						//VAR_DUMP($criteria->params);DIE();
+						}  
+                                                
                 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -255,12 +282,41 @@ class VwDoci extends CActiveRecord
 	}
         
      public function horaspadas(){
-       return round((time()-strtotime($this->fechacrea))/(60*60),2);
-     }   
+       return round((time()-strtotime($this->fechanominal))/(60*60),2);
+     }  
+     
+     
+     public function horaspasadas() {
+
+        
+        if (!is_null($this->fechafin)) {
+            return MiFactoria::tiempopasado($this->fechanominal, $this->fechafin, 'h');
+        } else {
+            $fevencimiento = $this->fechavencimiento;
+            if (is_null($fevencimiento) or strlen(trim($fevencimiento))==0 or empty($fevencimiento)) 
+             {
+                // echo "esta es ";
+                return MiFactoria::tiempopasado($this->fechanominal, null, 'h');
+            } else { //si tiene fecha de vencimiento ahi si debe de cambiar el criterio
+                if (yii::app()->periodo->verificaFechas(date("Y-m-d"), $fevencimiento)) { //si esta en el pasado
+                    return MiFactoria::tiempopasado($this->fechanominal, null, 'h');
+                } else {//si esta ene el futuro
+                    return MiFactoria::tiempopasado($fevencimiento, null, 'h');
+                }
+            }
+        }
+        
+        
+        
+        
+        
+        
+        
+    }
       
      public function getcolor(){
          if($this->final <> "1"){
-             $pasado=$this->horaspadas();
+             $pasado=$this->horaspasadas();
          if( $pasado < $this->nhorasverde)
              return '#07a204';
          if( $pasado < $this->nhorasnaranja and $pasado > $this->nhorasverde)
@@ -283,5 +339,134 @@ class VwDoci extends CActiveRecord
     public function getPrimarykey(){
         return $this->id;
     }
+    
+    
+    public function search_por_filtro_array($arrayids,$codproveedor=null)
+	{
+		
+		$criteria=new CDbCriteria;
+               if(!is_null($codproveedor)){
+                    $criteria->addCondition("codprov=:vcodpro");
+                    $criteria->params=array(":vcodpro"=>$codproveedor);
+                }
+                $criteria->addInCondition('id',$arrayids);
+                
+                    
+
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
+	}
+        
+    public function array_columnas_proveedores(){
+        return array(
+            'numero',
+            'descorta',
+            'moneda',
+            'nomep',
+            'fecha',
+            'fechain'
+                );
+    }
      
+    public static function kpiprovdocu($codocu,$codtenencia){
+        $factor=0.6;
+        $codocu=  MiFactoria::cleanInput($codocu);
+        $codtenencia=  MiFactoria::cleanInput($codtenencia);
+        $sqlcount=" select AVG( (".MiFactoria::dbExpresionTiempoPasado('fechain').")*montomoneda  ) as smtiempodinero
+from vw_docu_ingresados 
+where idproceso in (select max(idproceso)  from vw_docu_ingresados  where final<>'1' group by id )
+  ";
+        
+   $montototal= yii::app()->db->createCommand($sqlcount)->queryScalar() ;  
+   
+   
+        $sql=" select count(id) as cantidad, 
+            avg(".MiFactoria::dbExpresionTiempoPasado('fechain').") AS horasprom, 
+avg(montomoneda) AS montosoles, AVG( (".MiFactoria::dbExpresionTiempoPasado('fechain')."  )*montomoneda) AS tiempodinero,
+codprov ,despro,
+tipodoc 
+from vw_docu_ingresados 
+where tipodoc='".$codocu."' and codtenencia='".$codtenencia."' and  idproceso in (select max(idproceso)  from vw_docu_ingresados  where final<>'1' group by id )
+group by codprov,tipodoc    having AVG( (".MiFactoria::dbExpresionTiempoPasado('fechain')."  )*montomoneda) > ".((string)($montototal*$factor))."   order by tiempodinero desc " ;
+        
+  
+       //return var_dump($sql);
+        //return var_dump((string)($montototal*0.8));
+        
+       $datos=yii::app()->db->createCommand($sql)->queryAll(); 
+       $datosparagrafico=MiFactoria::getArrayValColumnas($datos);
+       return $datosparagrafico;
+        
+    }
+     
+    
+    
+     public static function kpiprovdocuhoras($codocu,$codtenencia){
+        $factor=0.3;
+        $codocu=  MiFactoria::cleanInput($codocu);
+        $codtenencia=  MiFactoria::cleanInput($codtenencia);
+              
+      $sqlcount=" select AVG (".MiFactoria::dbExpresionTiempoPasado('fechain').") as smhoras
+from vw_docu_ingresados 
+where idproceso in (select max(idproceso)  from vw_docu_ingresados  where final<>'1' group by id )
+  ";  
+     
+        
+   $horastotales= yii::app()->db->createCommand($sqlcount)->queryScalar() ;  
+   
+   
+        $sql=" select count(id) as cantidad, 
+            avg(".MiFactoria::dbExpresionTiempoPasado('fechain').") AS horasprom, 
+codprov ,despro,
+tipodoc 
+from vw_docu_ingresados 
+where tipodoc='".$codocu."' and codtenencia='".$codtenencia."' and  idproceso in (select max(idproceso)  from vw_docu_ingresados  where final<>'1' group by id )
+group by codprov,tipodoc,despro    having AVG (".MiFactoria::dbExpresionTiempoPasado('fechain')."  ) > ".((string)($horastotales*$factor))."   order by horasprom desc " ;
+        
+        
+     
+       return var_dump($sql);
+        //return var_dump((string)($montototal*0.8));
+        
+       $datos=yii::app()->db->createCommand($sql)->queryAll(); 
+       $datosparagrafico=MiFactoria::getArrayValColumnas($datos);
+       return $datosparagrafico;
+        
+    }
+    
+    
+     public static function kpiprovdocunumero($codocu,$codtenencia){
+        $factor=0.3;
+        $codocu=  MiFactoria::cleanInput($codocu);
+        $codtenencia=  MiFactoria::cleanInput($codtenencia);
+              
+      $sqlcount=" select count(id) as smdocus
+from vw_docu_ingresados 
+where idproceso in (select max(idproceso)  from vw_docu_ingresados  where final<>'1' group by id )
+  ";  
+     
+        
+   $docstotales= yii::app()->db->createCommand($sqlcount)->queryScalar() ;  
+   
+   
+        $sql=" select count(id) as cantidad, 
+            
+codprov ,despro,
+tipodoc 
+from vw_docu_ingresados 
+where tipodoc='".$codocu."' and codtenencia='".$codtenencia."' and  idproceso in (select max(idproceso)  from vw_docu_ingresados  where final<>'1' group by id )
+group by codprov,tipodoc,despro    having  > ".((string)($docstotales*$factor))."   order by cantidad desc " ;
+        
+        
+     
+       return var_dump($sql);
+        //return var_dump((string)($montototal*0.8));
+        
+       $datos=yii::app()->db->createCommand($sql)->queryAll(); 
+       $datosparagrafico=MiFactoria::getArrayValColumnas($datos);
+       return $datosparagrafico;
+        
+    }
+    
 }

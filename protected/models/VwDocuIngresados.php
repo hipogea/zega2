@@ -1,61 +1,14 @@
 <?php
 
-/**
- * This is the model class for table "vw_docu_ingresados".
- *
- * The followings are the available columns in table 'vw_docu_ingresados':
- * @property double $montomoneda
- * @property integer $id
- * @property string $codprov
- * @property string $fecha
- * @property string $fechain
- * @property string $correlativo
- * @property string $tipodoc
- * @property string $moneda
- * @property string $descorta
- * @property string $codepv
- * @property double $monto
- * @property string $codgrupo
- * @property string $codresponsable
- * @property string $creadopor
- * @property string $creadoel
- * @property string $texv
- * @property string $docref
- * @property string $codteniente
- * @property string $codlocal
- * @property string $numero
- * @property string $cod_estado
- * @property string $codocu
- * @property string $codtenencia
- * @property string $codtenor
- * @property string $codsoc
- * @property integer $idproceso
- * @property string $fechacrea
- * @property string $fechanominal
- * @property string $fechafin
- * @property integer $hidtra
- * @property integer $hidproc
- * @property string $codocuref
- * @property string $numdocref
- * @property string $comentario
- * @property string $codtenenciaproc
- * @property integer $idtenenciasproc
- * @property string $final
- * @property integer $hidevento
- * @property integer $nhorasnaranja
- * @property integer $nhorasverde
- * @property integer $hidprevio
- * @property string $descripcion
- * @property string $ap
- * @property string $am
- * @property string $nombres
- */
 class VwDocuIngresados extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
+    public $color;
     public $tiempopasado;
+    public $d_fechain1;
+    public $fechanominal1;
 	public function tableName()
 	{
 		return 'vw_docu_ingresados';
@@ -90,7 +43,7 @@ class VwDocuIngresados extends CActiveRecord
 			array('texv, fechafin, comentario', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('montomoneda, id, codprov, fecha, fechain, correlativo, tipodoc, moneda, descorta, codepv, monto, codgrupo, codresponsable, creadopor, creadoel, texv, docref, codteniente, codlocal, numero, cod_estado, codocu, codtenencia, codtenor, codsoc, idproceso, fechacrea, fechanominal, fechafin, hidtra, hidproc, codocuref, numdocref, comentario, codtenenciaproc, idtenenciasproc, final, hidevento, nhorasnaranja, nhorasverde, hidprevio, descripcion, ap, am, nombres', 'safe', 'on'=>'search'),
+			array('espeabierto,idproceso,montomoneda, id, codprov, fecha, fechain, correlativo, tipodoc, moneda, descorta, codepv, monto, codgrupo, codresponsable, creadopor, creadoel, texv, docref, codteniente, codlocal, numero, cod_estado, codocu, codtenencia, codtenor, codsoc, idproceso, fechacrea, fechanominal, fechafin, hidtra, hidproc, codocuref, numdocref, comentario, codtenenciaproc, idtenenciasproc, final, hidevento, nhorasnaranja, nhorasverde, hidprevio, descripcion, ap, am, nombres', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -173,56 +126,114 @@ class VwDocuIngresados extends CActiveRecord
 	 */
 	public function search()
 	{
-		// @todo Please modify the following code to remove attributes that should not be searched.
-
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('montomoneda',$this->montomoneda);
-		$criteria->compare('id',$this->id);
-		$criteria->compare('codprov',$this->codprov,true);
-		$criteria->compare('fecha',$this->fecha,true);
-		$criteria->compare('fechain',$this->fechain,true);
+		//$criteria->compare('id',$this->id);
+		//$criteria->compare('codepv',$this->codepv,true);
+		//$criteria->compare('fecha',$this->fecha,true);
+               // $criteria->compare('color',$this->color,true);
+		//$criteria->compare('fechain',$this->fechain,true);
 		$criteria->compare('correlativo',$this->correlativo,true);
 		$criteria->compare('tipodoc',$this->tipodoc,true);
-		$criteria->compare('moneda',$this->moneda,true);
-		$criteria->compare('descorta',$this->descorta,true);
+                $criteria->compare('color',$this->color,true);
+		//$criteria->compare('moneda',$this->moneda,true);
+		//$criteria->compare('descorta',$this->descorta,true);
 		$criteria->compare('codepv',$this->codepv,true);
 		$criteria->compare('monto',$this->monto);
-		$criteria->compare('codgrupo',$this->codgrupo,true);
-		$criteria->compare('codresponsable',$this->codresponsable,true);
-		$criteria->compare('creadopor',$this->creadopor,true);
-		$criteria->compare('creadoel',$this->creadoel,true);
-		$criteria->compare('texv',$this->texv,true);
+		//$criteria->compare('fechavencimiento',$this->codgrupo,true);
+		//$criteria->compare('codresponsable',$this->codresponsable,true);
+		//$criteria->compare('texv',$this->texv,true);
 		$criteria->compare('docref',$this->docref,true);
-		$criteria->compare('codteniente',$this->codteniente,true);
+		//$criteria->compare('codteniente',$this->codteniente,true);
 		$criteria->compare('codlocal',$this->codlocal,true);
 		$criteria->compare('numero',$this->numero,true);
-		$criteria->compare('cod_estado',$this->cod_estado,true);
+		//$criteria->compare('cod_estado',$this->cod_estado,true);
 		$criteria->compare('codocu',$this->codocu,true);
-		$criteria->compare('codtenencia',$this->codtenencia,true);
-		$criteria->compare('codtenor',$this->codtenor,true);
-		$criteria->compare('codsoc',$this->codsoc,true);
-		$criteria->compare('idproceso',$this->idproceso);
+		//$criteria->compare('codigotra',$this->codigotra,true);
 		$criteria->compare('fechacrea',$this->fechacrea,true);
-		$criteria->compare('fechanominal',$this->fechanominal,true);
-		$criteria->compare('fechafin',$this->fechafin,true);
-		$criteria->compare('hidtra',$this->hidtra);
-		$criteria->compare('hidproc',$this->hidproc);
 		$criteria->compare('codocuref',$this->codocuref,true);
-		$criteria->compare('numdocref',$this->numdocref,true);
-		$criteria->compare('comentario',$this->comentario,true);
-		$criteria->compare('codtenenciaproc',$this->codtenenciaproc,true);
-		$criteria->compare('idtenenciasproc',$this->idtenenciasproc);
-		$criteria->compare('final',$this->final,true);
-		$criteria->compare('hidevento',$this->hidevento);
 		$criteria->compare('nhorasnaranja',$this->nhorasnaranja);
 		$criteria->compare('nhorasverde',$this->nhorasverde);
-		$criteria->compare('hidprevio',$this->hidprevio);
+		$criteria->compare('numdocref',$this->numdocref,true);
 		$criteria->compare('descripcion',$this->descripcion,true);
 		$criteria->compare('ap',$this->ap,true);
-		$criteria->compare('am',$this->am,true);
-		$criteria->compare('nombres',$this->nombres,true);
-
+		$criteria->compare('despro',$this->despro,true);
+		//$criteria->compare('rucpro',$this->rucpro,true);
+		$criteria->compare('final',$this->final,true);
+                $criteria->compare('espeabierto',$this->espeabierto,true);
+                //$criteria->compare('idproceso',$this->idproceso,true);
+                if(isset($_SESSION['sesion_Clipro']))
+                    {
+			$criteria->addInCondition('codprov', $_SESSION['sesion_Clipro'], 'AND');
+			  } ELSE {
+				$criteria->compare('codprov',$this->codprov,true);
+                      }
+                      
+                     if(isset($_SESSION['sesion_Tenenciasproc']))
+                    {
+			$criteria->addInCondition('idproceso', $_SESSION['sesion_Tenenciasproc'], 'AND');
+			  } ELSE {
+				$criteria->compare('idproceso',$this->idproceso);
+                      }
+                      
+                      
+                      
+                      
+                      
+                     if(isset($_SESSION['sesion_Tenencias']))
+                    {
+			$criteria->addInCondition('codtenencia', $_SESSION['sesion_Tenencias'], 'AND');
+			  } ELSE {
+				$criteria->compare('codtenencia',$this->codtenencia,true);
+                      }  
+                      
+                      
+                       if(isset($_SESSION['sesion_Eventos']))
+                    {
+			$criteria->addInCondition('hidproc', $_SESSION['sesion_Eventos'], 'AND');
+			  } ELSE {
+				$criteria->compare('hidproc',$this->hidproc,true);
+                      }  
+                      
+                      
+                      
+                      
+                if(isset($_SESSION['sesion_Docingresados']))
+                    {
+			$criteria->addInCondition('id', $_SESSION['sesion_Docingresados'], 'AND');
+			  } ELSE {
+				$criteria->compare('id',$this->id,true);
+                      }      
+                      
+                      
+                      
+               if(isset($_SESSION['sesion_Embarcaciones']))
+                    {
+			$criteria->addInCondition('codepv', $_SESSION['sesion_Embarcaciones'], 'AND');
+			  } ELSE {
+				$criteria->compare('codepv',$this->codepv,true);
+                      } 
+                      
+                       if((isset($this->fechain) && trim($this->fechain) != "") && (isset($this->d_fechain1) && trim($this->d_fechain1) != ""))  {
+		           
+                        $criteria->addBetweenCondition('fechain', ''.$this->fechain.'', ''.$this->d_fechain1.''); 
+						//VAR_DUMP($criteria->params);DIE();
+						}
+                                                
+                                                
+                            if((isset($this->fechanominal) && trim($this->fechanominal) != "") && (isset($this->fechanominal1) && trim($this->fechanominal1) != ""))  {
+		           
+                        $criteria->addBetweenCondition('fechanominal', ''.$this->fechanominal.'', ''.$this->fechanominal1.''); 
+						//VAR_DUMP($criteria->params);DIE();
+						}   
+                                                
+                                                if((isset($this->fechavencimiento) && trim($this->fechavencimiento) != "") && (isset($this->fechavencimiento1) && trim($this->fechavencimiento1) != ""))  {
+		           
+                        $criteria->addBetweenCondition('fechavencimiento', ''.$this->fechavencimiento.'', ''.$this->fechavencimiento1.''); 
+						//VAR_DUMP($criteria->params);DIE();
+						}  
+                                                
+                
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));

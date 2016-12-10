@@ -2,6 +2,17 @@
 /* @var $this DocingresadosController */
 /* @var $model Docingresados */
 
+ 
+$opcionesajax=ARRAY(
+    "type"=>"GET",
+    "url"=>yii::app()->createUrl($this->id."/indicadores"),
+    "update"=>"#zonita"
+);
+echo CHtml::ajaxLink("presionar aqui",yii::app()->createUrl($this->id."/indicadores"),$opcionesajax);
+?>
+<div id="zonita">hola</div>
+
+<?PHP
 $this->breadcrumbs=array(
 	'Docingresadoses'=>array('index'),
 	$model->id,

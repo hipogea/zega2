@@ -80,6 +80,17 @@
 		<?php echo $form->error($model,'automatico'); ?>
 	</div>
     <div class="row">
+		<?php echo $form->labelEx($model,'renuevavencimiento'); ?>
+		<?php echo $form->CheckBox($model,'renuevavencimiento'); ?>
+		<?php echo $form->error($model,'renuevavencimiento'); ?>
+	</div>
+    
+    <div class="row">
+		<?php echo $form->labelEx($model,'esmensaje'); ?>
+		<?php echo $form->CheckBox($model,'esmensaje'); ?>
+		<?php echo $form->error($model,'esmensaje'); ?>
+	</div>
+    <div class="row">
 		<?php echo $form->labelEx($model,'hidprevio'); ?>
 		<?php
                  if (!$model->isNewRecord) {
@@ -94,7 +105,11 @@
                 ?>
 		<?php echo $form->error($model,'hidprevio'); ?>
 	</div>
-    
+    <div class="row">
+		<?php echo $form->labelEx($model,'msgexterno'); ?>
+		<?php echo $form->textArea($model,'msgexterno'); ?>
+		<?php echo $form->error($model,'msgexterno'); ?>
+	</div>
     <div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Crear' : 'Actualizar'); ?>
 	</div>

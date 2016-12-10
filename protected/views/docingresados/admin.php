@@ -2,6 +2,8 @@
 $this->menu=array(
 	//array('label'=>'List Docingresados', 'url'=>array('index')),
 	array('label'=>'Nuevo', 'url'=>array('create')),
+    array('label'=>'Listado rapido', 'url'=>array('certificadosdicapi')),
+      array('label'=>'Listado detallado', 'url'=>array('detalles')),
 );
 
 Yii::app()->clientScript->registerScript('search', "
@@ -59,9 +61,9 @@ $form=$this->beginWidget('CActiveForm', array(
             // 'id'=>'cajita' // the columnID for getChecked
                       ),
 		
-		//'desdocu',
+		//'desdocu',  
             'tipodoc',
-		array('name'=>'correlativo','type'=>'raw','value'=>'CHTml::openTag("span",array("style"=>"border-radius:3px;padding:4px;background-color:$data->color"))."     ".CHTml::closeTag("span")." .".CHTml::link($data->correlativo,yii::app()->createUrl("docingresados/update",array("id"=>$data->id)),array("target"=>"_blank"))'),
+		array('name'=>'correlativo','type'=>'raw','value'=>'CHTml::openTag("span",array("style"=>"border-radius:3px;padding:4px;background-color:$data->color"))."     ".CHTml::closeTag("span")." .".CHTml::link($data->correlativo,yii::app()->createUrl("docingresados/update",array("id"=>$data->id)),array("target"=>"_blank"))','htmlOptions'=>array('width'=>70)),
 		'id',
             'numero',
 		'moneda',
@@ -69,10 +71,9 @@ $form=$this->beginWidget('CActiveForm', array(
            array('name'=>'codtenencia','type'=>'raw','value'=>'CHTml::openTag("span",array("class"=>"label label-1504")).$data->codtenencia.CHTml::closeTag("span")'),
 		
 		//'codprov',
-		'despro',			
-		//'barcos.nomep',
-		
-		
+		'despro',
+             array('name'=>'Refer','type'=>'raw','value'=>'$data->nomep'),
+	
 		array(
 			'name'=>'fecha',
 			'value'=>'date("d.m.y", strtotime($data->fecha))','htmlOptions'=>array('width'=>'30')
@@ -86,6 +87,8 @@ $form=$this->beginWidget('CActiveForm', array(
 			'name'=>'cuantoshay','type'=>'raw',
 			'value'=>'Chtml::image(Yii::app()->getTheme()->baseUrl.DIRECTORY_SEPARATOR."img".DIRECTORY_SEPARATOR."attach_2.png").CHtml::openTag("span",array("class"=>"label badge-warning"),true).$data->cuantosfileshay()','htmlOptions'=>array('width'=>'30')
 		),
+            // array('name'=>'falta','type'=>'raw','value'=>'($data->tiempofaltante())','htmlOptions'=>array('width'=>120)),
+           
 		'ap',
             'descripcion',
             
@@ -224,3 +227,6 @@ $this->endWidget();
 
 
 ?>
+
+
+

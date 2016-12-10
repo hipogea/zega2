@@ -13,19 +13,12 @@ class TenenciasController extends Controller
 	 */
 	public function filters()
 	{
-		return array(
-			'accessControl', // perform access control for CRUD operations
-			'postOnly + delete', // we only allow deletion via POST request
-		);
+		return array('accessControl',array('CrugeAccessControlFilter'));
 	}
 
-	/**
-	 * Specifies the access control rules.
-	 * This method is used by the 'accessControl' filter.
-	 * @return array access control rules
-	 */
 	public function accessRules()
 	{
+		Yii::app()->user->loginUrl = array("/cruge/ui/login");
 		return array(
 			
 			
@@ -79,17 +72,17 @@ class TenenciasController extends Controller
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
-
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
 		if(isset($_POST['Tenencias']))
 		{
 			$model->attributes=$_POST['Tenencias'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->codte));
 		}
-
+              
+                
+			
+                
+                
 		$this->render('update',array(
 			'model'=>$model,
 		));

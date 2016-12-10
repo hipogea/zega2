@@ -51,7 +51,7 @@
 		<?php  
                 //$criterio=
                 $datosp = CHtml::listData(Documentos::model()->
-                        findAll(),
+                        findAll("controlfisico='1'"),
                         'coddocu','desdocu');
 		echo $form->DropDownList($model,'codocuref',$datosp, array('empty'=>'--Llene el doc referencia--',
                   ));

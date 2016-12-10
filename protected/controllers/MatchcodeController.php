@@ -358,8 +358,16 @@ public function actionRelaciona1()
 											//$model=Yii::app()->explorador->devuelvemodelo($campo,$nombreclase);
 												//$m=$_GET['nombremodelo'];
 												$model->unsetAttributes(); 
-												if(isset($_GET[$nombreclase]))
-												$model->attributes=$_GET[$nombreclase];
+												if(isset($_GET[$nombreclase])){
+                                                                                                    $model->attributes=$_GET[$nombreclase];                                                                                                   
+                                                                                                       var_dump($model->attributes);
+                                                                                                       echo "<br>";
+                                                                                                       var_dump($_GET[$nombreclase]);
+                                                                                                        echo "<br>";
+                                                                                                     var_dump($nombreclase);
+                                                                                                      var_dump(get_class($model));
+                                                                                             }
+												
 												$this->layout='//layouts/iframe' ;
 
 

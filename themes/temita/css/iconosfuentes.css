@@ -10,6 +10,7 @@
 .icon {
     /* use !important to prevent issues with browser extensions that change fonts */
     font-family: 'IcoMoon-Free' !important;
+    padding:5px;
     speak: none;    
    /* font-size: 64px;*/
     font-style: normal;

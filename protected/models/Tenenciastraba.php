@@ -14,7 +14,9 @@
  */
 class Tenenciastraba extends CActiveRecord
 {
-	/**
+	const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
+    
+    /**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
@@ -110,4 +112,23 @@ class Tenenciastraba extends CActiveRecord
             $this->activo='1';
             return parent::beforesave();
         }
+        
+        public static function getIdHidtraByTrabajador($codte){ 
+            if(is_null($codte))
+                $codte='100';
+    //if(yii::app()->user->id==$id){
+                $codi=Yii::app()->user->getField('codtra');
+          //  }else{
+                //$codi=Yii::app()->user->um->getFieldValue(Yii::app()->user->um->loadUserById($id,true),'codtra');
+                //yii::app()->user->um->getFieldValue(yii::app()->user->id,'codpro');
+            //}
+    $hallados=self::model()->findAll("codtra=:vcodtra and codte=:vcodte",array(":vcodtra"=>$codi,":vcodte"=>$codte));
+    if(count($hallados)>0){
+        return $hallados[0]->id; 
+    }else{
+        return null;
+    }
+    
+}
+        
 }

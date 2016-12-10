@@ -187,9 +187,10 @@ class Configuracion extends CActiveRecord {
             $cri->params=array(
              ":vcodocu"=>$codocu,
                ":vcodcen"=>$codcen,
-              ":viduser"=>(is_null($iduser))?-1:$iduser,
+              ":viduser"=>(is_null($iduser))?-1:$iduser.'',
                ":vcodparam"=>$codparam,
                  );
+            
       $resultado= self::model()->find($cri);
       //return $resultado->attributes;
         if(is_null($resultado)){

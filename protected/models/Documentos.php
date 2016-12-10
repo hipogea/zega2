@@ -78,7 +78,7 @@ class Documentos extends CActiveRecord
 			array('coddocu', 'unique'),
 			array('coddocu', 'match', 'pattern'=>Yii::app()->params['mascaradocs'],'message'=>'El codigo  no es el correcto, El c debe comenzar por 2 DIGITOS  > 0 y los caracteres deben ser numericos','on'=>'insert'),
 
-			array('x_report,y_report,idreportedefault,comprobante', 'safe'),
+			array('x_report,y_report,controlfisico,idreportedefault,comprobante', 'safe'),
 			array('desdocu', 'length', 'max'=>45),
 			array('clase, cactivo', 'length', 'max'=>1),
 			array('prefijo', 'length', 'max'=>3),
@@ -127,6 +127,8 @@ class Documentos extends CActiveRecord
 			'anuladesde' => 'Anuladesde',
 			'cactivo' => 'Cactivo',
 			'abreviatura' => 'Abreviatura',
+                    'controlfisico' => 'C. Fis',
+                     'comprobante' => 'Comprob',
 		);
 	}
 

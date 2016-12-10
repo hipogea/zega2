@@ -37,13 +37,16 @@ $('.search-form form').submit(function(){
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'tenencias-grid',
 	'dataProvider'=>$model->search(),
+    'filter'=>$model,
     'itemsCssClass'=>'table table-striped table-bordered table-hover',
 	//'filter'=>$model,
 	'columns'=>array(
 		'codte',
 		'deste',
-		'codcen',
-		array(
+		array('name'=>'codcen','value'=>'$data->codcen','filter'=>CHtml::listData(Centros::model()->findAll(),'codcen','nomcen')  ),
+		array('name'=>'centros','value'=>'$data->centros->nomcen'),
+		
+            array(
 			'class'=>'CButtonColumn',
 		),
 	),

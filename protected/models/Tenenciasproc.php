@@ -15,23 +15,38 @@ public $nombrecompleto;
 	/**
 	 * @return array validation rules for model attributes.
 	 */
+
+ public function behaviors()
+	{
+		return array(
+			// Classname => path to Class
+			'ActiveRecordLogableBehavior'=>
+				'application.behaviors.ActiveRecordLogableBehavior'
+               );
+                
+	} 
+
+
+
 	public function rules()
 	{
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
 			array('hidevento', 'numerical', 'integerOnly'=>true),
-                     array('codte,nhorasnaranja,final,codocu,automatico,nhorasverde,hidprevio, hidevento', 'safe', 'on'=>'insert,update'),
+                     array('codte,nhorasnaranja,esmensaje,msgexterno,final,codocu,automatico,nhorasverde,renuevavencimiento,hidprevio, hidevento', 'safe', 'on'=>'insert,update'),
 			
                      array('codte,nhorasnaranja,codocu,nhorasverde, hidevento', 'required', 'on'=>'insert,update'),
 			array('codte', 'length', 'max'=>4),
                    // array('hidprevio', 'chkvalores'),
-                    array('hidevento+codte+codocu', 'application.extensions.uniqueMultiColumnValidator','on'=>'insert,update'),
+                     array('hidevento+codte+codocu', 'application.extensions.uniqueMultiColumnValidator','on'=>'insert,update'),
 			
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, codte, hidevento', 'safe', 'on'=>'search'),
-		);
+			array('codte,nhorasnaranja,codocu,nhorasverde, hidevento',
+                            'safe', 'on'=>'search_por_tenencia,search'),
+                    
+		); 
 	}
 
 	/**
@@ -59,6 +74,9 @@ public $nombrecompleto;
 			'id' => 'ID',
 			'codte' => 'Codte',
 			'hidevento' => 'Hidevento',
+                    'nhorasverde' => 'H. Aler',
+            'nhorasnaranja' => 'H. Venc',
+        
 		);
 	}
 
@@ -80,9 +98,15 @@ public $nombrecompleto;
        $parametro=  MiFactoria::cleanInput($codte);
 		$criteria=new CDbCriteria;
 
-		
-		$criteria->addCondition('codte=:VCODTE');
-                $criteria->params=array(':VCODTE'=>$codte);
+		$criteria->compare('codocu', $this->codocu);
+       $criteria->compare('codte', $this->codte);
+       $criteria->compare('nhorasnaranja', $this->nhorasnaranja);
+       $criteria->compare('nhorasverde', $this->nhorasverde);
+       $criteria->compare('hidevento', $this->hidevento);
+        
+       
+		$criteria->addCondition("codte=".$parametro);
+               // $criteria->params=array(':VCODTE'=>$parametro);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -104,7 +128,11 @@ public $nombrecompleto;
         
       public function beforesave(){
           if($this->automatico=='1'){ //Solo uno puede tener le heck actuivo por default 
-              $this->updateAll(array('automatico'=>'0'),"codte=:vcodte",array(":vcodte"=>$this->codte));
+             // var_dump($this->codte);var_dump($this->codocu);die();
+              $this->updateAll(
+                      array('automatico'=>'0'),
+                      "codte=:vcodte and codocu=:vcodocu",array(":vcodte"=>$this->codte,":vcodocu"=>$this->codocu)
+                      );
            $this->automatico='1';
               
           }
@@ -129,5 +157,26 @@ public $nombrecompleto;
     return parent::afterfind();
 }
         
+     public function search() {
+        // @todo Please modify the following code to remove attributes that should not be searched.
+
+        $criteria = new CDbCriteria;
+
+       
+        $criteria->compare('codocu', $this->codocu);
+       $criteria->compare('codte', $this->codte);
+       $criteria->compare('nhorasnaranja', $this->nhorasnaranja);
+       $criteria->compare('nhorasverde', $this->nhorasverde);
+       $criteria->compare('hidevento', $this->hidevento);
         
+       
+
+        return new CActiveDataProvider($this, array(
+            'criteria'=>$criteria,
+        ));
+    }
+
+
+
+
 }

@@ -24,7 +24,7 @@
 	   
     <div class="row">        
                 <?php 			
-	echo $form->textField($model,'id',array('disabled'=>'disabled','size'=>3,'maxlength'=>3));
+	echo $form->textField($model,'id',array('disabled'=>'disabled','size'=>2,'maxlength'=>2));
 		?>
 		<?php 
 		         if (!$model->isNewRecord ) {						
@@ -34,38 +34,23 @@
 	
 		<?php echo $form->labelEx($model,'codtenencia'); ?>
 		<?php  
-                if($model->isNewRecord){
+                if(!$model->isNewRecord){
                    // var_dump($model::PARAM_TENENCIA_POR_DEFECTO);
-                   
+                   echo $form->textField($model,'codtenencia',array('size'=>2,'disabled'=>'disabled')); 
+                        echo Chtml::textField('idtextenencfia',$model->tenencias->deste,array('size'=>30,'disabled'=>'disabled')); 
+                         
                 }else{
-                   
+                  
                     if(is_null(Configuracion::valor(
                                     $model->codocu,
                                      $model->codlocal, 
                                     $model::PARAM_TENENCIA_POR_DEFECTO))){
-                     $this->widget('ext.matchcode.MatchCode',array(		
-					'nombrecampo'=>'codtenencia',
-					'ordencampo'=>1,
-					//'defol'=>(isset(Yii::app()->session['codprov']))?Yii::app()->session['codprov']:'',
-					//'defol2'=>isset(Yii::app()->session['desprov'])?Yii::app()->session['desprov']:'',
-					'controlador'=>$this->id,
-					'relaciones'=>$model->relations(),
-					'tamano'=>2,
-					'model'=>$model,
-					'form'=>$form,
-					'nombredialogo'=>'cru-dialog3',
-					'nombreframe'=>'cru-frame3',
-					'nombrearea'=>'cocity',
-					)
-
-					);
+                      $datos = CHtml::listData(Tenencias::model()->findAll(),'codte','deste');
+					echo $form->DropDownList($model,'codtenencia',$datos, array('empty'=>'--Seleccione tenencia --')  );
+					//ECHO CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."nuevo.gif","",array("width"=>30,"height"=>15));
+			
                      
-                     }else{
-                    
-                    echo $form->textField($model,'codtenencia',array('size'=>2,'disabled'=>'disabled')); 
-                        echo Chtml::textField('idtextenencfia',$model->tenencias->deste,array('size'=>30,'disabled'=>'disabled')); 
-                         
-                }
+                     }
                   }
                 
                 ?>
@@ -90,7 +75,7 @@
                               'asc'=>-1,
                              'valor'=>$procesoactivo->horaspasadas(),
                       )
-                        ); 
+                        ); var_dump($procesoactivo->horaspasadas());
                        echo Chtml::textField('idtex45encfia',$procesoactivo->tiempopasado(),array('size'=>9,'disabled'=>'disabled')); 
                   
                       }else{ //en caso de ser final
@@ -107,16 +92,7 @@
     
     <div class="panelizquierdo">
         
-        <div class="row">
-		<?php echo $form->labelEx($model,'codlocal'); ?>
-		<?php  $datos = CHtml::listData(Centros::model()->findAll(array('order'=>'nomcen')),'codcen','nomcen');
-		echo $form->DropDownList($model,'codlocal',$datos, array('empty'=>'--Llene el centro--',
-               /* 'options'=>array(
-		 isset(Yii::app()->session['codlocal'])?Yii::app()->session['codlocal']:''=>array('selected'=>true)
-		) */ ));
-					?>
-		<?php echo $form->error($model,'codlocal'); ?>
-	</div>
+      
         
         
         
@@ -157,7 +133,10 @@
 													'showAnim'=>'fold', // 'show' (the default), 'slideDown', 'fadeIn', 'fold'
 													'showOn'=>'button', // 'focus', 'button', 'both'
 													'buttonText'=>Yii::t('ui','...'),													
-													'dateFormat'=>'dd-mm-yy',
+													'dateFormat'=>'yy-mm-dd',
+                                                                                            'showOtherMonths'=>true, 
+                                     'changeMonth' => true, 
+                                    'changeYear' => true, 
 														),
 												'htmlOptions'=>array(
 															'style'=>'width:80px;vertical-align:top',
@@ -181,6 +160,9 @@
 					'showOn'=>'button', // 'focus', 'button', 'both'
 					'buttonText'=>Yii::t('ui','...'),													
 					'dateFormat'=>'yy-mm-dd',
+                                    'showOtherMonths'=>true, 
+                                     'changeMonth' => true, 
+                                    'changeYear' => true, 
 					),
 					'htmlOptions'=>array(
 							//'value'=>(  ($model->isNewRecord ) and    isset(Yii::app()->session["fechain"]) ) ?Yii::app()->session["fechain"]:$model->fechain,
@@ -195,9 +177,15 @@
 	</div>
 	<div class="row">
 		<?php echo $form->labelEx($model,'conservarvalor'); ?>
-		<?php echo $form->checkBox($model,'conservarvalor',array('value'=>'1')); ?>
+		<?php echo $form->checkBox($model,'conservarvalor',array('checked'=>true)); ?>
 		
 	</div>
+        <div class="row">
+		<?php echo $form->labelEx($model,'espeabierto'); ?>
+		<?php echo $form->checkBox($model,'espeabierto'); ?>
+		
+	</div>
+        
 	
 	
 
@@ -296,12 +284,7 @@
 			<?php echo $form->error($model,'moneda'); ?>
 	</div>
 	
-	<div class="row">
-		<?php echo $form->labelEx($model,'descorta'); ?>
-		<?php echo $form->textField($model,'descorta',array('size'=>25,'maxlength'=>25)); ?>
-		<?php echo $form->error($model,'descorta'); ?>
-	</div>	
-
+	
 	
 	
 	
@@ -362,25 +345,33 @@
 		
 		<?php echo $form->error($model,'codresponsable'); ?>
 	</div>
-    <div class="row">
-		<?php echo $form->labelEx($model,'codteniente'); ?>
-		<?php
-		$this->widget('ext.matchcode.MatchCode',array(
-			'nombrecampo'=>'codteniente',
-			'ordencampo'=>1,
-			'controlador'=>$this->id,
-			'relaciones'=>$model->relations(),
-			'tamano'=>6,
-			'model'=>$model,
-			'form'=>$form,
-			'nombredialogo'=>'cru-dialog3',
-			'nombreframe'=>'cru-frame3',
-			'nombrearea'=>'f4vfr23gt4jfdxxsfdf',
-		)); ?>
-		<?php echo $form->error($model,'codteniente'); ?>
-	</div>
+   
 	
+<div class="row">
+		<?php echo $form->labelEx($model,'fechavencimiento'); ?>
+		<?php  $this->widget('zii.widgets.jui.CJuiDatePicker', array(
+										//'name'=>'my_date',
+										'model'=>$model,
+										'attribute'=>'fechavencimiento',
+										'language'=>Yii::app()->language=='es' ? 'es' : null,
+											'options'=>array(
+													'showAnim'=>'fold', // 'show' (the default), 'slideDown', 'fadeIn', 'fold'
+													'showOn'=>'button', // 'focus', 'button', 'both'
+													'buttonText'=>Yii::t('ui','...'),													
+													'dateFormat'=>'yy-mm-dd',
+                                                                                            'showOtherMonths'=>true, 
+                                     'changeMonth' => true, 
+                                    'changeYear' => true, 
+														),
+												'htmlOptions'=>array(
+															'style'=>'width:80px;vertical-align:top',
+															'readonly'=>'readonly',
+															),
+															));
 
+		?>	
+		<?php echo $form->error($model,'fechavencimiento'); ?>
+	</div>
 	
 
 	<div class="row">
@@ -408,32 +399,43 @@
 
 
 <?php
+//VAR_DUMP(Yii::app()->createUrl($this->id."/ajaxanulacion",array("id"=>$data->id)));
+
    if(!$model->isNewRecord){
        $this->widget('zii.widgets.grid.CGridView', array(
             'id'=>'procesos-grid',
             'dataProvider'=> Procesosdocu::model()->search_por_docu($model->id),
+           
              'itemsCssClass'=>'table table-striped table-bordered table-hover', 
            'columns'=>array(
-               // 'fechanominal',
-              
+               // 'fechanominal',                
                 
-               ARRAY('name'=>'iduser','type'=>'raw','value'=>'CHtml::link(CHtml::openTag("span",array("class"=>"icon icon-pencil icon-blue icon-fuentesize16"),true),"#", array("onclick"=>\'$("#cru-frame3").attr("src","\'.Yii::app()->createurl(\'/docingresados/modificaproceso\', array(\'id\'=> $data->id ) ).\'");$("#cru-dialog3").dialog("open"); return false;\' ) )','htmlOptions'=>array('width'=>3)),
+               ARRAY('name'=>'iduser1','type'=>'raw','value'=>'($data->anulado=="1")?CHtml::openTag("span",array("class"=>"icon icon-bin icon-blue icon-fuentesize16"),true):CHtml::link(CHtml::openTag("span",array("class"=>"icon icon-pencil icon-blue icon-fuentesize16"),true),"#", array("onclick"=>\'$("#cru-frame3").attr("src","\'.Yii::app()->createurl(\'/docingresados/modificaproceso\', array(\'id\'=> $data->id ) ).\'");$("#cru-dialog3").dialog("open"); return false;\' ) )','htmlOptions'=>array('width'=>3)),
+               ARRAY('name'=>'Anul','type'=>'raw','value'=>'($data->anulado=="1")?"":CHtml::ajaxLink(CHtml::openTag("span",array("class"=>"icon icon-cross icon-blue icon-fuentesize16"),true),'
+                   . 'CHtml::normalizeUrl(Yii::app()->createUrl("docingresados/ajaxanulacion")),'
+                   . 'array("type" => "POST", "data"=>array("id"=>$data->id), "beforeSend"=>"function(){ var r = confirm(\"Esta seguro de Este proceso?\"); if(!r){return false;} }", "success"=>"function(data) { $.fn.yiiGridView.update(\"procesos-grid\"); return false; }"  ),array() )'),
+                ARRAY('name'=>'Mail','type'=>'raw','value'=>'($data->anulado=="1")?"":CHtml::ajaxLink(CHtml::openTag("span",array("class"=>"icon icon-envelop icon-blue icon-fuentesize16"),true),'
+                   . 'CHtml::normalizeUrl(Yii::app()->createUrl("docingresados/ajaxenviacorreoproceso")),'
+                   . 'array("type" => "GET", "data"=>array("id"=>$data->id), "beforeSend"=>"function(){ var r =confirm(\"Esta seguro de Enviar este mensaje al proveedor?\"); if(!r){return false;} }", "success"=>"function(data) { alert(data); }"  ),array() )'),
 
                array(
-			'name'=>'fechanominal',
-			'value'=>'date("d.m.y", strtotime($data->fechanominal))','htmlOptions'=>array('width'=>10)
+			'name'=>'fechanominal', 'type'=>'raw',
+			'value'=>'($data->anulado=="1")?CHtml::openTag("strike").date("d.m.y", strtotime($data->fechanominal)).CHtml::closeTag("strike"):date("d.m.y", strtotime($data->fechanominal))','htmlOptions'=>array('width'=>10)
 		),
                 //array('name'=>'tipo','type'=>'raw','value'=>'($data->tipo=="M")?CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."email.png"):$data->tipo','htmlOptions'=>array('width'=>50)),
-            array('name'=>'proc','type'=>'raw','value'=>'($data->tenenciasproc->eventos->descripcion)','htmlOptions'=>array('width'=>250)),
+          
+               array('name'=>'proc','type'=>'raw','value'=>'($data->anulado=="1")?CHtml::openTag("strike").$data->tenenciasproc->eventos->descripcion.CHtml::closeTag("strike"):$data->tenenciasproc->eventos->descripcion','htmlOptions'=>array('width'=>250)),
              array('name'=>'trab','type'=>'raw','value'=>'($data->tenenciastrab->trabajadores->ap)','htmlOptions'=>array('width'=>30)),
              array('name'=>'codocuref','type'=>'raw','value'=>'$data->documentos->desdocu','htmlOptions'=>array('width'=>150)),
-            array('name'=>'numdocref','type'=>'raw','value'=>'$data->numdocref','htmlOptions'=>array('width'=>10)),
+            array('name'=>'numdocref','type'=>'raw','value'=>'$data->numdocref','htmlOptions'=>array('width'=>10)), 
             array(
 			'name'=>'fechafin',
 			'value'=>'(!is_null($data->fechafin))?date("d/m/y", strtotime($data->fechafin)):"--"','htmlOptions'=>array('width'=>10)
 		),
                array('name'=>'tiempo','type'=>'raw','value'=>'($data->tiempopasado())','htmlOptions'=>array('width'=>120)),
-            array('name'=>'iduser', 'type'=>'html','value'=>'$data->iduser.CHtml::openTag("span",array("class"=>"icon icon-user icon-blue icon-fuentesize16"),true)'),
+            array('name'=>'falta','type'=>'raw','value'=>'($data->tiempofaltante())','htmlOptions'=>array('width'=>120)),
+           
+               array('name'=>'iduser', 'type'=>'html','value'=>'$data->iduser.CHtml::openTag("span",array("class"=>"icon icon-user icon-blue icon-fuentesize16"),true)'),
         
                 //'titulo',
               //  array('htmlOptions'=>array('width'=>24),'name'=>'st.','header'=>'st', 'type'=>'raw','value'=>'CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"].$data->coddocu.$data->estadodetalle.".png")'),

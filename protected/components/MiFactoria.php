@@ -582,7 +582,7 @@ const CAMPO_COLECTOR='mf_colector';
         return $items;
     }
 
-   public static function tiempopasado($fecha,$fechafinal=null){
+   public static function tiempopasado($fecha,$fechafinal=null,$formato=null){
       $tinicial= strtotime($fecha);
       if(is_null($fechafinal)){
          $tfinal=time(); 
@@ -595,19 +595,23 @@ const CAMPO_COLECTOR='mf_colector';
        var_dump($tfinal);echo "tfinal <br>";*/
          $diferencia=$tfinal-$tinicial;
          IF($diferencia >0){
-              $segano=60*60*24*7*30*12;
-         $segmes=60*60*24*7*30;
+             $segano=60*60*24*365;
+         $segmes=60*60*24*30;
          $segdia=60*60*24;
          $seghora=60*60;
          $segminuto=60;
 
        $annos=floor($diferencia/$segano);
+       
+       
        $meses=floor(($diferencia-$annos*$segano)/$segmes);
        $dias=floor(($diferencia-$annos*$segano-$meses*$segmes)/$segdia);
        $horas=floor(($diferencia-$annos*$segano-$meses*$segmes-$dias*$segdia)/$seghora);
        $minutos=floor(($diferencia-$annos*$segano-$meses*$segmes-$dias*$segdia-$horas*$seghora)/$segminuto);
        $segundos=$diferencia-$annos*$segano-$meses*$segmes-$dias*$segdia-$horas*$seghora-$segminuto*$minutos;
 
+             if(is_null($formato)){
+                  
        $tiempopasad="";
        $tiempopasad.=($annos > 0)?" ".$annos."años ":"";
        $tiempopasad.=($meses > 0)?" ".$meses."m ":"";
@@ -616,7 +620,34 @@ const CAMPO_COLECTOR='mf_colector';
        $tiempopasad.=($minutos > 0)?" ".$minutos."min ":"";
        $tiempopasad.=($segundos > 0)?" ".$segundos."s ":"";
        Return $tiempopasad;
+             }else{
+                   switch ($formato) {
+            case 'h': //horas
+                return round($diferencia/($seghora),2);       
+                break;
+            
+            case 'mm': //meses 
+               return round(($diferencia)/$segmes,2);
+                break;
+            
+            case 'm': //minutos
+            return round(($diferencia)/$segminuto,2);
+            break;
+            
+            case 's':
+                return $diferencia;
+                break;
+            case 'd': //dias
+            return round($diferencia/$segdia,2);
+           
+            default:
+                return 0;
+        }
+             }
+             
          }else{
+             if(is_null($formato))
+                 return 0;
              return "  ";
          }
         
@@ -1371,9 +1402,14 @@ if(!$mensaje->save())
         }
     }
 
-    public static function titulo($titulo,$imagen){
-        echo  CHtml::openTag("h1")."  ".CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"].$imagen.".png")."  ".$titulo.CHtml::closeTag("h1");
-
+    public static function titulo($titulo,$imagen,$flag=null){
+        if(is_null($flag)){
+           echo  CHtml::openTag("h1")."  ".CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"].$imagen.".png")."  ".$titulo.CHtml::closeTag("h1");
+        
+        }else{
+            echo  CHtml::openTag("h1").CHtml::openTag("span",array("class"=>"icon icon-".$flag." icon-blue icon-fuentesize16")).CHtml::closeTag("span"). "                        ".$titulo.CHtml::closeTag("h1");
+        
+        }
     }
 
 
@@ -1453,4 +1489,46 @@ if(!$mensaje->save())
     }
     
 
+    ///esta funcion recibe un conjunto de datos  resultado 
+    //de efectuar queryAll(), luegolos procesa y vita datos 
+    ///preparados para un grafico por ejemplo
+    /*
+     *      campo1  campo2   campo3 
+     *      13      45      'valor1'
+     *      78      22      'valora'
+     *      56      37      'valorb'
+     * 
+     *    array( 'campo1'=>array(13,78,56),  'campo2'=>array(45,22,37),'campo3'=>array('valor1','valora','valorb')
+     */
+    
+    public static function getArrayValColumnas($datos){
+        if(count($datos)>0){
+            
+//iniciamos recorreindo los nombres de las columnas  y las guradamos en un array
+            $cabeceras=array();
+            foreach($datos[0] as $clave=>$valor){
+                $cabeceras[]=$clave;
+            }
+            
+            $datoscolumnas=array();
+            
+            foreach($datos as $fila){
+                foreach($cabeceras as $clave=>$nombrecabecera){
+                    $valor=$fila[$nombrecabecera];
+                    if(is_numeric($valor))
+                        $valor=round($valor+0,1);
+                    $datoscolumnas[$nombrecabecera][]=$valor;
+                }
+            
+             } 
+             
+            
+           return $datoscolumnas; 
+            
+        }
+        
+        
+       
+    }
+    
 }//fin de la clase Mifactoria

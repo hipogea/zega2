@@ -6,6 +6,8 @@ class Docingresados extends ModeloGeneral
     CONST PARAM_TENENCIA_POR_DEFECTO='1012';
     CONST PARAMETRO_TITULO_CORREO_PEDIDO='1248';
     CONST PARAMETRO_CONFIRMAR_LECTURA_CORREO='1247';
+    const PARAMETRO_COD_TENENCIA_VISUALIZAR_CERTIFICADOS='1238';
+     const COD_DOCUMENTO_REGISTRO='280';
     /**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -19,7 +21,7 @@ class Docingresados extends ModeloGeneral
         
         public function init(){
             $this->campoestado='cod_estado';
-            $this->documento='280';
+            $this->documento=self::COD_DOCUMENTO_REGISTRO;
             
            /* $this->campossensibles=array(
                 'tipodoc'=>array(self::ESTADO_REGISTRO_NUEVO,self::ESTADO_PREVIO,self::ESTADO_CREADO),
@@ -69,16 +71,18 @@ class Docingresados extends ModeloGeneral
 	/**
 	 * @return array validation rules for model attributes.
 	 */
-	public function rules()
+	public function rules() 
 	{
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-                      array('numero+tipodoc+codprov', 'application.extensions.uniqueMultiColumnValidator','on'=>'insert,update'),
-		
+                      array('numero+tipodoc+codprov+codtenencia', 'application.extensions.uniqueMultiColumnValidator','on'=>'insert,update'),
+		 array('codtenencia,espeabierto', 'safe','on'=>'insert,update'),
 			array('monto', 'numerical','on'=>'insert,update'),
+                    array('tipodoc', 'checkcambiodoc','on'=>'update'),
+                    array('codtenencia', 'required','message'=>'Llenar la tenencia','on'=>'insert,update'),
 			array('monto', 'required','message'=>'Debes de llenar el monto','on'=>'insert,update'),
-			array('codlocal', 'required','message'=>'Debes de llenar el centro','on'=>'insert,update'),
+			//array('codlocal', 'required','message'=>'Debes de llenar el centro','on'=>'insert,update'),
 			array('numero', 'required','message'=>'Debes de llenar el numero','on'=>'insert,update'),
 			array('codprov', 'required','message'=>'Llena el proveedor','on'=>'insert,update'),
 			array('tipodoc', 'required','message'=>'Ingresa el tipo de documento','on'=>'insert,update'),
@@ -93,6 +97,7 @@ class Docingresados extends ModeloGeneral
 			array('codepv', 'required','message'=>'...Que paso con la referencia?','on'=>'insert,update'),
 			array('codprov', 'length', 'max'=>6,'on'=>'insert,update'),
 			array('codprov', 'checkvalores','on'=>'insert,update'),
+                    array('fechavencimiento', 'safe','on'=>'escfechavencimiento'),
 			array('correlativo', 'length', 'max'=>8,'on'=>'insert,update'),
 			array('tipodoc, codepv, codgrupo', 'length', 'max'=>3,'on'=>'insert,update'),
 			array('moneda', 'length', 'max'=>3,'on'=>'insert,update'),
@@ -100,11 +105,13 @@ class Docingresados extends ModeloGeneral
 			array('codresponsable', 'length', 'max'=>4,'on'=>'insert,update'),
 			array('creadopor', 'length', 'max'=>23,'on'=>'insert,update'),
 			array('creadoel', 'length', 'max'=>15,'on'=>'insert,update'),
-			array('fecha,montomoneda,codteniente,docref,numero,codlocal, fechain,conservarvalor,codteniente, codtenencia, texv', 'safe','on'=>'insert,update'),
+			array('fecha,fechavencimiento,montomoneda,codteniente,docref,numero,codlocal, fechain,conservarvalor,codteniente, codtenencia, texv', 'safe','on'=>'insert,update'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, codprov,conservarvalor, fecha, fechain, correlativo, tipodoc, moneda, descorta, codepv, monto, codgrupo, codresponsable, creadopor, creadoel, texv, docref', 'safe', 'on'=>'search'),
-		);
+			array('id, fechavencimiento,codprov,conservarvalor, fecha, fechain, correlativo, tipodoc, moneda, descorta, codepv, monto, codgrupo, codresponsable, creadopor, creadoel, texv, docref', 'safe', 'on'=>'search'),
+                        array('id, fechavencimiento,codprov,conservarvalor, fecha, fechain, correlativo, tipodoc, moneda, descorta, codepv, monto, codgrupo, codresponsable, creadopor, creadoel, texv, docref', 'safe', 'on'=>'search_por_dicapi'),
+		
+                    );
 	}
 
 	
@@ -137,7 +144,7 @@ class Docingresados extends ModeloGeneral
 			'barcos'=> array(self::BELONGS_TO, 'Embarcaciones', 'codepv'),
                         'tenencias'=>array(self::BELONGS_TO, 'Tenencias', 'codtenencia'),
                         'procesosdocu'=>array(self::HAS_MANY, 'Procesosdocu', 'hiddoci'),
-                     'procesoactivo'=>array(self::HAS_MANY, 'Procesosdocu','hiddoci','limit'=>'1','order'=>'id DESC'),
+                     'procesoactivo'=>array(self::HAS_MANY, 'Procesosdocu','hiddoci','condition'=>'anulado<>"1" ',  'limit'=>'1','order'=>'id DESC'),
                     'tenores' => array(self::BELONGS_TO, 'Tenores', array('codsoc'=>'sociedad','codocu'=>'coddocu') ),
            
                     
@@ -172,9 +179,11 @@ class Docingresados extends ModeloGeneral
 			'docref' => 'Ref.',
 			'codlocal' => 'Centro',
 			'codteniente' => 'Pers.',
+                     'fechavencimiento' => 'F. Venci',
                     'codtenencia' => 'Tenencia',
-				'conservarvalor' => 'Preservar valores ',
+				'conservarvalor' => 'Preservar valores ', 
 			'numero'=>'Numero',
+                    'espeabierto'=>'P. Ab',
 		);
 	}
 
@@ -184,58 +193,77 @@ class Docingresados extends ModeloGeneral
 		if ($this->isNewRecord) {	// $this->creadoel=Yii::app()->user->name;
 		$this->correlativo=Numeromaximo::numero($this->model(),'correlativo','maximovalor',8);
 		$this->cod_estado='10';
-		$this->codocu='280';
+                //$this->espeabierto='0';
+		$this->codocu=self::COD_DOCUMENTO_REGISTRO;
                 //$this->codtenencia=$this->getparametro(self::PARAM_TENENCIA_POR_DEFECTO);
               // VAR_DUMP( $this->codtenencia);DIE();
                // if(is_null($this->codteniente))
                $this->codteniente= Yii::app()->user->getField('codtra');
-                   
+                   if(is_null($this->codtenencia))
                 $this->codtenencia=Configuracion::valor($this->codocu,
                     $this->codlocal, 
                     self::PARAM_TENENCIA_POR_DEFECTO);
-                MiFactoria::Mensaje('error', 'DOCINGFRESADO-BEFORESAVE   , COLOCANDO VALORES POR DEFAULT');
+            $this->codlocal=Tenencias::model()->findByPk($this->codtenencia)->codcen;
+               // MiFactoria::Mensaje('error', 'DOCINGFRESADO-BEFORESAVE   , COLOCANDO VALORES POR DEFAULT');
                 
-                 }
-                else{
-                    
-                                    
-                    
-                }
-                if(!($this->moneda==yii::app()->settings->get('general','general_monedadef')))
-                        $this->montomoneda=yii::app()->tipocambio->getCambio(
+            if(!($this->moneda==yii::app()->settings->get('general','general_monedadef'))){
+                     $this->montomoneda=yii::app()->tipocambio->getCambio(
                                 $this->moneda,
                                 yii::app()->settings->get('general','general_monedadef')
-                                )*$this->monto;
+                                )*$this->monto; 
+                }else{
+                    $this->montomoneda=$this->monto;
+                }
+            
+                 }                 
+                else{
+                   IF($this->cambiocampo("monto") or $this->cambiocampo("moneda"))
+                if(!($this->moneda==yii::app()->settings->get('general','general_monedadef'))){
+                     $this->montomoneda=yii::app()->tipocambio->getCambio(
+                                $this->moneda,
+                                yii::app()->settings->get('general','general_monedadef')
+                                )*$this->monto; 
+                }else{
+                    $this->montomoneda=$this->monto;
+                }
+                       
+                    
+                    
+                }
+                
+                
+                
+                
+                
 	return parent::beforeSave();
 				}
 	
 	
 	public function afterSave() {
 	     if ($this->isNewRecord) {
-		  $tenencia= Tenencias::model()->findByPk($this->codtenencia);
-                 if(count($tenencia->tenenciaprocauto) >0 
-                        and count($tenencia->tenenciastraba)>0)
+                 
+                 $regpro= Tenenciasproc::model()->findAll("codocu=:vcodocu and codte=:vcodte and automatico='1'", array(":vcodocu"=>$this->tipodoc,":vcodte"=>$this->codtenencia ));
+                    $regtra=Tenenciastraba::model()->findAll("codtra=:vcodtra and codte=:vcodte ", array(":vcodtra"=>$this->codteniente,":vcodte"=>$this->codtenencia ));
+                 
+                 if(count($regpro) >0 
+                        and count($regtra)>0)
                 {
-                   foreach($tenencia->tenenciastraba as $fila){
+                  if( !$this->procesarcorto(
+                                   $regtra[0]->id,
+                                   $regpro[0]->id, 
+                                   $this->fechain
+                           ))
+                       MiFactoria::mensaje('error','No se pudo grabar el registro hijo ');
+                                          
                        
-                       if($fila->codtra==$this->codteniente){
-                          //  MiFactoria::Mensaje('error', 'DOCINGFRESADO-AFTERSAVE   , PROCESANDO CORTO');
-                
-                         if(
-                                  !$this->procesarcorto(
-                                   $fila->id,
-                                   $tenencia->tenenciaprocauto[0]->id, 
-                                   $this->fechain)
-                                          )
-                                  //die();
-                           break;
-                       }
+                   } else{
                        
-                   } 
+                       //var_dump($this->codteniente);var_dump($this->codtenencia);
+                      // echo "no se granbo registro hijo carajo"; die();
+                   }
                     
                 }
-		//MiFactoria::Mensaje('error','DOCINGFRESADO-AFTERSAVE se detecto nuevo')	;						   		//$this->c_salida='1';
-		} else
+		 else
 			{
 			//MiFactoria::Mensaje('error','DOCINGFRESADO-AFTERSAVE   se dertecto ggrabado')	;							
 										//$this->ultimares=" ".strtoupper(trim($this->usuario=Yii::app()->user->name))." ".date("H:i")." :".$this->ultimares;
@@ -283,18 +311,20 @@ class Docingresados extends ModeloGeneral
          *
          */
         public function checktenencias($attribute,$params) {
-            $configuracion=Configuracion::valor($this->codocu,
+            /*$configuracion=Configuracion::valor($this->codocu,
                     $this->codlocal, 
                     self::PARAM_TENENCIA_POR_DEFECTO);
             if(is_null($configuracion))
             {
                 $this->adderror('tipodoc','No existe una tenencia configurada para este centro  ( '.$this->codlocal.' )  y documento  (  '.$this->codocu.'    )  , agregue una por favor');
             }
+            */
             
-            
-            
-           
-            
+            //primero que el tipo de documento a ingresar esta registrado en algn proceso de la tenencia
+            $cuantos=count(Tenenciasproc::model()->findAllByAttributes(array('codte' => $this->codtenencia,'codocu'=>$this->tipodoc)));
+             if($cuantos==0)
+             $this->adderror('tipodoc','La tenencia   ( '.$this->codtenencia.' )  no tiene ningun proceso registrado para este documento  (  '.$this->tipodoc.'   '.$this->docus->desdocu.'  )  , agregue una por favor');
+         
             
             
         }
@@ -313,8 +343,13 @@ class Docingresados extends ModeloGeneral
                             )
                     );
             //ECHO "SALIO4";DIE();
-           return ($registro->save());
-           MiFactoria::mensaje('error','procesarcorto');
+           if($registro->save()){
+               return true;
+           }else{
+               MiFactoria::mensaje('error', yii::app()->mensajes->getErroresItem($registro->geterrors()));
+               return false;
+           }
+           //MiFactoria::mensaje('error','procesarcorto');
            /* }else{
                 ECHO "SALIO";DIE();
                return false; 
@@ -401,6 +436,71 @@ class Docingresados extends ModeloGeneral
    } 
    
    
+   public function getcolor(){
+       $hayobjeto=$this->procesoactivo[0];
+       if(!is_null($hayobjeto)){
+          return  $hayobjeto->getcolor();
+       }else{
+          return '#d8d5d2';   
+       }
+   }
    
+   public function search_por_dicapi($tenencia=null)
+	{
+		// Warning: Please modify the following code to remove attributes that
+		// should not be searched.
+
+		$criteria=new CDbCriteria;
+
+		$criteria->compare('id',$this->id);
+		$criteria->compare('codprov',$this->codprov,true);
+		$criteria->compare('fecha',$this->fecha,true);
+		$criteria->compare('fechain',$this->fechain,true);
+		$criteria->compare('correlativo',$this->correlativo,true);
+		$criteria->compare('tipodoc',$this->tipodoc,true);
+		$criteria->compare('moneda',$this->moneda,true);
+		$criteria->compare('descorta',$this->descorta,true);
+		$criteria->compare('codepv',$this->codepv,true);
+		$criteria->compare('monto',$this->monto);
+		$criteria->compare('codgrupo',$this->codgrupo,true);
+		$criteria->compare('codresponsable',$this->codresponsable,true);
+
+
+		$criteria->compare('texv',$this->texv,true);
+		$criteria->compare('docref',$this->docref,true);
+                if(!is_null($codtenencia))
+                 $criteria->addCondition("codtenencia='".$codtenencia."'");
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+                     'sort'=>array(
+                                 'defaultOrder'=>'codepv ASC',
+                                 ),
+                    'pagination' => array (
+                             'pageSize' => 100 //edit your number items per page here
+                       ),
+		));
+	}
+        
+    public function checkcambiodoc($attribute,$params){
+        ///compronbado si ha cambiado de tipodoco, eso si es delicado 
+                    if($this->cambiocampo("tipodoc")){
+                        ///el documento nuevo campobiado sebe de ser compatible con el ultimo proceso
+                        if(count($this->procesoactivo)>0){
+                            if(!$this->tipodoc==$this->procesoactivo[0]->tenenciasproc->codocu){
+                                $this->adderror('tipodoc','Este nuevo documento, es distinto a lo que ya has procesado ');
+                            }
+                        }
+                    }
+    }   
+   
+    
+ public static function clipro_from_ids($arrayids){
+     $criterio=New CDBCriteria;
+		//$criterio->addCondition("a.id=b.hidvale AND b.id=c.idkardex AND b.numdocref=:numocompra");
+		$criterio->addInCondition('id',$arrayids);
+     return yii::app()->db->createCommand()->selectDistinct("codprov")->
+             from("{{docu_ingresados}}")->where($criterio->condition,$criterio->params)->queryColumn();
+ }   
+    
    
 }
