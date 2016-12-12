@@ -317,14 +317,14 @@ return array(
 
 
 		
-		/*'db'=>array(
-        'connectionString' => 'pgsql:host=localhost;port=5432;dbname=pruebas ',
-        'username' => 'tomasito',
-        'password' => 'tomasito',
+		'db'=>array(
+        'connectionString' => 'mysql:host=localhost;dbname=nautilus',
+        'username' => 'root',
+        'password' => '',
 		 'tablePrefix' => 'public_',
         'charset' => 'utf8',
-        ),*/
-		'db'=>array(
+        ),
+		/*'db'=>array(
 			'connectionString' => 'mysql:host=localhost;dbname=gearmari_flota',
 			'emulatePrepare' => true,
 			'username' => 'gearmari_julian',
@@ -332,7 +332,7 @@ return array(
 			'tablePrefix' => 'public_',
 			'charset' => 'utf8',
                    //  'enableParamLogging'=>true,//desactivarlo en produccion
-		),
+		),*/
 		
 		
 		

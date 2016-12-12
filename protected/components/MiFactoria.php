@@ -1466,13 +1466,16 @@ if(!$mensaje->save())
     
     //Esta fduncion es una capa para estabelcer dirfencias entre fecha 
     //en los difernertes motores de Base de Datos  sqlserver, MYSQL, POSTGRES ..etc DATEDIFF, DATE MIN ETC 
-    public static function dbExpresionTiempoPasado($nombrecampofecha){
+    public static function dbExpresionTiempoPasado($nombrecampofecha,$nombrecampofinal=null){
         $dri=yii::app()->db->getDriverName();
         //revisar la propeiedad     " yii::app()->db->driverMap"  que contiene las abreciatua de odoas las bases de datos
          $expresion="";
         switch ( $dri ){
                 case "mysql":
-                    $expresion=" TIMESTAMPDIFF(HOUR,".$nombrecampofecha.",now()) ";
+                    
+                        $expresion=" TIMESTAMPDIFF(HOUR,".$nombrecampofecha.",IFNULL(".$nombrecampofinal.",now()))";
+                    
+                    
                     break;
                 case "pgsql":
                    throw new CHttpException(500,__CLASS__."---".__FUNCTION__." No se encontraron expresiones apra este tipo de MOTOR DE BASE DE DATPOS  ".$dri);

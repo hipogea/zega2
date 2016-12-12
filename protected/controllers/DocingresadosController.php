@@ -1027,6 +1027,9 @@ public function actionborrafilamaletin()
   
    public function  actionindicadores(){
        $arrayvalores=VwDoci::kpiprovdocu('145','100');
+       $arrayvalhoras=VwDoci::kpiprovdocuhoras('145','100');
+       $arrayvalnumero=VwDoci::kpiprovdocunumero('145','100');
+      //var_dump($arrayvalnumero);die();
        function ciento($v){
             return 1000*$v;
             }
@@ -1036,8 +1039,20 @@ public function actionborrafilamaletin()
          $this->render('resumen',array(
              'proveedores'=>$arrayvalores['codprov'],
              'montodinero'=>$arrayvalores['tiempodinero'],
-              'cantidades'=>$arrayvalores['cantidad'],
-              'horas'=>$horas,
+             'horas'=>$horas,
+             
+             
+             
+            
+              'proveedoresabs'=>$arrayvalhoras['proveedores'],
+              'horas100'=>$arrayvalhoras['horas100'],
+             'horas200'=>$arrayvalhoras['horas200'],
+             
+             'cantidades'=>$arrayvalnumero['cantidad'],
+              'proveedorescanti'=>$arrayvalnumero['proveedores'],
+             
+             
+             
                  ),false,true); 
    }
     
