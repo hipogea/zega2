@@ -102,8 +102,7 @@
         <?php echo $form->error($model,'fechanominal'); ?>
     </div>
     
-    
-    
+     
      <div class="row">
 		<?php echo $form->labelEx($model,'codocuref'); ?>
 		<?php  

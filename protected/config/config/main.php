@@ -49,6 +49,7 @@ return array(
 		'ayuda'=>array(),
             'clientes'=> array(),
 		'contabilidad'=> array(),
+            'docingresados'=> array(),
 		'cruge'=>array(
 				'tableprefix'=>'cruge_',
 

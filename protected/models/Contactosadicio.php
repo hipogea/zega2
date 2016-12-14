@@ -44,11 +44,15 @@ class Contactosadicio extends CActiveRecord
 
 			array('mail', 'length', 'max'=>120),
 			array('mail,hidcontacto,codocu,activo', 'safe', 'on'=>'insert,update'),
-			//array('codocu', 'length', 'max'=>3),
+			array('activo', 'safe', 'on'=>'status'),
+			
+//array('codocu', 'length', 'max'=>3),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, hidcontacto, mail, activo, codocu, idevento', 'safe', 'on'=>'search'),
-		);
+		
+                    array('mail,id, codocu', 'safe', 'on'=>'search_por_contacto'),
+                    );
 	}
 
 	/**

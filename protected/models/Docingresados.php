@@ -502,5 +502,8 @@ class Docingresados extends ModeloGeneral
              from("{{docu_ingresados}}")->where($criterio->condition,$criterio->params)->queryColumn();
  }   
     
-   
+ 
+        
+ 
+ 
 }

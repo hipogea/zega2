@@ -41,7 +41,7 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
 		return array(
 			
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('indicadores',   'detalles','ajaxenviacorreoproceso','ajaxanulacion','certificadosdicapi',  'modificaproceso','confirmalectura','limpiarcarro','borrafilamaletin','poneralcarro',   'procesavarios','cargatenencias','cargatrabajadores','cargaprocesos','borraarchivo','adjuntaarchivo','admin','ajaxcargaformtenencia','view','creaproceso','relaciona','recibevalor','create','update'),
+				'actions'=>array('ajaxhereda',    'indicadores',   'detalles','ajaxenviacorreoproceso','ajaxanulacion','certificadosdicapi',  'modificaproceso','confirmalectura','limpiarcarro','borrafilamaletin','poneralcarro',   'procesavarios','cargatenencias','cargatrabajadores','cargaprocesos','borraarchivo','adjuntaarchivo','admin','ajaxcargaformtenencia','view','creaproceso','relaciona','recibevalor','create','update'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -418,8 +418,9 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
 				{
 					//Close the dialog, reset the iframe and update the grid
 					echo CHtml::script("window.parent.$('#cru-dialog31').dialog('close');
-							window.parent.$('#cru-frame31').attr('src','');						
-					window.parent.$.fn.yiiGridView.update('procesos-grid');
+							window.parent.$('#cru-frame31').attr('src','');	
+                                                        window.parent.location.reload();
+					
 					");
 
 				}
@@ -500,22 +501,35 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
            
             if(Isset($_GET['idregistro'])){
                    $registro=$this->loadModel((integer) MiFactoria::cleanInput($_GET['idregistro']));
-                     
+                   if(count($registro->contactos)>0){
+                        
                    //preparando el titulo del mensaje 
                    
                    $titulo=$registro->nombrecortado($ruta)[1].'   '.Configuracion::valor($registro->codocu, $registro->codlocal, $registro::PARAMETRO_TITULO_CORREO_PEDIDO);
-                   
-                 //insertadno lo emnejaes primero para obtener el id el mensaje esto para generalun tojken para conifirmar la alectura del correo envciado 
+                   if ($registro->codtenencia=='400'){
+                     $destinatarios=Contactos::getListMailContacto($registro->clipro->contactoses[0],$registro->tipodoc);
+                    
+                   }else{
+                       $destinatarios=Contactos::getListMailEmpresa($registro->codprov,$registro->tipodoc);
+                  
+                   }
+                          
+                     
+//insertadno lo emnejaes primero para obtener el id el mensaje esto para generalun tojken para conifirmar la alectura del correo envciado 
             $idmensaje=$registro->insertamensajes('M',
-                             Contactos::getListMailEmpresa($registro->codprov,$registro->codocu),
+                             $destinatarios,
                           $titulo    
 //Configuracion::valor($registro->codocu, $registro->codlocal, $registro::PARAMETRO_TITULO_CORREO_PEDIDO)                  
                              );
              //preaprando para enviar el correo
+            
+            //id contacto 
+                    
                    $resultadocorreo="";
                    $resultadocorreo= yii::app()->correo->correo_adjunto(
-                   Contactos::getListMailEmpresa($registro->codprov,$registro->codocu),
-                   Yii::app()->user->email,
+                   //Contactos::getListMailEmpresa($registro->codprov,$registro->codocu),
+                  $destinatarios,
+                           Yii::app()->user->email,
                    $titulo,
                    $registro->getmensajemail($idmensaje),
                            //'hola miaguitos',
@@ -524,7 +538,13 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
                  if(strlen($resultadocorreo)>0)   //si hubo erroes 
                  {//borrar el mensaje 
                      $registro->borramensaje($idmensaje);
+                 }  
+                   
+                 
+                 } else{
+                     echo "NO hay contactos para esta empresa";
                  }
+                  
                    
             }else{
                 
@@ -989,7 +1009,7 @@ public function actionborrafilamaletin()
                        $titulo=$registro->tenenciasproc->eventos->descripcion;
                          $mensaje=$registro->msgexterno;
                          $idmensaje=$registro->insertamensajes('M',
-                             Contactos::getListMailEmpresa($registro->codprov,$registro->codocu),
+                             Contactos::getListMailEmpresa($registro->codprov,$registro->docingresados->tipodoc),
                           $titulo    
                          );
                    $resultadocorreo="";
@@ -1026,6 +1046,29 @@ public function actionborrafilamaletin()
       }
   
    public function  actionindicadores(){
+       if($_GET['tipo']=="reparto"){
+          $datospay= MiFactoria::getArrayValColumnas(
+                  VwDoci::getcantidadporusuario());
+         $arraypay=array();
+          foreach($datospay['ap'] as $clave=>$valor){
+              
+              $nombre=$valor;
+              $cantidad=$datospay['cantdocus'][$clave];
+              $elemento=array('name'=>$nombre,'y'=>$cantidad);
+              array_push($arraypay,$elemento);
+             // $arraypay[][0]=$datospay['ap'][$clave];
+              //$arraypay[][1]=$datospay['cantdocus'][$clave];
+          }
+          
+          
+          $this->render('view_pay',array('datos'=>$arraypay));
+           var_dump( $arraypay);die();
+           
+           
+       }
+       
+       
+       
        $arrayvalores=VwDoci::kpiprovdocu('145','100');
        $arrayvalhoras=VwDoci::kpiprovdocuhoras('145','100');
        $arrayvalnumero=VwDoci::kpiprovdocunumero('145','100');
@@ -1056,6 +1099,58 @@ public function actionborrafilamaletin()
                  ),false,true); 
    }
     
+  public function actionajaxnotificavencimientos(){
+      if(yii::app()->request->isAjaxRequest){
+         $reply=yii::app()->user->email;
+         $factor='0.7'; ///70%
+               //  echo $reply;
+            $titulo='Proximo vencimiento de certificados';
+               $prove= VwDoci::getCertificadosVencidos($factor);
+                $columnas=$regview->array_columnas_proveedores();
+                                 $mensaje=Tenenciasproc::model()->findByPk($registro->hidproc)->msgexterno.
+                                         CHtml::openTag("br").
+                                         $this->renderPartial('listadomail',
+                                                 array(
+                                                     'proveedor'=>$prove,
+                                                     'arraycolumnas'=>$columnas,
+                                                 ),
+                                                 
+                                                 true,false);
+                                  // echo "<br>Mensaje<br>" ;
+                                
+                                // echo $mensaje;
+                                /// echo "<br>" ;
+                                  yii::app()->correo->correo_simple(
+                                           $direcciones,
+                                           $reply,
+                                           $titulo,
+                                           $mensaje
+                                           ) ;              
+      }
+          
+     }
+   
+   public function actionajaxhereda(){
+       if(yii::app()->request->isAjaxRequest){
+           if(isset($_POST['idpadre'])){
+               $id=(integer) MiFactoria::cleanInput($_POST['idpadre']);
+               $registro=Docingresados::model()->findByPk($id);
+               if(!is_null($registro)){
+                   header("Content-Type: application/json");
+                    echo CJSON::encode(
+                        array(
+                            'codigo' => $registro->tipodoc,
+                            'numero' => $registro->numero                            
+                            )); 
+                  
+               }else{
+                   echo " No se encontro nngun registro para este id ".$id;
+               }
+           }else{
+               //var_dump($_POST);
+           }
+       }
+   }
 }
 
 

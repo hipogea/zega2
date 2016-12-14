@@ -91,9 +91,7 @@
 
 <br>
 <?php 
-var_dump($proveedoresabs);echo "<br>";
-var_dump($horas100);echo "<br>";
-var_dump($horas200);echo "<br>";
+
 
 	$this->Widget('ext.highcharts.HighchartsWidget', array(
    'options'=>array(
@@ -187,9 +185,8 @@ var_dump($horas200);echo "<br>";
 <br>
 <?php 
 
-var_dump($proveedorescanti);echo "<br>";
+//var_dump($proveedorescanti);echo "<br>";
 
-var_dump($proveedorescanti);echo "<br>";
 	$this->Widget('ext.highcharts.HighchartsWidget', array(
    'options'=>array(
 		'theme'=>'dark-green', 	

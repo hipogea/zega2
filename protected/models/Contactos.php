@@ -31,6 +31,7 @@ class Contactos extends ModeloGeneral
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
+                    
 			array('c_nombre', 'required','message'=>'Debes de colocar el nombre','on'=>'insert,update,BATCH_INS'),
                          array('c_hcod', 'required', 'message'=>'El codigo de la empresa','on'=>'BATCH_INS'),
                     array('c_hcod','exist','allowEmpty' => false, 'attributeName' => 'codpro', 'className' => 'Clipro','message'=>'Este proveedor no existe','on'=>'BATCH_INS'),

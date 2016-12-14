@@ -225,10 +225,10 @@ $form=$this->beginWidget('CActiveForm', array(
 	   
             </div>
 	  <div class="row">
-		<?php echo $form->label($model,'docref'); ?>
+		<?php echo $form->label($model,'numdocref'); ?>
 		
 		
-		<?php echo $form->textField($model,'docref',array('size'=>30,'maxlength'=>14)); ?>
+		<?php echo $form->textField($model,'numdocref',array('size'=>30,'maxlength'=>14)); ?>
 	
 	   
 	
@@ -282,13 +282,13 @@ $form=$this->beginWidget('CActiveForm', array(
 		<?php $this->widget('zii.widgets.jui.CJuiDatePicker',
  array(
  'model'=>$model,
- 'attribute'=>'d_fechain1',
- 'value'=>$model->d_fechain1,
+ 'attribute'=>'fechain1',
+ 'value'=>$model->fechain1,
  'language' => 'es',
  'htmlOptions' => array('readonly'=>"readonly"),
  'options'=>array(
  'autoSize'=>true,
- 'defaultDate'=>$model->d_fechain1,
+ 'defaultDate'=>$model->fechain1,
  'dateFormat'=>'yy-mm-dd',
  'showAnim'=>'fold', 
  'selectOtherMonths'=>true,
@@ -381,13 +381,25 @@ $form=$this->beginWidget('CActiveForm', array(
 	</div>
 	
 	<div class="row">
-			<?php echo $form->label($model,'tipodoc'); ?>
+			<?php echo $form->label($model,'codocuref'); ?>
 			<?php  $datos = CHtml::listData(Documentos::model()->findAll(array("condition"=>"clase='D' ",'order'=>'coddocu')),'coddocu','referencia');
-					echo $form->DropDownList($model,'tipodoc',$datos, array('empty'=>'--Seleccione un documento --')  );
+					echo $form->DropDownList($model,'codocuref',$datos, array('empty'=>'--Seleccione un documento --')  );
 					//ECHO CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."nuevo.gif","",array("width"=>30,"height"=>15));
 			?>
 													
 	</div>
+          <div class="row">
+		<?php echo $form->label($model,'numdocref'); ?>
+		
+		
+		<?php echo $form->textField($model,'numdocref',array('size'=>30,'maxlength'=>14)); ?>
+	
+	   
+	
+
+
+	  </div>
+	  
 	
 	
       </div>

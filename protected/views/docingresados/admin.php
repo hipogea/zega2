@@ -2,8 +2,9 @@
 $this->menu=array(
 	//array('label'=>'List Docingresados', 'url'=>array('index')),
 	array('label'=>'Nuevo', 'url'=>array('create')),
-    array('label'=>'Listado rapido', 'url'=>array('certificadosdicapi')),
+    array('label'=>'Listado Certificados', 'url'=>array('certificadosdicapi')),
       array('label'=>'Listado detallado', 'url'=>array('detalles')),
+     array('label'=>'Indicadores', 'url'=>array('indicadores')),
 );
 
 Yii::app()->clientScript->registerScript('search', "

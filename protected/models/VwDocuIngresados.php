@@ -7,7 +7,7 @@ class VwDocuIngresados extends CActiveRecord
 	 */
     public $color;
     public $tiempopasado;
-    public $d_fechain1;
+    public $fechain1;
     public $fechanominal1;
 	public function tableName()
 	{
@@ -43,7 +43,16 @@ class VwDocuIngresados extends CActiveRecord
 			array('texv, fechafin, comentario', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('espeabierto,idproceso,montomoneda, id, codprov, fecha, fechain, correlativo, tipodoc, moneda, descorta, codepv, monto, codgrupo, codresponsable, creadopor, creadoel, texv, docref, codteniente, codlocal, numero, cod_estado, codocu, codtenencia, codtenor, codsoc, idproceso, fechacrea, fechanominal, fechafin, hidtra, hidproc, codocuref, numdocref, comentario, codtenenciaproc, idtenenciasproc, final, hidevento, nhorasnaranja, nhorasverde, hidprevio, descripcion, ap, am, nombres', 'safe', 'on'=>'search'),
+			array('codprov, fecha,'
+                            . ' fechain, fechain1,fechanominal1,correlativo, tipodoc, '
+                            . ' codepv, monto, codgrupo, codresponsable,'
+                            . ' espeabierto,  docref, '
+                            . ' codlocal, numero,  codtenencia,'
+                            . '   fechacrea, fechanominal, '
+                            . 'fechafin, hidtra, hidproc, codocuref, numdocref,  '
+                            . ' final, hidevento, '
+                            . 'nhorasnaranja, nhorasverde, hidprevio, descripcion, ap,'
+                            . ' am, nombres', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -154,13 +163,13 @@ class VwDocuIngresados extends CActiveRecord
 		$criteria->compare('codocuref',$this->codocuref,true);
 		$criteria->compare('nhorasnaranja',$this->nhorasnaranja);
 		$criteria->compare('nhorasverde',$this->nhorasverde);
+                $criteria->compare('espeabierto',$this->espeabierto);
 		$criteria->compare('numdocref',$this->numdocref,true);
 		$criteria->compare('descripcion',$this->descripcion,true);
 		$criteria->compare('ap',$this->ap,true);
 		$criteria->compare('despro',$this->despro,true);
 		//$criteria->compare('rucpro',$this->rucpro,true);
 		$criteria->compare('final',$this->final,true);
-                $criteria->compare('espeabierto',$this->espeabierto,true);
                 //$criteria->compare('idproceso',$this->idproceso,true);
                 if(isset($_SESSION['sesion_Clipro']))
                     {
@@ -214,12 +223,7 @@ class VwDocuIngresados extends CActiveRecord
 				$criteria->compare('codepv',$this->codepv,true);
                       } 
                       
-                       if((isset($this->fechain) && trim($this->fechain) != "") && (isset($this->d_fechain1) && trim($this->d_fechain1) != ""))  {
-		           
-                        $criteria->addBetweenCondition('fechain', ''.$this->fechain.'', ''.$this->d_fechain1.''); 
-						//VAR_DUMP($criteria->params);DIE();
-						}
-                                                
+                     
                                                 
                             if((isset($this->fechanominal) && trim($this->fechanominal) != "") && (isset($this->fechanominal1) && trim($this->fechanominal1) != ""))  {
 		           
@@ -227,9 +231,9 @@ class VwDocuIngresados extends CActiveRecord
 						//VAR_DUMP($criteria->params);DIE();
 						}   
                                                 
-                                                if((isset($this->fechavencimiento) && trim($this->fechavencimiento) != "") && (isset($this->fechavencimiento1) && trim($this->fechavencimiento1) != ""))  {
+                                                if((isset($this->fechain) && trim($this->fechain) != "") && (isset($this->fechain1) && trim($this->fechain1) != ""))  {
 		           
-                        $criteria->addBetweenCondition('fechavencimiento', ''.$this->fechavencimiento.'', ''.$this->fechavencimiento1.''); 
+                        $criteria->addBetweenCondition('fechain', ''.$this->fechain.'', ''.$this->fechain1.''); 
 						//VAR_DUMP($criteria->params);DIE();
 						}  
                                                 

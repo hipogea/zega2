@@ -1,4 +1,5 @@
 <?php 
+var_dump($_GET['VwDocuIngresados']);
 $this->menu=array(
 	//array('label'=>'List Docingresados', 'url'=>array('index')),
 	array('label'=>'Nuevo', 'url'=>array('create')),

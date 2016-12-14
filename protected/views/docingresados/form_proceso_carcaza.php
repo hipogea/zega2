@@ -127,6 +127,24 @@
         <?php echo $form->error($model,'fechanominal'); ?>
     </div>
     
+    <div class="row">
+		
+		
+		<?php 
+                $opajax=array(
+                    'type'=>'POST',
+                    'data'=>array('idpadre'=>$modelopadre->id),
+                    'dataType'=>"json",
+                    'success'=>"function(data) {"  
+                        ."$('#Procesosdocu_codocuref').val(data.codigo).change(); "              
+                    . "$('#Procesosdocu_numdocref').attr('value',data.numero); "
+                    . "   }",
+                );
+                
+                echo CHtml::ajaxButton('heredar',yii::app()->createUrl($this->id."/ajaxhereda",array()),$opajax); ?>
+	</div>
+    
+    
     
     
      <div class="row">

@@ -373,22 +373,23 @@ class VwDoci extends CActiveRecord
         $factor=0.6;
         $codocu=  MiFactoria::cleanInput($codocu);
         $codtenencia=  MiFactoria::cleanInput($codtenencia);
-        $sqlcount=" select AVG( (".MiFactoria::dbExpresionTiempoPasado('fechain').")*montomoneda  ) as smtiempodinero
-from vw_docu_ingresados 
-where idproceso in (select max(idproceso)  from vw_docu_ingresados  where final<>'1' group by id )
+        $sqlcount=" select AVG( (".MiFactoria::dbExpresionTiempoPasado('fechanominal','fechafin').")*montomoneda  ) 
+            as smtiempodinero
+  from vw_docu_ingresados 
+   where ".MiFactoria::dbExpresionTiempoPasado('fechanominal','fechafin')." > 12 and final<>'1' 
   ";
-        
+     // var_dump( $sqlcount);die();
    $montototal= yii::app()->db->createCommand($sqlcount)->queryScalar() ;  
    
    
         $sql=" select count(id) as cantidad, 
-            avg(".MiFactoria::dbExpresionTiempoPasado('fechain').") AS horasprom, 
-avg(montomoneda) AS montosoles, AVG( (".MiFactoria::dbExpresionTiempoPasado('fechain')."  )*montomoneda) AS tiempodinero,
+            avg(".MiFactoria::dbExpresionTiempoPasado('fechanominal','fechafin').") AS horasprom, 
+avg(montomoneda) AS montosoles, AVG( (".MiFactoria::dbExpresionTiempoPasado('fechanominal','fechafin')."  )*montomoneda) AS tiempodinero,
 codprov ,despro,
 tipodoc 
 from vw_docu_ingresados 
-where tipodoc='".$codocu."'  and  idproceso in (select max(idproceso)  from vw_docu_ingresados  where final<>'1' group by id )
-group by codprov,tipodoc    having AVG( (".MiFactoria::dbExpresionTiempoPasado('fechain')."  )*montomoneda) > ".((string)($montototal*$factor))."   order by tiempodinero desc " ;
+where tipodoc='".$codocu."'  
+group by codprov,tipodoc    having AVG( (".MiFactoria::dbExpresionTiempoPasado('fechanominal','fechafin')."  )*montomoneda) > ".((string)($montototal*$factor))."   order by tiempodinero desc " ;
         
   
        //return var_dump($sql);
@@ -405,12 +406,11 @@ group by codprov,tipodoc    having AVG( (".MiFactoria::dbExpresionTiempoPasado('
      public static function kpiprovdocuhoras($codocu,$codtenencia){
         $factor=0.1;
         $codocu=  MiFactoria::cleanInput($codocu);
-        $codtenencia=  MiFactoria::cleanInput($codtenencia);
-              
-      $sqlcount=" select AVG (".MiFactoria::dbExpresionTiempoPasado('fechanominal','fechafin').") as smhoras
-                    from vw_docu_ingresados where codtenencia ='100' and  
-                    idproceso  in (select max(idproceso)  from vw_docu_ingresados 
-                    where final<>'1' group by id ) ";  
+        $codtenencia=  MiFactoria::cleanInput($codtenencia);  
+        
+     $sqlcount=" select AVG (".MiFactoria::dbExpresionTiempoPasado('fechanominal','fechafin').") as smhoras
+                    from vw_docu_ingresados where codtenencia ='100' and  final<>'1' ";
+     // VAR_DUMP( $sqlcount);DIE();
       $horastotales100= yii::app()->db->createCommand($sqlcount)->queryScalar() ;  
       
     $sql100= " select count(id) as cantidad, 
@@ -424,9 +424,8 @@ group by codprov,tipodoc    having AVG( (".MiFactoria::dbExpresionTiempoPasado('
     order by codprov desc "; 
     
     $sqlcount=" select AVG (".MiFactoria::dbExpresionTiempoPasado('fechanominal','fechafin').") as smhoras
-                    from vw_docu_ingresados where codtenencia ='200' and  
-                    idproceso  in (select max(idproceso)  from vw_docu_ingresados 
-                    where final<>'1' group by id ) ";  
+                    from vw_docu_ingresados where codtenencia ='200' and   final<>'1' "; 
+    
       $horastotales200= yii::app()->db->createCommand($sqlcount)->queryScalar() ; 
            
       $sql200= " select count(id) as cantidad, 
@@ -438,6 +437,7 @@ group by codprov,tipodoc    having AVG( (".MiFactoria::dbExpresionTiempoPasado('
     having AVG (".MiFactoria::dbExpresionTiempoPasado('fechanominal', 'fechafin')." )"
     . " > ".((string)($horastotales100*$factor))." 
     order by codprov desc ";
+      
         $datos100=MiFactoria::getArrayValColumnas(yii::app()->db->createCommand($sql100)->queryAll()); 
         $datos200=MiFactoria::getArrayValColumnas(yii::app()->db->createCommand($sql200)->queryAll());
       
@@ -487,21 +487,47 @@ group by codprov,tipodoc    having AVG( (".MiFactoria::dbExpresionTiempoPasado('
         $codtenencia=  MiFactoria::cleanInput($codtenencia);
               
       $sqlcount=" select  count(id) as smdocus
-from vw_docu_ingresados 
-where idproceso in (select max(idproceso)  from vw_docu_ingresados  where final<>'1' group by id )
-  ";  
+from vw_doci
+where  tipodoc='145' and  final<>'1'  ";  
    $docstotales= yii::app()->db->createCommand($sqlcount)->queryScalar() ;  
              $sql=" select count(id) as cantidad,             
 codprov ,despro,
 tipodoc 
-from vw_docu_ingresados 
-where tipodoc='".$codocu."'  and  idproceso in (select max(idproceso)  from vw_docu_ingresados  where final<>'1' group by id )
-group by codprov,tipodoc,despro    having count(id) > ".((string)($docstotales*$factor))."   order by cantidad desc " ;
-  //return var_dump($sql);
+from vw_doci 
+where tipodoc='".$codocu."'   group by codprov,tipodoc,despro    having count(id) > ".((string)($docstotales*$factor))."   order by cantidad desc " ;
+  //var_dump($sql);die();
              $datos=yii::app()->db->createCommand($sql)->queryAll(); 
        $datosparagrafico=MiFactoria::getArrayValColumnas($datos);
+       //var_dump($datosparagrafico);die();
        return $datosparagrafico;
-        
+       
     }
+    
+    
+   public static function getcantidadporusuario($codtra=null){
+       
+       $cadena="";
+       if(!is_null($codtra))
+           $cadena=" and codigotra='".$codtra."'";
+      $sqlcount=" select  count(id) as cantdocus, codigotra,ap
+                    from vw_doci
+where  tipodoc='145' and  final<>'1' ".$cadena."  group by codigotra,ap order by  count(id) desc ";  
+      if(is_null($codtra)){
+          //echo "salio";die();
+          return  yii::app()->db->createCommand($sqlcount)->queryAll() ; 
+      }else{
+           //echo "salio 45";die();
+          $salio=yii::app()->db->createCommand($sqlcount)->queryAll();
+          if(count($salio)>0){
+             return $salio[0]["cantdocus"] ; 
+          }else{
+              return 0;
+          }
+         
+      }
+      
+  
+  
+ } 
     
 }

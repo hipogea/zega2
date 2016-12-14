@@ -399,6 +399,7 @@ $mo=New Alinventario();
 
 public $layout='//layouts/column2';
 	public function actionPio() {
+            var_dump(VwDoci::getcantidadporusuario('7007'));die();
                         VwDoci::kpiprovdocuhoras('145','100');die();
             //Yii::app()->user->um->getFieldValue(5,'codtra');die();
             echo Trabajadores::getNombresFromIdUsuario(5); echo "<br>";

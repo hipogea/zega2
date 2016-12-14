@@ -20,18 +20,12 @@ class ContactosController extends Controller
 	{
 		Yii::app()->user->loginUrl = array("/cruge/ui/login");
 		return array(
-			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
-				'users'=>array('*'),
-			),
+			
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','contactosporprove','borradetalle','modificadetalle','creaadicional','update'),
+				'actions'=>array( 'admin','delete', 'ajaxdesactivacontatodetalle','create','contactosporprove','borradetalle','modificadetalle','creaadicional','update'),
 				'users'=>array('@'),
 			),
-			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
-				'users'=>array('admin'),
-			),
+			
 			array('deny',  // deny all users
 				'users'=>array('*'),
 			),
@@ -157,8 +151,7 @@ class ContactosController extends Controller
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
-
-		// Uncomment the following line if AJAX validation is needed
+  // Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
 		if(isset($_POST['Contactos']))
@@ -182,7 +175,15 @@ class ContactosController extends Controller
 					$codigoproveedor=$_GET['codpro'];
 					} else {$codigoproveedor=$model->c_hcod;}
     //----- end new code --------------------
+                    $modeldetalle=New Contactosadicio('search_por_contacto');
+                    $modeldetalle->unsetAttributes();  // clear any default values
+		
+                    if(isset($_GET['Contactosadicio']))
+			$modeldetalle->attributes=$_GET['Contactosadicio'];
+		                    
+                                        
 		$this->render('_form',array(
+                       'modeldetalle'=>$modeldetalle,
 			'model'=>$model,'codpro'=>$codigoproveedor,
 		));
 	}
@@ -252,4 +253,37 @@ class ContactosController extends Controller
 			Yii::app()->end();
 		}
 	}
+        
+        
+        public function actionajaxdesactivacontatodetalle(){
+            if(yii::app()->request->isAjaxRequest){ 
+                Yii::app()->clientScript->scriptMap=array("jquery.js"=>false, 'duplicatedScrip.js'=>false);
+          if(Isset($_GET['id'])){ 
+                   $registro= Contactosadicio::Model()->findByPk( (integer)MiFactoria::cleanInput($_GET['id']));
+                    if(!is_null($registro))
+                        {
+                        $registro->setScenario('status');
+                        if($registro->activo=='1'){
+                            $registro->activo=null;
+                        } else {
+                             $registro->activo='1';
+                        }
+                        if($registro->save()){
+                           echo "grabo  ".$registro->id; 
+                        }else{
+                            echo "no garbo";
+                        }
+                    }
+                   
+                
+                   
+            }else{
+                
+            }
+          } else{
+              
+          }
+              
+        }
+          
 }
