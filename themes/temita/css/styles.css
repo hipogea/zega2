@@ -1,140 +1,185 @@
+.grid-view table.items {
 
-
-
-
-
-
-
-.grid-view-loading
-{
-	background:url(loading.gif) no-repeat;
-}
-
-.grid-view
-{
-	padding: 1px 0;
-}
-
-.grid-view table.items
-{
-	background: white;
-	border-collapse: collapse;
 	width: 100%;
-	border: 1px #D0E3EF solid;
+
+	border-collapse:collapse;
+
+	border:1px solid #FFCA5E;
+
 }
 
-.grid-view table.items th, .grid-view table.items td
-{
-	font-size: 0.9em;
-	border: 1px white solid;
-	padding: 0.3em;
+
+
+.grid-view table.items {
+
+	border-collapse:collapse;
+
+	border:1px solid #FFCA5E;
+
 }
 
-.grid-view table.items th
-{
-	color: white;
-	background: url("bg.gif") repeat-x scroll left top white;
-	text-align: center;
-}
 
-.grid-view table.items th a
-{
-	color: #EEE;
+
+.grid-view table.items thead th {
+
+	/*background: #DAE2EC url(bg_td2.gif) repeat-x;*/
+    vertical-align: bottom;
+    background: url(images/sprite.png) repeat-x 0 0;
+	height: 20px;
+
+	color: #000;
+
+	font-size: 0.8em;
+
 	font-weight: bold;
-	text-decoration: none;
-}
 
-.grid-view table.items th a:hover
-{
-	color: #246975;
-}
+	padding: 0px 7px;
 
-.grid-view table.items th a.asc
-{
-	background:url(up.gif) right center no-repeat;
-	padding-right: 10px;
-}
+	margin: 5px 0px 0px;
 
-.grid-view table.items th a.desc
-{
-	background:url(down.gif) right center no-repeat;
-	padding-right: 10px;
-}
+	text-align: left;
 
-.grid-view table.items tr.even
-{
-	background: #F8F8F8;
-}
+	border-right: 1px solid #bbb;
 
-.grid-view table.items tr.odd
-{
-	background: #E5F1F4;
+	border-top: 1px solid #bbb;
+
+
+
 }
 
 .grid-view table.items tr.selected
-{
-	background: #BCE774;
-}
 
-.grid-view table.items tr:hover.selected
 {
-	background: #CCFF66;
+
+	background: #9ee7e5;
+
 }
 
 .grid-view table.items tbody tr:hover
+
 {
+
 	background: #ECFBD4;
+
 }
 
-.grid-view .link-column img
+.grid-view table.items tr:hover.selected
+
 {
-	border: 0;
+
+	background: #c1ffff;
+
 }
 
-.grid-view .button-column
-{
-	text-align: center;
-	width: 60px;
-}
 
-.grid-view .button-column img
-{
-	border: 0;
-}
-
-.grid-view .checkbox-column
-{
-	width: 15px;
-}
 
 .grid-view .summary
+
 {
-	margin: 0 0 0px 0;
-	text-align: left;
-        font-weight:bold;
-   font-size:12px;
-   color : #46569c;
-       text-shadow: #ccc 1px 0px 1px;
+
+	margin: 0 0 2px 0;
+
+	text-align: right;
+
 }
 
-.grid-view .pager
-{
-	
-    margin: 15px 0 0 0;
-    text-align: right;
-    font-size: 16px;
-    text-shadow: #a3a5a7 1px 0px 1px;
-    color: #090a0a;
+
+
+.grid-view table.items tbody tr {
+
+	/*background: url(bg_td1.jpg) repeat-x top;*/
+
 }
 
-.grid-view .empty
-{
-	font-style: italic;
+.grid-view table.items tbody tr.odd {
+
+	/*background: #FFF8E8 url(bg_td4.gif) repeat-x;*/
+
 }
 
-.grid-view .filters input,
-.grid-view .filters select
-{
-	width: 100%;
-	border: 1px solid #ccc;
+.grid-view table.items tbody tr.even {
+
+	/*background: #fff url(bg_td3.gif) repeat-x;*/
+
 }
+
+.grid-view table.items tbody th,td {
+
+	    font-size: 14px !important;
+    line-height: 1em;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #192E80;
+    padding: 5px 5px;
+    text-shadow: #ccc 1px 0px 1px;
+    border-top: 1px solid #FFCA5E;
+    border-right: 1px solid #F2E2D7;
+    text-align: left;
+
+}
+
+.grid-view table.items tbody tr a {
+
+	color: #0D76DD;
+
+	font-weight: bold;
+
+	text-decoration: underline;
+
+}
+
+.grid-view table.items tbody th a{
+
+	 font-size: 12px !important;   
+    
+    color: #333;
+    padding: 5px 5px;
+    text-shadow: #ccc 1px 0px 1px;
+
+
+
+}
+
+.grid-view table.items a:hover {
+
+	color: #F8A704;
+
+	text-decoration: underline;
+
+}
+
+.grid-view table.items a:visited {
+
+	color: #9D576C;
+
+	text-decoration: underline;
+
+}
+
+.grid-view table.items tfoot th {
+
+	/*background: url(bg_total.jpg) repeat-x bottom;*/
+
+	color: #FFFFFF;
+
+	height: 30px;
+
+}
+
+.grid-view table.items tfoot td {
+
+	/*background: url(bg_total.jpg) repeat-x bottom;*/
+
+	color: #000;
+
+	height: 10px;
+
+}
+
+.grid-view-loading
+
+{
+
+	background:url(loading.gif) no-repeat;
+
+}
+

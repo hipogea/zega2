@@ -406,7 +406,7 @@ $form=$this->beginWidget('CActiveForm', array(
 	
 	<div class="row">
 		<?php echo $form->labelEx($model,'hidproc'); ?>
-		<?php  $datos = CHtml::listData(Tenenciasproc::model()->findAll(),'id','eventos.descripcioncompleta');
+		<?php  $datos = CHtml::listData(Tenenciasproc::model()->findAll(array("order"=>"codocu")),'id','eventos.descripcioncompleta');
 					echo $form->DropDownList($model,'hidproc',$datos, array('empty'=>'--Seleccione un proceso --')  )
 					?>
 	</div>

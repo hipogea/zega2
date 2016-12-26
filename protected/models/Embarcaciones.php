@@ -44,7 +44,8 @@ class Embarcaciones extends ModeloGeneral
 			//array('codcentro', 'length', 'max'=>4),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('codep, nomep, matricula, cbodega, activa, codsap', 'safe', 'on'=>'search,BATCH_INS'),
+                        array('codep, nomep, matricula,eslora, manga, puntal, cbodega, activa, codsap', 'safe', 'on'=>'insert,update'),
+			array('codep, nomep, matricula,eslora, manga, puntal, cbodega, activa, codsap', 'safe', 'on'=>'search,BATCH_INS'),
 		);
 	}
 

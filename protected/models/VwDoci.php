@@ -156,7 +156,7 @@ class VwDoci extends CActiveRecord
 		$criteria->compare('correlativo',$this->correlativo,true);
 		$criteria->compare('tipodoc',$this->tipodoc,true);
                 $criteria->compare('color',$this->color,true);
-		//$criteria->compare('moneda',$this->moneda,true);
+		$criteria->compare('moneda',$this->moneda,true);
 		$criteria->compare('descorta',$this->descorta,true);
 		$criteria->compare('codepv',$this->codepv,true);
 		$criteria->compare('monto',$this->monto);
@@ -247,11 +247,17 @@ class VwDoci extends CActiveRecord
                         $criteria->addBetweenCondition('fechavencimiento', ''.$this->fechavencimiento.'', ''.$this->fechavencimiento1.''); 
 						//VAR_DUMP($criteria->params);DIE();
 						}  
-                                                
+                     
+                     $dependecy = new CDbCacheDependency('SELECT count(*) FROM {{docu_ingresados}}');
+ 
+                return new CActiveDataProvider($this->cache(600, $dependecy, 2), array ( 
+                        'criteria'=>$criteria,
+                        'pagination'=>array('pageSize'=>50),
+                                            ));
                 
-		return new CActiveDataProvider($this, array(
+		/*return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
-		));
+		));*/
 	}
 
         
@@ -358,17 +364,35 @@ class VwDoci extends CActiveRecord
 		));
 	}
         
-    public function array_columnas_proveedores(){
+    public static function array_columnas_proveedores(){
         return array(
-            'numero',
-            'descorta',
-            'moneda',
-            'nomep',
-            'fecha',
-            'fechain'
+             array('name'=>'numero','header'=>'Num','type'=>'raw'),
+             array('name'=>'id','header'=>'Id','type'=>'raw'),
+           array('name'=>'despro','header'=>'Empresa'),
+                array('name'=>'moneda'),        
+             array('name'=>'nomep','header'=>'Embarcacion'),
+           array('name'=>'fecha','header'=>'F. Doc'),
+             array('name'=>'fechain','header'=>'F recepcion'),
                 );
     }
      
+    public static function array_columnas_interno(){
+        return array(
+            'desdocu',
+             'numero',            
+            'correlativo',
+            'despro',           
+            'descorta',
+           // 'moneda',
+            'nomep',
+            'fecha',
+            'fechain',
+            //'numdocref',
+                );
+    }
+    
+    
+    
     public static function kpiprovdocu($codocu,$codtenencia){
         $factor=0.6;
         $codocu=  MiFactoria::cleanInput($codocu);
@@ -481,6 +505,9 @@ group by codprov,tipodoc    having AVG( (".MiFactoria::dbExpresionTiempoPasado('
     }
     
     
+   
+    
+    
      public static function kpiprovdocunumero($codocu,$codtenencia){
         $factor=0.01;
         $codocu=  MiFactoria::cleanInput($codocu);
@@ -530,4 +557,40 @@ where  tipodoc='145' and  final<>'1' ".$cadena."  group by codigotra,ap order by
   
  } 
     
+ 
+  public static function vencimientocertificados($codtenencia,$diferenciahoras){
+         $codtenencia=  MiFactoria::cleanInput($codtenencia);
+          
+          $sql200= "select t.*,
+            round(".MiFactoria::dbExpresionTiempoPasado('fechanominal', 'fechafin')." /nhorasnaranja ,2) as porcentaje,
+round(".MiFactoria::dbExpresionTiempoPasado('fechanominal', 'fechafin').",2  )  as horaspasadas,
+nhorasnaranja-round(".MiFactoria::dbExpresionTiempoPasado('fechanominal', 'fechafin')." ,2) 
+ from vw_doci t where
+  (IFNULL(           TIMESTAMPDIFF(  HOUR,fechanominal, IFNULL(  fechavencimiento,now() )         ),nhorasnaranja)      
+  -round(TIMESTAMPDIFF(HOUR,fechanominal,IFNULL(fechafin,now())) ,2) ) < ".$diferenciahoras." 
+    and  
+	 codtenencia='".$codtenencia."' and final <> '1' ";
+          
+         // echo $ql200; echo "<br><br>";
+            $datos=yii::app()->db->createCommand($sql200)->queryAll(); 
+        return $datos;
+        
+         
+    }
+    
+ public static function vencimientocertificadosId($codtenencia,$dias){
+         $codtenencia=  MiFactoria::cleanInput($codtenencia);
+          $dias=  MiFactoria::cleanInput($dias);
+          $sql200= "select t.id 
+ from vw_doci t where 
+IF(ISNULL(fechavencimiento)=1,  nhorasnaranja-TIMESTAMPDIFF(HOUR,fechanominal,now() ) ,
+TIMESTAMPDIFF(HOUR,NOW(),fechavencimiento )   ) <  ".($dias*24)." and codtenencia='".$codtenencia."' and final <> '1' ";
+          
+         // echo $ql200; echo "<br><br>";
+            $datos=yii::app()->db->createCommand($sql200)->queryColumn(); 
+        return $datos;
+        
+         
+    }
+ 
 }

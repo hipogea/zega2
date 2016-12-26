@@ -5,23 +5,45 @@ $this->menu=array(
 );
 
 ?>
+
+
+<?php
+Yii::app()->clientScript->registerScript('search', "
+$('.search-button').click(function(){
+	$('.search-form').toggle();
+	return false;
+});
+$('.search-form form').submit(function(){
+	$.fn.yiiGridView.update('dicapi-grid', {
+		data: $(this).serialize()
+	});
+	return false;
+});
+");
+
+?>
+
+
  
 <?php MiFactoria::titulo('Certificados y Vencimiento','attach');
   ?>
 
+<div class="search-form" >
+<?php
 
+$this->renderPartial('_searchdicapi',array(
+	'model'=>$model,
+)); 
+
+?>
+</div>
 
 <?php 
 
  $this->widget('ext.groupgridview.GroupGridView', array(
-      'id' => 'grid-dicapi',      
+      'id' => 'dicapi-grid',      
       'mergeColumns' => array('Embarcacion','documento'),
-	'dataProvider'=>$model->search_por_dicapi(
-                Configuracion::valor($model::COD_DOCUMENTO_REGISTRO,
-                    $model->codlocal, 
-                    $model::PARAMETRO_COD_TENENCIA_VISUALIZAR_CERTIFICADOS,
-                        yii::app()->user->id)
-                ),
+	'dataProvider'=>$model->search_por_dicapi('400'),
     'itemsCssClass'=>'table table-striped table-bordered table-hover',
 	//'cssFile' => ''.Yii::app()->getTheme()->baseUrl.'grid_pyy.css',  // your version of css file
 	
@@ -40,7 +62,7 @@ $this->menu=array(
 		//'desdocu', 
            
              array('name'=>'Embarcacion','type'=>'raw','value'=>'$data->barcos->nomep'),
-           array('name'=>'Docum','type'=>'raw','value'=>'CHTml::openTag("span",array("style"=>"background-color:".$data->getcolor().";  font-weight:bold;font-size:16px; color:white;border-radius:13px;padding:4px;")).$data->tipodoc.CHTml::closeTag("span")'),
+           array('name'=>'codtenencia','type'=>'raw','value'=>'CHTml::openTag("span",array("style"=>"background-color:".$data->getcolor().";  font-weight:bold;font-size:16px; color:white;border-radius:13px;padding:4px;")).$data->tipodoc.CHTml::closeTag("span")'),
 	
 	array('name'=>'documento','type'=>'raw','value'=>'CHTml::link($data->docus->desdocu,yii::app()->createUrl("docingresados/update",array("id"=>$data->id)),array("target"=>"_blank"))','htmlOptions'=>array('width'=>70)),
 		
@@ -58,10 +80,10 @@ $this->menu=array(
 			'name'=>'fechanominal','header'=>'F. Proc',
 			'value'=>'date("d.m.y", strtotime($data->procesoactivo[0]->fechanominal))','htmlOptions'=>array('width'=>'30')
 		),
-		/*array(
-			'name'=>'fechain',
-			'value'=>'date("d.m.y", strtotime($data->fechain))','htmlOptions'=>array('width'=>'30')
-		),	*/
+		array(
+			'name'=>'fechavencimiento',
+			'value'=>'date("d.m.y", strtotime($data->fechavencimiento))','htmlOptions'=>array('width'=>'30')
+		),	
 		//'numdocref',
            /* array(
 			'name'=>'cuantoshay','type'=>'raw',
@@ -82,7 +104,7 @@ $this->menu=array(
           
             array(
 			'name'=>'progreso','type'=>'raw', 
-			'value'=>' Controller::createWidget("zii.widgets.jui.CJuiProgressBar", array(
+			'value'=>' Yii::app()->controller->widget("zii.widgets.jui.CJuiProgressBar", array(
     "id"=>"progress".$data->id,
     "value"=>(is_null($data->procesoactivo[0]))?0:$data->procesoactivo[0]->porcavance(),
     "htmlOptions"=>array(
@@ -119,4 +141,26 @@ $this->menu=array(
 
 		
 
+
+<?php
+//--------------------- begin new code --------------------------
+   // add the (closed) dialog for the iframe
+    $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
+    'id'=>'cru-dialog3',
+    'options'=>array(
+        'title'=>'Actualizar Ingreso',
+        'autoOpen'=>false,
+        'modal'=>true,
+        'width'=>750,
+        'height'=>510,
+    ),
+    ));
+?>
+<iframe id="cru-frame3" width="100%" height="100%"></iframe>
+<?php
+ 
+$this->endWidget();
+
+
+?>
 

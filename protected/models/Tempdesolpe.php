@@ -5,7 +5,7 @@ class Tempdesolpe extends ModeloGeneral
 	
     const ESTADO_PREVIO='99';
     const ESTADO_CREADO='10';
-    
+     const ESTADO_REGISTRO_NUEVO='10';
     
     /**
 	 * @return string the associated database table name

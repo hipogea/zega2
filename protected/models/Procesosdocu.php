@@ -9,6 +9,8 @@ class Procesosdocu extends ModeloGeneral {
         return '{{procesosdocu}}';
     }
 
+    
+    public $proximovencimiento;
     //public $codtefalsa; //7ATRIBUTO DE L ACODRTEENCIA PARA VALIDAR EL FORM MASIVO NADA MAS 
     /**
      * @return array validation rules for model attributes.
@@ -17,7 +19,19 @@ class Procesosdocu extends ModeloGeneral {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            ///Escenario para proceso masivo   MASIVO
+            ///escenario apra subrpoceso
+            array('hidtra,hidproc', 'required', 'on' => 'subproceso'),
+             array('tipoactivo,hiddoci,fechacrea,fechanominal,fechafin,iduser,hidtra,hidproc,codocuref,umdocref,comentario,codte', 'safe', 'on' => 'subproceso'),
+           //escenaripo solo para cambiar documentos y numero de referencia 
+          
+
+
+
+///Escenario para proceso masivo   MASIVO
+            
+            
+            
+            
             array('hidproc,hidtra,fechanominal,codte', 'required', 'on' => 'masivo'),
              array('anulado', 'safe', 'on' => 'anulacion'),
             array('hiddoci,hidproc,hidtra,fechanominal,codte,codocuref,numdocref', 'safe', 'on' => 'masivo'),
@@ -26,7 +40,7 @@ class Procesosdocu extends ModeloGeneral {
             array('codocuref,numdocref', 'required', 'on' => 'documentosreferencia'),
             array('codocuref,numdocref', 'safe', 'on' => 'documentosreferencia'),
             array('hiddoci,hidproc', 'required', 'on' => 'insert,update'),
-            array('fechafinal', 'safe', 'on' => 'fechafinal'),
+            array('fechafin', 'safe', 'on' => 'fechafinal'),
             
             array('hidproc', 'chkrequisitos', 'on' => 'insert,update,cambiotenencia'),
             array('hiddoci,'
@@ -145,7 +159,7 @@ class Procesosdocu extends ModeloGeneral {
             $this->iduser = yii::app()->user->name;
             $procesoactual = Docingresados::model()->findByPk($this->hiddoci)->procesoactivo[0];
             //MiFactoria::mensaje('error',' procesosdocu -beforesave El id del proceso activo      '.$procesoactual->id.'  el  id del doci '.$procesoactual->hiddoci);
-            if (!is_null($procesoactual)) { // ..y mataer el proceso anterior tambien
+            if (!is_null($procesoactual) AND ($this->getScenario() != 'subproceso')) { // ..y mataer el proceso anterior tambien
                 $procesoactual->setScenario("fechafinal");
                 $procesoactual->fechafin = $this->fechanominal; //date("Y-m-d H:i:s"); 
                 $procesoactual->save();
@@ -153,7 +167,32 @@ class Procesosdocu extends ModeloGeneral {
             } else {
                 //  MiFactoria::Mensaje('error','procesosdocu -beforesave  no existe proceso actual');
             }
+            
+             /*si es un suproceso*/
+         if($this->getScenario()=='subproceso') {
+             $this->fechanominal=$procesactual->fechanominal;
+                     
+             $this->fechafin=$procesactual->fechanominal;
+         }
+            
         }
+        
+          if($this->getScenario()=='subproceso') {
+            $registro = $this->docingresados;
+            if($this->isNewRecord){
+                ///anular el proceso actual por lo bajo , clonarlo y grabrlo despues para colocaR EL id en orde 
+               $procactual=$registro->procesoactivo[0];
+               //VAR_DUMP($registro->procesoactivo[0]);DIE();
+               yii::app()->db->createCommand()->delete($this->tableName(),"id=:vid",array(":vid"=>$procactual->id));
+              
+                
+            }
+             
+            
+         }
+        
+        
+        
 
         return parent::beforesave();
     }
@@ -253,6 +292,7 @@ class Procesosdocu extends ModeloGeneral {
     public function aftersave() {
         if (!is_null($this->codte) and strlen($this->codte) > 0
                 and ! ($this->getScenario() == "fechafinal") and !($this->getScenario() == "anulacion")
+                        and !($this->getScenario() == "subproceso")
         ) {
             //hay que cambiar de tenencia 
             $registro = $this->docingresados;
@@ -269,11 +309,13 @@ class Procesosdocu extends ModeloGeneral {
         }
        
         
+      
       //  $registro->refresh();
          
        // var_dump($registro->fechavencimiento);die();
         //ademas tenemso que refrescar la fecha de vencimiento
-       if(!($this->getScenario() == "fechafinal")  and !($this->getScenario() == "anulacion")){
+       if(!($this->getScenario() == "fechafinal")  and !($this->getScenario() == "anulacion")  and !($this->getScenario() == "subproceso"))
+           {
            if(is_null($registro))
             $registro=$this->docingresados;
           $registro->setScenario("escfechavencimiento");
@@ -292,6 +334,34 @@ class Procesosdocu extends ModeloGeneral {
               }
             }
           }
+          
+          if($this->getScenario()=='subproceso') {
+            $registro = $this->docingresados;
+            if($this->isNewRecord){
+                ///anular el proceso actual por lo bajo , clonarlo y grabrlo despues para colocaR EL id en orde 
+               $procactual=$registro->procesoactivo[0];
+               //VAR_DUMP($registro->procesoactivo[0]);DIE();
+              // yii::app()->db->createCommand()->delete($this->tableName(),"id=:vid",array(":vid"=>$procactual->id));
+               yii::app()->db->createCommand()->insert($this->tableName(),
+                       array("hiddoci"=>$procactual->hiddoci,
+                           "fechacrea"=>$procactual->fechacrea,
+                           "fechanominal"=>$procactual->fechanominal,
+                           "fechafin"=>$procactual->fechafin,
+                           "iduser"=>$procactual->iduser,
+                           "hidtra"=>$procactual->hidtra,
+                            "hidproc"=>$procactual->hidproc,
+                           "codocuref"=>$procactual->codocuref,
+                           "numdocref"=>$procactual->numdocref,
+                            "comentario"=>$procactual->comentario,
+                           "codte"=>$procactual->codte,
+                           "anulado"=>$procactual->anulado,
+                              )
+                       ); 
+                
+            }
+            
+          }
+          
         return parent::aftersave();
     }
 
@@ -337,10 +407,14 @@ class Procesosdocu extends ModeloGeneral {
         $docu = Docingresados::model()->findByPk($this->hiddoci);
         $fechaingreso = $docu->fechain;
         if (!yii::app()->periodo->verificafechas($fechaingreso, $this->fechanominal))
-            $this->adderror('fechanominal', 'La fecha 1 de proceso es  anterior a la fecha de ingreso del Documento ');
-        if (!yii::app()->periodo->verificafechas($docu->procesoactivo[0]->fechanominal, $this->fechanominal))
-            $this->adderror('fechanominal', 'La fecha 2 de proceso es  anterior a la fecha del proceso activo a reemplazar ');
-
+            $this->adderror('fechanominal', 'La fecha de proceso es  anterior a la fecha de ingreso del Documento ');
+        //if (!yii::app()->periodo->verificafechas($docu->procesoactivo[0]->fechanominal, $this->fechanominal))
+           // $this->adderror('fechanominal', 'La fecha 2 de proceso es  anterior a la fecha del proceso activo a reemplazar ');
+        if(!is_null($docu->fechamaxima))
+            if(!yii::app()->periodo->verificafechas($docu->fechamaxima, $this->fechanominal))
+        $this->adderror('fechanominal', 'Hay un proceso con fecha posterior a esta fecha , para colocar esta fecha tiene que anular el proceso con fecha posterior ');
+       
+        
         if (!yii::app()->periodo->verificafechas($this->fechanominal, date("Y-m-d H:i:s", time() + 60 * 15)))
             $this->adderror('fechanominal', 'La fecha de proceso ' . $this->fechanominal . '  es  POSTERIOR AL  a la fecha actual  ' . date("Y-m-d H:i:s", time() + 60 * 15));
     }

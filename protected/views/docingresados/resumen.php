@@ -48,7 +48,7 @@
 				'tooltip'=>ARRAY(
 								'pointFormat'=>'<span style="color:{series.color}">
 								   {series.name}</span>: <b>{point.y}</b> 
-								   ({point.percentage}%)<br/>',
+								   <br/>',
 
                                 'shared'=> true,
 
@@ -142,7 +142,7 @@
 				'tooltip'=>ARRAY(
 								'pointFormat'=>'<span style="color:{series.color}">
 								   {series.name}</span>: <b>{point.y}</b> 
-								   ({point.percentage}%)<br/>',
+								   <br/>',
 
                                 'shared'=> true,
 
@@ -236,7 +236,7 @@
 				'tooltip'=>ARRAY(
 								'pointFormat'=>'<span style="color:{series.color}">
 								   {series.name}</span>: <b>{point.y}</b> 
-								   ({point.percentage}%)<br/>',
+								   <br/>',
 
                                 'shared'=> true,
 

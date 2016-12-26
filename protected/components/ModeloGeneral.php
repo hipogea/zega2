@@ -468,12 +468,19 @@ Public function recorro($matriz)
 
 
 
-  /*public function afterfind() {
+  public function afterfind() {
 	 ///Copiar los valores originales
 	$this->oldAttributes=$this->Attributes;
+        if(yii::app()->user->id==1){
+            // ECHO "<BR> ". get_class($this)."  :     <BR>";
+      
+           //VAR_DUMP($this->oldAttributes); 
+           //ECHO "<BR><BR><BR>";
+        }
+                       
 
 	  Return parent::afterfind();
-  }*/
+  }
 
 
 
@@ -664,7 +671,36 @@ public static function  getIdsLog ($flag, $codocu){
     
 }
 
+public function recuperamensaje($tipo,$codocu,$usuario=null){
+    $criterio=New CDBCriteria();
+    if($usuario===null){
+        $criterio->addCondition("tipo=:vtipo and codocu=:vcodocu ");
+        $criterio->params=array(":vtipo"=>$tipo,":vcodocu"=>$codocu);
+  
+    }else{
+        $criterio->addCondition("tipo=:vtipo and codocu=:vcodocu and usuario=:vusername");
+        $criterio->params=array(":vtipo"=>$tipo,":vcodocu"=>$codocu,"usuario"=>$usuario);
+    }
+    $criterio->order="cuando DESC";
+    $registro= Mensajes::model()->findAll($criterio);
+    if(count($registro)>0){
+        return $registro[0];
+    }else{
+        return null;
+    }
+     
+   
+   }
 
+     ///esta funcion permite agregar dinamicamente  la auditoria de log
 
-        
+public function preparaAuditoria(){
+            if(!in_array('auditoriaBehavior',$this->behaviors())){
+               yii::import('application.behaviors.ActiveRecordLogableBehavior');
+                   $this->attachbehavior('auditoriaBehavior', new ActiveRecordLogableBehavior);
+                   if(!$this->isNewRecord)
+                    $this->setOldAttributes($this->getAttributes());
+            }
+            
+        }    
 }

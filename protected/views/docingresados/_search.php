@@ -10,6 +10,8 @@ $form=$this->beginWidget('CActiveForm', array(
    
 	<div class="row">
 		<?php
+                if($this->beginCache('cache_doci_admin_toolbar',array(
+    'duration'=>600,))) {
 		$botones=array(
 			'search'=>array(
 				'type'=>'A',
@@ -22,7 +24,10 @@ $form=$this->beginWidget('CActiveForm', array(
 				'visiblex'=>array('10'),
 			),
 		);
-		$this->widget('ext.toolbar.Barra',
+		
+                
+                
+                $this->widget('ext.toolbar.Barra',
 			array(
 				//'botones'=>MiFactoria::opcionestoolbar($model->id,$this->documento,$model->codestado),
 				'botones'=>$botones,
@@ -31,13 +36,19 @@ $form=$this->beginWidget('CActiveForm', array(
 				'status'=>'10',
 
 			)
-		); ?>
+		); 
+                
+               
+    $this->endCache('cache_doci_admin_toolbar');}
+                
+                ?>
 
 	</div>
     
      <div class="panelizquierdo">
          
          <div class="row">
+             
 	<?php echo $form->label($model,'final'); ?>
 	<?php  
         $datos = array('1' => 'Archivados ','0'=> 'En proceso');
@@ -355,7 +366,10 @@ $form=$this->beginWidget('CActiveForm', array(
 	
 	<div class="row">
 			<?php echo $form->label($model,'tipodoc'); ?>
-			<?php  $datos = CHtml::listData(Documentos::model()->findAll(array("condition"=>"clase='D' ",'order'=>'coddocu')),'coddocu','referencia');
+			<?php  
+                            $dependenciadoc = new CDbCacheDependency('SELECT count(*) FROM {{documentos}}');
+                            $docs = Documentos::model()->cache(1000, $dependenciadoc)->findAll(array("condition"=>"clase='D' ",'order'=>'coddocu'));
+                        $datos = CHtml::listData($docs,'coddocu','referencia');
 					echo $form->DropDownList($model,'tipodoc',$datos, array('empty'=>'--Seleccione un documento --')  );
 					//ECHO CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."nuevo.gif","",array("width"=>30,"height"=>15));
 			?>

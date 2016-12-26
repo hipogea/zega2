@@ -43,6 +43,7 @@ $('.search-form form').submit(function(){
 	'columns'=>array(
             array('name'=>'id','type'=>'raw','header'=>'Id','value'=>'CHtml::link("editar",yii::app()->createUrl("configuracion/editar",array("id"=>$data->id )   )  )', 'htmlOptions'=>array('width'=>10),),
 		'codcen',
+            'codocu',
             'codparam',
 		array('name'=>'codparam','header'=>'Parametro','value'=>'$data->parametros->desparam', 'htmlOptions'=>array('width'=>400),),
 		'iduser',

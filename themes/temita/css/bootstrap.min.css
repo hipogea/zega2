@@ -232,8 +232,8 @@ input:focus:required:invalid:focus,textarea:focus:required:invalid:focus,select:
 table{max-width:100%;background-color:transparent;border-collapse:collapse;border-spacing:0}
 .table{width:100%;margin-bottom:5px}
 .table th,.table td{
-    padding-left: 3px;
-    padding-right: 3px;
+    padding-left: 5px;
+    padding-right: 6px;
     padding-top: 5px;
     padding-bottom: 5px;
     line-height:19px;

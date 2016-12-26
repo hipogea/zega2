@@ -63,7 +63,7 @@ class TipoactivosController extends Controller
 	public function actionCreate()
 	{
 		$model=new Tipoactivos;
-
+$model->activo='1';
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
@@ -94,9 +94,18 @@ class TipoactivosController extends Controller
 		if(isset($_POST['Tipoactivos']))
 		{
 			$model->attributes=$_POST['Tipoactivos'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->codtipo));
-		}
+			if($model->save()){
+                            MiFactoria::Mensaje('success', 'Se grabo el registro');
+                            $this->render('update',array(
+			'model'=>$model,
+		));
+                     yii::app()->end();
+                            
+                            
+                        }
+		
+                            
+                }
 
 		$this->render('update',array(
 			'model'=>$model,

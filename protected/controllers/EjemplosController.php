@@ -399,7 +399,16 @@ $mo=New Alinventario();
 
 public $layout='//layouts/column2';
 	public function actionPio() {
-            var_dump(VwDoci::getcantidadporusuario('7007'));die();
+            var_dump(yii::app()->db->driverMap);die();
+            //var_dump(Docingresados::model()->findByPk(344)->procesosdocusinanular);die();
+            $dar=date("H:i:s");
+           // var_dump(strtotime($dar));
+           // var_dump($dar);die();
+            $dia="2016-12-14";
+            $hoy=date("Y-m-d");
+            $tiempopasado=time()-strtotime($hoy);
+            var_dump(date("Y-m-d H:i:s",strtotime($dia)+$tiempopasado));die();
+            
                         VwDoci::kpiprovdocuhoras('145','100');die();
             //Yii::app()->user->um->getFieldValue(5,'codtra');die();
             echo Trabajadores::getNombresFromIdUsuario(5); echo "<br>";

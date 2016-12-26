@@ -31,7 +31,13 @@
 		<?php echo $form->error($model,'destipo'); ?>
 	</div>
 
-
+ <div class="row">
+		<?php echo $form->labelEx($model,'activo'); ?>
+		<?php echo $form->checkBox($model,'activo'); ?>
+		
+	</div>
+        
+	
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
 	</div>

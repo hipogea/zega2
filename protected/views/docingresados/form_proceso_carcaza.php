@@ -60,7 +60,6 @@
                         'id','trabajadores.ap'); 
                  $claveencontrada=  Tenenciastraba::getIdHidtraByTrabajador($model->docingresados->codtenencia);
                               //  var_dump($claveencontrada); var_dump($codtenencia); 
-
               $claveencontrada=  Tenenciastraba::getIdHidtraByTrabajador($codtenencia);
                              
               if(is_null($claveencontrada)) {
@@ -150,10 +149,9 @@
      <div class="row">
 		<?php echo $form->labelEx($model,'codocuref'); ?>
 		<?php  
-                //$criterio=
-                $datosp = CHtml::listData(Documentos::model()->
-                        findAll(),
-                        'coddocu','desdocu');
+                $dependenciadoc = new CDbCacheDependency('SELECT count(*) FROM {{documentos}}');
+                            $docs = Documentos::model()->cache(1000, $dependenciadoc)->findAll(array("condition"=>"clase='D' ",'order'=>'coddocu'));
+                        $datosp = CHtml::listData($docs,'coddocu','referencia');               
 		echo $form->DropDownList($model,'codocuref',$datosp, array('empty'=>'--Llene el doc referencia--',
                   ));
 					?>

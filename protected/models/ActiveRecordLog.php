@@ -131,9 +131,16 @@ class ActiveRecordLog extends CActiveRecord
 	public function search_general($criterio)
 	{
 
-		return new CActiveDataProvider($this, array(
+		$dependecy = new CDbCacheDependency('SELECT count(*) FROM '.$this->tableName()); 
+                return new CActiveDataProvider($this->cache(600, $dependecy, 2), array ( 
+                        'criteria'=>$criterio,
+                       // 'pagination'=>array('pageSize'=>50),
+                                            ));
+            
+            
+          /*  return new CActiveDataProvider($this, array(
 			'criteria'=>$criterio,
-		));
+		));*/
 	}
 
 

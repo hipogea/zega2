@@ -64,18 +64,20 @@
      <div class="row">
 		
 		<?php  
+               
                 if(!$model->isNewRecord and count($model->procesoactivo)>0){
+                     $procedimiento=$procesoactivo->tenenciasproc;
                     echo Chtml::label("Proceso Actual:","4nfkg85");
-                echo Chtml::textField('idtextyyenencfia',$procesoactivo->tenenciasproc->eventos->descripcion,array('size'=>30,'disabled'=>'disabled')); 
+                echo Chtml::textField('idtextyyenencfia',$procedimiento->eventos->descripcion,array('size'=>30,'disabled'=>'disabled')); 
                    echo Chtml::textField('ivbgetcfia',$procesoactivo->tenenciastrab->trabajadores->ap,array('size'=>30,'disabled'=>'disabled')); 
                       if(!$esfinal) ///si no es final enornce spina semaforo
                       {$this->widget('ext.semaforo.Semaforo',
                       array(
-                          'valores'=>ARRAY(0,$procesoactivo->tenenciasproc->nhorasverde,$procesoactivo->tenenciasproc->nhorasnaranja),
+                          'valores'=>ARRAY(0,$procedimiento->nhorasverde,$procedimiento->nhorasnaranja),
                               'asc'=>-1,
                              'valor'=>$procesoactivo->horaspasadas(),
                       )
-                        ); var_dump($procesoactivo->horaspasadas());
+                        ); 
                        echo Chtml::textField('idtex45encfia',$procesoactivo->tiempopasado(),array('size'=>9,'disabled'=>'disabled')); 
                   
                       }else{ //en caso de ser final
@@ -237,7 +239,7 @@
             <div style="font-family:verdana;color:#000; font-size: 13px; text-shadow: #aaa 1px 0px 1px;border-style:solid;border-radius:8px; margin:6px;padding:6px;width:350px;background-color:#f3f3eb; border-color:#ffce08;border-width:1px;">
 		No puede subir archivos, mientras no especifique el tipo y el 
                  Número de documento en el proceso activo  <?php
-                echo $procesoactivo->tenenciasproc->eventos->descripcion
+                echo $procedimineto->eventos->descripcion
                 ?>
 	    </div>
          <?php  } 
@@ -413,7 +415,7 @@
                ARRAY('name'=>'iduser1','type'=>'raw','value'=>'($data->anulado=="1")?CHtml::openTag("span",array("class"=>"icon icon-bin icon-blue icon-fuentesize16"),true):CHtml::link(CHtml::openTag("span",array("class"=>"icon icon-pencil icon-blue icon-fuentesize16"),true),"#", array("onclick"=>\'$("#cru-frame3").attr("src","\'.Yii::app()->createurl(\'/docingresados/modificaproceso\', array(\'id\'=> $data->id ) ).\'");$("#cru-dialog3").dialog("open"); return false;\' ) )','htmlOptions'=>array('width'=>3)),
                ARRAY('name'=>'Anul','type'=>'raw','value'=>'($data->anulado=="1")?"":CHtml::ajaxLink(CHtml::openTag("span",array("class"=>"icon icon-cross icon-blue icon-fuentesize16"),true),'
                    . 'CHtml::normalizeUrl(Yii::app()->createUrl("docingresados/ajaxanulacion")),'
-                   . 'array("type" => "POST", "data"=>array("id"=>$data->id), "beforeSend"=>"function(){ var r = confirm(\"Esta seguro de Este proceso?\"); if(!r){return false;} }", "success"=>"function(data) { $.fn.yiiGridView.update(\"procesos-grid\"); return false; }"  ),array() )'),
+                   . 'array("type" => "POST", "data"=>array("id"=>$data->id), "beforeSend"=>"function(){ var r = confirm(\"Esta seguro de ejecutar la anulación ?\"); if(!r){return false;} }", "success"=>"function(data) { $.fn.yiiGridView.update(\"procesos-grid\"); return false; }"  ),array() )'),
                 ARRAY('name'=>'Mail','type'=>'raw','value'=>'($data->anulado=="1")?"":CHtml::ajaxLink(CHtml::openTag("span",array("class"=>"icon icon-envelop icon-blue icon-fuentesize16"),true),'
                    . 'CHtml::normalizeUrl(Yii::app()->createUrl("docingresados/ajaxenviacorreoproceso")),'
                    . 'array("type" => "GET", "data"=>array("id"=>$data->id), "beforeSend"=>"function(){ var r =confirm(\"Esta seguro de Enviar este mensaje al proveedor?\"); if(!r){return false;} }", "success"=>"function(data) { alert(data); }"  ),array() )'),

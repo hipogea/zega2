@@ -168,6 +168,23 @@ class Tenores extends CActiveRecord
 
     }
 
+    public  function estiliza($mensaje=null){
+        $patrones=array('/class=[\"\']{1}[A-Za-z0-9]*[\"\']{1}/','/\<span/','/\<tr/','/\<td/','/\<th/');
+        //$campos=array('css_body','css_tr','css_td','css_th');
+        $reemplazos=array(
+            '',
+            '<span '.$this->css_body,
+            '<tr '.$this->css_tr,
+            '<td '.$this->css_td,
+             '<th '.$this->css_th,
+            );
+       $mensaje=preg_replace ($patrones , $reemplazos , (is_null($mensaje))?$this->mensaje:$mensaje);
+       return $mensaje;
+        
+    }
+    
+    
+    
     public function beforesave(){
         $this->estilomail=CHtml::encode($this->estilomail);
         $this->css_h1=CHtml::encode($this->css_h1);
@@ -193,3 +210,6 @@ class Tenores extends CActiveRecord
     }
     
 }
+
+
+

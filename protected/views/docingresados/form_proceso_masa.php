@@ -202,8 +202,7 @@ $this->endWidget();
                                     $.fn.yiiGridView.update('maletin-grid', {
                                         type:'GET',
                                         url:$(this).attr('href'),
-                                        success:function(data) {
-                                              $.growlUI('Growl Notification', data); 
+                                        success:function(data) {                                             
                                               $.fn.yiiGridView.update('maletin-grid');
                                         }
                                     })

@@ -27,14 +27,16 @@
         'jquery.ui.theme.css' =>  $baseUrl.'/css/jquery.ui.theme.css',
         'jquery.ui.tooltip.css' =>  $baseUrl.'/css/jquery.ui.tooltip.css',*/
                  );
-    
+      $cs->registerCssFile($baseUrl.'/css/pace.css');
+   
+	 $cs->registerScriptFile($baseUrl.'/js/pace.min.js');
     
     $cs->registerCssFile($baseUrl.'/css/bootstrap.min.css');
     //->registerCssFile($baseUrl.'/css/ma.css');
-    $cs->registerCssFile($baseUrl.'/css/bootstrap-responsive.min.css');
+    //$cs->registerCssFile($baseUrl.'/css/bootstrap-responsive.min.css');
     $cs->registerCssFile($baseUrl.'/css/abound.css'); 
     $cs->registerCssFile($baseUrl.'/css/miestilo.css');///sas
-    $cs->registerScriptFile($baseUrl.'/js/plugins/blockuiplugin.js',CClientScript::POS_HEAD);
+   // $cs->registerScriptFile($baseUrl.'/js/plugins/blockuiplugin.js',CClientScript::POS_HEAD);
   //  $cs->registerScriptFile($baseUrl.'/js/loading.js');
     ?>
 </head>

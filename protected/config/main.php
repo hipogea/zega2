@@ -129,10 +129,15 @@ return array(
 
 	// application components
 	'components'=>array(
-
+                    'assetManager' => array(
+                            'linkAssets' => true,
+                         ),
 		'cache'=>array(
-			'class'=>'system.caching.CFileCache',
-		),
+                                'class'=>'system.caching.CDbCache',
+                                'connectionID'=>'db',
+                                ),
+            
+            
 		'settings'=>array(
 			'class' => 'CmsSettings',
 			'cacheComponentId'  => 'cache',
@@ -317,14 +322,14 @@ return array(
 
 
 		
-		'db'=>array(
+		/*'db'=>array(
         'connectionString' => 'mysql:host=localhost;dbname=nautilus',
         'username' => 'root',
         'password' => '',
 		 'tablePrefix' => 'public_',
         'charset' => 'utf8',
-        ),
-		/*'db'=>array(
+        ),*/
+		'db'=>array(
 			'connectionString' => 'mysql:host=localhost;dbname=gearmari_flota',
 			'emulatePrepare' => true,
 			'username' => 'gearmari_julian',
@@ -332,7 +337,7 @@ return array(
 			'tablePrefix' => 'public_',
 			'charset' => 'utf8',
                    //  'enableParamLogging'=>true,//desactivarlo en produccion
-		),*/
+		),
 		
 		
 		

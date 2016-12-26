@@ -7,23 +7,14 @@ $this->breadcrumbs=array(
 	'Error',
 );
 ?>
-
-<h2>Error <?php echo $code; ?></h2>
-
-
-<?php
-/* @var $this SiteController */
-/* @var $error array */
-
-$this->pageTitle=Yii::app()->name . ' - Error';
-$this->breadcrumbs=array(
-	'Error',
-);
-?>
 <br>
 <br><br><br>
-<div class="mensajeerroracceso" >
-	Error de acceso <?php echo $code; ?>
+<div class="label mensajeerroracceso" >
+    <br>
+	Error de acceso    <?php 
+        
+         echo "<br>";
+        echo $code."     :       "; ?>
 
 
 
@@ -49,7 +40,7 @@ $this->breadcrumbs=array(
 			$dibujo='home.png';
 			break;
 		case 404:
-			$mensaje=$message.'  Esta direccion no ha sido encontrada, consulte con el administrador';
+			$mensaje=$message.'    Esta direccion no ha sido encontrada, consulte con el administrador';
 			$dibujo='cloud2.png';
 			break;
 		case 408:
@@ -67,8 +58,16 @@ $this->breadcrumbs=array(
 
 
 
-	echo CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].$dibujo,"hola",array('width'=>'25','height'=>'30'));
-	echo $mensaje;
+
+        echo CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].$dibujo,"hola",array('width'=>'25','height'=>'30'));
+	echo "<br>";
+         echo "<br>";
+        echo $mensaje;
+        echo "<br>";
+        echo "<br>";
+        echo CHtml::link("Regresar","#",array("onClick"=>"js:window.history.back();"));
+        echo "<br>";
+         
 	?>
 	</div>
 

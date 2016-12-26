@@ -131,7 +131,7 @@ class AdGallery extends CWidget
 	/**
 	* @float A value between 0 and 1 that dictates how opaque thumbnails will be. 1 removes fade effect
 	*/
-	public $agThumbOpacity					= 0.7; // Opacity that the thumbs fades to/from, (1 removes fade effect)
+	public $agThumbOpacity					= 0.5; // Opacity that the thumbs fades to/from, (1 removes fade effect)
 	
 	/**
 	* @integer the index of the gallery images to start at
@@ -402,11 +402,13 @@ class AdGallery extends CWidget
 	public function run()
 	{
 		if(!$this->visible)
-			return
+			return;
 
 		//Render AdGallery template
-		$this->getViewFile('adGallery'); //Why do I have to do this? Unkown but rendering the file doesn't work unless I call this
-		$this->render('adGallery',
+                    echo "hola";
+		//var_dump($this->getViewFile('adGallery'));die(); //Why do I have to do this? Unkown but rendering the file doesn't work unless I call this
+		
+                $this->render('adGallery',
 			array(
 				'imageList' => $this->imageList
 			)

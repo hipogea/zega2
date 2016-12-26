@@ -8,17 +8,18 @@ class Barra extends CWidget
 	public $size; ///pixeles para el tamaño de los botones
 	public $ruta;
 	public $extension;
-	public $status;		
+	public $status;	
+        public $_idcache;
 	public function init()
 	{
 	$asset=Yii::app()->assetManager->publish(dirname(__FILE__).'/assets');
 	$this->ruta=$asset;
     	$cs=Yii::app()->clientScript;
     	$cs->registerCssFile($asset."/css/barra.css");
-        $cs->registerCssFile($asset."/css/blockui.css");
+        //$cs->registerCssFile($asset."/css/blockui.css");
 		//$cs->registerScriptFile($asset."/js/jQueryRotate.min.js");
 		$cs->registerScriptFile($asset."/js/barra.js");	
-                $cs->registerScriptFile($asset."/js/blockuiplugin.js");
+                //$cs->registerScriptFile($asset."/js/blockuiplugin.js");
 		$script = 'assetUrl = "' . $asset . '";';
 	}
 	private function iniciamarco(){
@@ -178,5 +179,7 @@ class Barra extends CWidget
 		}
   return $retorno;
 	}
+        
+      
 
 }

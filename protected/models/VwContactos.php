@@ -1,18 +1,5 @@
 <?php
 
-/**
- * This is the model class for table "vw_contactos".
- *
- * The followings are the available columns in table 'vw_contactos':
- * @property integer $id
- * @property string $c_nombre
- * @property string $correlativo
- * @property string $c_hcod
- * @property string $despro
- * @property string $c_cargo
- * @property string $c_mail
- * @property string $c_tel
- */
 class VwContactos extends CActiveRecord
 {
 	/**
@@ -60,6 +47,7 @@ class VwContactos extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+                    	
 		);
 	}
 
@@ -102,6 +90,7 @@ class VwContactos extends CActiveRecord
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+                    'pagination'=>array('pageSize'=>20),
 		));
 	}
 }

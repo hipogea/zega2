@@ -1472,7 +1472,8 @@ if(!$mensaje->save())
          $expresion="";
         switch ( $dri ){
                 case "mysql":
-                    
+                    if(is_null($nombrecampofinal))
+                        $nombrecampofinal="NULL";
                         $expresion=" TIMESTAMPDIFF(HOUR,".$nombrecampofecha.",IFNULL(".$nombrecampofinal.",now()))";
                     
                     
@@ -1491,7 +1492,35 @@ if(!$mensaje->save())
             return $expresion;
     }
     
-
+//Esta fduncion es una capa para evaluar un null condicionalmente en una instruccion SQL  
+    //en los difernertes motores de Base de Datos  sqlserver, MYSQL, POSTGRES ..etc DATEDIFF, DATE MIN ETC 
+    //  @expresion1:  valor a evaluar si es nulo, devuelve expresion2
+    //  @expresion2:  valor a devolver si es nulo expresion1
+    public static function dbExpresionNull($expresion1,$expresion2){
+        $dri=yii::app()->db->getDriverName();
+        //revisar la propeiedad     " yii::app()->db->driverMap"  que contiene las abreciatua de odoas las bases de datos
+         $expresion="";
+        switch ( $dri ){
+                case "mysql":
+                    
+                        $expresion=" COALESCE(".$expresion1.",".$expresion2." )";
+                    
+                    
+                    break;
+                case "pgsql":
+                 $expresion=" COALESCE(".$expresion1.",".$expresion2." )";
+                    break;
+                case "image/png":
+                    throw new CHttpException(500,__CLASS__."---".__FUNCTION__." No se encontraron expresiones apra este tipo de MOTOR DE BASE DE DATPOS  ".$dri);
+      break;
+                default:
+                    throw new CHttpException(500,__CLASS__."---".__FUNCTION__." No se encontraron expresiones apra este tipo de MOTOR DE BASE DE DATPOS  ".$dri);
+     
+                    break;
+            }
+            return $expresion;
+    }
+    
     ///esta funcion recibe un conjunto de datos  resultado 
     //de efectuar queryAll(), luegolos procesa y vita datos 
     ///preparados para un grafico por ejemplo

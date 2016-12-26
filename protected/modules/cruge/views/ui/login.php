@@ -7,7 +7,7 @@
 	<?php echo Yii::app()->user->getFlash('loginflash'); ?>
 </div>
 <?php else: ?>
-<div style="height:500px;margin-left:200px; padding-left:50px; display:block; background-image:url('<?php echo Yii::app()->getTheme()->baseUrl.DIRECTORY_SEPARATOR."img".DIRECTORY_SEPARATOR."inicio.png"; ?>');background-repeat: no-repeat;padding-top: 300px;">
+<div style="height:1700px;margin-left:200px; padding-left:50px; display:block; background-image:url('<?php echo Yii::app()->getTheme()->baseUrl.DIRECTORY_SEPARATOR."img".DIRECTORY_SEPARATOR."inicio.jpg"; ?>');background-repeat: no-repeat;padding-top: 100px;">
 <?php
 $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'logon-form',
@@ -17,13 +17,13 @@ $form=$this->beginWidget('CActiveForm', array(
 	),
 )); ?>
 
-	<div style="display:block;margin-left:10px;text-align: left;">
+	<div style="padding-top:10px; padding-bottom:10px;display:block;margin-left:10px;text-align: left;">
 		<?php echo $form->labelEx($model,'username'); ?>
 		<?php echo $form->textField($model,'username'); ?>
 		<?php echo $form->error($model,'username'); ?>
 	</div>
 
-	<div style="display:block;margin-left:10px;text-align: left;">
+	<div style="padding-top:10px; padding-bottom:10px;display:block;margin-left:10px;text-align: left;">
 		<?php echo $form->labelEx($model,'password'); ?>
 		<?php echo $form->passwordField($model,'password'); ?>
 		<?php echo $form->error($model,'password'); ?>
@@ -36,8 +36,12 @@ $form=$this->beginWidget('CActiveForm', array(
 	</div>
 
 	<div class="row buttons">
-		<?php Yii::app()->user->ui->tbutton(CrugeTranslator::t('logon', "Login")); ?>
-		<?php echo Yii::app()->user->ui->passwordRecoveryLink; ?>
+		<?php Yii::app()->user->ui->tbutton(CrugeTranslator::t('logon', "Login"),array("class"=>"btn")); ?>
+	</div>	
+                   <div class="row buttons"> 
+                    <?php echo Yii::app()->user->ui->passwordRecoveryLink; ?>
+                    </div>
+            <div class="row buttons"> 
 		<?php
 			if(Yii::app()->user->um->getDefaultSystem()->getn('registrationonlogin')===1)
 				echo Yii::app()->user->ui->registrationLink;

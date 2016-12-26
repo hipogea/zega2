@@ -84,6 +84,7 @@ private function abreborde($imagen=null){
                      // 'data'=>array( 'idregistro'=>$this->idregistro),
 			  'update'=>'#division_'.$imagensola,
 			 //'update'=>'#gatito',
+                      'beforeSend'=>"function(){ var r = confirm(\"Esta seguro de Este proceso?\"); if(!r){return false;} }",
 		  ),
 		  array("onClick"=>"Loading.show(); Loading.hide();")
 		  
@@ -97,6 +98,8 @@ private function abreborde($imagen=null){
                     //  'data'=>array( 'idregistro'=>$this->idregistro),
 			  'update'=>'#division_'.$imagensola,
 			 //'update'=>'#gatito',
+                      'beforeSend'=>"function(){ var r = confirm(\"Esta seguro de Este proceso?\"); if(!r){return false;} }",
+		 
 		  ),
 		  array("onClick"=>"Loading.show(); Loading.hide();")
 		  

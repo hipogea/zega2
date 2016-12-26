@@ -49,6 +49,12 @@ private function prepara() {
        
     }
     
+  public function getCarpeta (){
+      if(is_null($this->_carpetadestino))
+          $this->prepara ();
+      return $this->_carpetadestino;
+      
+  }  
     private function existecarpetadocu(){
         
         if (is_dir($this->_rutabas.DIRECTORY_SEPARATOR.$this->_codocu)) {
@@ -436,5 +442,16 @@ private function prepara() {
   
    public function cuantosfileshay(){
       return count($this->recuperaarchivos(false));
+   }
+   
+   
+   ///Bota el HTML para prsentar los enclaces de los archivos relacionados 
+   public function enlacesarchivos($rutaimagen=null){ 
+       $cade="";
+       foreach($this->recuperaarchivos(true) as $datosarchivo){ 
+           $cad=(!is_null($rutaimagen))?CHtml::image($rutaimagen):$datosarchivo['nombre'];
+           $cade.= CHtml::link($cad,$datosarchivo['rutacorta'].DIRECTORY_SEPARATOR.$datosarchivo['nombrecompleto'],array('target'=>'_blank'));
+       }
+       return $cade;
    }
 }

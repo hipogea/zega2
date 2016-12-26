@@ -51,7 +51,7 @@ class TenenciasController extends Controller
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
-
+$model->preparaAuditoria();
 		if(isset($_POST['Tenencias']))
 		{
 			$model->attributes=$_POST['Tenencias'];
@@ -72,9 +72,11 @@ class TenenciasController extends Controller
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
+               $model->preparaAuditoria();//AGERGANDO DINAMICAMENTE LE LOG DE AUDITORIA
 		if(isset($_POST['Tenencias']))
 		{
-			$model->attributes=$_POST['Tenencias'];
+		    	
+                    $model->attributes=$_POST['Tenencias'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->codte));
 		}

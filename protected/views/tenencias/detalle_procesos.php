@@ -90,6 +90,13 @@
 		<?php echo $form->CheckBox($model,'esmensaje'); ?>
 		<?php echo $form->error($model,'esmensaje'); ?>
 	</div>
+     <div class="row">
+		<?php echo $form->labelEx($model,'subproceso'); ?>
+		<?php echo $form->CheckBox($model,'subproceso'); ?>
+		<?php echo $form->error($model,'subproceso'); ?>
+	</div>
+    
+    
     <div class="row">
 		<?php echo $form->labelEx($model,'hidprevio'); ?>
 		<?php

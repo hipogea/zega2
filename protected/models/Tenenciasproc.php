@@ -34,7 +34,7 @@ public $nombrecompleto;
 		// will receive user inputs.
 		return array(
 			array('hidevento', 'numerical', 'integerOnly'=>true),
-                     array('codte,nhorasnaranja,esmensaje,msgexterno,final,codocu,automatico,nhorasverde,renuevavencimiento,hidprevio, hidevento', 'safe', 'on'=>'insert,update'),
+                     array('codte,nhorasnaranja,subproceso,esmensaje,msgexterno,final,codocu,automatico,nhorasverde,renuevavencimiento,hidprevio, hidevento', 'safe', 'on'=>'insert,update'),
 			
                      array('codte,nhorasnaranja,codocu,nhorasverde, hidevento', 'required', 'on'=>'insert,update'),
 			array('codte', 'length', 'max'=>4),

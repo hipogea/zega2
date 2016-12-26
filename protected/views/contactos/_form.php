@@ -301,7 +301,7 @@
 			   "idcabeza" => $model->id ,
 		   )
 	   );
-	   echo CHtml::link ( 'Agregar ' , '#' , array ( 'onclick' => "$('#cru-frame').attr('src','$createUrl '); $('#cru-dialog').dialog('open');" ) );
+	   echo CHtml::link ( 'Agregar ' , '#' , array ( 'onclick' => "$('#cru-frame').attr('src','$createUrl'); $('#cru-dialog').dialog('open');" ) );
 	   ?>
 
    <?php

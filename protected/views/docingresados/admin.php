@@ -142,7 +142,10 @@ $form=$this->beginWidget('CActiveForm', array(
 
 
 		<?php
-				$botones=array(
+			
+              /*  if($this->beginCache('cache_doci_admin_toolbarpie',array(
+    'duration'=>600,))) {*/
+                $botones=array(
 					
 					 'briefcase' => array(
                             'type' => 'D', //AJAX LINK
@@ -195,7 +198,7 @@ $form=$this->beginWidget('CActiveForm', array(
 				); ?>	
 
 
-
+  <?php // $this->endCache('cache_doci_admin_toolbarpie'); } ?>
 
 <?php $this->endWidget(); ?>
 
@@ -222,6 +225,8 @@ $this->renderExportGridButton($gridWidget,'Exportar resultados',array('class'=>'
     ));
 ?>
 <iframe id="cru-frame3" width="100%" height="100%"></iframe>
+
+  
 <?php
  
 $this->endWidget();

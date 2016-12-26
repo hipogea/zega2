@@ -110,10 +110,17 @@ class Usuariosfavoritos extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 		$criteria->addCondition("hiduser=".$iduser);
+ 
+                     $dependecy = new CDbCacheDependency('SELECT count(*) FROM {{usuariosfavoritos}}');
+ 
+                return new CActiveDataProvider($this->cache(600, $dependecy, 2), array ( 
+                        'criteria'=>$criteria,
+                        'pagination'=>array('pageSize'=>10),
+                                            ));
+                
 
-
-		return new CActiveDataProvider($this, array(
+		/*return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
-		));
+		));*/
 	}
 }

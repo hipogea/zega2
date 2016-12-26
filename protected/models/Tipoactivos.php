@@ -28,12 +28,13 @@ class Tipoactivos extends CActiveRecord
 		return array(
 			array('codtipo, destipo', 'required'),
 			array('codtipo','unique'),
+                    array('activo','safe'),
 			array('iduser', 'numerical', 'integerOnly'=>true),
 			array('codtipo', 'length', 'max'=>3),
 			array('destipo', 'length', 'max'=>40),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('codtipo, destipo, iduser', 'safe', 'on'=>'search'),
+			array('codtipo, destipo, activo,iduser', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -97,4 +98,6 @@ class Tipoactivos extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        
+        
 }

@@ -56,6 +56,30 @@
 		<?php echo $form->error($model,'codcen'); ?>
 	</div>
 
+        
+        <div class="row">
+		<?php echo $form->labelEx($model,'alerta'); ?>
+		<?php echo $form->checkBox($model,'alerta'); ?>
+		<?php //echo $form->error($model,'horaspreviasalerta'); ?>
+	</div>
+        
+        <div class="row">
+		<?php echo $form->labelEx($model,'horaspreviasalerta'); ?>
+		<?php echo $form->textField($model,'horaspreviasalerta',array('size'=>6,'maxlength'=>6)); ?>
+		<?php echo $form->error($model,'horaspreviasalerta'); ?>
+	</div>
+        <div class="row">
+		<?php echo $form->labelEx($model,'horasfrecuencialerta'); ?>
+		<?php echo $form->textField($model,'horasfrecuencialerta',array('size'=>6,'maxlength'=>6)); ?>
+		<?php echo $form->error($model,'horasfrecuencialerta'); ?>
+	</div>
+        <div class="row">
+		<?php echo $form->labelEx($model,'listamail'); ?>
+		<?php echo $form->textField($model,'listamail',array('size'=>90,'maxlength'=>200)); ?>
+		<?php echo $form->error($model,'listamail'); ?>
+	</div>
+        
+        
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
 	</div>

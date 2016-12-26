@@ -16,6 +16,15 @@ class CliproController extends Controller
 		return array('accessControl',array('CrugeAccessControlFilter'));
 	}
 
+          public function behaviors() {
+		return array(
+			'exportableGrid' => array(
+				'class' => 'application.components.ExportableGridBehavior',
+				'filename' => 'Empresas.csv',
+				'csvDelimiter' =>(Yii::app()->user->isGuest)?",":Yii::app()->user->getField('delimitador') , //i.e. Excel friendly csv delimiter
+			));
+	}
+        
 	/**
 	 * Specifies the access control rules.
 	 * This method is used by the 'accessControl' filter.
@@ -511,24 +520,33 @@ public function ActionExcel()
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['Clipro']))
 			$model->attributes=$_GET['Clipro'];
-			if (isset($_GET['espe'])) {
+			//if (isset($_GET['espe'])) {
 			         // $this->render('ju',array('data'=>$model->search()->getdata()));
-					$modelito=new Clipro('search_');
-					$modelito->unsetAttributes();  // clear any default values
-					if(isset($_GET['Clipro']))
-						$modelito->attributes=$_GET['Clipro'];
-						$data=$modelito->search_()->getdata();
-						Yii::import('application.extensions.phpexcel.JPhpExcel');
-						$xls = new JPhpExcel('UTF-8', false, 'My Test Sheet');
-						$xls->addArray($data);
-						$xls->generateXML('my-test');
-							Yii::app()->end();
-			           } 
+					///$modelito=new Clipro('search_');
+					//$modelito->unsetAttributes();  // clear any default values
+					//if(isset($_GET['Clipro']))
+						//$modelito->attributes=$_GET['Clipro'];
+						//$data=$modelito->search_()->getdata();
+						///Yii::import('application.extensions.phpexcel.JPhpExcel');
+						//$xls = new JPhpExcel('UTF-8', false, 'My Test Sheet');
+						//$xls->addArray($data);
+						//$xls->generateXML('my-test');
+							//Yii::app()->end();
+			           //} 
+                  if ($this->isExportRequest()) { //<==== [[ADD THIS BLOCK BEFORE RENDER]]
+			//ECHO "SALIO";DIE();
+			$this->exportCSV($model->search(), array(
+					'codpro',
+					'rucpro',
+					'despro',
+				)
+			);
+		} else {                           
 		$this->render('admin',array(
 			'model'=>$model,
 		));
 		
-		
+                }
 	}
 
 
@@ -542,11 +560,24 @@ public function ActionExcel()
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['VwContactos']))
 			$model->attributes=$_GET['VwContactos'];
-			
+		
+                if ($this->isExportRequest()) { //<==== [[ADD THIS BLOCK BEFORE RENDER]]
+			//ECHO "SALIO";DIE();
+			$this->exportCSV($model->search(), array(
+					'c_nombre',
+					'c_hcod',
+					'despro',
+                            'c_cargo',
+                            'c_mail',
+                            'c_tel'
+				)
+			);
+		} else {                           
 		$this->render('contactos',array(
 			'model'=>$model,
 		));
 		
+                }
 		
 	}
 

@@ -10,6 +10,17 @@ class Tenencias extends CActiveRecord
 		return '{{tenencias}}';
 	}
 
+         public function behaviors()
+	{
+		return array(
+			
+			//'ActiveRecordLogableBehavior'=>	'application.behaviors.ActiveRecordLogableBehavior',
+               );
+                
+	}
+        
+        
+        
 	/**
 	 * @return array validation rules for model attributes.
 	 */
@@ -18,8 +29,9 @@ class Tenencias extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-                        array('codte,codcen', 'required','message'=>'Este dato es obligatorio'),
+                        array('codte,codcen,listamail,horasfrecuencialerta,horaspreviasalerta', 'required','message'=>'Este dato es obligatorio'),
 			array('codte, codcen', 'length', 'max'=>4),
+                     //array('horasfrecuencialerta,horaspreviasalerta', 'chkhoras','on'=>'insert,update'),
                     array('codte, codcen', 'length', 'max'=>4),
                       array('codte', 'match', 'pattern'=>'/[1-9]{1}[0-9]{1}/','message'=>'El codigo  no es el correcto, deben ser 2 digitos y el primero no puede ser cero','on'=>'insert'),			
 			 
@@ -27,20 +39,11 @@ class Tenencias extends CActiveRecord
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('codte, deste, codcen', 'safe', 'on'=>'search'),
-                    array('codte, deste,codocu, codcen', 'safe', 'on'=>'insert,update'),
+                    array('codte,listamail,alerta, deste,codocu, codcen,horaspreviasalerta,horasfrecuencialerta', 'safe', 'on'=>'insert,update'),
 		);
 	}
 
-          public function behaviors()
-	{
-		return array(
-			// Classname => path to Class
-			'ActiveRecordLogableBehavior'=>
-				'application.behaviors.ActiveRecordLogableBehavior',
-                    );
-                  
-                
-	}
+          
         
 	/**
 	 * @return array relational rules.
@@ -67,6 +70,9 @@ class Tenencias extends CActiveRecord
 			'codte' => 'Codte',
 			'deste' => 'Descripcion',
 			'codcen' => 'Centro',
+                       'horaspreviasalerta'=>'H. Alerta',
+                      'horasfrecuencialerta'=>'H. frec',
+                     'listamail'=>'Dest',
 		);
 	}
 
@@ -111,6 +117,35 @@ class Tenencias extends CActiveRecord
         
        
 	
+            public function chkhoras($attribute,$params) {
+                if($this->horasfrecuencialerta < 24 ){
+                     $this->adderror('horasfrecuencialerta','Este valor es muy pequeño no pasa de un dia ');
+              return;
+                }
+                
+                if($this->horaspreviasalerta < 24 ){
+                     $this->adderror('horaspreviasalerta','Este valor es muy pequeño no pasa de un dia ');
+            return;
+                }
+                
+	      if($this->horasfrecuencialerta < $this->horaspreviasalerta)
+            
+                  $this->adderror('horasfrecuencialerta','Las horas de frecuencia deben ser mayores a las horas previas de alerta ');
+                 return;   
+             }
+         
+	//FUNCION QUE PERMITE AGREGAR DINAMICAMENTE EL LOG DE AUDITORIA, ESTO PARA  NO 
+             //SOBRECARGAR  LOS EVENTOS AFTERFIND DE CADA REGISTRO DEL FINDALL();
+        public function preparaAuditoria(){
+            if(!in_array('auditoriaBehavior',$this->behaviors())){
+               yii::import('application.behaviors.ActiveRecordLogableBehavior');
+                   $this->attachbehavior('auditoriaBehavior', new ActiveRecordLogableBehavior);
+                   if(!$this->isNewRecord)
+                    $this->setOldAttributes($this->getAttributes());
+            }
+            
+        }     
+             
 	
 	
 }

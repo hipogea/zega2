@@ -21,7 +21,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
     	'cssFile' => Yii::app()->getTheme()->baseUrl.'/css/grilla_naranja.css', 
 	//'summaryText'=>'',
     'filter'=>$model,
-	'columns'=>array(  
+	'columns'=>array( 
 						array(
 									'class'=>'CCheckBoxColumn',
 									'selectableRows' => 10,

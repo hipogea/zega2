@@ -1,5 +1,4 @@
 <?php
-
 class DocingresadosController extends Controller
 {
 	/**
@@ -8,16 +7,21 @@ class DocingresadosController extends Controller
 	 */
 	public $layout='//layouts/column2';
 const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
-
-
 	/**
 	 * @return array action filters
 	 */
 	public function filters()
 	{
-		return array('accessControl',array('CrugeAccessControlFilter'));
+		return array(
+                    'accessControl',
+                    array('CrugeAccessControlFilter'),
+                   /* array(
+            'COutputCache',
+            'duration'=>600,
+            'varyByParam'=>array('id'),
+        ),*/
+                    );
 	}
-
 	/**
 	 * Specifies the access control rules.
 	 * This method is used by the 'accessControl' filter.
@@ -26,7 +30,6 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
 	
         public function behaviors() {
 		return array(
-
 			'exportableGrid' => array(
 				'class' => 'application.components.ExportableGridBehavior',
 				'filename' => 'Inventariomareriles.csv',
@@ -38,10 +41,11 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
         
         public function accessRules() 
 	{
-		return array(
+		Yii::app()->user->loginUrl = array("/cruge/ui/login");
+            return array(
 			
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('ajaxhereda',    'indicadores',   'detalles','ajaxenviacorreoproceso','ajaxanulacion','certificadosdicapi',  'modificaproceso','confirmalectura','limpiarcarro','borrafilamaletin','poneralcarro',   'procesavarios','cargatenencias','cargatrabajadores','cargaprocesos','borraarchivo','adjuntaarchivo','admin','ajaxcargaformtenencia','view','creaproceso','relaciona','recibevalor','create','update'),
+				'actions'=>array('alertavencimientos',    'creasub',    'ajaxhereda',    'indicadores',   'detalles','ajaxenviacorreoproceso','ajaxanulacion','certificadosdicapi',  'modificaproceso','confirmalectura','limpiarcarro','borrafilamaletin','poneralcarro',   'procesavarios','cargatenencias','cargatrabajadores','cargaprocesos','borraarchivo','adjuntaarchivo','admin','ajaxcargaformtenencia','view','creaproceso','relaciona','recibevalor','create','update'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -53,7 +57,6 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
 			),
 		);
 	}
-
 	/**
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
@@ -160,6 +163,7 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
 		
             $model=new Docingresados;
                 $model->valorespordefecto();
+                $model->preparaAuditoria();
                 $model->setAttributes(
                         array(
                             $model->codprov=Yii::app()->session['codprov'],
@@ -178,30 +182,31 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
                 $model->codocu=self::CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS;
 		// Uncomment the following line if AJAX validation is needed
 		 $this->performAjaxValidation($model);
-
 		if(isset($_POST['Docingresados']))
 		{
 			$model->attributes=$_POST['Docingresados'];
 			if($model->save()) {
                             $model->refresh();
-                            MiFactoria::Mensaje('sucess','Se creó un nuevo registro con Id ( '.$model->id.' )  Correlativo :  [ '.$model->correlativo.'  ]' );
+                            MiFactoria::Mensaje('success','Se creó un nuevo registro con Id ( '.$model->id.' )  Correlativo :  [ '.$model->correlativo.'  ]' );
 			// if ($model->conservarvalor==0 ) 
 						//$this->enviacorreo($model);
 				$this->Creasesiones($model);
 				if ($model->conservarvalor==0 )
 				 $this->Destruyesesiones();
 			   
-				$this->redirect(array('update','id'=>$model->id));
+				 $esfinal=false;
+                if($model->procesoactivo[0]->tenenciasproc->final=='1')
+                    $esfinal=true;
+		$this->redirect(array('update','id'=>$model->id));
+                   yii::app()->end();
 				} ELSE {
 				   //PRINT_R($model->geterrors());
 				}
 		}
-
 		$this->render('create',array(
 			'model'=>$model,
 		));
 	}
-
 	/**
 	 * Updates a particular model.
 	 * If update is successful, the browser will be redirected to the 'view' page.
@@ -210,13 +215,12 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
-
 		// Uncomment the following line if AJAX validation is needed
 		 $this->performAjaxValidation($model);
-
 		if(isset($_POST['Docingresados']))
 		{
-			$model->attributes=$_POST['Docingresados'];
+			$model->preparaAuditoria();
+                    $model->attributes=$_POST['Docingresados'];
 			if($model->save())  {
 			       //verificando si se slecciono la opcion de conservarlos valores 
                                MiFactoria::Mensaje('success', 'Se actualizaron los datos');
@@ -244,7 +248,6 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
 				'model'=>$model,'esfinal'=>$esfinal,
 						));
 	}
-
 	public function enviacorreo($model)
 			{
 				
@@ -288,12 +291,10 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
 	public function actionDelete($id)
 	{
 		$this->loadModel($id)->delete();
-
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax']))
 			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
 	}
-
 	/**
 	 * Lists all models.
 	 */
@@ -306,15 +307,12 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
 			'dataProvider'=>$dataProvider,
 		));
 	}
-
 	/**
 	 * Manages all models.
 	 */
 	public function actionAdmin()
 	{
-	 
-            
-            
+	 $this->alertavencimientos(); 
             $model=new VwDoci('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['VwDoci']))
@@ -342,16 +340,13 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
 					'numero',
                             
 				)
-
 			);
 		} else {
-
 		$this->render('admin',array(
 			'model'=>$model,
 		));
                 }
 	}
-
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
@@ -364,7 +359,6 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
 			throw new CHttpException(404,'El enlace o direccion solicitado no existe');
 		return $model;
 	}
-
 	/**
 	 * Performs the AJAX validation.
 	 * @param CModel the model to be validated
@@ -376,6 +370,54 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
+	}
+        
+  public function actioncreasub ($id){
+      $id=(integer) MiFactoria::cleanInput($id);
+      
+     
+     $modelopadre=$this->loadModel($id);
+     if($modelopadre->procesoactivo[0]->tenenciasproc->final=='1')
+     {
+         throw new CHttpException(500,'No puede procesar mas este documento, el ultimo proceso ha sido marcado como final, consulte con el damisnitrador ');
+      
+     }else{
+        
+                    $model=new Procesosdocu('subproceso');
+                    
+               
+                $model->hiddoci=$modelopadre->id;
+		if(isset($_POST['Procesosdocu']))		{
+                    // var_dump($_POST['Procesosdocu']);
+			$model->attributes=$_POST['Procesosdocu'];
+                        //var_dump($model->attributes);die();
+                        //$this->performAjaxValidationdetalle($model);
+			if($model->save()){
+				if (!empty($_GET['asDialog']))
+				{
+					//Close the dialog, reset the iframe and update the grid
+					echo CHtml::script("window.parent.$('#cru-dialog31').dialog('close');
+							window.parent.$('#cru-frame31').attr('src','');	
+                                                        window.parent.location.reload();
+					
+					");
+				}
+			}else{
+                           // print_r($model->geterrors());
+                           /* MiFactoria::Mensaje('error',
+                              yii::app()->mensajes->getErroresItem($model->geterrors())
+                                    );  */                                  
+                        }
+		}
+		// if (!empty($_GET['asDialog']))
+		$this->layout = '//layouts/iframe';                
+		$this->render(                    
+                        'form_subproceso',
+                        array('modelopadre'=>$modelopadre,
+			'model'=>$model, 'id'=>$id,'codtenencia'=>$codtenencia,
+		)); 
+     }
+     
 	}
         
   public function actioncreaproceso ($id){
@@ -401,12 +443,19 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
 		if(!is_null($codtenencia)){
                     $model=new Procesosdocu('cambiotenencia');
                     $model->codte=$codtenencia;
+                    
                 }else{
                     $model=new Procesosdocu();
                     $model->codte=null;
                 }
-     
-              // die();
+            
+                
+               
+                $dia=$modelopadre->fechain;
+                 $hoy=date("Y-m-d");
+                 $tiempopasado=time()-strtotime($hoy);                   
+     $model->fechanominal=date("Y-m-d H:i:s",strtotime($dia)+$tiempopasado); 
+             //var_dump($model->attributes);die();
                 $model->hiddoci=$modelopadre->id;
 		if(isset($_POST['Procesosdocu']))		{
                     // var_dump($_POST['Procesosdocu']);
@@ -422,16 +471,13 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
                                                         window.parent.location.reload();
 					
 					");
-
 				}
 			}else{
                            // print_r($model->geterrors());
                            /* MiFactoria::Mensaje('error',
                               yii::app()->mensajes->getErroresItem($model->geterrors())
                                     );  */                                  
-
                         }
-
 		}
 		// if (!empty($_GET['asDialog']))
 		$this->layout = '//layouts/iframe';                
@@ -445,9 +491,7 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
      }
      
 	}
-
         
-       
         
         
         
@@ -558,7 +602,8 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
   }  
   
   public function actionprocesavarios(){
-      $idsenmaletin=yii::app()->maletin->valoresid(self::CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS);            
+      $idsenmaletin=yii::app()->maletin->valoresid(self::CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS);  
+      //var_dump($idsenmaletin);die();
       if(count($idsenmaletin)){
          $registro=New Procesosdocu('masivo');
          Logprocesosdocu::model()->deleteAll("iduser=".yii::app()->user->id); 
@@ -644,28 +689,28 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
                            
                            ///aqui enviar le mail de confirmacion del proceso
                           
-                           if(Tenenciasproc::model()->findByPk($registro->hidproc)->esmensaje=='1' and yii::app()->user->id==1){
+                           if(Tenenciasproc::model()->findByPk($registro->hidproc)->esmensaje=='1' ){
                             //echo "murio";die();
                                $arrayids=$registro::getIdsLog ('success',self::CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS);
                              $proveedores=  Docingresados::clipro_from_ids( $arrayids);
-                            // var_dump($proveedores);die();
+                             var_dump($proveedores);
                              
                             $regview=new VwDoci;
                              foreach($proveedores as $clave=>$valor){
                                        //echo "<br>ddirecciones<br>" ;
-                                 $direcciones=Contactos::getListMailEmpresa($valor, self::CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS);
-                              // echo $direcciones;
-                             //  echo "<br>responder<br>" ;
+                                 $direcciones=Contactos::getListMailEmpresa($valor, $registrodoc->tipodoc);
+                              //echo $direcciones;
+                              // echo "<br>responder<br>" ;
                               
                                  $reply=yii::app()->user->email;
-                                //  echo $reply;
+                                 //echo $reply;
                                  $titulo=Tenenciasproc::model()->findByPk($registro->hidproc)->eventos->descripcion;
-                                 // echo "<br>Titulo<br>" ;
-                                // echo $titulo;
-                               //  echo "<br>" ;
-                                //var_dump($regview->search_por_filtro_array($arrayids,$valor));die();
+                                // echo "<br>Titulo<br>" ;
+                               // echo $titulo;
+                               // echo "<br>" ;
+                                //($regview->search_por_filtro_array($arrayids,$valor));die();
                                  $prove=$regview->search_por_filtro_array($arrayids,$valor);
-                                 $columnas=$regview->array_columnas_proveedores();
+                                 $columnas=$regview::array_columnas_proveedores();
                                  $mensaje=Tenenciasproc::model()->findByPk($registro->hidproc)->msgexterno.
                                          CHtml::openTag("br").
                                          $this->renderPartial('listadomail',
@@ -678,7 +723,7 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
                                   // echo "<br>Mensaje<br>" ;
                                 
                                 // echo $mensaje;
-                                /// echo "<br>" ;
+                                //echo "<br>" ;
                                   yii::app()->correo->correo_simple(
                                            $direcciones,
                                            $reply,
@@ -686,12 +731,10 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
                                            $mensaje
                                            ) ;             
                                                
-                                //echo "<br><br><br>Se acabo el bucle  <br><br><br>" ; 
+                             //  echo "<br><br><br>Se acabo el bucle  <br><br><br>" ; 
                                 $direcciones="";
                              }
                            }
-                           
-                           
                            
                            MiFactoria::mensaje('notice','Se realizo el proceso masivo , favor revise el log de procesos para verificar los mensajes');
                              $this->render(
@@ -707,13 +750,12 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
                                         'form_proceso_masa',                
                                             array('model'=>$registro, 'codigodocu'=>self::CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS,)
                                                     );
-                            yii::app()->maletin->flush();
-                             yii::app()->end();
-                             
+                           // yii::app()->maletin->flush();
+                             yii::app()->end();                             
                          }
                          
                 }
-         
+         MiFactoria::mensaje('notice','Va ha procesar ['.count($idsenmaletin).']  Documentos ');
          $this->render(
                  'form_proceso_masa',
                 
@@ -787,7 +829,6 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
 			foreach($autoIdAll as $autoId)
 			{
 				$arrayvalores[$autoId]=$this->id;
-
 			}
                       //  print_r($arrayvalores);die();
 			yii::app()->maletin->ponervalores($arrayvalores,self::CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS);
@@ -795,16 +836,18 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
                 
                 echo "Se agregaron ".count($autoIdAll)."  Registros al maletín";
     }
-
 public function actionborrafilamaletin()
     {
        
          if(yii::app()->request->isAjaxRequest){
              $id=(integer) MiFactoria::cleanInput($_GET['id']);
-             yii::app()->maletin->borrafila($id);
-             echo "Se saco el registro del maletin de usuario";
+             if(yii::app()->maletin->borrafila($id)> 0){
+                 echo "Se borro el registro del Maletin";
+             }else{
+               echo "No se pudo borrar  el registro del Maletin";  
+             }
+            
          }
-
     }   
   
   public function actionlimpiarcarro()
@@ -814,7 +857,6 @@ public function actionborrafilamaletin()
              yii::app()->maletin->flush();
              echo "Se limpio del maletin de usuario";
          }
-
     } 
     
     //Esta function verifica que el destinatario 
@@ -858,9 +900,9 @@ public function actionborrafilamaletin()
       $id=(integer) MiFactoria::cleanInput($id); 
       $model= Procesosdocu::model()->findByPk($id);
       $model->setScenario('documentosreferencia');
-     if($model->tenenciasproc->final=='1' or !is_null($model->fechafin))
+     if($model->tenenciasproc->final=='1' or strlen($model->fechafin) >0)
      {
-         throw new CHttpException(500,'No puede procesar mas este documento, el ultimo proceso ha sido marcado como final, consulte con el damisnitrador ');
+         throw new CHttpException(500,'No puede procesar mas este documento, el ultimo proceso ha sido marcado como final, consulte con el damisnitrador '.$model->fechafin);
       
      }else{        
 		if(isset($_POST['Procesosdocu']))		{
@@ -876,16 +918,13 @@ public function actionborrafilamaletin()
 							window.parent.$('#cru-frame3').attr('src','');						
 					window.parent.$.fn.yiiGridView.update('procesos-grid');
 					");
-
 			
 			}else{
                            // print_r($model->geterrors());
                            /* MiFactoria::Mensaje('error',
                               yii::app()->mensajes->getErroresItem($model->geterrors())
                                     );  */                                  
-
                         }
-
 		}
 		// if (!empty($_GET['asDialog']))
 		$this->layout = '//layouts/iframe';                
@@ -897,13 +936,13 @@ public function actionborrafilamaletin()
      }
      
 	}
-
      
    public function actioncertificadosdicapi(){
-        $model=new Docingresados('search');
+        $model=new Docingresados('search_por_dicapi');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['Docingresados']))
 			$model->attributes=$_GET['Docingresados'];
+                //print_r($model->attributes);
                 if ($this->isExportRequest()) { //<==== [[ADD THIS BLOCK BEFORE RENDER]]
 			//ECHO "SALIO";DIE();
 			$this->exportCSV($model->search(), array(
@@ -927,10 +966,8 @@ public function actionborrafilamaletin()
 					'numero',
                             
 				)
-
 			);
 		} else {
-
 		$this->render('reportedicapi',array(
 			'model'=>$model,
 		));
@@ -941,16 +978,46 @@ public function actionborrafilamaletin()
        if(yii::app()->request->isAjaxRequest){
            if(isset($_POST['id'])){
                 $id=(integer)  MiFactoria::cleanInput($_POST['id']); 
-                $regi=Procesosdocu::model()->findByPk($id);  
-                if(!is_null($regi)){ 
-                    $regi->setScenario('anulacion');
+                $regi=Procesosdocu::model()->findByPk($id); 
+               
+                if(!is_null($regi)){
+                  if(count($regi->docingresados->procesosdocusinanular)> 1){
+                      
+                      ///verificando si se anula el proceso activo, si es asi, se tiene
+                         /// que colocar fecha fin=null ene le proc inmediato anterior
+                            $idproactivo= $regi->docingresados->procesoactivo[0]->id;
+              // $hayotroanterior=false;
+                if($id==$idproactivo){
+                 ///buscamos el otor id inemadiato antariro
+                   foreach($regi->docingresados->procesosdocu as $fila){
+                      if($id <> $fila->id){
+                      $otroid=$fila->id;
+                      break;
+                      }
+                      
+                   }
+                   $otroregistro= Procesosdocu::model()->findByPk($otroid);
+                   $otroregistro->setScenario("fechafinal");
+                   $otroregistro->fechafin=null; //abrimos la fecha fin 
+                   $otroregistro->save();
+                   
+                 
+                 }else{
+                     
+                 }
+                
+                 $regi->setScenario('anulacion');
                     $regi->anulado="1";
                    if( $regi->save()){
                        echo "Se anuló este Proceso ";
                    }else{
                       echo "No se pudo anular este proceso : ".yii::app()->mensajes->getErroresItem($regi->errors()); 
                    }
+                
+                  }else{ //En este casoHAY UN OSLO PROECSO Y ES LE PROCESO ACTIVO  Y SE QUIER AQNULAR
+                   echo " No pUEDE ANUALR ETE PROCESO PORQUE ESTÁ ACTIVO Y ES UNICO";    
                       
+                  }                      
                 }else{
                     echo " No se encontro registro con ese ID";
                 }
@@ -991,12 +1058,9 @@ public function actionborrafilamaletin()
 					'numero',
                             
 				)
-
 			);
 		} else {
-
-		$this->render('admindetalle',array(
-			'model'=>$model,
+		$this->render('admindetalle',array(			'model'=>$model,
 		));
                 }
 	}
@@ -1005,18 +1069,21 @@ public function actionborrafilamaletin()
        if(yii::app()->request->isAjaxRequest){ 
           if(Isset($_GET['id'])){ 
                    $registro= Procesosdocu::Model()->findByPk( (integer)MiFactoria::cleanInput($_GET['id']));
-                    if($registro->tenenciasproc->esmensaje=='1' and strlen(trim($registro->tenenciasproc->msgexterno))> 0 and yii::app()->user->id==1 ){
+                    $registropadre=$registro->docingresados;
+                   if($registro->tenenciasproc->esmensaje=='1' and strlen(trim($registro->tenenciasproc->msgexterno))> 0  ){
                        $titulo=$registro->tenenciasproc->eventos->descripcion;
-                         $mensaje=$registro->msgexterno;
+                       $titulo.='-'.$registropadre->docus->desdocu.'-'.$registropadre->numero;
+                         $mensaje=$registro->tenenciasproc->msgexterno;
                          $idmensaje=$registro->insertamensajes('M',
-                             Contactos::getListMailEmpresa($registro->codprov,$registro->docingresados->tipodoc),
+                             Contactos::getListMailEmpresa($registropadre->codprov,$registropadre->tipodoc),
                           $titulo    
                          );
                    $resultadocorreo="";
                    $resultadocorreo= yii::app()->correo->correo_simple(
-                   Contactos::getListMailEmpresa($registro->codprov,$registro->codocu),
+                   Contactos::getListMailEmpresa($registropadre->codprov,$registropadre->tipodoc),
                    Yii::app()->user->email,
-                   $titulo 
+                   $titulo ,
+                           $mensaje
                  
                );  
                    if(strlen($resultadocorreo)>0)   //si hubo erroes 
@@ -1078,10 +1145,11 @@ public function actionborrafilamaletin()
             }
             $horas=array_map("ciento",$arrayvalores['horasprom']);
             
-            
+            //var_dump($arrayvalores['despro']);die();
          $this->render('resumen',array(
              'proveedores'=>$arrayvalores['codprov'],
              'montodinero'=>$arrayvalores['tiempodinero'],
+             'nombresprove'=>$arrayvalores['despro'],
              'horas'=>$horas,
              
              
@@ -1106,7 +1174,7 @@ public function actionborrafilamaletin()
                //  echo $reply;
             $titulo='Proximo vencimiento de certificados';
                $prove= VwDoci::getCertificadosVencidos($factor);
-                $columnas=$regview->array_columnas_proveedores();
+                $columnas=$regview::array_columnas_proveedores();
                                  $mensaje=Tenenciasproc::model()->findByPk($registro->hidproc)->msgexterno.
                                          CHtml::openTag("br").
                                          $this->renderPartial('listadomail',
@@ -1151,6 +1219,90 @@ public function actionborrafilamaletin()
            }
        }
    }
+   
+   ///funcioque usa el correo electronicao para alertar de vencmientos d edocumentos 
+   public function alertavencimientos(){
+       //prmero verifica r que no se hay enviado un mensajer con epriodo anterior
+       //recueprando el mensaje
+       $registro=New Docingresados();
+       $tipo='A';
+       $tenencias= Tenencias::model()->findAll();
+       $direcciones=yii::app()->user->email;
+       $reply=yii::app()->user->email;
+       $titulo='Vencimiento de documentos';
+       foreach ($tenencias  as $tenencia){
+           if($tenencia->alerta=='1'){
+                $direcciones=$tenencia->listamail;
+                   $reply=yii::app()->user->email;
+                   $titulo='Vencimiento de documentos - Tenencia  '.$tenencia->codte;
+          // ECHO "RECIRRINDO LAS TENMENCIAS <BR><BR>";
+           $ultimomensaje=$registro->recuperamensaje($tipo, self::CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS);
+           if(!is_null($ultimomensaje))
+           {
+               //ahora verificando la fecha del ultimo mensaje para no generar correos inndecesarios 
+               $fechaultimomensaje=$ultimomensaje->cuando;
+               $horaspasadasdeultimomensaje=time()/60-strtotime($fechaultimomensaje)/60;
+               if($horaspasadasdeultimomensaje >= $tenencia->horasfrecuencialerta)
+                   { //Si ha pasodf mas horas de la frecuencia de la tenencia
+                    
+                   $this->enviadatosvencimiento($tenencia->codte,$tenencia->horaspreviasalerta,$direcciones,$reply,$titulo);
+             // $registro->insertamensajes('A',$direcciones,$titulo);
+                   }
+               
+               
+           }else{
+                $this->enviadatosvencimiento($tenencia->codte,$tenencia->horaspreviasalerta,$direcciones,$reply,$titulo);
+            
+           } //fin de si ultimomensaje==null
+               
+               
+           } //fin de si es alerta checked==1
+                  
+           
+       }
+       $registro->insertamensajes('A',$direcciones,$titulo);
+        }
+      
+       private function enviadatosvencimiento($codte,$previasalerta,$direcciones,$reply,$titulo){
+            $datos=VwDoci::vencimientocertificados($codte, $previasalerta);
+                 
+                   $dataProvider=new CArrayDataProvider($datos, array(
+                                                                        'id'=>'user',
+                                                                        'sort'=>array(
+                                                                        'attributes'=>array(
+                                                                            'porcentaje',
+                                                                                        ),
+                                                                                    ),
+                                                                'pagination'=>array(
+                                                                            'pageSize'=>10000,
+                                                                                        ),
+                                                            ));
+                   
+                   
+                   
+                   $columnas=VwDoci::array_columnas_interno();
+                   $tenor=Tenores::buscatenor(self::CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS, 'G', 'A');
+                  // $tenor->estiliza();
+                   $mensaje=$tenor->estiliza();
+                 
+                 //  var_dump($mensaje);die();
+                   $datacadena=$this->renderPartial('listadomail',
+                                                 array(
+                                                     'proveedor'=>$dataProvider,
+                                                     'arraycolumnas'=>$columnas,
+                                                 ),true,false);
+                   $datacadena=$tenor->estiliza($datacadena);
+                   $mensaje.=CHtml::openTag("br").$datacadena;
+                   yii::app()->correo->correo_simple(
+                                           $direcciones,
+                                           $reply,
+                                           $titulo,
+                                           $mensaje
+                                           ) ; 
+                   
+           
+                   
+            }
+     
+     
 }
-
-

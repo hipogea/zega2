@@ -18,6 +18,7 @@ class Docingresados extends ModeloGeneral
 		return parent::model($className);
 	}
         public $d_fechain1=null;
+        public $diasfaltan;
         
         public function init(){
             $this->campoestado='cod_estado';
@@ -47,8 +48,8 @@ class Docingresados extends ModeloGeneral
 	{
 		return array(
 			// Classname => path to Class
-			'ActiveRecordLogableBehavior'=>
-				'application.behaviors.ActiveRecordLogableBehavior',
+			/*'ActiveRecordLogableBehavior'=>
+				'application.behaviors.ActiveRecordLogableBehavior',*/
                     
                     'imagenesjpg'=>array(
 				'class'=>'ext.behaviors.TomaFotosBehavior',
@@ -76,7 +77,7 @@ class Docingresados extends ModeloGeneral
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-                      array('numero+tipodoc+codprov+codtenencia', 'application.extensions.uniqueMultiColumnValidator','on'=>'insert,update'),
+                      array('numero+tipodoc+codprov+codtenencia', 'application.extensions.uniqueMultiColumnValidator','on'=>'insert'),
 		 array('codtenencia,espeabierto', 'safe','on'=>'insert,update'),
 			array('monto', 'numerical','on'=>'insert,update'),
                     array('tipodoc', 'checkcambiodoc','on'=>'update'),
@@ -93,7 +94,8 @@ class Docingresados extends ModeloGeneral
 			array('codresponsable', 'required','message'=>'...Quien es el responsable?','on'=>'insert,update'),
 			array('fecha', 'required','message'=>'...La fecha del documento?','on'=>'insert,update'),
 			array('fechain', 'required','message'=>'...La fecha de ingreso?','on'=>'insert,update'),
-			array('moneda', 'required','message'=>'...Que paso con la moneda?','on'=>'insert,update'),
+			array('fechain', 'checkfechaing','on'=>'update'),                    
+                    array('moneda', 'required','message'=>'...Que paso con la moneda?','on'=>'insert,update'),
 			array('codepv', 'required','message'=>'...Que paso con la referencia?','on'=>'insert,update'),
 			array('codprov', 'length', 'max'=>6,'on'=>'insert,update'),
 			array('codprov', 'checkvalores','on'=>'insert,update'),
@@ -109,7 +111,7 @@ class Docingresados extends ModeloGeneral
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, fechavencimiento,codprov,conservarvalor, fecha, fechain, correlativo, tipodoc, moneda, descorta, codepv, monto, codgrupo, codresponsable, creadopor, creadoel, texv, docref', 'safe', 'on'=>'search'),
-                        array('id, fechavencimiento,codprov,conservarvalor, fecha, fechain, correlativo, tipodoc, moneda, descorta, codepv, monto, codgrupo, codresponsable, creadopor, creadoel, texv, docref', 'safe', 'on'=>'search_por_dicapi'),
+                        array('id,diasfaltan, fechavencimiento,codprov,conservarvalor, fecha, fechain, correlativo, tipodoc, moneda, descorta, codepv, monto, codgrupo, codresponsable, creadopor, creadoel, codtenencia, docref', 'safe', 'on'=>'search_por_dicapi'),
 		
                     );
 	}
@@ -124,6 +126,23 @@ class Docingresados extends ModeloGeneral
 			 if (is_null($modeloprueba )) 
 			    $this->adderror('codprov','Esta empresa no existe');
 			//En el modelo destinatario
+							
+	} 
+        
+        
+        
+        public function checkfechaing($attribute,$params) {
+	 if(!$this->isNewRecord){
+             if($this->cambiocampo('fechain')){
+                 //verificar que los procesos subyacentes no tengan fecha posteriro a la acatual
+                 $valoractual=$this->fechain;
+                 $fechaminima=$this->fechaminima;
+                 if(!is_null($fechaminima))
+                if(yii::app()->periodo->verificafechas($fechaminima,$valoractual))
+                  $this->adderror('fechain','Este documento tiene procesos con fechas posteriores a la fecha de ingreso, anule estos procesos y luego intente nuevamente');
+                    
+             }
+         }
 							
 	} 
 	
@@ -143,10 +162,15 @@ class Docingresados extends ModeloGeneral
 			'trabajador1' => array(self::BELONGS_TO, 'Trabajadores', 'codteniente'),
 			'barcos'=> array(self::BELONGS_TO, 'Embarcaciones', 'codepv'),
                         'tenencias'=>array(self::BELONGS_TO, 'Tenencias', 'codtenencia'),
-                        'procesosdocu'=>array(self::HAS_MANY, 'Procesosdocu', 'hiddoci'),
-                     'procesoactivo'=>array(self::HAS_MANY, 'Procesosdocu','hiddoci','condition'=>'anulado<>"1" ',  'limit'=>'1','order'=>'id DESC'),
+                        'procesosdocu'=>array(self::HAS_MANY, 'Procesosdocu', 'hiddoci','order'=>' id DESC '),
+                     'procesosdocusinanular'=>array(self::HAS_MANY, 'Procesosdocu','hiddoci','condition'=>'anulado<>"1" ','order'=>' id DESC '),
+                    'procesoactivo'=>array(self::HAS_MANY, 'Procesosdocu','hiddoci','condition'=>'anulado<>"1" ',  'limit'=>'1','order'=>'id DESC'),
                     'tenores' => array(self::BELONGS_TO, 'Tenores', array('codsoc'=>'sociedad','codocu'=>'coddocu') ),
-           
+            'fechamaxima' => array(self::STAT, 'Procesosdocu','hiddoci', 'select'=>'max(fechanominal)','condition'=>"anulado <>'1'"),
+         'fechaminima' => array(self::STAT, 'Procesosdocu','hiddoci', 'select'=>'min(fechanominal)','condition'=>"anulado <>'1'"),
+       
+//  'alkardex_gastos'=>array(self::STAT, 'Alkardex', 'idref','select'=>'sum(montomovido*-1)','condition'=>"codocuref in('340','350')"),//el campo foraneo
+             
                     
                     
                     
@@ -453,24 +477,72 @@ class Docingresados extends ModeloGeneral
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('codprov',$this->codprov,true);
-		$criteria->compare('fecha',$this->fecha,true);
+		//$criteria->compare('codprov',$this->codprov,true);
+		//$criteria->compare('fecha',$this->fecha,true);
 		$criteria->compare('fechain',$this->fechain,true);
 		$criteria->compare('correlativo',$this->correlativo,true);
-		$criteria->compare('tipodoc',$this->tipodoc,true);
-		$criteria->compare('moneda',$this->moneda,true);
+		//$criteria->compare('tipodoc',$this->tipodoc,true);
+		//$criteria->compare('moneda',$this->moneda,true);
 		$criteria->compare('descorta',$this->descorta,true);
-		$criteria->compare('codepv',$this->codepv,true);
-		$criteria->compare('monto',$this->monto);
-		$criteria->compare('codgrupo',$this->codgrupo,true);
-		$criteria->compare('codresponsable',$this->codresponsable,true);
+		//$criteria->compare('codepv',$this->codepv,true);
+		//$criteria->compare('monto',$this->monto);
+		//$criteria->compare('codgrupo',$this->codgrupo,true);
+		//$criteria->compare('codresponsable',$this->codresponsable,true);
 
 
 		$criteria->compare('texv',$this->texv,true);
 		$criteria->compare('docref',$this->docref,true);
-                if(!is_null($codtenencia))
-                 $criteria->addCondition("codtenencia='".$codtenencia."'");
-		return new CActiveDataProvider($this, array(
+                
+                
+                if(!is_null($this->diasfaltan) and strlen(trim($this->diasfaltan))>0){
+                    $criteria->addInCondition('id',VwDoci::vencimientocertificadosId($tenencia, $this->diasfaltan) , 'AND');
+                }
+                   
+                
+                if(!is_null($tenencia))
+                 $criteria->addCondition("codtenencia='".$tenencia."'");
+                         
+                if(isset($_SESSION['sesion_Docingresados']))
+                    {
+			$criteria->addInCondition('id', $_SESSION['sesion_Docingresados'], 'AND');
+			  } ELSE {
+				$criteria->compare('id',$this->id,true);
+                      }      
+                      
+                  if(isset($_SESSION['sesion_Documentos']))
+                    {
+			$criteria->addInCondition('tipodoc', $_SESSION['sesion_Documentos'], 'AND');
+			  } ELSE {
+				$criteria->compare('tipodoc',$this->tipodoc,true);
+                      }      
+                      
+               if(isset($_SESSION['sesion_Embarcaciones']))
+                    {
+			$criteria->addInCondition('codepv', $_SESSION['sesion_Embarcaciones'], 'AND');
+			  } ELSE {
+				$criteria->compare('codepv',$this->codepv,true);
+                      } 
+                      
+                       if((isset($this->fechain) && trim($this->fechain) != "") && (isset($this->d_fechain1) && trim($this->d_fechain1) != ""))  {
+		           
+                        $criteria->addBetweenCondition('fechain', ''.$this->fechain.'', ''.$this->d_fechain1.''); 
+						//VAR_DUMP($criteria->params);DIE();
+						}
+                 
+                //var_dump( $tenencia);die();
+               //  $criteria->addCondition("hiddoci=" . $id);        
+        $dependecy = new CDbCacheDependency('SELECT count(*) FROM '.$this->tableName()); 
+return new CActiveDataProvider($this->cache(600, $dependecy, 2), array ( 
+    'criteria'=>$criteria,
+     'pagination' => array (
+                             'pageSize' => 100 //edit your number items per page here
+                       ),
+));
+                 
+                 
+                 
+                 
+		/*return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
                      'sort'=>array(
                                  'defaultOrder'=>'codepv ASC',
@@ -478,7 +550,7 @@ class Docingresados extends ModeloGeneral
                     'pagination' => array (
                              'pageSize' => 100 //edit your number items per page here
                        ),
-		));
+		));*/
 	}
         
     public function checkcambiodoc($attribute,$params){

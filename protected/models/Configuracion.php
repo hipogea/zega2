@@ -32,7 +32,7 @@ class Configuracion extends CActiveRecord {
         // will receive user inputs.
         return array(
              array('valor', 'safe'),
-           
+           array('valor', 'safe','on'=>'cambiavalor'),
             array('codparam, valor', 'required', 'on' => 'parametro'),
             array('codparam,  valor, explicacion', 'safe', 'on' => 'parametro'),
             //  array('codcen, codocu, codparam, desparam, valor, tipodato, explicacion, lista, iduser, longitud', 'required'),
@@ -179,18 +179,8 @@ class Configuracion extends CActiveRecord {
     
     public static function valor($codocu,$codcen,$codparam,$iduser=null)
             {
-            $cri=NEW CDBCriteria();
-            $cri->addCondition("codocu=:vcodocu and "
-                .           "codcen=:vcodcen and "
-                .             "iduser=:viduser and "
-                .           "codparam=:vcodparam ");
-            $cri->params=array(
-             ":vcodocu"=>$codocu,
-               ":vcodcen"=>$codcen,
-              ":viduser"=>(is_null($iduser))?-1:$iduser.'',
-               ":vcodparam"=>$codparam,
-                 );
             
+           $cri=self::criterio($codocu, $codcen, $codparam, $iduser);
       $resultado= self::model()->find($cri);
       //return $resultado->attributes;
         if(is_null($resultado)){
@@ -202,4 +192,39 @@ class Configuracion extends CActiveRecord {
         }
       
             }
+            
+            
+   
+  public static function setvalor($valor,$codocu,$codcen,$codparam,$iduser=null){
+         ///Si existe modificarlo si no reorna -1;
+      
+      if(!is_null(self::valor($codocu,$codcen,$codparam,$iduser))){
+             $regi=self::model()->find( self::criterio($codocu, $codcen, $codparam,$iduser)  );
+             $regi->setScenario('cambiavalor');
+             $regi->valor=$valor;
+             return ($regi->save())?1:-1;
+         }else{
+             return -1;
+         }
+           
+       }        
+   
+    private static function criterio($codocu,$codcen,$codparam,$iduser=null){
+        
+        $cri=NEW CDBCriteria();
+            $cri->addCondition("codocu=:vcodocu and "
+                .           "codcen=:vcodcen and "
+                .             "iduser=:viduser and "
+                .           "codparam=:vcodparam ");
+            $cri->params=array(
+             ":vcodocu"=>$codocu,
+               ":vcodcen"=>$codcen,
+              ":viduser"=>(is_null($iduser))?-1:$iduser.'',
+               ":vcodparam"=>$codparam,
+                 );
+            return $cri;
+    }   
+       
 }
+
+ 

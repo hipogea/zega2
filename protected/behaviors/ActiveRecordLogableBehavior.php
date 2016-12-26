@@ -11,6 +11,8 @@ class ActiveRecordLogableBehavior extends CActiveRecordBehavior
 			$newattributes = $this->Owner->getAttributes();
 			$oldattributes = $this->getOldAttributes();
 
+                        
+                        
 			// compare old and new
 			foreach ($newattributes as $name => $value) {
 				if (!empty($oldattributes)) {
@@ -21,8 +23,9 @@ class ActiveRecordLogableBehavior extends CActiveRecordBehavior
 
 				if ($value != $old) {
 					//$changes = $name . ' ('.$old.') => ('.$value.'), ';
-
-					$log=new ActiveRecordLog;
+                                    
+                                    
+                                        $log=new ActiveRecordLog;
 					$log->description=  'El usuario ' . Yii::app()->user->Name
 						. ' Cambio ' . $name . ' en '
 						. get_class($this->Owner)
@@ -46,6 +49,10 @@ class ActiveRecordLogableBehavior extends CActiveRecordBehavior
 					}
 					$log->asignacamposclave($this->Owner->getPrimaryKey());
 					$log->save();
+                                    
+                                       
+                                       
+					
 				}
 			}
 		} else {
@@ -86,7 +93,19 @@ class ActiveRecordLogableBehavior extends CActiveRecordBehavior
 	public function afterFind($event)
 	{
 		// Save old values
-		$this->setOldAttributes($this->Owner->getAttributes());
+           // var_dump(get_parent_class($this->Owner));die();
+           
+		
+                //$clasepadre=get_parent_class($this->Owner);
+                 //if(!($clasepadre=='ModeloGeneral')){
+                   $this->setOldAttributes($this->Owner->getAttributes());
+                  if(yii::app()->user->id==1){
+                      // ECHO "<BR> ". get_class($this)."  :   ".get_class($this->owner)."  <BR>";
+          // VAR_DUMP($this->getOldAttributes()); 
+          
+        }
+                // }
+                    // return $this->Owner::parent
 	}
 
 	public function getOldAttributes()

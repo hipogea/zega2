@@ -32,8 +32,11 @@ class Clipro extends ModeloGeneral
 		// will receive user inputs.
 		$reglas= array(
 			//array('codpro', 'required'),
-			// array('codpro', 'length', 'max'=>6),
-			array('codpro,despro,codestado, codocu, direcciontemp,nombrecomercial,telpro, rucpro,socio', 'safe', 'on'=>'insert,update'),
+		 array('codpro,telpro,emailpro', 'safe', 'on'=>'BATCH_UPD_COMUNICACIONES'),
+			 //array('codpro,telpro,emailpro', 'safe', 'on'=>'BATCH_UPD_COMUNICACIONES'),
+		array('emailpro', 'match','pattern'=>'/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/','message'=>'El correo no es el apropiado','on'=>'BATCH_INS,BATCH_UPD,insert,update,BATCH_UPD_COMUNICACIONES'),
+			
+                    array('codpro,despro,codestado, codocu, direcciontemp,nombrecomercial,telpro, rucpro,socio', 'safe', 'on'=>'insert,update'),
 			array('despro,rucpro,socio', 'safe', 'on'=>'BATCH_INS,BATCH_UPD'),
 			array('despro', 'required', 'message'=>'Coloca el nombre del cliente','on'=>'BATCH_INS,BATCH_UPD,insert,update'),
 			array('direcciontemp', 'required', 'message'=>'Coloca la direccion','on'=>'insert'),

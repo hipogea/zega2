@@ -94,7 +94,7 @@ public function auditoriamensajes($codocu,$hidocu,$fichero=null,$tipo=null){
     $modelo->setAttributes(
         array(
             'usuario'=>Yii::app()->user->um->loadUserById(yii::app()->user->id)->username,
-             'cuando'=>date('Y-m-d H:m:s'),
+             'cuando'=>date('Y-m-d H:i:s'),
             'codocu'=>$codocu,
             'nombrefichero'=>$fichero,
             'tipo'=>$tipo,

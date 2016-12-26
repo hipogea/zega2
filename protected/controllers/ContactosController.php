@@ -22,13 +22,11 @@ class ContactosController extends Controller
 		return array(
 			
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array( 'admin','delete', 'ajaxdesactivacontatodetalle','create','contactosporprove','borradetalle','modificadetalle','creaadicional','update'),
+				'actions'=>array('admin',  'create','contactosporprove','borradetalle','modificadetalle','creaadicional','update'),
 				'users'=>array('@'),
 			),
 			
-			array('deny',  // deny all users
-				'users'=>array('*'),
-			),
+			
 		);
 	}
 
@@ -128,14 +126,19 @@ class ContactosController extends Controller
 		$model=new Contactos;
 		$model->setScenario("creasolo");
 		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+		$this->performAjaxValidation($model);
 
 		if(isset($_POST['Contactos']))
 		{
 			$model->attributes=$_POST['Contactos'];
 			
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+			if($model->save()){
+                            MiFactoria::mensaje('success','Se grabo el contacto ');
+                            $this->redirect(array('admin'));
+                        }else{
+                             MiFactoria::mensaje('error','No se pudo grabar el contacto ');
+                        }
+				
 		}
 
 		$this->render('create',array(
@@ -151,20 +154,26 @@ class ContactosController extends Controller
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
-  // Uncomment the following line if AJAX validation is needed
+
+		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
 		if(isset($_POST['Contactos']))
 		{
 			$model->attributes=$_POST['Contactos'];
-			if($model->save())
-						           if (!empty($_GET['asDialog']))
+			if($model->save()){
+                            MiFactoria::Mensaje('success','Se modificaron los datos del contacto');
+                              if (!empty($_GET['asDialog']))
 												{
 													//Close the dialog, reset the iframe and update the grid
 													echo CHtml::script("window.parent.$('#cru-dialog2').dialog('close');window.parent.$('#cru-frame2').attr('src','');window.parent.$.fn.yiiGridView.update('{$_GET['gridId']}');");
 														Yii::app()->end();
 												}
-			  $this->redirect(array('view','id'=>$model->id));
+			  $this->redirect(array('admin'));
+                        }else{
+                             MiFactoria::Mensaje('error','No se pudieron modificar los datos del contacto'.yii::app()->mensajes->getErroresItem($model->getErrors()));
+                        }
+						         
 			
 				
 		}
@@ -173,18 +182,18 @@ class ContactosController extends Controller
 				if (!empty($_GET['asDialog'])){
 					$this->layout = '//layouts/iframe';
 					$codigoproveedor=$_GET['codpro'];
-					} else {$codigoproveedor=$model->c_hcod;}
-    //----- end new code --------------------
-                    $modeldetalle=New Contactosadicio('search_por_contacto');
-                    $modeldetalle->unsetAttributes();  // clear any default values
-		
-                    if(isset($_GET['Contactosadicio']))
-			$modeldetalle->attributes=$_GET['Contactosadicio'];
-		                    
+					} else {
+                                            $codigoproveedor=$model->c_hcod;
                                         
-		$this->render('_form',array(
-                       'modeldetalle'=>$modeldetalle,
+                                        }
+    //----- end new code --------------------
+                $modeldetalle=New Contactosadicio('search_por_contacto');
+                if (!empty($_GET['Contactosadicio'])){
+                    $modeldetalle->attributes= $_GET['Contactosadicio'];
+                }
+		$this->render('update',array(
 			'model'=>$model,'codpro'=>$codigoproveedor,
+                    'modeldetalle'=>$modeldetalle,
 		));
 	}
 
@@ -253,37 +262,4 @@ class ContactosController extends Controller
 			Yii::app()->end();
 		}
 	}
-        
-        
-        public function actionajaxdesactivacontatodetalle(){
-            if(yii::app()->request->isAjaxRequest){ 
-                Yii::app()->clientScript->scriptMap=array("jquery.js"=>false, 'duplicatedScrip.js'=>false);
-          if(Isset($_GET['id'])){ 
-                   $registro= Contactosadicio::Model()->findByPk( (integer)MiFactoria::cleanInput($_GET['id']));
-                    if(!is_null($registro))
-                        {
-                        $registro->setScenario('status');
-                        if($registro->activo=='1'){
-                            $registro->activo=null;
-                        } else {
-                             $registro->activo='1';
-                        }
-                        if($registro->save()){
-                           echo "grabo  ".$registro->id; 
-                        }else{
-                            echo "no garbo";
-                        }
-                    }
-                   
-                
-                   
-            }else{
-                
-            }
-          } else{
-              
-          }
-              
-        }
-          
 }
