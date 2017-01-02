@@ -76,6 +76,39 @@
 						<?php echo $form->labelEx($model,'item'); ?>
 						<?php echo $form->textField($model,'item',array('size'=>3,'disabled'=>'disabled')); ?>
 </div>
+    
+    <div class="row">
+		<?php echo $form->labelEx($model,'imputacion'); ?>
+		<?php
+			
+                  IF($model->escampohabilitado('imputacion')){
+                     $this->widget('ext.matchcode.MatchCode',array(
+				'nombrecampo'=>'imputacion',
+				//'pintarcaja'=>1, ///indica si debe de pintar el textbox al iniciar
+				'ordencampo'=>3,
+				'controlador'=>'Ot',
+				'relaciones'=>$model->relations(),
+				'tamano'=>12,
+				'model'=>$model,
+				'form'=>$form,
+				'nombredialogo'=>'cru-dialog3',
+				'nombreframe'=>'cru-frame3',
+				'nombrearea'=>'mifreerfDDuufu',
+				//'nombrecampoareemplazar'=>'imputacion',
+				//'comopintar'=>'c_descri',//Significa que va a ha reemplazar al imput del campo
+			));
+
+				echo $form->error($model,'imputacion');
+                  }else{
+                ?>
+                  <?php
+                  echo $form->textField($model,'imputacion',array('size'=>8,'maxlength'=>8, 'disabled'=>'disabled' ));
+                  ?>
+             <?php
+                  }
+			
+		?>
+	</div>
 	<div class="row">
 		<?php echo $form->labelEx($model,'cant'); ?>
 		<?php echo $form->textField($model,'cant',array('size'=>8,'maxlength'=>8, 'disabled'=>$model->disabledcampo('cant') )); ?>
@@ -203,8 +236,7 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'fechaent'); ?>
-		<?php if ($this->eseditable($modelopadre->codestado)=='')
-
+		<?php if ($model->escampohabilitado('fechaent'))
 		{
 
 			$this->widget('zii.widgets.jui.CJuiDatePicker', array(

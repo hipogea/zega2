@@ -264,8 +264,8 @@ $this->widget('zii.widgets.jui.CJuiSliderInput', array(
 		<?php
               
 
-         $datos1tb1x = CHtml::listData(Masterrelacion::model()->findAll("hidpadre=:orden",array(":orden"=>$model->ot->objetosmaster->masterequipo->codigo)),'hidhijo','hijo.descripcion');
-		echo $form->DropDownList($model,'codmaster',$datos1tb1x, array('empty'=>'--Seleccione un grupo--','disabled'=>$this->eseditable($model->codestado))  )  ;
+         $datos1tb1x = CHtml::listData(Masterrelacion::model()->findAll("codigopadre=:orden",array(":orden"=>$model->ot->objetosmaster->masterequipo->codigo)),'codigohijo','hijo.descripcion');
+		echo $form->DropDownList($model,'codmaster',$datos1tb1x, array('empty'=>'--Seleccione un Componente--','disabled'=>$this->eseditable($model->codestado))  )  ;
 		?>
 		<?php echo $form->error($model,'codmaster'); ?>
 	</div>

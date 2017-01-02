@@ -196,7 +196,7 @@ class GaleriaFirme extends CWidget
   
   
   private function etiquetasegundodiv(){
-             var_dump($this->ext);    var_dump($this->esimagen());
+            // var_dump($this->ext);    var_dump($this->esimagen());
           $estilo=($this->esimagen())?"demo-gallery":"archiviot";
      echo CHtml::opentag("div",array("class"=>$estilo)); 
       

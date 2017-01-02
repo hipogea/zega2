@@ -563,22 +563,22 @@ public static function model($className=__CLASS__)
                                  {
                                     // isnewrecord =false; verificando si es un campo que solo sepudee ingersar una osla vez y ya no s emodifica 
                                          if(in_array(self::ESTADO_REGISTRO_NUEVO,array($this->campossensibles[$nombrecampo]))){
-                                             Yii::log(' campossensibles primer criterioel campo '.$nombrecampo.'   '.self::ESTADO_REGISTRO_NUEVO,'error');
+                                            // Yii::log(' campossensibles primer criterioel campo '.$nombrecampo.'   '.self::ESTADO_REGISTRO_NUEVO,'error');
                                              return false;
                                             
                                          } else{ //isnewrecord =false; ahora toca revisar  segun el estado
                                               if(in_array($this->{$this->campoestado},array($this->campossensibles[$nombrecampo]))){
-                                                 Yii::log(' campossensibles segundo criteiro '.$nombrecampo.'   ','error');
+                                               //  Yii::log(' campossensibles segundo criteiro '.$nombrecampo.'   ','error');
                                             
                                                   return false; 
                                                 } else{///muy bien ahora que ya paso los 2 criterios (1) ingreso unica vez y 2) estado del documento)
                                                          // ahora toca revisar el criterio 3) de los compromisos, a nivel BASE DE DATOS de las tablas hijas relacionadas
                                                      if($this->checkcompromisos()) {//sis tiene compromisos  ya no  puede ser editable
-                                                          Yii::log(' ahora que ya paso los 2 criterios '.$nombrecampo.'   ','error');
+                                                          //Yii::log(' ahora que ya paso los 2 criterios '.$nombrecampo.'   ','error');
                                                          return false;
                                                      }else{ //en este caso despues de haber pasado los 3 criterios recien puede 
                                                            //decirse que es editable
-                                                          Yii::log(' ahora ya p`sso los 3 croterios y es editable '.$nombrecampo.'   ','error');
+                                                          //Yii::log(' ahora ya p`sso los 3 croterios y es editable '.$nombrecampo.'   ','error');
                                                          
                                                          return true;
                                                      }
@@ -587,8 +587,8 @@ public static function model($className=__CLASS__)
                                              }
                                  
                                             } else{
-                                                var_dump($nombrecampo);var_dump(array_keys($this->campossensibles));die();
-                                                Yii::log(' campossensibles el campo '.$nombrecampo.'   no esta en los campos sensibles ','error');
+                                                echo " El campo  [".$nombrecampo."]  no esta le la lista de CAmpos sesiisbles de este modelo debe de agregarlo si esta usando la funcion escampohabilitado   ";die();
+                                                //Yii::log(' campossensibles el campo '.$nombrecampo.'   no esta en los campos sensibles ','error');
                                             
                                         return true;
                                 }  

@@ -38,7 +38,7 @@ class Tempdetgui extends ModeloGeneral
                     array('c_af', 'safe'),
 			array('c_codep', 'required','message'=>'Sin referencia'),
 			array('c_edgui', 'required','message'=>'Llene el destino'),
-			//array('modo', 'required','message'=>'Llene el modo'),
+			array('modo', 'required','message'=>'Llene el modo'),
 			array('c_descri', 'length', 'max'=>40),
 			array('c_descri', 'length', 'min'=>5),
 			 

@@ -295,24 +295,28 @@ private function prepara() {
     
     public function getcreado($nombrecorto){
         $aparts=explode("_",$nombrecorto);
-        
-       /*var_dump((integer)$aparts[1]);echo "     El nombre original <br>";
+       /* var_dump($nombrecorto);
+        print_r($aparts);die();
+       var_dump((integer)$aparts[1]);echo "     El nombre original <br>";
         var_dump(date("Y-m-d H:i:s",(integer)($aparts[1])));echo " La fecha con el original <br>";
         var_dump((integer)$aparts[1]/10000);echo " El marcador divido en re 10000 <br>";
-         var_dump(date("Y-m-d H:i:s",(integer)($aparts[1]/10000)));echo "<br>";
+         var_dump(date("Y-m-d H:i:s",(integer)($aparts[2]/10000)));echo "<br>";
         die();*/
-        return date("Y-m-d H:i:s",(($aparts[1])/10000));
+        return date("Y-m-d H:i:s",(($aparts[2])/10000));
     }
     public function getquiensubio($nombrecorto){
         $aparts=explode("_",$nombrecorto);
         
-        return strrev(substr(strrev($aparts[2]),4));
+        return strrev(substr(strrev($aparts[3]),4));
     }
     
     public function getSize($archivo){
         
-        $archi= CFile::getInstance($archivo);
-        return $archi->getSize('0.00');
+        $decimals=2;
+        $sz = 'BKMGTP';
+        $bytes=filesize ( $archivo);
+  $factor = floor((strlen($bytes) - 1) / 3);
+  return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$sz[$factor];
     }
     
     public function getauditoria(){

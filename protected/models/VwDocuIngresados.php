@@ -44,7 +44,7 @@ class VwDocuIngresados extends CActiveRecord
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('codprov, fecha,'
-                            . ' fechain, fechain1,fechanominal1,correlativo, tipodoc, '
+                            . ' fechain, fechain1,tipoactivo, subproceso,fechanominal1,correlativo, tipodoc, '
                             . ' codepv, monto, codgrupo, codresponsable,'
                             . ' espeabierto,  docref, '
                             . ' codlocal, numero,  codtenencia,'
@@ -165,6 +165,8 @@ class VwDocuIngresados extends CActiveRecord
 		$criteria->compare('nhorasverde',$this->nhorasverde);
                 $criteria->compare('espeabierto',$this->espeabierto);
 		$criteria->compare('numdocref',$this->numdocref,true);
+                $criteria->compare('tipoactivo',$this->tipoactivo,true);
+                 $criteria->compare('subproceso',$this->subproceso,true);
 		$criteria->compare('descripcion',$this->descripcion,true);
 		$criteria->compare('ap',$this->ap,true);
 		$criteria->compare('despro',$this->despro,true);

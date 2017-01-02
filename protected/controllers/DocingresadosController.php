@@ -32,7 +32,7 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
 		return array(
 			'exportableGrid' => array(
 				'class' => 'application.components.ExportableGridBehavior',
-				'filename' => 'Inventariomareriles.csv',
+				'filename' => 'Documentos.csv',
 				'csvDelimiter' =>(Yii::app()->user->isGuest)?",":Yii::app()->user->getField('delimitador') , //i.e. Excel friendly csv delimiter
 			));
 	}
@@ -373,9 +373,7 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
 	}
         
   public function actioncreasub ($id){
-      $id=(integer) MiFactoria::cleanInput($id);
-      
-     
+      $id=(integer) MiFactoria::cleanInput($id); 
      $modelopadre=$this->loadModel($id);
      if($modelopadre->procesoactivo[0]->tenenciasproc->final=='1')
      {
@@ -383,14 +381,13 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
       
      }else{
         
-                    $model=new Procesosdocu('subproceso');
-                    
+                    $model=new Procesosdocu('subproceso');                  
                
                 $model->hiddoci=$modelopadre->id;
 		if(isset($_POST['Procesosdocu']))		{
                     // var_dump($_POST['Procesosdocu']);
 			$model->attributes=$_POST['Procesosdocu'];
-                        //var_dump($model->attributes);die();
+                       // var_dump($model->attributes);die();
                         //$this->performAjaxValidationdetalle($model);
 			if($model->save()){
 				if (!empty($_GET['asDialog']))
@@ -449,6 +446,11 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
                     $model->codte=null;
                 }
             
+                if($modelopadre->codtenencia=='400'){
+                    $model->setScenario('ins_certificado');
+                    //$model->proximovencimiento=;
+                }
+                
                 
                
                 $dia=$modelopadre->fechain;
@@ -457,6 +459,12 @@ const CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS='280';
      $model->fechanominal=date("Y-m-d H:i:s",strtotime($dia)+$tiempopasado); 
              //var_dump($model->attributes);die();
                 $model->hiddoci=$modelopadre->id;
+                
+                //preparando el escanerio ceritifcado 
+               
+                
+                
+                
 		if(isset($_POST['Procesosdocu']))		{
                     // var_dump($_POST['Procesosdocu']);
 			$model->attributes=$_POST['Procesosdocu'];

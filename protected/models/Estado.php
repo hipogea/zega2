@@ -172,12 +172,18 @@ class Estado extends CActiveRecord
 	}
 
 public static function listaestadosnocalculables($codocu){
-			$CADENA="  ('";
-	       FOREACH(self::estadosnocalculables($codocu) as $clave=>$valor){
+    $estados=self::estadosnocalculables($codocu);
+    if(count($estados) >0){
+        $CADENA="  ('";
+	       FOREACH($estados as $clave=>$valor){
 			   $CADENA.=$valor."','";
 		   }
 	       $CADENA=substr($CADENA,0,strlen($CADENA)-2);
 	   $CADENA.=")";
+    }else{
+        $CADENA="(-1)";
+    }
+			
 	//var_dump($CADENA);yii::app()->end();
 	return $CADENA;
 }

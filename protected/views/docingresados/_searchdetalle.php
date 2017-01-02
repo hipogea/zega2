@@ -400,7 +400,28 @@ $form=$this->beginWidget('CActiveForm', array(
 
 	  </div>
 	  
-	
+	 <div class="row">
+		<?php echo $form->labelEx($model,'tipoactivo'); ?>
+		<?php  
+                //$criterio=
+                $datosp = CHtml::listData(Tipoactivos::model()->
+                        findAll("activo='1'"),
+                        'codtipo','destipo');
+		echo $form->DropDownList($model,'tipoactivo',$datosp, array('empty'=>'--Llene el tipo activo--',
+                  ));
+					?>
+		<?php echo $form->error($model,'codocuref'); ?>
+	</div>
+    <div class="row">
+		<?php echo $form->labelEx($model,'subproceso'); ?>
+		<?php  
+                //$criterio=
+                $datospx = array('1'=>'Con subproceso');
+		echo $form->DropDownList($model,'subproceso',$datospx, array('empty'=>'--Llene el subproceso--',
+                  ));
+					?>
+		<?php echo $form->error($model,'subproceso'); ?>
+	</div>
 	
       </div>
 	

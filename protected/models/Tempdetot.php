@@ -180,11 +180,15 @@ class Tempdetot extends ModeloGeneral
                                             yii::app()->tipocambio->getcambio($this->grupoplan->codmon,$this->codmon)*
                                             $this->grupoplan->tarifa;
                                 }
-                if(!is_null($this->idlabor)){
+               /* if(!is_null($this->idlabor)){
                     if($this->cambiocampo('idlabor')){
-                      $this->cargarecursos(); 
+                      //$this->cargarecursos(); 
+                        echo "cambio csm"; 
+                        var_dump($this->oldAttributes);
+                        var_dump($this->oldVal('idlabor'));
+                         var_dump($this->idlabor);die();
                     }
-                }                
+                }  */              
                                 
                                 
                                return parent::beforeSave();
@@ -231,8 +235,9 @@ class Tempdetot extends ModeloGeneral
     }
     
     //7carga los materiales relacinados a la tabla tempdesolpe a al actividad de la lista materiales 
-    private function cargarecursos(){
+    public function cargarecursos($atributos=null){
         ///devuelve primero los registros hijos para ver si tiene hijos 
+        
         $registros=  Listamateriales::model()->findByPk($this->idlabor)->hijos;
         foreach($registros as $fila){
             $recurso=New Tempdesolpe('buffer');
@@ -253,9 +258,17 @@ class Tempdetot extends ModeloGeneral
                                 'hidot'=>$this->ot->id,
                                 'hidlabor'=>$this->idaux,
                                  'tipsolpe'=>'M',
-                                'idstatus'=>1,
+                                'idstatus'=>0,
                             )
                      );
+             //ahora sobreescribimos lo ms avlore   ue pasaron como parametro en el array
+             if(!is_null($atributos)){
+                 foreach($atributos as $clave=>$valor){
+                     $recurso->{$clave}=$valor;
+                 }
+             }
+             
+             
             if(!$recurso->save())
                 MiFactoria::Mensaje ('error',
                         Yii::app()->mensajes->

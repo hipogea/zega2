@@ -34,7 +34,7 @@ class Opcionescamposdocu extends ModeloGeneral
 			array('campo, nombrecampo, nombredelmodelo, primercampolista, segundocampolista', 'length', 'max'=>30),
 			array('tipodato', 'length', 'max'=>1),
 			array('seleccionable', 'safe'),
-			array('campo+nombredelmodelo', 'application.extensions.uniqueMultiColumnValidator','on'=>'insert','message'=>'Estos valores ya estan registrados'),
+			array('campo+nombredelmodelo+codocu', 'application.extensions.uniqueMultiColumnValidator','on'=>'insert','message'=>'Estos valores ya estan registrados'),
 
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.

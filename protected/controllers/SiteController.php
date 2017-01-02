@@ -421,6 +421,7 @@ class SiteController extends Controller
         
         public function actionmuestragaleria(){
             if(isset($_GET['fotos'])){
+                //VAR_DUMP($_GET);DIE();
                 $this->layout='//layouts/fotos';
                 $fotos=unserialize(base64_decode($_GET['fotos']));
                 $mensajegeneral=unserialize(base64_decode($_GET['mensajegeneral']));
@@ -451,6 +452,10 @@ class SiteController extends Controller
       
     public function actionlimpiaCache(){
         yii::app()->cache->flush();
+        MiFactoria::Mensaje('notice', 'Ha limpiado los datos del Cache de memoria del servidor');
+        $this->redirect(array('docingresados/admin'));
+        //throw new CHttpException(404,'El enlace o direccion solicitado no existe');
+		
     }
     
 }

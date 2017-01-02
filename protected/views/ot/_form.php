@@ -512,7 +512,11 @@ $this->widget('zii.widgets.jui.CJuiTabs', array(
 			'Auditoria'=>array('id'=>'tab____..__',
 				'content'=>$this->renderPartial('//site/tab_auditoria', array('form'=>$form,'model'=>$model),TRUE)
 			),
-
+                    
+                    
+                    'Costos'=>array('id'=>'tab__n__..__',
+				'content'=>$this->renderPartial('tab_resumencostos', array('proveedorceco'=>$model->resumenCostosPorCeCo(false),'proveedordef'=>$model->resumenCostosPorTipo(true),'model'=>$model),TRUE)
+			),
 
 
 		),

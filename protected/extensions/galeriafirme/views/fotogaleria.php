@@ -13,6 +13,7 @@ $nombrecompleto=$foto['archivo'];
   <?php 
   echo $this->mensajegeneral."<br>";
   echo $foto['metadatos'];
+  //VAR_DUMP($foto['metadatos']);
   ?>
   </p>" 
 data-pinterest-text="Pin it1" 

@@ -349,38 +349,14 @@
 	</div>
    
 	
-<div class="row">
-		<?php echo $form->labelEx($model,'fechavencimiento'); ?>
-		<?php  $this->widget('zii.widgets.jui.CJuiDatePicker', array(
-										//'name'=>'my_date',
-										'model'=>$model,
-										'attribute'=>'fechavencimiento',
-										'language'=>Yii::app()->language=='es' ? 'es' : null,
-											'options'=>array(
-													'showAnim'=>'fold', // 'show' (the default), 'slideDown', 'fadeIn', 'fold'
-													'showOn'=>'button', // 'focus', 'button', 'both'
-													'buttonText'=>Yii::t('ui','...'),													
-													'dateFormat'=>'yy-mm-dd',
-                                                                                            'showOtherMonths'=>true, 
-                                     'changeMonth' => true, 
-                                    'changeYear' => true, 
-														),
-												'htmlOptions'=>array(
-															'style'=>'width:80px;vertical-align:top',
-															'readonly'=>'readonly',
-															),
-															));
 
-		?>	
-		<?php echo $form->error($model,'fechavencimiento'); ?>
-	</div>
 	
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'docref'); ?>
 		<?php echo $form->textField($model,'docref',array('size'=>14,'maxlength'=>14)); ?>
 		<?php echo $form->error($model,'docref'); ?>
-	</div>
+	</div> 
 
 	
 
@@ -426,7 +402,7 @@
 		),
                 //array('name'=>'tipo','type'=>'raw','value'=>'($data->tipo=="M")?CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."email.png"):$data->tipo','htmlOptions'=>array('width'=>50)),
           
-               array('name'=>'proc','type'=>'raw','value'=>'($data->anulado=="1")?CHtml::openTag("strike").$data->tenenciasproc->eventos->descripcion.CHtml::closeTag("strike"):$data->tenenciasproc->eventos->descripcion','htmlOptions'=>array('width'=>250)),
+               array('name'=>'proc','type'=>'raw','value'=>'($data->anulado=="1")?CHtml::openTag("strike").$data->tenenciasproc->eventos->descripcion.CHtml::closeTag("strike"):(($data->tenenciasproc->subproceso=="1")?CHtml::image(Yii::app()->getTheme()->baseUrl."/img/adi.png"):"").$data->tenenciasproc->eventos->descripcion','htmlOptions'=>array('width'=>250)),
              array('name'=>'trab','type'=>'raw','value'=>'($data->tenenciastrab->trabajadores->ap)','htmlOptions'=>array('width'=>30)),
              array('name'=>'codocuref','type'=>'raw','value'=>'$data->documentos->desdocu','htmlOptions'=>array('width'=>150)),
             array('name'=>'numdocref','type'=>'raw','value'=>'$data->numdocref','htmlOptions'=>array('width'=>10)), 

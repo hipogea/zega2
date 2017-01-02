@@ -368,7 +368,7 @@ class OtController extends ControladorBase
 		return array(
 
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('view','imputa','cargagaleria','tomafoto','creaconsignacion','borraitemsdesolpe','nadax','creaservicio','modificadetallerecurso','creadetallerecurso','verprecios','crearpdf','verDetoc','firmar','aprobar','cargaprecios','enviarpdf','admin','borrarimpuesto','reporte','agregarmasivamente','cargadirecciones','borraitems','sacaitem','sacaum','salir','agregaimpuesto','agregaritemsolpe','procesardocumento','refrescadescuento','VerDocumento','EditaDocumento','creadocumento','Agregardelmaletin','borraitem','imprimirsolo','cargaentregas','agregarsolpe','agregarsolpetotal','pasaatemporal','create','imprimirsolo','imprimir','imprimir2','enviarmail',
+				'actions'=>array('JalaMateriales','view','imputa','cargagaleria','tomafoto','creaconsignacion','borraitemsdesolpe','nadax','creaservicio','modificadetallerecurso','creadetallerecurso','verprecios','crearpdf','verDetoc','firmar','aprobar','cargaprecios','enviarpdf','admin','borrarimpuesto','reporte','agregarmasivamente','cargadirecciones','borraitems','sacaitem','sacaum','salir','agregaimpuesto','agregaritemsolpe','procesardocumento','refrescadescuento','VerDocumento','EditaDocumento','creadocumento','Agregardelmaletin','borraitem','imprimirsolo','cargaentregas','agregarsolpe','agregarsolpetotal','pasaatemporal','create','imprimirsolo','imprimir','imprimir2','enviarmail',
 					'procesaroc','hijo','Aprobaroc','Reporteoc','Anularoc','Configuraop','Revertiroc', ///acciones de proceso
 					'libmasiva','creadetalle','Verdetalle','muestraimput','update','nada','Modificadetalle'),
 				'users'=>array('@'),
@@ -1454,33 +1454,7 @@ class OtController extends ControladorBase
 
 	}
 
-	//Idevento=51
-	public function actionAnularoc($id){
-		$sepuedeono=$this->verificaestado($id,51); //obteniendo el estado destino
-		if (!$sepuedeono==null) {
-			///aprobar con pana y elegancia
-			$modelin=$this->loadmodel($id);
-			$transaccion=$modelin->dbConnection->beginTransaction();
-			$modelin->codestado=$sepuedeono;//colocar el estadodestino
-			//luego grabar
-
-			$matrizdetalle= Docompra::model()->findAll( "hidguia=:hidguia  " ,array(":hidguia"=>$id));
-
-			for ($i=0; $i < count($matrizdetalle); $i++) { //recorriendo la cantidad de filas que hay
-
-				$this->Anulaitem($matrizdetalle[$i]['id']);
-			}
-			if($modelin->save())
-				$transaccion->commit();
-
-			$this->render("vw_procesado");
-
-		}else{
-			throw new CHttpException(404,'Este documento no se puede anular,no tiene el estado adecuado');
-		}
-
-
-	}
+	
 
 
 
@@ -1622,143 +1596,7 @@ class OtController extends ControladorBase
 		return  (count($matri)==0)?true:false;
 	}
 
-	/**
-	 * Creates a new model.
-	 * If creation is successful, the browser will be redirected to the 'view' page.
-	 */
-	public function actionCreate()
-	{
-		$model=new Ocompra;
-		$model->valorespordefecto();
-		// Uncomment the following line if AJAX validation is needed
-		$this->performAjaxValidation($model);
-
-		if(isset($_POST['Ocompra']))
-		{
-			$model->attributes=$_POST['Ocompra'];
-			if($model->save())
-			{
-				$command = Yii::app()->db->createCommand(" delete from ".Yii::app()->params['prefijo']."docompra_t  where idsesion=".Yii::app()->user->getId());
-				$command->execute();
-				$this->redirect(array('update','id'=>$model->idguia));
-
-			}
-		}
-
-		$this->render('create',array(
-			'model'=>$model,
-		));
-	}
-
-	/**
-	 * Updates a particular model.
-	 * If update is successful, the browser will be redirected to the 'view' page.
-	 * @param integer $id the ID of the model to be updated
-	 */
-	public function actionUpdate($id)
-	{
-		$model=$this->loadModel($id);
-		print_r($model-> devuelveimpuestos());
-		yii::app()->end();
-		//primeor veriifcando que oitri io este metiendo las narices para modificar
-		if($this->hayacceso($id) ) {
-			$this->performAjaxValidation($model);
-			if(isset($_POST['Ocompra'])){
-				///Si paso el FORM
-				$model->attributes=$_POST['Ocompra'];
-				$transaccion=$model->dbConnection->beginTransaction();
-				if($model->save()){
-					$this->pasaacompratotal($id,$transaccion);
-					$command = Yii::app()->db->createCommand(" delete from ".Yii::app()->params['prefijo']."docompra_t  where idsesion=".Yii::app()->user->getId());
-					$command->execute();
-					$transaccion->commit();
-					$this->redirect(array('view','id'=>$model->idguia));
-
-				} ELSE {
-				}
-
-			} else {
-				///Si no se envio el FORMULARIO
-				///Si  no se trata de un refresh de la GRILLA, y ademas no es una llamada pare creacion
-				////Limpiar la tabla teporal con DELETE
-				///Luego llenar esta tabla temporal con los datos de DESOLPE correspondiente
-				if ( $model->codestado <> '99' AND  !isset($_GET['ajax'])) {
-
-					$command = Yii::app()->db->createCommand(" delete from ".Yii::app()->params['prefijo']."docompra_t  where idsesion=".Yii::app()->user->getId());
-					$command->execute();
-					$transaccion=$model->dbConnection->beginTransaction();
-					$this->pasaatemporaltotal($id,$transaccion);
-					$transaccion->commit();
-				}
-				//opk, ya actualizamos el remporal , recien ppodemos mostrar el temporal lleno listo para modificar
-				$this->render('update',array(
-					'model'=>$model,
-				));
-			}
-
-		} else {
-			$this->render('ocupado',array(
-				'model'=>$model,
-			));
-		}
-
-
-
-
-
-
-
-
-		/******************************************
-		 * ANTIGUO CODIGO
-		 ******************************************/
-		/*
-          $model=$this->loadModel($id);
-       //Primero verifica que otro usuario no este metiendo las narices
-       if($model->hayacceso($id) ) {
-          // ECho isset($_POST['Ocompra']);
-        //Yii::app()->end();
-        // Uncomment the following line if AJAX validation is needed
-     $this->performAjaxValidation($model);
-        if(isset($_POST['Ocompra']))
-        {
-            $model->attributes=$_POST['Ocompra'];
-             $transaccion=$model->dbConnection->beginTransaction();
-            if($model->save()){
-                               $this->pasaacompratotal($id,$transaccion);
-                                $command = Yii::app()->db->createCommand(" delete from ".Yii::app()->params['prefijo']."docompra_t  where idsesion=".Yii::app()->user->getId());
-                                                     $command->execute();
-                                $transaccion->commit();
-                               $this->redirect(array('view','id'=>$model->idguia));
-
-                         } ELSE {
-                           }
-          } else {  ///Si no se envio el FORMULARIO
-                            if ( $model->codestado <> '99' AND  !isset($_GET['ajax'])) {
-
-                                          $command = Yii::app()->db->createCommand(" delete from ".Yii::app()->params['prefijo']."docompra_t  where idsesion=".Yii::app()->user->getId());
-                                         $command->execute();
-                                        $transaccion=$model->dbConnection->beginTransaction();
-                                        $this->pasaatemporaltotal($id,$transaccion);
-                                        $transaccion->commit();
-                                                            }
-                         //opk, ya actualizamos el remporal , recien ppodemos mostrar el temporal lleno listo para modificar
-                                    $this->render('update',array(
-                                                'model'=>$model,
-                                                ));
-             }
-
-        } else //en caso haya otro usuario que ya ha abierto la OC
-           {
-            $this->render('ocupado',array(
-            'model'=>$model,
-                                    ));
-           }
-            */
-	}
-
-
-
+	
 	public function actionModificadetalle($id)
 	{		
           // echo"ss";
@@ -1882,10 +1720,7 @@ class OtController extends ControladorBase
 		// if ($estadodelmodelo=='10' or $estadodelmodelo=='99' or empty($estadodelmodelo) or is_null($estadodelmodelo)) {return '';} else{return 'disabled';}
 	}
 
-	public function actionReporteoc(){
-		$this->render("reporteoc");
 
-	}
 	/****************************************************
 	 *	crea un item segun  solpe
 	 ****************************************************/
@@ -2701,12 +2536,12 @@ public function borraitemdesolpe($autoId) //Borra un registro de solpe
                  $detalle= Tempdetot::model()->findByPk($id);
                  
                  if(!is_null($detalle)){
-               
+              // var_dump($detalle->fotosparagaleria());die();
                       $this->renderpartial('//site/galeria',
                               array(
-                                    'titulo'=>$detalle->ot->textocorto,
+                                    'titulo'=>$detalle->textoactividad,
                                    'modo'=>3,
-                                     'mensajegeneral'=>$detalle->textoactividad,                                   
+                                     'mensajegeneral'=>$detalle->ot->textocorto,                                   
                                    'fotos'=>$detalle->fotosparagaleria(),
                               )
                               );
@@ -2787,7 +2622,97 @@ public function borraitemdesolpe($autoId) //Borra un registro de solpe
         
     }
     
+   
+    
+    public function actionJalaMateriales($id)
+	{		
+          $this->layout = '//layouts/iframe';  
+           $modelopadre=$this->loadModel($id);
+           
+              if(isset($_POST['Tempdesolpe']))  {
+                  //var_dump($_POST['Tempdesolpe']);
+                  $registroelegido= Tempdetot::model()->
+                          findByPk((integer)$_POST['Tempdesolpe']['hidlabor']);
+                  //var_dump( $registroelegido);
+                  if(!is_null($registroelegido)){
+                     $atributos=array(
+                                    'fechaent'=>$_POST['Tempdesolpe']['fecahent'],
+                                    'centro'=>$_POST['Tempdesolpe']['centro'],
+                                    'codal'=>$_POST['Tempdesolpe']['codal'],
+                                    'textodetalle'=>$_POST['Tempdesolpe']['textodetalle'],
+                                    'solicitanet'=>$_POST['Tempdesolpe']['solicitanet'],
+                                  );
+                  $registroelegido->cargarecursos($atributos);
+                 
+                      
+                  }
+                  
+                   echo CHtml::script(
+                          "window.parent.$('#cru-dialog3').dialog('close');
+                             window.parent.$('#cru-frame3').attr('src','');
+			window.parent.$.fn.yiiGridView.update('detalle-recursos-grid');
+				");
+                  
+                  yii::app()->end(); 
+                  
+              }else{
+                  $criteria=New CDBcriteria();
+            $criteria->addCondition("hidorden=:vorden and codmaster is not null  and idusertemp=:viduser");
+            $criteria->params=array(":vorden"=>$modelopadre->id,":viduser"=>yii::app()->user->id);
+           $datoscombo= CHtml::listData(Tempdetot::model()->findAll($criteria),'idtemp','textoactividad');
+           //var_dump($datoscombo);
+		 
+              }
+                
+                
+                
+                $model=new Tempdesolpe;
+		$this->render('_form_jalamateriales',array(
+                    'model'=>$model,
+                    'modelopadre'=>$modelopadre,
+                    'datoscombo'=>$datoscombo,
+			//'model'=>$model, 'idcabeza'=>$idcabeza,'editable'=>true
+		                     ));
+                
+                
+	}
+    
+    public function actionajaxmuestralistamateriales(){
+         if(isset($_GET['id'])){
+                $id= (integer)MiFactoria::cleanInput($_GET['id']);
+                 $detalle= Tempdetot::model()->findByPk($id);                 
+                 if(!is_null($detalle)){
+                     $condiciones=array($detalle->ot->vwObjetos->codigo,$detalle->codmaster);
+                     $criteria = new CDbCriteria();
+		     $criteria->addInCondition("codigo",$condiciones);
+                     $listaids=yii::app()->db->createCommand()->select("hidlista")->
+                             from("{{masterlistamateriales}}")->
+                             where($criteria->condition, $criteria->params)->
+                             queryColumn();
+                     $criterio = new CDbCriteria();
+		     $criterio->addInCondition("id", $listaids);
+                     $data=CHtml::listData(Listamateriales::model()->findAll($criterio),
+                                                                 "id",
+                                                            "nombrelista"											
+                                            ); 
+                     echo CHtml::tag('option', array('value'=>null),CHtml::encode('Escoja una lista'),true);
+			foreach($data as $value=>$name) { 
+			    echo CHtml::tag('option', array('value'=>$value),CHtml::encode($name),true);
+			   } 
+                 }
+                     
+		
+		
+			
+                     
+                 }
+         }
     }
+                 
+      
+        
+        
+    
     
     
     

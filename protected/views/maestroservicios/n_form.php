@@ -17,10 +17,10 @@
 	<?php echo $form->errorSummary($model); ?>
 
 	<?php // echo "<br><br><br><br>  ".($model->isnewRecord)?"ES NUEVO - EN EL FORM ":"YA NO ES NUVEO EN EL FOMRN";?>
-	<?php echo "el escenario es : ".$model->getScenario(); ?>
+	<?php //echo "el escenario es : ".$model->getScenario(); ?>
 	<div class="row">
 		<?php
-                VAR_DUMP(ESTADO_PREVIO);DIE();
+               // VAR_DUMP(ESTADO_PREVIO);DIE();
 		$botones=array(
 			'go'=>array(
 				'type'=>'A',

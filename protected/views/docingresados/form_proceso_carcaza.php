@@ -126,6 +126,41 @@
         <?php echo $form->error($model,'fechanominal'); ?>
     </div>
     
+    
+      <div class="row">
+        <?php //var_dump(date($modelopadre->fechain));
+        if($modelopadre->codtenencia=='400'){
+            
+        ?>
+        <?php echo $form->labelEx($model,'proximovencimiento'); ?>
+        <?php Yii::import('application.extensions.CJuiDateTimePicker.CJuiDateTimePicker');
+        $this->widget('CJuiDateTimePicker',array(
+            'model'=>$model, //Model object
+          // 'value'=>date($model->proximovencimiento),
+            'attribute'=>'proximovencimiento', //attribute name
+            'language'=>'es',
+            'mode'=>'datetime', //use "time","date" or "datetime" (default)
+            'options'=>array( 'dateFormat'=>'yy-mm-dd',
+                'showOn'=>'button', // 'focus', 'button', 'both'
+                'buttonText'=>Yii::t('ui',' ... '),
+                'changeMonth'=>true,
+        'changeYear'=>true,  
+                //'buttonImage'=>Yii::app()->request->baseUrl.'/images/calendar.png',
+                //'buttonImageOnly'=>true, 
+            ),
+            'htmlOptions'=>array(
+                'style'=>'width:150px;vertical-align:top',
+                //'readonly'=>'readonly',
+            ),				// jquery plugin options
+        ));
+        ?>
+        <?php echo $form->error($model,'proximovencimiento'); ?>
+        <?php //var_dump(date($modelopadre->fechain));
+        }
+        ?>
+    </div>
+    
+    
     <div class="row">
 		
 		

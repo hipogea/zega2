@@ -119,7 +119,16 @@ public function actionModificadetalle($id)
 	
 		public function actionimport($id)
 		{
-			$nombreprimercampo=null;
+			//$model= Maestrodetalle::Model()->findByPk(array('codart'=>'12000007','codcentro'=>'1203','codal'=>'125')  ); 
+			//VAR_DUMP($model);die();
+		if(yii::app()->request->isAjaxRequest){
+			if(!isset($_POST['id']))
+			$id=MiFactoria::cleanInput($_POST['id']);
+			if(!isset($_GET['id']))
+			$id=MiFactoria::cleanInput($_GET['id']);
+		}
+$camposclave=array();
+		$nombreprimercampo=null;
 			MiFactoria::limpialogcarga();
 			$carga=Cargamasiva::model()->findByPk($id);
 			$carga->setScenario('search');
@@ -127,16 +136,23 @@ public function actionModificadetalle($id)
 				$filas=$carga->detalle;
 			//VAR_DUMP($filas[0]);DIE();
 				foreach ($filas as $filita) {
+					
 
 					if(!((int)$filita->longitud > 0)  or !((int)$filita->orden >0) )
 						throw new CHttpException(500,'Revise la longitud :  ('.$filita->longitud.') y el   orden : ('.$filita->orden.') del campo '.$filita->nombrecampo.'   ');
 					
 					if(is_null($nombreprimercampo))
 					$nombreprimercampo=((int)$filita->orden ==1)?$filita->nombrecampo:null;
+				
+				if($filita->esclave=='1')
+				$camposclave[$filita->orden]=$filita->nombrecampo;
+				
+				
+				
 					
 				}
 		     if(is_null($nombreprimercampo)) {				
-				 throw new CHttpException(500,'NO asignó un campo clave para la carga, debe tener el numero de orden 1   ');
+				 throw new CHttpException(500,'NO asign贸 un campo clave para la carga, debe tener el numero de orden 1   ');
 					
 			 }
 
@@ -156,8 +172,6 @@ public function actionModificadetalle($id)
 									//$model->attributes=$_POST['Alinventario'];
 									
 									$filelist=CUploadedFile::getInstancesByName('csvfile'); 
-									
-									
 															
 													foreach($filelist as $file)
 																{
@@ -176,13 +190,32 @@ public function actionModificadetalle($id)
 																								{
 																										$cadena="\$model= new ".$carga->modelo.";";	
 																					            } else {
-																										$cadena=" \$model= ".$carga->modelo."::Model()->find('".$nombreprimercampo."=:param ', array(':param'=>'".$data[0]."')); ";
+																										if(count($camposclave) <= 1 ){ ///si la clave princuipal es un campo
+																											$cadena=" \$model= ".$carga->modelo."::Model()->findByPk('".$nombreprimercampo."=:param ', array(':param'=>'".$data[0]."')); ";
+																										$cadvar=$nombreprimercampo."=".$data[0];
+																										}else{//si es mas de un solo campo ahi si ahya chicha
+																											/*FORMADO LA CADENA DE FILREO PARA REGISTROS CON CLAVE PRINCIPAL DE MAS DE UN CAMPO*/
+																											$cadvar="";
+																											foreach($camposclave as $clave=>$valor){
+																												
+																												$cadvar.=",'".$valor."'=>'".$data[$clave-1]."'";																												
+																											}
+																											$cadvar=substr($cadvar,1);//eliminado la primera comita
+																											/* LISTO YA ESTA AHRA LA INSERTAMOS EN LA SENTENCIA FINDBYPK*/
+																											$cadvar="array(".$cadvar.")  ";
+																											$cadena=" \$model= ".$carga->modelo."::Model()->findByPk(".$cadvar."); ";
 																										
+																										}
+																						
 																								}
-																										
+																									echo $cadena;// die();
+																									echo "<br>";
+																									//echo "<br>"; var_dump($data);echo "<br>";
+																								//$model= Maestrodetalle::Model()->findByPk(array('codart'=>1203,'codcentro'=>125,'codal'=>201) );
 																										eval($cadena);
 																										if(is_null($model))	{
-																									      MiFactoria::registralogcarga($row-1,$carga->id,' No se encontro ningun registro para el valor : '.$filas[$i]->nombrecampo.' =  '.$data[0].'  '   ,$filas[$i]->nombrecampo,0);
+																											
+																									      MiFactoria::registralogcarga($row-1,$carga->id,' No se encontro ningun registro para el valor : '.$cadvar   ,$filas[$i]->nombrecampo,0);
 																					                       continue;
 																										}
 																										$model->setScenario($carga->escenario);   

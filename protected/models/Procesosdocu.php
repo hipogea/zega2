@@ -20,13 +20,17 @@ class Procesosdocu extends ModeloGeneral {
         // will receive user inputs.
         return array(
             ///escenario apra subrpoceso
+           // array('proximovencimiento','safe'),
             array('hidtra,hidproc', 'required', 'on' => 'subproceso'),
              array('tipoactivo,hiddoci,fechacrea,fechanominal,fechafin,iduser,hidtra,hidproc,codocuref,umdocref,comentario,codte', 'safe', 'on' => 'subproceso'),
            //escenaripo solo para cambiar documentos y numero de referencia 
           
 
-
-
+   //ESCENARIO PARA CERTIIFCADO
+            ARRAY('hiddoci,tipoactivo,fechanominal,fechafin,hidtra,hidproc,codocuref,numdocref,comentario, anulado','safe','on'=>'ins_certificado'),
+              array('hiddoci,hidproc,hidtra,proximovencimiento', 'required', 'on' => 'ins_certificado'),
+             array('proximovencimiento', 'chkvencimiento', 'on' => 'ins_certificado,upd_certificado'),
+            ARRAY('tipoactivo,codocuref,numdocref,comentario','safe','on'=>'upd_certificado'),
 ///Escenario para proceso masivo   MASIVO
             
             
@@ -35,7 +39,7 @@ class Procesosdocu extends ModeloGeneral {
             array('hidproc,hidtra,fechanominal,codte', 'required', 'on' => 'masivo'),
              array('anulado', 'safe', 'on' => 'anulacion'),
             array('hiddoci,hidproc,hidtra,fechanominal,codte,codocuref,numdocref', 'safe', 'on' => 'masivo'),
-            array('fechanominal', 'chkfecha', 'on' => 'masivo,insert,update,documentosreferencia'),
+            array('fechanominal', 'chkfecha', 'on' => 'ins_certificado,masivo,insert,update,documentosreferencia'),
             //escenaripo solo para cambiar documentos y numero de referencia 
             array('codocuref,numdocref', 'required', 'on' => 'documentosreferencia'),
             array('codocuref,numdocref', 'safe', 'on' => 'documentosreferencia'),
@@ -81,13 +85,14 @@ class Procesosdocu extends ModeloGeneral {
     public function attributeLabels() {
         return array(
             'id' => 'ID',
-            'hiddoci' => 'Hiddoci',
-            'fechacrea' => 'Fechacrea',
-            'fechanominal' => 'Fechanominal',
-            'hidtra' => 'Hidtra',
-            'hidproc' => 'Hidproc',
-            'codocuref' => 'Codocuref',
-            'numdocref' => 'Numdocref',
+            'hiddoci' => 'hidoc',
+            'fechacrea' => 'F Cre',
+            'fechanominal' => 'F Proc.',
+            'hidtra' => 'Apode',
+            'hidproc' => 'Proceso',
+            'codocuref' => 'Doc. Ref',
+            'numdocref' => 'N doc',
+            'proximovencimiento'=>'F. Venc'
         );
     }
 
@@ -170,9 +175,10 @@ class Procesosdocu extends ModeloGeneral {
             
              /*si es un suproceso*/
          if($this->getScenario()=='subproceso') {
-             $this->fechanominal=$procesactual->fechanominal;
-                     
-             $this->fechafin=$procesactual->fechanominal;
+            
+             $this->fechanominal=$procesoactual->fechanominal;             
+             $this->fechafin=$procesoactual->fechanominal;
+             
          }
             
         }
@@ -307,32 +313,22 @@ class Procesosdocu extends ModeloGeneral {
         } else {
             //MiFactoria::Mensaje('error', 'procesosdocu -aftersave'.$registro->id.'     Paso de largo ');
         }
-       
-        
-      
-      //  $registro->refresh();
-         
-       // var_dump($registro->fechavencimiento);die();
+    
         //ademas tenemso que refrescar la fecha de vencimiento
-       if(!($this->getScenario() == "fechafinal")  and !($this->getScenario() == "anulacion")  and !($this->getScenario() == "subproceso"))
+        //siempre y cuando se haya es`pecificado este valor en el formualrio 
+        //
+       if( $this->getScenario()=='ins_certificado' or 
+             $this->getScenario()=='upd_certificado'  )
            {
            if(is_null($registro))
             $registro=$this->docingresados;
-          $registro->setScenario("escfechavencimiento");
-        if(!is_null($registro->fechavencimiento)){
-            if($this->tenenciasproc->renuevavencimiento=="1"){
-                $registro->fechavencimiento=date("Y-m-d H:i:s",strtotime($registro->fechavencimiento)+$this->tenenciasproc->nhorasnaranja*60*60);
-            //  var_dump(strtotime($registro->fechavencimiento));
-             // var_dump($this->tenenciasproc->nhorasnaranja*60*60);
-              //  var_dump($registro->fechavencimiento);
-                $registro->setScenario("escfechavencimiento");
-                ///MiFactoria::Mensaje('error', ' Cambiando la fecha de  VENCIMIENTO');
+          $registro->setScenario("escfechavencimiento");        
+                 $registro->fechavencimiento=$this->proximovencimiento;
                 if(!$registro->save()){
                     echo yii::app()->mensajes->getErroresItem($registro->geterrors());die();
                 }else{                    
                 }
-              }
-            }
+              
           }
           
           if($this->getScenario()=='subproceso') {
@@ -453,5 +449,21 @@ class Procesosdocu extends ModeloGeneral {
          }
          
      }
-    
+    public function chkvencimiento($attribute, $params) {
+        ///que la fecha sea mayor a la fecha de ingreso del doci
+        $docu = Docingresados::model()->findByPk($this->hiddoci);
+        $fechaingreso = $docu->fechain;
+        if (!yii::app()->periodo->verificafechas($fechaingreso, $this->proximovencimiento))
+            $this->adderror('proximovencimiento', 'La fecha de vencimiento es  anterior a la fecha de ingreso del Documento ');
+        //if (!yii::app()->periodo->verificafechas($docu->procesoactivo[0]->fechanominal, $this->fechanominal))
+           // $this->adderror('fechanominal', 'La fecha 2 de proceso es  anterior a la fecha del proceso activo a reemplazar ');
+        //if(!is_null($docu->fechamaxima))
+            if(!yii::app()->periodo->verificafechas($this->fechanominal, $this->proximovencimiento))
+        $this->adderror('proximovencimiento', 'La fecha de vencmiento es anterior a la fecha del proceso, no puede ser');
+       
+        
+       // if (!yii::app()->periodo->verificafechas($this->fechanominal, date("Y-m-d H:i:s", time() + 60 * 15)))
+           // $this->adderror('fechanominal', 'La fecha de proceso ' . $this->fechanominal . '  es  POSTERIOR AL  a la fecha actual  ' . date("Y-m-d H:i:s", time() + 60 * 15));
+    }
+ 
 }

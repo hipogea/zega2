@@ -135,4 +135,16 @@ class Imputaciones extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        
+        public function beforeSave() {
+            if(!(yii::app()->settings->get('general','general_monedadef')==$this->codmon))
+            {
+                $this->montosoles=yii::app()->tipocambio->cambio(
+                        $this->codmon,yii::app()->settings->
+                        get('general','general_monedadef')
+                        )*$this->monto;
+            }
+            
+            return parent::beforeSave();
+        }
 }

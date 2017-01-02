@@ -399,7 +399,8 @@ $mo=New Alinventario();
 
 public $layout='//layouts/column2';
 	public function actionPio() {
-            var_dump(yii::app()->db->driverMap);die();
+            $ot=Ot::model()->findByPk(29)->resumenCostosPorTipo(true);
+            var_dump($ot);die();
             //var_dump(Docingresados::model()->findByPk(344)->procesosdocusinanular);die();
             $dar=date("H:i:s");
            // var_dump(strtotime($dar));

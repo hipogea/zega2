@@ -166,15 +166,15 @@ $this->widget('zii.widgets.grid.CGridView', array(
 
 			'checklist' => array(
 				'type' => 'C',
-				'ruta' => array($this->id . '/agregardespacho', array(
+				'ruta' => array($this->id . '/JalaMateriales', array(
 					'id' => $model->id,
 					//"id"=>$model->n_direc,
 					"asDialog" => 1,
 					"gridId" => 'detalle-grid',
 				)
 				),
-				'dialog' => 'cru-dialogdetalle',
-				'frame' => 'cru-detalle',
+				'dialog' => 'cru-dialog3',
+				'frame' => 'cru-frame3',
 				'visiblex' => array(ESTADO_CREADO),
 			),
 			'pack2' => array(

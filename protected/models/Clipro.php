@@ -233,7 +233,7 @@ class Clipro extends ModeloGeneral
                       //los subequipos primero
                                              foreach($filaequipo->masterequipo->masterrelacion as $filahijo)
                                                  {
-                                                 $idsubequipo=$this->arbolinsertasubequipo($filahijo->hijo,$idmaster);
+                                                 $idsubequipo=$this->arbolinsertasubequipo($filahijo->hijo,$idmaster,$filaequipo->id);
                                                   } 
                         $listas=yii::app()->db->createCommand()->
                                 select("a.id,a.nombrelista")->
@@ -300,6 +300,7 @@ class Clipro extends ModeloGeneral
                           'codigo'=>$filaobjeto->codobjeto,
                         'descripcion'=>$filaobjeto->nombreobjeto,
                         'parent_id'=>$idclipro,
+                        'identificador'=>$filaobjeto->id,
                     )
                     );
             $arbol->save();$arbol->refresh();
@@ -355,13 +356,14 @@ class Clipro extends ModeloGeneral
         } 
         
         
-         private function arbolinsertasubequipo($filahijo,$idlista){
+         private function arbolinsertasubequipo($filahijo,$idlista,$idequipopadre){
             $arbol=New Arbolobjetosmaster();
             $arbol->setAttributes(
                     array(
                         'codpro'=>$this->codpro,
                           'codigo'=>$filahijo->codigo,
                         'descripcion'=>$filahijo->descripcion,
+                         'identificador'=>$idequipo,
                         'parent_id'=>$idlista,
                     )
                     );
