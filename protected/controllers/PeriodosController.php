@@ -27,7 +27,7 @@ class PeriodosController extends Controller
 
 		return array(
 				array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','admin','view','update'),
+				'actions'=>array('ajaxdesactiva' , 'create','admin','view','update'),
 				'users'=>array('@'),
 			),
 			array('deny',  // deny all users
@@ -162,4 +162,36 @@ class PeriodosController extends Controller
 			Yii::app()->end();
 		}
 	}
+        
+        public function actionajaxdesactiva(){
+            if(yii::app()->request->isAjaxRequest){
+                if(isset($_GET['id'])){
+                    $id= (Integer)MiFactoria::cleanInput($_GET['id']);
+                    $registro= Periodos::model()->findByPk($id);
+                    if(!is_null($registro)){
+                       $registro->setScenario('cambiastatus');
+                       if($registro->activo=='1'){
+                           $registro->activo='0';
+                           $registro->save();
+                           var_dump($registro->geterrors());die();
+                       }else{ ///sI ESTA DESACTIVADO D, ACTICARLO PERO CUIDADO HAY QUE FIJARSE BIEN 
+                            //verificar cuentos period puede abrir 
+                           $cuantoshay=count($registro->findAll("activo='1'"));
+                           $cuantoshay=$registro::nperiodosactivos();
+                           //var_dump($cuantoshay);
+                          // var_dump((integer)yii::app()->settings->get('conta','conta_nperiodosabiertos'));die();
+                           if( (integer)yii::app()->settings->get('conta','conta_nperiodosabiertos')> $cuantoshay){
+                                $registro->activo='1';
+                               $registro->save();
+                           }else{
+                               echo " Ya no puede abrir mas periodos el número maximo de periodos permitidos es [".yii::app()->settings->get('conta','conta_nperiodosabiertos')."]";
+                           }
+                           
+                           
+                           
+                       }
+                    }
+                }
+            }
+        }
 }

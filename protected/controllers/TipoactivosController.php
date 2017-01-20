@@ -13,10 +13,7 @@ class TipoactivosController extends Controller
 	 */
 	public function filters()
 	{
-		return array(
-			'accessControl', // perform access control for CRUD operations
-			'postOnly + delete', // we only allow deletion via POST request
-		);
+		return array('accessControl',array('CrugeAccessControlFilter'));
 	}
 
 	/**
@@ -26,6 +23,8 @@ class TipoactivosController extends Controller
 	 */
 	public function accessRules()
 	{
+		
+            Yii::app()->user->loginUrl = array("/cruge/ui/login");
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 				'actions'=>array('index','view'),
@@ -63,7 +62,7 @@ class TipoactivosController extends Controller
 	public function actionCreate()
 	{
 		$model=new Tipoactivos;
-$model->activo='1';
+
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 

@@ -15,17 +15,8 @@ function(){
  $(document).ready(function() { 
     $('.boton_barrita').click(function() {
             //$(this).hide();
-        $.blockUI({ css: { 
-            border: 'none', 
-            padding: '15px', 
-            backgroundColor: '#0a0',
-            '-webkit-border-radius': '10px', 
-            '-moz-border-radius': '10px', 
-            opacity: .5, 
-            color: '#fff' 
-        } }); 
- 
-        setTimeout($.unblockUI, 0);
+        
+        
            /* $(this).css("display", "none");*/
 
     }

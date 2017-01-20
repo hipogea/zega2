@@ -17,7 +17,7 @@ class Configuraciongeneral extends CFormModel
         public $general_directorioimg; ///porcenytaje de exceso para la caja chica
          public $general_nregistrosporcarpeta; ///porcenytaje de exceso para la caja chica
           public $general_codigomanualempresa; ///indinca si el codigo proveedor es manual o automatico
-
+            public $general_codempresa;
 	/*****documentos***/
 	public $documentos_numeromaxbloqueos;
 	public $documentos_docmascara;
@@ -25,6 +25,7 @@ class Configuraciongeneral extends CFormModel
 	public $documentos_archivo_sello_agua=null;
 	public $documentos_controlrecepcion=null;
 public $documentos_tolerecepfacturaendias=null;
+
 
 	/*****transporte***/
 	public $transporte_tiempopermitidohastaentrega;
@@ -74,7 +75,12 @@ public $materiales_verpresolpe;
          public $email_nombrewebmaster;//pawd
 
 
-
+         /*****CONTABILIDAD***/
+	public $conta_patroncuentas; ///La expresion regular que determina las cuentas
+        public $conta_montodetraccion;/// monto de la detraccion en m,openda nacional
+         public $conta_nperiodosabiertos; /// num,ero maximo de periodos abiertos
+	public $conta_formatonumerocomprobantes; ///formato XXXX-XXXXXXXX para facturas boletas
+        public $conta_multisociedad; // Permitre trabajar varioas soceidades contab lemente  en una mis a sesion 
 
 
 
@@ -94,6 +100,7 @@ public $materiales_verpresolpe;
                                    general_directorioimg,
 				   general_userauto,
                                    general_nregistrosporcarpeta,
+                                   general_codempresa,
                                    transporte_motivoot,
 					documentos_numeromaxbloqueos,
 					documentos_docmascara,
@@ -119,7 +126,10 @@ public $materiales_verpresolpe;
 					email_cuentahost,email_nombrewebmaster',
 				'required','message'=>'Este dato es obligatorio'
 			),
-			array('email_smptauth,email_usamaildeusuario,email_passwordhost,email_nombrewebmaster,general_codigomanualempresa,transporte_umdefault,'
+			array(''
+                            .'conta_patroncuentas,conta_montodetraccion,conta_nperiodosabiertos,'
+                             .' conta_formatonumerocomprobantes,conta_multisociedad,'
+                            . 'general_codempresa,general_codigomanualempresa,email_smptauth,email_usamaildeusuario,email_passwordhost,email_nombrewebmaster,general_codigomanualempresa,transporte_umdefault,'
                             . 'transporte_motivoot,general_nregistrosporcarpeta,transporte_rutafotos,'
                             . 'general_directorioimg,transporte_objenguia,general_userauto,inventario_auto,'
                             . 'inventario_bloqueado,inventario_mascaraubicaciones,materiales_contabilidad,'
@@ -157,6 +167,7 @@ public $materiales_verpresolpe;
                     'general_directorioimg'=>'Directorio de almacenamiento de Imagenes',
                     'general_nregistrosporcarpeta'=>'Cantidad registros por carpeta',
                    'general_codigomanualempresa'=>'Cod manual Empresas',
+                    'general_codempresa'=>'Codigo empresa',
 	'documentos_numeromaxbloqueos'=>'Cant Max Documentos abiertos por usuario',
 			'documentos_selloagua'=>'Sello de agua',
 			'documentos_archivo_sello_agua'=>'Archivo sello agua',
@@ -191,9 +202,12 @@ public $materiales_verpresolpe;
 			'email_cuentahost'=>'Cuenta de correo motor',
 			'email_passwordhost'=>'Password de la cuenta',
                     'email_nombrewebmaster'=>'Nombre Webmaster',
-			'inventario_bloqueado'=>'Bloquear en Conteo'
-
-
+			'inventario_bloqueado'=>'Bloquear en Conteo',
+                    'conta_patroncuentas'=>'Forma Cuent',
+                    'conta_montodetraccion'=>'Mont Detr',
+                   'conta_nperiodosabiertos'=>'N max Period',
+	           'conta_formatonumerocomprobantes'=>'Form Numero',
+                  'conta_multisociedad'=>'MultiSocie',
 
 		);
 	}

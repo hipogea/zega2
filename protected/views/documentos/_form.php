@@ -29,6 +29,11 @@
 		<?php echo $form->checkBox($model,'comprobante'); ?>
 		<?php echo $form->error($model,'comprobante'); ?>
 	</div>
+    <div class="row">
+		<?php echo $form->labelEx($model,'controlfisico'); ?>
+		<?php echo $form->checkBox($model,'controlfisico'); ?>
+		<?php echo $form->error($model,'controlfisico'); ?>
+	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'abreviatura'); ?>
@@ -41,6 +46,8 @@
 		<?php echo $form->textField($model,'clase',array('size'=>1,'maxlength'=>1)); ?>
 		<?php echo $form->error($model,'clase'); ?>
 	</div>
+    
+    
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'tipo'); ?>

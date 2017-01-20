@@ -20,9 +20,7 @@ class Tempdesolpe extends ModeloGeneral
             $this->campoestado='est';
             
             $this->campossensibles=array(
-                 'fechaent'=>array(self::ESTADO_REGISTRO_NUEVO,self::ESTADO_PREVIO,self::ESTADO_CREADO),
-                               'centro'=>array(self::ESTADO_REGISTRO_NUEVO,self::ESTADO_PREVIO,self::ESTADO_CREADO),
-                'imputacion'=>array(self::ESTADO_REGISTRO_NUEVO,self::ESTADO_PREVIO,self::ESTADO_CREADO),                
+                'centro'=>array(self::ESTADO_REGISTRO_NUEVO,self::ESTADO_PREVIO,self::ESTADO_CREADO),
                 'codal'=>array(self::ESTADO_REGISTRO_NUEVO,self::ESTADO_PREVIO,self::ESTADO_CREADO),
             'codart'=>array(self::ESTADO_PREVIO,self::ESTADO_CREADO),
                 'cant'=>array(self::ESTADO_REGISTRO_NUEVO,self::ESTADO_PREVIO,self::ESTADO_CREADO),
@@ -83,7 +81,6 @@ class Tempdesolpe extends ModeloGeneral
 		// class name for the relations automatically generated below.
 		return array(
 			'solpe' => array(self::BELONGS_TO, 'Solpe', 'hidsolpe'),
-                    'cc' => array(self::BELONGS_TO, 'Cc', 'imputacion'),
 			'desolpe' => array(self::HAS_ONE, 'Desolpe', 'idtemp'),
 			'servicios'=>array(self::BELONGS_TO, 'Maestroservicios', 'codservicio'),
            'maestro' => array(self::BELONGS_TO, 'Maestrocompo', 'codart'),

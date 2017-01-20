@@ -129,15 +129,10 @@ return array(
 
 	// application components
 	'components'=>array(
-                    'assetManager' => array(
-                            'linkAssets' => true,
-                         ),
+
 		'cache'=>array(
-                                'class'=>'system.caching.CDbCache',
-                                'connectionID'=>'db',
-                                ),
-            
-            
+			'class'=>'system.caching.CFileCache',
+		),
 		'settings'=>array(
 			'class' => 'CmsSettings',
 			'cacheComponentId'  => 'cache',
@@ -323,20 +318,20 @@ return array(
 
 		
 		/*'db'=>array(
-        'connectionString' => 'mysql:host=localhost;dbname=nautilus',
-        'username' => 'root',
-        'password' => '',
+        'connectionString' => 'pgsql:host=localhost;port=5432;dbname=pruebas ',
+        'username' => 'tomasito',
+        'password' => 'tomasito',
 		 'tablePrefix' => 'public_',
         'charset' => 'utf8',
         ),*/
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=gearmari_flota',
+			'connectionString' => 'mysql:host=localhost;dbname=neotegni_base1',
 			'emulatePrepare' => true,
-			'username' => 'gearmari_julian',
+			'username' => 'neotegni_julian',
 			'password' => 'luchito',
 			'tablePrefix' => 'public_',
 			'charset' => 'utf8',
-                   //  'enableParamLogging'=>true,//desactivarlo en produccion
+                     'enableParamLogging'=>true,//desactivarlo en produccion
 		),
 		
 		
@@ -358,7 +353,7 @@ return array(
 		),
 		'log'=>array(
 			'class'=>'CLogRouter',
-/*
+
 			'routes'=>array(
 				array(
 					'class'=>'CFileLogRoute',
@@ -366,12 +361,7 @@ return array(
 					'levels'=>'error,warning', //agreagamos aqui el mail para probar los correos en modo DEBUG 
 					//'enabledParamLogging'=>true,
 				),
-                        
-                            
-                            
-                            
-                            
-                              array(
+                          /*  array(
                    'class'=>'CEmailLogRoute',
                    'levels'=>'error, warning',
                    'emails'=>'neotegnia@gmail.com',
@@ -384,8 +374,8 @@ return array(
 				array(
 					'class'=>'CWebLogRoute',
 				),
-				
-			),*/
+				*/
+			),
 		),
 	),
 
@@ -406,10 +396,10 @@ return array(
 	'params'=>array(
 		// this is used in contact pageoel
 		//'webRoot' => dirname(dirname(__FILE__).DIRECTORY_SEPARATOR.'..'),
-		//'nombrecamposlog'=>array('creadopor','creadoel','modificadopor','modificadoel'), //la matriz con le nombre delos campos de auditoria de cualquier tabla
-		'pwdmail'=>'123456',
+		'nombrecamposlog'=>array('creadopor','creadoel','modificadopor','modificadoel'), //la matriz con le nombre delos campos de auditoria de cualquier tabla
 		
-		//'adminEmail'=>'Julian Ramirez Tenorio <hipogea@hotmail.com>',
+		
+		'adminEmail'=>'Julian Ramirez Tenorio <hipogea@hotmail.com>',
         'prefijo'=>'public_',
 		'rutainternafotos'=>'webroot.assets.FOTOS',
 		'aliasfotosinventario'=>'webroot.assets.FOTOS',

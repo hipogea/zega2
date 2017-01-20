@@ -121,7 +121,54 @@ const ESTADO_REGISTRO_NUEVO='00'; ///ESTO SOLO PARA INCLUIR LA CONDICION isNewRe
 				$this->_venumModels[] = substr($f,0,strpos($f,'.php'));
 
 			}
+                        //ahora toca recorres los modelos de los MODULOS INSTALADOS 
+                         $p=yii::app()->basePath.DIRECTORY_SEPARATOR.'modules'.DIRECTORY_SEPARATOR;
+           $modulosp=array();
+            $modelosp=array();
+           foreach (scandir($p) as $f) {
+               
+              // var_dump($f); echo "<br><br><br>";
+				if ($f == '.' || $f == '..') {
+					continue;
+				}
+				if (strlen($f)) {
+					if ($f[0] == '.') {
+						continue;
+					}
+				}
+                                    if(is_dir($p.$f.DIRECTORY_SEPARATOR.'models')){
+                                        foreach(scandir($p.$f.DIRECTORY_SEPARATOR.'models') as $archivo)
+                                                {
+                                                        if ($archivo == '.' || $archivo == '..') {
+                                                            continue;
+                                                            }
+                                                            if (strlen($archivo)) {
+                                                            if ($archivo[0] == '.') {
+                                                                    continue;
+                                                                    }
+                                                            }
+                                                        if(is_file($p.$f.DIRECTORY_SEPARATOR.'models'.DIRECTORY_SEPARATOR.$archivo)                   
+                                                                )  {
+                                                            $modelosp[]=substr($archivo,0,strpos($archivo,'.php'));
+                                                        }  
+                                                    }
+                                    }
+				//$modulosp[]=$p.$f.DIRECTORY_SEPARATOR.'models';
+
+			}
+                        
+                        $this->_venumModels=array_merge( $this->_venumModels,$modelosp);
+                        
 			return $this->_venumModels;
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
 		} else {
 			return $this->_venumModels ;
 		}

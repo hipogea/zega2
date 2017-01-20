@@ -111,8 +111,9 @@ class Barra extends CWidget
 					case "E":
 						echo CHtml::link ( Chtml::image ( $rutaimagenes , '' , $arrayestilolink
 						) , '#' ,
-							array ( 'onclick' => " $(this).closest('form').find('input[type=text], input[type=select],textarea').val('');" )
-
+							//array ( 'onclick' => " $(this).closest('form').find('input[type=text], input[type=select],textarea').val('');" )
+                                                          array ( 'onclick' => " $(this).closest('form')[0].reset();" ) 
+                                                        //array ( 'onclick' => " $(this).closest('form').find('input[type=text], input[type=select],textarea').reset();" )
 						);
 						break;
 					case "F":

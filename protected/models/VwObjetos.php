@@ -40,7 +40,7 @@ class VwObjetos extends CActiveRecord
 			array('rucpro', 'length', 'max'=>11),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, serie, descripcion, codigo, nombreobjeto, despro, rucpro', 'safe', 'on'=>'search'),
+			array('id,codpro, serie, descripcion, codigo, nombreobjeto, despro, rucpro', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -91,6 +91,7 @@ class VwObjetos extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('serie',$this->serie,true);
+                $criteria->compare('codpro',$this->codpro,true);
 		$criteria->compare('descripcion',$this->descripcion,true);
 		$criteria->compare('codigo',$this->codigo,true);
 		$criteria->compare('nombreobjeto',$this->nombreobjeto,true);

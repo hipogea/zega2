@@ -21,6 +21,12 @@
 		<?php echo $form->textField($model,'general_horaspasadastipocambio',array('size'=>3,'maxlength'=>3)); ?>
 		<?php echo $form->error($model,'general_horaspasadastipocambio'); ?>
 	</div>
+        
+        <div class="row">
+		<?php echo $form->labelEx($model,'general_codempresa'); ?>
+		<?php echo $form->textField($model,'general_codempresa',array('size'=>9,'maxlength'=>9)); ?>
+		<?php echo $form->error($model,'general_codempresa'); ?>
+	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'general_porcexcesocaja'); ?>

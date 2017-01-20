@@ -46,10 +46,10 @@ class Masterequipo extends ModeloGeneral
 			array('modelo', 'length', 'max'=>25),
 			array('numeroparte', 'length', 'max'=>20),
 			array('codart', 'length', 'max'=>14),
-			array('codigo, descripcion,codigopadre,id,cant, hidpadre,marca, modelo, numeroparte, codart, id', 'safe'),
+			array('codigo,esubicacion, descripcion,codigopadre,id,cant, hidpadre,marca, modelo, numeroparte, codart, id', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('codigo, descripcion, marca, modelo, numeroparte, codart, id', 'safe', 'on'=>'search'),
+			array('codigo, esubicacion,descripcion, marca, modelo, numeroparte, codart, id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -63,6 +63,7 @@ class Masterequipo extends ModeloGeneral
 		return array(
 			'maestro' => array(self::BELONGS_TO, 'Maestrocompo', 'codart'),
 			'masterequipo' => array(self::BELONGS_TO, 'Masterequipo', 'codigopadre'),
+                        'padres'=>array(self::HAS_MANY, 'Masterrelacion', 'hidhijo'),
 			'canthijos'=>array(self::STAT, 'Masterequipo', 'hidpadre'),
 			'parent' => array(self::BELONGS_TO, 'Masterequipo', 'parent_id'),
 			'children' => array(self::HAS_MANY, 'Masterequipo', 'parent_id'),

@@ -28,7 +28,7 @@ class TrabajadoresController extends Controller
 		return array(
 			
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('prueba','create','update','actualizadetalle','creadetallecaja','rendicion','caja','admin','view','perfil'),
+				'actions'=>array('ajaxcierracaja','prueba','create','update','actualizadetalle','creadetallecaja','rendicion','caja','admin','view','perfil'),
 				'users'=>array('@'),
 			),
 			
@@ -65,9 +65,9 @@ class TrabajadoresController extends Controller
 
            $codigotra=Yii::app()->user->um->getFieldValue(Yii::app()->user->id,'codtra');
 		if(is_null($codigotra)){
-			yii::app()->user->setFlash('notice'," Para usar esta funciÃ³n debes de ser un usuario, registrado como trabajador");
+			yii::app()->user->setFlash('notice'," Para usar esta función debes de ser un usuario, registrado como trabajador");
 		}else{
-			yii::app()->user->setFlash('success'," Tienes cÃ³digo de tabajador ".$codigotra);
+			yii::app()->user->setFlash('success'," Tienes código de tabajador ".$codigotra);
 
 			$this->render("cajamenor",array('codtrabajador'=>$codigotra));
 		}
@@ -205,7 +205,11 @@ class TrabajadoresController extends Controller
 				}
 			}
 		}
-		$this->render("profile",array('model'=>$model));
+                
+                $modeloconfig=New Configuracion('search_por_usuario');
+                if(isset($_GET['Configuracion']))
+                    $modeloconfig->attributes=$_GET['Configuracion'];
+		$this->render("profile",array('modeloconfig'=>$modeloconfig,'model'=>$model));
 	}
 
 	/**
@@ -373,6 +377,19 @@ class TrabajadoresController extends Controller
     
         }
         
+     public function actionajaxcierracaja(){
+         if(yii::app()->request->isAjaxRequest){
+             if(isset($_GET['Dcajachica']['id'])){
+                 $id=  MiFactoria::cleanInput($id);
+                 $modelo=  Dcajachica::model()->findByPk($id);
+                 if($modelo->hidcargo >0){ ///Solo para prestamos de caja
+                     $modelo->setScenario('cambiaestado');
+                     $modelo->codestado=self::ESTADO_APROBADO_CAJA_CHICA;
+                     $modelo->save();
+                 }
          
+             }
+         }
+     }    
         
 }

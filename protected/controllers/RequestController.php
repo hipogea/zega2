@@ -40,6 +40,7 @@ return array(
 'fillTree'=>array(
 'class'=>'ext.actions.XFillTreeAction',
 'modelName'=>'Menu',
+    'rootId'=>$_GET['rootId'],
 'showRoot'=>TRUE
 ),
 

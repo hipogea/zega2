@@ -8,7 +8,7 @@ $opcionesajax=ARRAY(
     "url"=>yii::app()->createUrl($this->id."/indicadores"),
     "update"=>"#zonita"
 );
-echo CHtml::ajaxLink("presionar aqui",yii::app()->createUrl($this->id."/indicadores"),$opcionesajax);
+//echo CHtml::ajaxLink("presionar aqui",yii::app()->createUrl($this->id."/indicadores"),$opcionesajax);
 ?>
 <div id="zonita">hola</div>
 
@@ -27,27 +27,24 @@ $this->menu=array(
 );
 ?>
 
-<h1> Documento <?php echo $model->correlativo; ?>   Ingresado</h1>
+<h1> <?php echo $model->docus->desdocu." - [ ".$model->numero. " ]-  ".$model->clipro->despro; ?> </h1>
 <?php //echo CHTml::ajaxLink('limpiar','ffdfd',array())  ?> 
 <?php $this->widget('zii.widgets.CDetailView', array(
 	'data'=>$model,
 	'attributes'=>array(
 		'id',
-		'codprov',
+		'clipro.despro',
 		'fecha',
 		'fechain',
 		'correlativo',
-		'tipodoc',
+		'docus.desdocu',
 		'moneda',
 		'descorta',
-		'codepv',
+		'barcos.nomep',
 		'monto',
-		'codgrupo',
-		'codresponsable',
-		'creadopor',
-		'creadoel',
+                'docref',
+		//'codgrupo',
+		'trabajadores.ap',		
 		'texv',
-		array('name'=>'jo','value'=>''.gettype($model->conservarvalor).' '),
-		'docref',
 	),
 )); ?>

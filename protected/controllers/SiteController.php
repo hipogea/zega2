@@ -51,8 +51,8 @@ class SiteController extends Controller
 							//
 			//  //	echo ModeloGeneral::getClassName();
 		// echo  MiFactoria::InsertaCumple();
-                                       $this->redirect("docingresados/admin");
-		            		//$this->render('index');
+                                      // $this->redirect("docingresados/admin");
+		            		$this->render('index');
 
 		            }
 		//$this->render('index');

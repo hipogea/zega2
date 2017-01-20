@@ -15,7 +15,7 @@ class Cargamasivadet extends CActiveRecord
 			array('hidcarga', 'required', 'on'=>'insert'),
 			array('nombrecampo, aliascampo', 'length', 'max'=>100),
 			array('activa, requerida', 'length', 'max'=>1),
-			array('orden,aliascampo,clave,longitud', 'safe', 'on'=>'update'),
+			array('orden,aliascampo,clave,longitud,explicacion', 'safe', 'on'=>'update'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, hidcarga,longitud, tipo, orden,nombrecampo, aliascampo, activa, requerida', 'safe', 'on'=>'search'),

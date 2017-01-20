@@ -254,6 +254,22 @@ public function actionRelaciona1()
 												$model->unsetAttributes(); 
 												if(isset($_GET[$nombreclase]))
 												$model->attributes=$_GET[$nombreclase];
+                                                                                              //VAR_DUMP($_SESSION);DIE();
+                                                                                                   //var_dump(yii::app()->session['matchcode_Clipro_codpro']);die();
+                                                                                                if(isset($_GET['filtro'])){
+                                                                                                    $filtro=$_GET['filtro'];
+                                                                                                    // var_dump($filtro);die();
+                                                                                                    $filtro=CJSON::decode($filtro);                                                                                                   
+                                                                                                   if(is_array($filtro)){
+                                                                                                   
+                                                                                                      foreach($filtro as $clave=>$valor) {
+                                                                                                          $model->{$clave}=$valor;
+                                                                                                          //var_dump($model->{$clave});die();
+                                                                                                          break;
+                                                                                               }
+                                                                                                   }
+                                                                                                }
+                                                                                              
 												$this->layout='//layouts/iframe' ;
 												$this->render("ext.explorador.views.vw_".$nombreclase,array('model'=>$model));
 												 //$this->render("ext.explorador.views.vw_pruebitas1",array('tipodato'=>$tipodato,'tablita'=>$nombreclase,'campo'=>$campo,'relaciones'=>$relaciones));

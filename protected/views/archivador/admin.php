@@ -28,8 +28,18 @@ $('.search-form form').submit(function(){
 
 <h1><?php echo CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."arrow_down.png");?>   Descargas utiles</h1>
 
+<?php
+ yii::log('Pintado de arbol', 'error');
+$this->widget('CTreeView',array(
+    'id'=>'unit-treeview',
+    'url'=>array('request/fillTree'),
+    'htmlOptions'=>array(
+        'class'=>'treeview-red'
+    )
+));
 
 
+?>
 
 <div class="search-form">
 <?php $this->renderPartial('_search',array(

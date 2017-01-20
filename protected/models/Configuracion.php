@@ -32,7 +32,7 @@ class Configuracion extends CActiveRecord {
         // will receive user inputs.
         return array(
              array('valor', 'safe'),
-           array('valor', 'safe','on'=>'cambiavalor'),
+           
             array('codparam, valor', 'required', 'on' => 'parametro'),
             array('codparam,  valor, explicacion', 'safe', 'on' => 'parametro'),
             //  array('codcen, codocu, codparam, desparam, valor, tipodato, explicacion, lista, iduser, longitud', 'required'),
@@ -116,6 +116,29 @@ class Configuracion extends CActiveRecord {
             'criteria' => $criteria,
         ));
     }
+    
+    
+    
+     public function search_por_usuario($iduser) {
+        // @todo Please modify the following code to remove attributes that should not be searched.
+
+        $criteria = new CDbCriteria;
+
+        $criteria->compare('codcen', $this->codcen, true);
+        $criteria->compare('codocu', $this->codocu, true);
+        $criteria->compare('codparam', $this->codparam, true);
+       // $criteria->compare('desparam', $this->desparam, true);
+        $criteria->compare('valor', $this->valor, true);
+       // $criteria->compare('tipodato', $this->tipodato, true);
+        $criteria->compare('explicacion', $this->explicacion, true);
+       // $criteria->compare('lista', $this->lista, true);
+       // $criteria->compare('iduser', $this->iduser);
+        //$criteria->compare('longitud', $this->longitud);
+     $criteria->addCondition('iduser='.$iduser);
+        return new CActiveDataProvider($this, array(
+            'criteria' => $criteria,
+        ));
+    }
 
     /**
      * Returns the static model of the specified AR class.
@@ -129,46 +152,59 @@ class Configuracion extends CActiveRecord {
     
     public function beforeSave(){
         
-            //$this->valor=serialize($this->valor);
-        if($this->iduser >0){
-              //$this->refrescausuarios();                 
-            }
-            
-            if($this->isNewRecord){
-                if($this->iduser >0){
-              //$this->refrescausuarios();                 
-            }else{
-               $this->iduser=-1; 
-            }
-                    }
         
         
         return parent::beforeSave();
     }
 
+    public function afterSave(){
+        
+        
+            
+            if($this->isNewRecord){
+                if($this->iduser >0){
+             $this->refrescausuarios();                 
+            }else{
+               $this->iduser=-1; 
+            }
+                    }else{
+                        
+                    }
+        
+        
+        return parent::afterSave();
+    }
+    
+    
+    
     public function afterfind(){
        // $this->valor=@unserialize($this->valor);
         return parent::afterfind();
     }
-    public function refrescausuarios(){
+    public function refrescausuarios($parametro=null){
         $comboList = array();
                 foreach(Yii::app()->user->um->listUsers() as $user){        
                 $comboList[$user->primaryKey] = $user->username;
                     }
-                    unset($user);
+                  //  unset($user);
                 ////crear el parametro para todos los usuarios
+                    if(is_null($parametro)){
+                        $parametro=$this->codparam;
+                    }
+                    
                 foreach( $comboList as $iduser=>$username)
                 {
                    $criterio=New CDBCriteria();
-                   $criterio->addCondition("codcen=:vcentro and codocu=:vcodocu and iduser=:viduser");
-                    $criterio->params=array(":vcentro"=>$this->codcen,":vcodocu"=>$this->codocu,":viduser"=>$iduser);
-                    if(  !(count(self::model()->findAll($criterio)) >0  )){
-                       $nuevomodel=New Config();
+                   $criterio->addCondition("codparam=:vcodparam and codcen='0000' and codocu=:vcodocu and iduser=:viduser");
+                    $criterio->params=array(":vcodparam"=>$parametro,   ":vcodocu"=>$this->codocu,":viduser"=>$iduser);
+                    if(  (count(self::model()->findAll($criterio)) ==0  )){
+                       $nuevomodel=New Configuracion();
                        $nuevomodel->setAttributes(array(
-                           'codocu'=>$this->codocu,
-                            'codcen'=>$this->codcen,
-                           'codparam'=>$this->codparam,
+                           'codocu'=>$this->codocu,  
+                           'codcen'=>'0000',
+                           'codparam'=>$parametro,
                             'iduser'=>$iduser,
+                           'valor'=>null,
                            
                        ));
                        $nuevomodel->save();
@@ -177,10 +213,20 @@ class Configuracion extends CActiveRecord {
                 }
     }
     
-    public static function valor($codocu,$codcen,$codparam,$iduser=null)
+    public static function valor($codocu,$codcen='0000',$codparam,$iduser=null)
             {
+            $cri=NEW CDBCriteria();
+            $cri->addCondition("codocu=:vcodocu and "
+                .           "codcen=:vcodcen and "
+                .             "iduser=:viduser and "
+                .           "codparam=:vcodparam ");
+            $cri->params=array(
+             ":vcodocu"=>$codocu,
+               ":vcodcen"=>$codcen,
+              ":viduser"=>(is_null($iduser))?-1:$iduser.'',
+               ":vcodparam"=>$codparam,
+                 );
             
-           $cri=self::criterio($codocu, $codcen, $codparam, $iduser);
       $resultado= self::model()->find($cri);
       //return $resultado->attributes;
         if(is_null($resultado)){
@@ -192,39 +238,4 @@ class Configuracion extends CActiveRecord {
         }
       
             }
-            
-            
-   
-  public static function setvalor($valor,$codocu,$codcen,$codparam,$iduser=null){
-         ///Si existe modificarlo si no reorna -1;
-      
-      if(!is_null(self::valor($codocu,$codcen,$codparam,$iduser))){
-             $regi=self::model()->find( self::criterio($codocu, $codcen, $codparam,$iduser)  );
-             $regi->setScenario('cambiavalor');
-             $regi->valor=$valor;
-             return ($regi->save())?1:-1;
-         }else{
-             return -1;
-         }
-           
-       }        
-   
-    private static function criterio($codocu,$codcen,$codparam,$iduser=null){
-        
-        $cri=NEW CDBCriteria();
-            $cri->addCondition("codocu=:vcodocu and "
-                .           "codcen=:vcodcen and "
-                .             "iduser=:viduser and "
-                .           "codparam=:vcodparam ");
-            $cri->params=array(
-             ":vcodocu"=>$codocu,
-               ":vcodcen"=>$codcen,
-              ":viduser"=>(is_null($iduser))?-1:$iduser.'',
-               ":vcodparam"=>$codparam,
-                 );
-            return $cri;
-    }   
-       
 }
-
- 

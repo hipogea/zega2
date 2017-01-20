@@ -64,7 +64,13 @@
 		<?php echo $form->error($model,'numeroparte'); ?>
 		<?php // } ?>
 	</div>
-
+<div class="row">
+		<?php //if(!$model->isNewRecord){ ?>
+		<?php echo $form->labelEx($model,'esubicacion'); ?>
+		<?php echo $form->checkBox($model,'esubicacion',array('disabled'=>($model->canthijos>0)?'disabled':'')); ?>
+		<?php //echo $form->error($model,'numeroparte'); ?>
+		<?php // } ?>
+	</div>
 
 
 

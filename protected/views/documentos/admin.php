@@ -37,6 +37,8 @@ $('.search-form form').submit(function(){
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'documentos-grid',
 	'dataProvider'=>$model->search(),
+      'itemsCssClass'=>'table table-striped table-bordered table-hover',
+
 	'filter'=>$model,
 	'columns'=>array(
 		'coddocu',

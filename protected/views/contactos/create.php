@@ -13,6 +13,6 @@ $this->menu=array(
 );
 ?>
 
-<h1>Crear Contacto</h1>
+<?php MiFactoria::titulo('Crear Contacto', 'gear');  ?>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

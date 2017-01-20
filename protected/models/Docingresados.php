@@ -2,7 +2,7 @@
 
 class Docingresados extends ModeloGeneral
 {
-	
+	public $nomep; ///campo para ofredenar en el fgrid view
     CONST PARAM_TENENCIA_POR_DEFECTO='1012';
     CONST PARAMETRO_TITULO_CORREO_PEDIDO='1248';
     CONST PARAMETRO_CONFIRMAR_LECTURA_CORREO='1247';
@@ -77,8 +77,36 @@ class Docingresados extends ModeloGeneral
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-                      array('numero+tipodoc+codprov+codtenencia', 'application.extensions.uniqueMultiColumnValidator','on'=>'insert'),
-		 array('codtenencia,espeabierto', 'safe','on'=>'insert,update'),
+                    
+                    
+                    //CERTIFICADOS
+                     array('numero+tipodoc+codprov+codtenencia', 'application.extensions.uniqueMultiColumnValidator','on'=>'insert_certi,update_certi'),
+                        array('codtenencia', 'safe','on'=>'insert_certi,update_certi'),
+			//array('monto', 'numerical','on'=>'insert,update'),
+                    array('tipodoc', 'checkcambiodoc','on'=>'update_certi'),
+                    array('codtenencia', 'required','message'=>'Llenar la tenencia','on'=>'insert_certi,_certi'),
+			//array('monto', 'required','message'=>'Debes de llenar el monto','on'=>'insert,update'),
+			//array('codlocal', 'required','message'=>'Debes de llenar el centro','on'=>'insert,update'),
+			array('numero', 'required','message'=>'Debes de llenar el numero','on'=>'insert-certi,update_certi'),
+			array('codprov', 'required','message'=>'Llena la empresa','on'=>'insert_certi,update_certi'),
+			array('tipodoc', 'required','message'=>'Ingresa el tipo de documento','on'=>'insert_certi,update_certi'),
+                   array('tipodoc', 'checktenencias','on'=>'insert_certi,update_certi'),
+                   array('fecha,montomoneda,codteniente,docref,numero,codlocal, fechain,conservarvalor,codteniente,codprov,codgrupo,codresponsable, codtenencia, texv', 'safe','on'=>'insert_certi'),
+		 array('fecha,codteniente,docref,numero,codlocal, conservarvalor,codteniente, codtenencia,codepv,codgrupo,codresponsable, texv', 'safe','on'=>'update_certi'),
+				
+                    
+                    
+                    
+                    
+                    ///CAMBIO TENENCIA
+                    array('codtenencia', 'safe','on'=>'cambiotenencia'),
+                   
+                    
+                    array('fecha','checkfechas'),  ///Todos los escenarios 
+                    
+                    
+                      array('numero+tipodoc+codprov+codtenencia', 'application.extensions.uniqueMultiColumnValidator','on'=>'insert,update'),
+                        array('codtenencia,espeabierto', 'safe','on'=>'insert,update'),
 			array('monto', 'numerical','on'=>'insert,update'),
                     array('tipodoc', 'checkcambiodoc','on'=>'update'),
                     array('codtenencia', 'required','message'=>'Llenar la tenencia','on'=>'insert,update'),
@@ -88,7 +116,7 @@ class Docingresados extends ModeloGeneral
 			array('codprov', 'required','message'=>'Llena el proveedor','on'=>'insert,update'),
 			array('tipodoc', 'required','message'=>'Ingresa el tipo de documento','on'=>'insert,update'),
                    array('tipodoc', 'checktenencias','on'=>'insert,update'),
-                    array('codtenencia', 'safe','on'=>'cambiotenencia'),
+                    //array('codtenencia', 'safe','on'=>'cambiotenencia'),
                    
                    // checktenencias
 			array('codresponsable', 'required','message'=>'...Quien es el responsable?','on'=>'insert,update'),
@@ -111,7 +139,7 @@ class Docingresados extends ModeloGeneral
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, fechavencimiento,codprov,conservarvalor, fecha, fechain, correlativo, tipodoc, moneda, descorta, codepv, monto, codgrupo, codresponsable, creadopor, creadoel, texv, docref', 'safe', 'on'=>'search'),
-                        array('id,diasfaltan, fechavencimiento,codprov,conservarvalor, fecha, fechain, correlativo, tipodoc, moneda, descorta, codepv, monto, codgrupo, codresponsable, creadopor, creadoel, codtenencia, docref', 'safe', 'on'=>'search_por_dicapi'),
+                        array('nomep,id,diasfaltan, fechavencimiento,codprov,conservarvalor, fecha, fechain, correlativo, tipodoc, moneda, descorta, codepv, monto, codgrupo, codresponsable, creadopor, creadoel, codtenencia, docref', 'safe', 'on'=>'search_por_dicapi'),
 		
                     );
 	}
@@ -193,7 +221,7 @@ class Docingresados extends ModeloGeneral
 			'tipodoc' => 'Docum',
 			'moneda' => 'Moneda',
 			'descorta' => 'Descripcion',
-			'codepv' => 'Ref',
+			'codepv' => 'Embarc',
 			'monto' => 'Monto',
 			'codgrupo' => 'Grupo',
 			'codresponsable' => 'Resp',
@@ -215,6 +243,9 @@ class Docingresados extends ModeloGeneral
 	public $conservarvalor=0; //Opcionpa reaverificar si se quedan lo valores predfindos en sesiones 
 	public function beforeSave() {
 		if ($this->isNewRecord) {	// $this->creadoel=Yii::app()->user->name;
+                   if($this->escertificado()){
+                       $this->fechain=$this->fecha;
+                   }
 		$this->correlativo=Numeromaximo::numero($this->model(),'correlativo','maximovalor',8);
 		$this->cod_estado='10';
                 //$this->espeabierto='0';
@@ -528,14 +559,33 @@ class Docingresados extends ModeloGeneral
                         $criteria->addBetweenCondition('fechain', ''.$this->fechain.'', ''.$this->d_fechain1.''); 
 						//VAR_DUMP($criteria->params);DIE();
 						}
-                 
-                //var_dump( $tenencia);die();
+                 $criteria->together  =  true;
+		$criteria->with = array('barcos');
+                $criteria->compare('barcos.nomep', $this->nomep, true);  //Agregamos a $criteria nuestro nuevo campo, esto nos sirve para realizar búsquedas dentro del CGridView
+
+        
+
+
+        //Creamos un nuevo sort y añadimos nuestro campo relacionado
+
+        $sort = new CSort();
+        $sort->attributes = array(
+                        
+                        'nomep' => array(   //<---------------- Aqui agregamos el campo relacionado
+                            'asc'=>'barcos.nomep ASC ',
+                            'desc'=>'barcos.nomep DESC',
+                        ),
+                );
+
+//var_dump( $tenencia);die();
                //  $criteria->addCondition("hiddoci=" . $id);        
         $dependecy = new CDbCacheDependency('SELECT count(*) FROM '.$this->tableName()); 
 return new CActiveDataProvider($this->cache(600, $dependecy, 2), array ( 
     'criteria'=>$criteria,
+     'sort'=>$sort,
      'pagination' => array (
                              'pageSize' => 100 //edit your number items per page here
+                               
                        ),
 ));
                  
@@ -575,7 +625,16 @@ return new CActiveDataProvider($this->cache(600, $dependecy, 2), array (
  }   
     
  
-        
+        PUBLIC function checkfechas(){
+            if(!yii::app()->periodo->verificaFechas($this->fecha,$this->fechain))
+                    $this->adderror('fechain','La fecha de ingreso, es menor que la fecha de Registro');
+        }
  
- 
+ public function escertificado(){
+    if($this->getScenario()=='insert_certi' or $this->getScenario()=='update_certi'){
+                       return true;
+                   }else{
+                       return false;
+                   }
+ }
 }

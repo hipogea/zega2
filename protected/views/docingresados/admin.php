@@ -1,10 +1,10 @@
 <?php 
 $this->menu=array(
 	//array('label'=>'List Docingresados', 'url'=>array('index')),
-	array('label'=>'Nuevo', 'url'=>array('create')),
-    array('label'=>'Listado Certificados', 'url'=>array('certificadosdicapi')),
+	array('label'=>'Ingresar Documento', 'url'=>array('create')),
+    array('label'=>'Certificados Dicapi', 'url'=>array('certificadosdicapi')),
       array('label'=>'Listado detallado', 'url'=>array('detalles')),
-     array('label'=>'Indicadores', 'url'=>array('indicadores')),
+     array('label'=>'Ingresar certificado', 'url'=>array('create','cert'=>'yes')),
 );
 
 Yii::app()->clientScript->registerScript('search', "
@@ -142,10 +142,7 @@ $form=$this->beginWidget('CActiveForm', array(
 
 
 		<?php
-			
-              /*  if($this->beginCache('cache_doci_admin_toolbarpie',array(
-    'duration'=>600,))) {*/
-                $botones=array(
+				$botones=array(
 					
 					 'briefcase' => array(
                             'type' => 'D', //AJAX LINK
@@ -198,7 +195,7 @@ $form=$this->beginWidget('CActiveForm', array(
 				); ?>	
 
 
-  <?php // $this->endCache('cache_doci_admin_toolbarpie'); } ?>
+
 
 <?php $this->endWidget(); ?>
 
@@ -225,8 +222,6 @@ $this->renderExportGridButton($gridWidget,'Exportar resultados',array('class'=>'
     ));
 ?>
 <iframe id="cru-frame3" width="100%" height="100%"></iframe>
-
-  
 <?php
  
 $this->endWidget();

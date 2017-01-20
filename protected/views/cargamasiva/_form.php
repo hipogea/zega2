@@ -118,48 +118,6 @@
 	</div>
 	
 	
-	<div class="row">
-	<?php
-//echo $model->getulpoaddirectory();
-$campoclave=$model->getMetadata()->tableSchema->primaryKey;
-$this->widget('ext.coco.CocoWidget'
-              ,array(
-		'id'=>'cocowidget1',
-		'onCompleted'=>'function(id,filename,jsoninfo){  }',
-		'onCancelled'=>'function(id,filename){ alert("cancelled"); }',
-		'onMessage'=>'function(m){ alert(m); }',
-		'allowedExtensions'=>array('csv'), // server-side mime-type validated
-		'sizeLimit'=>8000000, // limit in server-side and in client-side
-		'uploadDir' => 'carpeta/',
-                  //$model->getulpoaddirectory(), // coco will @mkdir it
-			// this arguments are used to send a notification
-			// on a specific class when a new file is uploaded,
-		'buttonText'=>'Subir Archivo',
-		'receptorClassName'=>'application.models.'.get_class($model),
-                 //'modelin'=> $model,					//'methodName'=>'FileReceptor',
-                 'methodName'=>'cargaconajax',
-                  
-                'userdata'=>$model->{$campoclave}, //OJ ES EL CAMPO CLAVE PARA EL MODELO TEMPRAL
-			// controls how many files must be uploaded
-		'maxUploads'=>3, // defaults to -1 (unlimited)
-		'maxUploadsReachMessage'=>'No esta permitido cargar mas archivos', // if empty, no message is shown
-			// controls how many files the can select (not upload, for uploads see also: maxUploads)
-		'multipleFileSelection'=>false, // true or false, defaults: true
-										//'nombrealt'=>$model->codigo.'',
-		));
-
-
-/*$this->widget('ext.camara.Camara',
-					array(
-                                            'accion'=>''
-					)
-				);
-                                                
-      */                                          
-  ?>
-</div>
-
-
 
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Crear' : 'Guardar'); ?>
@@ -172,6 +130,8 @@ $this->widget('ext.coco.CocoWidget'
 	'dataProvider'=>Cargamasivadet::model()->search_por_carga($model->id),
 	'cssFile' => Yii::app()->getTheme()->baseUrl.'/css/grilla_naranja.css',
 	//'filter'=>$model,
+    'itemsCssClass'=>'table table-striped table-bordered table-hover',
+	
 	'columns'=>array(	
         array(
 			'htmlOptions'=>array('width'=>15),
@@ -201,13 +161,13 @@ $this->widget('ext.coco.CocoWidget'
 								'delete'=>
 
                              array(
-                             	    'visible'=>'false',
-                                    'url'=>'$this->grid->controller->createUrl("/Cargamasiva/borracarga", array("id"=>$data->id))',
-							 'options' => array( 'ajax' => array('type' => 'GET','data'=>'Se borro el registro', 'success'=>'reloadGrid' ,'url'=>'js:$(this).attr("href")'),
-							  'onClick'=>'Loading.show();Loading.hide(); ',
+                             	    'visible'=>'true',
+                                    'url'=>'$this->grid->controller->createUrl("/Cargamasiva/borrafilacampo", array("id"=>$data->id))',
+							 'options' => array( 'ajax' => array('type' => 'GET','data'=>'Se borro el registro', 'success'=>'js:function() { $.fn.yiiGridView.update("detalle-grid");}' ,'url'=>'js:$(this).attr("href")'),
+							 
 							 ) ,
-						    'imageUrl'=>''.Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'hand_point.png',
-								'label'=>'Ver detalle',
+						    'imageUrl'=>''.Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'borrador.png',
+								'label'=>'Borrar',
                                 ),	
 							
 
@@ -236,10 +196,10 @@ $this->widget('ext.coco.CocoWidget'
 
                             ),
 	               ),	
-		'id',
+		//'id',
 		'aliascampo',
 		array('name'=>'nombrecampo','header'=>'Campo','type'=>'raw','value'=>'($data->esclave=="1")?CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."ajustes.png")." - ".$data->nombrecampo:"".$data->nombrecampo'),
-		'esclave',
+		ARRAY('name'=>'explicacion','value'=>'substr($data->explicacion,0,40)."..."'),
 		'requerida',
 		'longitud',
 		'tipo',

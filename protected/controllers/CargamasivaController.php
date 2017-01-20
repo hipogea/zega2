@@ -21,7 +21,7 @@ class CargamasivaController extends ControladorBase
 		return array(
 
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('index','view','admin','create','borracarga','cargaescenario','carga','update','modificadetalle','borradetalle','import'),
+				'actions'=>array('borrafilacampo',   'index','view','admin','create','borracarga','cargaescenario','carga','update','modificadetalle','borradetalle','import'),
 				'users'=>array('@'),
 			),
 
@@ -208,8 +208,8 @@ $camposclave=array();
 																										}
 																						
 																								}
-																									echo $cadena;// die();
-																									echo "<br>";
+																									//echo $cadena;// die();
+																									//echo "<br>";
 																									//echo "<br>"; var_dump($data);echo "<br>";
 																								//$model= Maestrodetalle::Model()->findByPk(array('codart'=>1203,'codcentro'=>125,'codal'=>201) );
 																										eval($cadena);
@@ -624,4 +624,20 @@ $camposclave=array();
 			Yii::app()->end();
 		}
 	}
+        
+        
+        public function actionborrafilacampo(){
+            if(yii::app()->request->isAjaxRequest){ 
+                if(isset($_GET['id'])){  
+                    $id= (integer)MiFactoria::cleanInput($_GET['id']); 
+                    $registro= Cargamasivadet::model()->findByPk($id); 
+                    if(is_null($registro)) 
+                        throw new CHttpException(500,'NO se encontro el registro con el id '.$id);  
+                      $registro->delete();
+                    
+                }  
+                
+                }
+                
+        }
 }

@@ -19,9 +19,11 @@ class Cuentas extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
+    
+    public $descriclase;
 	public function tableName()
 	{
-		return '{{cuentas}}';
+		 return '{{cuentas}}';
 	}
 
 	/**
@@ -41,7 +43,7 @@ class Cuentas extends CActiveRecord
 			array('n2, n3', 'length', 'max'=>4),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('codcuenta, descuenta, clase, contrapartida, grupo, codigo, n2, n3, registro', 'safe', 'on'=>'search'),
+			array('codcuenta, elemento,descuenta, clase, contrapartida, grupo, codigo, n2, n3, registro', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -65,7 +67,7 @@ class Cuentas extends CActiveRecord
 			'codcuenta' => 'Codcuenta',
 			'descuenta' => 'Descuenta',
 			'clase' => 'Clase',
-			'contrapartida' => 'Contrapartida',
+			'contrapartida' => 'ContraP',
 			'grupo' => 'Grupo',
 			'codigo' => 'Codigo',
 			'n2' => 'N2',
@@ -100,10 +102,12 @@ class Cuentas extends CActiveRecord
 		$criteria->compare('codigo',$this->codigo,true);
 		$criteria->compare('n2',$this->n2,true);
 		$criteria->compare('n3',$this->n3,true);
+                $criteria->compare('elemento',$this->elemento,true);
 		$criteria->compare('registro',$this->registro,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+                    'pagination'=>array('pageSize'=>50),
 		));
 	}
 
@@ -117,4 +121,18 @@ class Cuentas extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        
+        
+        ///devuelve el array de las clases
+        public static function clases()
+	{
+		//return yii::app()->db->createCommand(" SELECT DISTINCT clase, desclase from {{cuentas}} ")->queryAll();
+         return self::model()-> findAllBySql(" SELECT DISTINCT clase, desclase from {{cuentas}} order by clase ASC "); 
+            
+	}
+        
+        public function afterfind(){
+            $this->descriclase="[".$this->clase."]  ".$this->desclase;
+            return parent::afterfind();
+        }
 }

@@ -36,13 +36,15 @@ class Monedas extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('codmoneda, desmon, simbolo', 'required'),
+                    array('habilitado', 'safe','on'=>'status'),
+			array('codmoneda, desmon, simbolo', 'required','on'=>'insert'),
 			array('codmoneda', 'length', 'max'=>3),
 			array('desmon', 'length', 'max'=>60),
 			array('simbolo', 'length', 'max'=>4),
+                   
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('codmoneda, desmon, simbolo', 'safe', 'on'=>'search'),
+			array('codmoneda, desmon,habilitado,  simbolo', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -81,9 +83,10 @@ class Monedas extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('codmoneda',$this->codmoneda,true);
+                
 		$criteria->compare('desmon',$this->desmon,true);
 		$criteria->compare('simbolo',$this->simbolo,true);
-
+$criteria->compare('habilitado',$this->habilitado,true);
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));

@@ -327,15 +327,18 @@
                             
                             $this->widget('ext.matchcode.MatchCode',array(
 						'nombrecampo'=>'codpro',
+                                               // 'valor'=>$model->codpro,
 						'ordencampo'=>1,
 						'controlador'=>$this->id,
 						'relaciones'=>$model->relations(),
 						'tamano'=>6,
+                                                //'nombreclase'=> get_class($model),                                                
 						'model'=>$model,
 						'form'=>$form,
 						'nombredialogo'=>'cru-dialog3',
 						'nombreframe'=>'cru-frame3',
-						'nombrearea'=>'fehdfj',
+						'nombrearea'=>'fehdfj',                              
+                                      
 					)
 
 				);
@@ -354,15 +357,17 @@
 			echo $form->labelEx($model,'codpro1');	
                             $this->widget('ext.matchcode.MatchCode',array(
 						'nombrecampo'=>'codpro1',
+                                               // 'valor'=>$model->codpro1,
 						'ordencampo'=>1,
 						'controlador'=>$this->id,
 						'relaciones'=>$model->relations(),
 						'tamano'=>6,
+                                               // 'nombreclase'=> get_class($model),                                                
 						'model'=>$model,
 						'form'=>$form,
 						'nombredialogo'=>'cru-dialog3',
 						'nombreframe'=>'cru-frame3',
-						'nombrearea'=>'feh34dfgyfj',
+						'nombrearea'=>'fehT764GVdfj',
 					)
 
 				);
@@ -375,23 +380,29 @@
 		<div class="row">
 			
 			<?php  
- 
+                            echo $form->labelEx($model,'idobjeto');
 			if ($model->isNewRecord)
 
-			{
-				echo $form->labelEx($model,'idobjeto');
+			{  ?>
+                    <div id="Ot_idobjeto_div"  ></div>
+                          <?php   
+                            echo $form->labelEx($model,'idobjeto');
                             $this->widget('ext.matchcode.MatchCode',array(
 						'nombrecampo'=>'idobjeto',
+                                                // 'valor'=>$model->idobjeto,
+                                                // 'nombreclase'=> get_class($model),
 						'ordencampo'=>5,
 						'controlador'=>$this->id,
 						'relaciones'=>$model->relations(),
 						'tamano'=>6,
 						'model'=>$model,
 						'form'=>$form,
-                                'filtro'=>'codpro@js:Ot_codpro.value',
+                                'filtro'=>array('codpro'=>'js:Ot_codpro.value'),
 						'nombredialogo'=>'cru-dialog3',
 						'nombreframe'=>'cru-frame3',
 						'nombrearea'=>'feh77dfddj',
+                                
+                                
 					)
 
 				);
@@ -409,12 +420,14 @@
 			{
 				$this->widget('ext.matchcode.MatchCode',array(
 						'nombrecampo'=>'codresponsable',
+                                                'valor'=>$model->codresponsable,
+                                                'nombreclase'=>get_class($model),
 						'ordencampo'=>2,
 						'controlador'=>$this->id,
 						'relaciones'=>$model->relations(),
 						'tamano'=>5,
-						'model'=>$model,
-						'form'=>$form,
+						//'model'=>$model,
+						//'form'=>$form,
 						'nombredialogo'=>'cru-dialog3',
 						'nombreframe'=>'cru-frame3',
 						'nombrearea'=>'fehe367dfddj',

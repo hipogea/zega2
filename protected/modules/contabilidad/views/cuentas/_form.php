@@ -3,8 +3,9 @@
 /* @var $model Cuentas */
 /* @var $form CActiveForm */
 ?>
-
-<div class="form">
+<div class="division">
+    
+<div class="wide form">
 
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'cuentas-form',
@@ -15,19 +16,19 @@
 	'enableAjaxValidation'=>false,
 )); ?>
 
-	<p class="note">Fields with <span class="required">*</span> are required.</p>
+	
 
 	<?php echo $form->errorSummary($model); ?>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'codcuenta'); ?>
-		<?php echo $form->textField($model,'codcuenta',array('size'=>18,'maxlength'=>18)); ?>
+		<?php echo $form->textField($model,'codcuenta',array('size'=>14,'maxlength'=>14)); ?>
 		<?php echo $form->error($model,'codcuenta'); ?>
 	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'descuenta'); ?>
-		<?php echo $form->textField($model,'descuenta',array('size'=>35,'maxlength'=>35)); ?>
+		<?php echo $form->textField($model,'descuenta',array('size'=>60,'maxlength'=>60)); ?>
 		<?php echo $form->error($model,'descuenta'); ?>
 	</div>
 
@@ -69,8 +70,8 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'registro'); ?>
-		<?php echo $form->textField($model,'registro',array('size'=>1,'maxlength'=>1)); ?>
-		<?php echo $form->error($model,'registro'); ?>
+		<?php echo $form->checkBox($model,'registro'); ?>
+		
 	</div>
 
 	<div class="row buttons">
@@ -79,4 +80,5 @@
 
 <?php $this->endWidget(); ?>
 
-</div><!-- form -->
+</div>
+    </div><!-- form -->

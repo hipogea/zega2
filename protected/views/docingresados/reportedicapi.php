@@ -1,7 +1,7 @@
 <?php 
 $this->menu=array(
 	//array('label'=>'List Docingresados', 'url'=>array('index')),
-	array('label'=>'Nuevo', 'url'=>array('create')),
+	array('label'=>'Ingresar certificado', 'url'=>array('create','cert'=>'yes')),
 );
 
 ?>
@@ -42,7 +42,7 @@ $this->renderPartial('_searchdicapi',array(
 
  $this->widget('ext.groupgridview.GroupGridView', array(
       'id' => 'dicapi-grid',      
-      'mergeColumns' => array('Embarcacion','documento'),
+     'mergeColumns' => array('nomep','tipodoc'),
 	'dataProvider'=>$model->search_por_dicapi('400'),
     'itemsCssClass'=>'table table-striped table-bordered table-hover',
 	//'cssFile' => ''.Yii::app()->getTheme()->baseUrl.'grid_pyy.css',  // your version of css file
@@ -61,8 +61,8 @@ $this->renderPartial('_searchdicapi',array(
 		
 		//'desdocu', 
            
-             array('name'=>'Embarcacion','type'=>'raw','value'=>'$data->barcos->nomep'),
-           array('name'=>'codtenencia','type'=>'raw','value'=>'CHTml::openTag("span",array("style"=>"background-color:".$data->getcolor().";  font-weight:bold;font-size:16px; color:white;border-radius:13px;padding:4px;")).$data->tipodoc.CHTml::closeTag("span")'),
+             array('name'=>'nomep','header'=>'Embarcac','type'=>'raw','value'=>'$data->barcos->nomep'),
+           array('name'=>'tipodoc','header'=>'Doc','type'=>'raw','value'=>'CHTml::openTag("span",array("style"=>"background-color:".$data->getcolor().";  font-weight:bold;font-size:16px; color:white;border-radius:13px;padding:4px;")).$data->tipodoc.CHTml::closeTag("span")'),
 	
 	array('name'=>'documento','type'=>'raw','value'=>'CHTml::link($data->docus->desdocu,yii::app()->createUrl("docingresados/update",array("id"=>$data->id)),array("target"=>"_blank"))','htmlOptions'=>array('width'=>70)),
 		

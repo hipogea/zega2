@@ -37,6 +37,7 @@
 
 
 
+
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Crear' : 'Actualizar'); ?>
 	</div>

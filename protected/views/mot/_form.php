@@ -15,34 +15,7 @@
 
 	
 	<?PHP 
-   $this->widget('ext.JuiButtonSet.JuiButtonSet', array(
-    'items' => array(
-        array(
-            'label'=>'Nuevo',
-            'icon-position'=>'left',
-			'icon'=>'document', // This a CSS class starting with ".ui-icon-"
-            'url'=>array('create') //urls like 'create', 'update' & 'delete' generates an icon beside the button
-        ),
-        array(
-            'label'=>'Grabar',
-            'icon-position'=>'left',
-            'icon'=>'disk', // This a CSS class starting with ".ui-icon-"
-            'url'=>array('#','onclick'=>new CJavaScriptExpression('function(){alert("Yes");}'))
-			//'htmlOptions'=>array(
-			///'onclick'=>new CJavaScriptExpression('function(){alert("Yes");}'),
-			//  ),
-
-        ),  
-		
-		array(
-            'label'=>'Imprimir',
-            'icon-position'=>'left',
-            'icon'=>'print', // This a CSS class starting with ".ui-icon-"
-            'url'=>array('action2')
-        ),
-    ),
-    'htmlOptions' => array('style' => 'clear: both;'),
-));
+   
 /*$this->widget('zii.widgets.jui.CJuiTabs', array(
 					'tabs' => array(
 									
@@ -65,7 +38,7 @@
 												)
 			);*/
 
-   //$this->renderPartial('llena_materiales', array('model'=>$model,'form'=>$form,'naleatorio'=>$naleatorio,),false);
+   $this->renderPartial('llena_materiales', array('model'=>$model,'form'=>$form,'naleatorio'=>$naleatorio,),false);
 														
 		
 		 
@@ -74,7 +47,7 @@
 
  
  <?php
-// $this->renderPartial('detalle', array('model'=>$model,'naleatorio'=>$naleatorio));   
+ $this->renderPartial('detalle', array('model'=>$model,'naleatorio'=>$naleatorio));   
 	
 	?>
 	

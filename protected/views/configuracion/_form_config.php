@@ -22,7 +22,7 @@
 
         <div class="row">
 			<?php echo $form->labelEx($model,'codocu'); ?>
-			<?php $data=CHTml::listData(Documentos::model()->findall(),'coddocu','desdocu'); ?>
+			<?php $data=CHTml::listData(Documentos::model()->findall(),'coddocu','referencia'); ?>
 			<?php echo $form->dropDownList($model,'codocu',$data,array('empty'=>'Seleccione un documento')); ?>
 			<?php echo $form->error($model,'codocu'); ?>
 		</div>
@@ -30,6 +30,7 @@
         <div class="row">
 			<?php echo $form->labelEx($model,'codcen'); ?>
 			<?php $data=CHTml::listData(Centros::model()->findall(),'codcen','nomcen'); ?>
+                        <?php $data['0000']='TODOS LOS CENTROS'; ?>
 			<?php echo $form->dropDownList($model,'codcen',$data,array('empty'=>'Seleccione el centro')); ?>
 			<?php echo $form->error($model,'codcen'); ?>
 		</div>
@@ -59,26 +60,26 @@
 		<?php echo $form->error($model,'codparam'); ?>
 	</div>
 
-	<div class="row">
-			<?php echo $form->labelEx($model,'codcen'); ?>
-			<?php $data=CHTml::listData(Centros::model()->findall(),'codcen','nomcen'); ?>
-			<?php echo $form->dropDownList($model,'codcen',$data,array('empty'=>'Seleccione el centro')); ?>
-			<?php echo $form->error($model,'codcen'); ?>
-		</div>
+	
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'valor'); ?>
-		<?php echo $form->textField($model,'valor'); ?>
+		<?php echo $form->textField($model,'valor',array('size'=>60)); ?>
 		<?php echo $form->error($model,'valor'); ?>
 	</div>
-
+       <div class="row">
+		<?php echo $form->labelEx($model,'lista'); ?>
+		<?php echo $form->textArea($model,'lista'); ?>
+		<?php echo $form->error($model,'lista'); ?>
+	</div>
 	
-
 	<div class="row">
 		<?php echo $form->labelEx($model,'explicacion'); ?>
 		<?php echo $form->textArea($model,'explicacion'); ?>
 		<?php echo $form->error($model,'explicacion'); ?>
 	</div>
+
+	
 
 	 <?php echo $form->labelEx($model,'iduser'); ?>
         <?php

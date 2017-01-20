@@ -26,6 +26,8 @@
 		<?php echo $form->DropDownList($model,'mes',$datos, array('empty'=>'--Seleccione un mes--','disabled'=>'')  ); ?>
 		<?php echo $form->error($model,'mes'); ?>
 	</div>
+                    
+      
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'anno'); ?>
@@ -44,6 +46,12 @@
 		<?php echo $form->labelEx($model,'final'); ?>
 		<?php echo $form->textField($model,'final',array('disabled'=>'disabled')); ?>
 		<?php echo $form->error($model,'final'); ?>
+	</div>
+                    
+        <div class="row">
+		<?php echo $form->labelEx($model,'desperiodo'); ?>
+		<?php echo $form->textField($model,'desperiodo',array()); ?>
+		<?php echo $form->error($model,'desperiodo'); ?>
 	</div>
 
 	<div class="row">

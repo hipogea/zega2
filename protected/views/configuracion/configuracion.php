@@ -67,6 +67,9 @@
 				'Documentos'=>array('id'=>'tab___b___o',
 					'content'=>$this->renderPartial('tab_documentos', array('form'=>$form,'model'=>$model),TRUE)
 				),
+                            'Contabilidad'=>array('id'=>'tab___b_conta__o',
+					'content'=>$this->renderPartial('tab_contabilidad', array('form'=>$form,'model'=>$model),TRUE)
+				),
 
 			),
 			'options' => array('overflow'=>'auto','collapsible' => false,),

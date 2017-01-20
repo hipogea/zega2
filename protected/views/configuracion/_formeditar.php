@@ -44,7 +44,10 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'valor'); ?>
-		<?php echo $form->textField($model,'valor'); ?>
+		<?php echo $form->textField($model,'valor',array('size'=>60)); ?>
+            
+           		
+			
 		<?php echo $form->error($model,'valor'); ?>
 	</div>
 
@@ -56,7 +59,11 @@
 		<?php echo $form->error($model,'explicacion'); ?>
 	</div>
 
-	
+	<div class="row">
+		<?php echo $form->labelEx($model,'lista'); ?>
+		<?php echo $form->textArea($model,'lista'); ?>
+		<?php echo $form->error($model,'lista'); ?>
+	</div>
 	
 
 

@@ -223,7 +223,17 @@ $form=$this->beginWidget('CActiveForm', array(
     </div>
       <div class="panelderecho">
 	  
+	 <div class="row">
+		<?php echo $form->label($model,'monto'); ?>
+		
+		
+		<?php echo $form->textField($model,'monto',array('size'=>28,'maxlength'=>28)); ?>
 	
+	   
+	
+
+
+	  </div>
 
 	<div class="row">
 		<?php echo $form->label($model,'correlativo'); ?>

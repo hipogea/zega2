@@ -399,8 +399,97 @@ $mo=New Alinventario();
 
 public $layout='//layouts/column2';
 	public function actionPio() {
-            $ot=Ot::model()->findByPk(29)->resumenCostosPorTipo(true);
-            var_dump($ot);die();
+           VAR_DUMP( yii::app()->tipocambio->getVenta('USD','2016-02-16'));DIE();
+            echo date("w",time());die();
+            $clase= New Tempdesolpe();
+            print_r($clase->enumModels());die();
+           $p=yii::app()->basePath.DIRECTORY_SEPARATOR.'modules'.DIRECTORY_SEPARATOR;
+           $modulosp=array();
+            $modelosp=array();
+           foreach (scandir($p) as $f) {
+               
+              // var_dump($f); echo "<br><br><br>";
+				if ($f == '.' || $f == '..') {
+					continue;
+				}
+				if (strlen($f)) {
+					if ($f[0] == '.') {
+						continue;
+					}
+				}
+                                    if(is_dir($p.$f.DIRECTORY_SEPARATOR.'models')){
+                                        foreach(scandir($p.$f.DIRECTORY_SEPARATOR.'models') as $archivo)
+                                                {
+                                                        if ($archivo == '.' || $archivo == '..') {
+                                                            continue;
+                                                            }
+                                                            if (strlen($archivo)) {
+                                                            if ($archivo[0] == '.') {
+                                                                    continue;
+                                                                    }
+                                                            }
+                                                        if(is_file($p.$f.DIRECTORY_SEPARATOR.'models'.DIRECTORY_SEPARATOR.$archivo)                   
+                                                                )  {
+                                                            $modelosp[]=substr($archivo,0,strpos($archivo,'.php'));
+                                                        }  
+                                                    }
+                                    }
+				//$modulosp[]=$p.$f.DIRECTORY_SEPARATOR.'models';
+
+			}
+                   print_r($modelosp);
+           die();
+            
+            
+            
+            
+            
+            $client = Yii::createComponent
+                    (array(
+                    'class' => 'ext.GWebService.GSoapClient',
+                    'wsdlUrl' => 'http://ws.insite.pe/sunat/ruc.php?wsdl'
+                        )   );
+ 
+// remote method parameters are passed as an array
+     VAR_DUMP($client->call('consultaRUC', array('ruc'=>'20600279832')));
+             die();
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+             var_dump(date("w",time())) ;die();
+           $citer=New CDBCriteria;
+        $citer->addCondition("codmondef=:monedadef AND codmon1=:monedaacomprar");
+        $citer->params=array(":monedadef"=>'PEN' ,":monedaacomprar"=>'USD' );
+        $ultima= yii::app()->db->createCommand()->select('id,compra,venta,dia,ultima,iduser')->
+        from('{{tipocambio}}')->
+        where($citer->condition,$citer->params)->queryAll();
+        //var_dump($moneda);yii::app()->end();
+        //if(!$ultima!=false)
+          // throw new CHttpException(500,__CLASS__.' '.__FUNCTION__.'  '.__LINE__.'  No se ha registrado tipo de cambio compra para la moneda '.$moneda);
+        var_dump($ultima);die(); 
+            
+            
+            
+            
+            $client = Yii::createComponent
+                    (array(
+                    'class' => 'ext.GWebService.GSoapClient',
+                    'wsdlUrl' => 'http://www.webservicex.net/CurrencyConvertor.asmx?WSDL'
+                        )   );
+ 
+// remote method parameters are passed as an array
+     VAR_DUMP($client->call('ConversionRate', array('FromCurrency'=>'USD','ToCurrency'=>'PEN')));
+             die();
             //var_dump(Docingresados::model()->findByPk(344)->procesosdocusinanular);die();
             $dar=date("H:i:s");
            // var_dump(strtotime($dar));

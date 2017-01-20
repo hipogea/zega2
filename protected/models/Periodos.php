@@ -13,11 +13,17 @@
  * @property integer $toleranciaatras
  * @property integer $toleranciadelante
  */
-class Periodos extends CActiveRecord
+class Periodos extends ModeloGeneral
 {
-	/**
+
+    public $descrilarga;
+    /**
 	 * @return string the associated database table name
 	 */
+    
+    public $_fechaminima;
+     public $_fechamaxima;
+    
 	public function tableName()
 	{
 		return '{{periodos}}';
@@ -36,10 +42,13 @@ class Periodos extends CActiveRecord
 			array('toleranciaatras, toleranciadelante', 'numerical', 'integerOnly'=>true,'min'=>0,'max'=>10),
 			//array('toleranciaatras, toleranciadelante', 'max'=>10),
 			array('mes, anno', 'length', 'max'=>2),
+                    array('activo', 'safe', 'on'=>'insert,update'  ),
 			array('activo', 'length', 'max'=>1),
+                    array('activo', 'verificaperiodosactivos'),
+                    array('desperiodo', 'safe', 'on'=>'insert,update'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, mes, anno, inicio, final, activo, toleranciaatras, toleranciadelante', 'safe', 'on'=>'search'),
+			array('id, mes, anno, inicio, desperiodo,final, activo, toleranciaatras, toleranciadelante', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -51,7 +60,9 @@ class Periodos extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-		);
+                   // 'fminima'=>array(self::STAT,'Periodos','id','select'=>'min(inicio)','condition'=>"activo='1'"),
+		// 'fmaxima'=>array(self::STAT,'Periodos','id','select'=>'max(final)','condition'=>"activo='1'"),
+                    );
 	}
 
 	/**
@@ -162,10 +173,16 @@ class Periodos extends CActiveRecord
 		return parent::model($className);
 	}
 
-	public function verificafecha($attribute,$params){
-
-			if(!yii::app()->periodos->verificafechas($this->inicio,$this->final))
-				$this->adderror('inicio','Fecha final mayor que la de inicio');
+	public function verificaperiodosactivos($attribute,$params){
+                    //var_dump($this->activo);die();
+		if($this->cambiocampo('activo'))
+                    //var_dump($this->activo);
+                if($this->activo=='1')
+                  /* var_dump((integer)yii::app()->settings->get('conta','conta_nperiodosabiertos') );
+                var_dump($this::nperiodosactivos());
+                 die();*/
+            if((integer)yii::app()->settings->get('conta','conta_nperiodosabiertos') <=  $this::nperiodosactivos())
+				$this->adderror('activo','Ya no puede activar mas periodos ');
 
 	}
 
@@ -185,4 +202,47 @@ class Periodos extends CActiveRecord
 	}
 
 
+        public static function nperiodosactivos(){
+            return count(self::model()->findAll("activo='1'"));
+        }
+        
+        public function verificafecha($attribute,$params){
+
+			if(!yii::app()->periodos->verificafechas($this->inicio,$this->final))
+				$this->adderror('inicio','Fecha final mayor que la de inicio');
+
+	}
+        
+        public  function fechaminima(){
+           // $sql = '';
+            if(is_null($this->_fechaminima)){
+                 $dependency = new CDbCacheDependency('SELECT count(*) FROM {{periodos}} ');
+            return  Yii::app()->db->cache(100000, $dependency)->
+                    createCommand()->
+                    select('min(inicio)')->from('{{periodos}}')->
+                    where("activo='1'")->queryScalar();
+            }else{
+                return $this->_fechaminima;
+            }
+           
+            
+        }
+        
+        public  function fechamaxima(){
+           // $sql = '';
+            if(is_null($this->_fechamaxima)){
+            $dependency = new CDbCacheDependency('SELECT count(*) FROM {{periodos}} ');
+            return  Yii::app()->db->cache(100000, $dependency)->
+                      createCommand()->
+                    select('max(final)')->from('{{periodos}}')->
+                    where("activo='1'")->queryScalar();
+            }else{
+                return $this->_fechamaxima;
+            }
+        }
+        
+        public function afterfind(){
+            $this->descrilarga=$this->mes.'-'.'20'.$this->anno;
+            return parent::afterfind();
+        }
 }

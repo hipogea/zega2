@@ -32,7 +32,7 @@ class TMonedaController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','admin','cambio','colocacambio','actualizacambio'),
+				'actions'=>array( 'activalog',   'updatecambio',    'activamoneda',   'listamonedas',   'create','update','admin','cambio','colocacambio','actualizacambio'),
 				'users'=>array('@'),
 			),
 
@@ -206,4 +206,115 @@ class TMonedaController extends Controller
 			Yii::app()->end();
 		}
 	}
+        
+        public function actionlistamonedas()
+            {
+		$model=new Monedas('search');
+		$model->unsetAttributes();  // clear any default values
+		if(isset($_GET['Monedas']))
+			$model->attributes=$_GET['Monedas'];
+
+		$this->render('adminmonedas',array(
+			'model'=>$model,
+		));
+	}
+        
+      /*  Esta funcion agrega 
+       * kla estruutua para una nueva moneda 
+       * agrega registro de moneda en la tabla rtmoneda 
+       * params : 
+       * @codmon: Codifo de l anueva moenda
+       * @seguir:  Indica si el tipo de cambio de esta moneda tebdra un Log
+       * 
+       */  
+        public function actionactivamoneda(){
+            if(isset($_GET['codmon'])){
+                 $codmon= strtoupper(MiFactoria::cleanInput($_GET['codmon']));
+                 ///ACTUALIZANDO EL STATUS DE LA MONEDA 
+                 $regmoneda=Monedas::model()->findByPk($codmon);
+                 if(is_null($regmoneda)){
+                    MiFactoria::mensaje('error','NO ha especificado una moneda para agregar');
+                  
+                 } else{
+                     $regmoneda->setScenario('status');
+                     $regmoneda->habilitado='1';
+                    $regmoneda->save();
+                       
+                      yii::app()->tipocambio->agregarmoneda($codmon,$seguir=false);
+                     MiFactoria::mensaje('success','Se agrego la moneda al sistema');
+                 }
+                     
+                
+            }else{
+                 MiFactoria::mensaje('error','NO ha especificado una moneda para agregar');
+            }
+           $this->redirect('cambio');
+           
+            
+        }
+        
+        
+        public function actionupdatecambio($fecha=null)
+        {
+             $items= Tipocambio::model()->findAll();    
+                if(isset($_POST['Tipocambio']))
+                        {
+                            //echo "saliomm "; die();
+                    $valid=true;
+                             $transaccion=$items[0]->dbConnection->beginTransaction();
+                                 foreach($items as $i=>$item)
+                                         {
+                                           // echo "entro "; die();
+                                     if(isset($_POST['Tipocambio'][$i])){
+                                                $item->attributes=$_POST['Tipocambio'][$i];
+                                                $valid=$item->validate();
+                                                    if($valid){
+                                                        $item->save();
+                                                         }else{
+                                                            break; 
+                                                            }
+                
+                                                                }
+                
+                                        }
+                                    if($valid){
+                                        $transaccion->commit();
+                                        MiFactoria::Mensaje('success','Se grabaron los registros');
+                                        $this->redirect('cambio');
+                                        
+                                    }else{
+                                            $transaccion->rollback(); 
+                                            MiFactoria::Mensaje('error',' NO Se grabaron los registros');
+                                       
+                                        }
+             }
+          
+    // displays the view to collect tabular input
+    $this->render('actualizacambio',array('items'=>$items));
+           
+            
+        }
+      public function actionactivalog(){
+                    
+          if(yii::app()->request->isAjaxRequest){
+              if(isset($_GET['id'])){
+                  $id= (integer)MiFactoria::cleanInput($_GET['id']);
+                  $registro= Tipocambio::model()->findByPk($id);
+                  if(is_null($registro))
+                   throw new CHttpException(500,'NO se encontro el registro con el id '.$id);
+		   $registro->setScenario('seguimiento');
+                   if($registro->seguir=='1')
+                   {
+                       $registro->seguir='0';
+                   } else {
+                       $registro->seguir='1';
+                   }
+                  // $registro->seguir='1';
+                   $registro->save();
+                   echo "Se actualizo el seguiemietno del tipo de cambio para la moneda ".$registro->codmon1;
+              }
+          }
+      }  
 }
+        
+

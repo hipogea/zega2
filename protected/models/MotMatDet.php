@@ -41,7 +41,7 @@ class MotMatDet extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'mot_mat_det';
+		return '{{mot_mat_det}}';
 	}
 
 	/**
@@ -58,7 +58,7 @@ class MotMatDet extends CActiveRecord
 			array('descripcion', 'length', 'max'=>40),
 			array('um, codocu', 'length', 'max'=>3),
 			array('codigoequipo', 'length', 'max'=>5),
-			array('creadopor, creadoel, modificadoel, modificadopor', 'length', 'max'=>25),
+			//array('creadopor, creadoel, modificadoel, modificadopor', 'length', 'max'=>25),
 			array('hidmot, obs,estado,codigoequipo,cantidad', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
@@ -101,11 +101,7 @@ class MotMatDet extends CActiveRecord
 			'descripcion' => 'Descripcion',
 			'obs' => 'Obs',
 			'um' => 'Um',
-			'codigoequipo' => 'Codigoequipo',
-			'creadopor' => 'Creadopor',
-			'creadoel' => 'Creadoel',
-			'modificadoel' => 'Modificadoel',
-			'modificadopor' => 'Modificadopor',
+			'codigoequipo' => 'Codigoequipo',			
 			'estado' => 'Estado',
 			'codocu' => 'Codocu',
 			'cantidad' => 'Cantidad',
@@ -149,11 +145,7 @@ class MotMatDet extends CActiveRecord
 		$criteria->compare('descripcion',$this->descripcion,true);
 		$criteria->compare('obs',$this->obs,true);
 		$criteria->compare('um',$this->um,true);
-		$criteria->compare('codigoequipo',$this->codigoequipo,true);
-
-
-
-
+		$criteria->compare('codigoequipo',$this->codigoequipo,true);		
 		$criteria->compare('estado',$this->estado,true);
 		$criteria->compare('codocu',$this->codocu,true);
 		$criteria->compare('cantidad',$this->cantidad);
@@ -179,11 +171,7 @@ class MotMatDet extends CActiveRecord
 		$criteria->compare('descripcion',$this->descripcion,true);
 		$criteria->compare('obs',$this->obs,true);
 		$criteria->compare('um',$this->um,true);
-		$criteria->compare('codigoequipo',$this->codigoequipo,true);
-
-
-
-
+		$criteria->compare('codigoequipo',$this->codigoequipo,true);		
 		$criteria->compare('estado',$this->estado,true);
 		$criteria->compare('codocu',$this->codocu,true);
 		$criteria->addCondition("hidmot = ".$idpedido."");

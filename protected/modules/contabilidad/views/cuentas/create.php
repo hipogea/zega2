@@ -8,11 +8,11 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'List Cuentas', 'url'=>array('index')),
-	array('label'=>'Manage Cuentas', 'url'=>array('admin')),
+	//array('label'=>'List Cuentas', 'url'=>array('index')),
+	array('label'=>'Listado Cuentas', 'url'=>array('admin')),
 );
 ?>
 
-<h1>Create Cuentas</h1>
+<?php MiFactoria::titulo('Crear Cuenta ', 'gear')   ?>
 
 <?php $this->renderPartial('_form', array('model'=>$model)); ?>

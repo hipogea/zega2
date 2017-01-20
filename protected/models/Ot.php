@@ -4,9 +4,7 @@ CONST ESTADO_CREADO='10';
 
 class Ot extends  ModeloGeneral
 {
-	
-    CONST CODIGO_DOCUMENTO_DETALLE_SOLPE='350';
-    /**
+	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
@@ -285,53 +283,26 @@ public function tienesolpeabierta($tipo) {
 
    
  public  function  resumenCostosPorTipo($temp=false){
-    $arrayrotulos=array("Costo de materiales : ","Costo de Servicios : ","Costo de Imputaciones Externas :");
-   
-    if($temp){
-        $tabla="{{tempdesolpe}}";
-        }else {
-          $tabla="{{desolpe}}";   
-        }
-       $filas=yii::app()->db->createCommand(
+     if($temp){
+        return yii::app()->db->createCommand(
                  " SELECT sum(punitplan) as mplan, 
                      sum(punitreal) as mreal from 
-                     ".$tabla."  where hidot =".$this->id." and  est not in"
-               . "   ".Estado::listaestadosnocalculables(self::CODIGO_DOCUMENTO_DETALLE_SOLPE)."  group by tipsolpe 
+                    {{tempdesolpe}}  where hidot =".$this->id." group by tipsolpe
                             union 
                     select sum(montosoles) as mplan , sum(montosoles)
-                    as mreal from {{imputaciones}} where idcolectorpadre=".$this->id." "
+                    as mreal from {{imputaciones}} where idcolectorpadre==".$this->id." "
                  )->queryAll();
-       
-     
-     $filas[0]['designacion']=$arrayrotulos[0];
-     $filas[1]['designacion']=$arrayrotulos[1];
-     $filas[2]['designacion']=$arrayrotulos[2];
-    return new CArrayDataProvider($filas, array(
-                    'id'=>'costosporcategoria',
-                ));
-}
-
-
-public  function  resumenCostosPorCeCo($temp=false){
-   // $arrayrotulos=array("Costo de materiales : ","Costo de Servicios : ","Costo de Imputaciones Externas :");
-    if($temp){
-        $tabla="{{tempdesolpe}}";
-        }else {
-          $tabla="{{desolpe}}";   
-        }
-       $filas=yii::app()->db->createCommand(
-                 "select  sum(t.punitplan)as mplan , sum(t.punitreal) as mreal, 
-                     c.codc as ceco,  c.desceco as designacion from ".$tabla." 
-                     t ,  {{cc}} c where t.imputacion=c.codc and hidot=".$this->id." and t.est not in "
-               . "    ".Estado::listaestadosnocalculables(self::CODIGO_DOCUMENTO_DETALLE_SOLPE)."    "
-               . " group by c.codc,  c.desceco   " )->queryAll();
-       
-     
-     
-    return new CArrayDataProvider($filas, array(
-                    'id'=>'costosporceco',
-                ));
-}
-     
+     }else{
+        return  yii::app()->db->createCommand(
+                 " SELECT sum(punitplan) as mplan, 
+                     sum(punitreal) as mreal from 
+                     {{desolpe}}  where hidot =".$this->id." group by tipsolpe
+                            union 
+                    select sum(montosoles) as mplan , sum(montosoles)
+                    as mreal from {{imputaciones}} where idcolectorpadre==".$this->id." "
+                 )->queryAll();
+     }
+    
+}     
   
 }

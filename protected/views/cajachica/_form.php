@@ -30,7 +30,7 @@
 					'save'=>array(
 						'type'=>'A',
 						'ruta'=>array(),
-						'visiblex'=>array(ESTADO_CREADO,ESTADO_AUTORIZADO,ESTADO_ANULADO,ESTADO_LIQUIDADO),
+						'visiblex'=>array(NULL,ESTADO_PREVIO,ESTADO_CREADO,ESTADO_AUTORIZADO,ESTADO_ANULADO,ESTADO_LIQUIDADO),
 					),
 
 

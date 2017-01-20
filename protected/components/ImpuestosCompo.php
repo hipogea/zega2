@@ -11,18 +11,23 @@ private $_valor;
   public function getImpuesto($codimpuesto,$fecha=null){
       if(is_null($fecha)){
           $fecha=date('Y-m-d');
-      }else{
-          $fecha=date('Y-m-d',strtotime($fecha));
-      }
-
-      $criterio=New CDBCriteria();
+          $criterio=New CDBCriteria();
       $criterio->addCondition("activo='1' and hcodimpuesto=:vcodimpuesto");
       $criterio->addCondition("ffinal >= :vfecha AND finicio <= :vfecha ");
       $criterio->params=array(":vfecha"=>$fecha,":vcodimpuesto"=>$codimpuesto);
+      }else{
+          $fecha=date('Y-m-d',strtotime($fecha));
+          $criterio=New CDBCriteria();
+      $criterio->addCondition(" hcodimpuesto=:vcodimpuesto");
+      $criterio->addCondition("ffinal >= :vfecha AND finicio <= :vfecha ");
+      $criterio->params=array(":vfecha"=>$fecha,":vcodimpuesto"=>$codimpuesto);
+      }
+
+      
       $modelo=$this->_modelo;
       //var_dump($modelo::model()->find( $criterio)->attributes);yii::app()->end();
-      $this->_valor=$modelo::model()->find( $criterio)->valor;
-     if( is_null($this->_valor))
+      $this->_valor=$modelo::model()->findAll( $criterio)[0]->valor;
+     if( is_null($modelo::model()->findAll( $criterio)[0]))
          throw new CHttpException(500,'No se pudo encontrar el valor del impuesto para esta fecha');
    return  $this->_valor/100;
   }

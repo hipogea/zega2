@@ -19,6 +19,15 @@ class CuentasController extends Controller
 		);
 	}
 
+      public function behaviors(){
+          return array(
+			'exportableGrid' => array(
+				'class' => 'application.components.ExportableGridBehavior',
+				'filename' => 'Cuentas.csv',
+				'csvDelimiter' =>(Yii::app()->user->isGuest)?",":Yii::app()->user->getField('delimitador') , //i.e. Excel friendly csv delimiter
+			));
+          
+      }
 	/**
 	 * Specifies the access control rules.
 	 * This method is used by the 'accessControl' filter.
@@ -137,10 +146,27 @@ class CuentasController extends Controller
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['Cuentas']))
 			$model->attributes=$_GET['Cuentas'];
+                
+                 if ($this->isExportRequest()) { //<==== [[ADD THIS BLOCK BEFORE RENDER]]
+			//ECHO "SALIO";DIE();
+			$this->exportCSV($model->search(), array(
+					'codcuenta',
+					'descuenta',
+					'clase',
+					'contrapartida',
+					'grupo',
+					'codigo',
+                            'n2',
+					'n3',
+					'registro',
+                                                                )
+                                            );
+		} else {
 
 		$this->render('admin',array(
 			'model'=>$model,
 		));
+                }
 	}
 
 	/**

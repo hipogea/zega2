@@ -44,7 +44,7 @@ class Mot extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'mot_materiales';
+		return '{{mot_materiales}}';
 	}
 
 	/**
@@ -55,7 +55,7 @@ class Mot extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('descripcion, creadoel, modificadoel', 'length', 'max'=>25),
+			array('descripcion', 'length', 'max'=>25),
 			array('codep','required','message'=>'Debes de indicar la embarcacion'),
 			array('descripcion','required','message'=>'Indica algo'),
 			array('codcentro','required','message'=>'Donde estas localizado?'),
@@ -64,12 +64,12 @@ class Mot extends CActiveRecord
 			array('codcentro, codep', 'length', 'max'=>4),
 			array('codplanta', 'length', 'max'=>2),
 			array('codtraba', 'length', 'max'=>4),
-			array('creadopor', 'length', 'max'=>20),
-			array('fecha,barquitos.nomep,modificadopor,numeroauxiliar', 'safe'),
+			
+			array('fecha,barquitos.nomep,numeroauxiliar', 'safe'),
 			//array('numeroauxiliar', 
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('fecha,numeroauxiliar, id, descripcion, numero, codcentro, codplanta, codtraba, creadoel, creadopor, modificadoel, modificadopor, codep', 'safe', 'on'=>'search'),
+			array('fecha,numeroauxiliar, id, descripcion, numero, codcentro, codplanta, codtraba, codep', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -100,11 +100,7 @@ class Mot extends CActiveRecord
 			'numero' => 'Numero',
 			'codcentro' => 'Codcentro',
 			'codplanta' => 'Codplanta',
-			'codtraba' => 'Codtraba',
-			'creadoel' => 'Creadoel',
-			'creadopor' => 'Creadopor',
-			'modificadoel' => 'Modificadoel',
-			'modificadopor' => 'Modificadopor',
+			'codtraba' => 'Codtraba',			
 			'codep' => 'Codep',
 		);
 	}
@@ -146,11 +142,7 @@ class Mot extends CActiveRecord
 		$criteria->compare('numero',$this->numero,true);
 		$criteria->compare('codcentro',$this->codcentro,true);
 		$criteria->compare('codplanta',$this->codplanta,true);
-		$criteria->compare('codtraba',$this->codtraba,true);
-
-
-
-
+		$criteria->compare('codtraba',$this->codtraba,true);		
 		$criteria->compare('codep',$this->codep,true);
 
 		return new CActiveDataProvider($this, array(

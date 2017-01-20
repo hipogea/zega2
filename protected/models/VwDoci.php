@@ -5,7 +5,7 @@ class VwDoci extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
-    
+    const CODIGO_TENENCIA_CERTIFICADOS='400';
     public  $d_fechain1;
    public $color;
    public $fechanominal1;
@@ -156,7 +156,7 @@ class VwDoci extends CActiveRecord
 		$criteria->compare('correlativo',$this->correlativo,true);
 		$criteria->compare('tipodoc',$this->tipodoc,true);
                 $criteria->compare('color',$this->color,true);
-		$criteria->compare('moneda',$this->moneda,true);
+		//$criteria->compare('moneda',$this->moneda,true);
 		$criteria->compare('descorta',$this->descorta,true);
 		$criteria->compare('codepv',$this->codepv,true);
 		$criteria->compare('monto',$this->monto);
@@ -181,6 +181,7 @@ class VwDoci extends CActiveRecord
 		$criteria->compare('rucpro',$this->rucpro,true);
 		$criteria->compare('final',$this->final,true);
                 $criteria->compare('espeabierto',$this->espeabierto,true);
+                 $criteria->addCondition("codtenencia not in ('".self::CODIGO_TENENCIA_CERTIFICADOS."')");
                 if(isset($_SESSION['sesion_Clipro']))
                     {
 			$criteria->addInCondition('codprov', $_SESSION['sesion_Clipro'], 'AND');
@@ -366,13 +367,15 @@ class VwDoci extends CActiveRecord
         
     public static function array_columnas_proveedores(){
         return array(
-             array('name'=>'numero','header'=>'Num','type'=>'raw'),
-             array('name'=>'id','header'=>'Id','type'=>'raw'),
-           array('name'=>'despro','header'=>'Empresa'),
-                array('name'=>'moneda'),        
-             array('name'=>'nomep','header'=>'Embarcacion'),
-           array('name'=>'fecha','header'=>'F. Doc'),
-             array('name'=>'fechain','header'=>'F recepcion'),
+             'numero',
+            'correlativo',
+            'despro',           
+            'descorta',
+            'moneda',
+            'nomep',
+            'fecha',
+            'fechain',
+            'numdocref',
                 );
     }
      

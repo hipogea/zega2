@@ -169,7 +169,7 @@ class Bloqueos extends CActiveRecord
 		echo  "fechalimite  ".	$fechalimite."<br>";*/
 		$filasborradas= Bloqueos::model()->delete($criterio->condition,$criterio->params);
 		/*var_dump($criterio);*/
-		return $filasborradas; 
+		return $filasborradas;
 	}
 
 

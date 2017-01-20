@@ -10,7 +10,7 @@
  * @property integer $denominador
  * @property integer $numerador
  */
-class Tipocambio extends CActiveRecord
+class Tipocambio extends ModeloGeneral
 {
 
 	public $monedaref=NULL;
@@ -40,6 +40,12 @@ class Tipocambio extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
+                     array('codmondef+codmon1', 'application.extensions.uniqueMultiColumnValidator','on'=>'insert,update,nuevamoneda,general,analitica'),
+                    
+                     array('seguir', 'safe', 'on'=>'seguimiento'),
+			
+                    array('codmon1, codmondef,dia,seguir', 'safe', 'on'=>'nuevamoneda'),
+			
 			array('compra,venta', 'numerical'),
 			array('codmon1, codmon2', 'length', 'max'=>3),
 			//array('compra, venta', 'required', 'message'=>'Indique todos los datos'),
@@ -48,9 +54,9 @@ class Tipocambio extends CActiveRecord
 			array('compra, venta,monedaref', 'required', 'on'=>'general'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('codmon1, codmon2, id, denominador, numerador', 'safe', 'on'=>'search'),
-			array('codmon1, codmon2, ultima,cambio', 'safe', 'on'=>'analitica'),
-			array('codmon1, codmon2, ultima,monedaref,cambio', 'safe', 'on'=>'general'),
+			array('codmon1, codmon2, id, denominador,dia, numerador', 'safe', 'on'=>'search'),
+			array('codmon1, codmon2, ultima,cambio,dia', 'safe', 'on'=>'analitica'),
+			array('codmon1, codmon2, ultima,monedaref,dia,cambio', 'safe', 'on'=>'general'),
 		);
 	}
 
@@ -96,22 +102,34 @@ public function checkvalores($attribute,$params) {
 
 
 public function beforeSave() {
-							if ($this->isNewRecord) {
-										
-											
-									} else
-									{
-										$this->ultima=date("Y-m-d H:i:s"); 
-												$this->modificadopor=Yii::app()->user->name;  
+        if($this->cambiovalores()){
+                 $this->ultima=date("Y-m-d H:i:s");    
+            }
+            
+      if($this->isNewRecord)
+          $this->dia=date("w",time());
+            
+      
+      return parent::beforeSave();
+}
 
-										   }
 
-   if($this->codmon1==$this->codmon2)$this->cambio=1;
-									
-
-									return parent::beforeSave();
-				}
-	
+public function afterSave() {
+    if(!$this->isNewRecord)  {         
+              if($this->cambiodia()){
+                 // if($this->cambiovalores())}
+                    $this->dia=date("w",time());
+                      yii::app()->tipocambio->log($this->codmon1);
+              }else{
+                  if($this->cambiovalores())
+                      //echo "cambiaron los avlores ";die();
+                      yii::app()->tipocambio->log($this->codmon1);
+                  
+              }
+          }
+//yii::app()->tipocambio->log($this->codmon1);
+return parent::afterSave();
+	}	
 
 
 
@@ -144,4 +162,27 @@ public function beforeSave() {
 			'criteria'=>$criteria,
 		));
 	}
-}
+        
+        private function havencido(){
+           $tiempoacumulado= strtotime($this->ultima)+
+            yii::app()->settings->get('general','general_horaspasadastipocambio')*60*60;
+          return ($tiempoacumulado > time())?true:false;
+           
+           
+        }
+        
+         private function cambiodia(){
+          $diaactual=date("w",time());
+          return($this->dia==$diaactual)?false:true;
+           
+           
+        }
+        
+         private function cambiovalores(){
+          return ($this->cambiocampo('compra')
+                  or $this->cambiocampo('venta'))?true:false;
+                     
+            }
+           
+           
+        }
