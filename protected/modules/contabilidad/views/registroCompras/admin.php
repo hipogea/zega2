@@ -3,7 +3,8 @@
 
 $this->menu=array(
 	//array('label'=>'Liberacion masiva', 'url'=>array('libmasiva')),
-	array('label'=>'Crear Registro de compra', 'url'=>array('CreaDocumento')),
+	array('label'=>'Nuevo Reg Material', 'url'=>array('Crear')),
+        array('label'=>'Nuevo Reg Servicio', 'url'=>array('Creaservicio')),
 	//array('label'=>'Valores por defecto', 'url'=>$this->createUrl('Opcionescamposdocu/configurausuario',array('docu'=>$this->documento,'docuhijo'=>$this->documentohijo))),
 
 );

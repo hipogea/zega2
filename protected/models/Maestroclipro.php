@@ -83,7 +83,7 @@ class Maestroclipro extends CActiveRecord
 						$this->adderror('codart','Este material no existe' );
 						  }else {
 						  		if($maestro->um<>$this->um)
-						  			$this->adderror('um','Esta unidad de medida no esta ampliada para este material,amplie las vistas del material' );
+						  			$this->adderror('um','Esta unidad de medida [ '.$this->um.' ]no esta ampliada para este material,amplie las vistas del material' );
 
 						  }
 					 

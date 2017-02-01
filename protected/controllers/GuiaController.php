@@ -1,14 +1,17 @@
 <?php
-const ESTADO_PREVIO='99';
+
+class GuiaController extends ControladorBase
+{
+	
+    const ESTADO_PREVIO='99';
 const ESTADO_CREADO='10';
 const ESTADO_CONFIRMADO='20';
 const ESTADO_AUTORIZADO='30';
 const ESTADO_ENTREGADO='80';
 const ESTADO_ANULADO='50';
 const CODIGO_LUGAR_A_BORDO='000011';
-class GuiaController extends ControladorBase
-{
-	/**
+const CODIGO_ESTADO_DETALLE_ANULADO='40';
+    /**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
@@ -108,7 +111,7 @@ class GuiaController extends ControladorBase
 				/*echo " es primer avez y renderizar sin mas    ";
 				  yii::app()->end();*/
 				///Si se esta abriendo un documento que no ha sido compeltado por otro usuario...!BORRARLO
-				if($model->{$this->campoestado}==ESTADO_PREVIO and $model->iduser != yii::app()->user->id){
+				if($model->{$this->campoestado}==self::ESTADO_PREVIO and $model->iduser != yii::app()->user->id){
 						$model->delete();
 					throw new CHttpException(400,'No se ha podido encontrar el documento');
 
@@ -464,7 +467,7 @@ public function actioncargadespacho(){
 	public function actionCreate()
 	{
 		$model=new Guia;
-		$model->{$this->campoestado}=ESTADO_PREVIO;
+		$model->{$this->campoestado}=self::ESTADO_PREVIO;
 		//$model->valorespordefecto();
       // $this->layout='//layouts/column_inicio_chico';
 		// Uncomment the following line if AJAX validation is needed
@@ -549,7 +552,8 @@ public function actioncargadespacho(){
 	
 		public function actionCreadetalleActivo($idcabeza,$cest)
 	{
-		if($cest=='10' OR $cest=='99') {
+		$modelocabeza=$this->loadModel($idcabeza);
+                    if($cest=='10' OR $cest=='99') {
 		$model=new Tempdetgui;
 		$model->setScenario('INS_ACTIVO');
 		$model->valorespordefecto($this->documentohijo);
@@ -560,10 +564,8 @@ public function actioncargadespacho(){
 			$model->codocu=$this->documentohijo; ///detalle guia
 			$model->n_hguia=$idcabeza;
 			//crietria para filtrar la cantidad de items del detalle
-			$criterio=new CDbCriteria;			
-			 $criterio->condition="n_hguia=:idguia  ";
-			$criterio->params=array(':idguia'=>$idcabeza);
-			$model->c_itguia=str_pad(Tempdetgui::model()->count($criterio)+1,3,"0",STR_PAD_LEFT);
+			
+			$model->c_itguia=$modelocabeza->getNextItem();
 			//str_pad($somevariable,$anchocampo,"0",STR_PAD_LEFT);
 			////con esto calculamos el numero de items
 			//echo "  El valor de  ".$idcabeza."       ".$model->n_hguia."   ";
@@ -598,12 +600,12 @@ public function actioncargadespacho(){
 	{
 		 $id= (integer) MiFactoria::cleanInput($idcabeza);
         if ($cest == '10' OR $cest == '99') {
-     $this->loadModel($id);
+     $modelocabeza=$this->loadModel($id);
 			$model = new Tempdetgui();
 			//var_dump($model->rules());die();
                         $tipo=  MiFactoria::cleanInput($_GET['tipo']);
                         if(!in_array($tipo,  MiFactoria::tiposmateriales()))
-                                throw new CHttpException(500,__CLASS__.'   '.__FUNCTION__.'  El tipo de material especificado {$tipo} no existe ');
+                                throw new CHttpException(500,__CLASS__.'   '.__FUNCTION__.'  El tipo de material especificado {'.$tipo.'   } no existe ');
                                  $model->c_af=$tipo;
                          
                                $relaciones=$model->colocaescenario($tipo);
@@ -616,10 +618,8 @@ public function actioncargadespacho(){
 				$model->codocu = $this->documentohijo; ///detalle guia
 				$model->n_hguia = $idcabeza;
 				//crietria para filtrar la cantidad de items del detalle
-				$criterio = new CDbCriteria;
-				$criterio->condition = "n_hguia=:idguia  ";
-				$criterio->params = array(':idguia' => $idcabeza);
-				$model->c_itguia = str_pad(Tempdetgui::model()->count($criterio) + 1, 3, "0", STR_PAD_LEFT);
+				
+				$model->c_itguia = $modelocabeza->getNextItem();
 				//str_pad($somevariable,$anchocampo,"0",STR_PAD_LEFT);
 				////con esto calculamos el numero de items
 				//echo "  El valor de  ".$idcabeza."       ".$model->n_hguia."   ";
@@ -898,19 +898,25 @@ public function actionVerdetalle($id)
 
 		$autoIdAll = $_POST['cajita'];
 		$estado=$_POST[$this->modelopadre][$this->campoestado];
-		 if(in_array($estado,array(ESTADO_CREADO,ESTADO_PREVIO)))
+		 if(in_array($estado,array(self::ESTADO_CREADO,self::ESTADO_PREVIO)))
 			 {
 				 foreach($autoIdAll as $autoId)
 					{
 
-						if($this->borraitemhijo($this->modeloshijos['Detgui'],$autoId))
-						{
-						yii::app()->user->setFlash('success',' OK, Se borro la linea ');
-				        } else {
-							yii::app()->user->setFlash('error','ERROR-  se pudo  borrar la linea');
-
-						}
+						$tempito= Tempdetgui::model()->findByPk($autoId);
+                                                if(!is_null($tempito)){
+                                                    $tempito->setScenario('cambioestado');
+                                                    $tempito->c_estado=self::CODIGO_ESTADO_DETALLE_ANULADO;
+                                                    if($tempito->save()){
+                                                       
+                                                        yii::app()->user->setFlash('success',' OK, Se borro la linea ');
+                                                    }else{
+                                                       yii::app()->user->setFlash('error','ERROR-  se pudo  borrar la linea '.yii::app()->mensajes->getErroresItem($tempito->geterrors())); 
+                                                    }
+                                                }
+                                 
 					}
+                                         $tempito->guia->arreglaOrdenItems(self::CODIGO_ESTADO_DETALLE_ANULADO);
 			} ELSE {
 			 yii::app()->user->setFlash('error',' El estado del documento no permite borrar el Item');
 		   }
@@ -1493,7 +1499,7 @@ public function actionVerdetalle($id)
         public function actionCreadetalleCompo($idcabeza,$cest)
 	{
 		$idcabeza=(integer)  MiFactoria::cleanInput($idcabeza);
-                
+               $modelocabeza=$this->loadModel($idcabeza) ;
             if($cest=='10' OR $cest=='99') {
 		$model=new Tempdetgui;
 		$model->setScenario('INS_COMPO');
@@ -1505,11 +1511,8 @@ public function actionVerdetalle($id)
 			$model->codocu=$this->documentohijo; ///detalle guia
 			$model->n_hguia=$idcabeza;
 			//crietria para filtrar la cantidad de items del detalle
-			$criterio=new CDbCriteria;			
-			 $criterio->condition="n_hguia=:idguia  ";
-                          $criterio->addCondition("n_hguia=:idguia  ");
-			$criterio->params=array(':idguia'=>$idcabeza);
-			$model->c_itguia=str_pad(Tempdetgui::model()->count($criterio)+1,3,"0",STR_PAD_LEFT);
+			
+			$model->c_itguia=$modelocabeza->getNextItem();
 			//str_pad($somevariable,$anchocampo,"0",STR_PAD_LEFT);
 			////con esto calculamos el numero de items
 			//echo "  El valor de  ".$idcabeza."       ".$model->n_hguia."   ";
@@ -1584,7 +1587,7 @@ public function actionVerdetalle($id)
             $idguia=(integer)  MiFactoria::cleanInput($id);
             // $idvale=(integer)  MiFactoria::cleanInput($_GET['idvale']);
              $guia=$this->loadModel($id);
-             $registrodetalle=New Tempdetgui('INS_VALEMASIVO');
+             $registrodetalle=New Tempdetgui();
              //$vale=  Almacendocs::model()->findBypK($idvale);
             // if(is_null($vale))
                //  throw new CHttpException(500,'No se encontro ningun documento Vale para estos datos '.$idvale);
@@ -1592,7 +1595,7 @@ public function actionVerdetalle($id)
              if(isset($_POST['Tempdetgui'])){
                     $autoIdAll = $_POST['cajita'];
                     //$estado=$guia->{$this->campoestado};
-		 if(in_array($guia->{$this->campoestado},array(ESTADO_CREADO,ESTADO_PREVIO)))
+		 if(in_array($guia->{$this->campoestado},array(self::ESTADO_CREADO,self::ESTADO_PREVIO)))
 			 {
 			//$logi="";
                         $mensaje="";	
@@ -1616,7 +1619,7 @@ public function actionVerdetalle($id)
                                                          'c_descri'=>$modelodespacho->kardex->maestro->descripcion,
                                                           'c_um'=>$modelodespacho->kardex->um,
                                                         'c_codep'=>$_POST['Tempdetgui']['c_codep'],
-                                                         'c_estado'=>ESTADO_PREVIO,
+                                                         'c_estado'=>self::ESTADO_PREVIO,
                                                           'idusertemp'=>yii::app()->user->id,
                                                          'codocu'=>$this->documentohijo,
                                                             'codob'=>$_POST['Tempdetgui']['codob'],

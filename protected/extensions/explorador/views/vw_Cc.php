@@ -37,6 +37,6 @@
 	),
 )); ?>
 <div class="row buttons">
-		<?php echo CHtml::submitButton('Seleccionar'); ?>
+		<?php echo CHtml::submitButton('Seleccionar  C'); ?>
 	</div>
 <?php $this->endWidget(); ?>

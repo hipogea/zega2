@@ -1,7 +1,7 @@
 <?php
 
 $datosparagrafico=$model->pronostico();
-//PRINT_R($datosparagrafico=$model->pronostico());yii::app()->end();
+//PRINT_R($datosparagrafico[2]);yii::app()->end();
 ?>
 
 <?php
@@ -23,7 +23,7 @@ $this->Widget('ext.highcharts.HighchartsWidget',
 			),
 			'title'=>array('text'=>'Pronostico stock Libre',),
 			'xAxis'=>array(
-				'categories'=>$datosparagrafico[2],
+				'categories'=>$datosparagrafico[0],
 				'text'=>'Dias Calendario',
 				'labels'=>array(
 					'style'=>array(
@@ -68,7 +68,7 @@ $this->Widget('ext.highcharts.HighchartsWidget',
 				),
 			),
 			'series'=>array(
-				array('name'=>'Libre','data'=>$datosparagrafico[3]),
+				array('name'=>'Libre','data'=>$datosparagrafico[1]),
 
 			)
 		)

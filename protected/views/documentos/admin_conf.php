@@ -13,16 +13,18 @@ $this->menu=array(
 
 <?php $this->widget('ext.groupgridview.GroupGridView', array(
       	'id'=>'documentos-grid',
-	'dataProvider'=> Opcionescamposdocu::model()->search(),
+	'dataProvider'=> $model->search(),
 	 'mergeColumns' => array('codocu'),
 	 'itemsCssClass'=>'table table-striped table-bordered table-hover','filter'=>$model,
 	'columns'=>array(
-		'codocu',
-            array('name'=>'codocu','value'=>'$data->documentos->desdocu'),
+		array('name'=>'codocu','value'=>'$data->documentos->desdocu','filter'=>CHtml::listData(Documentos::model()->findAll(array("condition"=>"clase='D' ",'order'=>'coddocu')), "coddocu", "referencia")),
+            
+                    //array('name'=>'desdocu','value'=>'$data->documentos->desdocu'),
 		//'campo',
                 'nombrecampo',
-            'cuantasopcioneshay',
-             array('name'=>'codocu','value'=>'$data->documentos->nconfiguser'),
+            //'cuantasopcioneshay',
+            //'documentos.desdocu',
+             array('header'=>'N opciones','value'=>'$data->documentos->nconfiguser'),
 	
             
                 // 'nombrecampo',

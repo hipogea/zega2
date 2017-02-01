@@ -32,7 +32,7 @@ class TMonedaController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array( 'activalog',   'updatecambio',    'activamoneda',   'listamonedas',   'create','update','admin','cambio','colocacambio','actualizacambio'),
+				'actions'=>array('updatecambiolog',    'ajaxcambioporfecha',      'activalog',   'updatecambio',    'activamoneda',   'listamonedas',   'create','update','admin','cambio','colocacambio','actualizacambio'),
 				'users'=>array('@'),
 			),
 
@@ -109,12 +109,14 @@ class TMonedaController extends Controller
 	public function actioncambio()
 	{
 		$model=new Tipocambio('search');
+                $logcambio=New Logtipocambio();
+               $logcambio->fecha= date('Y-m-d',time()-24*60*60);
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['TMoneda']))
 			$model->attributes=$_GET['TMoneda'];
 
 		$this->render('admin',array(
-			'model'=>$model,
+			'model'=>$model,'logcambio'=>$logcambio
 		));
 	}
 
@@ -256,7 +258,7 @@ class TMonedaController extends Controller
         
         public function actionupdatecambio($fecha=null)
         {
-             $items= Tipocambio::model()->findAll();    
+             $items= Tipocambio::model()->findAll("codmon1 <> :vcodmon1",array(":vcodmon1"=>yii::app()->settings->get('general','general_monedadef')));    
                 if(isset($_POST['Tipocambio']))
                         {
                             //echo "saliomm "; die();
@@ -294,27 +296,111 @@ class TMonedaController extends Controller
            
             
         }
-      public function actionactivalog(){
+        
+        
+         public function actionupdatecambiolog()
+        {
+            if(isset($_GET['fecha'])){
+                //var_dump($_GET['fecha']);die();
+                if(preg_match('/(19|20)\d{2}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])/',$_GET['fecha'])){
+                    
+                    $items= Logtipocambio::model()->findAll(" codmondef='".yii::app()->settings->get('general','general_monedadef')."' and fecha='".$_GET['fecha']."'");
+                    //var_dump($items);die();
+                    $yaestanmonedas=array();
+                    foreach($items AS $fila){
+                         $yaestanmonedas[]=$fila->codmon;
+                     } 
+                     //var_dump($yaestanmonedas);die();
+                    $monedasactivas=yii::app()->tipocambio->monedasactivas();
+                    //var_dump($monedasactivas);die();
+                    $faltanmonedas= array_diff($monedasactivas, $yaestanmonedas);
+                    foreach($faltanmonedas as $clave=>$monedafalta){
+                        $registro=New Logtipocambio();
+                        $cambioac=yii::app()->tipocambio->registroactual($monedafalta);
+                        
+                        //var_dump($cambioac);
+                        $registro->setAttributes(                               
+                                    array(
+                                                         'hidcambio'=>$cambioac[0]['id']->id,
+                                                         'compra'=>null,
+                                                        'codmon'=>$monedafalta,
+                                                        'codmondef'=>$cambioac[0]['codmondef'],
+                                                        'venta'=>null,
+                                                        'fecha'=>$_GET['fecha'],
+                                                        'dia'=>date("w",strtotime($_GET['fecha'])),
+                                                         'iduser'=>yii::app()->user->id,
+                                                            'diaano'=>date("z",strtotime($_GET['fecha'])),
+                                                        )                                 
+                                );
+                       $items[]=$registro;
+                    }
+                    if(!isset($_POST['Logtipocambio']))
+                    $this->render('actualizalogcambio',array('items'=>$items));
+           
+            }
+            
+                    }
+            
+                if(isset($_POST['Logtipocambio']))
+                        {
+                    //var_dump($items);die();
+                       // unset($_GET) ;  
+                    //var_dump($items); die();
+                    $valid=true;
+                             $transaccion=$items[0]->dbConnection->beginTransaction();
+                                 foreach($items as $i=>$item)
+                                         {
+                                           //echo count($items); die();
+                                    //var_dump($item);die();
+                                     if(isset($_POST['Logtipocambio'][$i])){
+                                                $item->attributes=$_POST['Logtipocambio'][$i];
+                                                //$item->venta=$_POST['Logtipocambio'][$i]['venta'];
+                                                //var_dump($item->attributes);
+                                                $valid=$item->validate();
+                                                    if($valid){
+                                                       $item->save();
+                                                           //echo yii::app()->mensajes->getErroresItem($item->geterrors());
+                                                         }else{
+                                                             $mensaje=yii::app()->mensajes->getErroresItem($item->geterrors());
+                                                            break; 
+                                                            }
+                
+                                                                }
+                
+                                        }
+                                    if($valid){
+                                        $transaccion->commit();
+                                        MiFactoria::Mensaje('success','Se grabo el registro ');
+                                        $this->redirect('cambio');
+                                        
+                                        
+                                    }else{
+                                            $transaccion->rollback(); 
+                                            MiFactoria::Mensaje('error',' NO Se grabaron los registros  ->  '.$mensaje);
+                                            $this->render('actualizalogcambio',array('items'=>$items));
+                                       
+                                        }
+                              
+             }
+          
+    // displays the view to collect tabular input
+    
+            
+        }
+         
+        
+      public function actionajaxcambioporfecha(){
                     
           if(yii::app()->request->isAjaxRequest){
-              if(isset($_GET['id'])){
-                  $id= (integer)MiFactoria::cleanInput($_GET['id']);
-                  $registro= Tipocambio::model()->findByPk($id);
-                  if(is_null($registro))
-                   throw new CHttpException(500,'NO se encontro el registro con el id '.$id);
-		   $registro->setScenario('seguimiento');
-                   if($registro->seguir=='1')
-                   {
-                       $registro->seguir='0';
-                   } else {
-                       $registro->seguir='1';
-                   }
-                  // $registro->seguir='1';
-                   $registro->save();
-                   echo "Se actualizo el seguiemietno del tipo de cambio para la moneda ".$registro->codmon1;
+              if(isset($_POST['fechita'])){
+                  $fecha=$_POST['fechita'];
+                  $model=New Logtipocambio();
+                  echo $this->renderpartial('cambioporfecha',array('model'=>$model,'fecha'=>$fecha),true, false);
               }
           }
-      }  
+      } 
+      
+      
 }
         
 

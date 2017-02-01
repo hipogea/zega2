@@ -51,7 +51,7 @@ $this->endWidget();
 				),
 				'dialog'=>'cru-dialogdetalle',
 				'frame'=>'cru-detalle',
-				'visiblex'=>array($this->editable($model->{$this->campoestado}),ESTADO_CREADO,ESTADO_PREVIO),
+				'visiblex'=>array($this->editable($model->{$this->campoestado}),$this::ESTADO_CREADO,$this::ESTADO_PREVIO),
 
 			),
 			'tool'=>array(
@@ -67,7 +67,7 @@ $this->endWidget();
 				),
 				'dialog'=>'cru-dialogdetalle',
 				'frame'=>'cru-detalle',
-				'visiblex'=>array($this->editable($model->{$this->campoestado}),ESTADO_CREADO,ESTADO_PREVIO),
+				'visiblex'=>array($this->editable($model->{$this->campoestado}),$this::ESTADO_CREADO,$this::ESTADO_PREVIO),
 
 			),
 			
@@ -80,11 +80,12 @@ $this->endWidget();
 					//"id"=>$model->n_direc,
 					"asDialog"=>3,
 					"gridId"=>'detalle-grid',
+                                                "tipo"=>"A"
 				)
 				),
 				'dialog'=>'cru-dialogdetalle',
 				'frame'=>'cru-detalle',
-				'visiblex'=>array($this->editable($model->{$this->campoestado}),ESTADO_CREADO,ESTADO_PREVIO),
+				'visiblex'=>array($this->editable($model->{$this->campoestado}),$this::ESTADO_CREADO,$this::ESTADO_PREVIO),
                                                "tipo"=>"A"
 
 			),
@@ -108,7 +109,7 @@ $this->endWidget();
                                							 }
                                					',
 				),
-				'visiblex'=>array($this->editable($model->{$this->campoestado}),ESTADO_CREADO,ESTADO_AUTORIZADO,ESTADO_ANULADO,ESTADO_CONFIRMADO,ESTADO_FACTURADO,ESTADO_PREVIO),
+				'visiblex'=>array($this->editable($model->{$this->campoestado}),$this::ESTADO_CREADO,$this::ESTADO_AUTORIZADO,$this::ESTADO_ANULADO,$this::ESTADO_CONFIRMADO,$this::ESTADO_PREVIO),
 
 			),
 
@@ -124,18 +125,18 @@ $this->endWidget();
 				),
 				'dialog'=>'cru-dialogdetalle',
 				'frame'=>'cru-detalle',
-				'visiblex'=>array($this->editable($model->{$this->campoestado}),ESTADO_CREADO,ESTADO_PREVIO),
+				'visiblex'=>array($this->editable($model->{$this->campoestado}),$this::ESTADO_CREADO,$this::ESTADO_PREVIO),
 			),
 			'pack2'=>array(
 				'type'=>'B',
 				'ruta'=>array($this->id.'/procesardocumento',array('id'=>$model->id,'ev'=>35)),
-				'visiblex'=>array($this->editable($model->{$this->campoestado}),ESTADO_CREADO,ESTADO_PREVIO),
+				'visiblex'=>array($this->editable($model->{$this->campoestado}),$this::ESTADO_CREADO,$this::ESTADO_PREVIO),
 
 			),
 			'adddoc'=>array(
 				'type'=>'B',
 				'ruta'=>array($this->id.'/procesardocumento',array('id'=>$model->id,'ev'=>64)),
-				'visiblex'=>array($this->editable($model->{$this->campoestado}),ESTADO_AUTORIZADO,ESTADO_PREVIO),
+				'visiblex'=>array($this->editable($model->{$this->campoestado}),$this::ESTADO_AUTORIZADO,$this::ESTADO_PREVIO),
 
 			),
 

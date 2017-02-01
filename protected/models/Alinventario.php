@@ -78,7 +78,7 @@ class Alinventario extends ModeloGeneral
 			->select($this->getsumas())
 			->from('{{alinventario}} a ,{{tipocambio}} b , {{almacenes}} c')
 			->where("a.codalm=c.codalm and a.codcen=c.codcen and
-		  c.codmon=b.codmon1 and b.codmon2=:Vmonedadefault  ",
+		  c.codmon=b.codmon1 and b.codmondef=:Vmonedadefault  ",
 				array(":Vmonedadefault"=>yii::app()->settings->get('general','general_monedadef')))->queryAll();
 		$stocks=array();
 		foreach($data[0] as $clave=>$valor){
@@ -98,7 +98,7 @@ class Alinventario extends ModeloGeneral
 		  ->select($this->getsumas().', a.codcen ')
 		  ->from('{{alinventario}} a ,{{tipocambio}} b , {{almacenes}} c')
 		  ->where("a.codalm=c.codalm and a.codcen=c.codcen and
-		  c.codmon=b.codmon1 and b.codmon2=:Vmonedadefault  ",
+		  c.codmon=b.codmon1 and b.codmondef=:Vmonedadefault  ",
 			  array(":Vmonedadefault"=>yii::app()->settings->get('general','general_monedadef')))
 		  ->group('a.codcen')->order('a.codcen ASC')
 		  ->queryAll();
@@ -120,7 +120,7 @@ class Alinventario extends ModeloGeneral
 			       ')
 			->from('{{alinventario}} a ,{{tipocambio}} b , {{almacenes}} c')
 			->where("a.codalm=c.codalm and a.codcen=c.codcen and
-		  c.codmon=b.codmon1 and b.codmon2=:Vmonedadefault  ",
+		  c.codmon=b.codmon1 and b.codmondef=:Vmonedadefault  ",
 				array(":Vmonedadefault"=>yii::app()->settings->get('general','general_monedadef')))
 			->group('a.codalm, a.codcen,c.nomal')->order('a.codalm asc')
 			->queryAll();
@@ -140,7 +140,7 @@ class Alinventario extends ModeloGeneral
 			->select($this->getsumas())
 			->from('{{alinventario}} a ,{{tipocambio}} b , {{almacenes}} c')
 			->where("a.codalm=c.codalm and a.codcen=c.codcen and
-		  c.codmon=b.codmon1 and b.codmon2=:Vmonedadefault and a.codart=:vcodigo ",
+		  c.codmon=b.codmon1 and b.codmondef=:Vmonedadefault and a.codart=:vcodigo ",
 				array(":vcodigo"=>$codigo,":Vmonedadefault"=>yii::app()->settings->get('general','general_monedadef')))->queryAll();
 		return $data;
 	}
@@ -151,7 +151,7 @@ class Alinventario extends ModeloGeneral
 			->select($this->getsumas().', a.codcen,a.codart ')
 			->from('{{alinventario}} a ,{{tipocambio}} b , {{almacenes}} c')
 			->where("a.codalm=c.codalm and a.codcen=c.codcen and
-		  c.codmon=b.codmon1 and b.codmon2=:Vmonedadefault and a.codart=:vcodigo ",
+		  c.codmon=b.codmon1 and b.codmondef=:Vmonedadefault and a.codart=:vcodigo ",
 				array(":vcodigo"=>$codigo,":Vmonedadefault"=>yii::app()->settings->get('general','general_monedadef')))
 			->group('a.codcen,a.codart')->order('a.codcen ASC')
 			->queryAll();
@@ -173,7 +173,7 @@ class Alinventario extends ModeloGeneral
 			       ')
 			->from('{{alinventario}} a ,{{tipocambio}} b , {{almacenes}} c')
 			->where("a.codalm=c.codalm and a.codcen=c.codcen and
-		  c.codmon=b.codmon1 and b.codmon2=:Vmonedadefault and a.codart=:vcodigo  ",
+		  c.codmon=b.codmon1 and b.codmondef=:Vmonedadefault and a.codart=:vcodigo  ",
 				array(":vcodigo"=>$codigo,":Vmonedadefault"=>yii::app()->settings->get('general','general_monedadef')))
 			->group('a.codalm, a.codcen,a.codart,c.nomal')->order('a.codalm asc')
 			->queryAll();
@@ -233,7 +233,7 @@ class Alinventario extends ModeloGeneral
             ->select(self::getsumas().', a.codalm,  a.codcen')
             ->from('{{alinventario}} a ,{{tipocambio}} b , {{almacenes}} c')
             ->where(" a.codalm=c.codalm and a.codcen=c.codcen and
-		  c.codmon=b.codmon1 and b.codmon2=:Vmonedadefault and a.codart=:vcodart ",
+		  c.codmon=b.codmon1 and b.codmondef=:Vmonedadefault and a.codart=:vcodart ",
                 array(':vcodart'=>$codmaterial,":Vmonedadefault"=>yii::app()->settings->get('general','general_monedadef')))
             ->group('a.codalm,  a.codcen')
             ->queryAll();
@@ -352,42 +352,49 @@ public function getstockTotalmaterial($codmaterial,$adatos=null){
 		$valorux=$stockinicial+$consumido;
 		/*print_r($valores);*/
 		/*echo "sotckinical ".$stockinicial."<br>";
-		echo "sotckinical ".$consumido."<br>";
-		echo "sotckinical +cosumido".$valorux."<br>";*/
-		//yii::app()->end();
+		echo "consumido ".$consumido."<br>";
+		echo "sotckinical +cosumido".$valorux."<br>";
+		yii::app()->end();*/
 		$fechax=strtotime($fechainicio);
 		$diaspasados=0;
 
 		foreach($valores as $fila){
 			$diaspasados+=ceil((strtotime($fila['fecha'])-$fechax)/(60*60*24));
 			$xarray[$fila['fecha']]=$diaspasados+1;
-			$yarray[]=$valorux-abs($fila['consumido']);
+			$yarray[]=$valorux;
 			$valorux-=abs($fila['consumido']);
 			$fechax=strtotime($fila['fecha']);
 		}
-	/*	echo "ejes x <br>";
+		/*echo "ejes x <br>";
 	print_r($xarray);
 		echo "ejes y";
 		echo "<br>";
 		print_r($yarray);
-		echo "<br>";*/
-		//yii::app()->end();*/
+		echo "<br>";
+		yii::app()->end();*/
 
 		if(count($xarray) < 2 or count($yarray) < 2 ){
 			return array(array(),array(),array(),array());
 		} else {
 			$recta=yii::app()->estadisticas->linear_regression(array_values($xarray), $yarray);
-			//recta devuelve un array ( valorpendiente m, intercepto y)
-			/*$x1=array_values($xarray)[0];
+			//var_dump($recta);die();
+//recta devuelve un array ( valorpendiente m, intercepto y)
+			
+                        /*$x1=array_values($xarray)[0];
             $y1=$recta['m']*$x1+$recta['b'];
             $x2=array_values($xarray)[count($xarray)-1];
             $y2=$recta['m']*$x2+$recta['b'];*/
 			$numerodepuntos=ceil((array_values($xarray)[count($xarray)-1]-array_values($xarray)[0])/count($xarray));
-		/*	echo "final ".array_values($xarray)[count($xarray)-1]."<br>";
+			/*var_dump($xarray);echo "<br>";
+                        echo "final ".array_values($xarray)[count($xarray)-1]."<br>";
 			echo "inicio ".array_values($xarray)[0]."<br>";
 			echo "cuantos ".count($xarray)."<br>";
-			echo "numeropuntos ".$numerodepuntos."<br>";*/
-			$x0=-round($recta['b']/$recta['m'],1);
+			echo "numeropuntos ".$numerodepuntos."<br>";die();*/
+			$x0=-round($recta['b']/$recta['m'],4);
+                        
+                        $xfinal=round(($stockinicial-$recta['b'])/$recta['m'],4);
+                        
+                       
 			//$escala=floor($x0/10);
 			// $xreg=array_values($xarray);
 			/*echo "numero puntos  ".$numerodepuntos."<br>";
@@ -401,8 +408,28 @@ public function getstockTotalmaterial($codmaterial,$adatos=null){
 			/*ECHO "DAI ACTUAL  ".$diaactual."<br>";
             ECHO "pendiente  ".$recta['m']."<br>";
             ECHO "residuo  ".$recta['b']."<br>";*/
+                         $primerpunto=array(0,$stockinicial+$consumido);
+                      // $yf=$diaactual*$recta['m']+$recta['b'];
+                        $ultimopunto=array($xfinal,$stockinicial);
+                        $absisas=array(0,$xfinal);
+                        $ordenadas=array($stockinicial+$consumido,$stockinicial);
+                        
+                        if($stockinicial >0){
+                           //hallnado x0
+                            $xfuturo=-round($recta['b']/$recta['m'],4);
+                            $yfuturo=$xfuturo*$recta['m']+$recta['b'];
+                            $absisas[]= $xfuturo;
+                            $ordenadas[]= $yfuturo;
+                        }
+                        
+                        
+                        
+                        return array($absisas,$ordenadas);
+                        
+                        
+                        
 			$frecuencia=floor(($x0-$diaactual)/$numerodepuntos)-1;
-			/*echo "frecuencia   ".$frecuencia."<br>";*/
+			//echo "frecuencia   ".$frecuencia."<br>";die();
 			$xreg=array();
 			$yreg=array();
 			//$xreg[]=0;
@@ -434,6 +461,7 @@ public function getstockTotalmaterial($codmaterial,$adatos=null){
 //$dospuntos=array(array($x1,round($y1,1)),array($x2,round($y2,1)));
 			///devolvemos las ordenadas, absisas y la ecuacion de la recta de regresion
 			///todo listo para el grafico
+                        
 			return array(array_values($xarray),$yarray,$xreg,$yreg);
 		}
 
@@ -1118,9 +1146,9 @@ public function getstockTotalmaterial($codmaterial,$adatos=null){
 	public function getsumas(){
 		$cadenasumas="";
 		foreach($this->camposstock as $clave=>$valor){
-			$cadenasumas.=", sum(a.".$valor.") as ".$valor." , sum((a.".self::NOMBRE_CAMPO_PRECIO_UNITARIO."+".self::NOMBRE_CAMPO_PRECIO_DIFERENCIA_UNITARIA.")*(a.".$valor.")*b.cambio ) as stock_".$valor;
+			$cadenasumas.=", sum(a.".$valor.") as ".$valor." , sum((a.".self::NOMBRE_CAMPO_PRECIO_UNITARIO."+".self::NOMBRE_CAMPO_PRECIO_DIFERENCIA_UNITARIA.")*(a.".$valor.")*b.venta ) as stock_".$valor;
 		           }
-		$cadenasumas.=", sum(".$this->getcadenacampos().") as cant_total,sum((a.".self::NOMBRE_CAMPO_PRECIO_UNITARIO."+".self::NOMBRE_CAMPO_PRECIO_DIFERENCIA_UNITARIA.")*(".$this->getcadenacampos().")*b.cambio) as stock_total";
+		$cadenasumas.=", sum(".$this->getcadenacampos().") as cant_total,sum((a.".self::NOMBRE_CAMPO_PRECIO_UNITARIO."+".self::NOMBRE_CAMPO_PRECIO_DIFERENCIA_UNITARIA.")*(".$this->getcadenacampos().")*b.venta) as stock_total";
 		return substr($cadenasumas,1);
 	}
 
@@ -1729,6 +1757,17 @@ var_dump($this->attributes);*/
 			return $this->punit;
 		}
 
+     }
+     
+     public static function getrotacion($codalmacen,$limite=null){
+         if($limite===null)
+             $limite=10;
+         return Yii::app()->db->createCommand()
+            ->select(" count(a.codart) as n, a.codart ")
+            ->from('{{alkardex}} a ')
+            ->where("  a.alemi=:vcodal ", array(':vcodal'=>$codalmacen))
+            ->group('a.codart')->limit($limite)
+            ->queryAll();
      }
 
 }

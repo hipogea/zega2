@@ -374,5 +374,6 @@ class Clipro extends ModeloGeneral
             return Clipro::model()->find("rucpro=:vruc",array(":vruc"=>$ruc));
             
         }
+        
 }
 

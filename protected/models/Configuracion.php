@@ -49,7 +49,7 @@ class Configuracion extends CActiveRecord {
            // array('tipodato', 'length', 'max' => 1),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('codcen, codocu, codparam,  valor,  explicacion,  iduser', 'safe', 'on' => 'search'),
+            array('codcen, codocu, codparam,  valor,  explicacion,  iduser', 'safe', 'on' => 'search,search_por_centro'),
         );
     }
 
@@ -117,7 +117,27 @@ class Configuracion extends CActiveRecord {
         ));
     }
     
-    
+    public function search_por_centro($codcen) {
+        // @todo Please modify the following code to remove attributes that should not be searched.
+
+        $criteria = new CDbCriteria;
+
+        //$criteria->compare('codcen', $this->codcen, true);
+        $criteria->compare('codocu', $this->codocu, true);
+        $criteria->compare('codparam', $this->codparam, true);
+       // $criteria->compare('desparam', $this->desparam, true);
+        $criteria->compare('valor', $this->valor, true);
+       // $criteria->compare('tipodato', $this->tipodato, true);
+        $criteria->compare('explicacion', $this->explicacion, true);
+       // $criteria->compare('lista', $this->lista, true);
+        $criteria->compare('iduser', $this->iduser);
+        //$criteria->compare('longitud', $this->longitud);
+        $criteria->addCondition("codcen='".$codcen."' and iduser < 0");
+     // $criteria->params=array(":vcodcen"=>$codcen);
+        return new CActiveDataProvider($this, array(
+            'criteria' => $criteria,
+        ));
+    }
     
      public function search_por_usuario($iduser) {
         // @todo Please modify the following code to remove attributes that should not be searched.

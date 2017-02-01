@@ -1,40 +1,6 @@
 <?php
 
-/**
- * This is the model class for table "{{registrocompras}}".
- *
- * The followings are the available columns in table '{{registrocompras}}':
- * @property string $id
- * @property string $femision
- * @property string $fvencimiento
- * @property string $tipo
- * @property string $codaduana
- * @property string $annodua
- * @property string $numerocomprobante
- * @property string $tipodocid
- * @property string $numerodocid
- * @property string $razpronombre
- * @property double $expobaseimpgrav
- * @property double $expigvgrav
- * @property double $expbaseimpnograv
- * @property double $expigvnograv
- * @property double $baseimpnograv
- * @property double $igvnograv
- * @property double $isc
- * @property double $otrostributos
- * @property double $importetotal
- * @property string $numerodocnodomiciliado
- * @property string $numconstdetraccion
- * @property string $fechaemidetra
- * @property double $tipocambio
- * @property string $reffechaorigen
- * @property string $reftipo
- * @property string $refserie
- * @property string $refnumero
- * @property string $fechacre
- * @property string $socio
- * @property integer $hidperiodo
- */
+
 class Registrocompras extends ModeloGeneral
 {
 	/**
@@ -80,8 +46,8 @@ class Registrocompras extends ModeloGeneral
                     //para toods elos escenarios 
                     
                     array('femision','checkfecha'),
-                    array('hidperiodo','safe'),
-                    array('hidperiodo','required'),
+                   // array('hidperiodo','safe'),
+                    //array('hidperiodo','required'),
                     
                     
                     
@@ -297,10 +263,11 @@ class Registrocompras extends ModeloGeneral
        
        
    public function checkfecha($attribute,$params) {
-       if(is_null($this->hidperiodo))
-           $this->adderror('hidperiodo','Debe de especificar el periodo, es un valor nulo'); 
+       //if(is_null($this->hidperiodo))
+          // $this->adderror('hidperiodo','Debe de especificar el periodo, es un valor nulo'); 
+       if(!yii::app()->periodo->estadentrodefechas($this->femision,$this->fechacontable,$this->fvencimiento))
+               $this->addError ('fechacontable', 'Revise el orden de las fechas no son consistentes');
 	
-       if(!$this->esfechacontable($this->hidperiodo, 'femision'))
-           $this->adderror('femision','La fecha de emision no esta dentro del periodo especificado'); 
+       
 		          }
 }

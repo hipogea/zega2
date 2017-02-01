@@ -18,4 +18,4 @@ $this->menu=array(
 
 <h1>Actualizar centro <?php echo $model->codcen; ?></h1>
 
-<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
+<?php echo $this->renderPartial('_form', array('model'=>$model,'modeloconf'=>$modeloconf)); ?>

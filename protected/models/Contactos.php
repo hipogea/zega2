@@ -154,10 +154,18 @@ class Contactos extends ModeloGeneral
 	public static  function getListMailContacto($idcontacto,$codocu) {
 		$modelocontacto=self::model()->findByPk($idcontacto);
 		$registroshijos=$modelocontacto->contactos_mail;
-		$listacorreos=$modelocontacto->c_mail.",";
+                if(yii::app()->correo->ValidateAddress($modelocontacto->c_mail)){
+                    $listacorreos=$modelocontacto->c_mail.",";
+                    
+                    }
+		
 		foreach($registroshijos as $fila ){
 			if($fila->codocu==$codocu and $fila->activo=='1')
-				$listacorreos.=$fila->mail.",";
+                            if(yii::app()->correo->ValidateAddress($fila->mail)){
+                   $listacorreos.=$fila->mail.",";
+                    
+                    }
+				
 		}
 		// $listacorreos=substr($listacorreos,1).""; //quitar el primer slash
 		$listacorreos=str_replace(",,",",",$listacorreos);//quitamos los slashes
@@ -173,7 +181,7 @@ class Contactos extends ModeloGeneral
 		$modeloempresa=Clipro::model()->findAll("codpro=:vcodempresa", array(":vcodempresa"=>$codempresa));
 		//echo "esta es la empresa". $codempresa;
 		//yii::app()->end();
-                if(strlen($modeloempresa[0]->emailpro)>0){
+                if(yii::app()->correo->ValidateAddress($modeloempresa[0]->emailpro)){
                    $listacorreos=$modeloeempresa->emailpro; 
                     
                 }else{
@@ -184,11 +192,17 @@ class Contactos extends ModeloGeneral
                 
                 foreach($modeloempresa[0]->contactoses as $filax )
                     {
-                     $listacorreos.=$filax->c_mail.","; 
+                      if(yii::app()->correo->ValidateAddress($filax->c_mail)){
+                           $listacorreos.=$filax->c_mail.",";
+                      }
+                    
                      foreach($filax->contactos_mail as $contacto )
                          {
                             if($contacto->codocu==$codocu and $contacto->activo=='1'){
-                                    $listacorreos.=$contacto->mail.","; 
+                                if(yii::app()->correo->ValidateAddress($contacto->mail)){
+                                  $listacorreos.=$contacto->mail.",";   
+                                }
+                                    
                                     }
                             }
                     }

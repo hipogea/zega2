@@ -204,9 +204,12 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'punit'); ?>
-		<?php echo $form->textField($model,'punit',array('disabled'=>($editable)?'':'disabled')); ?>
-		<?php echo $form->error($model,'punit'); ?>
-		<?php echo CHtml::label($model->ocompra->moneda,'sdsds '); ?>
+		<?php echo $form->textField($model,'punit',array('size'=>5,'class'=>'numerodocumento','disabled'=>($editable)?'':'disabled')); ?>
+            <span class="label badge-error">
+                    <?php echo $model->ocompra->moneda; ?>
+                </span>
+                    <?php echo $form->error($model,'punit'); ?>
+		
 		<?php $codpro=($model->isNewRecord)?Ocompra::model()->findByPk($model->hidguia)->codpro:$model->ocompra->codpro; ?>
 		<?php //var_dump($codpro);yii::app()->end(); ?>
 		<?php if(!($model->ocompra->tipologia=='W')) { ?>
@@ -216,10 +219,10 @@
 				'type' => 'POST',
 				'url' => CController::createUrl($this->id.'/cargaprecios'), //  la acci?n que va a cargar el segundo div
 				"data"=>array(
-					"codigoprove"=>$model->ocompra->codpro,
+					//"codigoprove"=>$model->ocompra->codpro,
 					"codigomaterial"=>"js:".get_class($model)."_codart.value",
 					"codentro"=>"js:".get_class($model)."_codentro.value",
-					"codigoalma"=>"js:".get_class($model)."_codigoalma.value",
+					//"codigoalma"=>"js:".get_class($model)."_codigoalma.value",
 				),
 				"update" => "#zona_precios",
 			)

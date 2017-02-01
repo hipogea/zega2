@@ -38,7 +38,7 @@ class VwImputaciones extends CActiveRecord
 			array('desimputa', 'length', 'max'=>15),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('codc, clasecolector, desceco, desimputa', 'safe', 'on'=>'search'),
+			array('codc,codclase, clasecolector, desceco, desimputa', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -86,6 +86,7 @@ class VwImputaciones extends CActiveRecord
 
 		$criteria->compare('codc',$this->codc,true);
 		$criteria->compare('clasecolector',$this->clasecolector,true);
+                $criteria->compare('codclase',$this->codclase,true);
 		$criteria->compare('desceco',$this->desceco,true);
 		$criteria->compare('desimputa',$this->desimputa,true);
 

@@ -2,10 +2,12 @@
 <div style=" width:300px;  " >
 <?php if($codprov=='')$codprov=null;?>
 <?php //var_dump(Ocompra::historicoprecios($codigom,$codprov,$codcentro));die();
-
+//var_dump(Ocompra::historicoprecios($codigom,$codprov,$codentro)->getdata());die();
 $this->widget('zii.widgets.grid.CGridView', array(
 		'summaryText'=>'',
 	'id'=>'precios-grid',
+     'itemsCssClass'=>'table table-striped table-bordered table-hover',
+	
 	//'dataProvider'=>Alentregas::model()->search_por_detcompra($filtro),
 		//'cssFile' => Yii::app()->getTheme()->baseUrl.'/css/grilla_naranja.css',
 
@@ -19,13 +21,21 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			//'value'=>'$data->codentro',
 			'htmlOptions'=>array('width'=>10),
 		),
-		array(
+		/*array(
 			'name'=>'codigoalma',
 			//array('name'=>'fechaent','header'=>'Para'),
 			'header'=>'Alm',
 			//'value'=>'$data->codigoalma',
 			'htmlOptions'=>array('width'=>10),
+		),*/
+                array(
+			'name'=>'despro',
+			//array('name'=>'fechaent','header'=>'Para'),
+			'header'=>'Proveedor',
+			'value'=>'$data["despro"]',
+			'htmlOptions'=>array('width'=>100),
 		),
+            
 		array(
 			'name'=>'fecdoc',
 			//array('name'=>'fechaent','header'=>'Para'),
@@ -41,13 +51,15 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			'htmlOptions'=>array('width'=>40),
 		),
 
-		array(
+		/*array(
 			'name'=>'punit',
 			//array('name'=>'fechaent','header'=>'Para'),
 			'header'=>'PU',
 			'value'=>'Mifactoria::decimal($data["punit"],2)',
 			'htmlOptions'=>array('width'=>40),
-		),
+		),*/
+            array('name'=>'punit', 'type'=>'raw','value'=>'CHtml::openTag("span",array("class"=>"badge badge-important")).Mifactoria::decimal($data["punit"],2).CHtml::closeTag("span")','htmlOptions'=>array('width'=>40)),
+		
 		array(
 			'name'=>'moneda',
 			//array('name'=>'fechaent','header'=>'Para'),

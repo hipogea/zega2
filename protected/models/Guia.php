@@ -7,6 +7,8 @@ class Guia extends ModeloGeneral
 	 * @param string $className active record class name.
 	 * @return Guia the static model class
 	 */
+    
+ CONST ESTADO_DETALLE_ANULADO='40';
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
@@ -301,6 +303,7 @@ class Guia extends ModeloGeneral
 			'detalle' => array(self::HAS_MANY, 'Detgui', 'n_hguia'),
 			'tempdetalle' => array(self::HAS_MANY, 'Tempdetgui', 'n_hguia'),
 			'numeroitems'=>array(self::STAT, 'Tempdetgui', 'n_hguia'),//el campo foraneo
+                    'numeroitemsvalidos'=>array(self::STAT, 'Tempdetgui', 'n_hguia','condition'=>" c_estado not in ('".self::ESTADO_DETALLE_ANULADO."') "),//el campo foraneo
 			'direccionespartida' => array(self::BELONGS_TO, 'Direcciones', 'n_dirsoc'),
 			'direccionesllegada' => array(self::BELONGS_TO, 'Direcciones', 'n_direc'),
 			'transportistas' => array(self::BELONGS_TO, 'Clipro', 'c_codtra'),
@@ -334,7 +337,7 @@ class Guia extends ModeloGeneral
 			'c_licon' => 'Licencia',
 			'd_fectra' => 'F trans',
 			'c_desgui' => 'Descrip',
-			'n_direc' => 'P lleg',
+			'n_direc' => 'P Lleg',
 			'c_texto' => 'Detalle',
 			'c_dirsoc' => 'C Dirsoc',
 			'c_serie' => 'Serie',
@@ -343,7 +346,7 @@ class Guia extends ModeloGeneral
 			'c_creado' => 'Creado',
 			//'n_guia' => 'N Guia',
 			'c_estado' => 'Estado',
-			'n_dirsoc' => 'Pto. partida',
+			'n_dirsoc' => 'P Part',
 			'c_modificado' => 'Modificado',
 			//n_agencia' => 'N Agencia',
 			'creadopor' => 'Creado por',
@@ -355,7 +358,7 @@ class Guia extends ModeloGeneral
 			'd_fecentrega' => 'F entr',
 			//'c_salida' => 'C Salida',
 			//'codocu' => 'Codocu',
-			'cod_cen' => 'C emisor',
+			'cod_cen' => 'Sucursa',
 		);
 	}
 	
@@ -495,4 +498,53 @@ class Guia extends ModeloGeneral
 		if($this->numeroitems==0 )
 			$this->adderror('c_numgui','Este documento no tiene items');
 	}
+        
+        /* Esta fucnion  devuelve un valor valido de objetos cliente cuando la opcion de transporte no obliga a usarlo
+         * se llena silenciocamente en los detalle sd eguia o NE 
+         */
+        public static function getobjetocliente(){
+           $valor=yii::app()->db->createCommand()->
+                select('codobjeto')->
+           from('{{objetos_cliente}}')->limit(1)->queryScalar();
+           if($valor!=false)
+               return $valor;
+            throw new CHttpException(500,__CLASS__.'   '.__FUNCTION__.'  No existen valores en la tabla Objetos cliente, llene uno  ');
+                               
+           
+        }
+        
+        /* Esta fucnion  devuelve un valor valido de objetos internis RMBARCACIONES X EJEMPLO cuando la opcion de transporte no obliga a usarlo
+         * se llena silenciocamente en los detalle sd eguia o NE 
+         */
+        public static function getobjetointerno(){
+            $valor=  yii::app()->db->createCommand()->
+                select('codep')->
+           from('{{embarcaciones}}')->limit(1)->queryScalar();
+            if($valor!=false)
+               return $valor;
+            throw new CHttpException(500,__CLASS__.'   '.__FUNCTION__.'  No existen valores en la tabla Embarcaciones, llene uno  ');
+              
+           
+        }
+        
+        public function arreglaOrdenItems($estadoanulado){
+            $contador=1;
+            foreach($this->tempdetalle as $detalle){
+                 $detalle->setScenario('cambioitems');
+                if(!($detalle->c_estado==$estadoanulado)){
+                   
+                    $detalle->c_itguia=str_pad($contador,3,"0",STR_PAD_LEFT); 
+                     $contador+=1;
+                }else{
+                     $detalle->c_itguia='000'; 
+                }
+                 $detalle->save();
+                   
+                
+            }
+        }
+        
+        public function getNextItem(){
+            return str_pad($this->numeroitemsvalidos+1,3,"0",STR_PAD_LEFT); 
+        }
 }

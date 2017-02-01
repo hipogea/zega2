@@ -271,7 +271,8 @@ class Alkardex extends ModeloGeneral
 				if(!$this->esatencionRQ())
 				$this->alkardex_alinventario->actualiza_stock($this->codmov, abs($this->cantidadbase()),  $this->punitbase(), $this->id);
 				$this->ocuparsedelosRq(); ///Si hay RQ de compras verifica y astender
-				$codop='357'; //Ingreso compras
+				$this->actualizapreciosclipro();
+                                $codop='357'; //Ingreso compras
 				break;
 
 			case "40": //ANULAR INGRESO COMPRA
@@ -1461,6 +1462,52 @@ class Alkardex extends ModeloGeneral
              );
             $model->save();                
           }
-          
+
+
+    /*Esta fucniona ctualiza los precios de los materiales 
+         * en la tabla maestroclipro segun cada OC atendida 
+         * ColocAL EL ULTIMO PRECIO 
+         */
+        public  function actualizapreciosclipro(){
+            $regdetallecompra= Docompra::model()->findByPk($this->idref);
+            if(!is_null( $regdetallecompra)){
+                $existe= Maestroclipro::model()->
+                        findByAttributes(array(
+                            'codart'=>$this->codart,
+                            'codpro'=>$regdetallecompra->ocompra->codpro,
+                             'centro'=>$this->codcentro,
+                        ));
+                if(!is_null($existe)){
+                    if(is_array($existe)){
+                        $model=$existe[0];
+                    }else{
+                        $model=$existe;
+                    }
+                        unset($existe);
+                         $model->setAttributes(array(                    
+                    'precio'=>$regdetallecompra->punit,                    
+                    'um'=>$regdetallecompra->um,
+                ));
+                }else{
+                    $model=New Maestroclipro();
+                     $model->setAttributes(array(
+                    'codart'=>$this->codart,
+                    'codpro'=>$regdetallecompra->ocompra->codpro,
+                    'codmon'=>$regdetallecompra->ocompra->moneda,
+                    'precio'=>$regdetallecompra->punit,
+                    'centro'=>$this->codcentro,
+                    'um'=>$regdetallecompra->um,
+                ));
+                }
+                
+               
+                $model->save();
+                  
+                
+                unset($regdetallecompra);
+            }
+            
+            
+        }          
           
 }

@@ -129,6 +129,7 @@ class DocingresadosController extends Controller {
         Yii::app()->session['codtenencia'] = $model->codtenencia;
         Yii::app()->session['codgrupo'] = $model->codgrupo;
         Yii::app()->session['espeabierto'] = $model->espeabierto;
+         Yii::app()->session['fecha'] = $model->fecha;
     }
 
     public function Destruyesesiones() {
@@ -142,13 +143,14 @@ class DocingresadosController extends Controller {
         unset(Yii::app()->session['codepv']);
         unset(Yii::app()->session['codresponsable']);
         unset(Yii::app()->session['espeabierto']);
+         unset(Yii::app()->session['fecha']);
     }
 
     /**
      * Creates a new model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
-    public function actionCreacertificado() {
+    public function actioncreacertificado() {
 ///var_dump(yii::app()->settings->get('general','general_codempresa'));die();	
         $model = new Docingresados('insert_certi');
         $model->valorespordefecto();
@@ -161,7 +163,7 @@ class DocingresadosController extends Controller {
                     // $model->codprov=Yii::app()->session['codprov'],
                     // Yii::app()->session['desprov'] = $model->clipro->despro;
                     $model->codlocal = Yii::app()->session['codlocal'],
-                    //$model->fechain=Yii::app()->session['fechain'],  
+                    $model->fecha=Yii::app()->session['fecha'],  
                     $model->tipodoc = Yii::app()->session['tipodoc'],
                     $model->moneda = Yii::app()->settings->get('general', 'general_monedadef'),
                     $model->monto = 0,
@@ -176,6 +178,8 @@ class DocingresadosController extends Controller {
         $model->codprov = yii::app()->settings->get('general', 'general_codempresa');
         // VAR_DUMP($model->codprov);die();
         // Uncomment the following line if AJAX validation is needed
+        
+            
         $this->performAjaxValidation($model);
         if (isset($_POST['Docingresados'])) {
             $model->attributes = $_POST['Docingresados'];
@@ -225,8 +229,10 @@ class DocingresadosController extends Controller {
         $model->codocu = self::CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS;
         if (isset($_GET['cert'])) {
             // die();
-            $model->codprov = yii::app()->settings->get('general', 'general_codempresa');
-            var_dump(yii::app()->settings->get('general', 'general_codempresa'));
+            $this->redirect('creacertificado');
+           // $model->codprov = yii::app()->settings->get('general', 'general_codempresa');
+            //$model->setScenario('insert_certi');
+            //var_dump(yii::app()->settings->get('general', 'general_codempresa'));
         }
         // Uncomment the following line if AJAX validation is needed
         $this->performAjaxValidation($model);
@@ -614,7 +620,7 @@ class DocingresadosController extends Controller {
         //var_dump($idsenmaletin);die();
         if (count($idsenmaletin)) {
             $registro = New Procesosdocu('masivo');
-            Logprocesosdocu::model()->deleteAll("iduser=" . yii::app()->user->id);
+           Logprocesosdocu::model()->deleteAll("iduser=" . yii::app()->user->id);
             if (isset($_POST['Procesosdocu'])) {
                 $registro->attributes = $_POST['Procesosdocu'];
                 if ($registro->validate()) {
@@ -690,13 +696,14 @@ class DocingresadosController extends Controller {
                         //echo "murio";die();
                         $arrayids = $registro::getIdsLog('success', self::CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS);
                         $proveedores = Docingresados::clipro_from_ids($arrayids);
-                        var_dump($proveedores);
+                       // var_dump($proveedores);
 
                         $regview = new VwDoci;
                         foreach ($proveedores as $clave => $valor) {
                             //echo "<br>ddirecciones<br>" ;
                             $direcciones = Contactos::getListMailEmpresa($valor, $registrodoc->tipodoc);
-                            //echo $direcciones;
+                            if(strlen(trim($direcciones))>0 ){
+                                //echo $direcciones;
                             // echo "<br>responder<br>" ;
 
                             $reply = yii::app()->user->email;
@@ -721,6 +728,8 @@ class DocingresadosController extends Controller {
                                     $direcciones, $reply, $titulo, $mensaje
                             );
 
+                            }
+                            
                             //  echo "<br><br><br>Se acabo el bucle  <br><br><br>" ; 
                             $direcciones = "";
                         }
@@ -1209,13 +1218,5 @@ class DocingresadosController extends Controller {
                 $direcciones, $reply, $titulo, $mensaje, Configuracion::valor(self::CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS, '1203', '1248')
         );
     }
-    
-    public function actionarbolcertificados(){
-        
-        
-        
-    }
-          
-    }
 
-
+}

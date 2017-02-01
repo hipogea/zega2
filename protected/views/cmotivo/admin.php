@@ -8,8 +8,8 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'List CMotivo', 'url'=>array('index')),
-	array('label'=>'Create CMotivo', 'url'=>array('create')),
+	//array('label'=>'List CMotivo', 'url'=>array('index')),
+	array('label'=>'Crear Motivo', 'url'=>array('create')),
 );
 
 Yii::app()->clientScript->registerScript('search', "
@@ -28,7 +28,7 @@ $('.search-form form').submit(function(){
 
 <?php MiFactoria::titulo('Motivos de  transporte ','package') ?>
 
-<?php echo CHtml::link('Advanced Search','#',array('class'=>'search-button')); ?>
+
 <div class="search-form" >
 <?php $this->renderPartial('_search',array(
 	'model'=>$model,
@@ -37,6 +37,7 @@ $('.search-form form').submit(function(){
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'cmotivo-grid',
+    'itemsCssClass'=>'table table-striped table-bordered table-hover',
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
 	'columns'=>array(

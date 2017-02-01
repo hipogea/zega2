@@ -2305,7 +2305,7 @@ public function actionReporte($id){
 
        //var_dump($codigo); var_dump($codigopro); var_dump($codigocen);die();
     // var_dump(Ocompra::historicoprecios($codigo,$codigopro,$codigocen,$limit=null));
-        echo   $this->renderpartial('precios',array('codigom'=>$codigo,'codprov'=>$codigopro,'codentro'=>$codigocen,'codigoalma'=>$codigoalma),true,true);
+        echo   $this->renderpartial('precios',array('codart'=>$codigo,'codigom'=>$codigo,'codprov'=>$codigopro,'codentro'=>$codigocen,'codigoalma'=>$codigoalma),true,true);
 
 
    }

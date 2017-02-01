@@ -16,6 +16,7 @@
                  ),
             array('name'=>'documentos','type'=>'raw','value'=>'$data->documentos->desdocu'),
             'final',
+            'automatico',
             'esmensaje',
             array('name'=>'hidprevio','header'=>'Previo','value'=>'($data->hidprevio>0)?$data->hidprevio:""'),
             'nhorasverde',

@@ -1085,13 +1085,17 @@ public $maximovalor;
 	public function checkfacturacion($attribute,$params){
 		//verifica  que el vale a anualr no este dfacturado
 		$valeaanular=Almacendocs::model()->find("numvale=:nimi",array("nimi"=>trim($this->numdocref)));
-		foreach($valeaanular->almacendocs_alkardex as $filakardex ){
+		$kardis=$valeaanular->almacendocs_alkardex;
+                if(is_array($kardis)){
+                    foreach( $kardis as $filakardex ){
 			if($filakardex->alkardex_alentregas[0]->cantfacturada > 0){
 				$this->adderror('numdocref','Este vale no puede anularse, ya tiene items facturados');
 				break;
 			}
 
 		}
+                }
+                
 
 	}
 

@@ -85,9 +85,12 @@ class Docingresados extends ModeloGeneral
 			//array('monto', 'numerical','on'=>'insert,update'),
                     array('tipodoc', 'checkcambiodoc','on'=>'update_certi'),
                     array('codtenencia', 'required','message'=>'Llenar la tenencia','on'=>'insert_certi,_certi'),
+                    array('codepv', 'required','message'=>'...Que paso con la referencia?','on'=>'insert_certi,update_certi'),
 			//array('monto', 'required','message'=>'Debes de llenar el monto','on'=>'insert,update'),
 			//array('codlocal', 'required','message'=>'Debes de llenar el centro','on'=>'insert,update'),
-			array('numero', 'required','message'=>'Debes de llenar el numero','on'=>'insert-certi,update_certi'),
+			array('numero', 'required','message'=>'Debes de llenar el numero','on'=>'insert_certi,update_certi'),
+                    array('fecha', 'required','message'=>'La fecha es obligatoria','on'=>'insert_certi,update_certi'),
+                     array('codgrupo,codresponsable', 'required','message'=>'Este dato es obligatorio','on'=>'insert_certi,update_certi'),
 			array('codprov', 'required','message'=>'Llena la empresa','on'=>'insert_certi,update_certi'),
 			array('tipodoc', 'required','message'=>'Ingresa el tipo de documento','on'=>'insert_certi,update_certi'),
                    array('tipodoc', 'checktenencias','on'=>'insert_certi,update_certi'),
@@ -102,7 +105,7 @@ class Docingresados extends ModeloGeneral
                     array('codtenencia', 'safe','on'=>'cambiotenencia'),
                    
                     
-                    array('fecha','checkfechas'),  ///Todos los escenarios 
+                    array('fecha','checkfechas','on'=>'insert,update'),  ///Todos los escenarios 
                     
                     
                       array('numero+tipodoc+codprov+codtenencia', 'application.extensions.uniqueMultiColumnValidator','on'=>'insert,update'),
@@ -244,7 +247,7 @@ class Docingresados extends ModeloGeneral
 	public function beforeSave() {
 		if ($this->isNewRecord) {	// $this->creadoel=Yii::app()->user->name;
                    if($this->escertificado()){
-                       $this->fechain=$this->fecha;
+                       $this->fechain=date('Y-m-d',strtotime($this->fecha)+24*60*60);
                    }
 		$this->correlativo=Numeromaximo::numero($this->model(),'correlativo','maximovalor',8);
 		$this->cod_estado='10';
@@ -627,7 +630,7 @@ return new CActiveDataProvider($this->cache(600, $dependecy, 2), array (
  
         PUBLIC function checkfechas(){
             if(!yii::app()->periodo->verificaFechas($this->fecha,$this->fechain))
-                    $this->adderror('fechain','La fecha de ingreso, es menor que la fecha de Registro');
+                    $this->adderror('fechain','La fecha de ingreso,  ['.$this->fechain.'] es menor que la fecha de Registro  ['.$this->fecha.' ]');
         }
  
  public function escertificado(){

@@ -34,20 +34,31 @@ class Tempdetgui extends ModeloGeneral
 		$reglas= array(
 
 			///PARA TODOS LOS ESCENARIOS
+                    
+                    array('n_hguia,m_obs,modo,codocu,c_itguia,c_codactivo,c_um,modo,c_codgui,hidref,
+			c_um,c_itguia,n_cangui,c_descri,c_estado,c_edgui,c_codep,n_hconformidad,docref,c_af,
+			cargodevolucion,codlugar', 'safe','on'=>'buffer'),
+                    
+                    
                     array('c_af', 'required','message'=>'Llene el tipo de material a mover'),
-                    array('c_af', 'safe'),
-			array('c_codep', 'required','message'=>'Sin referencia'),
+                    array('c_af,c_estado', 'safe'),
+			//array('c_codep', 'required','message'=>'Sin referencia'),
 			array('c_edgui', 'required','message'=>'Llene el destino'),
-			array('modo', 'required','message'=>'Llene el modo'),
+			//array('modo', 'required','message'=>'Llene el modo'),
 			array('c_descri', 'length', 'max'=>40),
 			array('c_descri', 'length', 'min'=>5),
 			 
-
+//ESCENARIO ca,bpo de stado //
+      array('c_estado', 'safe','on'=>'cambioestado'),   
+                    			 
+//ESCENARIO ca,bpo de stado //
+      array('c_itguia', 'safe','on'=>'cambioitems'),    
+                    
 
 			//ESCENARIO DE ACTIVO FIJO //
 			array('c_codactivo,n_cangui,c_itguia,c_descri,c_um,c_edgui,c_codep','safe','on'=>'INS_ACTIVO,UPD_ACTIVO'),
 			array('c_codactivo', 'exist','allowEmpty' => false,'attributeName' => 'codigoaf', 'className' => 'Inventario','message'=>'Este códIgo de activo no existe', 'on'=>'INS_ACTIVO,UPD_ACTIVO'),
-			array('c_codactivo', 'match', 'pattern'=>'/90-3[1-5]{1}00-[0-9]{5}/','message'=>'El codigo de placa no es el correcto', 'on'=>'INS_ACTIVO,UPD_ACTIVO'),
+			array('c_codactivo', 'match', 'pattern'=>yii::app()->settings->get('af','af_afmascara'),'message'=>'El codigo de placa no es el correcto', 'on'=>'INS_ACTIVO,UPD_ACTIVO'),
 			array('n_cangui', 'required', 'message'=>'La cantidad', 'on'=>'INS_ACTIVO,UPD_ACTIVO'),
                     array('c_descri', 'required','message'=>'Sin descripcion','on'=>'insert,update,INS_ACTIVO,UPD_ACTIVO,INS_COMPO,UPD_COMPO,INS_VALE,UPD_VALE'),
                        array('n_cangui', 'required', 'message'=>'La cantidad es obligatoria','on'=>'insert,update,INS_ACTIVO,UPD_ACTIVO,INS_COMPO,UPD_COMPO,INS_VALE,UPD_VALE'),
@@ -105,7 +116,11 @@ class Tempdetgui extends ModeloGeneral
 			$reglas[]=array('codob','safe');
 			$reglas[]=array('codob','required','message'=>'Coloque el objeto referencia');
 		}
-
+                
+                if(yii::app()->settings->get('transporte','transporte_objinterno')=='1'){
+			$reglas[]=array('c_codep','safe');
+			$reglas[]=array('c_codep','required','message'=>'Coloque el objeto interno referencia');
+		}
 		return $reglas;
 	}
 
@@ -206,9 +221,19 @@ class Tempdetgui extends ModeloGeneral
 
 
 	public function beforeSave() {
-		if ($this->isNewRecord) {
+		if ($this->isNewRecord){
+                    if(is_null($this->c_estado))
 			$this->c_estado='99';
 			$this->idusertemp=yii::app()->user->id;
+                        if(!(yii::app()->settings->get('transporte','transporte_objenguia')=='1')
+                                and is_null($this->codob)){
+                            $this->codob= Guia::getobjetocliente();
+                        }
+                        if(!(yii::app()->settings->get('transporte','transporte_objinterno')=='1')
+                            and is_null($this->c_codep)    ){
+                             $this->c_codep=Guia::getobjetointerno();
+                        }
+                        
 
 		}
 
@@ -363,9 +388,17 @@ class Tempdetgui extends ModeloGeneral
                          RETURN  $relaciones;
                          
                     break;
-                    case MiFactoria::material_activo():
-                                RETURN   $this->setScenario(($this->isNewRecord)?'INS_ACTIVO':'UPD_ACTIVO');
+                
+                ///EL CASO DE ACTIVO FIJOS
+                case MiFactoria::material_activo():
+                          $relaciones=$this->relations();
+                                $relaciones['inventario']=array(self::BELONGS_TO, 'Inventario', 'c_codactivo');
+                                $this->setScenario(($this->isNewRecord)?'INS_ACTIVO':'UPD_ACTIVO');
+                              //   $this->relations()=$relaciones;
+                         RETURN  $relaciones;
+                         
                     break;
+                    
                            
                         default:
        throw new CHttpException(500,__CLASS__.'   '.__FUNCTION__.'  Defina el tipo de material movido, al usar esta funcion  ');
@@ -385,5 +418,10 @@ class Tempdetgui extends ModeloGeneral
                    // Yii::log(' ejecutando '.serialize($fullFileName),'error');
                     $this->colocaarchivo($fullFileName);
              }
+             
+             
+          public function anula(){
+              
+          }
         
 }

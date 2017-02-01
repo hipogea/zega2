@@ -15,7 +15,7 @@
 						array(
 									'class'=>'CCheckBoxColumn',
 									'selectableRows' => 1,
-									'value'=>'$data->codc',
+								'value'=>'$data->codc."_".$data->desceco',
 									'checkBoxHtmlOptions' => array(                
 																'name' => 'checkselected[]',
 																	),
@@ -23,10 +23,10 @@
 							),
 	
 		'codc',
-		array('name'=>'clasecolector',
+		array('name'=>'codclase',
 			'type'=>'raw',
-			'value'=>'$data->desimputa',
-			'filter'=>CHtml::listData(Tipimputa::model()->findAll(),'codimpu','desimputa'  )
+			'value'=>'$data->codclase',
+			'filter'=>CHtml::listData(Clasecc::model()->findAll(array('order'=>'desclasecolector')),'codclasecolector','desclasecolector'  )
 		     ),
 		'desceco',
 		//'desimputa',

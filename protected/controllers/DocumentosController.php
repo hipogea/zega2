@@ -136,9 +136,11 @@ class DocumentosController extends Controller
 	{
 		$model=new Opcionescamposdocu('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Opcionescamposdocu']))
-			$model->attributes=$_GET['Opcionescamposdocu'];
-
+		if(isset($_GET['Opcionescamposdocu'])){
+                    $model->attributes=$_GET['Opcionescamposdocu'];
+                        //print_r($model->attributes);die();
+                }
+			
 		$this->render('admin_conf',array(
 			'model'=>$model,
 		));

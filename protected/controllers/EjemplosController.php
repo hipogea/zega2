@@ -399,6 +399,57 @@ $mo=New Alinventario();
 
 public $layout='//layouts/column2';
 	public function actionPio() {
+           var_dump(Alinventario::getrotacion('125'));die();
+            
+            echo yii::app()->periodo->diasentre('2016-04-12','2016-04-16');die();
+            
+            var_dump(yii::app()->db->createCommand()->
+                select('codobjeto')->
+           from('{{objetos_cliente}}')->limit(1)->queryScalar());die();
+         var_dump(Contactos::getListMailEmpresa('107031', '145')); die();
+            
+            
+            
+            var_dump(yii::app()->correo->ValidateAddress('address'));die();
+            
+            
+            
+            
+            var_dump(yii::app()->tipocambio->vacanciastotales('2017-01-01','2017-02-15')); 
+            die();
+            
+            
+            
+            
+            
+            
+            
+          PRINT_R(yii::app()->tipocambio->vacancias('USD','2015-12-14','2016-02-05'));DIE();
+        $fechas=yii::app()->db->createCommand()->
+                select('fecha')->
+           from('{{logtipocambio}}')->
+           where("fecha <= :fechitasup ",
+           array(":fechitasup"=>date('Y-m-d'))
+                   )->order("fecha desc")->queryColumn() ; 
+        var_dump($fechas);
+        die();   
+            
+            
+         echo date('Y-m-d H:i:s');die();
+date_default_timezone_set('Europe/London');
+
+if (date_default_timezone_get()) {
+    echo 'date_default_timezone_set: ' . date_default_timezone_get() . '<br />';
+}
+
+if (ini_get('date.timezone')) {
+    echo 'date.timezone: ' . ini_get('date.timezone');
+}
+
+die();
+            
+            
+            
            VAR_DUMP( yii::app()->tipocambio->getVenta('USD','2016-02-16'));DIE();
             echo date("w",time());die();
             $clase= New Tempdesolpe();

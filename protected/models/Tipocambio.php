@@ -102,9 +102,9 @@ public function checkvalores($attribute,$params) {
 
 
 public function beforeSave() {
-        if($this->cambiovalores()){
+       // if($this->cambiovalores()){
                  $this->ultima=date("Y-m-d H:i:s");    
-            }
+           // }
             
       if($this->isNewRecord)
           $this->dia=date("w",time());
@@ -157,7 +157,8 @@ return parent::afterSave();
 		$criteria->compare('id',$this->id);
 		$criteria->compare('denominador',$this->denominador);
 		$criteria->compare('numerador',$this->numerador);
-
+                $criteria->addCondition("codmon1<>:vcodmon1");
+                $criteria->params=array(":vcodmon1"=>yii::app()->settings->get('general','general_monedadef'));
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));

@@ -88,12 +88,33 @@
 	
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'n_cangui'); ?>
-		<?php echo $form->textField($model,'n_cangui',array('size'=>4,'maxlength'=>4,'value'=>1, 'disabled'=>'disabled')); ?>
+		<?php //echo $form->labelEx($model,'n_cangui'); ?>
+		<?php echo $form->hiddenField($model,'n_cangui',array('value'=>1)); ?>
 
 	</div>
 
+<div class="row">
+		<?php
+		if(yii::app()->settings->get('transporte','transporte_objenguia')=='1') {
 
+			?>
+			<?php echo $form->labelEx($model, 'codob'); ?>
+			<?php
+					$codpro=Guia::model()->findByPk($idcabeza)->c_coclig;
+			?>
+			<?php $datos15 = CHtml::listData( ObjetosCliente::model()->findAll(array('condition'=>"codpro=:codpro",'params'=>array(':codpro'=>$codpro),'order' => 'nombreobjeto')), 'codobjeto', 'nombreobjeto');
+			echo $form->DropDownList($model, 'codob', $datos15, array('empty' => '--Seleccione un objeto--', 'disabled' => $habilitado,
+				'options' => array(
+					isset(Yii::app()->session['codob']) ? Yii::app()->session['codob'] : $model->c_edgui => array('selected' => true)
+				)));
+			?>
+			<?php echo $form->error($model, 'codob'); ?>
+		<?php
+		         }
+		?>
+	</div>
+    
+    
 
 
 	<div class="row">
@@ -107,11 +128,13 @@
 																			)
 															 ));
 				*/
+                //$cd=New Inventario();
+               // var_dump($cd->attributeNames());
 		$this->widget('ext.matchcode1.MatchCode1',array(
 			'nombrecampo'=>'c_codactivo',
 			'campoex'=>'codigoaf',
 			'pintarcaja'=>0, ///indica si debe de pintar el textbox al iniciar
-			'ordencampo'=>14,
+			'ordencampo'=>9,
 			'controlador'=>'Tempdetgui',
 			'relaciones'=>$model->relations(),
 			'tamano'=>13,
@@ -142,6 +165,7 @@
 	</div>
 
 	<div class="row">
+            <?php if(yii::app()->settings->get('transporte','transporte_objinterno')=='1') { ?>
 		<?php echo $form->labelEx($model,'c_codep'); ?>
 		<?php  $datos1 = CHtml::listData(Embarcaciones::model()->findAll(array('order'=>'nomep')),'codep','nomep');
 		  echo $form->DropDownList($model,'c_codep',$datos1, array('empty'=>'--Seleccione una referencia--',  'disabled'=>$habilitado,
@@ -149,21 +173,23 @@
 													          isset(Yii::app()->session['c_codep'])?Yii::app()->session['c_codep']:$model->c_codep=>array('selected'=>true)
 																		)  ) ) ;
 		?>
-		<?php echo $form->error($model,'c_codep'); ?>m
+		<?php echo $form->error($model,'c_codep'); ?>
+            <?php  }  ?>
 	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'c_edgui'); ?>
-		<?php  $datos11 = CHtml::listData(Motivos::model()->findAll(array('order'=>'desmotivo')),'codmotivo','desmotivo');
+		<?php  $datos11 = CHtml::listData(Paraqueva::model()->findAll(array('order'=>'motivo')),'cmotivo','motivo');
 		  echo $form->DropDownList($model,'c_edgui',$datos11, array('empty'=>'--Seleccione un destino--',  'disabled'=>$habilitado,
 													   'options'=>array(
 													          isset(Yii::app()->session['c_edgui'])?Yii::app()->session['c_edgui']:$model->c_edgui=>array('selected'=>true)
 																		) ))  ;
 		?>
+            
+            
+            
 		<?php echo $form->error($model,'c_edgui'); ?>
 	</div>
-	
-	
 	
 
 

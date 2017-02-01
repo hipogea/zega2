@@ -10,6 +10,7 @@ class Configuraciongeneral extends CFormModel
 
 	/*****general****/
 	public $general_monedadef;
+        public $general_esmovil; ///PRPIEDA QUE SIRVE PARA SABER SI ES UN DISPSITIVO MOVIL : CEL , TABLET, IPOD ='1'
 	public $general_rutatemaimagenes;
 	public $general_horaspasadastipocambio;
 	public $general_porcexcesocaja; ///porcenytaje de exceso para la caja chica
@@ -18,6 +19,7 @@ class Configuraciongeneral extends CFormModel
          public $general_nregistrosporcarpeta; ///porcenytaje de exceso para la caja chica
           public $general_codigomanualempresa; ///indinca si el codigo proveedor es manual o automatico
             public $general_codempresa;
+             public $general_cambiofindesemana;
 	/*****documentos***/
 	public $documentos_numeromaxbloqueos;
 	public $documentos_docmascara;
@@ -32,7 +34,9 @@ public $documentos_tolerecepfacturaendias=null;
 	public $transporte_trancheck;
     public $transporte_lugares;
 	public $transporte_objenguia; //permite tener objbetos de referncia en los detalle sde la guia de remision
-       public $transporte_rutafotos ;///directorio donde se almacenaran las imagenes de l
+       public $transporte_objinterno; //permite tener objbetos de referncia en los detalle sde la guia de remision
+     
+        public $transporte_rutafotos ;///directorio donde se almacenaran las imagenes de l
       public $transporte_motivoot ;///directorio donde se almacenaran las imagenes de l
        public $transporte_umdefault ;///unidad de medida por default 
      
@@ -93,7 +97,7 @@ public $materiales_verpresolpe;
 	{
 		return array(
 
-			array('general_monedadef,
+			array('general_esmovil,general_monedadef,
 				   general_rutatemaimagenes,
 				   general_horaspasadastipocambio,
 				   general_porcexcesocaja,
@@ -101,13 +105,13 @@ public $materiales_verpresolpe;
 				   general_userauto,
                                    general_nregistrosporcarpeta,
                                    general_codempresa,
+                                   general_cambiofindesemana,
                                    transporte_motivoot,
 					documentos_numeromaxbloqueos,
 					documentos_docmascara,
 					documentos_archivo_sello_agua,
 					documentos_tolerecepfacturaendias,
-					transporte_tiempopermitidohastaentrega,
-					transporte_trancheck,
+					transporte_tiempopermitidohastaentrega,					
                                         transporte_umdefault,
 					inventario_periodocontrol,
 					compras_restringircantidades,
@@ -129,8 +133,8 @@ public $materiales_verpresolpe;
 			array(''
                             .'conta_patroncuentas,conta_montodetraccion,conta_nperiodosabiertos,'
                              .' conta_formatonumerocomprobantes,conta_multisociedad,'
-                            . 'general_codempresa,general_codigomanualempresa,email_smptauth,email_usamaildeusuario,email_passwordhost,email_nombrewebmaster,general_codigomanualempresa,transporte_umdefault,'
-                            . 'transporte_motivoot,general_nregistrosporcarpeta,transporte_rutafotos,'
+                            . 'general_codempresa,general_codigomanualempresa,general_cambiofindesemana,email_smptauth,email_usamaildeusuario,email_passwordhost,email_nombrewebmaster,general_codigomanualempresa,transporte_umdefault,'
+                            . 'transporte_motivoot,transporte_objinterno,general_nregistrosporcarpeta,transporte_rutafotos,'
                             . 'general_directorioimg,transporte_objenguia,general_userauto,inventario_auto,'
                             . 'inventario_bloqueado,inventario_mascaraubicaciones,materiales_contabilidad,'
                             . 'materiales_verpresolpe,documentos_selloagua,documentos_controlrecepcion,'
@@ -168,14 +172,16 @@ public $materiales_verpresolpe;
                     'general_nregistrosporcarpeta'=>'Cantidad registros por carpeta',
                    'general_codigomanualempresa'=>'Cod manual Empresas',
                     'general_codempresa'=>'Codigo empresa',
+                    'general_cambiofindesemana'=>'Ajustar Tip Cambio por fin de Semana',
 	'documentos_numeromaxbloqueos'=>'Cant Max Documentos abiertos por usuario',
 			'documentos_selloagua'=>'Sello de agua',
 			'documentos_archivo_sello_agua'=>'Archivo sello agua',
 			'documentos_tolerecepfacturaendias'=>'Tolerancia recep facturas (dias)',
 	'transporte_tiempopermitidohastaentrega'=>'Dias permitidos para anular despacho ',
 	'transporte_trancheck'=>'Restringir Mov Af por lugar',
+                    'transporte_objinterno'=>'Referencia a Objetos internos en el detalle ',
            ' transporte_lugares'=>'Exigir lugares para direccion',
-			'transporte_objenguia'=>'	Referencias a objetos en  el detalle de la guia',
+			'transporte_objenguia'=>'	Referencias a objetos en  el detalle ',
                     'transporte_rutafotos'=>'Directorio de footografias',
                     'transporte_motivoot'=>'Movimiento de ordenes de trabajo',
                     'transporte_umdefault'=>'Unidad de medida por default',

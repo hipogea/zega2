@@ -54,7 +54,7 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'c_mail'); ?>
-		<?php echo $form->textField($model,'c_mail',array('size'=>30,'maxlength'=>30)); ?>
+		<?php echo $form->textField($model,'c_mail',array('size'=>40,'maxlength'=>80)); ?>
 		<?php echo $form->error($model,'c_mail'); ?>
 	</div>
 

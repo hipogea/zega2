@@ -21,7 +21,7 @@
     
 <?php echo $form->hiddenField($model,'codocu',array('value'=>$model->codocu)); ?>
 		
-	   
+	   <?php  $form->errorSummary($model);  ?>
     <div class="row">        
                 <?php 			
 	echo $form->textField($model,'id',array('disabled'=>'disabled','size'=>2,'maxlength'=>2));
@@ -101,7 +101,8 @@
 	<div class="row">
 		<?php echo $form->labelEx($model,'codprov'); ?>
             
-		<?php $this->widget('ext.matchcode.MatchCode',array(		
+		<?php  if(!$model->escertificado()){  ?>
+                    <?php $this->widget('ext.matchcode.MatchCode',array(		
 												'nombrecampo'=>'codprov',
 												'ordencampo'=>1,
 												//'defol'=>(isset(Yii::app()->session['codprov']))?Yii::app()->session['codprov']:'',
@@ -111,6 +112,7 @@
 												'tamano'=>6,
 												'model'=>$model,
 												'form'=>$form,
+                                                                                               // 'filtro'=>array(),
 												'nombredialogo'=>'cru-dialog3',
 												'nombreframe'=>'cru-frame3',
 												'nombrearea'=>'coci',
@@ -118,6 +120,11 @@
 
 								);
 		?>
+                <?php  } else { ?>
+            
+                    <?php  echo CHtml::textField(uniqid(), $model->clipro->despro, array('disabled'=>'disabled','size'=>'40'));  ?>
+            
+                <?php   }  ?>
             
             <?php echo $form->error($model,'codprov'); ?>
 	</div>
@@ -147,10 +154,17 @@
 															));
 
 		?>	
+            
+          
 		<?php echo $form->error($model,'fecha'); ?>
+            
+               
+            
+            
 	</div>
 
 	<div class="row">
+            <?php  if(!$model->escertificado()){  ?>
 		<?php echo $form->labelEx($model,'fechain'); ?>
 		<?php  $this->widget('zii.widgets.jui.CJuiDatePicker', array(
 			//'name'=>'my_date',
@@ -176,6 +190,8 @@
 
 		?>	
 		<?php echo $form->error($model,'fechain'); ?>
+            
+            <?php  }  ?>
 	</div>
 	<div class="row">
 		<?php echo $form->labelEx($model,'conservarvalor'); ?>
@@ -183,9 +199,10 @@
 		
 	</div>
         <div class="row">
+             <?php  if(!$model->escertificado()){  ?>
 		<?php echo $form->labelEx($model,'espeabierto'); ?>
 		<?php echo $form->checkBox($model,'espeabierto'); ?>
-		
+		<?php  }  ?>
 	</div>
         
 	
@@ -259,6 +276,8 @@
         
         
 	<div class="row">
+            
+              <?php  if(!$model->escertificado()){  ?>
 		<?php echo $form->labelEx($model,'moneda'); ?>
 		<?php  
                
@@ -284,6 +303,8 @@
                          */
                  ?>
 			<?php echo $form->error($model,'moneda'); ?>
+            
+              <?php }  ?>
 	</div>
 	
 	
@@ -305,9 +326,11 @@
 	
 
 	<div class="row">
+              <?php  if(!$model->escertificado()){  ?>
 		<?php echo $form->labelEx($model,'monto'); ?>
 		<?php echo $form->textField($model,'monto'); ?>
 		<?php echo $form->error($model,'monto'); ?>
+              <?php }  ?>
 	</div>
 
 	<div class="row">
@@ -333,6 +356,7 @@
 			'model'=>$model,
 			'form'=>$form,
 			'nombredialogo'=>'cru-dialog3',
+                    //'filtro'=>array('codpro'=>'js:Docingresados_codpro.value'),
 			'nombreframe'=>'cru-frame3',
 			'nombrearea'=>'fhevfrdfa3gt4jfdxxsfdf',
 		)); ?>
@@ -349,14 +373,20 @@
 	</div>
    
 	
-
-	
-
-	<div class="row">
+<div class="row">
 		<?php echo $form->labelEx($model,'docref'); ?>
 		<?php echo $form->textField($model,'docref',array('size'=>14,'maxlength'=>14)); ?>
 		<?php echo $form->error($model,'docref'); ?>
-	</div> 
+	</div>
+	
+
+	<div class="row">
+              <?php  if($model->escertificado() and !is_null($model->fechavencimiento)){  ?>
+		<?php echo $form->labelEx($model,'fechavencimiento'); ?>
+		<?php echo $form->textField($model,'fechavencimiento',array('style'=>'color:red; font-weight:bold;',  'size'=>8,'disabled'=>'disabled')); ?>
+		<?php //echo $form->error($model,'fechavencimiento'); ?>
+              <?php }  ?>
+	</div>
 
 	
 
@@ -402,7 +432,7 @@
 		),
                 //array('name'=>'tipo','type'=>'raw','value'=>'($data->tipo=="M")?CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."email.png"):$data->tipo','htmlOptions'=>array('width'=>50)),
           
-               array('name'=>'proc','type'=>'raw','value'=>'($data->anulado=="1")?CHtml::openTag("strike").$data->tenenciasproc->eventos->descripcion.CHtml::closeTag("strike"):(($data->tenenciasproc->subproceso=="1")?CHtml::image(Yii::app()->getTheme()->baseUrl."/img/adi.png"):"").$data->tenenciasproc->eventos->descripcion','htmlOptions'=>array('width'=>250)),
+               array('name'=>'proc','type'=>'raw','value'=>'($data->anulado=="1")?CHtml::openTag("strike").$data->tenenciasproc->eventos->descripcion.CHtml::closeTag("strike"):$data->tenenciasproc->eventos->descripcion','htmlOptions'=>array('width'=>250)),
              array('name'=>'trab','type'=>'raw','value'=>'($data->tenenciastrab->trabajadores->ap)','htmlOptions'=>array('width'=>30)),
              array('name'=>'codocuref','type'=>'raw','value'=>'$data->documentos->desdocu','htmlOptions'=>array('width'=>150)),
             array('name'=>'numdocref','type'=>'raw','value'=>'$data->numdocref','htmlOptions'=>array('width'=>10)), 

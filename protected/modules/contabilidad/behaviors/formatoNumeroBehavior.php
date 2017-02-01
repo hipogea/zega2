@@ -59,9 +59,32 @@ class formatoNumeroBehavior extends CActiveRecordBehavior
                 $this->owner->{$nombrecampofecha},false,$idperiodo
                 );
         
-        
-      
+      }
+    
+    
+    /***********************************
+     * Establece le impuesto para la 
+     * fecha del documento, es decir para la fecha 
+     * 
+     * 
+     */
+    public function getimpuesto($codimpuesto,$nombrecampofecha){
+        return yii::app()->impuestos->getImpuesto($codimpuesto,$this->owner->{$nombrecampofecha});
+    }
+    
+    /************************************
+     * Establece le impuesto para la 
+     * fecha del documento, es decir para la fecha 
+     * 
+     * 
+     */
+    public function getcambio($codmoneda,$nombrecampofecha){
+        return yii::app()->tipocambio->getImpuesto($codimpuesto,$this->owner->{$nombrecampofecha});
         
     }
+    
+    
+    
+    
     
 }

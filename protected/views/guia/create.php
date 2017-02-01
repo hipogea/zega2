@@ -13,6 +13,5 @@ $this->menu=array(
 );
 ?>
 
-<h1><?php echo CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'carro.png',"hola",array('width'=>'60','height'=>'30')); ?>Crear Doc Transporte</h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

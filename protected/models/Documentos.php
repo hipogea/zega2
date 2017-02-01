@@ -199,7 +199,7 @@ class Documentos extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('coddocu',$this->coddocu,true);
-		$criteria->compare('desdocu',$this->desdocu,true,'and',false);
+		$criteria->compare('desdocu',$this->desdocu,true);
 		$criteria->compare('clase',$this->clase,true);
 		$criteria->compare('tipo',$this->tipo,true);
 

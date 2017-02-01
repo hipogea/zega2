@@ -533,6 +533,7 @@ public $maximovalor;
 	}
 	public static function historicoprecios($codart,$codpro=null,$codcen=null,$limit=null){
 		$codart=MiFactoria::cleanInput($codart);
+                //var_dump($codart);var_dump($codpro);var_dump($codcen);die();
 		/******
 		 *
 		 * funcioque regresa un data provider de datos de precios para un material especificado
@@ -548,7 +549,7 @@ public $maximovalor;
 			is_null($codcen) ){
 			$codart=MiFactoria::cleanInput($codart);
 			$rawData = Yii::app()->db->createCommand()
-				->select('a.numcot,a.codpro,a.moneda,a.fecdoc,b.codentro,b.codigoalma,b.codart,b.punit,b.um,y.desum as desumbase,z.desum as desum
+				->selectDistinct('a.numcot,a.codpro,a.moneda,a.fecdoc,b.codentro,b.codigoalma,b.codart,b.punit,b.um,y.desum as desumbase,z.desum as desum
 				    ,c.descripcion,c.um as umbase')
 				->from('{{ocompra}} a ,{{docompra b}},{{alentregas}} x,{{maestrocomponentes}} c,{{ums}} z,{{ums}} y ')
 				->limit($limit)
@@ -566,12 +567,12 @@ public $maximovalor;
 			$codart=MiFactoria::cleanInput($codart);
 			$codcen=MiFactoria::cleanInput($codcen);
 			$rawData = Yii::app()->db->createCommand()
-				->select('a.numcot,a.codpro,a.moneda,a.fecdoc,b.codentro,b.codigoalma,b.codart,b.punit,b.um,y.desum as desumbase,z.desum as desum
+				->selectDistinct('f.despro,a.numcot,a.codpro,a.moneda,a.fecdoc,b.codentro,b.codigoalma,b.codart,b.punit,b.um,y.desum as desumbase,z.desum as desum
 				    ,c.descripcion,c.um as umbase')
-				->from('{{ocompra}} a ,{{docompra b}},{{alentregas}} x,{{maestrocomponentes}} c,{{ums}} z,{{ums}} y ')
+				->from('{{ocompra}} a ,{{docompra b}},{{alentregas}} x,{{maestrocomponentes}} c,{{ums}} z,{{ums}} y ,{{clipro}} f')
 				->limit($limit)
 				->where(
-					"a.idguia=b.hidguia and b.id=x.iddetcompra and b.codart=c.codigo
+					"f.codpro=a.codpro and a.idguia=b.hidguia and b.id=x.iddetcompra and b.codart=c.codigo
 					and c.um=y.um and b.um =z.um and b.codart=:vcodigo and b.codentro=:vcentro ",
 					array(":vcodigo" => $codart,":vcentro"=>$codcen))
 				->order("a.fecdoc DESC")
@@ -584,12 +585,12 @@ public $maximovalor;
 			$codart=MiFactoria::cleanInput($codart);
 			$codpro=MiFactoria::cleanInput($codpro);
 			$rawData = Yii::app()->db->createCommand()
-				->select('a.numcot,a.codpro,a.moneda,a.fecdoc,b.codentro,b.codigoalma,b.codart,b.punit,b.um,y.desum as desumbase,z.desum as desum
+				->selectDistinct('f.despro,a.numcot,a.codpro,a.moneda,a.fecdoc,b.codentro,b.codigoalma,b.codart,b.punit,b.um,y.desum as desumbase,z.desum as desum
 				    ,c.descripcion,c.um as umbase')
-				->from('{{ocompra}} a ,{{docompra b}},{{alentregas}} x,{{maestrocomponentes}} c,{{ums}} z,{{ums}} y ')
+				->from('{{ocompra}} a ,{{docompra b}},{{alentregas}} x,{{maestrocomponentes}} c,{{ums}} z,{{ums}} y ,{{clipro}} f')
 				->limit($limit)
 				->where(
-					"a.idguia=b.hidguia and b.id=x.iddetcompra and b.codart=c.codigo
+					" f.codpro=a.codpro,a.idguia=b.hidguia and b.id=x.iddetcompra and b.codart=c.codigo
 					and c.um=y.um and b.um =z.um and b.codart=:vcodigo and a.codpro=:vcodpro ",
 					array(":vcodigo" => $codart,":vcodpro"=>$codpro))
 				->order("a.fecdoc DESC")
@@ -598,21 +599,22 @@ public $maximovalor;
 
 		if(!is_null($codart) and
 			!is_null($codpro) and
-			is_null($codcen) ){
+			!is_null($codcen) ){
 			$codart=MiFactoria::cleanInput($codart);
 			$codpro=MiFactoria::cleanInput($codpro);
 			$codcen=MiFactoria::cleanInput($codcen);
 			$rawData = Yii::app()->db->createCommand()
-				->select('a.numcot,a.codpro,a.moneda,a.fecdoc,b.codentro,b.codigoalma,b.codart,b.punit,b.um,y.desum as desumbase,z.desum as desum
+				->selectDistinct('f.despro,a.numcot,a.codpro,a.moneda,a.fecdoc,b.codentro,b.codigoalma,b.codart,b.punit,b.um,y.desum as desumbase,z.desum as desum
 				    ,c.descripcion,c.um as umbase')
-				->from('{{ocompra}} a ,{{docompra b}},{{alentregas}} x,{{maestrocomponentes}} c,{{ums}} z,{{ums}} y ')
+				->from('{{ocompra}} a ,{{docompra b}},{{alentregas}} x,{{maestrocomponentes}} c,{{ums}} z,{{ums}} y ,{{clipro}} f')
 				->limit($limit)
 				->where(
-					"a.idguia=b.hidguia and b.id=x.iddetcompra and b.codart=c.codigo
+					"f.codpro=a.codpro and a.idguia=b.hidguia and b.id=x.iddetcompra and b.codart=c.codigo
 					and c.um=y.um and b.um =z.um and b.codart=:vcodigo and a.codpro=:vcodpro and b.codentro=:vcentro ",
 					array(":vcodigo" => $codart,":vcodpro"=>$codpro,":vcentro"=>$codcen))
 				->order("a.fecdoc DESC")
 				->queryAll();
+                      
 		}
 
 
@@ -620,7 +622,7 @@ public $maximovalor;
 		if(!is_null($codpro)){
 			$codpro=MiFactoria::cleanInput($codpro);
 			$rawData=Yii::app()->db->createCommand()
-				->select('a.numcot,a.codpro,a.moneda,a.fecdoc,b.codentro,b.codigoalma,b.codart,b.punit,b.um,y.desum as desumbase,z.desum as desum
+				->selectDistinct('a.numcot,a.codpro,a.moneda,a.fecdoc,b.codentro,b.codigoalma,b.codart,b.punit,b.um,y.desum as desumbase,z.desum as desum
 				    ,c.descripcion,c.um as umbase')
 				->from('{{ocompra}} a ,{{docompra b}},{{alentregas}} x,{{maestrocomponentes}} c,{{ums}} z,{{ums}} y ')
 				->where(
@@ -639,7 +641,7 @@ public $maximovalor;
 				array(
 					'sort'=>array(
 						'attributes'=>array(
-							'codpro','numcot', 'moneda','fecdoc','codentro','codigoalma','codart','punit', 'umbase','um','desum','desumbase','descripcion',
+							'despro','codpro','numcot', 'moneda','fecdoc','codentro','codigoalma','codart','punit', 'umbase','um','desum','desumbase','descripcion',
 						),
 					),
 
@@ -735,4 +737,7 @@ public function refrescaresumen($controlador){
 	 return  new CArrayDataProvider($this->resumen,array('keyField' => 'param'));
 
               }
+              
+          
+              
 }

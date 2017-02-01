@@ -26,7 +26,7 @@
 	$departamento = new CDbCriteria;  // Preparamos los parámetros de búsqueda  
 	$departamento->order = 'despro ASC';  // ordenamos alfabéticamente  
 	echo $form->dropDownList($model,'codpro',  // id_tipo_org es el nombre del campo en el modelo 
-	CHtml::listData(Clipro::model()->findAll($departamento),  // TipoOrgG es el modelo en el que se buscaran los datos  
+	CHtml::listData(Clipro::model()->findAll(/*$departamento*/),  // TipoOrgG es el modelo en el que se buscaran los datos  
 	'codpro','despro'),  // id_tipo_org es el dato que se quiere guardar y  // descripción lo que se quiere mostrar  
 	array('ajax' => array('type' => 'POST',  'url' => CController::createUrl('Lugares/cargadirecciones'), //  la acción que va a cargar el segundo div 
 	'update' => '#Lugares_n_direc' // el div que se va a actualizar

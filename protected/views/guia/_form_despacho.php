@@ -27,6 +27,7 @@
 
 	</div>
             <div class="row">
+            <?php if(yii::app()->settings->get('transporte','transporte_objinterno')=='1') { ?>
 		<?php echo $form->labelEx($model,'c_codep'); ?>
 		<?php  $datos1 = CHtml::listData(Embarcaciones::model()->findAll(array('order'=>'nomep')),'codep','nomep');
 		  echo $form->DropDownList($model,'c_codep',$datos1, array('empty'=>'--Seleccione una referencia--',  'disabled'=>$habilitado,
@@ -34,7 +35,8 @@
 													          isset(Yii::app()->session['c_codep'])?Yii::app()->session['c_codep']:$model->c_codep=>array('selected'=>true)
 																		)  ) ) ;
 		?>
-		<?php echo $form->error($model,'c_codep'); ?>m
+		<?php echo $form->error($model,'c_codep'); ?>
+            <?php  }  ?>
 	</div>
             <div class="row">
 		<?php echo $form->labelEx($model,'c_edgui'); ?>

@@ -153,6 +153,7 @@ echo $form->DropDownList($model,'c_um',$datos, array('empty'=>'--Unidad de medid
 	</div>
 
 	<div class="row">
+            <?php if(yii::app()->settings->get('transporte','transporte_objinterno')=='1') { ?>
 		<?php echo $form->labelEx($model,'c_codep'); ?>
 		<?php  $datos1 = CHtml::listData(Embarcaciones::model()->findAll(array('order'=>'nomep')),'codep','nomep');
 		  echo $form->DropDownList($model,'c_codep',$datos1, array('empty'=>'--Seleccione una referencia--',  'disabled'=>$habilitado,
@@ -161,6 +162,7 @@ echo $form->DropDownList($model,'c_um',$datos, array('empty'=>'--Unidad de medid
 																		)  ) ) ;
 		?>
 		<?php echo $form->error($model,'c_codep'); ?>
+            <?php  }  ?>
 	</div>
 
 	<div class="row">

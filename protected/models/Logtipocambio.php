@@ -148,4 +148,28 @@ class Logtipocambio extends CActiveRecord
                         )->id;
             return parent::beforesave();
         }
+        
+        
+        public function search_por_fecha($fecha)
+	{
+		// @todo Please modify the following code to remove attributes that should not be searched.
+//var_dump($fecha);
+		$criteria=new CDbCriteria;
+                if(preg_match('/(19|20)\d{2}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])/',trim($fecha)))
+                {
+                    $criteria->addCondition("fecha='".trim($fecha)."'"); 
+                    //var_dump($criteria->condition);  die();
+                }else{
+                    $criteria->addCondition("1=2");
+                    //var_dump($criteria->condition);  die();
+                }
+                        
+                   // var_dump($criteria->condition);  die();
+		$criteria->compare('fecha',$this->fecha);
+
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
+	}
+        
 }

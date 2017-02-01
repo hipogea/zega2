@@ -16,12 +16,12 @@ class TipocambioCompo extends CApplicationComponent
     public function cambiospasados(){
 
         $citer=New CDBCriteria;
-        $citer->addCondition("ultima < :fechamenos ");
+        $citer->addCondition("ultima < :fechamenos and codmon1 <> :vcodmon1");
         //  $citer->addCondition(" codmon1 <> codmon2 ");
-        $citer->params=array(":fechamenos"=>date('Y-m-d H:i:s',time()-$this->_horastolerancia*60*60));
+        $citer->params=array(":vcodmon1"=>$this->monedadefault ,":fechamenos"=>date('Y-m-d H:i:s',time()-$this->_horastolerancia*60*60));
     /*  var_dump(date('Y-m-d H:i:s',time()-$this->_horastolerancia*60*60));
         var_dump(date('Y-m-d H:i:s',time()));
-        yii::app()->end();*/
+         yii::app()->end();*/
         $registros= yii::app()->db->createCommand()->select("codmon1")->
         from('{{tipocambio}}')->
         where($citer->condition,$citer->params)->queryColumn();
@@ -50,7 +50,7 @@ class TipocambioCompo extends CApplicationComponent
                             }
          
             }else{ //sise trata deuna bsuqyeda de cambios pasaods 
-                return $this->getventapasada($moneda,$fecha);
+                return $this->getcambiopasado($moneda,$fecha,'venta');
             }
          
          
@@ -64,19 +64,30 @@ class TipocambioCompo extends CApplicationComponent
 
     ///es el cambio de $MONEDA->PEN
     public function getcompra($moneda){
-          if(!($moneda==$this->monedadefault)){
-        $citer=New CDbCriteria;
-         $citer->addCondition("codmon1=:moneda AND codmondef=:monedadefault");
-        $citer->params=array(":monedadefault"=>$this->monedadefault,":moneda"=>$moneda);        
-        $compra= yii::app()->db->createCommand()->select('compra')->
-        from('{{tipocambio}}')->
-        where($citer->condition,$citer->params)->queryScalar();
-        if($compra!=false)
-        {return $compra;}else{  throw new CHttpException(500,__CLASS__.' '.__FUNCTION__.'  '.__LINE__.'  No se ha registrado tipo de cambio compra para la moneda '.$moneda);
+         if(!($moneda==$this->monedadefault)){
+          
+            if(is_null($fecha)){ // si se trata de una busqueda de cambioa actual 
+                        $citer=New CDBCriteria;
+        //$citer->addCondition("codmon1=:monedadef AND codmon2=:monedaacomprar");
+        //$citer->params=array(":monedadef"=>$this->monedadefault,":monedaacomprar"=>$moneda);
+                     $citer->addCondition("codmon1=:moneda AND codmondef=:monedadefault");
+                     $citer->params=array(":monedadefault"=>$this->monedadefault,":moneda"=>$moneda);        
+                    $compra= yii::app()->db->createCommand()->select('compra')->
+                    from('{{tipocambio}}')->
+                    where($citer->condition,$citer->params)->queryScalar();
+                     if($compra!=false)
+                            {return $compra ;}else{  throw new CHttpException(500,__CLASS__.' '.__FUNCTION__.'  '.__LINE__.'  No se ha registrado tipo de cambio compra para la moneda '.$moneda);
+                            }
+         
+            }else{ //sise trata deuna bsuqyeda de cambios pasaods 
+                return $this->getcambiopasado($moneda,$fecha,'compra');
+            }
+         
+         
+         
+        }else{
+            return 1;
         }
-          }else{
-              return 1;
-          }
 
     }
 
@@ -228,7 +239,9 @@ class TipocambioCompo extends CApplicationComponent
    }
    
    public function log($moneda){
-       
+       IF($moneda==$this->monedadefault){
+           
+       }else{
          //$crit->addCondition("codmon=:vcodmon");
        //$pasados=$this->cambiospasados();
       //var_dump($pasados);die();
@@ -264,6 +277,7 @@ class TipocambioCompo extends CApplicationComponent
                              'fecha'=>date('Y-m-d'),
                               'dia'=>date("w",time()),
                               'iduser'=>$registro[0]['iduser'],
+                             'diaano'=>date("z",time()),
                          )
                          );    
               }
@@ -277,12 +291,15 @@ class TipocambioCompo extends CApplicationComponent
       // }
      // DIE();
          
-         
+       }  
        
    }
    
-   private function registroactual($moneda){
-        $citer=New CDBCriteria;
+   public function registroactual($moneda){
+      if($moneda==$this->monedadefault) {
+         return null;
+      }else{
+         $citer=New CDBCriteria;
         $citer->addCondition("codmondef=:monedadef AND codmon1=:monedaacomprar");
         $citer->params=array(":monedadef"=>$this->monedadefault,":monedaacomprar"=>$moneda);
         $ultima= yii::app()->db->createCommand()->select('id,seguir,codmondef,codmon1,compra,venta,dia,ultima,iduser')->
@@ -291,11 +308,16 @@ class TipocambioCompo extends CApplicationComponent
         //var_dump($moneda);yii::app()->end();
         //if(!$ultima!=false)
           // throw new CHttpException(500,__CLASS__.' '.__FUNCTION__.'  '.__LINE__.'  No se ha registrado tipo de cambio compra para la moneda '.$moneda);
-        return $ultima;
+        return $ultima; 
+      }
+       
    }
    
-   private function getventapasada($moneda, $fecha){
-     //antes que nada verifica que la fecha no sea la del cambio actual
+   private function getcambiopasado($moneda, $fecha,$tipocambio){
+      if($this->monedadefault==$moneda){
+          return 1;
+      }else{
+         //antes que nada verifica que la fecha no sea la del cambio actual
        $registroactual=$this->registroactual($moneda);
    
      if($fecha==date('Y-m-d',strtotime($registroactual->ultima)).''){
@@ -303,13 +325,13 @@ class TipocambioCompo extends CApplicationComponent
      }else{
           
        $cambios= yii::app()->db->createCommand()->
-                select('venta')->
+                select($tipocambio)->
            from('{{logtipocambio}}')->
            where("fecha = :fechita and codmon=:vcodmon and codmondef=:vcodmondef",
            array(":fechita"=>$fecha,":vcodmon"=>$moneda,":vcodmondef"=>$this->monedadefault)
                    )->queryAll();
        if(count($cambios)>0){ //si existe y lo enucentra bien ...!
-           return $cambios[0]['venta'];
+           return $cambios[0][$tipocambio];
        }else{ //oh oh aqui si puede haber probelmas 
             $fechainferior= yii::app()->db->createCommand()->
                 select('max(fecha)')->
@@ -334,21 +356,21 @@ class TipocambioCompo extends CApplicationComponent
                 IF($this->_horastolerancia < $difup/(60*60))
                     MiFactoria::Mensaje ('notice', "Se ha tomado un tipo de cambio con fecha de aproximacion mayor a las ".$this->_horastolerancia."  horas");
               return   yii::app()->db->createCommand()->
-                select('venta')->
+                select($tipocambio)->
            from('{{logtipocambio}}')->
            where("fecha = :fechita and codmon=:vcodmon and codmondef=:vcodmondef",
            array(":fechita"=>$fechainferior,":vcodmon"=>$moneda,":vcodmondef"=>$this->monedadefault)
-                   )->queryAll()[0]['venta'];
+                   )->queryAll()[0][$tipocambio];
             }else{
                  IF($this->_horastolerancia < $difdown/(60*60))
                     MiFactoria::Mensaje ('notice', "Se ha tomado un tipo de cambio con fecha de aproximacion mayor a las ".$this->_horastolerancia."  horas");
               
                 return   yii::app()->db->createCommand()->
-                select('venta')->
+                select($tipocambio)->
            from('{{logtipocambio}}')->
            where("fecha = :fechita and codmon=:vcodmon and codmondef=:vcodmondef",
            array(":fechita"=>$fechasuperior,":vcodmon"=>$moneda,":vcodmondef"=>$this->monedadefault)
-                   )->queryAll()[0]['venta'];
+                   )->queryAll()[0][$tipocambio];
             }
             
         }
@@ -362,11 +384,11 @@ class TipocambioCompo extends CApplicationComponent
                      MiFactoria::Mensaje ('notice', "Se ha tomado un tipo de cambio con fecha de aproximacion mayor a las ".$this->_horastolerancia."  horas");
               
             return   yii::app()->db->createCommand()->
-                select('venta')->
+                select($tipocambio)->
            from('{{logtipocambio}}')->
            where("fecha = :fechita and codmon=:vcodmon and codmondef=:vcodmondef",
            array(":fechita"=>$fechainferior,":vcodmon"=>$moneda,":vcodmondef"=>$this->monedadefault)
-                   )->queryAll()[0]['venta'];
+                   )->queryAll()[0][$tipocambio];
         }
            
             ///Si no hay fechas anterioroes tomar la superior
@@ -377,11 +399,11 @@ class TipocambioCompo extends CApplicationComponent
                      MiFactoria::Mensaje ('notice', "Se ha tomado un tipo de cambio con fecha de aproximacion mayor a las ".$this->_horastolerancia."  horas");
               
             return   yii::app()->db->createCommand()->
-                select('venta')->
+                select($tipocambio)->
            from('{{logtipocambio}}')->
            where("fecha = :fechita and codmon=:vcodmon and codmondef=:vcodmondef",
            array(":fechita"=>$fechasuperior,":vcodmon"=>$moneda,":vcodmondef"=>$this->monedadefault)
-                   )->queryAll()[0]['venta'];
+                   )->queryAll()[0][$tipocambio];
         }
         
         ///Si no hay fechas anteriores ni posteriores , entonces estamos mal...!
@@ -400,9 +422,132 @@ class TipocambioCompo extends CApplicationComponent
       
         
         
-   
+    
+      }
+     
    
 }
+
+
+         /*******************
+       * Devuelve un array de fechas 
+       * que estan entre  @fecha1 y @fecha2  inclusive
+       * descubrinedo las vacancias de dias en que falta
+       * llenar el tipo de cambio 
+       */
+        
+private function vacancias($moneda,$fecha1,$fecha2){
+            
+            if(!yii::app()->periodo->verificaFechas($fecha1,$fecha2))
+               throw new CHttpException(500,__CLASS__.' '.__FUNCTION__.'  '.__LINE__.'  Las fecha inferior es mayor que la fecha posterior , revise  los parametros de la funcion VACANCIAS');        
+           
+            IF(yii::app()->periodo->verificaFechas(date('Y-m-d'),$fecha2))
+                //esta en futuro 
+                $fecha2=DATE('Y-m-d',time()-24*60*60);
+            
+           /* $fechaultimaactualizacion=date('Y-m-d', $this->registroactual($moneda)->ultima);
+           
+            //si la ultima fecha de actualizacion , es menor que la fecha limite supeiror
+            //entonces  ha faltado actualizar algunos dias Y SE DEBE DE HACER URGENTE en la tabla tipocambio 
+            if(yii::app()->periodo->verificaFechas($fechaultimaactualizacion,$fecha2)){
+                
+                
+            }else{ //El caso de la 
+                
+            }*/
+            
+           $fechas= yii::app()->db->createCommand()->
+                select('fecha')->
+           from('{{logtipocambio}}')->
+           where("fecha <= :fechitasup and fecha >=:fechitainf and codmon=:vcodmon and codmondef=:vcodmondef",
+           array(":fechitainf"=>$fecha1,":fechitasup"=>$fecha2,":vcodmon"=>$moneda,":vcodmondef"=>$this->monedadefault)
+                   )->order("fecha ASC")->queryColumn();
+           //VAR_DUMP($fechas);
+           //ya tenemos los dias en fechas m ahora revisemos las vacancias 
+            $diferencias=array();
+            if(count($fechas)>0){
+                $fechaprueba=$fecha1;
+               while($fechaprueba <=$fecha2){
+                   if(!in_array($fechaprueba,$fechas)){
+                       $searreglo=false;
+                         //verificar si esta comfiguarada la opcio para llenar los vacantes con 
+                       ///feriados y fina de semana reytroactivos 
+                       //es decir el tipo de cambio de sabados y dominfgs lo llebnamos con le ultimo viernes
+                        if(in_array(date('w',strtotime($fechaprueba)),array('0','6'))){
+                          if(yii::app()->settings->get('general','general_cambiofindesemana')=='1'){
+                              if(date('w',strtotime($fechaprueba))=='6'){//si es sabado
+                              $fechaviernes=date('Y-m-d',strtotime($fechaprueba)-24*60*60);
+                             
+                              
+                              }
+                               if(date('w',strtotime($fechaprueba))=='0'){//si Domingo
+                              $fechaviernes=date('Y-m-d',strtotime($fechaprueba)-2*24*60*60);
+                              
+                              }
+                                      $compraviernes=$this->getcompra($moneda,$fechaviernes);
+                                      $ventaviernes=$this->getventa($moneda,$fechaviernes);                                  
+                                  if(!is_null($ventaviernes) and !is_null($compraviernes))
+                                  {
+                                      $registro=New Logtipocambio();
+                                      $plantilla=$this->registroactual($moneda);
+                                      $registro->setAttributes(
+                                                      array(
+                                                         'hidcambio'=>$plantilla->id,
+                                                         'compra'=>$compraviernes,
+                                                        'codmon'=>$moneda,
+                                                        'codmondef'=>$this->monedadefault,
+                                                        'venta'=>$ventaviernes,
+                                                        'fecha'=>$fechaprueba,
+                                                        'dia'=>date("w",strtotime($fechaprueba)),
+                                                         'iduser'=>yii::app()->user->id,
+                                                            'diaano'=>date("z",strtotime($fechaprueba)),
+                                                        )   
+                                              );
+                                     If( $registro->save())
+                                         $searreglo=true;
+                                  }
+                                  unset($registro);
+                              } 
+                              
+                               
+                               
+                          }
+                          if(!$searreglo)
+                          $diferencias[]=$fechaprueba; 
+                           }
+                           
+                          $fechaprueba=date('Y-m-d', strtotime($fechaprueba)+24*60*60);    
+                        }
+                        return $diferencias;
+              
+            }else{
+              $fechaprueba=$fecha1;
+               while($fechaprueba <=$fecha2){
+                  $diferencias[]=$fechaprueba;  
+                  $fechaprueba=date('Y-m-d', strtotime($fechaprueba)+24*60*60); 
+               }
+               return $diferencias;
+            }
+       }
+       
+       
+      
+  public function monedasactivas(){
+       return yii::app()->db->createCommand()->
+                select('codmon1')->
+           from('{{tipocambio}}')->where("codmon1<>:cdoc",array(":cdoc"=>$this->monedadefault))->
+           queryColumn();
+  }
+
+        public function vacanciastotales($fecha1,$fecha2){
+            $dias=array();
+           // var_dump($this->monedasactivas());die();
+           foreach($this->monedasactivas() as $clave=>$valor){
+              // var_dump($this->vacancias($valor, $fecha1, $fecha2));
+               $dias=array_merge($dias,$this->vacancias($valor, $fecha1, $fecha2));
+           }
+           return array_unique($dias);
+        }
 
 }
 ?>

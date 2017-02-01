@@ -77,19 +77,23 @@ class CentrosController extends Controller
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
-
+                $modeloconf=New Configuracion('search_por_centro');  
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
 		if(isset($_POST['Centros']))
 		{
-			$model->attributes=$_POST['Centros'];
+			$model->attributes=$_POST['Centros']; 
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->codcen));
 		}
+                
+               $modeloconf->unsetAttributes();  // clear any default values
+		if(isset($_GET['Configuracion']))
+			$modeloconf->attributes=$_GET['Configuracion'];
 
 		$this->render('update',array(
-			'model'=>$model,
+			'model'=>$model,'modeloconf'=>$modeloconf
 		));
 	}
 

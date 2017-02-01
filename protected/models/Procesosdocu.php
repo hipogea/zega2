@@ -386,14 +386,19 @@ class Procesosdocu extends ModeloGeneral {
         if (!is_null($this->fechafin)) {
             return 0;
         } else {
-            $diferencia = $this->horaspasadas() - $this->tenenciasproc->nhorasnaranja;
-            if ($diferencia > 0) {
-                return 0;
-            } else {
-                return $diferencia;
+            $fechavenci=$this->docingresados->fechavencimiento;
+            if(!is_null($fechavenci)){ //si tinene fecha vencimiento
+                $diferencia= strtotime($fechavenci)/(60*60)-time()/(60*60);
+               // var_dump($fechavenci);var_dump(strtotime($fechavenci)/(60*60));
+               // var_dump($diferencia);die();
+            }else{
+                $diferencia= $this->tenenciasproc->nhorasnaranja-$this->horaspasadas();
             }
-        }
-    }
+               
+            
+                return round($diferencia,1);
+            
+    }}
 
     
     

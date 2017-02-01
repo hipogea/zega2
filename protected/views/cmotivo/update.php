@@ -16,6 +16,6 @@ $this->menu=array(
 );
 ?>
 
-<?php MiFactoria::titulo('Editar  de transporte ','package') ?>
+<?php MiFactoria::titulo('Editar motivo  de transporte ','package') ?>
 
 <?php $this->renderPartial('_form', array('model'=>$model)); ?>

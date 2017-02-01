@@ -30,11 +30,11 @@ $('.search-form form').submit(function(){
 ");
 ?>
 
-<h1>Manage Estados</h1>
+<h1> Estados</h1>
 
 
 
-<?php echo CHtml::link('Advanced Search','#',array('class'=>'search-button')); ?>
+<?php echo CHtml::link('Filtrar','#',array('class'=>'search-button')); ?>
 <div class="search-form" style="display:none">
 <?php $this->renderPartial('_search',array(
 	'model'=>$model,
@@ -49,8 +49,10 @@ $('.search-form form').submit(function(){
 
 	'columns'=>array(
 		'codestado',
-		'dokis.desdocu',
-		'codocu',
+             array('name'=>'codocu','header'=>'Documento','value'=>'$data->dokis->desdocu','filter'=>CHTml::listData(Documentos::model()->findAll(),'coddocu','desdocu'), 'htmlOptions'=>array('width'=>400),),
+		
+		//'dokis.desdocu',
+		//'codocu',
 		'estado',
 		'ordenn',
 

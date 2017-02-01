@@ -48,3 +48,25 @@
 
 </div><!-- form -->
 </div>
+
+<?php MiFactoria::titulo("Parametros de Configuracion", "basket") ?>
+
+<?php  $this->widget('ext.groupgridview.GroupGridView', array(
+      'id' => 'settings-grid',      
+      'mergeColumns' => array('codocu'),
+	'dataProvider'=>$modeloconf->search_por_centro($model->codcen),
+    'itemsCssClass'=>'table table-striped table-bordered table-hover',
+	'filter'=>$modeloconf,
+	'columns'=>array(
+             array('name'=>'codocu','header'=>'Documento','value'=>'$data->documentos->desdocu','filter'=>CHTml::listData(Documentos::model()->findAll(),'coddocu','desdocu'), 'htmlOptions'=>array('width'=>400),),
+		
+          	//'codcen',
+           array('name'=> 'codparam','type'=>'raw','value'=>'CHtml::openTag("span",array("class"=>"label badge-success")).$data->codparam.CHtml::closeTag("span")'),
+		array('name'=>'desparam','header'=>'Parametro','value'=>'$data->parametros->desparam', 'htmlOptions'=>array('width'=>400),),
+		//'iduser',
+		// 'documentos.desdocu',
+            array('name'=>'valor','type'=>'raw','value'=>'substr(trim($data->valor),0,40)', 'htmlOptions'=>array('width'=>60)),
+		  array('name'=>'id','type'=>'raw','header'=>'Id','value'=>'CHtml::link("editar",yii::app()->createUrl("configuracion/editar",array("id"=>$data->id )   )  )', 'htmlOptions'=>array('width'=>10),),
+	
+	),
+)); ?>

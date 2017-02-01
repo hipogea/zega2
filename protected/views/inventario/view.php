@@ -122,7 +122,7 @@ $this->menu=array(
   $this->widget('ext.galeria.Galeria',array(
 			'images'=>$fotos,
 			'rutaimagenes'=>'',
-	         'rutaborra'=>'Inventario/borrafoto',
+	        // 'rutaborra'=>'Inventario/borrafoto',
 			'idimagen'=>'gatito',//ID del a miagen para e intercambiar
 	));
 ?>

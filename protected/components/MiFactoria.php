@@ -695,15 +695,13 @@ const CAMPO_COLECTOR='mf_colector';
                                                          w.numero as ".self::CAMPO_NUMERO_DOC.",
                                                         w.codocu as  ".self::CAMPO_CODIGO_DOCUMENTO.",
                                                              s.cant AS ".self::CAMPO_CANTIDAD_MATERIAL.",
-                                                             r.punit*c.cambio AS ".self::CAMPO_PRECIO_UNITARIO_MATERIAL.",
+                                                             r.punit as ".self::CAMPO_PRECIO_UNITARIO_MATERIAL.",
                                                               sum(x.cant) as n_sumita
  									from {{desolpe}} t
  									INNER JOIN {{alreserva}} s ON s.hidesolpe=t.id
  									INNER JOIN {{alinventario}} r ON t.codal=r.codalm
  									and t.centro=r.codcen and t.codart=r.codart
- 									INNER JOIN {{almacenes}} b ON b.codalm=r.codalm
- 									INNER JOIN {{tipocambio}} c ON b.codmon=c.codmon1 AND
- 									c.codmon2='".yii::app()->settings->get('general','general_monedadef')."'
+ 									INNER JOIN {{almacenes}} b ON b.codalm=r.codalm 									
  									INNER JOIN {{solpe}}  w ON  t.hidsolpe=w.id
  									LEFT JOIN {{atencionreserva}} x ON s.id=x.hidreserva
  									WHERE ( (t.centro='".$centro."'   and t.codal='".$almacen."') and ( ( t.codart <> '".yii::app()->settings->get('materiales','materiales_codigoservicio')."' AND   s.estadoreserva not in('30','70') AND s.codocu IN('450') and t.hidsolpe=".$idsolpe." )
@@ -1054,7 +1052,8 @@ if(!$mensaje->save())
                 $registros=self::DevuelveSolPespendientes ($numero,$idvale);
                 break;
             case '79':
-            $registros=array();
+            $registros=self::DevuelveSolPespendientes ($numdoc,$idvale);
+               
             break;
             case '68': ///Ingreso de Servicios
                 $id=Ocompra::model()->find("numcot=:vnumerocompra",array(":vnumerocompra"=>trim($numdoc)))->idguia;
@@ -1432,6 +1431,14 @@ if(!$mensaje->save())
             '01' => 'ENERO', '02' => 'FEBRERO', '03' => 'MARZO', '04' => 'ABRIL',
             '05' => 'MAYO', '06' => 'JUNIO', '07' => 'JULIO', '08' => 'AGOSTO',
             '09' => 'SETIEMBRE', '10' => 'OCTUBRE', '11' => 'NOVIEMBRE', '12' => 'DICIEMBRE',
+        );
+    }
+    
+    public static function diassemana()
+    {
+        return array(
+            '0' => 'Domingo', '1' => 'Lunes', '2' => 'Martes', '3' => 'Miercoles',
+            '4' => 'Jueves', '5' => 'Viernes', '6' => 'Sabado'
         );
     }
 

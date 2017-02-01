@@ -107,4 +107,7 @@ class TMoneda extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+        
+      
+        
 }

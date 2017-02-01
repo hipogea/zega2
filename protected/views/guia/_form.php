@@ -28,61 +28,61 @@
 					'go'=>array(
 						'type'=>'A',
 						'ruta'=>array(),
-						'visiblex'=>array($this->editable($model->{$this->campoestado}),ESTADO_PREVIO,NUll,''),
+						'visiblex'=>array($this->editable($model->{$this->campoestado}),$this::ESTADO_PREVIO,NUll,''),
 					),
 					'save'=>array(
 						'type'=>'A',
 						'ruta'=>array(),
-						'visiblex'=>array($this->editable($model->{$this->campoestado}),ESTADO_CREADO,ESTADO_AUTORIZADO,ESTADO_ANULADO,ESTADO_CONFIRMADO,ESTADO_FACTURADO),
+						'visiblex'=>array($this->editable($model->{$this->campoestado}),$this::ESTADO_CREADO,$this::ESTADO_AUTORIZADO,$this::ESTADO_ANULADO,$this::ESTADO_CONFIRMADO),
 					),
 
 
 					'ok'=>array(
 						'type'=>'B',
 						'ruta'=>array($this->id.'/procesardocumento',array('id'=>$model->id,'ev'=>2)),//apreuba guia
-						'visiblex'=>array($this->editable($model->{$this->campoestado}),ESTADO_CREADO),
+						'visiblex'=>array($this->editable($model->{$this->campoestado}),$this::ESTADO_CREADO),
 					),
 					'tacho'=>array(
 						'type'=>'B',
 						'ruta'=>array($this->id.'/procesardocumento',array('id'=>$model->id,'ev'=>35)),//anula guia
-						'visiblex'=>array($this->editable($model->{$this->campoestado}),ESTADO_CREADO),
+						'visiblex'=>array($this->editable($model->{$this->campoestado}),$this::ESTADO_CREADO),
 
 					),
 					'undo'=>array(
 						'type'=>'B',
 						'ruta'=>array($this->id.'/procesardocumento',array('id'=>$model->id,'ev'=>64)),//reveiree liberacion
-						'visiblex'=>array($this->editable($model->{$this->campoestado}),ESTADO_AUTORIZADO),
+						'visiblex'=>array($this->editable($model->{$this->campoestado}),$this::ESTADO_AUTORIZADO),
 
 					),
 					'truck'=>array(
 						'type'=>'B',
 						'ruta'=>array($this->id.'/procesardocumento',array('id'=>$model->id,'ev'=>36)), //confirma trasladoa
-						'visiblex'=>array($this->editable($model->{$this->campoestado}),ESTADO_AUTORIZADO),
+						'visiblex'=>array($this->editable($model->{$this->campoestado}),$this::ESTADO_AUTORIZADO),
 
 					),
 
 					'pack1'=>array(
 						'type'=>'B',
 						'ruta'=>array($this->id.'/procesardocumento',array('id'=>$model->id,'ev'=>37)), //confirma entrega
-						'visiblex'=>array($this->editable($model->{$this->campoestado}),ESTADO_CONFIRMADO),
+						'visiblex'=>array($this->editable($model->{$this->campoestado}),$this::ESTADO_CONFIRMADO),
 
 					),
 					'pack'=>array(
 						'type'=>'B',
 						'ruta'=>array($this->id.'/procesardocumento',array('id'=>$model->id,'ev'=>69)), //revertir  entrega
-						'visiblex'=>array($this->editable($model->{$this->campoestado}),ESTADO_ENTREGADO),
+						'visiblex'=>array($this->editable($model->{$this->campoestado}),$this::ESTADO_ENTREGADO),
 
 					),
 					'print'=>array(
 						'type'=>'B',
 						'ruta'=>array($this->id.'/imprimir/',array('id'=>$model->id)),
-						'visiblex'=>array($this->editable($model->{$this->campoestado}),ESTADO_CREADO,ESTADO_AUTORIZADO),
+						'visiblex'=>array($this->editable($model->{$this->campoestado}),$this::ESTADO_CREADO,$this::ESTADO_AUTORIZADO),
 					),
 
 					'edit'=>array(
 						'type'=>'B',
 						'ruta'=>array($this->id.'/editadocumento',array('id'=>$model->id)), //confirma trasladoa
-						'visiblex'=>array(!$this->editable($model->{$this->campoestado}),ESTADO_ENTREGADO,ESTADO_CREADO,ESTADO_AUTORIZADO,ESTADO_ANULADO,ESTADO_CONFIRMADO,ESTADO_FACTURADO),
+						'visiblex'=>array(!$this->editable($model->{$this->campoestado}),$this::ESTADO_ENTREGADO,$this::ESTADO_CREADO,$this::ESTADO_AUTORIZADO,$this::ESTADO_ANULADO,$this::ESTADO_CONFIRMADO),
 					),
 
 

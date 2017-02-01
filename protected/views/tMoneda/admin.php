@@ -76,3 +76,87 @@ $this->menu=array(
 		),
 	),
 )); ?>
+
+
+<?php  
+  $dias=yii::app()->tipocambio->vacanciastotales(date('Y-m-d',time()-14*24*60*60),date('Y-m-d',time()-24*60*60));
+   
+  if(count($dias)>0){
+       MiFactoria::titulo('Vacancias Halladas  ('.count($dias).')', 'basket');
+       //var_dump($dias);die();
+       $this->renderpartial('vacancias',array('dias'=>$dias));
+   }
+
+
+?>
+
+
+<?php $form=$this->beginWidget('CActiveForm', array(
+	'id'=>'tmoneda-form',
+	'enableAjaxValidation'=>false,
+)); ?>
+
+
+<div class="division">
+    <div class="wide form">
+
+	<?php echo $form->errorSummary($logcambio); ?>
+
+	<div class="row">
+		<?php echo $form->labelEx($logcambio,'fecha'); ?>
+        <?php $this->widget('zii.widgets.jui.CJuiDatePicker',
+            array(
+                'model'=>$logcambio,
+                'attribute'=>'fecha',
+                'value'=>$logcambio->fecha,
+                'language' => 'es',
+                'htmlOptions' => array('readonly'=>"readonly"),
+                'options'=>array(
+                    'autoSize'=>true,
+                    'defaultDate'=>date('Y-m-d',time()-24*60*60),
+                    'dateFormat'=>'yy-mm-dd',
+                    'showAnim'=>'fold',
+                    //'buttonImage'=>Yii::app()->baseUrl.'/images/calendar.png',
+                    //'buttonImageOnly'=>true,
+                    //'buttonText'=>'Fecha',
+                    'selectOtherMonths'=>true,
+                    'showAnim'=>'slide',
+                    'showButtonPanel'=>true,
+                    'showOn'=>'button',
+                    'showOtherMonths'=>true,
+                    'changeMonth' => 'true',
+                    'changeYear' => 'true',
+                ),
+            )
+        );?>
+		<?php echo $form->error($logcambio,'fecha'); ?>
+            <?php //echo CHtml::submitButton($model->isNewRecord ? 'Ver' : 'Modificar');
+            echo CHtml::ajaxButton('Ver', yii::app()->createUrl($this->id.DIRECTORY_SEPARATOR.'ajaxcambioporfecha'),
+                    ARRAY(
+                        'type'=>'POST',
+                        'url'=>yii::app()->createUrl($this->id.DIRECTORY_SEPARATOR.'ajaxcambioporfecha'),
+                        'data'=>array('fechita'=>'js:Logtipocambio_fecha.value'),
+                        'update'=>'#panelcambio',
+                    )
+                    );
+            ?>
+	</div>
+
+	
+	
+		
+	
+
+<?php $this->endWidget(); ?>
+
+</div>
+    </div>
+
+
+<div id="panelcambio">
+    
+    
+    
+</div>
+
+

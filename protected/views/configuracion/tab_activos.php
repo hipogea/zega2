@@ -1,7 +1,7 @@
 
 <div class="row">
 	<?php echo $form->labelEx($model,'af_afmascara'); ?>
-	<?php echo $form->textField($model,'af_afmascara',array('size'=>20,'maxlength'=>20)); ?>
+	<?php echo $form->textField($model,'af_afmascara',array('size'=>80,'maxlength'=>80)); ?>
 	<?php echo $form->error($model,'af_afmascara'); ?>
 </div>
 
