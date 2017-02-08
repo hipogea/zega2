@@ -299,7 +299,7 @@ CONST CODIGO_MOVIMIENTO_ANULA_AJUSTE_SOBRANTES='19';
 			array('fechavale', 'required', 'message'=>'La fecha es obligatoria','on'=>self::PREFIJO_ESCENARIO.'79'),
 			array('fechacont', 'required', 'message'=>'Indique la fecha contabilizacion','on'=>self::PREFIJO_ESCENARIO.'79'),
 			array('codalmacen', 'required', 'message'=>'Indique el almacen','on'=>self::PREFIJO_ESCENARIO.'79'),
-			//array('numdocref', 'checksolpe','on'=>self::PREFIJO_ESCENARIO.'79'),
+			array('numdocref', 'checksolpeventa','on'=>self::PREFIJO_ESCENARIO.'79'),
 			array('codcentro', 'required', 'message'=>'Indique el centro','on'=>self::PREFIJO_ESCENARIO.'79'),
 			array('fechavale, fechacont,numero, fechacre,codalmacen,codcentro', 'safe','on'=>self::PREFIJO_ESCENARIO.'79'),
 
@@ -1142,5 +1142,38 @@ public $maximovalor;
 
 
 	}
+        
+        
+public function checksolpecompra($attribute,$params) {
+	  //Verfiicando que existan en una solpe 
+	  $registro=Solpe::model()->findAll("numero=:nimi",array("nimi"=>trim($this->numdocref)));
+		if(!(count($registro)>0)) {
+		    $this->adderror('numdocref','Esta Solpe no existe '.$this->numdocref.' '.count($registro));
+			}else{
+                            if(!($registro->escompra=='V')){
+                              $this->adderror('numdocref','Esta Solpe no es del tipo Ventas ');
+                                                RETURN;
+				  }  
+			   ////Verfiicando que existan en esa solpe items que esten reservadas 
+			  // $matriz=Desolpe::model()->findAll( "hidsolpe=:mipa and est='06' and cant > 0 ",array("mipa"=>$registro[0]['id']));
+			$matriz = Yii::app()->db->createCommand(" select t.id, t.codart,t.um, s.cant,r.punit from
+  																{{desolpe}} t,
+  																 {{alreserva}}  s ,
+  																{{alinventario}}  r
+  																 where
+  																 t.codal=r.codalm and
+  																 t.centro=r.codcen and
+  																 t.codart=r.codart and
+  																 s.hidesolpe=t.id and
+  																 s.codocu='450' and
+  																 t.hidsolpe=".$registro[0]['id']." and
+  																  s.estadoreserva in ('10' ,'40') ")->queryAll();
 
+			         if(count($matriz) ==0 )  {
+				 $this->adderror('numdocref','Esta Solpe no tiene items reservados ');
+				  }
+				  
+			}
+                    
+          }
 }

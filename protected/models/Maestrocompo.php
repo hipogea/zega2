@@ -33,7 +33,8 @@ class Maestrocompo extends ModeloGeneral
 	{
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
-		return array(
+		$reglas= array(
+                    array('detalle','safe','on'=>'prueba'),
 			//eSCENARIO BASICO
 			array('descripcion,codigo,codtipo,marca,modelo,nparte,um,esrotativo','safe','on'=>'BATCH_BASICO_INS'),
                     array('descripcion,codigo,codtipo,marca,modelo,nparte,um','safe','on'=>'BATCH_BASICO_UPD'),
@@ -75,8 +76,14 @@ class Maestrocompo extends ModeloGeneral
                     array('codigo, marca, modelo, nparte, um, descripcion,codtipo', 'safe', 'on'=>'update'),
 			array('codigo, marca, modelo, nparte, codpadre, um,esrotativo, descripcion, detalle, clase, codmaterial, flag, codtipo', 'safe', 'on'=>'search'),
 		);
+                
+                if(yii::app()->hasModule('ventas')){
+                  $reglas[]=array('tipogrupoventa','safe');
+                  $reglas[]=array('tipogrupoventa','required','on'=>'insert,update');
+                }
+                    
              //Escenario para cargar
-
+                                 return $reglas;
 
 	}
 
@@ -120,7 +127,7 @@ public function FileReceptor($fullFileName,$userdata) {
 																$lienzo = imagecreatetruecolor( $miniatura_ancho, $miniatura_alto );
 																imagecopyresampled($lienzo, $imagen, 0, 0, 0, 0, $miniatura_ancho, $miniatura_alto, $imagen_ancho, $imagen_alto);
 																imagejpeg($lienzo,$path_parts['dirname'].DIRECTORY_SEPARATOR.$userdata.'.JPG', 50);
-																unlink($fullFileName);
+																@unlink($fullFileName);
  																	} else {
  			
  														}

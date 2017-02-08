@@ -273,7 +273,7 @@ class Docingresados extends ModeloGeneral
                     $this->montomoneda=$this->monto;
                 }
             
-                 }                 
+                }                 
                 else{
                    IF($this->cambiocampo("monto") or $this->cambiocampo("moneda"))
                 if(!($this->moneda==yii::app()->settings->get('general','general_monedadef'))){
@@ -629,9 +629,16 @@ return new CActiveDataProvider($this->cache(600, $dependecy, 2), array (
     
  
         PUBLIC function checkfechas(){
-            if(!yii::app()->periodo->verificaFechas($this->fecha,$this->fechain))
-                    $this->adderror('fechain','La fecha de ingreso,  ['.$this->fechain.'] es menor que la fecha de Registro  ['.$this->fecha.' ]');
-        }
+            if(!yii::app()->periodo->verificaFechas($this->fecha,$this->fechain)){
+                $this->adderror('fechain','La fecha de ingreso,  ['.$this->fechain.'] es menor que la fecha de Registro  ['.$this->fecha.' ]');
+                 return ; 
+            }    
+            
+            if(!yii::app()->periodo->verificaFechas($this->fechain,date('Y-m-d'))){
+               $this->adderror('fechain','La fecha de ingreso,  ['.$this->fechain.'] es posterior a la fecha actual  ['.date('Y-m-d').' ]');
+               return ; 
+            }
+                      }
  
  public function escertificado(){
     if($this->getScenario()=='insert_certi' or $this->getScenario()=='update_certi'){

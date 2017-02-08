@@ -1,5 +1,6 @@
 <div class="form">
     <?php 
+        
        $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'ot-form',
 	// Please note: When you enable ajax validation, make sure the corresponding
@@ -197,7 +198,9 @@
 	</div>
 
 		<div class="row">
-			<?php echo $form->labelEx($model,'fechainiprog'); ?>
+			<?php 
+                         
+                        echo $form->labelEx($model,'fechainiprog'); ?>
 			<?php if ($this->eseditable($model->codestado)=='')
 			{
 				$this->widget('zii.widgets.jui.CJuiDatePicker', array(
@@ -308,7 +311,8 @@
 
 			}
 			?>
-			<?php echo $form->error($model,'fechafin'); ?>
+			<?php 
+                        echo $form->error($model,'fechafin'); ?>
 		</div>
 <div class="row">
 		<?php echo $form->labelEx($model,'fechacre'); ?>
@@ -397,7 +401,7 @@
 						'tamano'=>6,
 						'model'=>$model,
 						'form'=>$form,
-                                'filtro'=>array('codpro'=>'js:Ot_codpro.value'),
+                               // 'filtro'=>array('codpro'=>'js:Ot_codpro.value'),
 						'nombredialogo'=>'cru-dialog3',
 						'nombreframe'=>'cru-frame3',
 						'nombrearea'=>'feh77dfddj',
@@ -420,18 +424,18 @@
 			{
 				$this->widget('ext.matchcode.MatchCode',array(
 						'nombrecampo'=>'codresponsable',
-                                                'valor'=>$model->codresponsable,
+                                               // 'valor'=>$model->codresponsable,
                                                 'nombreclase'=>get_class($model),
 						'ordencampo'=>2,
 						'controlador'=>$this->id,
 						'relaciones'=>$model->relations(),
 						'tamano'=>5,
-						//'model'=>$model,
-						//'form'=>$form,
+						'model'=>$model,
+						'form'=>$form,
 						'nombredialogo'=>'cru-dialog3',
 						'nombreframe'=>'cru-frame3',
 						'nombrearea'=>'fehe367dfddj',
-					)
+					) 
 
 				);
 			} else{
@@ -473,7 +477,7 @@
     <?php if(!$model->isNewRecord){ ?>
 		<?php echo $form->labelEx($model,'codestado'); ?>
 		<?php echo CHtml::textField('modeldgdgd',$model->estado->estado,array('disabled'=>($editable)?'':'disabled')); ?>
-    <?php } ?>	
+    <?php }   ?>	
 	</div>
 
 	

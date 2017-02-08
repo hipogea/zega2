@@ -28,6 +28,7 @@ return array(
 		'application.models.*',
 		'application.interfaces.*',
 		'application.modules.contabilidad.models.*',
+            'application.modules.ventas.models.*',
 		'application.modules.cruge.components.*',
 		'application.modules.cruge.extensions.crugemailer.*',
 		'application.modules.cruge.extensions.crugemailer.*',
@@ -41,7 +42,7 @@ return array(
 	
 	'modules'=>array(
 		// uncomment the following to enable the Gii tool
-                    
+          'ventas'=>array(),          
         'facturacion'=>array(),
     
 		//'backup'=> array('path' => __DIR__.'/../_backup/'  ),
@@ -107,7 +108,7 @@ return array(
 			'class'=>'system.gii.GiiModule',
 			'password'=>'grecita',
 			// If removed, Gii defaults to localhost only. Edit carefully to taste.
-                'ipFilters'=>array('190.117.165.218'),
+                'ipFilters'=>array('190.117.148.219'),
 		),
 
 
@@ -325,9 +326,9 @@ return array(
         'charset' => 'utf8',
         ),*/
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=neotegni_base1',
+			'connectionString' => 'mysql:host=localhost;dbname=gearmari_flota',
 			'emulatePrepare' => true,
-			'username' => 'neotegni_julian',
+			'username' => 'gearmari_julian',
 			'password' => 'luchito',
 			'tablePrefix' => 'public_',
 			'charset' => 'utf8',

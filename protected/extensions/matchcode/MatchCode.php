@@ -209,8 +209,8 @@ class MatchCode extends CWidget
                                                                                                                                                                                         array(
                                                                                                                                                                                             "campo"=> $this->nombrecampo,
                                                                                                                                                                                             "clasesita"=> $this->nombreclase,
-                                                                                                                                                                                            "controlado"=> $this->controlador ,
-                                                                                                                                                                                            "filtro"=> JSON::encode($this->filtro) ,
+                                                                                                                                                                                            "controlado"=> $this->controlador,
+                                                                                                                                                                                            "filtro"=>CJSON::encode($this->filtro),
                                                                                                                                                                                                 ) 
 																											)
 																					.'"); $("#'.$this->nombredialogo.'").data("hilo","'.get_class($this->model).'_'.$this->nombrecampo.'@'.$this->nombrearea.'").dialog("open"); return false',

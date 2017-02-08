@@ -29,8 +29,8 @@
                                             'ajax'=>array(
                                                         'type' => 'POST',  
                                                         'url' => CController::createUrl($this->id.'/ajaxmuestralistamateriales'), //  la acción que va a cargar el segundo div 
-                                                        'update' => '#Tempdetot_hidsolpe', // el div que se va a actualizar
-                                                        'data'=>array('id'=>'js:Tempdetot_hidlabor.value'), 
+                                                        'update' => '#Tempdesolpe_hidsolpe', // el div que se va a actualizar
+                                                        'data'=>array('datopost'=>'js:Tempdesolpe_hidlabor.value'), 
                                                         ),
                                             'empty'=>'--Seleccione una labor--'
                                             )

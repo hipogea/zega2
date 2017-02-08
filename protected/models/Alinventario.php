@@ -1769,5 +1769,41 @@ var_dump($this->attributes);*/
             ->group('a.codart')->limit($limite)
             ->queryAll();
      }
+     
+     /**************************************
+      * 
+      *   Esta funcion devuelve la cantida del articulo que esta pendeinte 
+      *   de atender, OCOMPRAS abiertas pedneintes de atencion
+      *   EXLCUYE AQUELLAS COMPRAS QUE SON DE IMPUTACION DIRECTA POR 
+      *   NO ESTAR DESTINADAS AL STOCK,
+      * 
+      *************************************/
+     
+     public function ingresoCompraPendiente(){
+        $filas= Yii::app()->db->createCommand(
+                 "select t.cant-sum(b.cant) as faltan,t.cant 
+                from {{docompra}} t,
+                {{alentregas}} b  where 
+                b.iddetcompra=t.id and
+                t.iddesolpe not in 
+                (select id  from 
+                    {{desolpe}} where idreserva  > 0)  
+                    and t.codart='".$this->codart."'  and 
+                    t.codentro='".$this->codcen."'  
+                    and t.codigoalma='".$this->codalm."' 
+                    group by  t.codart
+                    having sum(b.cant) < t.cant")->queryAll();
+        if(count( $filas)>0)
+         return $filas[0]['faltan'];
+        return 0;
+     }
+     
+     
+     public function actualizaPrecioVenta(){
+         if(yii::app()->hasModule('ventas')){
+             //mirando si tiene la tabla de precios
+         }
+         return -1;
+     }
 
 }

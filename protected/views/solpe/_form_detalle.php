@@ -233,9 +233,9 @@ echo CHtml::ajaxSubmitButton("Ver detalle material.",
 														),
 												'htmlOptions'=>array(
 															'style'=>'width:120px;vertical-align:top',
-															'readonly'=>'readonly',
+															//'readonly'=>'readonly',
 															'size'=>12,
-															'disabled'=>$habilitado,
+															//'disabled'=>$habilitado,
 															),
 															));
 

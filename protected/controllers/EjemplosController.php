@@ -399,6 +399,27 @@ $mo=New Alinventario();
 
 public $layout='//layouts/column2';
 	public function actionPio() {
+           var_dump(!yii::app()->periodo->verificaFechas('2017-09-02' ,date('Y-m-d')));die();
+            
+            clearstatcache();
+            $ruta = 'recurso/';
+      $archivo='nino.pdf';
+if (is_dir($ruta))
+{
+   header('Content-Type: application/force-download');
+   header('Content-Disposition: attachment; filename='.$archivo);
+   header('Content-Transfer-Encoding: binary');
+   header('Content-Length: '.filesize($ruta));
+
+   readfile($ruta); 
+}else{
+    echo $ruta."   No es un archivo";
+}
+   die();
+            
+            
+            
+            
            var_dump(Alinventario::getrotacion('125'));die();
             
             echo yii::app()->periodo->diasentre('2016-04-12','2016-04-16');die();

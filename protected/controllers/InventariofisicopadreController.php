@@ -50,7 +50,7 @@ class InventariofisicopadreController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('cierraconteo','descargainventario','generadetalle','create','update'),
+				'actions'=>array('pickdata','pickerCodeBar', 'cierraconteo','descargainventario','generadetalle','create','update'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -387,4 +387,34 @@ class InventariofisicopadreController extends Controller
 	  $this->render('view',array('model'=>$modelo));
   }
 
+  ///Coge el codg de un text box y lo envia mefiante ajax al aservidor 
+  ///posible uso LECTOR OPTICO DE CODIGO DE BARRAS 
+  public function actionpickerCodeBar(){
+      
+      $this->render('codigobarras');
+  }
+  
+  public function actionpickdata(){
+      if(yii::app()->request->isAjaxRequest){  
+         // var_dump($_POST);
+          if(isset($_POST['codigo'])){    
+              $id= MiFactoria::cleanInput($_POST['codigo']);   
+              $registro= Maestrocompo::model()->findByPk($id); 
+              if(is_null($registro))             
+                  throw new CHttpException(500,'NO se encontro el registro con el id '.$id);        
+               
+              $registro->setScenario('prueba');
+              $registro->detalle="modifico";
+              if($registro->save()){
+                   echo "grabo";
+              }else{
+                  echo yii::app()->mensajes->getErroresItem($registro->geterrors());
+              }
+                 
+              
+          }     
+              }
+      
+  }
+  
 }

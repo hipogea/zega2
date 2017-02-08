@@ -83,6 +83,9 @@ $datos = CHtml::listData(Ums::model()->findAll(),'um','desum');
 echo $form->DropDownList($model,'um',$datos, array('empty'=>'--Unidad de medida--', 'disabled'=>($model->Sepuedecambiarum())?'':'disabled')  )  ;
 ?>
 
+                                                                            
+                                                                            <?php echo $form->labelEx($model,'um'); ?>
+
 
 <?php  echo Chtml::Link(
 	Chtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."Conversion.png"),
@@ -97,6 +100,12 @@ echo $form->DropDownList($model,'um',$datos, array('empty'=>'--Unidad de medida-
 	</div>
  			<?php $this->endWidget(); ?>
 
+    <?php
+if(yii::app()->hasModule('ventas')){ ?>
+    <?php echo $form->labelEx($model,'tipogrupoventa'); ?>
+       <?php   $datosx = CHtml::listData(VentasTipoproducto::model()->findAll(),'codtipo','destipo'); ?>
+    <?php echo $form->DropDownList($model,'tipogrupoventa',$datosx, array('empty'=>'--Llene el grupo de ventas--')  )  ; ?>
+<?php }   ?>
 
  <?php if($model->tienedetalle) {  ?>
 

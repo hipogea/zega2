@@ -39,6 +39,7 @@ $('.search-form form').submit(function(){
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'listamateriales-grid',
+     'itemsCssClass'=>'table table-striped table-bordered table-hover',
 	'dataProvider'=>$model->search(),
 	'cssFile' => Yii::app()->getTheme()->baseUrl.'/css/grilla_naranja.css',
 

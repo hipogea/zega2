@@ -26,9 +26,9 @@ class VwStockSupervision extends CActiveRecord
 			array('descripcion', 'length', 'max'=>60),
 			array('desum', 'length', 'max'=>20),
 			array('supervisionautomatica', 'length', 'max'=>1),
-			// The following rule is used by search().
+			// The following rulcolore is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('codart, color,codcentro, codal', 'safe', 'on'=>'search'),
+			array('codart,codcentro, color,codal', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -85,10 +85,11 @@ class VwStockSupervision extends CActiveRecord
 		$criteria->compare('codart',$this->codart,true);
 		$criteria->compare('codcentro',$this->codcentro,true);
 		$criteria->compare('codal',$this->codal,true);
-		//$criteria->compare('color',$this->color,true);
+		$criteria->compare('color',$this->color,true);
+                
 			return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
-				'order'
+				
 		));
 	}
 
@@ -105,6 +106,9 @@ class VwStockSupervision extends CActiveRecord
 	}
 
 
+        public function afterfind(){
+            $this->color=$this->colorstatus();
+        }
 
 
 

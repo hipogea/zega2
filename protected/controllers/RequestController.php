@@ -46,12 +46,18 @@ return array(
 
 'llenaEquipos'=>array(
                 'class'=>'ext.actions.XFillTreeAction',
-                'modelName'=>'Masterequipo',
-	'rootId'=>$_GET['rootId'],
+                'modelName'=>'Menu',
+	'rootId'=>1,
 	            'showRoot'=>false
 
  ),
+'llenaCertificados'=>array(
+                'class'=>'ext.actions.XFillTreeAction',
+                'modelName'=>'Arbolcerti',
+	//'rootId'=>1,
+	            'showRoot'=>true
 
+ ),
 
 'treePath'=>array(
 'class'=>'ext.actions.XAjaxEchoAction',
@@ -144,7 +150,7 @@ public function actionprueba(){
 	{
 		return array(
 			array('allow',
-				'actions'=>array('prueba',  'otroMaestrocompo','suggestMaestrocompo',
+				'actions'=>array( 'llenaCertificados', 'prueba',  'otroMaestrocompo','suggestMaestrocompo',
 'suggestCountry','legacySuggestCountry','fillTree','treePath','llenaEquipos','loadContent','suggestAuPlaces',
 'suggestAuHierarchy','suggestLastname','fillAuTree','viewUnitPath','viewUnitLabel','initPerson',
 'suggestPerson','suggestPersonGroupCountry','listPersonsWithSameFirstname',

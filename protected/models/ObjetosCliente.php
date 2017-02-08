@@ -119,7 +119,10 @@ class ObjetosCliente extends ModeloGeneral
 		$criteria->compare('codobjeto',$this->codobjeto,true);
 		$criteria->compare('nombreobjeto',$this->nombreobjeto,true);
 		$criteria->compare('descripcionobjeto',$this->descripcionobjeto,true);
-		
+		if(isset(yii::app()->session['codpro'])){
+                    $criteria->addCondition("codpro=:vcodpro");
+                    $criteria->params=array("codpro=:vcodpro"=>yii::app()->session['codpro']);
+                }
 		$criteria->compare('estado',$this->estado);
 
 

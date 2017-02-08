@@ -18,6 +18,7 @@ public $_rutabas=null;
 public $_carpetadestino=null;
 public $_extensionatrabajar=null;
 public $_nombrearchivopredef=null;
+public $_archivos=array(); ///archivos cargados, se obiente mediante EL METODO RECUPERAARCHIVOS()
 
 
 private function prepara() {
@@ -51,7 +52,7 @@ private function prepara() {
     
   public function getCarpeta (){
       if(is_null($this->_carpetadestino))
-          $this->prepara ();
+          $this->prepara();
       return $this->_carpetadestino;
       
   }  
@@ -209,13 +210,15 @@ private function prepara() {
              return $this->_id."_0_".((integer)microtime(true)*10000)."_".yii::app()->user->id.".".$this->_extensionatrabajar;
        
         }else{
+            $this->_nombrearchivopredef=preg_replace("/[^a-zA-Z0-9]/", "",$this->_nombrearchivopredef);
             return $this->_id."_".$this->_nombrearchivopredef."_".( ((microtime(true))*10000)    )."_".yii::app()->user->id.".".$this->_extensionatrabajar;
         
         }          
        
     }
     
-    public function recuperaarchivos($rutasabsolutas){
+    public function recuperaarchivos($rutasabsolutas=true){
+        if(count($this->_archivos)==0){
         $this->creacarpeta(); //por si acaso se invoque esta funcion antes de 
         //que se suban archivos, nos aseguramso de crear las carperas asociadas
         $archivos= CFileHelper::findFiles(
@@ -225,7 +228,7 @@ private function prepara() {
                 'level'=>0,
                 'absolutePaths'=>$rutasabsolutas,
                 ));
-         
+        // var_dump($archivos);die();
         $archivosfiltrados=array(); //nuevo array apra guaradar los datos 
    foreach($archivos as $clave=>$archivo)
      {
@@ -250,7 +253,8 @@ private function prepara() {
                                      $rutaarchivo=$this->limpiaruta($rutaarchivo);
                                      $datosruta= pathinfo($this->_carpetadestino.$nombrearchivo);
                                      
-                                              $archivosfiltrados[]=array(
+                         
+                                     $archivosfiltrados[]=array(
                                                   'nombre'=>$datosruta['filename'],
                                                   'extension'=>$datosruta['extension'],
                                                   'nombrecompleto'=>$datosruta['basename'],
@@ -259,8 +263,8 @@ private function prepara() {
                                                   'subidoel'=>$this->getcreado($archivo),
                                                   'tamano'=>$this->getSize($this->_carpetadestino.$nombrearchivo),
                                                   'rutacorta'=>$this->limpiaruta(DIRECTORY_SEPARATOR.trim($this->rutarelativa(),DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR),
-                                                  //'rutalarga'=>$this->limpiaruta(Yii::getPathOfAlias('webroot').$this->rutarelativa()),
-                                                 
+                                                  //'rutalarga'=>$this->limpiaruta(Yii::getPathOfAlias('webroot').$this->rutarelativa()),*/
+                                                    
                                                  /* 'rutacorta'=>($rutasabsolutas)?$this->limpiaruta(
                                                   DIRECTORY_SEPARATOR.trim($this->rutarelativa(),DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR):
                                                   DIRECTORY_SEPARATOR.trim($this->limpiaruta($datosruta['dirname']),DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR,
@@ -273,9 +277,11 @@ private function prepara() {
                                       
                                 }
                            }
-
-        return $archivosfiltrados;
-        
+                           
+        $this->_archivos=$archivosfiltrados;
+      
+        } 
+        return $this->_archivos;
     }
     
     public function borraarchivos(){
@@ -296,18 +302,18 @@ private function prepara() {
     public function getcreado($nombrecorto){
         $aparts=explode("_",$nombrecorto);
        /* var_dump($nombrecorto);
-        print_r($aparts);die();
+        print_r($aparts);
        var_dump((integer)$aparts[1]);echo "     El nombre original <br>";
         var_dump(date("Y-m-d H:i:s",(integer)($aparts[1])));echo " La fecha con el original <br>";
         var_dump((integer)$aparts[1]/10000);echo " El marcador divido en re 10000 <br>";
          var_dump(date("Y-m-d H:i:s",(integer)($aparts[2]/10000)));echo "<br>";
         die();*/
-        return date("Y-m-d H:i:s",(($aparts[2])/10000));
+        return date("Y-m-d H:i:s",(($aparts[3])/10000));
     }
     public function getquiensubio($nombrecorto){
         $aparts=explode("_",$nombrecorto);
         
-        return strrev(substr(strrev($aparts[3]),4));
+        return strrev(substr(strrev($aparts[4]),4));
     }
     
     public function getSize($archivo){
@@ -432,6 +438,7 @@ private function prepara() {
   
   public function renombraarchivo($filename,$nuevonombre){
        $datosruta= pathinfo($filename);
+       $nuevonombre=preg_replace("/[^a-zA-Z0-9]/", "", $nuevonombre);
        $nombrecortado=$this->nombrecortado($filename);
        $nuevonombre=$nombrecortado[0]."_".
                str_replace("","_",$nuevonombre). ///nos aseguramos que no haya ningun  caracter: '_'
@@ -457,5 +464,23 @@ private function prepara() {
            $cade.= CHtml::link($cad,$datosarchivo['rutacorta'].DIRECTORY_SEPARATOR.$datosarchivo['nombrecompleto'],array('target'=>'_blank'));
        }
        return $cade;
+   }
+   
+   //devuel los datros del archivo mas reciente segun la fecha de creacion en el servidor
+   //un array com los datros 
+   public function getLastFile(){
+       if(count($this->_archivos)>0){
+           
+       }else{
+          $this->recuperaarchivos(true); 
+       }
+       
+       $maximo['subidoel']='1969-12-31';
+           foreach($this->_archivos as $archivo){
+               if($maximo['subidoel'] < $archivo['subidoel']){
+                   $maximo=$archivo;
+               }
+           }
+           return $archivo;
    }
 }

@@ -57,7 +57,7 @@
 
 <?PHP  $this->widget('CTreeView',array(
 	'id'=>'unit-treeview',
-	'url'=>array('request/fillTree'),
+	'url'=>array('request/llenaEquipos'),
 	'htmlOptions'=>array(
 'class'=>'treeview-red'
 	)

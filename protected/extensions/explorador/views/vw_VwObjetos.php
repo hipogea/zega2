@@ -38,8 +38,8 @@ $this->widget('zii.widgets.grid.CGridView', array(
 		
 	),
 )); */
-
-$identificador=Clipro::model()->findBYpk($valor)->creaarboltabla(true);
+//var_dump(yii::app()->session['codpro']);die();
+$identificador=Clipro::model()->findBYpk(yii::app()->session['codpro'])->creaarboltabla(true);
 //echo " el idnetiifcaor ".$identificador;
 $this->widget('CTreeView',array(
     'id'=>'menu-treeview',

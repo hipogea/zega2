@@ -43,7 +43,7 @@ class DocingresadosController extends Controller {
         Yii::app()->user->loginUrl = array("/cruge/ui/login");
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('creacertificado', 'alertavencimientos', 'creasub', 'ajaxhereda', 'indicadores', 'detalles', 'ajaxenviacorreoproceso', 'ajaxanulacion', 'certificadosdicapi', 'modificaproceso', 'confirmalectura', 'limpiarcarro', 'borrafilamaletin', 'poneralcarro', 'procesavarios', 'cargatenencias', 'cargatrabajadores', 'cargaprocesos', 'borraarchivo', 'adjuntaarchivo', 'admin', 'ajaxcargaformtenencia', 'view', 'creaproceso', 'relaciona', 'recibevalor', 'create', 'update'),
+                'actions' => array('muestrapdf',    'llenaarbol',    'creacertificado', 'alertavencimientos', 'creasub', 'ajaxhereda', 'indicadores', 'detalles', 'ajaxenviacorreoproceso', 'ajaxanulacion', 'certificadosdicapi', 'modificaproceso', 'confirmalectura', 'limpiarcarro', 'borrafilamaletin', 'poneralcarro', 'procesavarios', 'cargatenencias', 'cargatrabajadores', 'cargaprocesos', 'borraarchivo', 'adjuntaarchivo', 'admin', 'ajaxcargaformtenencia', 'view', 'creaproceso', 'relaciona', 'recibevalor', 'create', 'update'),
                 'users' => array('@'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -227,6 +227,10 @@ class DocingresadosController extends Controller {
                 )
         );
         $model->codocu = self::CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS;
+         $model->monto=(is_null($model->monto))?0:$model->monto;
+                 $model->moneda=(is_null($model->moneda))?yii::app()->settings->get('general','general_monedadef'):$model->moneda;
+                 $model->codresponsable=(is_null($model->codresponsable))?'7012':$model->codresponsable;
+                
         if (isset($_GET['cert'])) {
             // die();
             $this->redirect('creacertificado');
@@ -355,7 +359,7 @@ class DocingresadosController extends Controller {
      * Manages all models.
      */
     public function actionAdmin() {
-        $this->alertavencimientos();
+        //$this->alertavencimientos();
         $model = new VwDoci('search');
         $model->unsetAttributes();  // clear any default values
         if (isset($_GET['VwDoci']))
@@ -1218,5 +1222,79 @@ class DocingresadosController extends Controller {
                 $direcciones, $reply, $titulo, $mensaje, Configuracion::valor(self::CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS, '1203', '1248')
         );
     }
+    
+    
+    //lna el arbol de cerificados 
+    public function actionllenaarbol(){
+        Arbolcerti::model()->deleteAll();
+        $ramaroot=New Arbolcerti();
+            $ramaroot->setAttributes(array(
+                'parent_id'=>0,
+                'titulo'=>'Embarcaciones',
+            ));$ramaroot->save();
+            $ramaroot->refresh();
+        
+        $barcos=Embarcaciones::model()->findAll("activa='1'");
+        foreach($barcos as $barco){
+            $rama=New Arbolcerti();
+            $rama->setAttributes(array(
+                'parent_id'=>$ramaroot->id,
+                'titulo'=>$barco->nomep,
+            ));$rama->save();//unset($ramaroot);
+            $rama->refresh();
+            
+             $certificados=Docingresados::model()->findAll("codtenencia='400' and codepv='".$barco->codep."'");
+                foreach($certificados as $certificado){
+                    $procesoactivo=$certificado->procesoactivo[0];
+                    if(is_null( $procesoactivo)){
+                        $porcentaje=0;
+                    }else{
+                        $porcentaje=$certificado->procesoactivo[0]->porcavance();
+                    }
+                   
+             $nuevorama=New Arbolcerti();
+            $nuevorama->setAttributes(array(
+                'parent_id'=>$rama->id,
+                'porcentaje'=>$porcentaje,
+                'identidad'=>$certificado->id,
+                'tipodoc'=>$certificado->tipodoc,
+                'color'=>$certificado->getcolor(),
+                'enlaces'=>$certificado->enlacesarchivos(Yii::app()->getTheme()->baseUrl.'/img/doc_pdf.png'),
+                'fechavenc'=>$certificado->fechavencimiento,
+                'nivel'=>2,
+                'titulo'=>$certificado->docus->desdocu,
+            ));
+            $nuevorama->save();unset($nuevorama);
+                }
+                
+                unset($rama);
+            
+        }
+        unset($barcos);
+        
+       
+        $this->render('arbolcertificados');
+        
+    }
+    
+   public function eschimbotano(){
+      return in_array(yii::app()->user->id,array(14,15));
+   } 
 
+   
+   public function actionmuestrapdf(){
+      
+           if(isset($_GET['id'])){   
+               $id= (integer)MiFactoria::cleanInput($_GET['id']); 
+               $registro= Docingresados::model()->findByPk($id);  
+               if(is_null($registro))          
+                   throw new CHttpException(500,'NO se encontro el registro con el id '.$id);     
+               echo  $this->renderpartial('certificadopdf',array('model'=>$registro),false,true);   
+            //yii::app()->request->redirect(yii::app()->getBaseUrl(true).$archivo['rutacorta'].$archivo['nombre'].'.'.$archivo['extension']);  
+               
+           }         
+              
+           
+   }
+   
 }

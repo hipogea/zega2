@@ -59,6 +59,7 @@ class Desolpe extends ModeloGeneral
 		return array(
 			//array('hidsolpe', 'required'),
 			//array('numero, codart', 'length', 'max'=>10),
+                    //array('fechaent', 'date', 'format'=>'dd/MM/y', 'allowEmpty'=>true),
 			array('centro, codal, codart,cant, txtmaterial,um,hidlabor', 'required','on'=>'buffer'),
 			array('tipsolpe,centro, 
                             codal,hidot,hcodoc, 

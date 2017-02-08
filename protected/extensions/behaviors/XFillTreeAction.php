@@ -277,6 +277,7 @@ class XTreeBehavior extends CActiveRecordBehavior
      */
     public function getTreeItems($id=null,$showRoot=true)
     {
+        //echo"de"; die();
         $owner=$this->getOwner();
         $rootId=($id===null) ? $this->getRootId() : $id;
         $items=array();
@@ -308,11 +309,15 @@ class XTreeBehavior extends CActiveRecordBehavior
      */
     public function fillTree($id=null, $showRoot=true)
     {
+       //die();
+       // var_dump($showRoot);die();
+        echo "nada"; die();
         $owner=$this->getOwner();
         $rootId=($id===null) ? $this->getRootId() : $id;
         $items=array();
         if ($showRoot===false)
         {
+           echo "uno"; die();
             $models=$owner->with($this->getWidth())->findAll(array(
                 'condition'=>$this->parent_id.'=:id',
                 'params'=>array(':id'=>$rootId),
@@ -325,6 +330,7 @@ class XTreeBehavior extends CActiveRecordBehavior
         }
         else
         {
+             echo "dos"; die();
             $model=$owner->with($this->getWidth())->findByPk($rootId);
             if($model===null)
                 throw new CException('The requested tree does not exist.');

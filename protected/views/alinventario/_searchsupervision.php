@@ -74,6 +74,11 @@
 		<?php echo $form->textField($model,'codal',array('size'=>3,'maxlength'=>3, )); ?>
 		<?php echo $form->error($model,'codal'); ?>
 	</div>
+       <div class="row">
+		<?php echo $form->labelEx($model,'color'); ?>
+		<?php echo $form->textField($model,'color',array('size'=>3,'maxlength'=>3, )); ?>
+		<?php echo $form->error($model,'color'); ?>
+	</div>
 
 
 <?php $this->endWidget(); ?>

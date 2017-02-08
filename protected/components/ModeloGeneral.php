@@ -13,6 +13,7 @@ const ESTADO_REGISTRO_NUEVO='00'; ///ESTO SOLO PARA INCLUIR LA CONDICION isNewRe
 	public $campoprecio=null; //nobre del campo precio del modelo
 	public $isdocParent=true; ///Si es modelo padre TRUE , FALSE  SI es un item	
         public $campoestado='';
+        public $camposfechas=array();
         public $campossensibles=array();///Esta propiedad guarda los campos sensisble del modelo para veriifcacion si se pueden 
    //editar o no de acuerdo a si ya tieen compromisos
    
@@ -121,54 +122,7 @@ const ESTADO_REGISTRO_NUEVO='00'; ///ESTO SOLO PARA INCLUIR LA CONDICION isNewRe
 				$this->_venumModels[] = substr($f,0,strpos($f,'.php'));
 
 			}
-                        //ahora toca recorres los modelos de los MODULOS INSTALADOS 
-                         $p=yii::app()->basePath.DIRECTORY_SEPARATOR.'modules'.DIRECTORY_SEPARATOR;
-           $modulosp=array();
-            $modelosp=array();
-           foreach (scandir($p) as $f) {
-               
-              // var_dump($f); echo "<br><br><br>";
-				if ($f == '.' || $f == '..') {
-					continue;
-				}
-				if (strlen($f)) {
-					if ($f[0] == '.') {
-						continue;
-					}
-				}
-                                    if(is_dir($p.$f.DIRECTORY_SEPARATOR.'models')){
-                                        foreach(scandir($p.$f.DIRECTORY_SEPARATOR.'models') as $archivo)
-                                                {
-                                                        if ($archivo == '.' || $archivo == '..') {
-                                                            continue;
-                                                            }
-                                                            if (strlen($archivo)) {
-                                                            if ($archivo[0] == '.') {
-                                                                    continue;
-                                                                    }
-                                                            }
-                                                        if(is_file($p.$f.DIRECTORY_SEPARATOR.'models'.DIRECTORY_SEPARATOR.$archivo)                   
-                                                                )  {
-                                                            $modelosp[]=substr($archivo,0,strpos($archivo,'.php'));
-                                                        }  
-                                                    }
-                                    }
-				//$modulosp[]=$p.$f.DIRECTORY_SEPARATOR.'models';
-
-			}
-                        
-                        $this->_venumModels=array_merge( $this->_venumModels,$modelosp);
-                        
 			return $this->_venumModels;
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
 		} else {
 			return $this->_venumModels ;
 		}
@@ -532,12 +486,13 @@ Public function recorro($matriz)
 
 
 	public function beforeSave() {
-
+//$this->conviertefechas(false);
 		return parent::beforeSave();
 	}
 
 public function afterSave() {
-
+          // $this->arreglafechas();
+//$this->conviertefechas(true);
 		return parent::afterSave();
 	}
 
@@ -610,22 +565,22 @@ public static function model($className=__CLASS__)
                                  {
                                     // isnewrecord =false; verificando si es un campo que solo sepudee ingersar una osla vez y ya no s emodifica 
                                          if(in_array(self::ESTADO_REGISTRO_NUEVO,array($this->campossensibles[$nombrecampo]))){
-                                            // Yii::log(' campossensibles primer criterioel campo '.$nombrecampo.'   '.self::ESTADO_REGISTRO_NUEVO,'error');
+                                             Yii::log(' campossensibles primer criterioel campo '.$nombrecampo.'   '.self::ESTADO_REGISTRO_NUEVO,'error');
                                              return false;
                                             
                                          } else{ //isnewrecord =false; ahora toca revisar  segun el estado
                                               if(in_array($this->{$this->campoestado},array($this->campossensibles[$nombrecampo]))){
-                                               //  Yii::log(' campossensibles segundo criteiro '.$nombrecampo.'   ','error');
+                                                 Yii::log(' campossensibles segundo criteiro '.$nombrecampo.'   ','error');
                                             
                                                   return false; 
                                                 } else{///muy bien ahora que ya paso los 2 criterios (1) ingreso unica vez y 2) estado del documento)
                                                          // ahora toca revisar el criterio 3) de los compromisos, a nivel BASE DE DATOS de las tablas hijas relacionadas
                                                      if($this->checkcompromisos()) {//sis tiene compromisos  ya no  puede ser editable
-                                                          //Yii::log(' ahora que ya paso los 2 criterios '.$nombrecampo.'   ','error');
+                                                          Yii::log(' ahora que ya paso los 2 criterios '.$nombrecampo.'   ','error');
                                                          return false;
                                                      }else{ //en este caso despues de haber pasado los 3 criterios recien puede 
                                                            //decirse que es editable
-                                                          //Yii::log(' ahora ya p`sso los 3 croterios y es editable '.$nombrecampo.'   ','error');
+                                                          Yii::log(' ahora ya p`sso los 3 croterios y es editable '.$nombrecampo.'   ','error');
                                                          
                                                          return true;
                                                      }
@@ -634,8 +589,8 @@ public static function model($className=__CLASS__)
                                              }
                                  
                                             } else{
-                                                echo " El campo  [".$nombrecampo."]  no esta le la lista de CAmpos sesiisbles de este modelo debe de agregarlo si esta usando la funcion escampohabilitado   ";die();
-                                                //Yii::log(' campossensibles el campo '.$nombrecampo.'   no esta en los campos sensibles ','error');
+                                                var_dump($nombrecampo);var_dump(array_keys($this->campossensibles));die();
+                                                Yii::log(' campossensibles el campo '.$nombrecampo.'   no esta en los campos sensibles ','error');
                                             
                                         return true;
                                 }  
@@ -749,5 +704,24 @@ public function preparaAuditoria(){
                     $this->setOldAttributes($this->getAttributes());
             }
             
-        }    
+        }   
+ ///cambia las fechas del modelo en los formatos estabeldicdos en la configuracion de
+        //de la aplicacion
+private function conviertefechas($salida){
+    foreach($this->camposfechas as $clave=>$campo){
+        $this->{$campo}=$this->cambiaformatofecha($this->{$campo},$salida);
+    }
+}  
+public function cambiaformatofecha($fecha,$salida=true){
+   
+    if($salida){ 
+        return yii::app()->periodo->fechaParaMostrar($fecha);
+    }else{
+        return yii::app()->periodo->fechaParaBd($fecha);
+       //return date_format(date_create($fecha), yii::app()->settings->get->general('general','general_formatofechaingreso'));
+     
+    }
+    //return 1;
+}
+
 }

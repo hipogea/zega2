@@ -379,8 +379,22 @@
 
 
 
-	<?PHP
-	/*$this->widget('zii.widgets.jui.CJuiTabs', array(
+	
+
+
+
+<?php $this->endWidget(); ?>
+
+</div><!-- form -->
+
+
+
+</div><!-- fin de Division -->
+
+<DIV>
+
+<?PHP
+	$this->widget('zii.widgets.jui.CJuiTabs', array(
 			'tabs' => array(
 				'Detalle'=>array('id'=>'tab_general',
 					'content'=>$this->renderPartial('vw_detalle_grilla',array('model'=>$model,'idcabecera'=>$model->id),TRUE)),
@@ -391,20 +405,13 @@
 				'heightStyle'=>'auto',
 			),
 			'id'=>'MyTabe',
-		));*/
+		));
 	?>
 
 	<?php
 	//$this->renderpartial('vw_detalle_grilla',array('idcabecera'=>$model->id));
 	?>
-
-
-
-<?php $this->endWidget(); ?>
-
-</div><!-- form -->
-</div><!-- fin de Division -->
-
+</DIV>
 
 <?php
 //--------------------- begin new code --------------------------

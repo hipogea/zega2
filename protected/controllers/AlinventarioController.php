@@ -779,7 +779,8 @@ public function actionBusqueda()
 		$model=new VwStockSupervision('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['VwStockSupervision'])){
-			$model->attributes=$_GET['VwStockSupervision'];
+		//var_dump($_GET['VwStockSupervision']);	die();
+                    $model->attributes=$_GET['VwStockSupervision'];
 		}
 		if ($this->isExportRequest()) { //<==== [[ADD THIS BLOCK BEFORE RENDER]]
 			$this->exportCSV($model->search(), array(

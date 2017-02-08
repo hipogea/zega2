@@ -72,22 +72,16 @@ class OtController extends ControladorBase
 	{
 		$model=MiFactoria::CargaModelo($this->modelopadre,$id);
 		$modelolabor=new Tempdesolpe('search_por_ot');
-		$modelolabor->unsetAttributes();  // clear any default values
-               
-                
-                
+		$modelolabor->unsetAttributes();  // clear any default values 
                 $modeloconsi=new Tempotconsignacion('search_por_ot');
 		$modeloconsi->unsetAttributes();  // clear any default values
-                
-                
+          
 		if(isset($_GET['Tempdesolpe'])){
 			$modelolabor->attributes=$_GET['Tempdesolpe'];
 			//var_dump($modelhijo->attributes);die();
 		}
-
 		if($model->{$this->campoestado}==ESTADO_PREVIO)
-			$model->{$this->campoestado}=ESTADO_CREADO;
-                       
+			$model->{$this->campoestado}=ESTADO_CREADO;                       
 		if($this->itsFirsTime($id))
 		{
 			$uintruso=$this->getUsersWorkingNow($id);
@@ -98,14 +92,11 @@ class OtController extends ControladorBase
 				$this->redirect(array('VerDocumento','id'=>$model->idguia));
 			} else { // Si no lo esta renderizar sin mas
 				
-                            $this->setBloqueo($id) ; 	///bloquea
-                           
+                            $this->setBloqueo($id) ; 	///bloquea                           
 				$this->ClearBuffer($id); //Limpia temporal antes de levantar
-                                   
-				$this->IniciaBuffer($id); //Levanta temporales
-                                 
-                                
-				$this->render('update',array('modeloconsi'=>$modeloconsi,'modelolabor'=>$modelolabor,'model'=>$model,'editable'=>true));
+                    
+                                $this->IniciaBuffer($id); //Levanta temporales
+                                $this->render('update',array('modeloconsi'=>$modeloconsi,'modelolabor'=>$modelolabor,'model'=>$model,'editable'=>true));
 				yii::app()->end();
 			}
 
@@ -117,22 +108,15 @@ class OtController extends ControladorBase
 			} else { // Si no lo es  tenemos que analizar los dos casos que quedan
 				if($this->IsRefreshUrlWithoutSubmit($id))
 				{ ///Solo refreso la pagina
-                                   
+                                        
 					MiFactoria::Mensaje('notice', "No has confirmado los datos, solo has refrescado la pagina ");
 					$this->render('update',array('modeloconsi'=>$modeloconsi,'modelolabor'=>$modelolabor,'model'=>$model,'editable'=>true));
 					yii::app()->end();
 				} else {
+                                      
 					$this->performAjaxValidation($model);
 					IF(isset($_POST[$this->modelopadre])) {
 						$model->attributes=$_POST[$this->modelopadre];
-						//$model->validate();
-                                               /* var_dump($model->oldAttributes);
-                                                ECHO "<BR>"; ECHO "<BR>";
-                                                var_dump($model->attributes);
-                                                 ECHO "<BR>";
-                                                 var_dump($model->hacambiado());
-                                                 ECHO "<BR>"; ECHO "<BR>";
-                                                die();*/
 						if($this->hubocambiodetalle($id) OR  $model->hacambiado()) {
 							$transacc=Yii::app()->db->beginTransaction();
 							if($model->save()){
@@ -368,7 +352,7 @@ class OtController extends ControladorBase
 		return array(
 
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('JalaMateriales','view','imputa','cargagaleria','tomafoto','creaconsignacion','borraitemsdesolpe','nadax','creaservicio','modificadetallerecurso','creadetallerecurso','verprecios','crearpdf','verDetoc','firmar','aprobar','cargaprecios','enviarpdf','admin','borrarimpuesto','reporte','agregarmasivamente','cargadirecciones','borraitems','sacaitem','sacaum','salir','agregaimpuesto','agregaritemsolpe','procesardocumento','refrescadescuento','VerDocumento','EditaDocumento','creadocumento','Agregardelmaletin','borraitem','imprimirsolo','cargaentregas','agregarsolpe','agregarsolpetotal','pasaatemporal','create','imprimirsolo','imprimir','imprimir2','enviarmail',
+				'actions'=>array('ajaxmuestralistamateriales','JalaMateriales','view','imputa','cargagaleria','tomafoto','creaconsignacion','borraitemsdesolpe','nadax','creaservicio','modificadetallerecurso','creadetallerecurso','verprecios','crearpdf','verDetoc','firmar','aprobar','cargaprecios','enviarpdf','admin','borrarimpuesto','reporte','agregarmasivamente','cargadirecciones','borraitems','sacaitem','sacaum','salir','agregaimpuesto','agregaritemsolpe','procesardocumento','refrescadescuento','VerDocumento','EditaDocumento','creadocumento','Agregardelmaletin','borraitem','imprimirsolo','cargaentregas','agregarsolpe','agregarsolpetotal','pasaatemporal','create','imprimirsolo','imprimir','imprimir2','enviarmail',
 					'procesaroc','hijo','Aprobaroc','Reporteoc','Anularoc','Configuraop','Revertiroc', ///acciones de proceso
 					'libmasiva','creadetalle','Verdetalle','muestraimput','update','nada','Modificadetalle'),
 				'users'=>array('@'),
@@ -2678,27 +2662,35 @@ public function borraitemdesolpe($autoId) //Borra un registro de solpe
 	}
     
     public function actionajaxmuestralistamateriales(){
-         if(isset($_GET['id'])){
-                $id= (integer)MiFactoria::cleanInput($_GET['id']);
-                 $detalle= Tempdetot::model()->findByPk($id);                 
+        //var_dump($_POST);die();
+         if(isset($_POST['datopost'])){
+                $id= (integer)MiFactoria::cleanInput($_POST['datopost']);
+                 $detalle= Tempdetot::model()->findByPk($id);  
+               
                  if(!is_null($detalle)){
-                     $condiciones=array($detalle->ot->vwObjetos->codigo,$detalle->codmaster);
+                     //echo "jajaj"; die();
+                       var_dump($detalle->ot->vwobjetos);die();
+                     $condiciones=array($detalle->ot->vwobjetos->codigo,$detalle->codmaster);
                      $criteria = new CDbCriteria();
-		     $criteria->addInCondition("codigo",$condiciones);
+		     $criteria->addInCondition("codigo",$condiciones);                     
                      $listaids=yii::app()->db->createCommand()->select("hidlista")->
                              from("{{masterlistamateriales}}")->
                              where($criteria->condition, $criteria->params)->
                              queryColumn();
                      $criterio = new CDbCriteria();
 		     $criterio->addInCondition("id", $listaids);
+                       
                      $data=CHtml::listData(Listamateriales::model()->findAll($criterio),
                                                                  "id",
                                                             "nombrelista"											
                                             ); 
+                 
                      echo CHtml::tag('option', array('value'=>null),CHtml::encode('Escoja una lista'),true);
 			foreach($data as $value=>$name) { 
 			    echo CHtml::tag('option', array('value'=>$value),CHtml::encode($name),true);
 			   } 
+                 }else{
+                      echo "jaxxx"; die();
                  }
                      
 		

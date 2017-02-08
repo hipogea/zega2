@@ -310,9 +310,12 @@ class XTreeBehavior extends CActiveRecordBehavior
      */
     public function fillTree($id=null, $showRoot=true)
     {
+       
+        
         $owner=$this->getOwner();
         $rootId=($id===null) ? $this->getRootId() : $id;
         $items=array();
+        //var_dump($this->getWidth());die();
         if ($showRoot===false)
         {
             $models=$owner->with($this->getWidth())->findAll(array(
@@ -320,6 +323,7 @@ class XTreeBehavior extends CActiveRecordBehavior
                 'params'=>array(':id'=>$rootId),
                 'order'=>$this->sort,
             ));
+            //var_dump($models);die();
             if($models===null)
                 throw new CException('The requested tree does not exist.');
             foreach($models as $model)
@@ -327,11 +331,13 @@ class XTreeBehavior extends CActiveRecordBehavior
         }
         else
         {
+            //var_dump($owner->with($this->getWidth())->findByPk(1));die();
             $model=$owner->with($this->getWidth())->findByPk($rootId);
             if($model===null)
                 throw new CException('The requested tree does not exist.');
             $items[]=$this->formatTreeItem($model);
         }
+       // var_dump($items);
         return $items;
     }
     /**
@@ -498,7 +504,7 @@ class XTreeBehavior extends CActiveRecordBehavior
         if($this->treeUrlMethod!==null)
             $url=$model->{$this->treeUrlMethod}();
         else
-            $url='#';
+            $url='#'; 
         return array(
             'text'=>CHtml::tag("input",
                     array(
@@ -506,16 +512,20 @@ class XTreeBehavior extends CActiveRecordBehavior
                         'type'=>"checkbox",
                         'name'=>"checkselected[]"
                         )
-                    ).            
-            CHtml::closeTag("input").
-            CHtml::link(
+                    )           
+            .CHtml::closeTag("input")
+             .CHtml::openTag("span",array("style"=>"background-color:".$model->color.";  font-weight:bold;font-size:13px; color:white;border-radius:7px;padding:3px;")).$model->tipodoc.CHTml::closeTag("span")
+            .CHtml::link(
                     $label,
                     $url,
                     array(
+                        
                         'id'=>$model->getAttribute($this->id),
-                        'onclick'=>'js:alert("El valor seleccionado es '.$model->getAttribute($this->id).' ");',
+                        //'onclick'=>"function(){   $('#zonapdf').load('".yii::app()->getBaseUrl(true).yii::app()->createUrl('/docingresados/muestrapdf',array('id'=>$model->identidad))."'); }",
+                        'onclick'=>"js:$('#zonapdf').load('".yii::app()->getBaseUrl(true).yii::app()->createUrl('/docingresados/muestrapdf',array('id'=>$model->identidad))."'); ",
+                        
                         )
-                    ),
+                    ).$model->enlaces,
             'id'=>$model->getAttribute($this->id),
             'hasChildren'=>$model->childCount==0 ? false : true,
         );

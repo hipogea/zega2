@@ -36,14 +36,14 @@ class SiteController extends Controller
 		// renders the view file 'protected/views/site/index.php'
 		// using the default layout 'protected/views/layouts/main.php'
 		  //$this->layout = '//layouts/column_inicio';
-		  if (Yii::app()->user->isGuest) {
-		  					$this->redirect(Yii::app()->user->ui->loginUrl);
-		            }else {
+		///  if (Yii::app()->user->isGuest) {
+		  					//$this->redirect(Yii::app()->user->ui->loginUrl);
+		            //}else {
 
 			              // $this->Loginventario(); //Registra el log de inventario
 
 			 //Bloqueos::clearbloqueos();
-			  MiFactoria::InsertaCumple(); //INSERTA CUMPLEAÑOS en lel tablon
+			  //MiFactoria::InsertaCumple(); //INSERTA CUMPLEAÑOS en lel tablon
 
 			               //
 			               //
@@ -51,10 +51,11 @@ class SiteController extends Controller
 							//
 			//  //	echo ModeloGeneral::getClassName();
 		// echo  MiFactoria::InsertaCumple();
-                                      // $this->redirect("docingresados/admin");
-		            		$this->render('index');
+                                      $this->redirect("docingresados/admin");
+		    // $this->layout = '//layouts/iframe';       		
+            //$this->render('indexflota');
 
-		            }
+		           // }
 		//$this->render('index');
 		//Yii::app()->user->ui->loginUrl
 

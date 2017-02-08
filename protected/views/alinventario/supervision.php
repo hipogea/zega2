@@ -30,7 +30,7 @@ return false;
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'supervision-grid',
 	'dataProvider'=>$model->search(),
-	//'filter'=>$model,
+	'filter'=>$model,
 	'itemsCssClass'=>'table table-striped table-bordered table-hover',
 	'columns'=>array(
 		//'codart',
@@ -38,7 +38,7 @@ return false;
 		'codcentro',
 		'codal',
 		'desum',
-		array('name'=>'Indic','type'=>'raw','value'=>'CHtml::image(Yii::app()->getTheme()->baseUrl."/img/reloj".$data->colorstatus().".png","")'),
+		array('name'=>'color','type'=>'raw','value'=>'CHtml::image(Yii::app()->getTheme()->baseUrl."/img/reloj".$data->colorstatus().".png","")'),
 
 		array('name'=>'cantlibre','type'=>'raw','value'=>'($data->cantlibre>0)?CHtml::openTag("span",array("class"=>"badge badge-success")).$data->cantlibre.CHtml::closeTag("span"):""'),
 
@@ -46,7 +46,7 @@ return false;
 		'cantreorden',
 		'canteconomica',
 		'descripcion',
-
+                  'color',
 		'punit',
 		//array('name'=>'color','value'=>'$data->colorstatus()'),
 			),

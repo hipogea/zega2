@@ -144,13 +144,13 @@ class Dpeticion extends ModeloGeneral
 
 			//$this->ultimares=" ".strtoupper(trim($this->usuario=Yii::app()->user->name))." ".date("H:i")." :".$this->ultimares;
 		}
-		$this->colocaimpuestositem(); ///Inserta o actualiza lois impuestos asigandos al documento
+		//$this->colocaimpuestositem(); ///Inserta o actualiza lois impuestos asigandos al documento
 		return parent::beforeSave();
 	}
 
 	public function afterSave() {
 		//$this->refresh();
-		$this->colocaimpuestositem(); ///Inserta o actualiza lois impuestos asigandos al documento
+	//	$this->colocaimpuestositem(); ///Inserta o actualiza lois impuestos asigandos al documento
 		return parent::afterSave();
 	}
 

@@ -39,21 +39,23 @@ class MatchcodeController extends Controller
 	}
 	public function actionRelaciona()
 	{
-			$ordencampo=$this->cleanInput($_GET['ordencampo']);
+		
+            $ordencampo=$this->cleanInput($_GET['ordencampo']);
 			$campito=$this->cleanInput($_GET['campo']);
 			$vvalore=$this->cleanInput($_GET[$_GET['contr']][$campito]);
 
 		$cremoto=$this->cleanInput($_GET['camporemoto']);
 		$clasi=$_GET['clasesita'];
-
+        
 		if($cremoto==""){
 			$rr= $clasi::model()->findByPK($vvalore);
 			//var_dump($rr);
 			if(!is_null($rr)){
                           //   var_dump($rr->attributes);
-				echo $rr->{$rr->attributeNames()[$ordencampo]};
+				//echo $rr->{$rr->attributeNames()[$ordencampo]};
+                            $valor=$rr->{$rr->attributeNames()[$ordencampo]};
 			}else{
-				echo "--Valor no encontrado ";
+				$valor=null;
 			}
 		}else{
 			$mokix =new $clasi;
@@ -66,12 +68,19 @@ class MatchcodeController extends Controller
 				throw new CHttpException(500,__CLASS__.'   '.__FUNCTION__.'  '.__LINE__.' No se encontro ninguna columna remota con el nombre :  '.$cremoto.', por favor revise la propiedad ');
 			$moki=$clasi::model()->find("".$cremoto."='".trim($vvalore)."'");
 			if(!is_null($moki)){
-                           
-					echo $moki->{$moki->attributeNames()[$ordencampo]};
+                           //yii::app()->session[$campito]=$moki->{$moki->attributeNames()[$ordencampo]};	
+					$valor=$moki->{$moki->attributeNames()[$ordencampo]};
 				}else{
-					echo "--Valor no encontrado ";
-				}
+                                    // yii::app()->session[$campito]=$moki->{$moki->attributeNames()[$ordencampo]};	
+			
+					$valor=null;
+				} 
+                                
 		}
+                echo is_null($valor)?"--No encontrado ":$valor;
+               yii::app()->session[$campito]=$vvalore;	
+			 
+                
 
 	}
 

@@ -97,7 +97,10 @@ class VwObjetos extends CActiveRecord
 		$criteria->compare('nombreobjeto',$this->nombreobjeto,true);
 		$criteria->compare('despro',$this->despro,true);
 		$criteria->compare('rucpro',$this->rucpro,true);
-
+           if(isset(yii::app()->session['codpro'])){
+                    $criteria->addCondition("codpro=:vcodpro");
+                    $criteria->params=array("codpro=:vcodpro"=>yii::app()->session['codpro']);
+                }
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));

@@ -430,9 +430,15 @@ class Procesosdocu extends ModeloGeneral {
     
     public function porcavance(){
        $horaspasadas= $this->horaspasadas();
-       $horastotales= $this->tenenciasproc->nhorasnaranja;
+       $fechaven=$this->docingresados->fechavencimiento;
+       if(!is_null($fechaven) or  strlen(trim($fechaven))>0){
+           $horastotales=(strtotime($fechaven)-strtotime($this->fechanominal))/3600;
+       }else{
+            $horastotales= $this->tenenciasproc->nhorasnaranja;
+       }
+      
        if($horastotales  <>0){
-           return 100*round($horaspasadas/$horastotales,3);
+           return 100*round($horaspasadas/$horastotales,1);
        }else{
          return 0;
        }

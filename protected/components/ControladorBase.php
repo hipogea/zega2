@@ -120,8 +120,8 @@ private function relacionesnietas(){
 				  $aid=$id;
 			  }
 			  $registroshijos=MiFactoria::getRegistrosHijos($nametablaoriginal,$campoenlace,$aid);
-                          if($nametablatemporal=='Tempdesolpe')
-                                {print_r($registroshijos);die();}
+                          //if($nametablatemporal=='Tempdesolpe')
+                                //{print_r($registroshijos);die();}
                           foreach  ($registroshijos as $row)
 			  {
 				

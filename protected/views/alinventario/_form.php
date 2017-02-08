@@ -244,6 +244,7 @@
 	<div class="row">
 		<?php echo $form->labelEx($model,'cantlibre' ); ?>
 		<?php echo $form->textField($model,'cantlibre',array('disabled'=>'disabled')); ?>
+            En compra: <span class="label badge-important"><?php echo $model->ingresoCompraPendiente();  ?></span>
 		<?php echo $form->error($model,'cantlibre'); ?>
 	</div>
 

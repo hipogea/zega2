@@ -107,6 +107,23 @@ class Sunatmaster extends CActiveRecord
                        )
 		));
 	}
+        
+        public function search_por_comprobantes($tabla)
+	{
+		// @todo Please modify the following code to remove attributes that should not be searched.
+
+		$criteria=new CDbCriteria;
+
+		$criteria->addCondition("codsunat='".$tabla."'");
+
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+                       'pagination'=>array(
+                           'pageSize'=>50
+                       )
+		));
+	}
+        
 
 	/**
 	 * Returns the static model of the specified AR class.
