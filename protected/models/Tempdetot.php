@@ -235,11 +235,60 @@ class Tempdetot extends ModeloGeneral
     }
     
     //7carga los materiales relacinados a la tabla tempdesolpe a al actividad de la lista materiales 
-    public function cargarecursos($atributos=null){
+    public function cargarecursosext($idlista=null,$atributos=null){
         ///devuelve primero los registros hijos para ver si tiene hijos 
+      if(is_null($atributos) or is_null($idlista))  {
+          return;
+      }else{
+       $registros=  Listamateriales::model()->findByPk($idlista)->hijos;
+       //var_dump($registros);die();
+          foreach($registros as $fila){
+            $recurso=New Tempotconsignacion('buffer');
+            $recurso->valorespordefecto();
+             $recurso->setAttributes(
+                            array(
+                                'centro'=>$atributos['centro'],
+                                'codal'=>$atributos['codal'],
+                                'idusertemp'=>yii::app()->user->id,
+                                //'hcodoc'=>$this->ot->codocu, //()
+                                'codart'=>$fila->codigo,
+                                'um'=>$fila->um,
+                                'cant'=>$fila->cant,
+                                'descripcion'=>$fila->maestro->descripcion,
+                               // 'codocu'=>'350',//()
+                                // 'tipsolpe'=>'M',//()
+                                'est'=>'99',
+                                'hidot'=>$this->ot->id,
+                                'hidetot'=>$this->idaux,
+                                // 'tipsolpe'=>'M',
+                                'idstatus'=>0, 
+                            )
+                        
+                     );
+            
+             $recurso->item=$this->ot->getNextItemConsignacion();
+            if(!$recurso->save())
+                MiFactoria::Mensaje ('error',
+                        Yii::app()->mensajes->
+                        getErroresItem($recurso->geterrors())
+                        );
+            
+        } 
+      }
         
-        $registros=  Listamateriales::model()->findByPk($this->idlabor)->hijos;
-        foreach($registros as $fila){
+        
+        
+        
+    }
+    
+     public function cargarecursos($idlista=null,$atributos=null){
+        ///devuelve primero los registros hijos para ver si tiene hijos 
+      if(is_null($atributos) or is_null($idlista))  {
+          return;
+      }else{
+       $registros=  Listamateriales::model()->findByPk($idlista)->hijos;
+       //var_dump($registros);die();
+          foreach($registros as $fila){
             $recurso=New Tempdesolpe('buffer');
             $recurso->valorespordefecto();
              $recurso->setAttributes(
@@ -275,11 +324,13 @@ class Tempdetot extends ModeloGeneral
                         getErroresItem($recurso->geterrors())
                         );
             
-        }
+        } 
+      }
+        
+        
         
         
     }
-    
     
     public function checkcamposdefecto(){
              

@@ -2,7 +2,9 @@
 
 class Ne extends ModeloGeneral
 {
-	/**
+	
+    const ESTADO_DETALLE_ANULADO='40';
+    /**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
 	 * @return Guia the static model class
@@ -212,7 +214,8 @@ class Ne extends ModeloGeneral
 		return array(
 			'detalle' => array(self::HAS_MANY, 'Detgui', 'n_hguia'),
 			'tempdetalle' => array(self::HAS_MANY, 'Tempdetgui', 'n_hguia'),
-
+                        'numeroitemsvalidos'=>array(self::STAT, 'Tempdetgui', 'n_hguia','condition'=>" c_estado not in ('".self::ESTADO_DETALLE_ANULADO."')  and iduser =".yii::app()->user->id." "),//el campo foraneo
+		
 			'direccionespartida' => array(self::BELONGS_TO, 'Direcciones', 'n_dirsoc'),
 			'direccionesllegada' => array(self::BELONGS_TO, 'Direcciones', 'n_direc'),
 			'transportistas' => array(self::BELONGS_TO, 'Clipro', 'c_codtra'),
@@ -454,7 +457,9 @@ class Ne extends ModeloGeneral
 		//}
 	}  
         
-        
+    public function getNextItem(){
+            return str_pad($this->numeroitemsvalidos+1,3,"0",STR_PAD_LEFT); 
+        }    
         
         
 }

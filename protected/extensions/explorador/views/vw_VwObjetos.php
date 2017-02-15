@@ -1,6 +1,7 @@
-
-
-
+<br>
+<br>
+<br>
+<br>
 <?php $form=$this->beginWidget('CActiveForm', array(
     'enableAjaxValidation'=>true,
 	'method'=>'GET',
@@ -40,7 +41,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 )); */
 //var_dump(yii::app()->session['codpro']);die();
 $identificador=Clipro::model()->findBYpk(yii::app()->session['codpro'])->creaarboltabla(true);
-//echo " el idnetiifcaor ".$identificador;
+ //echo " el idnetiifcaor ".$identificador; die();
 $this->widget('CTreeView',array(
     'id'=>'menu-treeview',
     'data'=> Arbolobjetosmaster::model()->getTreeItems($identificador,false),

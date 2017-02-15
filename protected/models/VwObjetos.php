@@ -91,16 +91,28 @@ class VwObjetos extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('serie',$this->serie,true);
-                $criteria->compare('codpro',$this->codpro,true);
+                //$criteria->compare('codpro',$this->codpro,true);
 		$criteria->compare('descripcion',$this->descripcion,true);
-		$criteria->compare('codigo',$this->codigo,true);
+		//$criteria->compare('codigo',$this->codigo,true);
 		$criteria->compare('nombreobjeto',$this->nombreobjeto,true);
 		$criteria->compare('despro',$this->despro,true);
 		$criteria->compare('rucpro',$this->rucpro,true);
-           if(isset(yii::app()->session['codpro'])){
-                    $criteria->addCondition("codpro=:vcodpro");
-                    $criteria->params=array("codpro=:vcodpro"=>yii::app()->session['codpro']);
-                }
+              if(isset($_SESSION['sesion_Clipro'])) {
+			$criteria->addInCondition('codpro', $_SESSION['sesion_Clipro'], 'AND');
+		} ELSE {
+			$criteria->compare('codpro',$this->codpro,true);
+		}  
+                if(isset($_SESSION['sesion_ObjetosCliente'])) {
+			$criteria->addInCondition('codobjeto', $_SESSION['sesion_ObjetosCliente'], 'AND');
+		} ELSE {
+			$criteria->compare('codobjeto',$this->codobjeto,true);
+		}  
+                if(isset($_SESSION['sesion_Masterequipo'])) {
+			$criteria->addInCondition('codigo', $_SESSION['sesion_Masterequipo'], 'AND');
+		} ELSE {
+			$criteria->compare('codigo',$this->codigo,true);
+		}  
+           
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));

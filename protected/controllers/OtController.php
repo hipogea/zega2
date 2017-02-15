@@ -18,7 +18,7 @@ CONST ESTADO_PREVIO='99';
 class OtController extends ControladorBase
 {
 	
-          
+      const ESTADO_DETALLE_CONSIGNACIONES_ANULADA='40';    
 	
 
 	public $layout='//layouts/column2';
@@ -54,6 +54,7 @@ class OtController extends ControladorBase
 
 			$model->attributes=$_POST[$this->modelopadre];
 			$model->codocu=$this->documento;
+                        
 			if($model->save()){
 
 				$this->redirect(array('editadocumento','id'=>$model->id));
@@ -70,14 +71,19 @@ class OtController extends ControladorBase
 
 	public function actionEditaDocumento($id)
 	{
-		$model=MiFactoria::CargaModelo($this->modelopadre,$id);
+		     
+            $model=MiFactoria::CargaModelo($this->modelopadre,$id);
 		$modelolabor=new Tempdesolpe('search_por_ot');
 		$modelolabor->unsetAttributes();  // clear any default values 
                 $modeloconsi=new Tempotconsignacion('search_por_ot');
 		$modeloconsi->unsetAttributes();  // clear any default values
-          
+     
 		if(isset($_GET['Tempdesolpe'])){
 			$modelolabor->attributes=$_GET['Tempdesolpe'];
+			//var_dump($modelhijo->attributes);die();
+		}
+                if(isset($_GET['Tempotconsignacion'])){
+			$modeloconsi->attributes=$_GET['Tempotconsignacion'];
 			//var_dump($modelhijo->attributes);die();
 		}
 		if($model->{$this->campoestado}==ESTADO_PREVIO)
@@ -352,7 +358,7 @@ class OtController extends ControladorBase
 		return array(
 
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('ajaxmuestralistamateriales','JalaMateriales','view','imputa','cargagaleria','tomafoto','creaconsignacion','borraitemsdesolpe','nadax','creaservicio','modificadetallerecurso','creadetallerecurso','verprecios','crearpdf','verDetoc','firmar','aprobar','cargaprecios','enviarpdf','admin','borrarimpuesto','reporte','agregarmasivamente','cargadirecciones','borraitems','sacaitem','sacaum','salir','agregaimpuesto','agregaritemsolpe','procesardocumento','refrescadescuento','VerDocumento','EditaDocumento','creadocumento','Agregardelmaletin','borraitem','imprimirsolo','cargaentregas','agregarsolpe','agregarsolpetotal','pasaatemporal','create','imprimirsolo','imprimir','imprimir2','enviarmail',
+				'actions'=>array('Borraitemsconsignaciones',   'JalaMaterialesExt',   'ajaxobjetosporclipro',    'ajaxmuestralistamateriales','JalaMateriales','view','imputa','cargagaleria','tomafoto','creaconsignacion','borraitemsdesolpe','nadax','creaservicio','modificadetallerecurso','creadetallerecurso','verprecios','crearpdf','verDetoc','firmar','aprobar','cargaprecios','enviarpdf','admin','borrarimpuesto','reporte','agregarmasivamente','cargadirecciones','borraitems','sacaitem','sacaum','salir','agregaimpuesto','agregaritemsolpe','procesardocumento','refrescadescuento','VerDocumento','EditaDocumento','creadocumento','Agregardelmaletin','borraitem','imprimirsolo','cargaentregas','agregarsolpe','agregarsolpetotal','pasaatemporal','create','imprimirsolo','imprimir','imprimir2','enviarmail',
 					'procesaroc','hijo','Aprobaroc','Reporteoc','Anularoc','Configuraop','Revertiroc', ///acciones de proceso
 					'libmasiva','creadetalle','Verdetalle','muestraimput','update','nada','Modificadetalle'),
 				'users'=>array('@'),
@@ -2384,9 +2390,61 @@ class OtController extends ControladorBase
         }
 	}
 
-
+public function actionBorraitemsconsignaciones()
+	{
 	
-public function borraitemdesolpe($autoId) //Borra un registro de solpe
+        if(yii::app()->request->isAjaxRequest){
+		$autoIdAll = $_POST['cajita'];		
+		 if(count($autoIdAll)>0 )
+			 {
+			 	
+                                  // $modelin=$autoIdAll[0]->solpe;  
+                                    //coger la cabecera del primer hijo basta 
+					// $transaccion = $modelin->dbConnection->beginTransaction();
+					 foreach ($autoIdAll as $autoId) {
+						 $this->borraitemconsignacion($autoId);
+					 }
+					
+					// $transaccion->commit();
+					 //$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array(index));
+				 
+				// Yii::app()->end();
+			} ///luego actualizar yodos los cambos
+        }
+	}
+	
+public function borraitemconsignacion($autoId) //Borra un registro de coinsnaciones
+	//para borrar  un registro tenemso 	ue tener en cuenta los criterios siguiertentes:
+	//  1) No debe de haber reservas activas, esto se logra contandolas con la propiedad "numerodereservas" del objeto modelo
+	{
+		$modelito=Tempotconsignacion::model()->findByPk($autoId);
+			if($modelito->id >0) { ///Si ya tiene relacion con la tabla Desolpe firme
+                            //si ya tiene
+                            $modelito1=$modelito->otconsignacion;
+				
+				if($modelito1->cantatendida==0 ){//Si no ha habido atenciones anularala
+                                     //SOLAMNET COLOCAR EL ESTADI AULADO 
+                                      $modelito->setScenario('estado');  
+                                    $modelito->est=self::ESTADO_DETALLE_CONSIGNACIONES_ANULADA;
+                                    $modelito->save();
+				} else {
+                                    MiFactoria::Mensaje('error', "Este item no puede ser anulado porque ya tiene atenciones");
+				}
+                                
+                                
+				} else {
+                            
+                            $command = Yii::app()->db->createCommand("delete from  {{tempotconsignacion}}   where idtemp =".$autoId."   ");
+				$command->execute();
+				MiFactoria::Mensaje('succcess', "El registro de cosignacion ".$modelito1->solpe->numero."-".$modelito1->item. " se ha borrado");
+			   
+                            
+			}
+		foreach(Yii::app()->user->getFlashes() as $key => $message) {
+			echo "*)". $message . "\n";		}
+		//echo $this->renderpartial("vw_mensajes",array());
+	}
+   public function borraitemdesolpe($autoId) //Borra un registro de solpe
 	//para borrar  un registro tenemso 	ue tener en cuenta los criterios siguiertentes:
 	//  1) No debe de haber reservas activas, esto se logra contandolas con la propiedad "numerodereservas" del objeto modelo
 	{
@@ -2419,8 +2477,7 @@ public function borraitemdesolpe($autoId) //Borra un registro de solpe
 		foreach(Yii::app()->user->getFlashes() as $key => $message) {
 			echo "*)". $message . "\n";		}
 		//echo $this->renderpartial("vw_mensajes",array());
-	}
-    
+	} 
     public function actionCreaconsignacion($idcabeza,$cest)
             
 	{
@@ -2444,12 +2501,8 @@ public function borraitemdesolpe($autoId) //Borra un registro de solpe
 			$model->attributes=$_POST['Tempotconsignacion'];
 
 
-			//$model->punitdes=$model->punit*$descuento;
-			//crietria para filtrar la cantidad de items del detalle
-			$criterio=new CDbCriteria;
-			$criterio->condition="hidot=:idguia  ";
-			$criterio->params=array(':idguia'=>$idcabeza);
-			$model->item=str_pad(Tempotconsignacion::model()->count($criterio)+1,3,"0",STR_PAD_LEFT);
+			$model->item=$modelopadre->getNextItemConsignacion();
+			//$model->item=str_pad(Tempotconsignacion::model()->count($criterio)+1,3,"0",STR_PAD_LEFT);
 			//str_pad($somevariable,$anchocampo,"0",STR_PAD_LEFT);
 			////con esto calculamos el numero de items
 			//echo "  El valor de  ".$idcabeza."       ".$model->n_hguia."   ";
@@ -2626,7 +2679,9 @@ public function borraitemdesolpe($autoId) //Borra un registro de solpe
                                     'textodetalle'=>$_POST['Tempdesolpe']['textodetalle'],
                                     'solicitanet'=>$_POST['Tempdesolpe']['solicitanet'],
                                   );
-                  $registroelegido->cargarecursos($atributos);
+                     $idlista=$_POST['Tempdesolpe']['hidsolpe'];
+                     //var_dump($idlista);die();
+                  $registroelegido->cargarecursos($idlista,$atributos);
                  
                       
                   }
@@ -2660,7 +2715,61 @@ public function borraitemdesolpe($autoId) //Borra un registro de solpe
                 
                 
 	}
-    
+      public function actionJalaMaterialesExt($id)
+	{		
+          $this->layout = '//layouts/iframe';  
+           $modelopadre=$this->loadModel($id);
+           
+              if(isset($_POST['Tempdesolpe']))  {
+                  //var_dump($_POST['Tempdesolpe']);
+                  $registroelegido= Tempdetot::model()->
+                          findByPk((integer)$_POST['Tempdesolpe']['hidlabor']);
+                  //var_dump( $registroelegido);
+                  if(!is_null($registroelegido)){
+                     $atributos=array(
+                                    'fechaent'=>$_POST['Tempdesolpe']['fecahent'],
+                                    'centro'=>$_POST['Tempdesolpe']['centro'],
+                                    'codal'=>$_POST['Tempdesolpe']['codal'],
+                                    'textodetalle'=>$_POST['Tempdesolpe']['textodetalle'],
+                                    'solicitanet'=>$_POST['Tempdesolpe']['solicitanet'],
+                                    
+                                  );
+                     $idlista=$_POST['Tempdesolpe']['hidsolpe'];
+                     //var_dump($idlista);die();
+                  $registroelegido->cargarecursosext($idlista,$atributos);
+                 
+                      
+                  }
+                  
+                   echo CHtml::script(
+                          "window.parent.$('#cru-dialog3').dialog('close');
+                             window.parent.$('#cru-frame3').attr('src','');
+			window.parent.$.fn.yiiGridView.update('detalle-recursos-grid');
+				");
+                  
+                  yii::app()->end(); 
+                  
+              }else{
+                  $criteria=New CDBcriteria();
+            $criteria->addCondition("hidorden=:vorden and codmaster is not null  and idusertemp=:viduser");
+            $criteria->params=array(":vorden"=>$modelopadre->id,":viduser"=>yii::app()->user->id);
+           $datoscombo= CHtml::listData(Tempdetot::model()->findAll($criteria),'idtemp','textoactividad');
+           //var_dump($datoscombo);
+		 
+              }
+                
+                
+                
+                $model=new Tempdesolpe;
+		$this->render('_form_jalamateriales',array(
+                    'model'=>$model,
+                    'modelopadre'=>$modelopadre,
+                    'datoscombo'=>$datoscombo,
+			//'model'=>$model, 'idcabeza'=>$idcabeza,'editable'=>true
+		                     ));
+                
+                
+	} 
     public function actionajaxmuestralistamateriales(){
         //var_dump($_POST);die();
          if(isset($_POST['datopost'])){
@@ -2669,8 +2778,8 @@ public function borraitemdesolpe($autoId) //Borra un registro de solpe
                
                  if(!is_null($detalle)){
                      //echo "jajaj"; die();
-                       var_dump($detalle->ot->vwobjetos);die();
-                     $condiciones=array($detalle->ot->vwobjetos->codigo,$detalle->codmaster);
+                      // var_dump($detalle->ot->vwobjetos);die();
+                     $condiciones=array($detalle->codmaster);
                      $criteria = new CDbCriteria();
 		     $criteria->addInCondition("codigo",$condiciones);                     
                      $listaids=yii::app()->db->createCommand()->select("hidlista")->
@@ -2699,13 +2808,30 @@ public function borraitemdesolpe($autoId) //Borra un registro de solpe
                      
                  }
          }
-    }
+    
                  
       
         
-        
+ public function actionajaxobjetosporclipro(){
+    if(yii::app()->request->isAjaxRequest){ 
+        if(isset($_POST['identidad'])){     
+            $id= MiFactoria::cleanInput($_POST['identidad']); 
+          // VAR_DUMP($id);DIE();
+            $registros= ObjetosCliente::model()->findAll("codpro='".$id."'");    
+            
+             //var_dump($registros);die();
+            foreach($registros as $filaobjeto){
+               // var_dump($filaojeto->id);
+                echo CHtml::tag('option', array('value'=>$filaobjeto->codobjeto),CHtml::encode($filaobjeto->nombreobjeto),true);
+
+            }
+         }
+            
+            } 
+            
+   }       
     
     
-    
+} 
     
 ?>

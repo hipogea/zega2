@@ -9,11 +9,13 @@
  * @property integer $hidobjeto
  * @property string $activo
  */
-class Objetosmaster extends Modelogeneral
+class Objetosmaster extends ModeloGeneral
 {
 	/**
 	 * @return string the associated database table name
 	 */
+    
+       public $insertahijo='' ; //propiedad para decidir si inserta hisjos o no 
 	public function tableName()
 	{
 		return '{{objetosmaster}}';
@@ -31,7 +33,7 @@ class Objetosmaster extends Modelogeneral
 			array('hidobjeto', 'numerical', 'integerOnly'=>true),
 			array('hcodobmaster', 'length', 'max'=>15),
 			array('activo', 'length', 'max'=>1),
-			array('activo,serie,identificador,textolargo', 'safe'),
+			array('activo,serie,identificador,insertahijo,textolargo,parent_id', 'safe'),
 			//array('hidobjeto+hcodobmaster', 'application.extensions.uniqueMultiColumnValidator','on'=>'insert,update'),
 
 			// The following rule is used by search().
@@ -40,6 +42,18 @@ class Objetosmaster extends Modelogeneral
 		);
 	}
 
+        
+        public function behaviors()
+    {
+        return array(
+            'TreeBehavior' => array(
+                'class' => 'ext.behaviors.XTreeBehavior',
+                'treeLabelMethod'=> 'getTreeLabel',
+                'menuUrlMethod'=> 'getMenuUrl',
+            ),
+        );
+    }
+        
 	/**
 	 * @return array relational rules.
 	 */
@@ -49,9 +63,12 @@ class Objetosmaster extends Modelogeneral
 		// class name for the relations automatically generated below.
 
 			return array(
-
+                                 'parent' => array(self::BELONGS_TO, 'Objetosmaster', 'parent_id'),
+                                'children' => array(self::HAS_MANY, 'Objetosmaster', 'parent_id'),
+                             'childCount' => array(self::STAT, 'Menu', 'parent_id'),
 				'objetoscliente'=> array(self::BELONGS_TO, 'ObjetosCliente', 'hidobjeto'),
 				'masterequipo'=> array(self::BELONGS_TO, 'Masterequipo', 'hcodobmaster'),
+                            'hijos'=> array(self::HAS_MANY, 'Objetosmaster', 'parent_id'),
                                   'nots'=> array(self::STAT, 'Ot', 'idobjeto'),
 			);
 
@@ -127,8 +144,27 @@ class Objetosmaster extends Modelogeneral
 	}
 
 
-
+  public function insertahijos(){
+      foreach($this->masterequipo->masterrelacion as $hijo){
+          $registro=New Objetosmaster();
+          $registro->setAttributes(
+                  array(
+                      'hcodobmaster'=>$hijo->hijo->codigo,
+                      'hidobjeto'=>$this->hidobjeto,
+                      'parent_id'=>$this->id,
+                       'serie'=>'SN: ',
+                       'identificador'=>'N 1',
+                       'nombre'=>'',
+                  )
+                  );
+          $registro->save();
+          unset($registro);
+      }
+  }
 	
-
+ public function getTreeLabel()
+    {
+        return $this->title . ':' . $this->childCount;
+    }
 
 }

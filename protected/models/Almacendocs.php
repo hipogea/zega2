@@ -299,7 +299,7 @@ CONST CODIGO_MOVIMIENTO_ANULA_AJUSTE_SOBRANTES='19';
 			array('fechavale', 'required', 'message'=>'La fecha es obligatoria','on'=>self::PREFIJO_ESCENARIO.'79'),
 			array('fechacont', 'required', 'message'=>'Indique la fecha contabilizacion','on'=>self::PREFIJO_ESCENARIO.'79'),
 			array('codalmacen', 'required', 'message'=>'Indique el almacen','on'=>self::PREFIJO_ESCENARIO.'79'),
-			array('numdocref', 'checksolpeventa','on'=>self::PREFIJO_ESCENARIO.'79'),
+			//array('numdocref', 'checksolpeventa','on'=>self::PREFIJO_ESCENARIO.'79'),
 			array('codcentro', 'required', 'message'=>'Indique el centro','on'=>self::PREFIJO_ESCENARIO.'79'),
 			array('fechavale, fechacont,numero, fechacre,codalmacen,codcentro', 'safe','on'=>self::PREFIJO_ESCENARIO.'79'),
 

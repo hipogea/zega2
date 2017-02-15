@@ -1513,7 +1513,7 @@ public function actionVerdetalle($id)
 			//crietria para filtrar la cantidad de items del detalle
 			
 			$model->c_itguia=$modelocabeza->getNextItem();
-			//str_pad($somevariable,$anchocampo,"0",STR_PAD_LEFT);
+			//str_pad($somevariable,$anchocampo,"0",STR_PAD_LEFT)behaviors;
 			////con esto calculamos el numero de items
 			//echo "  El valor de  ".$idcabeza."       ".$model->n_hguia."   ";
 			

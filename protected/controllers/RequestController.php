@@ -23,6 +23,9 @@ return array(
 				'modelName'=>'Maestrocompo',
 				'methodName'=>'suggest',
 			),
+                    
+                    
+                    
 	
 'suggestCountry'=>array(
 'class'=>'ext.actions.XSuggestAction',
@@ -44,6 +47,16 @@ return array(
 'showRoot'=>TRUE
 ),
 
+   'llenahijos'=>array(
+'class'=>'ext.actions.XFillTreeAction',
+'modelName'=>'Objetosmaster',
+    'rootId'=>$_GET['rootId'],
+'showRoot'=>TRUE
+),                 
+                    
+                    
+                    
+                    
 'llenaEquipos'=>array(
                 'class'=>'ext.actions.XFillTreeAction',
                 'modelName'=>'Menu',
@@ -131,6 +144,7 @@ return array(
 }
 
 
+
 public function actionprueba(){
     echo "este ees el nodo ";
   yii::app()->maletin->insertafila(3,'Clipro', null);
@@ -150,7 +164,7 @@ public function actionprueba(){
 	{
 		return array(
 			array('allow',
-				'actions'=>array( 'llenaCertificados', 'prueba',  'otroMaestrocompo','suggestMaestrocompo',
+				'actions'=>array('llenahijos',   'llenaCertificados', 'prueba',  'otroMaestrocompo','suggestMaestrocompo',
 'suggestCountry','legacySuggestCountry','fillTree','treePath','llenaEquipos','loadContent','suggestAuPlaces',
 'suggestAuHierarchy','suggestLastname','fillAuTree','viewUnitPath','viewUnitLabel','initPerson',
 'suggestPerson','suggestPersonGroupCountry','listPersonsWithSameFirstname',

@@ -17,7 +17,7 @@
  * @property string $descripcion
  * @property string $textolargo
  */
-class Tempotconsignacion extends CActiveRecord
+class Tempotconsignacion extends ModeloGeneral
 {
 	/**
 	 * @return string the associated database table name
@@ -36,6 +36,7 @@ class Tempotconsignacion extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			//array('idtemp', 'required'),
+                    array('est', 'safe','on'=>'estado'),
                     array('id, hidetot, cant, um, codart, fecnec, 
                          idusertemp, idtemp, identificador,
                          hidot, descripcion, textolargo,item,est,centro,codal,codcli', 
@@ -149,6 +150,10 @@ class Tempotconsignacion extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
-        
+   
+public function beforeSave(){
+    
+    return parent::beforeSave();
+}      
         
 }

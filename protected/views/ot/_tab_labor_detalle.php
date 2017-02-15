@@ -131,6 +131,31 @@
 </div>
     
     <div class="row">
+        <?php echo $form->labelEx($model,'codmaster'); ?>
+
+		<?php $this->widget('ext.matchcode.MatchCode',array(
+			'nombrecampo'=>'codmaster',
+                    'nombrecamporemoto'=>'codigo',
+			'ordencampo'=>3,
+			'controlador'=>$this->id,
+			'relaciones'=>$model->relations(),
+			'tamano'=>8,
+			'model'=>$model,
+			'form'=>$form,
+			'nombredialogo'=>'cru-dialog3',
+			'nombreframe'=>'cru-frame3',
+			'nombrearea'=>'f6ghhfg23ghdfssesj',
+		));
+		?>
+	
+
+	<?php echo $form->error($model,'codmaster'); ?>
+	</div>      
+    
+    
+    
+    
+    <div class="row">
         
         <?php echo CHtml::label('Avance','Avance (%)'); ?>
         <?php 
@@ -224,34 +249,7 @@ $this->widget('zii.widgets.jui.CJuiSliderInput', array(
 	</div>
 
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'cc'); ?>
-		<?php
-
-		if ($this->eseditable($model->codestado)=='')
-
-		{
-			$this->widget('ext.matchcode.MatchCode',array(
-					'nombrecampo'=>'cc',
-					'ordencampo'=>3,
-					'controlador'=>'Tempdetot',
-					'relaciones'=>$model->relations(),
-					'tamano'=>12,
-					'model'=>$model,
-					'form'=>$form,
-					'nombredialogo'=>'cru-dialog3',
-					'nombreframe'=>'cru-frame3',
-					'nombrearea'=>'fehe367uudf8989ddj',
-				)
-
-			);
-		} else{
-			echo CHtml::textField('Saccccc',$model->ceco->desceco,array('disabled'=>'disabled','size'=>30)) ;
-
-		}
-		?>
-		<?php echo $form->error($model,'cc'); ?>
-	</div>
+	
 	<div class="row">
 		<?php echo $form->labelEx($model,'codgrupoplan'); ?>
 		<?php  $datos1tb1 = CHtml::listData(Grupoplan::model()->findAll("codcen=:orden",array(":orden"=>$model->ot->codcen)),'codgrupo','desgrupo');
@@ -259,16 +257,7 @@ $this->widget('zii.widgets.jui.CJuiSliderInput', array(
 		?>
 		<?php echo $form->error($model,'codgrupoplan'); ?>
 	</div>
-	<div class="row">
-		<?php echo $form->labelEx($model,'codmaster'); ?>
-		<?php
-              
-
-         $datos1tb1x = CHtml::listData(Masterrelacion::model()->findAll("codigopadre=:orden",array(":orden"=>$model->ot->objetosmaster->masterequipo->codigo)),'codigohijo','hijo.descripcion');
-		echo $form->DropDownList($model,'codmaster',$datos1tb1x, array('empty'=>'--Seleccione un Componente--','disabled'=>$this->eseditable($model->codestado))  )  ;
-		?>
-		<?php echo $form->error($model,'codmaster'); ?>
-	</div>
+	
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'nhoras'); ?>

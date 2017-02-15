@@ -83,12 +83,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
 		//array('htmlOptions'=>array('width'=>5), 'type'=>'raw','name'=>'codart','value'=>'$data->codart','visible'=>(!yii::app()->settings->get("materiales","materiales_codigoservicio")==$data->codart)?true:false),
 		//array('header'=>'N° Solic','value'=>'$data->solpe->numero', 'htmlOptions'=>array('width'=>4),),
 		array('name'=>'cant', 'type'=>'raw','header'=>'Cant','htmlOptions'=>array('width'=>20) ),
-		array('name'=>'hidetot','header'=>'Recurso','value'=>'$data->descripcion','filter'=>CHTml::listData(Tempdetot::model()->findAll("idusertemp=:vuser and hidorden=:vorden",array(":vorden"=>$model->id,":vuser"=>yii::app()->user->id)),'idaux','descripcion'), 'htmlOptions'=>array('width'=>400),),
+		 array('header'=>'Atendido','type'=>'raw','value'=>'($data->otconsignacion->cantatendida>0)?CHtml::openTag("span",array("class"=>"label badge-warning ")).$data->otconsignacion->cantatendida.CHtml::closeTag("span"):""', 'htmlOptions'=>array('width'=>4),),
+                    array('name'=>'codart','value'=>'$data->codart','htmlOptions'=>array('width'=>30)),
+                 array('name'=>'hidetot','header'=>'Recurso','value'=>'$data->descripcion','filter'=>CHtml::listData(Tempdetot::model()->findAll("idusertemp=:vuser and hidorden=:vorden",array(":vorden"=>$model->id,":vuser"=>yii::app()->user->id)),'idaux','textoactividad'), 'htmlOptions'=>array('width'=>400),),
 		
                                                        // 'txtmaterial',
-		'codart',
-            array('header'=>'Atendido','value'=>'$data->otconsignacion->cantatendida', 'htmlOptions'=>array('width'=>4),),
 		
+           	
 		// array('name'=>'texto', 'type'=>'raw','header'=>'t','value'=>'(!empty($data->detalle))?CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."texto.png","hola"):""' ),
 		//array('name'=>'punit', 'type'=>'raw','header'=>'Pu','value'=>'Chtml::openTag("span", array("style"=>"float:right;font-weight:bold;")).Mifactoria::decimal($data->punit,3).Chtml::closeTag("span")','htmlOptions'=>array('width'=>20)),
 		//array('name'=>'Subt', 'type'=>'raw','header'=>'Subt','value'=>'Chtml::openTag("span", array("style"=>"float:right;font-weight:bold;")).Mifactoria::decimal($data->cant*($data->punit),3).Chtml::closeTag("span")','htmlOptions'=>array('width'=>68)),
@@ -138,14 +139,14 @@ $this->widget('zii.widgets.grid.CGridView', array(
 
 			'minus' => array(
 				'type' => 'D',
-				'ruta' => array($this->id . '/borraitemsdesolpe', array()),
+				'ruta' => array($this->id . '/Borraitemsconsignaciones', array()),
 
 				'opajax' => array(
 					'type' => 'POST',
-					'url' => Yii::app()->createUrl($this->id . '/borraitemsdesolpe', array()),
+					'url' => Yii::app()->createUrl($this->id . '/Borraitemsconsignaciones', array()),
 					'success' => "function(data) {
 										$('#AjFlash').html(data).fadeIn().animate({opacity: 1.0}, 3000).fadeOut('slow');
-                                              $.fn.yiiGridView.update('detalle-recursos-grid');                                              
+                                              $.fn.yiiGridView.update('detalle-consignaciones-grid');                                              
                                                return false;
                                         }",
 					'beforeSend' => 'js:function(){
@@ -162,7 +163,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 
 			'checklist' => array(
 				'type' => 'C',
-				'ruta' => array($this->id . '/agregardespacho', array(
+				'ruta' => array($this->id . '/JalaMaterialesExt', array(
 					'id' => $model->id,
 					//"id"=>$model->n_direc,
 					"asDialog" => 1,

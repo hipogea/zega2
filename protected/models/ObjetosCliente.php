@@ -54,7 +54,7 @@ class ObjetosCliente extends ModeloGeneral
 	public function relations()
 	{
 		return array(
-
+                       // 'objetospadres'=> array(self::HAS_MANY, 'Objetosmaster', 'hidobjeto'),
 			'clipro'=> array(self::BELONGS_TO, 'Clipro', 'codpro'),
 			//'master'=> array(self::HAS_MANY, 'Masterequipo', 'codigo'),
 			'cc'=> array(self::BELONGS_TO, 'Cc', 'cebe'),

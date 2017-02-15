@@ -210,6 +210,7 @@ class Clipro extends ModeloGeneral
         
         
        public function creaarboltabla($actualizar=false){
+           //echo "murio"; die();
            if($actualizar){
                 $listas=yii::app()->db->createCommand()->
                 delete("{{arbolobjetosmaster}}",
@@ -226,48 +227,27 @@ class Clipro extends ModeloGeneral
               //ahora los equipos 
               foreach($filaobjeto->objetosmaster as $filaequipo)
                   {
-                  $idmaster= $this->arbolinsertaequipo($filaequipo,$idobjeto);
-                  ///ahora las listas de materiales  y los subequipos
-                    // foreach($filaobjeto->objetosmaster as $filaequipo1)
-                       //{
-                      //los subequipos primero
-                                             foreach($filaequipo->masterequipo->masterrelacion as $filahijo)
-                                                 {
-                                                 $idsubequipo=$this->arbolinsertasubequipo($filahijo->hijo,$idmaster);
-                                                  } 
-                        $listas=yii::app()->db->createCommand()->
-                                select("a.id,a.nombrelista")->
-                                from("{{listamateriales}} a, "
-                                        . " {{masterlistamateriales}} b, "
-                                        . "{{masterequipo}} c ")->
-                                where(" b.codigo=c.codigo and"
-                                        . " a.id=b.hidlista and "
-                                        . "c.codigo='".$filaequipo->masterequipo->codigo."'"
-                                        )->queryAll();
-                          /*echo "La listas de materiales para el equipo  ".$filaequipo->masterequipo->codigo."    ".$filaequipo->masterequipo->descripcion;
-                          echo "<br>";
-                      print_r($listas);echo "<br><br><br><br>";*/
-                       // $datos= Dlisistamateriales::model()->findAll();
-                         foreach($listas as $filalista){
-                            $idlista= $this->arbolinsertalistamaterial($filalista,$idmaster);
-                           //ahora si insertamos los materiales
-                            $registrolista= Listamateriales::model()->findByPk($filalista['id']);
-                             /* var_dump($filalista);
-                            var_dump($filalista['id']);
-                             var_dump($registromaterial);*/
-                            //var_dump($registromaterial->hijos);die();
-                            foreach($registrolista->hijos as $clave=>$filadlista){
-                               $this->arbolinsertamaterial($filadlista->maestro,$idlista); 
-                            }
-                           // unset($registromaterial);
-                         }
-                         //unset( $listas);
+                 // print_r($filaobjeto->objetosmaster);die();
+                 if ($filaequipo->parent_id <=0 ){ ///sie le equipo es un equipo padre 
+                     $idmaster= $this->arbolinsertaequipo($filaequipo,$idobjeto);
+                  
+                               foreach($filaequipo->hijos as $filahijo)
+                                            {
+                                                //aplica recursividad
+                                                $idsubequipo=$this->arbolinsertaequipo($filahijo,$idmaster);
+                                            }
+                                     
+                 }
+                  
+                 
+                       
                   //}
               }
               
           }
                return $idclipro;
            }else{
+               echo "di";die();
               return yii::app()->db->createCommand()->
                                 select("min(id)")->
                                 from("{{arbolobjetosmaster}} a")->
@@ -284,7 +264,7 @@ class Clipro extends ModeloGeneral
                         'codpro'=>$this->codpro,
                         'codigo'=>$this->codpro,
                         'descripcion'=>$this->despro,
-                        'parent_id'=>null,
+                        'parent_id'=>0,
                     )
                     );
             $arbol->save();
@@ -320,6 +300,40 @@ class Clipro extends ModeloGeneral
                     );
             $arbol->save();$arbol->refresh();
             $valor=$arbol->id;unset($arbol);
+            
+             $listas=yii::app()->db->createCommand()->
+                                select("a.id,a.nombrelista")->
+                                from("{{listamateriales}} a, "
+                                        . " {{masterlistamateriales}} b, "
+                                        . "{{masterequipo}} c ")->
+                                where(" b.codigo=c.codigo and"
+                                        . " a.id=b.hidlista and "
+                                        . "c.codigo='".$filaequipo->masterequipo->codigo."'"
+                                        )->queryAll();
+                          /*echo "La listas de materiales para el equipo  ".$filaequipo->masterequipo->codigo."    ".$filaequipo->masterequipo->descripcion;
+                          echo "<br>";
+                      print_r($listas);echo "<br><br><br><br>";*/
+                       // $datos= Dlisistamateriales::model()->findAll();
+                         foreach($listas as $filalista){
+                            $idlista= $this->arbolinsertalistamaterial($filalista,$valor);
+                           //ahora si insertamos los materiales
+                            $registrolista= Listamateriales::model()->findByPk($filalista['id']);
+                             /* var_dump($filalista);
+                            var_dump($filalista['id']);
+                             var_dump($registromaterial);*/
+                            //var_dump($registromaterial->hijos);die();
+                            foreach($registrolista->hijos as $clave=>$filadlista){
+                               $this->arbolinsertamaterial($filadlista->maestro,$idlista); 
+                            }
+                           // unset($registromaterial);
+                         }
+                         //unset( $listas);
+            
+            
+            
+            
+            
+            
             return $valor;
         } 
         
@@ -360,8 +374,9 @@ class Clipro extends ModeloGeneral
             $arbol->setAttributes(
                     array(
                         'codpro'=>$this->codpro,
-                          'codigo'=>$filahijo->codigo,
-                        'descripcion'=>$filahijo->descripcion,
+                          'codigo'=>$filahijo->masterequipo->codigo,
+                        'descripcion'=>$filahijo->masterequipo->descripcion,
+                        'identificador'=>$filahijo->id,
                         'parent_id'=>$idlista,
                     )
                     );
@@ -371,9 +386,8 @@ class Clipro extends ModeloGeneral
         } 
         
         public static function findByRuc($ruc){
-            return Clipro::model()->find("rucpro=:vruc",array(":vruc"=>$ruc));
-            
+            $ruc=  MiFactoria::cleanInput($ruc);
+            return self::model()->find("rucpro='".$ruc."'");
         }
-        
 }
 

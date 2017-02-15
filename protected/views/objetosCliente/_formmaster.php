@@ -22,6 +22,7 @@
 
 
 <div class="row">
+     <?php echo $form->labelEx($model,'hcodobmaster'); ?>
 	<?php $this->widget('ext.matchcode.MatchCode',array(
 	'nombrecampo'=>'hcodobmaster',
 	'ordencampo'=>2,
@@ -35,10 +36,11 @@
 	'nombrearea'=>'fhdfssesj',
 	));
 	?>
-
+<?php echo $form->error($model,'hcodobmaster'); ?>
 </div>
 
 	<div class="row">
+           
 		<?php
 		$opajax=array(
 			'type'=>'POST',
@@ -56,6 +58,22 @@
 		<?php echo $form->error($model,'identificador'); ?>
 
 	</div>
+         <div class="row">
+             <?php $opajax=array(
+                 'type'=>'POST',
+                 'url'=>yii::app()->createUrl($this->id.'/ajaxpintahijos'),
+                 //'url'=>"#",
+                 'update'=>'#zonahijos',
+                 'data'=>array('codigoobjeto'=>'js:Objetosmaster_hcodobmaster.value'),
+                 'ajaxComplete'=>'js:function(data){$("#Objetosmaster_insertahijo").attr("checked", true);}',
+             ); ?>
+		<?php echo $form->labelEx($model,'insertahijo'); ?>
+		<?php echo $form->checkBox($model,'insertahijo'); ?>
+		<?php // echo $form->error($model,'insertahijo'); ?>
+            <?php echo CHtml::link("Ver Hijos...","#",array('ajax'=>$opajax)); ?>
+
+	</div>
+    <div id="zonahijos"></div>
 	<div class="row">
 		<?php echo $form->labelEx($model,'serie'); ?>
 		<?php echo $form->textField($model,'serie'); ?>

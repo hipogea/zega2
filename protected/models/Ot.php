@@ -4,7 +4,9 @@ CONST ESTADO_CREADO='10';
 
 class Ot extends  ModeloGeneral
 {
-	/**
+	//CONST ESTADO_DETALLE_CONSIGNACION_ANULADO='10';
+    CONST CODIGO_DOCUMENTO_DETALLE_SOLPE='350';
+    /**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
@@ -87,12 +89,14 @@ class Ot extends  ModeloGeneral
 			'desolpeserv' => array(self::HAS_MANY, 'Desolpe', 'hidot','condition'=>"tipsolpe='S' "),
 			'tempdesolpe' => array(self::HAS_MANY, 'Tempdesolpe','hidot'),
 			//'cant_solicitada'=>array(self::STAT, 'Alreserva', 'hidesolpe','select'=>'sum(t.cant)','condition'=>"estadoreserva <> '30' AND codocu IN ('800') "),//el campo foraneo
-                        'numeroitems' => array(self::STAT, 'Tempdetot','hidorden'),
-			'nrecursos' => array(self::STAT, 'Tempdesolpe','hidot','condition'=>"tipsolpe='M' "),
+                        'numeroitems' => array(self::STAT, 'Tempdetot','hidorden','condition'=>" idusertemp =".yii::app()->user->id." "),
+			'nrecursos' => array(self::STAT, 'Tempdesolpe','hidot','condition'=>"tipsolpe='M' and idusertemp =".yii::app()->user->id." "),
 			'nrecursosfirme' => array(self::STAT, 'Desolpe','hidot','condition'=>"tipsolpe='M' " ),
-			'nrecursosserv' => array(self::STAT, 'Tempdesolpe','hidot','condition'=>"tipsolpe='S' "),
-			'nrecursosfirmeserv' => array(self::STAT, 'Desolpe','hidot','condition'=>"tipsolpe='S' " ),
-			'clipro' => array(self::BELONGS_TO, 'Clipro', 'codpro'),
+			'nrecursosserv' => array(self::STAT, 'Tempdesolpe','hidot','condition'=>"tipsolpe='S' and idusertemp =".yii::app()->user->id." "),
+			'nrecursosfirmeserv' => array(self::STAT, 'Desolpe','hidot','condition'=>"tipsolpe='S'  " ),
+			'nconsignaciones' => array(self::STAT, 'Tempotconsignacion','hidot','condition'=>" idusertemp =".yii::app()->user->id." " ),
+			
+                    'clipro' => array(self::BELONGS_TO, 'Clipro', 'codpro'),
                     'clipro1' => array(self::BELONGS_TO, 'Clipro', 'codpro1'),
 			//'objetosmaster' => array(self::BELONGS_TO, 'Objetosmaster', 'idobjeto'),
 			'vwobjetos' => array(self::BELONGS_TO, 'VwObjetos', 'idobjeto'),
@@ -283,26 +287,62 @@ public function tienesolpeabierta($tipo) {
 
    
  public  function  resumenCostosPorTipo($temp=false){
-     if($temp){
-        return yii::app()->db->createCommand(
+    $arrayrotulos=array("Costo de materiales : ","Costo de Servicios : ","Costo de Imputaciones Externas :");
+   
+    if($temp){
+        $tabla="{{tempdesolpe}}";
+        }else {
+          $tabla="{{desolpe}}";   
+        }
+       $filas=yii::app()->db->createCommand(
                  " SELECT sum(punitplan) as mplan, 
                      sum(punitreal) as mreal from 
-                    {{tempdesolpe}}  where hidot =".$this->id." group by tipsolpe
+                     ".$tabla."  where hidot =".$this->id." and  est not in"
+               . "   ".Estado::listaestadosnocalculables(self::CODIGO_DOCUMENTO_DETALLE_SOLPE)."  group by tipsolpe 
                             union 
                     select sum(montosoles) as mplan , sum(montosoles)
-                    as mreal from {{imputaciones}} where idcolectorpadre==".$this->id." "
+                    as mreal from {{imputaciones}} where idcolectorpadre=".$this->id." "
                  )->queryAll();
-     }else{
-        return  yii::app()->db->createCommand(
-                 " SELECT sum(punitplan) as mplan, 
-                     sum(punitreal) as mreal from 
-                     {{desolpe}}  where hidot =".$this->id." group by tipsolpe
-                            union 
-                    select sum(montosoles) as mplan , sum(montosoles)
-                    as mreal from {{imputaciones}} where idcolectorpadre==".$this->id." "
-                 )->queryAll();
-     }
-    
-}     
-  
+       
+     
+     $filas[0]['designacion']=$arrayrotulos[0];
+     $filas[1]['designacion']=$arrayrotulos[1];
+     $filas[2]['designacion']=$arrayrotulos[2];
+    return new CArrayDataProvider($filas, array(
+                    'id'=>'costosporcategoria',
+                ));
+}
+
+
+public  function  resumenCostosPorCeCo($temp=false){
+   // $arrayrotulos=array("Costo de materiales : ","Costo de Servicios : ","Costo de Imputaciones Externas :");
+    if($temp){
+        $tabla="{{tempdesolpe}}";
+        }else {
+          $tabla="{{desolpe}}";   
+        }
+       $filas=yii::app()->db->createCommand(
+                 "select  sum(t.punitplan)as mplan , sum(t.punitreal) as mreal, 
+                     c.codc as ceco,  c.desceco as designacion from ".$tabla." 
+                     t ,  {{cc}} c where t.imputacion=c.codc and hidot=".$this->id." and t.est not in "
+               . "    ".Estado::listaestadosnocalculables(self::CODIGO_DOCUMENTO_DETALLE_SOLPE)."    "
+               . " group by c.codc,  c.desceco   " )->queryAll();
+       
+     
+     
+    return new CArrayDataProvider($filas, array(
+                    'id'=>'costosporceco',
+                ));
+}
+
+       public function getNextItemConsignacion(){
+            return str_pad($this->nconsignaciones+1,3,"0",STR_PAD_LEFT); 
+        }  
+        
+        public function getNextItem(){
+            return str_pad($this->numeroitems+1,3,"0",STR_PAD_LEFT); 
+        }  
+        public function getNextItemRecurso(){
+            return str_pad($this->nrecursos+1,3,"0",STR_PAD_LEFT); 
+        }  
 }

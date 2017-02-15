@@ -33,6 +33,7 @@ return array(
 		'application.modules.cruge.extensions.crugemailer.*',
 		'application.modules.cruge.extensions.crugemailer.*',
          'application.extensions.coco.*',
+             'application.extensions.matchcode.MatchCode',
             'application.extensions.CFile',
 		  'application.helpers.*',
 		//  'application.extensions.galleryManager.models.*',
@@ -326,13 +327,13 @@ return array(
         'charset' => 'utf8',
         ),*/
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=gearmari_flota',
+			'connectionString' => 'mysql:host=localhost;dbname=neotegni_base1',
 			'emulatePrepare' => true,
-			'username' => 'gearmari_julian',
+			'username' => 'neotegni_julian',
 			'password' => 'luchito',
 			'tablePrefix' => 'public_',
 			'charset' => 'utf8',
-                     'enableParamLogging'=>true,//desactivarlo en produccion
+                    // 'enableParamLogging'=>true,//desactivarlo en produccion
 		),
 		
 		

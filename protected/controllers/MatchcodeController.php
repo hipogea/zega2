@@ -39,14 +39,13 @@ class MatchcodeController extends Controller
 	}
 	public function actionRelaciona()
 	{
-		
-            $ordencampo=$this->cleanInput($_GET['ordencampo']);
-			$campito=$this->cleanInput($_GET['campo']);
-			$vvalore=$this->cleanInput($_GET[$_GET['contr']][$campito]);
-
-		$cremoto=$this->cleanInput($_GET['camporemoto']);
-		$clasi=$_GET['clasesita'];
-        
+	$vvalore=$this->cleanInput($_POST['valor']);
+         $ordencampo=$this->cleanInput($_POST['ordencampo']);   
+         $campito=$this->cleanInput($_POST['campo']);
+	 $cremoto=$this->cleanInput($_POST['camporemoto']);
+	 $clasi=$this->cleanInput($_POST['clasesita']);
+                
+              
 		if($cremoto==""){
 			$rr= $clasi::model()->findByPK($vvalore);
 			//var_dump($rr);
@@ -67,7 +66,8 @@ class MatchcodeController extends Controller
 			if(!in_array(strtolower($cremoto),$columnas) )
 				throw new CHttpException(500,__CLASS__.'   '.__FUNCTION__.'  '.__LINE__.' No se encontro ninguna columna remota con el nombre :  '.$cremoto.', por favor revise la propiedad ');
 			$moki=$clasi::model()->find("".$cremoto."='".trim($vvalore)."'");
-			if(!is_null($moki)){
+			//var_dump($clasi);var_dump($cremoto);var_dump($vvalore);
+                        if(!is_null($moki)){
                            //yii::app()->session[$campito]=$moki->{$moki->attributeNames()[$ordencampo]};	
 					$valor=$moki->{$moki->attributeNames()[$ordencampo]};
 				}else{
@@ -77,7 +77,7 @@ class MatchcodeController extends Controller
 				} 
                                 
 		}
-                echo is_null($valor)?"--No encontrado ":$valor;
+                MatchCode::pintatexto(is_null($valor)?"--No encontrado ":$valor);
                yii::app()->session[$campito]=$vvalore;	
 			 
                 
@@ -262,22 +262,7 @@ public function actionRelaciona1()
 												$model=new $nombreclase;
 												$model->unsetAttributes(); 
 												if(isset($_GET[$nombreclase]))
-												$model->attributes=$_GET[$nombreclase];
-                                                                                              //VAR_DUMP($_SESSION);DIE();
-                                                                                                   //var_dump(yii::app()->session['matchcode_Clipro_codpro']);die();
-                                                                                                if(isset($_GET['filtro'])){
-                                                                                                    $filtro=$_GET['filtro'];
-                                                                                                    // var_dump($filtro);die();
-                                                                                                    $filtro=CJSON::decode($filtro);                                                                                                   
-                                                                                                   if(is_array($filtro)){
-                                                                                                   
-                                                                                                      foreach($filtro as $clave=>$valor) {
-                                                                                                          $model->{$clave}=$valor;
-                                                                                                          //var_dump($model->{$clave});die();
-                                                                                                          break;
-                                                                                               }
-                                                                                                   }
-                                                                                                }
+												$model->attributes=$_GET[$nombreclase];                                                                                              
                                                                                               
 												$this->layout='//layouts/iframe' ;
 												$this->render("ext.explorador.views.vw_".$nombreclase,array('model'=>$model));

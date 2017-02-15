@@ -177,25 +177,7 @@
 			
             <?php }  ?>
 	</div>
-        <div class="row">
-            <?php if(!$model->isNewRecord) { ?>
-		<?php echo $form->labelEx($model,'idobjeto'); ?>
-
-			<?php echo CHTml::textField('objetito',$model->idobjeto,array('size'=>3,'Disabled'=>'Disabled')); ?>
-                        <?php echo CHTml::textField('despriobjeto',$model->objetosmaster->objetoscliente->nombreobjeto,array('size'=>36,'Disabled'=>'Disabled')); ?>
-			
-            <?php }  ?>
-	</div>
-                    
-                    <div class="row">
-            <?php if(!$model->isNewRecord) { ?>
-		
-                    <?php echo $form->labelEx($model,'idobjeto'); ?>
-			<?php echo CHTml::textField('objetito42',$model->objetosmaster->masterequipo->codigo,array('size'=>8,'Disabled'=>'Disabled')); ?>
-                        <?php echo CHTml::textField('despriobjeto2',$model->objetosmaster->masterequipo->descripcion,array('size'=>36,'Disabled'=>'Disabled')); ?>
-			
-            <?php }  ?>
-	</div>
+  
 
 		<div class="row">
 			<?php 
@@ -314,7 +296,7 @@
 			<?php 
                         echo $form->error($model,'fechafin'); ?>
 		</div>
-<div class="row">
+       <div class="row">
 		<?php echo $form->labelEx($model,'fechacre'); ?>
 		<?php echo $form->textField($model,'fechacre',array('disabled'=>'disabled')); ?>
 		<?php echo $form->error($model,'fechacre'); ?>
@@ -348,7 +330,7 @@
 				);
 			} 
 			?>
-
+                  <?php echo $form->error($model,'codpro'); ?>
 		</div>
                     
                     <div class="row">
@@ -377,43 +359,39 @@
 				);
 			} 
 			?>
-
+                   <?php echo $form->error($model,'codpro1'); ?>
 		</div>
-                    
-                    
-		<div class="row">
-			
-			<?php  
-                            echo $form->labelEx($model,'idobjeto');
-			if ($model->isNewRecord)
+                 
+                 <div class="row">
+                         <?php echo $form->labelEx($model,'coddobjeto'); ?>
+                            <?php
+                                if(!$model->isNewRecord){
+                                            $criterio=new CDbCriteria;
+                                            $criterio->addcondition("codpro='".$model->clipro->codpro."'");
+                                            $datos1 = CHtml::listData(ObjetosCliente::model()->findAll($criterio),'codobjeto','nombreobjeto');
+		
+                                    }else{
+                                        $datos1=array();
+                                        }
+             echo Chtml::ajaxLink(
+			Chtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."filter.png"),
+			CController::createUrl($this->id.'/ajaxobjetosporclipro'), array(
+				'type' => 'POST',
+				'url' => CController::createUrl($this->id.'/ajaxobjetosporclipro'), //  la acción que va a cargar el segundo div
+				'update' => '#Ot_codobjeto', // el div que se va a actualizar
+				'data'=>array('identidad'=>'js:Ot_codpro.value'),
+			)
 
-			{  ?>
-                    <div id="Ot_idobjeto_div"  ></div>
-                          <?php   
-                            echo $form->labelEx($model,'idobjeto');
-                            $this->widget('ext.matchcode.MatchCode',array(
-						'nombrecampo'=>'idobjeto',
-                                                // 'valor'=>$model->idobjeto,
-                                                // 'nombreclase'=> get_class($model),
-						'ordencampo'=>5,
-						'controlador'=>$this->id,
-						'relaciones'=>$model->relations(),
-						'tamano'=>6,
-						'model'=>$model,
-						'form'=>$form,
-                               // 'filtro'=>array('codpro'=>'js:Ot_codpro.value'),
-						'nombredialogo'=>'cru-dialog3',
-						'nombreframe'=>'cru-frame3',
-						'nombrearea'=>'feh77dfddj',
-                                
-                                
-					)
+		);
+            // var_dump($model->codobjeto);
+		echo $form->DropDownList($model,'codobjeto',$datos1, array('empty'=>'--Seleccione Emplazamiento--' ) ) ;
 
-				);
-			} 
-			?>
-			<?php echo $form->error($model,'idobjeto'); ?>
-		</div>
+
+
+		?>
+           
+               <?php echo $form->error($model,'codobjeto'); ?>     
+                    </div>   
 
 		<div class="row">
 			<?php echo $form->labelEx($model,'codresponsable'); ?>
@@ -509,7 +487,7 @@ $this->widget('zii.widgets.jui.CJuiTabs', array(
 			),
                     
                     'Rec externos'=>array('id'=>'tab_uifre4',
-				'content'=>$this->renderPartial('tab_consignaciones', array('modeloconsi'=>$modeloconsi,'form'=>$form,'model'=>$model,'modeloconsi'=>$modeloconsi),TRUE)
+				'content'=>$this->renderPartial('tab_consignaciones', array('form'=>$form,'model'=>$model,'modeloconsi'=>$modeloconsi),TRUE)
 			),
                     
                     'Componentes rotativos'=>array('id'=>'tab_uifre5',

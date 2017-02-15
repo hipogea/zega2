@@ -26,7 +26,7 @@ class ObjetosClienteController extends Controller
 			return array(
 
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('ajaxpintadescripcion','admin','view','Ajaxborraequipo','agregarequipo','create','update'),
+				'actions'=>array('modificaequipo', 'Equipos',    'ajaxequiposporobjeto',    'ajaxobjetosporclipro' ,   'updateequipo','creaequipo', 'ajaxpintahijos','admin','view','Ajaxborraequipo','agregarequipo','create','update'),
 				'users'=>array('@'),
 			),
 
@@ -179,11 +179,14 @@ class ObjetosClienteController extends Controller
 			if($model->save())
 				//if (!empty($_GET['asDialog']))
 				{
-					//Close the dialog, reset the iframe and update the grid
-					echo CHtml::script("window.parent.$('#cru-dialog').dialog('close');
-													                    window.parent.$('#cru-detalle').attr('src','');
-																		window.parent.$.fn.yiiGridView.update('detalle-grid');
-																		");
+			 if($model->insertahijo=='1'){
+                            $model->refresh();
+                            $model->insertahijos($model->id);
+                         }
+//Close the dialog, reset the iframe and update the grid
+					echo CHtml::script("window.parent.$('#cru-dialog').dialog('close');window.parent.$.fn.yiiGridView.update('detalle-grid');
+																	
+																	");
 					Yii::app()->end();
 				}
 
@@ -218,7 +221,114 @@ public function actionajaxpintadescripcion(){
 	echo $reg->descripcion."-".$idet;
 }
 
+public function actionajaxpintahijos(){
+    if(yii::app()->request->isAjaxRequest){
+        if(isset($_POST['codigoobjeto'])){
+            $codigo=  MiFactoria::cleanInput($_POST['codigoobjeto']);
+            //ubicando el maestro de equipos
+            $maestroeq=  Masterequipo::model()->findByCodigo($codigo);
+                    if(is_null($maestroeq))
+                    throw new CHttpException(500,'No existe este equipo en el maestro');
+                    
+              $proveedor= Masterrelacion::model()->search_por_hijo($codigo);
+              //var_dump($proveedor->getData());die();
+              echo $this->renderPartial('hijos',array('proveedor'=>$proveedor),true,true);
+        }
+    }
+}
 
+///difiere de agregar equipo que esta  funcion permite crear desde un fomrulario 
+//sin ingerar al formulario CLIPRO 
+// 
+public function actionCreaEquipo()
+	{
+		$model=new Objetosmaster;
 
+		// Uncomment the following line if AJAX validation is needed
+		// $this->performAjaxValidation($model);
 
+		if(isset($_POST['Objetosmaster']))
+		{
+			$model->attributes=$_POST['Objetosmaster'];
+			if($model->save())
+				$this->redirect(array('updateequipo','id'=>$model->id));
+		}
+                    $model2=New ObjetosCliente;
+		$this->render('_creaequipo',array(
+			'model'=>$model,'model2'=>$model2,
+		));
+	}
+
+ public function actionajaxobjetosporclipro(){
+    if(yii::app()->request->isAjaxRequest){ 
+        if(isset($_POST['identidad'])){     
+            $id= MiFactoria::cleanInput($_POST['identidad']); 
+          // VAR_DUMP($id);DIE();
+            $registros= ObjetosCliente::model()->findAll("codpro='".$id."'");    
+            
+             //var_dump($registros);die();
+            foreach($registros as $filaobjeto){
+               // var_dump($filaojeto->id);
+                echo CHtml::tag('option', array('value'=>$filaobjeto->id),CHtml::encode($filaobjeto->nombreobjeto),true);
+
+            }
+         }
+            
+            } 
+            
+   }
+   
+   public function actionajaxequiposporobjeto(){
+    if(yii::app()->request->isAjaxRequest){ 
+        if(isset($_POST['identidad'])){     
+            $id= MiFactoria::cleanInput($_POST['identidad']); 
+          // VAR_DUMP($id);DIE();
+            $registros= Objetosmaster::model()->findAll("hidobjeto=".$id."");    
+            
+             //var_dump($registros);die();
+            echo CHtml::tag('option', array('value'=>null),CHtml::encode('--Escoja el equipo contenedor'),true);
+
+            foreach($registros as $filaobjeto){
+               // var_dump($filaojeto->id);
+                echo CHtml::tag('option', array('value'=>$filaobjeto->id),CHtml::encode($filaobjeto->masterequipo->descripcion.'-'.$filaobjeto->nombre.'-'.$filaobjeto->identificador),true);
+
+            }
+         }
+            
+            } 
+            
+   }
+       
+
+   public function actionEquipos()
+	{
+		$model=new VwObjetos('search');
+		$model->unsetAttributes();  // clear any default values
+		if(isset($_GET['VwObjetos']))
+			$model->attributes=$_GET['VwObjetos'];
+
+		$this->render('adminequipos',array(
+			'model'=>$model,
+		));
+	}
+
+  public function actionModificaequipo($id)
+	{
+	$id= MiFactoria::cleanInput($id);	
+      $model= Objetosmaster::model()->findByPk($id);
+     if($model===null)
+			throw new CHttpException(500,'No se encontro ningun modelo con este id ');
+		
+		if(isset($_POST['Objetosmaster']))
+		{
+			$model->attributes=$_POST['Objetosmaster'];
+			if($model->save())
+				$this->redirect(array('equipos'));
+		}
+		
+
+		$this->render('_modificaequipo',array(
+			'model'=>$model,
+		));
+	} 
 }

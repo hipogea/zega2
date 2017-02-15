@@ -45,39 +45,10 @@ class MatchCode extends CWidget
 
 	public function init()
 	{
-		$modelo=$this->model;
-		$cadi=$this->controlador;
-		//ECHO $cadi."   ";
-		$cadi=strtoupper(trim($cadi[0]));
-		//ECHO " LA PRIMER ALETRA ".$cadi;
-		$cadi=$cadi.substr($this->controlador,1);
-		//echo " el resto ".substr($this->controlador,1);
-		$this->controlador=$cadi;
+		$this->nombreclase= $this->getModelParent($this->nombrecampo);	
+              //  VAR_DUMP($this->nombreclase);
 
-		//$this->controlador=ucwords(strtolower(trim($this->controlador)));
-		//$this->nombreclase=Yii::app()->explorador->nombreclase($this->nombrecampo,$this->relaciones);
-		$modelo->{$this->nombrecampo}=self::cleanInput($modelo->{$this->nombrecampo});
-					     
-								  
-		
-		
-		
-			foreach ($this->relaciones as $clave => $valor) {
-				               if($valor[0]==$modelo::BELONGS_TO and $valor[2]==$this->nombrecampo)
-							   {
-								  	$mitabla=  $valor[1];
-											  break;
-							   }
-										
-								}
-		$this->nombreclase= $mitabla;
-
-		//echo "Ek nombre de la clase es :".$mitabla;
-		unset($modelo);
-						}
-
-
-
+        }
 
 	/** Saca el nombre del modelo
 	 * externo relacionado en el campo*/
@@ -106,17 +77,19 @@ class MatchCode extends CWidget
 	}
 
 	public function relaciona($nombrecampo,$valorcampo,$ordencampo=null){
-
+                // var_dump($valorcampo);die();
            
-                $nombreclase=$this->getModelParent($nombrecampo);
+                $nombreclase=$this->nombreclase;
 		//si no  devolver valor
 		$cvn=(gettype($valorcampo)=='string')?"'":"";
 		if (!($valorcampo===null )) {
 			/*$cadena="\$moki=".$nombreclase."::model()->findByPk(".$cvn.$valorcampo.$cvn.");";
 			eval($cadena);*/
 			if($this->nombrecamporemoto===false){
+                           // echo "uno"; die();
 				$moki=$nombreclase::model()->findByPk($valorcampo);
 			}else{ //noes un cmapo clave buscar en los otros campos indexados
+                              //echo "dos"; die();
 				$mokix =new $nombreclase;
 				$func = function($valor) {
 					if (gettype($valor)=='string')
@@ -128,9 +101,10 @@ class MatchCode extends CWidget
 					throw new CHttpException(500,__CLASS__.'   '.__FUNCTION__.'  '.__LINE__.' No se encontro ninguna columna remota con el nombre :  '.$this->nombrecamporemoto.', por favor revise la propiedad ');
 
 				//$moki=$nombreclase::model()->find(":vcampo=:vvalor",array(":vcampo"=>$this->nombrecamporemoto,":vvalor"=>trim($valorcampo)));
-				$moki=$nombreclase::model()->find("".$this->nombrecamporemoto."='".trim($valorcampo)."'");
+				
+                                $moki=$nombreclase::model()->find("".$this->nombrecamporemoto."='".trim($valorcampo)."'");
 
-				//var_dump($moki);yii::app()->end();
+				//var_dump($valorcampo);var_dump($moki);yii::app()->end();
 			}
 
 
@@ -162,31 +136,16 @@ class MatchCode extends CWidget
 		///array del AJAX, segun el valor de la propiedad $comopintar
 		if (!is_null($this->nombrearea)) {
 				$opcionesajax=array( 
-                   					 'type'=>'GET',
-										'url'=>Yii::app()->createUrl('/Matchcode/relaciona',
-													ARRAY('campo'=>$this->nombrecampo,
-														  //'miclase'=>'Inventario',
-														  'ordencampo'=>$this->ordencampo,
-														 // 'relaciones'=>$this->relaciones,
-														  'clasesita'=>$this->nombreclase,
-														  'contr'=>$this->controlador,
-														'camporemoto'=>($this->nombrecamporemoto===false)?"":$this->nombrecamporemoto,
-														)		
-
-													),		
-												/*'data'	=>array('pcampo'=>$this->nombrecampo,
-														  //'miclase'=>'Inventario',
-														  'pordencampo'=>$this->ordencampo,
-														 // 'relaciones'=>$this->relaciones,
-														  'pclasesita'=>$this->nombreclase,
-														  'pcontr'=>$this->controlador,
-														),		*/
-                    				'update'=>'#'.$this->nombrearea,
+                   			'type'=>'POST',
+					'url'=>Yii::app()->createUrl('/Matchcode/Relaciona'),                                                                
+					'data'=>ARRAY('campo'=>$this->nombrecampo,
+                                                       'ordencampo'=>$this->ordencampo,	 // 'relaciones'=>$this->relaciones,
+                                                       'clasesita'=>$this->nombreclase,
+                                                       'valor'=>'js:'.ucfirst(get_class($this->model)).'_'.$this->nombrecampo.'.value',
+                                                        'camporemoto'=>($this->nombrecamporemoto===false)?"":$this->nombrecamporemoto,
+                                                        ),	
+                                           'update'=>'#'.$this->nombrearea,                    				
                					 ) ;
-
-			 
-			
-			 				
 
 			} else {
 			$opcionesajax=array();
@@ -224,12 +183,11 @@ class MatchCode extends CWidget
 		// if (!is_null($this->nombrearea)) {
 		//$modelorel=$this->nombreclase;
 		if (!is_null($this->nombrearea)) {
-						echo " <div style='float: left; background-color :#FFF; padding-left:4px;  padding-right:4px; font-family: verdana,tahoma,arial,sans-serif;
-								font-size: 8pt;'  id =".$this->nombrearea.">";
+						echo " <div  id =".$this->nombrearea.">";
 		                                                             //var_dump($this->model->attributes);
-						echo (!$this->model->isNewRecord or 
+						echo self::pintatexto((!$this->model->isNewRecord or 
                                                        strlen(trim($this->model->{$this->nombrecampo}))>0
-                                                        )?$this->relaciona($this->nombrecampo,$this->model->{$this->nombrecampo},$this->ordencampo):'.                       .';
+                                                        )?$this->relaciona($this->nombrecampo,$this->model->{$this->nombrecampo},$this->ordencampo):'--',array('disabled'=>'disabled','size'=>$this->tamano*3,'maxlength'=>$this->tamano));
 
 		echo " </div>";
 															unset($modelorel);
@@ -263,6 +221,12 @@ class MatchCode extends CWidget
 		return $output;
 	}
 
-
+        
+public static function pintatexto($valortexto){
+    echo CHtml::textField(uniqid(), CHtml::encode($valortexto), array(
+        'disabled'=>'disabled',
+        'size'=>round(strlen(trim($valortexto))),
+    ));
+}
 
 }
