@@ -196,7 +196,7 @@
                                                          'buttonImage'=>Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'calendar_1.png',
 												'buttonImageOnly'=>true,
 						//'buttonText'=>Yii::t('ui','...'),
-						'dateFormat'=>'dd-mm-yy',
+						'dateFormat'=>'dd/mm/yy',
 					),
 					'htmlOptions'=>array(
 						'style'=>'width:80px;vertical-align:top',
@@ -223,7 +223,7 @@
 						'showOn'=>'both', // 'focus', 'button', 'both'
 						'buttonImage'=>Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'calendar_1.png',
 												'buttonImageOnly'=>true,
-						'dateFormat'=>'yy-mm-dd',
+						'dateFormat'=>'dd/mm/yy',
 					),
 					'htmlOptions'=>array(
 						'style'=>'width:80px;vertical-align:top',
@@ -254,7 +254,7 @@
 						'showOn'=>'both', // 'focus', 'button', 'both'
 						'buttonImage'=>Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'calendar_1.png',
 												'buttonImageOnly'=>true,
-						'dateFormat'=>'yy-mm-dd',
+						'dateFormat'=>'dd/mm/yy',
 					),
 					'htmlOptions'=>array(
 						'style'=>'width:80px;vertical-align:top',
@@ -281,7 +281,7 @@
 						'showOn'=>'both', // 'focus', 'button', 'both'
 						'buttonImage'=>Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'calendar_1.png',
 												'buttonImageOnly'=>true,
-						'dateFormat'=>'yy-mm-dd',
+						'dateFormat'=>'dd/mm/yy',
 					),
 					'htmlOptions'=>array(
 						'style'=>'width:80px;vertical-align:top',
@@ -380,12 +380,12 @@
 				'url' => CController::createUrl($this->id.'/ajaxobjetosporclipro'), //  la acción que va a cargar el segundo div
 				'update' => '#Ot_codobjeto', // el div que se va a actualizar
 				'data'=>array('identidad'=>'js:Ot_codpro.value'),
-			)
+			) );
 
-		);
-            // var_dump($model->codobjeto);
+
+				
+       
 		echo $form->DropDownList($model,'codobjeto',$datos1, array('empty'=>'--Seleccione Emplazamiento--' ) ) ;
-
 
 
 		?>

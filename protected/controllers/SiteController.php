@@ -40,23 +40,23 @@ class SiteController extends Controller
 		  					//$this->redirect(Yii::app()->user->ui->loginUrl);
 		            //}else {
 
-			              // $this->Loginventario(); //Registra el log de inventario
+			              $this->Loginventario(); //Registra el log de inventario
 
-			 //Bloqueos::clearbloqueos();
+			 Bloqueos::clearbloqueos();
 			  //MiFactoria::InsertaCumple(); //INSERTA CUMPLEAÑOS en lel tablon
 
 			               //
 			               //
-			              // yii::app()->maletin->flush(); //Limpia el maletin del usuario
+			       yii::app()->maletin->flush(); //Limpia el maletin del usuario
 							//
 			//  //	echo ModeloGeneral::getClassName();
 		// echo  MiFactoria::InsertaCumple();
-                                      $this->redirect("docingresados/admin");
+                                      //$this->redirect("docingresados/admin");
 		    // $this->layout = '//layouts/iframe';       		
             //$this->render('indexflota');
 
 		           // }
-		//$this->render('index');
+		$this->render('index');
 		//Yii::app()->user->ui->loginUrl
 
 		

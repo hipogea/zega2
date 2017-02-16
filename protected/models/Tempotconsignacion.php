@@ -26,8 +26,19 @@ class Tempotconsignacion extends ModeloGeneral
 	{
 		return '{{tempotconsignacion}}';
 	}
-
-	/**
+        
+        public function init(){
+            $this->campossensibles=array(
+                'cant'=>array(),
+                'um'=>array(),
+                'codart'=>array(),
+                'descripcion'=>array(),
+                'centro'=>array(),
+                'codal'=>array());
+	    $this->campoestado='est';
+            return parent::init();
+        }
+        /**
 	 * @return array validation rules for model attributes.
 	 */
 	public function rules()

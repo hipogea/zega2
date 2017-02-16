@@ -17,6 +17,7 @@ class Ot extends  ModeloGeneral
 		$this->documento='890';
 
 	}
+        public $camposfechas=array('fechafinprog', 'fechainiprog','fechainicio', 'fechafin');
         
         public function behaviors()
 	{
@@ -49,13 +50,14 @@ class Ot extends  ModeloGeneral
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('fechainiprog,, codpro,
-			 idobjeto, codresponsable, textocorto, codcen', 'required'),
+			array('fechainiprog, codpro,codresponsable, textocorto, codcen', 'required'),
+                   //  array('idobjeto','exist','allowEmpty' => false, 'attributeName' => 'id', 'className' => 'Objetosmaster','message'=>'Este equipo no existe'),
+			
 			array('fechafinprog, fechainiprog,fechainicio, fechafin','checkfechas'),
                     array('codpro','exist','allowEmpty' => false, 'attributeName' => 'codpro', 'className' => 'Clipro','message'=>'Esta empresa no existe'),
 			   array('codpro1','exist','allowEmpty' => true, 'attributeName' => 'codpro', 'className' => 'Clipro','message'=>'Esta empresa no existe'),
 		                    array('idobjeto', 'checkobjeto','on'=>'insert'),
-                            array('textolargo','safe','on'=>'insert,update'),
+                            array('textolargo,codobjeto','safe','on'=>'insert,update'),
 			array('idobjeto, iduser', 'numerical', 'integerOnly'=>true),
 			array('numero', 'length', 'max'=>12),
 			array('codpro', 'length', 'max'=>8),
@@ -194,9 +196,16 @@ class Ot extends  ModeloGeneral
 	 *
 	 */
 	public function checkobjeto($attribute,$params) {
-		if($this->codpro!=$this->objetosmaster->objetoscliente->codpro)
-					$this->adderror('idobjeto','Este equipo no pertenece a la organizacion '.$this->clipro->despro);
-	}
+            var_dump($this->idobjeto);var_dump(Objetosmaster::model()->findByPk($this->idobjeto));die();
+            if($this->isNewRecord){
+                $codigocli= Objetosmaster::model()->findByPk($this->idobjeto)->objetoscliente->codpro;
+            }else{
+                 $codigocli= $this->objetosmaster->objetoscliente->codpro;
+            }
+             if($this->codpro!=$codigocli)
+                $this->adderror('idobjeto','Este equipo no pertenece a la organizacion '.$this->clipro->despro);
+	  
+		}
 
 
 	/**************************

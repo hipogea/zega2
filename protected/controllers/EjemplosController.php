@@ -399,6 +399,12 @@ $mo=New Alinventario();
 
 public $layout='//layouts/column2';
 	public function actionPio() {
+            echo "2015-12-03    :  ". yii::app()->periodo->toISO("2015-12-03"). "    <BR>"; 
+            echo "2015/12/03    :  ". yii::app()->periodo->toISO("2015/12/03"). "    <BR>"; 
+            Echo "12-03-2015    :  ". yii::app()->periodo->toISO("12-03-2015"). "    <BR>"; 
+             Echo "12/03/2015    :  ". yii::app()->periodo->toISO("12/03/2015"). "    <BR>"; DIE();
+            echo  preg_replace('/\//', "-", "2005/12/03");die();
+            
            var_dump(!yii::app()->periodo->verificaFechas('2017-09-02' ,date('Y-m-d')));die();
             
             clearstatcache();

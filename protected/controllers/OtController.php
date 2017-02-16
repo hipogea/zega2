@@ -129,7 +129,9 @@ class OtController extends ControladorBase
 								$this->ConfirmaBuffer($id); //Levanta temporales
 								$this->terminabloqueo($id);
 								$this->ClearBuffer($id);
-							}
+							}ELSE{
+                                                            MiFactoria::mensaje('error',yii::app()->mensajes->getErroresItem($model->geterrors()));
+                                                            }
 							if(!$this->detectaerrores()){
 								$transacc->commit();
 								MiFactoria::Mensaje('success', "Se grabo el documento  ".$this->SQL);
@@ -358,7 +360,7 @@ class OtController extends ControladorBase
 		return array(
 
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('Borraitemsconsignaciones',   'JalaMaterialesExt',   'ajaxobjetosporclipro',    'ajaxmuestralistamateriales','JalaMateriales','view','imputa','cargagaleria','tomafoto','creaconsignacion','borraitemsdesolpe','nadax','creaservicio','modificadetallerecurso','creadetallerecurso','verprecios','crearpdf','verDetoc','firmar','aprobar','cargaprecios','enviarpdf','admin','borrarimpuesto','reporte','agregarmasivamente','cargadirecciones','borraitems','sacaitem','sacaum','salir','agregaimpuesto','agregaritemsolpe','procesardocumento','refrescadescuento','VerDocumento','EditaDocumento','creadocumento','Agregardelmaletin','borraitem','imprimirsolo','cargaentregas','agregarsolpe','agregarsolpetotal','pasaatemporal','create','imprimirsolo','imprimir','imprimir2','enviarmail',
+				'actions'=>array( 'modificadetalleconsignacion',   'Borraitemsconsignaciones',   'JalaMaterialesExt',   'ajaxobjetosporclipro',    'ajaxmuestralistamateriales','JalaMateriales','view','imputa','cargagaleria','tomafoto','creaconsignacion','borraitemsdesolpe','nadax','creaservicio','modificadetallerecurso','creadetallerecurso','verprecios','crearpdf','verDetoc','firmar','aprobar','cargaprecios','enviarpdf','admin','borrarimpuesto','reporte','agregarmasivamente','cargadirecciones','borraitems','sacaitem','sacaum','salir','agregaimpuesto','agregaritemsolpe','procesardocumento','refrescadescuento','VerDocumento','EditaDocumento','creadocumento','Agregardelmaletin','borraitem','imprimirsolo','cargaentregas','agregarsolpe','agregarsolpetotal','pasaatemporal','create','imprimirsolo','imprimir','imprimir2','enviarmail',
 					'procesaroc','hijo','Aprobaroc','Reporteoc','Anularoc','Configuraop','Revertiroc', ///acciones de proceso
 					'libmasiva','creadetalle','Verdetalle','muestraimput','update','nada','Modificadetalle'),
 				'users'=>array('@'),
@@ -2830,7 +2832,46 @@ public function borraitemconsignacion($autoId) //Borra un registro de coinsnacio
             } 
             
    }       
-    
+   	public function actionmodificadetalleconsignacion($id)
+	{
+
+		$model= Tempotconsignacion::model()->findByPk((integer)MiFactoria::cleanInput($id));
+		$model->setScenario('buffer');
+		//$model->tipoitem='M';
+		if(isset($_POST['Tempotconsignacion']))		{
+			$model->attributes=$_POST['Tempotconsignacion'];
+
+
+			//$model->punitdes=$model->punit*$descuento;
+			//crietria para filtrar la cantidad de items del detalle
+
+			//str_pad($somevariable,$anchocampo,"0",STR_PAD_LEFT);
+			////con esto calculamos el numero de items
+			//echo "  El valor de  ".$idcabeza."       ".$model->n_hguia."   ";
+			$this->performAjaxValidationdetalle($model);
+			if($model->save()){
+				if (!empty($_GET['asDialog']))
+				{
+					//Close the dialog, reset the iframe and update the grid
+			echo CHtml::script("window.parent.$('#cru-dialogdetalle').dialog('close');
+				window.parent.$('#cru-detalle').attr('src','');
+                                window.parent.$.fn.yiiGridView.update('detalle-consignacion-grid');
+				
+			");
+
+				}
+			}
+
+		}
+		// if (!empty($_GET['asDialog']))
+		//$formulario=($model->tipsolpe=='M')?'_form_detalle_recursos':'_form_servicio';
+		$this->layout = '//layouts/iframe';
+		$modelopadre=Ot::model()->findByPk($model->hidot);
+		$this->render('_form_consignacion',array('modelopadre'=>$modelopadre,
+			'model'=>$model, 'idcabeza'=>$modelopadre->id,'editable'=>true
+		));
+	}
+ 
     
 } 
     

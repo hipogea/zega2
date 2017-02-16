@@ -478,7 +478,7 @@ Public function recorro($matriz)
            //VAR_DUMP($this->oldAttributes); 
            //ECHO "<BR><BR><BR>";
         }
-                       
+           $this->conviertefechas(true);             
 
 	  Return parent::afterfind();
   }
@@ -486,12 +486,12 @@ Public function recorro($matriz)
 
 
 	public function beforeSave() {
-//$this->conviertefechas(false);
+              $this->conviertefechas(false);
 		return parent::beforeSave();
 	}
 
 public function afterSave() {
-          // $this->arreglafechas();
+         // $this->arreglafechas();
 //$this->conviertefechas(true);
 		return parent::afterSave();
 	}
@@ -566,7 +566,7 @@ public static function model($className=__CLASS__)
                                     // isnewrecord =false; verificando si es un campo que solo sepudee ingersar una osla vez y ya no s emodifica 
                                          if(in_array(self::ESTADO_REGISTRO_NUEVO,array($this->campossensibles[$nombrecampo]))){
                                              Yii::log(' campossensibles primer criterioel campo '.$nombrecampo.'   '.self::ESTADO_REGISTRO_NUEVO,'error');
-                                             return false;
+                                             return TRUE;
                                             
                                          } else{ //isnewrecord =false; ahora toca revisar  segun el estado
                                               if(in_array($this->{$this->campoestado},array($this->campossensibles[$nombrecampo]))){
@@ -589,7 +589,7 @@ public static function model($className=__CLASS__)
                                              }
                                  
                                             } else{
-                                                var_dump($nombrecampo);var_dump(array_keys($this->campossensibles));die();
+                                               // var_dump($nombrecampo);var_dump(array_keys($this->campossensibles));die();
                                                 Yii::log(' campossensibles el campo '.$nombrecampo.'   no esta en los campos sensibles ','error');
                                             
                                         return true;

@@ -4,7 +4,9 @@ class PeriodosCompo extends CApplicationComponent
     private $_model=null;
     private $_fechainicio;
     private $_fechafin;
-
+  
+    
+  
    
     //busca de ntro de los periodos activos el mas reciente 
     private function setModel($idperiodo=null)
@@ -40,7 +42,9 @@ class PeriodosCompo extends CApplicationComponent
    */
     public function verificaFechas($fechaini,$fechafin,$puedeserigual=null)
     {
-       $fechafin=date('Y-m-d',strtotime($fechafin.''));
+        $fechafin=$this->toISO($fechafin);
+         $fechaini=$this->toISO($fechaini);
+        $fechafin=date('Y-m-d',strtotime($fechafin.''));
         $fechaini=date('Y-m-d',strtotime($fechaini.''));
 
       if( strtotime($fechaini.'')  > strtotime($fechafin.'')){
@@ -70,7 +74,8 @@ class PeriodosCompo extends CApplicationComponent
 
    public function HoyDentroDe($fechaini,$fechafin)
     {
-
+        $fechafin=$this->toISO($fechafin);
+         $fechaini=$this->toISO($fechaini);
         $hoy=date('Y-m-d',time());
         if( strtotime($fechaini.'')  > strtotime($fechafin.'')){
             return false;
@@ -87,6 +92,8 @@ class PeriodosCompo extends CApplicationComponent
 
 
 public function estadentroperiodo($fecha,$verificatolerancia=false,$idperiodo=null){
+   $fecha=$this->toISO($fecha);
+         
     $fecha=date('Y-m-d',strtotime($fecha));
     $modelperiodoactivo=$this->getModel($idperiodo);
     //VAR_DUMP($modelperiodoactivo);YII::APP()->END();
@@ -149,6 +156,43 @@ public function estadentroperiodosactivos($fecha,$verificatolerancia=false){
      return $this->getModel()->fechamaxima();
   }
   
+  public function fechaParaBd($fecha){
+      //var_dump(date_create($fecha));die();
+     // $fecha=$this->toISO($fecha);
+         
+        return substr(date( yii::app()->settings->get('general','general_formatofechaingreso'),  strtotime($fecha)),0,10);
+   // }else{
+      // return date_format(date_create($fecha), yii::app()->settings->get->general('general','general_formatofechaingreso'));
+     
+    }
+    public function fechaParaMostrar($fecha){
+        //$fecha=$this->toISO($fecha);
+        //return date_format(date_create($fecha), yii::app()->settings->get->general('general','general_formatofechasalida'));
+   // }else{
+       return substr(date( yii::app()->settings->get('general','general_formatofechasalida'),  strtotime($fecha)),0,10);
+   // 
+    }
+    
+  
+  
+  PUBLIC function toISO($fecha){
+      if(preg_match('/[0-3]{1}[0-9]{1}\/[0-1]{1}[0-9]{1}\/[0-9]{4}/', $fecha)){//FORMATO  12/04/1989
+               $retazos=explode("/",$fecha);//print_r($retazos);
+                return $retazos[2]."-".$retazos[1]."-".$retazos[0];
+          } 
+     elseif(preg_match ('/[0-3]{1}[0-9]{1}\-[0-1]{1}[0-9]{1}\-[0-9]{4}/', $fecha)){//FORMATO  12-04-1989
+        $retazos=explode("-",$fecha);
+         return $retazos[2]."-".$retazos[1]."-".$retazos[0];
+     }elseif(preg_match ('/[0-9]{4}\/[0-1]{1}[0-9]{1}\/[0-3]{1}[0-9]{1}/', $fecha)){ //FORMATO 1989/04/02
+         return preg_replace('/\//', "-", $fecha);
+     }elseif(preg_match ('/[0-9]{4}\-[0-1]{1}[0-9]{1}\-[0-3]{1}[0-9]{1}/',$fecha)){//FORMATO 1989-04-02
+        return $fecha; 
+     }else{
+         return $fecha;
+     }
+      
+     
+  }
 
 }
 ?>
