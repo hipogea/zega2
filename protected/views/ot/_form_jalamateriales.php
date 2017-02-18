@@ -113,7 +113,7 @@
 	</div>
 	
 	<div class="row buttons">
-		<?php echo ($habilitado=='')?CHtml::submitButton(($model->isNewRecord)?'Agregar' : 'Actualizar',array('onClick'=>'Loading.show();Loading.hide();')):''; ?>
+		<?php echo ($habilitado=='')?CHtml::submitButton(($model->isNewRecord)?'Agregar' : 'Actualizar'):''; ?>
 	</div>
 
 

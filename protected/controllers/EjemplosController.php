@@ -398,7 +398,12 @@ $mo=New Alinventario();
 }
 
 public $layout='//layouts/column2';
-	public function actionPio() {
+	public function actionPio() { 
+            $registro= Tempotconsignacion::model()->findByPk(47);
+            VAR_DUMP($registro->checkcompromisos(get_class($registro)));DIE();
+            
+            
+            
             echo "2015-12-03    :  ". yii::app()->periodo->toISO("2015-12-03"). "    <BR>"; 
             echo "2015/12/03    :  ". yii::app()->periodo->toISO("2015/12/03"). "    <BR>"; 
             Echo "12-03-2015    :  ". yii::app()->periodo->toISO("12-03-2015"). "    <BR>"; 

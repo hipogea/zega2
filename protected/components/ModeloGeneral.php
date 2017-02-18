@@ -13,6 +13,10 @@ const ESTADO_REGISTRO_NUEVO='00'; ///ESTO SOLO PARA INCLUIR LA CONDICION isNewRe
 	public $campoprecio=null; //nobre del campo precio del modelo
 	public $isdocParent=true; ///Si es modelo padre TRUE , FALSE  SI es un item	
         public $campoestado='';
+        public $_estacomprometido= false; //Esta prop indica si el registro modelo esta v
+                                            //compormetido con otro registro a traves de susus relaciones, 
+                                           //Esto quiere decir si se puede editar o borrar sin problemas
+                                            //Se actualiza Por medio de la funcion checkcomproimisos()
         public $camposfechas=array();
         public $campossensibles=array();///Esta propiedad guarda los campos sensisble del modelo para veriifcacion si se pueden 
    //editar o no de acuerdo a si ya tieen compromisos
@@ -520,41 +524,66 @@ public static function model($className=__CLASS__)
      * 
      * 
      ******************************/    
-   public function checkcompromisos ($final=false){
+   public function checkcompromisos ($nombreclase=null){
        //verificando la propedad relatriosn
+       
+       if(!$this->_estacomprometido){ //Solo efectuarla en el caso de que el flag de compromisos ea falso
+           //en otro caso se supopne q  ue ya esta comppemtido, para evitar sobrecarga de trabajo 
        $relaciones =$this->relations();
        $puentes=array();
        foreach($relaciones as $clave=>$valor){
-           if(in_array($valor[0],array(self::STAT,self::HAS_ONE))){
+           if(in_array($valor[0],array(self::STAT,self::HAS_ONE,self::HAS_MANY))){
                $puentes[]=$clave;
            }
+          
        }
+       //var_dump($puentes);die();
         $retorno=false;
       foreach($puentes as $clave=>$valore){
-         
-          if(!is_null($this->{$valore})){
-             $retorno=true;break; 
+         $valor=$this->{$valore};
+          if(!is_null($valor)){
+              /*  En estee caos se trataria de campos STAT */
+              if(in_array(gettype($valor),array('string','integer','float'))  ){
+                        if(($valor+0)>0){
+                                $retorno=true;break;//QUIERE DECIR QUE EXISTEN SUMATORIAS O COUNTERS MAOYRES QUE CERO 
+                            }else{
+                                    $retorno=false;
+                                }
+                    }
+              
+             if(gettype($valor)=='object'  ){ //HAS_ONE 
+                  //PREVINIEDO ERRORES
+                  //var_dump(get_class($valor)); var_dump($nombreclase);
+                  IF(method_exists($valor,__FUNCTION__)){
+                     if (get_class($valor)==$nombreclase){ //Si se trata del mismo objeto, es una relacion reflexiva 
+                               //en este caso, desestimar.  porque se trata del mismo objeto 
+                               //POR EJEMPLO   $tempdesolpe->desolpe  RELACION DE UNO  AUNO
+                               // cUNADO ANALICE desolpe tambien encontrara la relacion de 
+                               // uno a uno  y llegara otra vez a  $tempdesolpe 
+                         //En este caso se trata del miso objeto y no vale para el analisis
+                     //echo "sale";
+                        } else{
+                            //En este caso se trata de  de otro registro relacionado de de uno auno
+                            //toca anaizarlo recursivamente 
+                         // var_dump($valor);die();
+                            $retorno=$valor->checkcompromisos($nombreclase);//pero evitar mas recursiones con final=true
+                        }
+                  }else{
+                      
+                  }    
+                }
+              
+              if(is_array($valor) ){ //HAS_MANY
+                if(count($valor)>0){$retorno=true;break;}else{$retorno=false;}
+                }
+          }else{//si es nulo no pas anada 
+            $retorno=false;  
           }
           
-          /*if(  is_array($this->{$valore})  )
-           if(count($this->{$valore})>0)
-             return true;*/
-           if(in_array(gettype($this->{$valore}),array('string','integer','float'))  ){
-                $retorno=true;break; 
-           }
-           IF(gettype($this->{$valore})=='object'){ //HAS_ONE
-               if (!$final){ ///Si no es final entonces evaluar a su gemelo
-                   $retorno=$this->{$valore}->checkcompromisos(true);//pero evitar mas recursiones con final=true
-                    $retorno=true;break; 
-                   
-                   }
-               
-           }
-           
-          
-      }//FIN DEL FOR
-     return $retorno;
-          
+      }          
+       $this->_estacomprometido=$retorno;
+       }
+       return $this->_estacomprometido;
       }
       
       public function escampohabilitado($nombrecampo){
@@ -565,22 +594,22 @@ public static function model($className=__CLASS__)
                                  {
                                     // isnewrecord =false; verificando si es un campo que solo sepudee ingersar una osla vez y ya no s emodifica 
                                          if(in_array(self::ESTADO_REGISTRO_NUEVO,array($this->campossensibles[$nombrecampo]))){
-                                             Yii::log(' campossensibles primer criterioel campo '.$nombrecampo.'   '.self::ESTADO_REGISTRO_NUEVO,'error');
-                                             return TRUE;
+                                             //Yii::log(' campossensibles primer criterioel campo '.$nombrecampo.'   '.self::ESTADO_REGISTRO_NUEVO,'error');
+                                             return true;
                                             
                                          } else{ //isnewrecord =false; ahora toca revisar  segun el estado
                                               if(in_array($this->{$this->campoestado},array($this->campossensibles[$nombrecampo]))){
-                                                 Yii::log(' campossensibles segundo criteiro '.$nombrecampo.'   ','error');
+                                                // Yii::log(' campossensibles segundo criteiro '.$nombrecampo.'   ','error');
                                             
-                                                  return false; 
+                                                  return true; 
                                                 } else{///muy bien ahora que ya paso los 2 criterios (1) ingreso unica vez y 2) estado del documento)
                                                          // ahora toca revisar el criterio 3) de los compromisos, a nivel BASE DE DATOS de las tablas hijas relacionadas
-                                                     if($this->checkcompromisos()) {//sis tiene compromisos  ya no  puede ser editable
-                                                          Yii::log(' ahora que ya paso los 2 criterios '.$nombrecampo.'   ','error');
+                                                     if($this->checkcompromisos(get_class($this))) {//sis tiene compromisos  ya no  puede ser editable
+                                                         // Yii::log(' ahora que ya paso los 2 criterios '.$nombrecampo.'   ','error');
                                                          return false;
                                                      }else{ //en este caso despues de haber pasado los 3 criterios recien puede 
                                                            //decirse que es editable
-                                                          Yii::log(' ahora ya p`sso los 3 croterios y es editable '.$nombrecampo.'   ','error');
+                                                         // Yii::log(' ahora ya p`sso los 3 croterios y es editable '.$nombrecampo.'   ','error');
                                                          
                                                          return true;
                                                      }
@@ -590,7 +619,7 @@ public static function model($className=__CLASS__)
                                  
                                             } else{
                                                // var_dump($nombrecampo);var_dump(array_keys($this->campossensibles));die();
-                                                Yii::log(' campossensibles el campo '.$nombrecampo.'   no esta en los campos sensibles ','error');
+                                               // Yii::log(' campossensibles el campo '.$nombrecampo.'   no esta en los campos sensibles ','error');
                                             
                                         return true;
                                 }  

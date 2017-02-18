@@ -44,6 +44,20 @@
                     ),
                     'visiblex'=>array('10'),
                 ),
+                
+                'balanza'=>array(
+                    'type'=>'D',
+                    'ruta'=>array('cajachica/aprobaritem',array("id"=>$model->id)),
+                    'opajax'=>array(
+                        'type'=>'POST',
+                        'url'=>ARRAY('cajachica/aprobaritem',array("id"=>$model->id)),
+                        'success'=>'js:function(data) { $.growlUI("Growl Notification", data,2400); }',
+                       
+                    ),
+                    'visiblex'=>array('10'),
+                ),
+                
+                
             );
             $this->widget('ext.toolbar.Barra',
                 array(
@@ -91,6 +105,7 @@
 <?php
 }
 ?>
+
    <?php
 $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
     'id'=>'cru-dialog2',
@@ -98,8 +113,8 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
         'title'=>'Contactos',
         'autoOpen'=>false,
         'modal'=>true,
-        'width'=>400,
-        'height'=>400,
+        'width'=>800,
+        'height'=>600,
     ),
 ));
 ?>

@@ -14,7 +14,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 		    'selectableRows' => 20,
 		    'value'=>'$data->idtemp',
 			'checkBoxHtmlOptions' => array(                
-				'name' => 'cajita[]',
+				'name' => 'cajitaconsignaciones[]',
 		   ),
                 ),
 		array(
@@ -83,8 +83,9 @@ $this->widget('zii.widgets.grid.CGridView', array(
 		//array('htmlOptions'=>array('width'=>5), 'type'=>'raw','name'=>'codart','value'=>'$data->codart','visible'=>(!yii::app()->settings->get("materiales","materiales_codigoservicio")==$data->codart)?true:false),
 		//array('header'=>'N° Solic','value'=>'$data->solpe->numero', 'htmlOptions'=>array('width'=>4),),
 		array('name'=>'cant', 'type'=>'raw','header'=>'Cant','htmlOptions'=>array('width'=>20) ),
-		 array('header'=>'Atendido','type'=>'raw','value'=>'($data->otconsignacion->cantatendida>0)?CHtml::openTag("span",array("class"=>"label badge-warning ")).$data->otconsignacion->cantatendida.CHtml::closeTag("span"):""', 'htmlOptions'=>array('width'=>4),),
-                    array('name'=>'codart','value'=>'$data->codart','htmlOptions'=>array('width'=>30)),
+		 //array('header'=>'Atendido','type'=>'raw','value'=>'($data->otconsignacion->cantatendida>0)?CHtml::link(CHtml::openTag("span",array("class"=>"label badge-warning ")).$data->otconsignacion->cantatendida.CHtml::closeTag("span"),"#",array("onclick"=>"$(\'cru-frame3\').attr(\'src\',yii::app()->createUrl(\"ot/muestrakardex\",array(\"idref\"=>$data->id)   )  )")       )    :""', 'htmlOptions'=>array('width'=>4),),
+                   ARRAY('header'=>'Atendido','type'=>'raw','value'=>'($data->otconsignacion->cantatendida>0)?CHtml::link(CHtml::openTag("span",array("class"=>"label badge-warning ")).$data->otconsignacion->cantatendida.CHtml::closeTag("span"),"#", array("onclick"=>\'$("#cru-frame3").attr("src","\'.Yii::app()->createurl(\'/ot/muestrakardex\', array(\'idref\'=> $data->id ) ).\'");$("#cru-dialog3").dialog("open"); return false;\' ) ):""','htmlOptions'=>array('width'=>4)),
+                 array('name'=>'codart','value'=>'$data->codart','htmlOptions'=>array('width'=>30)),
                  array('name'=>'hidetot','header'=>'Recurso','value'=>'$data->descripcion','filter'=>CHtml::listData(Tempdetot::model()->findAll("idusertemp=:vuser and hidorden=:vorden",array(":vorden"=>$model->id,":vuser"=>yii::app()->user->id)),'idaux','textoactividad'), 'htmlOptions'=>array('width'=>400),),
 		
                                                        // 'txtmaterial',
@@ -144,11 +145,15 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				'opajax' => array(
 					'type' => 'POST',
 					'url' => Yii::app()->createUrl($this->id . '/Borraitemsconsignaciones', array()),
-					'success' => "function(data) {
-										$('#AjFlash').html(data).fadeIn().animate({opacity: 1.0}, 3000).fadeOut('slow');
-                                              $.fn.yiiGridView.update('detalle-consignaciones-grid');                                              
-                                               return false;
-                                        }",
+					'dataType'=>'text',
+                                    'success' => "function(data) {
+                                                                $.fn.yiiGridView.update('detalle-consignaciones-grid');                                              
+                                                                return false;
+                                                            }",
+                                     'complete' => "js:function(data) {
+                                                              $.growlUI('Growl Notification', data);  
+                                                            return false;
+                                                        }",
 					'beforeSend' => 'js:function(){
                                   				 var r = confirm("Esta seguro de Eliminar estos Items?");
                           						 if(!r){return false;}
@@ -170,8 +175,8 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					"gridId" => 'detalle-grid',
 				)
 				),
-				'dialog' => 'cru-dialogdetalle',
-				'frame' => 'cru-detalle',
+				'dialog' => 'cru-dialog3',
+				'frame' => 'cru-frame3',
 				'visiblex' => array(ESTADO_CREADO),
 			),
 			'pack2' => array(
@@ -236,7 +241,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 
 
 		);
-
+              // echo CHtml::link("presionar aqui","#",array("onclick"=>"js: $.growlUI('Growl Notification', 'hola bueyes')"));
 
 		$this->widget('ext.toolbar.Barra',
 			array(

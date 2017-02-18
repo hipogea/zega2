@@ -1,7 +1,7 @@
  <?php
 $prove=Dcajachica::model()->search_por_cargo_a_rendir($idcabecera,$idparent);
 $this->widget('zii.widgets.grid.CGridView', array(
-	'id'=>'detalle-grid',
+	'id'=>'detallex-grid',
 	'dataProvider'=>$prove,
 	//'filter'=>$model,
 	'itemsCssClass'=>'table table-striped table-bordered table-hover',
@@ -25,7 +25,9 @@ $this->widget('zii.widgets.grid.CGridView', array(
 
 		//array('name'=>'item', 'htmlOptions'=>array('width'=>1)),
 			//array('name'=>'fecha','header'=>'fecha','htmlOptions'=>array('width'=>5)),
-		array(
+		array('name'=>'id','header'=>'Correl','type'=>'raw','value'=>'CHtml::openTag("tag",array("class"=>"label badge-success")).$data->id.CHtml::closeTag("span")','htmlOptions'=>array('width'=>10)),
+		
+            array(
 			'name'=>'fecha',
 			//array('name'=>'fechaent','header'=>'Para'),
 			'header'=>'Fecha',
@@ -60,7 +62,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			 
                         'update'=>
                             array(
-                            	   'visible'=>'true',
+                            	  'visible'=>'($data->codestado=="10")?true:false',					
                                     'url'=>'$this->grid->controller->createUrl("trabajadores/actualizadetalle/",
 										    array("id"=>$data->id,
                                                                                          "asDialog"=>1,
@@ -78,27 +80,47 @@ $this->widget('zii.widgets.grid.CGridView', array(
 								'label'=>'Actualizar Item', 
                                 ),
 
+                          'delete'=> array(
+					 'visible'=>'($data->codestado =="20")?true:false',
+					 'url'=>'$this->grid->controller->createUrl("/Cajachica/ajaxabredetalle", array("id"=>$data->id))',
+					 'options' => array(
+						 'ajax' => array( 
+							 'type' => 'GET',
+							 'success'=>"function(data) {
+							 $.fn.yiiGridView.update('detallex-grid');  return false;
+                                                                       }",
 
-								'delete'=>
-
-                             array(
-                             	    'visible'=>'true',
-                                    'url'=>'',
-						    'imageUrl'=>''.Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'hand_point.png',
-								'label'=>'Ver detalle',
-                                ),	
-							
-
-                            
+							 'url'=>'js:$(this).attr("href")'
 
 
-                               'view'=>
-                            array(
-                                'visible'=>'true',
-                                'url'=>'',
-								'imageUrl'=>''.Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'borrador.png',
-								'label'=>'Reservar', 
-                                ),
+						 ),
+
+					 ) ,
+					 'imageUrl'=>Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."arrow_undo.png",
+					 'label'=>'Abrir',
+				 ),
+
+
+                              'view'=> array(
+					 'visible'=>'($data->codestado == "20")?false:true',
+					 'url'=>'$this->grid->controller->createUrl("/Cajachica/ajaxcierradetalle", array("id"=>$data->id))',
+					 'options' => array(
+						 'ajax' => array( 
+							 'type' => 'GET',
+							 'success'=>"function(data) {
+							 $.fn.yiiGridView.update('detallex-grid'); return false;
+                                                                       }",
+
+							 'url'=>'js:$(this).attr("href")'
+
+
+						 ),
+
+					 ) ,
+					 'imageUrl'=>Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."check16.png",
+					 'label'=>'Cerrar',
+				 ),
+
 
                             ),
 		),

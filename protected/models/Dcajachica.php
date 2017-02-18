@@ -24,8 +24,9 @@ const ESTADO_DETALLE_CAJA_CREADO='10';
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('hidcaja, fecha, glosa, monto,monedahaber,referencia, debe,tipoflujo,  codtra, ceco,  codocu,codocuref,hidref,tipimputacion', 'safe'),
+			array('hidcaja, fecha, glosa, monto,monedahaber,referencia, debe,tipoflujo,  codtra,esservicio,serie,tipodocid,numdocid,razon,  codocu,codocuref,hidref', 'safe'),
 			array('fecha', 'checkfecha','on'=>'insert,update'),
+                    array('codestado','safe','on'=> 'estado'),
 			array('monto', 'checktolerancia','on'=>'insert,update'),
             //array('ceco','exist','allowEmpty' => false, 'attributeName' => 'codc', 'className' => 'Cc','message'=>'Este ceco no existe'),
             array('fecha', 'checkfecha_detalle','on'=>'upd_rencidiontrabajador,ins_rendiciontrabajador'),
@@ -60,7 +61,7 @@ const ESTADO_DETALLE_CAJA_CREADO='10';
 			'ot'=>array(self::BELONGS_TO, 'VwOtdetalle', 'hidref'),
                     'moneda' => array(self::BELONGS_TO, 'Monedas', 'codmon'),
 			'flujos' => array(self::BELONGS_TO, 'Tipoflujocaja', 'tipoflujo'),
-			'rendido'=>array(self::STAT, 'Dcajachica', 'hidcargo','select'=>'sum(t.monto)','condition'=>"codestado <> '".ESTADO_DETALLE_CAJA_ANULADO."'  "),//el campo foraneo
+			'rendido'=>array(self::STAT, 'Dcajachica', 'hidcargo','select'=>'sum(t.monto)','condition'=>"codestado not in ( '".self::ESTADO_DETALLE_CAJA_ANULADO."','".self::ESTADO_DETALLE_CAJA_CREADO."') "),//el campo foraneo
 
                     
 		);
@@ -75,8 +76,8 @@ const ESTADO_DETALLE_CAJA_CREADO='10';
 	}
 
 	public function checktolerancia($attribute,$params) {
-		if($this->isNewRecord and $this->cabecera->excede() )
-			$this->adderror('Monto','Se excedio de la tolerancia,('.yii::app()->settings->get("general","general_porcexcesocaja").'%) ');
+		if($this->isNewRecord and $this->cabecera->excedeplan() )
+			$this->adderror('debe','Se excedio de la tolerancia,('.yii::app()->settings->get("general","general_porcexcesocaja").'%)  Monto planificado : '.$this->cabecera->monto_planificado.'    Limite superior :   '.$this->cabecera->limitesuperior);
 
 	}
 
@@ -203,17 +204,24 @@ const ESTADO_DETALLE_CAJA_CREADO='10';
 
 	///verifica que ningun otro usuario modifiaue o trate tu caja cabecera
 	private function isPropietariocaja(){
-		return ($this->cabecera->codtra==yii::app()->user->um->getFieldValue(yii::app()->user->id,'codtra'))?true:false;
-	}
+            if($this->hidcaja >0){
+                //echo "sale l";
+                return($this->iduser==yii::app()->user->id);
+            }else{
+               return ($this->cabecera->codtra==yii::app()->user->um->getFieldValue(yii::app()->user->id,'codtra'))?true:false;
+	 
+            }
+		}
 
 
 	public function isTratable(){
-		return (in_array($this->codestado,array(ESTADO_CREADO)) and $this->isPropietariocaja())?true:false;
+            //var_dump($this->codestado);
+		return ($this->codestado==self::ESTADO_DETALLE_CAJA_CREADO);
 	}
 
 
 	private function tieneHijos(){
-		if($this->tipoflujo==TIPO_DE_FLUJO_A_RENDIR)
+		if($this->tipoflujo==self::FUJO_CARGO_A_RENDIR)
 		{
 			$criteriax=New CDbcriteria;
 			$criteriax->addCondition(" hidcargo=:vcargo AND hidcaja=:vhidcaja  ");
@@ -232,7 +240,7 @@ const ESTADO_DETALLE_CAJA_CREADO='10';
 			$criteriaxy->addCondition(" hidcargo=:vcargo AND hidcaja=:vhidcaja  ");
 			$criteriaxy->params=array(" :vcargo"=>$this->id ,":vhidcaja"=>$this->hidcaja);
 			foreach (Dcajachica::model()->findAll($criteriaxy) as $fila){
-				if(in_array($fila->codestado,array(ESTADO_CREADO)))
+				if(in_array($fila->codestado,array(self::ESTADO_DETALLE_CAJA_CREADO)))
 				{
 					$sepuede=false;
 					break;
@@ -264,12 +272,13 @@ const ESTADO_DETALLE_CAJA_CREADO='10';
 		//Primero veriifcansdo si es usuario propietario
 		$mensaje="";
 		   if($this->isPropietariocaja()){
-
+                            echo "cero";
 			   if($this->isTratable())
 			    {
-					if(!$this->tieneHijos())
+				
+                               if(!$this->tieneHijos())
 					{
-
+                                        echo "dos";
 						$this->delete();
 
 					}else {
@@ -278,7 +287,7 @@ const ESTADO_DETALLE_CAJA_CREADO='10';
 
 
 			     }else {
-				   $mensaje.="  Este registro no se puede borrar porque tiene estado '.$this->estado->estado  <br>";
+				   $mensaje.="  Este registro no se puede borrar porque tiene estado ".$this->estado->estado." <br>";
 			   }
 
 		   } else {
@@ -317,7 +326,7 @@ const ESTADO_DETALLE_CAJA_CREADO='10';
 
             $this->coddocu=self::CODIGO_DOCUMENTO;
             $this->codestado=self::ESTADO_DETALLE_CAJA_CREADO;
-			
+		 $this->iduser=yii::app()->user->id;	
 			  
 		} else
 		{

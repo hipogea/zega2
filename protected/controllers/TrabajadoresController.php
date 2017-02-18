@@ -2,7 +2,12 @@
 
 class TrabajadoresController extends Controller
 {
-	/**
+	const ESTADO_DETALLE_CAJA_CREADO='10';
+    const ESTADO_DETALLE_CAJA_ANULADO='30';
+    const ESTADO_DETALLE_CAJA_CERRADO='20';
+    const ESTADO_DETALLE_CAJA_PREVIO='99';
+    const ESTADO_APROBADO_CAJA_CHICA='20';
+    /**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
@@ -65,9 +70,9 @@ class TrabajadoresController extends Controller
 
            $codigotra=Yii::app()->user->um->getFieldValue(Yii::app()->user->id,'codtra');
 		if(is_null($codigotra)){
-			yii::app()->user->setFlash('notice'," Para usar esta función debes de ser un usuario, registrado como trabajador");
+			yii::app()->user->setFlash('notice'," Para usar esta funciÃ³n debes de ser un usuario, registrado como trabajador");
 		}else{
-			yii::app()->user->setFlash('success'," Tienes código de tabajador ".$codigotra);
+			yii::app()->user->setFlash('success'," Tienes cÃ³digo de tabajador ".$codigotra);
 
 			$this->render("cajamenor",array('codtrabajador'=>$codigotra));
 		}
@@ -81,6 +86,8 @@ class TrabajadoresController extends Controller
         $model=Dcajachica::model()->findByPk($id);
         if(is_null($model))
             throw new CHttpException(500,'No existe este detalle con este ID');
+        IF($model->codestado <> self::ESTADO_DETALLE_CAJA_CREADO)
+            throw new CHttpException(500,'No puede editar este registro porque el estado no lo permite');
         if(isset($_POST['Dcajachica']))
         {
             $model->attributes=$_POST['Dcajachica'];
@@ -88,9 +95,9 @@ class TrabajadoresController extends Controller
                 if (!empty($_GET['asDialog']))
                 {
                     //Close the dialog, reset the iframe and update the grid
-                    echo CHtml::script("window.parent.$('#cru-dialogdetalle').dialog('close');
-													                    window.parent.$('#cru-detalle').attr('src','');
-																		window.parent.$.fn.yiiGridView.update('detalle-grid');
+                    echo CHtml::script("window.parent.$('#cru-dialog2').dialog('close');
+													                    window.parent.$('#cru-frame2').attr('src','');
+																		window.parent.$.fn.yiiGridView.update('detallex-grid');
 																		");
                     Yii::app()->end();
                 }
@@ -150,9 +157,9 @@ class TrabajadoresController extends Controller
 							if (!empty($_GET['asDialog']))
 							{
 								//Close the dialog, reset the iframe and update the grid
-								echo CHtml::script("window.parent.$('#cru-dialogdetalle').dialog('close');
-													                    window.parent.$('#cru-detalle').attr('src','');
-																		window.parent.$.fn.yiiGridView.update('detalle-grid');
+								echo CHtml::script("window.parent.$('#cru-dialog2').dialog('close');
+													                    window.parent.$('#cru-frame2').attr('src','');
+																		window.parent.$.fn.yiiGridView.update('detallex-grid');
 																		");
 								Yii::app()->end();
 							}
@@ -205,11 +212,7 @@ class TrabajadoresController extends Controller
 				}
 			}
 		}
-                
-                $modeloconfig=New Configuracion('search_por_usuario');
-                if(isset($_GET['Configuracion']))
-                    $modeloconfig->attributes=$_GET['Configuracion'];
-		$this->render("profile",array('modeloconfig'=>$modeloconfig,'model'=>$model));
+		$this->render("profile",array('model'=>$model));
 	}
 
 	/**
@@ -387,7 +390,7 @@ class TrabajadoresController extends Controller
                      $modelo->codestado=self::ESTADO_APROBADO_CAJA_CHICA;
                      $modelo->save();
                  }
-         
+                 
              }
          }
      }    

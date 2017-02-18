@@ -97,8 +97,7 @@ class VentasMcomprobantes extends CActiveRecord
         
         public static function comprobanteregistrado($codcomprobante){
             $codcomprobante= MiFactoria::cleanInput($codcomprobante);
-            $criterio=neW CDbCriteria();
-            $criterio->addcondition
+           
            return(count(self::model()->findAll())>0)?true:false;
             
         }

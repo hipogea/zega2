@@ -260,6 +260,7 @@ class Tempdetot extends ModeloGeneral
                                 'est'=>'99',
                                 'hidot'=>$this->ot->id,
                                 'hidetot'=>$this->idaux,
+                                'idusertemp'=>yii::app()->user->id,
                                 // 'tipsolpe'=>'M',
                                 'idstatus'=>0, 
                             )
@@ -267,6 +268,7 @@ class Tempdetot extends ModeloGeneral
                      );
             
              $recurso->item=$this->ot->getNextItemConsignacion();
+           
             if(!$recurso->save())
                 MiFactoria::Mensaje ('error',
                         Yii::app()->mensajes->

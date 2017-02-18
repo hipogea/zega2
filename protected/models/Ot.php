@@ -50,8 +50,8 @@ class Ot extends  ModeloGeneral
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('fechainiprog, codpro,codresponsable, textocorto, codcen', 'required'),
-                   //  array('idobjeto','exist','allowEmpty' => false, 'attributeName' => 'id', 'className' => 'Objetosmaster','message'=>'Este equipo no existe'),
+			array('fechainiprog,codobjeto, codpro,codresponsable, textocorto, codcen', 'required'),
+                     //array('codobjeto','required','message'=>'Debe especificar un objeto'),
 			
 			array('fechafinprog, fechainiprog,fechainicio, fechafin','checkfechas'),
                     array('codpro','exist','allowEmpty' => false, 'attributeName' => 'codpro', 'className' => 'Clipro','message'=>'Esta empresa no existe'),

@@ -17,7 +17,7 @@
  * @property string $descripcion
  * @property string $textolargo
  */
-class Otconsignacion extends CActiveRecord
+class Otconsignacion extends ModeloGeneral
 {
 	/**
 	 * @return string the associated database table name

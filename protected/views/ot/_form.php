@@ -1,3 +1,5 @@
+
+<div class="division"> 
 <div class="form">
     <?php 
         
@@ -9,7 +11,7 @@
 	// See class documentation of CActiveForm for details on this.
 	'enableAjaxValidation'=>false,
 )); ?>
-	<div class="division">            
+	           
 	<div class="wide form">
             <div class="row">
                 <?php 
@@ -137,8 +139,7 @@
 				);
                    
               ?>
-            <div id="myDivision" style="display:block;float:right;" class="flash-regular">
-.
+            
             </div>
 
             </div>

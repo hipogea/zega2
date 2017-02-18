@@ -7,7 +7,7 @@ echo "material  ".$model->codart."\n";*/
 
  $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'alkardex-gridXX',
-	'dataProvider'=>VwKardex::model()->search_pormaterial($model->codcen,$model->codalm,$model->codart),
+	'dataProvider'=>$proveedor,
 	// 'dataProvider'=>VwKardex::model()->search(),
 	 'itemsCssClass'=>'table table-striped table-bordered table-hover',
 	//'filter'=>$model,
@@ -26,7 +26,7 @@ echo "material  ".$model->codart."\n";*/
 		'codcentro',		
 		'alemi',
 		'desdocu',
-        array('name'=>'numvale','header'=>'Vale','type'=>'raw','value'=>'CHtml::link($data->numvale,Yii::app()->createurl(\'/almacendocs/update\', array(\'id\'=> $data->hidvale ) ))'),
+        array('name'=>'numvale','header'=>'Vale','type'=>'raw','value'=>'CHtml::link($data->numvale,Yii::app()->createurl(\'/almacendocs/update\', array(\'id\'=> $data->hidvale ) ),array("target"=>"_blank"))'),
        // array('name'=>'c_numgui','type'=>'raw','value'=>'CHtml::link($data->c_numgui, ($data->c_salida==\'1\')?Yii::app()->createurl(\'/guia/update\', array(\'id\'=> $data->id ) ) :  Yii::app()->createurl(\'/ne/update\', array(\'id\'=> $data->id ) )          )'),
         array('name'=>'numdocref','header'=>'Referencia','type'=>'raw','value'=>'$data->numdocref'),
 

@@ -2,13 +2,17 @@
 class Cajachica extends ModeloGeneral
 {
     const ESTADO_DETALLE_CAJA_CREADO='10';
-    const ESTADO_DETALLE_CAJA_ANULADO='20';
-    const ESTADO_DETALLE_CAJA_CERRADO='30';
+    const ESTADO_DETALLE_CAJA_ANULADO='30';
+    const ESTADO_DETALLE_CAJA_CERRADO='20';
+    const ESTADO_DETALLE_CAJA_PREVIO='99';
     const ESTADO_CAJA_CREADO='10';
     const ESTADO_CAJA_CERRADO='20';
     const ESTADO_CAJA_ANULADO='30';
     const ESTADO_CAJA_CONFIRMADO='40';
     const CODIGO_DOC='370';
+    
+    public $limiteinferior;
+    public $limitesuperior;
     //const TIPO_DE_FLUJO_A_RENDIR='102';
     /**
      * @return string the associated database table name
@@ -16,6 +20,12 @@ class Cajachica extends ModeloGeneral
     public function tableName()
     {
         return '{{cajachica}}';
+    }
+    
+    public function init(){
+        $this->limiteinferior=$this->valornominal*(1-yii::app()->settings->get('general','general_porcexcesocaja') /100);
+    $this->limitesuperior=$this->valornominal*(1+yii::app()->settings->get('general','general_porcexcesocaja') /100);
+        return parent::init();
     }
     /**
      * @return array validation rules for model attributes.
@@ -53,11 +63,13 @@ class Cajachica extends ModeloGeneral
             'periodo' => array(self::BELONGS_TO, 'Periodos', 'hidperiodo'),
             'trabajadores' => array(self::BELONGS_TO, 'Trabajadores', 'codtra'),
             'estado'=> array(self::BELONGS_TO, 'Estado', array('codestado'=>'codestado', 'codocu'=>'codocu')),
-            'monto_rendido' => array(self::STAT, 'Dcajachica', 'hidcaja','select'=>'sum(t.debe)','condition'=>" codestado in ('".ESTADO_DETALLE_CAJA_CERRADO."') "),
+            'monto_rendido' => array(self::STAT, 'Dcajachica', 'hidcaja','select'=>'sum(t.debe)','condition'=>" codestado in ('".self::ESTADO_DETALLE_CAJA_CERRADO."') "),
             //Monot planificado aquel monfot que se esta pensando gastar sin comnfirmar ,es importante para restringir el % de exceso de la caja
-            'monto_planificado' => array(self::STAT, 'Dcajachica', 'hidcaja','select'=>'sum(t.monto)','condition'=>" codestado not in ('".ESTADO_DETALLE_CAJA_ANULADO."') "),
-            'hijospendientes'=>array(self::STAT, 'Dcajachica', 'hidcaja','condition'=>" codestado in ('".ESTADO_DETALLE_CAJA_PREVIO."','".ESTADO_DETALLE_CAJA_CREADO."') "),//el campo
-        );
+            'monto_planificado' => array(self::STAT, 'Dcajachica', 'hidcaja','select'=>'sum(t.monto)','condition'=>" codestado not in ('".self::ESTADO_DETALLE_CAJA_ANULADO."') "),
+            'hijospendientes'=>array(self::STAT, 'Dcajachica', 'hidcaja','condition'=>" codestado in ('".self::ESTADO_DETALLE_CAJA_PREVIO."','".self::ESTADO_DETALLE_CAJA_CREADO."') "),//el campo
+            'hijos_cargo_por_cerrar' => array(self::STAT, 'Dcajachica', 'hidcaja','select'=>'count(t.id)','condition'=>" hidcargo >0 and codestado in ('".self::ESTADO_DETALLE_CAJA_PREVIO."','".self::ESTADO_DETALLE_CAJA_CREADO."')  "),
+           
+            );
     }
     /**
      * @return array customized attribute labels (name=>label)
@@ -104,14 +116,13 @@ class Cajachica extends ModeloGeneral
         $valorultimo=Yii::app()->db->createCommand()
             ->select('max(a.id)')
             ->from('{{cajachica}} a')
-            ->where(' a.serie=:vserie and codestado <>:vanulado and codestado  ',array(":vserie"=>$this->serie,":vanulado"=>ESTADO_CAJA_ANULADO))
+            ->where(' a.serie=:vserie and codestado <>:vanulado and codestado =:vestadocreado  ',array(':vestadocreado'=>self::ESTADO_CAJA_CREADO,":vserie"=>$this->serie,":vanulado"=>self::ESTADO_CAJA_ANULADO))
             ->queryScalar();
         if($valorultimo!=false){
-            ///anualizamo esta caja
-            $cajaanterior=Cajachica::model()->findBypK((int)$valorultimo);
-            if ($cajaanterior->hijospendientes ==0 )
+             // var_dump(self::ESTADO_CAJA_ANULADO); var_dump($this->serie);die();
                 $devolver=false;
         }else{
+            // echo "no salio algo ";die();
             $devolver=true; //se puede abrir no hay registro anteriores
         }
         if(!$devolver)
@@ -141,10 +152,23 @@ class Cajachica extends ModeloGeneral
         return parent::beforesave();
     }
 
-    public function excede(){
+    public function excedeplan(){
             return($this->monto_planificado >
-                $this->valornominal*(1+yii::app()->settings->get('general','general_porcexcesocaja')/100))?true:false;
+                $this->limitesuperior)?true:false;
 
+     }
+     
+     
+      
+     
+     public function puedecerrarse(){
+         $valor=false;
+         //if(!$this->excedeplan())///Primero que no tiene qu estar en defecto
+          if($this->monto_rendido >= $this->limiteinferior)
+              if($this->monto_rendido <= $this->limitesuperior)
+                  $valor=true;         
+        return $valor;
+  
      }
 
 }

@@ -219,4 +219,25 @@ class VwKardex extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+        
+        public function search_por_movimiento_idref($codmov,$idref)
+	{
+		$criteria=new CDbCriteria;
+                  if(is_array($codmov)){
+                       $criteria->addcondition('idref=:vidref');
+                        $criteria->params=array(':vidref'=>$idref);
+                       $criteria->addInCondition('codmov',$codmov); 
+                  }else{
+                    $criteria->addcondition('codmov=:vcodmov'); 
+                    $criteria->addcondition('idref=:vidref');
+                    $criteria->params=array(':vcodmov'=>$codmov,
+			':vidref'=>$idref);
+                  }
+		
+		
+
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
+	}
 }

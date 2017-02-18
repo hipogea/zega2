@@ -1,4 +1,3 @@
-
  <?php  $this->renderPartial('vw_detalle_grilla', array("idcabecera"=>$modelcabecera->id,'eseditable'=>$eseditable),false, true);
  ?>
 	<?php $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
@@ -7,8 +6,8 @@
 			'title'=>'Item',
 			'autoOpen'=>false,
 			'modal'=>true,
-			'width'=>800,
-			'height'=>500,
+			'width'=>900,
+			'height'=>800,
 			'show'=>'Transform',
 		),
 	));

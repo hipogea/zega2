@@ -28,17 +28,29 @@
 				$botones=array(
 					
 					'save'=>array(
-						'type'=>'A',
+						'type'=>'A', 
 						'ruta'=>array(),
 						'visiblex'=>array(NULL,ESTADO_PREVIO,ESTADO_CREADO,ESTADO_AUTORIZADO,ESTADO_ANULADO,ESTADO_LIQUIDADO),
 					),
 
 
 					'ok'=>array(
-						'type'=>'B',
-						'ruta'=>array($this->id.'/procesardocumento',array('id'=>$model->id,'ev'=>2)),
-						'visiblex'=>array(ESTADO_CREADO),
-					),
+				'type'=>'D',
+				'ruta'=>array($this->id.'/cierracaja',array("id"=>$model->id)),
+				'opajax'=>array(
+					'type'=>'GET',
+					'url'=>Yii::app()->createUrl($this->id.'/cierracaja',array("id"=>$model->id)),
+					'success'=>"function(data) {
+                                              $.fn.yiiGridView.update('detalle-grid'); 
+                                              $.growlUI('Growl Notification', data,2400);                                             
+                                                return false;
+                                        }",
+				
+                                   
+				),
+				'visiblex'=>array(ESTADO_CREADO,ESTADO_AUTORIZADO,ESTADO_ANULADO),
+
+			),
 					
 					'undo'=>array(
 						'type'=>'B',

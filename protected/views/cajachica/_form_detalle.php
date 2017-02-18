@@ -40,7 +40,89 @@
 
 	<?php echo $form->hiddenField($model,'hidcaja',array('value'=>$idcabeza)); ?>
 
-
+    <div class="row">
+                        <?php echo $form->labelEx($model,'codocu'); ?>
+			<?php echo $form->DropDownList($model,'codocu', Sunatmaster::datoslista('010'), array('empty'=>'--Seleccione un tipo de documento--')); ?>
+			<?php echo $form->error($model,'codocu'); ?>
+         </div>
+    
+                <div class="row"> 
+		<?php echo $form->labelEx($model,'esservicio'); ?>
+		<?php  $datos1 = array('M'=>'Materiales','S'=>'Servicios');
+		  echo $form->DropDownList($model,'esservicio',$datos1, array('empty'=>'--Seleccione el tipo de compra--')  )  ;
+		?>
+                     
+		<?php echo $form->error($model,'esservicio'); ?>
+	         </div>
+    
+     <div class="row">
+                        <?php echo $form->labelEx($model,'referencia'); ?>
+                    <?php $opajax=array(
+                              'type'=>'POST',
+                         'url'=>yii::app()->createUrl("comprobantes/rellena"),
+                           'data'=>array('numero'=>'js:Dcajachica_serie.value'),
+                         'success'=>'js:function(data){$("#Dcajachica_serie").val(data);}',
+                          //'update'=>'#Registrocompras_numerocomprobante',
+                         ); ?>
+                    <?php echo $form->textField($model,'serie',array('ajax'=>$opajax,'class'=>'numerodocumento','size'=>10,'maxlength'=>10)); ?>
+			 <?php $opajax2=array(
+                              'type'=>'POST',
+                         'url'=>yii::app()->createUrl("comprobantes/rellena"),
+                           'data'=>array('numero'=>'js:Dcajachica_referencia.value'),
+                         'success'=>'js:function(data){$("#Dcajachica_referencia").val(data);}',
+                          //'update'=>'#Registrocompras_numerocomprobante',
+                         ); ?>
+			<?php echo $form->textField($model,'referencia',array('ajax'=>$opajax2,'class'=>'numerodocumento','size'=>10,'maxlength'=>10)); ?>
+			<?php echo $form->error($model,'serie'); ?>
+                            <?php echo $form->error($model,'referencia'); ?>
+                </div>
+    
+    
+    <fieldset>
+                <legend>Datos del Proveedor</legend>	
+     
+                 <div class="row">
+           
+		<?php echo $form->labelEx($model,'tipodocid'); ?>
+			<?php echo $form->DropDownList($model,'tipodocid', Sunatmaster::datoslista('002'), array('empty'=>'--Seleccione tipo Doc Identidad--')); ?>
+                 <?php echo $form->error($model,'tipodocid'); ?>  
+           
+                </div>
+                
+                
+                
+                 <div class="row">
+                        <?php echo $form->labelEx($model,'numdocid'); ?>
+                      <?php $opajax=array(
+                          'type'=>'POST',
+                           'url'=>yii::app()->createUrl("clipro/ajaxmuestraproveedor"),
+                           'data'=>array(
+                               'ruc'=>'js:Dcajachica_numdocid.value',
+                                'tipo'=>'js:Dcajachica_tipodocid.value',
+                               'campo'=>'tipodocid',
+                               'modelo'=>get_class($model),
+                               'update'=>'#'.get_class($model).'_razon'
+                               ),
+                               //'success'=>'js:function(data){ $("#Registrocompras_razpronombre").value=data; alert(data); }',                           
+                               
+                      ); ?>
+			<?php echo $form->textField($model,'numdocid',array('ajax'=>$opajax,'size'=>20,'maxlength'=>20)); ?>
+			<?php echo $form->error($model,'numdocid'); ?>
+                   </div>
+                
+                <div class="row">
+                        <?php echo $form->labelEx($model,'razon'); ?>
+			<?php echo $form->textField($model,'razon',array('size'=>40,'maxlength'=>100)); ?>
+			<?php echo $form->error($model,'razon'); ?>
+                </div>
+                
+        </fieldset>  
+    
+    
+    
+    
+    
+    
 	<div class="row">
 		<?php echo $form->labelEx($model,'fecha'); ?>
 		<?php  $this->widget('zii.widgets.jui.CJuiDatePicker', array(
@@ -53,10 +135,10 @@
 				'showOn'=>'button', // 'focus', 'button', 'both'
 				'buttonImage'=>Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'calendar_1.png',
 				'buttonImageOnly'=>true,
-				'dateFormat'=>'yy-mm-dd',
+				'dateFormat'=>'dd/mm/yy',
 			),
 			'htmlOptions'=>array(
-				'style'=>'width:60px;vertical-align:top',
+				'style'=>'width:80px;vertical-align:top',
 				'readonly'=>'readonly',
 			),
 		)); ?>
@@ -68,11 +150,7 @@
 		<?php echo $form->textField($model,'glosa',ARRAY('size'=>40)); ?>
 		<?php echo $form->error($model,'glosa'); ?>
 	</div>
-	<div class="row">
-		<?php echo $form->labelEx($model,'referencia'); ?>
-		<?php echo $form->textField($model,'referencia',ARRAY('size'=>20)); ?>
-		<?php echo $form->error($model,'referencia'); ?>
-	</div>
+	
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'debe'); ?>
@@ -86,11 +164,7 @@
 		<?php echo $form->error($model,'monedahaber'); ?>
 	</div>
 	
-	<div class="row">
-		<?php echo $form->labelEx($model,'monto'); ?>
-		<?php echo CHtml::textField('hsfjjfsj',"  ".yii::app()->params['monedabase']." - ".MiFactoria::decimal($model->monto),ARRAY('disabled'=>'disabled')); ?>
-		<?php echo $form->error($model,'monto'); ?>
-	</div>
+	
 	
 
 	<div class="row">
@@ -126,8 +200,8 @@
     <?php } ?>
 
 <div class="row">
-		<?php echo $form->labelEx($model,'tipimputacion'); ?>
-		<?php  $datos = CHtml::listData(Tipimputa::model()->findAll(array('order'=>'desimputa')),'codimpu','desimputa');
+		<?php //echo $form->labelEx($model,'tipimputacion'); ?>
+		<?php /* $datos = CHtml::listData(Tipimputa::model()->findAll(array('order'=>'desimputa')),'codimpu','desimputa');
 		  echo $form->DropDownList($model,
                           'tipimputacion',
                           $datos, array(  
@@ -140,13 +214,13 @@
                                                                                 //  la acción que va a cargar el segundo div 
 				'update' => '#colector' // el div que se va a actualizar
 											  ),
-				'empty'=>'--Seleccione imputacion--',) ) ;
+				'empty'=>'--Seleccione imputacion--',) ) ;*/
 		?>
-		<?php echo $form->error($model,'tipimputacion'); ?>
+		<?php //echo $form->error($model,'tipimputacion'); ?>
 	</div>
     <div id="colector"></div>
     
-    <?PHP
+    <?PHP /*
       IF(!$model->isNewRecord){
           if($model->tipimputacion=='T'){
               $this->renderpartial('//cajachica/imputacion_Ot',array('form'=>$form,'model'=>$model));
@@ -158,18 +232,12 @@
               $this->renderpartial('//cajachica/imputacion_Cc',array('form'=>$form,'model'=>$model));
           }
           
-           }
+           }*/
     ?>
     
 	
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'codocu'); ?>
-		<?php  $datos1 = CHtml::listData(Documentos::model()->findAll("comprobante='1'"),'coddocu','desdocu');
-		echo $form->DropDownList($model,'codocu',$datos1, array('empty'=>'--Seleccione comprobante--') ) ;
-		?>
-		<?php echo $form->error($model,'codocu'); ?>
-	</div>
+	
 
 
 

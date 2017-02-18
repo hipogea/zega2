@@ -84,7 +84,7 @@ class Bloqueos extends CActiveRecord
 				$block->iduser = Yii::app ()->user->id;
 				$block->fechabloqueo = date ( "Y-m-d H:i:s" );
 				$block->iddocu = $id;
-				$block->url = yii::app ()->request->hostInfo . yii::app ()->request->url;
+				$block->url =  yii::app ()->request->url;
 				$block->ip = Yii::app ()->request->userHostAddress;
 				if ( ! $block->save () ) {
 					throw new CHttpException( 500 , ' no se grabo el blqouoe' );
@@ -300,4 +300,9 @@ public static function documentosenproceso($codocu){
 	{
 		return parent::model($className);
 	}
+        
+        public static function urlsBloqueadas(){
+           return yii::app()->db->createCommand()->
+	select('url')->from('{{bloqueos}}')->where("iduser=:viduser",array(":viduser"=>yii::app()->user->id))->queryColumn(); 
+        }
 }

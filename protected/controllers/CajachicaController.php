@@ -1,16 +1,18 @@
 <?php
-const ESTADO_CREADO='10';
-const ESTADO_AUTORIZADO='20';
-const ESTADO_ANULADO='30';
-const ESTADO_LIQUIDADO='40';
-const TIPO_DE_FLUJO_A_RENDIR='102';
 
 
 class CajachicaController extends ControladorBase
 
 
 {
-
+const ESTADO_CREADO='10';
+const ESTADO_AUTORIZADO='20';
+const ESTADO_ANULADO='30';
+const ESTADO_LIQUIDADO='40';
+const TIPO_DE_FLUJO_A_RENDIR='102';
+const ESTADO_DETALLE_CAJA_CREADO='10';
+    const ESTADO_DETALLE_CAJA_ANULADO='30';
+    const ESTADO_DETALLE_CAJA_CERRADO='20';
 	public function __construct() {
 		parent::__construct($id='cajachica',Null);
 		$this->documento='370';
@@ -37,7 +39,7 @@ class CajachicaController extends ControladorBase
 		return array(
 
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('cargaimputacion','admin','view','create','borraitems','aprobaritem','update','creadetalle','actualizadetalle'),
+				'actions'=>array('ajaxabredetalle',   'ajaxcierradetalle',   'cierracaja','cargaimputacion','admin','view','create','borraitems','aprobaritem','update','creadetalle','actualizadetalle'),
 				'users'=>array('@'),
 			),
 
@@ -74,21 +76,29 @@ class CajachicaController extends ControladorBase
 
 	}
 
-	public function actionCierracaja()
+	public function actioncierracaja()
 	
 	{
-			$model=$this->loadModel($_POST['Cajachica']['id']);
+		$id=(integer) MiFactoria::cleanInput($_GET['id']);
+            $model=$this->loadModel($id);
 		if(is_null($model))
 		  {
 		  echo "No se encontro el registro";
 		  } else {
-		     if($model->hijospendientes > 0 )		{
-		  		echo "No se puede cerrar, faltan confirmar los items";
+		     if(!$model->puedecerrarse() )		{
+		  		echo "Esta caja no pude cerrarse aun falta completar gastos reales o falta rendir cargos a cuentas";
 		  		} else {
-		  		$model->setScenario('cambiaestado');
-		  		$model->codestado='20';
-		  		if($model->save()){}
-		  		//echo " Se cambio el estado";
+                                    IF($model->hijos_cargo_por_cerrar ==0 ){
+                                             $model->setScenario('cambiaestado');
+                                            $model->codestado='20';
+                                                if($model->save()){
+                                                                     echo "Se cerró la caja menor ";
+		  		                              }else{
+                                                                    echo " Errores : ".yii::app()->mensajes->getErroresItem($model->geterrores());
+		  		                               }
+                                    }else{
+                                       echo "Esta caja no puede cerrarse proque existen cargos por rendir que no han sido liquidados " ;
+                                    }
 		  		 }
 		  		
 		  }
@@ -99,21 +109,32 @@ class CajachicaController extends ControladorBase
 	
 	public function actionAprobaritem()
 	{
-		if(!isset($_GET['ajax'])) {
+		
+            if(!isset($_GET['ajax'])) {
 			$identidad = $_GET[ 'id' ];
 			$modelo = Dcajachica::model ()->findByPk ( $identidad );
+                      
 			if ( is_null ( $modelo ) )
 				throw new CHttpException( 500 , 'No existe esta solicitud con este ID    ' . $_GET[ 'id' ] . '    ' );
 
 			//primero si le corresponde
 			if ( $modelo->isTratable () ) {
-				if ( ! $modelo->tieneHijospendientes () ) {
+                              //var_dump($modelo->tieneHijospendientes());
+				if ( ! $modelo->hidcargo >0 ) {
 					$modelo->setScenario ( 'cambiaestado' );
-					$modelo->codestado = ESTADO_AUTORIZADO;
-					$modelo->save ();
-				}
+					$modelo->codestado = self::ESTADO_AUTORIZADO;
+					if($modelo->save ()){
+                                            echo "Se cerro el registro ";
+                                        }else{
+                                            echo yii::app()->mensajes->getErroresItem($model->geterrors());
+                                        }
+				}else{
+                                    echo "Este reistro es un cargo a rendir y debe de ser cerrado por la persona que se le dió el dinero"; 
+                                }
 
-			}
+			}else{
+                            echo " Esta caja ya esta cerrada o no tiene el estado adecuado o El dueño de esta caja es otro usuario, no puede cerrar los detalles";
+                        }
 
 		}
 
@@ -157,7 +178,7 @@ class CajachicaController extends ControladorBase
 
 		$model = new Dcajachica;
 			$model->valorespordefecto ( $this->documento );
-			$model->{$this->campoestado} = ESTADO_CREADO;
+			$model->{$this->campoestado} = self::ESTADO_CREADO;
 			$model->coddocu = $this->documentohijo;
 			// Uncomment the following line if AJAX validation is needed
 			//$this->performAjaxValidation($model);
@@ -216,7 +237,11 @@ class CajachicaController extends ControladorBase
 	 */
 	public function actionCreate()
 	{
-		$model=new $this->modelopadre;
+		
+                       
+                      
+            
+            $model=new $this->modelopadre;
 		$model->valorespordefecto($this->documento);
 		$model->iduser=Yii::app()->user->id;
 		if(isset($_POST[$this->modelopadre]))
@@ -415,6 +440,51 @@ PUBLIC FUNCTION actioncargaimputacion (){
     
         }
         
-        
-        
+   public function actionajaxabredetalle(){
+       if(yii::app()->request->isAjaxRequest){  
+           if(isset($_GET['id'])){ 
+               $id= (integer)MiFactoria::cleanInput($_GET['id']);
+               $registro= Dcajachica::model()->findByPk($id); 
+               if(is_null($registro))  
+                   throw new CHttpException(500,'NO se encontro el registro con el id '.$id);  
+               } 
+               if(($registro->hidcargo >0) and $registro->iduser==yii::app()->user->id and $registro->codestado==self::ESTADO_DETALLE_CAJA_CERRADO){
+                        $registro->setScenario('estado');
+                        $registro->codestado=self::ESTADO_DETALLE_CAJA_CREADO;
+                             if($registro->save()){
+                                    echo "Se ha abierto el registro ";
+                                }else{
+                                    echo yii::app()->mensajes->getErroresIrem($registro->geterrors());
+                            }
+                   
+               }else{
+                   echo "Esta liquidacion no es de usted O NO TIENE EL STATUS ADECUADO PARA EFECTUAR ESTE PROCESO";
+               }
+               
+               
+           }
+   }    
+     
+    public function actionajaxcierradetalle(){
+       if(yii::app()->request->isAjaxRequest){  
+           if(isset($_GET['id'])){ 
+               $id= (integer)MiFactoria::cleanInput($_GET['id']);
+               $registro= Dcajachica::model()->findByPk($id); 
+               if(is_null($registro))  
+                   throw new CHttpException(500,'NO se encontro el registro con el id '.$id);  
+               } 
+             if(($registro->hidcargo >0) and $registro->iduser==yii::app()->user->id and $registro->codestado==self::ESTADO_DETALLE_CAJA_CREADO){
+               $registro->setScenario('estado');
+               $registro->codestado=self::ESTADO_DETALLE_CAJA_CERRADO;
+               if($registro->save()){
+                   echo "Se ha cerrado el registro ";
+               }else{
+                    echo yii::app()->mensajes->getErroresIrem($registro->geterrors());
+               }
+             }else{
+                 echo "ESTA LIQUIDACION NO ES DE USTED, O NO TOEEN EL ESTADO ADECUDO APRA EE TUAR ESTE PROCESO";
+             }
+           }
+   }   
+   
 }

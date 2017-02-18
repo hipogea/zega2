@@ -1,5 +1,3 @@
-<div id="AjFlash" class="flash-notice"></div>
-
 <?php
 $prove=Dcajachica::model()->search_por_caja($idcabecera);
 $this->widget('zii.widgets.grid.CGridView', array(
@@ -98,10 +96,8 @@ $this->widget('zii.widgets.grid.CGridView', array(
 						 'ajax' => array(
 							 'type' => 'GET',
 							 'success'=>"function(data) {
-										$('#AjFlash').html(data).fadeIn().animate({opacity: 1.0}, 3000).fadeOut('slow');
-
-                                              $.fn.yiiGridView.update('detalle-grid'); return false;
-                                        }",
+							 $.fn.yiiGridView.update('detalle-grid');  $.growlUI('Growl Notification', data,2400); return false;
+                                                                       }",
 
 							 'url'=>'js:$(this).attr("href")'
 

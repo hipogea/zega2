@@ -72,6 +72,7 @@
 
 </div>
 <?PHP
+$proveedor=VwKardex::model()->search_pormaterial($model->codcen,$model->codalm,$model->codart);
 $this->widget('zii.widgets.jui.CJuiTabs', array(
 					'tabs' => array(
 						'General'=>array('id'=>'tab_item',
@@ -79,7 +80,7 @@ $this->widget('zii.widgets.jui.CJuiTabs', array(
 							'model'=>$model,'form'=>$form),TRUE)
 						),
 							'Historial'=>array('id'=>'tab_reservas',
-							'content'=>$this->renderpartial('vistakardex',array('model'=>$model,   ), true),
+							'content'=>$this->renderpartial('vistakardex',array('model'=>$model,'proveedor'=>$proveedor   ), true),
 							),
 						       'Otros centros'=>array('id'=>'tab_modelo',
 							        'content'=>$this->renderpartial('stocks',array('model'=>$model,   ), true),

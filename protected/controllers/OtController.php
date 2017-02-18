@@ -19,7 +19,8 @@ class OtController extends ControladorBase
 {
 	
       const ESTADO_DETALLE_CONSIGNACIONES_ANULADA='40';    
-	
+        const COD_MOV_CONSIGNACION='14';  
+         const COD_MOV_ANULA_CONSIGNACION='15';   
 
 	public $layout='//layouts/column2';
 
@@ -360,7 +361,7 @@ class OtController extends ControladorBase
 		return array(
 
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array( 'modificadetalleconsignacion',   'Borraitemsconsignaciones',   'JalaMaterialesExt',   'ajaxobjetosporclipro',    'ajaxmuestralistamateriales','JalaMateriales','view','imputa','cargagaleria','tomafoto','creaconsignacion','borraitemsdesolpe','nadax','creaservicio','modificadetallerecurso','creadetallerecurso','verprecios','crearpdf','verDetoc','firmar','aprobar','cargaprecios','enviarpdf','admin','borrarimpuesto','reporte','agregarmasivamente','cargadirecciones','borraitems','sacaitem','sacaum','salir','agregaimpuesto','agregaritemsolpe','procesardocumento','refrescadescuento','VerDocumento','EditaDocumento','creadocumento','Agregardelmaletin','borraitem','imprimirsolo','cargaentregas','agregarsolpe','agregarsolpetotal','pasaatemporal','create','imprimirsolo','imprimir','imprimir2','enviarmail',
+				'actions'=>array('muestrakardex', 'modificadetalleconsignacion',   'Borraitemsconsignaciones',   'JalaMaterialesExt',   'ajaxobjetosporclipro',    'ajaxmuestralistamateriales','JalaMateriales','view','imputa','cargagaleria','tomafoto','creaconsignacion','borraitemsdesolpe','nadax','creaservicio','modificadetallerecurso','creadetallerecurso','verprecios','crearpdf','verDetoc','firmar','aprobar','cargaprecios','enviarpdf','admin','borrarimpuesto','reporte','agregarmasivamente','cargadirecciones','borraitems','sacaitem','sacaum','salir','agregaimpuesto','agregaritemsolpe','procesardocumento','refrescadescuento','VerDocumento','EditaDocumento','creadocumento','Agregardelmaletin','borraitem','imprimirsolo','cargaentregas','agregarsolpe','agregarsolpetotal','pasaatemporal','create','imprimirsolo','imprimir','imprimir2','enviarmail',
 					'procesaroc','hijo','Aprobaroc','Reporteoc','Anularoc','Configuraop','Revertiroc', ///acciones de proceso
 					'libmasiva','creadetalle','Verdetalle','muestraimput','update','nada','Modificadetalle'),
 				'users'=>array('@'),
@@ -2373,7 +2374,7 @@ class OtController extends ControladorBase
 	{
 	
         if(yii::app()->request->isAjaxRequest){
-		$autoIdAll = $_POST['cajita'];		
+		$autoIdAll = $_POST['cajitarecursos'];		
 		 if(count($autoIdAll)>0 )
 			 {
 			 	
@@ -2396,7 +2397,7 @@ public function actionBorraitemsconsignaciones()
 	{
 	
         if(yii::app()->request->isAjaxRequest){
-		$autoIdAll = $_POST['cajita'];		
+		$autoIdAll = $_POST['cajitaconsignaciones'];		
 		 if(count($autoIdAll)>0 )
 			 {
 			 	
@@ -2430,7 +2431,7 @@ public function borraitemconsignacion($autoId) //Borra un registro de coinsnacio
                                     $modelito->est=self::ESTADO_DETALLE_CONSIGNACIONES_ANULADA;
                                     $modelito->save();
 				} else {
-                                    MiFactoria::Mensaje('error', "Este item no puede ser anulado porque ya tiene atenciones");
+                                    //MiFactoria::Mensaje('error', "Este item no puede ser anulado porque ya tiene atenciones");
 				}
                                 
                                 
@@ -2438,12 +2439,13 @@ public function borraitemconsignacion($autoId) //Borra un registro de coinsnacio
                             
                             $command = Yii::app()->db->createCommand("delete from  {{tempotconsignacion}}   where idtemp =".$autoId."   ");
 				$command->execute();
-				MiFactoria::Mensaje('succcess', "El registro de cosignacion ".$modelito1->solpe->numero."-".$modelito1->item. " se ha borrado");
+				//MiFactoria::Mensaje('succcess', "El registro de cosignacion ".$modelito1->solpe->numero."-".$modelito1->item. " se ha borrado");
 			   
                             
 			}
-		foreach(Yii::app()->user->getFlashes() as $key => $message) {
-			echo "*)". $message . "\n";		}
+                        echo "holaa iugos <br>";
+		/*foreach(Yii::app()->user->getFlashes() as $key => $message) {
+			echo "*)". $message . "\n";		}*/
 		//echo $this->renderpartial("vw_mensajes",array());
 	}
    public function borraitemdesolpe($autoId) //Borra un registro de solpe
@@ -2746,7 +2748,7 @@ public function borraitemconsignacion($autoId) //Borra un registro de coinsnacio
                    echo CHtml::script(
                           "window.parent.$('#cru-dialog3').dialog('close');
                              window.parent.$('#cru-frame3').attr('src','');
-			window.parent.$.fn.yiiGridView.update('detalle-recursos-grid');
+			window.parent.$.fn.yiiGridView.update('detalle-consignaciones-grid');
 				");
                   
                   yii::app()->end(); 
@@ -2872,6 +2874,15 @@ public function borraitemconsignacion($autoId) //Borra un registro de coinsnacio
 		));
 	}
  
+     public function actionmuestrakardex(){
+         $codmov= array(self::COD_MOV_CONSIGNACION,self::COD_MOV_ANULA_CONSIGNACION);
+         $idref= (integer)MiFactoria::cleanInput($_GET['idref']);
+         $proveedor= VwKardex::model()->search_por_movimiento_idref($codmov, $idref);
+         $this->layout = '//layouts/iframe';
+         $this->render('//alinventario/vistakardex',array('proveedor'=>$proveedor));
+         
+     }
+        
     
 } 
     

@@ -15,7 +15,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 		    'selectableRows' => 20,
 		    'value'=>'$data->idtemp',
 			'checkBoxHtmlOptions' => array(                
-				'name' => 'cajita[]',
+				'name' => 'cajitarecursos[]',
 		   ),
                 ),
 		array(
@@ -147,8 +147,9 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				'opajax' => array(
 					'type' => 'POST',
 					'url' => Yii::app()->createUrl($this->id . '/borraitemsdesolpe', array()),
-					'success' => "function(data) {
-										$('#AjFlash').html(data).fadeIn().animate({opacity: 1.0}, 3000).fadeOut('slow');
+					'complete' => "function(data) {
+										 $.growlUI('Growl Notification', data);  
+                                                          
                                               $.fn.yiiGridView.update('detalle-recursos-grid');                                              
                                                return false;
                                         }",
