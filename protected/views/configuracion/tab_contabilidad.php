@@ -30,7 +30,11 @@
 		<?php echo $form->checkBox($model,'conta_multisociedad'); ?>
 		<?php echo $form->error($model,'conta_multisociedad'); ?>
 	</div>
-
+  <div class="row">
+		<?php echo $form->labelEx($model,'conta_cajachicadevuelvefondo'); ?>
+		<?php echo $form->checkBox($model,'conta_cajachicadevuelvefondo'); ?>
+		<?php echo $form->error($model,'conta_cajachicadevuelvefondo'); ?>
+	</div>
 	
         
 	<BR>

@@ -20,6 +20,8 @@ class Configuraciongeneral extends CFormModel
           public $general_codigomanualempresa; ///indinca si el codigo proveedor es manual o automatico
             public $general_codempresa;
              public $general_cambiofindesemana;
+             public $general_formatofechasalida;
+              public $general_formatofechaingreso;
 	/*****documentos***/
 	public $documentos_numeromaxbloqueos;
 	public $documentos_docmascara;
@@ -85,6 +87,7 @@ public $materiales_verpresolpe;
          public $conta_nperiodosabiertos; /// num,ero maximo de periodos abiertos
 	public $conta_formatonumerocomprobantes; ///formato XXXX-XXXXXXXX para facturas boletas
         public $conta_multisociedad; // Permitre trabajar varioas soceidades contab lemente  en una mis a sesion 
+       public $conta_cajachicadevuelvefondo; // Define si el pafgoi de una deuda de caja chica de un trabajador puede convertirse nuevamente en fondo 
 
 
 
@@ -131,7 +134,7 @@ public $materiales_verpresolpe;
 				'required','message'=>'Este dato es obligatorio'
 			),
 			array(''
-                            .'conta_patroncuentas,conta_montodetraccion,conta_nperiodosabiertos,'
+                            .'general_formatofechaingreso,general_formatofechasalida,conta_cajachicadevuelvefondo,conta_patroncuentas,conta_montodetraccion,conta_nperiodosabiertos,'
                              .' conta_formatonumerocomprobantes,conta_multisociedad,'
                             . 'general_codempresa,general_codigomanualempresa,general_cambiofindesemana,email_smptauth,email_usamaildeusuario,email_passwordhost,email_nombrewebmaster,general_codigomanualempresa,transporte_umdefault,'
                             . 'transporte_motivoot,transporte_objinterno,general_nregistrosporcarpeta,transporte_rutafotos,'
@@ -214,7 +217,9 @@ public $materiales_verpresolpe;
                    'conta_nperiodosabiertos'=>'N max Period',
 	           'conta_formatonumerocomprobantes'=>'Form Numero',
                   'conta_multisociedad'=>'MultiSocie',
-
+                    'conta_cajachicadevuelvefondo'=>'Permite convertir deudas cobradas en fondo caja chica?',
+'general_formatofechasalida'=>'Formato Fecha para mostrar',
+                    'general_formatofechaingreso'=>'Formato Fecha para almacenar en BD',
 		);
 	}
 

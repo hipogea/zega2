@@ -16,6 +16,6 @@ $this->menu=array(
 );
 ?>
 
-<h1>Update Cajachica <?php echo $model->id; ?></h1>
+<?php MiFactoria::titulo("Editar Caja ", "basket")?>
 
 <?php $this->renderPartial('_form', array('model'=>$model)); ?>

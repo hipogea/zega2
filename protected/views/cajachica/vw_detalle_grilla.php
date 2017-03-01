@@ -1,7 +1,7 @@
 <?php
 $prove=Dcajachica::model()->search_por_caja($idcabecera);
 $this->widget('zii.widgets.grid.CGridView', array(
-	'id'=>'detalle-grid',
+	'id'=>'detallecaja-grid',
 	'dataProvider'=>$prove,
 	//'filter'=>$model,
 	'itemsCssClass'=>'table table-striped table-bordered table-hover',
@@ -33,7 +33,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			'htmlOptions'=>array('width'=>50),
 		),
 		array('name'=>'tipoflujo','header'=>'Tipo','value'=>'$data->flujos->destipo','htmlOptions'=>array('width'=>140)),
-		array('name'=>'st.','header'=>'st', 'type'=>'raw','value'=>'($data->tipoflujo=="102")?CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."rojo.png"):""'),
+		array('name'=>'st.','header'=>'st', 'type'=>'raw','value'=>'($data->tipoflujo=="102")?CHtml::OpenTag("span",array("class"=>"label badge-error"))."+".CHtml::closeTag("span"):""'),
 
 		array('name'=>'glosa','header'=>'Glosa','htmlOptions'=>array('width'=>205)),
 		//array('name'=>'codocu','header'=>'Documento','value'=>'$data->documentos->desdocu','htmlOptions'=>array('width'=>200)),
@@ -80,23 +80,14 @@ $this->widget('zii.widgets.grid.CGridView', array(
                                 ),
 
 
-				 'delete'=> array(
-					 'visible'=>'false',
-
-				 ),
-
-
-
-
-
-				 'view'=> array(
-					 'visible'=>'true',
-					 'url'=>'$this->grid->controller->createUrl("/Cajachica/aprobaritem", array("id"=>$data->id))',
+				'delete'=> array(
+					 'visible'=>'($data->codestado=="20")?true:false',
+					 'url'=>'$this->grid->controller->createUrl("/Cajachica/ajaxRevierteCaja", array("id"=>$data->id))',
 					 'options' => array(
 						 'ajax' => array(
 							 'type' => 'GET',
 							 'success'=>"function(data) {
-							 $.fn.yiiGridView.update('detalle-grid');  $.growlUI('Growl Notification', data,2400); return false;
+							 $.fn.yiiGridView.update('detallecaja-grid');  $.growlUI(' Aviso ', data, 0, 0, 0); return false;
                                                                        }",
 
 							 'url'=>'js:$(this).attr("href")'
@@ -105,42 +96,54 @@ $this->widget('zii.widgets.grid.CGridView', array(
 						 ),
 
 					 ) ,
-					 'imageUrl'=>''.Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'ok.png',
-					 'label'=>'Aorbar',
+					 'imageUrl'=>''.Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'arrow_undo.png',
+					 'label'=>'Revertir',
 				 ),
 
 
 
 
 
+				 'view'=> array(
+					  'visible'=>'($data->codestado=="10")?true:false',
+					 'url'=>'$this->grid->controller->createUrl("/Cajachica/aprobaritem", array("id"=>$data->id))',
+					 'options' => array(
+						 'ajax' => array(
+							 'type' => 'GET',
+							 'success'=>"function(data) {
+							 $.fn.yiiGridView.update('detallecaja-grid');  $.growlUI(' Aviso ', data, 0, 0, 0); return false;
+                                                                       }",
+
+							 'url'=>'js:$(this).attr("href")'
 
 
+						 ),
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+					 ) ,
+					 'imageUrl'=>''.Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'check16.png',
+					 'label'=>'Aorbar',
+				 ),
 
 			 ),
 		),
 	),
 )); ?>
+
+
+
+<?php $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
+		'id'=>'cru-dialogdetalle',
+		'options'=>array(
+			'title'=>'Item',
+			'autoOpen'=>false,
+			'modal'=>true,
+			'width'=>900,
+			'height'=>800,
+			'show'=>'Transform',
+		),
+	));
+	?>
+	<iframe id="cru-detalle" frameborder="0"  width="100%" height="100%" ></iframe>
+	<?php
+	$this->endWidget();	//--------------------- end new code --------------------------
+	?>

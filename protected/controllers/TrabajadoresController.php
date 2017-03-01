@@ -18,8 +18,8 @@ class TrabajadoresController extends Controller
 	 */
 
 		public function filters(){
-									return array('accessControl',array('CrugeAccessControlFilter'));
-							} 
+	return array('accessControl',array('CrugeAccessControlFilter'));
+				} 
 	
 
 	/**
@@ -33,7 +33,7 @@ class TrabajadoresController extends Controller
 		return array(
 			
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('ajaxcierracaja','prueba','create','update','actualizadetalle','creadetallecaja','rendicion','caja','admin','view','perfil'),
+				'actions'=>array('ajaxllenazonadeudas',    'deudas',   'ajaxcierracaja','prueba','create','update','actualizadetalle','creadetallecaja','rendicion','caja','admin','view','perfil'),
 				'users'=>array('@'),
 			),
 			
@@ -50,6 +50,8 @@ class TrabajadoresController extends Controller
 		$regtra=Trabajadores::model()->findByPK($modelo->codtra);
                 if($regtra->iduser==yii::app()->user->id){
                     if(trim((string)$modelo->tipoflujo)=='102'){
+                       // $prove=$prove=Dcajachica::model()->search_por_cargo_a_rendir($idcabecera,$idparent);
+
                        $this->render('prueba',array('model'=>$modelo,'modelocabecera'=>$modelo->cabecera));
    
                     }else{
@@ -73,8 +75,8 @@ class TrabajadoresController extends Controller
 			yii::app()->user->setFlash('notice'," Para usar esta función debes de ser un usuario, registrado como trabajador");
 		}else{
 			yii::app()->user->setFlash('success'," Tienes código de tabajador ".$codigotra);
-
-			$this->render("cajamenor",array('codtrabajador'=>$codigotra));
+                            $deuda= Cajachica::deudaTrabajador($codigotra);
+			$this->render("cajamenor",array('deuda'=>$deuda,'codtrabajador'=>$codigotra));
 		}
 
 	}
@@ -394,5 +396,25 @@ class TrabajadoresController extends Controller
              }
          }
      }    
+  
+    public function actiondeudas() {
         
+        $prove= Dcajachica::model()->search_deuda_trabajador(Trabajadores::getCodigoFromUsuario(yii::app()->user->id));
+           $this->render('vw_deudas',array('prove'=>$prove));
+		
+               
+	   } 
+           
+    public function actionajaxllenazonadeudas(){
+            if(yii::app()->request->isAjaxRequest){   
+                if(isset($_POST['trabajador'])){  
+                    $codtra= MiFactoria::cleanInput($_POST['trabajador']); 
+                    $prove= Dcajachica::model()->search_deuda_trabajador($codtra);         
+                    if(is_null($prove))                  
+                        throw new CHttpException(500,'NO se encontro el registro con el id '.$id);
+                  echo $this->renderpartial("grilladeudas",array("prove"=>$prove),true,true);
+                    
+                } 
+              }
+    }
 }

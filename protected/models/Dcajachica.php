@@ -3,9 +3,12 @@
 class Dcajachica extends ModeloGeneral
 {
     const CODIGO_DOCUMENTO='200';
+    const ESTADO_CABECERA_CREADO='10';
 const ESTADO_DETALLE_CAJA_ANULADO='30';
 const ESTADO_DETALLE_CAJA_CREADO='10';
-    const FUJO_CARGO_A_RENDIR='120';
+const ESTADO_DETALLE_CAJA_CERRADO='20';
+const ESTADO_DETALLE_CAJA_CONFIRMADO='40';
+    const FUJO_CARGO_A_RENDIR='102';
 	const FUJO_FONDO='100';
 
 	/**
@@ -23,8 +26,15 @@ const ESTADO_DETALLE_CAJA_CREADO='10';
 	{
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
-		return array(
-			array('hidcaja, fecha, glosa, monto,monedahaber,referencia, debe,tipoflujo,  codtra,esservicio,serie,tipodocid,numdocid,razon,  codocu,codocuref,hidref', 'safe'),
+		
+            
+            
+            return array(
+                   array('fecha,monto','safe','on'=>'devuelve'),
+                  array('debe, haber, monto','safe','on'=>'montos'),
+                array('codestado,haber','safe','on'=>'anulacion'),
+                 array('fecha,monto','required','on'=>'devuelve'),
+			array('hidcaja,hidcargo,codestado, fecha, glosa, monto,monedahaber,referencia, debe,tipoflujo,  codtra,esservicio,serie,tipodocid,numdocid,razon,  codocu,codocuref,hidref', 'safe'),
 			array('fecha', 'checkfecha','on'=>'insert,update'),
                     array('codestado','safe','on'=> 'estado'),
 			array('monto', 'checktolerancia','on'=>'insert,update'),
@@ -53,7 +63,8 @@ const ESTADO_DETALLE_CAJA_CREADO='10';
 		// class name for the relations automatically generated below.
 		return array(
 			'documentos' => array(self::BELONGS_TO, 'Documentos', 'codocu'),
-			//'dcaja'=>array(self::HAS_MANY,'Dcaja','hidcaja')
+                    'padre' => array(self::BELONGS_TO, 'Dcajachica', 'hidcargo'),
+			'hijos'=>array(self::HAS_MANY,'Dcajachica','hidcargo'),
 			'cabecera' => array(self::BELONGS_TO, 'Cajachica', 'hidcaja'),
 			'trabajadores' => array(self::BELONGS_TO, 'Trabajadores', 'codtra'),
 			'estado'=> array(self::BELONGS_TO, 'Estado', array('codestado'=>'codestado', 'coddocu'=>'codocu')),			
@@ -61,8 +72,8 @@ const ESTADO_DETALLE_CAJA_CREADO='10';
 			'ot'=>array(self::BELONGS_TO, 'VwOtdetalle', 'hidref'),
                     'moneda' => array(self::BELONGS_TO, 'Monedas', 'codmon'),
 			'flujos' => array(self::BELONGS_TO, 'Tipoflujocaja', 'tipoflujo'),
-			'rendido'=>array(self::STAT, 'Dcajachica', 'hidcargo','select'=>'sum(t.monto)','condition'=>"codestado not in ( '".self::ESTADO_DETALLE_CAJA_ANULADO."','".self::ESTADO_DETALLE_CAJA_CREADO."') "),//el campo foraneo
-
+			'rendido'=>array(self::STAT, 'Dcajachica', 'hidcargo','select'=>'sum(t.monto)','condition'=>" t.hidcargo > 0 and t.codestado  in ( '".self::ESTADO_DETALLE_CAJA_CERRADO."','".self::ESTADO_DETALLE_CAJA_CONFIRMADO."') "),//el campo foraneo
+                        'deuda'=>array(self::STAT, 'Dcajachica', 'hidcargo','select'=>'sum(t.monto)','condition'=>"t.hidcargo > 0 and haber=0 and t.codestado  in ( '".self::ESTADO_DETALLE_CAJA_ANULADO."') "),
                     
 		);
 	}
@@ -201,6 +212,19 @@ const ESTADO_DETALLE_CAJA_CREADO='10';
 			'criteria'=>$criteria,
 		));
 	}
+        
+        public function search_deuda_trabajador($codigo)
+	{
+
+		$criteria=new CDbCriteria;
+
+		$criteria->addcondition("codtra='".$codigo."'  and monto <> 0 and debe <> haber");
+		$criteria->addcondition("codestado='".self::ESTADO_DETALLE_CAJA_ANULADO."'");
+
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
+	}
 
 	///verifica que ningun otro usuario modifiaue o trate tu caja cabecera
 	private function isPropietariocaja(){
@@ -216,38 +240,38 @@ const ESTADO_DETALLE_CAJA_CREADO='10';
 
 	public function isTratable(){
             //var_dump($this->codestado);
-		return ($this->codestado==self::ESTADO_DETALLE_CAJA_CREADO);
+		return ($this->codestado==self::ESTADO_DETALLE_CAJA_CREADO and $this->cabecera->codestado==self::ESTADO_CABECERA_CREADO);
 	}
 
 
-	private function tieneHijos(){
+	pUBLIC function tieneHijos(){
+            //var_dump($this->tipoflujo);var_dump(self::FUJO_CARGO_A_RENDIR);
 		if($this->tipoflujo==self::FUJO_CARGO_A_RENDIR)
 		{
-			$criteriax=New CDbcriteria;
-			$criteriax->addCondition(" hidcargo=:vcargo AND hidcaja=:vhidcaja  ");
-			$criteriax->params=array(":vcargo"=>$this->id ,":vhidcaja"=>$this->hidcaja);
-			return (count(Dcajachica::model()->findAll($criteriax))>0)?true:false;
+			//echo "salepues"; 
+			return (count($this->hijos)>0)?true:false;
 		}else{
+                    //echo "salecaray";
 			return false;
 		}
 	}
 
 	public function tieneHijospendientes(){
-		$sepuede=true;
+		$sepuede=FALSE;
 		if($this->tieneHijos())
 		{
-			$criteriaxy=New CDbcriteria;
-			$criteriaxy->addCondition(" hidcargo=:vcargo AND hidcaja=:vhidcaja  ");
-			$criteriaxy->params=array(" :vcargo"=>$this->id ,":vhidcaja"=>$this->hidcaja);
+			
+                    //echo "dentro";
+                    $criteriaxy=New CDbcriteria;
+			$criteriaxy->addCondition(" hidcargo=:vcargo AND hidcaja=:vhidcaja");
+			$criteriaxy->params=array(":vcargo"=>$this->id ,":vhidcaja"=>$this->hidcaja);
 			foreach (Dcajachica::model()->findAll($criteriaxy) as $fila){
 				if(in_array($fila->codestado,array(self::ESTADO_DETALLE_CAJA_CREADO)))
 				{
-					$sepuede=false;
+					$sepuede=true;
 					break;
 				}
 			}
-		}else{
-			$sepuede= false;
 		}
 		return $sepuede;
 	}
@@ -325,6 +349,7 @@ const ESTADO_DETALLE_CAJA_CREADO='10';
 		if ($this->isNewRecord) {
 
             $this->coddocu=self::CODIGO_DOCUMENTO;
+            if(is_null($this->codestado))
             $this->codestado=self::ESTADO_DETALLE_CAJA_CREADO;
 		 $this->iduser=yii::app()->user->id;	
 			  
@@ -403,4 +428,6 @@ const ESTADO_DETALLE_CAJA_CREADO='10';
             //}
             
         }
+        
+    
 }

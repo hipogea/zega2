@@ -96,6 +96,11 @@
                 <?php echo $form->labelEx($model,'debe'); ?>
                 <?php echo $form->textField($model,'debe',ARRAY('size'=>15,'disabled'=>'disabled')); ?>
             </div>
+            
+            <div class="row">
+                <?php echo $form->labelEx($model,'codestado'); ?>
+                <?php echo  CHtml::openTag("span",array("class"=>"label badge-error")).$model->estado->estado.CHtml::closeTag("span"); ?>
+            </div>
         </div>
     </div>
     <?php $this->endWidget(); ?>

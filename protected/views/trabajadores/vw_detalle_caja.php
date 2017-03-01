@@ -6,7 +6,10 @@
                 // See class documentation of CActiveForm for details on this.
                 'enableAjaxValidation'=>false,
             )); ?>
- <?php  $this->renderPartial('vw_detalle_grilla', array("model"=>$model,"idparent"=>$model->id,"idcabecera"=>$modelcabecera->id,'eseditable'=>$eseditable),false, true);
+ <?php  
+ $prove=Dcajachica::model()->search_por_cargo_a_rendir($modelcabecera->id,$model->id);
+
+ $this->renderPartial('vw_detalle_grilla', array("prove"=>$prove,"model"=>$model,'eseditable'=>$eseditable),false, true);
  ?>
 
 
@@ -24,7 +27,7 @@
              ),
              'dialog'=>'cru-dialog2',
              'frame'=>'cru-frame2',
-             'visiblex'=>array('10'),
+             'visiblex'=>array($model->codestado),
 
          ),
          'minus'=>array(
@@ -40,7 +43,7 @@
  										}
  								',
              ),
-             'visiblex'=>array('10'),
+             'visiblex'=>array($model->codestado),
          ),
      );
      $this->widget('ext.toolbar.Barra',
@@ -49,7 +52,7 @@
              'botones'=>$botones,
              'size'=>24,
              'extension'=>'png',
-             'status'=>'10',
+             'status'=>$this::ESTADO_DETALLE_CAJA_CREADO,
          )
      );  ?>
 

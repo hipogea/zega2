@@ -3,9 +3,10 @@
 /* @var $model Cajachica */
 /* @var $form CActiveForm */
 ?>
+<div class="form">
 <div class="division">
 	<div class="wide form">
-<div class="form">
+
 
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'cajachica-form',
@@ -30,7 +31,7 @@
 					'save'=>array(
 						'type'=>'A', 
 						'ruta'=>array(),
-						'visiblex'=>array(NULL,ESTADO_PREVIO,ESTADO_CREADO,ESTADO_AUTORIZADO,ESTADO_ANULADO,ESTADO_LIQUIDADO),
+						'visiblex'=>array(NULL,$this::ESTADO_PREVIO,$this::ESTADO_CREADO,$this::ESTADO_AUTORIZADO,$this::ESTADO_ANULADO,$this::ESTADO_LIQUIDADO),
 					),
 
 
@@ -48,20 +49,21 @@
 				
                                    
 				),
-				'visiblex'=>array(ESTADO_CREADO,ESTADO_AUTORIZADO,ESTADO_ANULADO),
+				'visiblex'=>array($this::ESTADO_CREADO,$this::ESTADO_AUTORIZADO,  $this::ESTADO_ANULADO),
 
 			),
 					
 					'undo'=>array(
 						'type'=>'B',
-						'ruta'=>array($this->id.'/procesardocumento',array('id'=>$model->id,'ev'=>64)),
-						'visiblex'=>array(ESTADO_AUTORIZADO),
+						'ruta'=>array($this->id.'/cierracaja',array('id'=>$model->id)),
+						'visiblex'=>array($this::ESTADO_CREADO,$this::ESTADO_AUTORIZADO,  $this::ESTADO_ANULADO),
+
 					),
 					
 					'tacho'=>array(
 						'type'=>'B',
 						'ruta'=>array($this->id.'/procesardocumento',array('id'=>$model->id,'ev'=>35)),
-						'visiblex'=>array(ESTADO_CREADO),
+						'visiblex'=>array($this::ESTADO_CREADO),
 
 					),
 					
@@ -69,26 +71,29 @@
 					
 					
 					
-					'money'=>array(
-						'type'=>'B',
-						'ruta'=>array($this->id.'/procesardocumento',array('id'=>$model->id,'ev'=>37)),
-						'visiblex'=>array(ESTADO_AUTORIZADO),
-				
-					),
-					
+					'boook' => array(
+                            'type' => 'C',
+                            'ruta' => array($this->id.'/liquidadeuda', array("id"=>$model->id)
+                                            ),
+                            'dialog' => 'cru-dialog3',
+                            'frame' => 'cru-frame3',
+                            'visiblex' => array($this::ESTADO_CREADO),
+
+                        ),
+                        
 					
 					
 					
 					'print'=>array(
 						'type'=>'B',
 						'ruta'=>array($this->id.'/imprimirsolo',array('id'=>$model->id)),
-						'visiblex'=>array(ESTADO_CREADO,ESTADO_AUTORIZADO, ESTADO_LIQUIDADO),
+						'visiblex'=>array($this::ESTADO_CREADO,$this::ESTADO_AUTORIZADO, $this::ESTADO_LIQUIDADO),
 					              ),
 					
 					'out'=>array(
 						'type'=>'B',
 						'ruta'=>array($this->id.'/salir',array('id'=>$model->id)),
-						'visiblex'=>array(ESTADO_CREADO,ESTADO_ANULADO,ESTADO_LIQUIDADO,ESTADO_AUTORIZADO),
+						'visiblex'=>array($this::ESTADO_CREADO,$this::ESTADO_ANULADO,$this::ESTADO_LIQUIDADO,$this::ESTADO_AUTORIZADO),
 					),
 
 				);
@@ -106,7 +111,7 @@
 						'status'=>$model->{$this->campoestado},
 
 					)
-				);?>
+				); ?>
 
 			</div>
 
@@ -283,7 +288,11 @@
 		<?php echo $form->error($model,'valornominal'); ?>
 	</div>
 
-
+ <div class="row">
+		<?php echo CHtml::label('Rendido','Rendido'); ?>
+		<?php echo CHtml::openTag("span",array("class"=>"label badge-error")).$model->rendido().Chtml::closeTag("span"); ?>
+		
+	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'liquidada'); ?>
@@ -300,7 +309,7 @@
 
 	
 	
-
+<?php $this->endWidget(); ?>
 
 
 </div><!-- form -->
@@ -308,14 +317,17 @@
 
 
 <?PHP if(!$model->isNewRecord ){ ?>
-
-<?php	$this->renderpartial('vw_detalle_caja',array('modelcabecera'=>$model)); ?>
-
-<?php
-  }
-?>
-
-	
+<?php  //$this->renderPartial('vw_detalle_grilla', array("idcabecera"=>$modelcabecera->id,'eseditable'=>$eseditable),false, false);
+ ?>
+<?php $form=$this->beginWidget('CActiveForm', array(
+	'id'=>'cajachica-form2',
+	// Please note: When you enable ajax validation, make sure the corresponding
+	// controller action is handling ajax validation correctly.
+	// There is a call to performAjaxValidation() commented in generated controller code.
+	// See class documentation of CActiveForm for details on this.
+	'enableAjaxValidation'=>false,
+)); ?>
+<?php  	echo $this->renderpartial('vw_detalle_grilla',array('modelcabecera'=>$model,"idcabecera"=>$model->id),FALSE,false); ?>
 <div class="row">
 
 		<?php
@@ -333,7 +345,7 @@
 				),
 				'dialog'=>'cru-dialog3',
 				'frame'=>'cru-frame3',
-				'visiblex'=>array(ESTADO_CREADO),
+				'visiblex'=>array($this::ESTADO_CREADO),
 
 			),
 			
@@ -347,17 +359,15 @@
 					'type'=>'POST',
 					'url'=>Yii::app()->createUrl($this->id.'/borraitems',array()),
 					'success'=>"function(data) {
-										$('#AjFlash').html(data).fadeIn().animate({opacity: 1.0}, 3000).fadeOut('slow');
-
-                                              $.fn.yiiGridView.update('detalle-grid'); return false;
-                                        }",
+							 $.fn.yiiGridView.update('detallecaja-grid');  $.growlUI(' Aviso ', data, 0, 0, 0); return false;
+                                                                       }",
 					'beforeSend' => 'js:function(){
                                   				 var r = confirm("Esta seguro de Eliminar estos Items?");
                           						 if(!r){return false;}
                                							 }
                                					',
 				),
-				'visiblex'=>array(ESTADO_CREADO,ESTADO_AUTORIZADO,ESTADO_ANULADO),
+				'visiblex'=>array($this::ESTADO_CREADO,$this::ESTADO_AUTORIZADO,$this::ESTADO_ANULADO),
 
 			),
 
@@ -380,11 +390,17 @@
 				'status'=>$model->{$this->campoestado},
 
 			)
-		);?>
+		); ?>
 	</div>
 
 
 	<?php $this->endWidget(); ?>
+<?php
+  }
+?>
+
+	
+
 
 </div>
 	</div>

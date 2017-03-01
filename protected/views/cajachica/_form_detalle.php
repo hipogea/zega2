@@ -16,7 +16,39 @@
 	'enableAjaxValidation'=>false,
 )); ?>
 
+			<div class="row">
+   <?php
+  
+        $botones=array(
+					
+		'save'=>array(
+		'type'=>'A', 
+		'ruta'=>array(),
+		'visiblex'=>array('10'),
+			),
+		 'money' => array(
+                            'type' => 'C',
+                            'ruta' => array($this->id.'/creadevolucionfondo', array(
+                                'id' => $model->id,
+                                "asDialog" => 1,
+                            )
+                            ),
+                            'dialog' => 'cru-dialogdetalle',
+                            'frame' => 'cru-detalle',
+                            'visiblex' => array('10'),
+                        ),	
+				);
+				$this->widget('ext.toolbar.Barra',
+					array(
+						//'botones'=>MiFactoria::opcionestoolbar($model->id,$this->documento,$model->codestado),
+						'botones'=>$botones,
+						'size'=>24,
+						'extension'=>'png',
+						'status'=>'10',
+					)
+				);?>
 
+                        </div>
 
 	<?php echo $form->errorSummary($model); ?>
     
@@ -156,6 +188,12 @@
 		<?php echo $form->labelEx($model,'debe'); ?>
 		<?php echo $form->textField($model,'debe',ARRAY('size'=>8)); ?>
 		<?php echo $form->error($model,'debe'); ?>
+	</div>
+    
+    <div class="row">
+		<?php echo CHtml::label('Rendido','Rendido'); ?>
+		<?php echo CHtml::openTag("span",array("class"=>"label badge-error")).$model->rendido.Chtml::closeTag("span"); ?>
+		
 	</div>
 	<div class="row">
 		<?php echo $form->labelEx($model,'monedahaber'); ?>

@@ -79,7 +79,6 @@ const ESTADO_REGISTRO_NUEVO='00'; ///ESTO SOLO PARA INCLUIR LA CONDICION isNewRe
 	}
 ///devuelve todos los escenarios definidos en el modelo a exceocion de INSERT, UPDATE
 	public function getScenarios() {
-		//$escenarios=array();
 		$cadena="";
 		$reglas=$this->rules();
 		foreach( $reglas as $clave=>$valor)
@@ -88,7 +87,6 @@ const ESTADO_REGISTRO_NUEVO='00'; ///ESTO SOLO PARA INCLUIR LA CONDICION isNewRe
 			{
 				if(strtolower($clavecita)=='on') {
 					$cadena.=",".$valorcito;
-					//$escenarios[]=explode(",",$valorcito);
 				}
 			}
 		}
@@ -153,9 +151,6 @@ public function etiquetascampos (){
 	//print_r($arreglo);
 	return $arreglo;
 }
-
-
-
  public  function parsemensajes($flagerror) {
 	 $cadena="";
 	 foreach($this->mensajes as $arreglo){
@@ -173,8 +168,7 @@ public function etiquetascampos (){
 			throw new CHttpException(500,__CLASS__.'   '.__FUNCTION__.'   '.__LINE__.'  NO existe el atributo en la clase ');
 
 		return $this->getTableSchema()->getColumn($attribute)->size;
-	}
-	
+	}	
 	
 	private function getPrefijo()
 	{
@@ -186,8 +180,6 @@ public function etiquetascampos (){
 			throw new CHttpException(500,__CLASS__.'   '.__FUNCTION__.'   '.__LINE__.' NO se encontro ningun prefijo para el documento '.$this->documento.'  Revise la tabla documentos');
         return trim($prefix);
 	}
-
-
 	public function Correlativo ($attribute,$criteria=null,$prefijo=null,$ancho=null) {
             
              if (is_null($criteria)){
@@ -737,6 +729,7 @@ public function preparaAuditoria(){
  ///cambia las fechas del modelo en los formatos estabeldicdos en la configuracion de
         //de la aplicacion
 private function conviertefechas($salida){
+    IF(property_exists($this,'camposfechas'))
     foreach($this->camposfechas as $clave=>$campo){
         $this->{$campo}=$this->cambiaformatofecha($this->{$campo},$salida);
     }

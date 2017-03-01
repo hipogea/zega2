@@ -33,6 +33,8 @@ class Desolpe extends ModeloGeneral
 	/**
 	 * @return string the associated database table name
 	 */
+        
+        
 	public function tableName()
 	{
 		return '{{desolpe}}';

@@ -160,7 +160,7 @@ public function estadentroperiodosactivos($fecha,$verificatolerancia=false){
       //var_dump(date_create($fecha));die();
      // $fecha=$this->toISO($fecha);
          
-        return substr(date( yii::app()->settings->get('general','general_formatofechaingreso'),  strtotime($fecha)),0,10);
+        return date( yii::app()->settings->get('general','general_formatofechaingreso'),  strtotime($this->toISO($fecha).''));
    // }else{
       // return date_format(date_create($fecha), yii::app()->settings->get->general('general','general_formatofechaingreso'));
      
@@ -169,13 +169,33 @@ public function estadentroperiodosactivos($fecha,$verificatolerancia=false){
         //$fecha=$this->toISO($fecha);
         //return date_format(date_create($fecha), yii::app()->settings->get->general('general','general_formatofechasalida'));
    // }else{
-       return substr(date( yii::app()->settings->get('general','general_formatofechasalida'),  strtotime($fecha)),0,10);
+       return date( yii::app()->settings->get('general','general_formatofechasalida'),  strtotime($this->toISO($fecha).''));
    // 
     }
     
   
   
   PUBLIC function toISO($fecha){
+      if(strlen(trim($fecha)."")==19){//se trata de un datetime
+          $valor= $this->validaformatos(substr(trim($fecha)."", 0, 10));
+        if($valor){
+           if($this->validahoras(substr(trim($fecha),11,8))){
+                   return $valor." ".substr(trim($fecha),11,8);
+           }else{
+              $valor=false; 
+           }
+        }
+      }
+      if(strlen(trim($fecha)."")==10){//se trata de un date
+       $valor=  $this->validaformatos(trim($fecha));  
+      }
+      
+       if($valor){return $valor;}else{throw new CHttpException(500,__CLASS__.' El formato de la fecha ['.$fecha.'] No es el adecuado o n esta permiitdo en la aplicación');
+         }
+     
+  }
+
+   public function validaformatos($fecha){
       if(preg_match('/[0-3]{1}[0-9]{1}\/[0-1]{1}[0-9]{1}\/[0-9]{4}/', $fecha)){//FORMATO  12/04/1989
                $retazos=explode("/",$fecha);//print_r($retazos);
                 return $retazos[2]."-".$retazos[1]."-".$retazos[0];
@@ -188,11 +208,12 @@ public function estadentroperiodosactivos($fecha,$verificatolerancia=false){
      }elseif(preg_match ('/[0-9]{4}\-[0-1]{1}[0-9]{1}\-[0-3]{1}[0-9]{1}/',$fecha)){//FORMATO 1989-04-02
         return $fecha; 
      }else{
-         return $fecha;
-     }
-      
-     
-  }
-
+         return false;
+     } 
+   }
+   
+   public function validahoras($hora){
+      return preg_match('/[0-2]{1}[0-9]{1}:[0-5]{1}[0-9]{1}:[0-5]{1}[0-9]{1}/', $hora);
+   }
 }
 ?>

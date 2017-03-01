@@ -6,13 +6,17 @@ class CajachicaController extends ControladorBase
 
 {
 const ESTADO_CREADO='10';
+const ESTADO_PREVIO='99';
 const ESTADO_AUTORIZADO='20';
 const ESTADO_ANULADO='30';
 const ESTADO_LIQUIDADO='40';
 const TIPO_DE_FLUJO_A_RENDIR='102';
+const TIPO_DE_FLUJO_DEV_FONDO='103';
+const TIPO_DE_FLUJO_FONDO='100';
 const ESTADO_DETALLE_CAJA_CREADO='10';
     const ESTADO_DETALLE_CAJA_ANULADO='30';
     const ESTADO_DETALLE_CAJA_CERRADO='20';
+     const ESTADO_DETALLE_CAJA_CONFIRMADO='40';
 	public function __construct() {
 		parent::__construct($id='cajachica',Null);
 		$this->documento='370';
@@ -39,7 +43,7 @@ const ESTADO_DETALLE_CAJA_CREADO='10';
 		return array(
 
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('ajaxabredetalle',   'ajaxcierradetalle',   'cierracaja','cargaimputacion','admin','view','create','borraitems','aprobaritem','update','creadetalle','actualizadetalle'),
+				'actions'=>array('liquidadeuda',   'ajaxRevierteCaja',    'creadevolucionfondo',   'ajaxreviertedetalle', 'ajaxconfirmadetalle',   'ajaxanuladetalle',       'ajaxabredetalle',   'ajaxcierradetalle',   'cierracaja','cargaimputacion','admin','view','create','borraitems','aprobaritem','update','creadetalle','actualizadetalle'),
 				'users'=>array('@'),
 			),
 
@@ -62,13 +66,13 @@ const ESTADO_DETALLE_CAJA_CREADO='10';
 					//Close the dialog, reset the iframe and update the grid
 					echo CHtml::script("window.parent.$('#cru-dialogdetalle').dialog('close');
 													                    window.parent.$('#cru-detalle').attr('src','');
-																		window.parent.$.fn.yiiGridView.update('detalle-grid');
+																		window.parent.$.fn.yiiGridView.update('detallecaja-grid');
 																		");
 					Yii::app()->end();
 				}
 		}			// if (!empty($_GET['asDialog']))
 		$this->layout = '//layouts/iframe';
-		$this->render('_form_detalle',array(
+		$this->render('_formeditar',array(
 			'model'=>$model, 'idcabeza'=>$model->hidcaja
 		));
 
@@ -76,34 +80,30 @@ const ESTADO_DETALLE_CAJA_CREADO='10';
 
 	}
 
-	public function actioncierracaja()
-	
+	public function actioncierracaja()	
 	{
 		$id=(integer) MiFactoria::cleanInput($_GET['id']);
             $model=$this->loadModel($id);
-		if(is_null($model))
-		  {
-		  echo "No se encontro el registro";
-		  } else {
+            //var_dump($model->valornominal);
+           // var_dump($model->valornominal*3);
 		     if(!$model->puedecerrarse() )		{
-		  		echo "Esta caja no pude cerrarse aun falta completar gastos reales o falta rendir cargos a cuentas";
+		  		MiFactoria::Mensaje('error', "Esta caja no pude cerrarse aun falta completar gastos reales o falta rendir cargos a cuentas ".$model->monto_rendido);
 		  		} else {
                                     IF($model->hijos_cargo_por_cerrar ==0 ){
                                              $model->setScenario('cambiaestado');
                                             $model->codestado='20';
                                                 if($model->save()){
-                                                                     echo "Se cerró la caja menor ";
+                                                                    
+                                                    
+                                                   MiFactoria::Mensaje('success', "Se cerró la caja menor ");
 		  		                              }else{
-                                                                    echo " Errores : ".yii::app()->mensajes->getErroresItem($model->geterrores());
+                                                                    MiFactoria::Mensaje('error',yii::app()->mensajes->getErroresItem($model->geterrores()));
 		  		                               }
                                     }else{
-                                       echo "Esta caja no puede cerrarse proque existen cargos por rendir que no han sido liquidados " ;
+                                        MiFactoria::Mensaje('error',"Esta caja no puede cerrarse proque existen cargos por rendir que no han sido liquidados ") ;
                                     }
 		  		 }
-		  		
-		  }
-					
-					
+             $this->redirect(array('update','id'=>$model->id));                  
 	}
 	
 	
@@ -119,15 +119,26 @@ const ESTADO_DETALLE_CAJA_CREADO='10';
 
 			//primero si le corresponde
 			if ( $modelo->isTratable () ) {
-                              //var_dump($modelo->tieneHijospendientes());
+                              //var_dump($modelo->tieneHijospendientes());die();
 				if ( ! $modelo->hidcargo >0 ) {
-					$modelo->setScenario ( 'cambiaestado' );
-					$modelo->codestado = self::ESTADO_AUTORIZADO;
-					if($modelo->save ()){
+                                     //var_dump($modelo->tieneHijospendientes());die();
+                                    if(!$modelo->tieneHijospendientes()){
+                                        //var_dump($modelo->tieneHijospendientes());die();
+                                        //verificar puede tratarse de un carg a rendir sin hjos pendientes pero recien abierto
+                                             IF($modelo->tipoflujo==self::TIPO_DE_FLUJO_A_RENDIR and !$modelo->tieneHijos()){
+                                                 echo "Este registro no se puede cerrar porque aun no tiene rendiciones , lo que puede hacer es anularlo o borrarlo";
+                                             }else{
+                                                 $modelo->setScenario ( 'cambiaestado' );
+                                                $modelo->codestado = self::ESTADO_AUTORIZADO;
+                                                    if($modelo->save ()){
                                             echo "Se cerro el registro ";
-                                        }else{
-                                            echo yii::app()->mensajes->getErroresItem($model->geterrors());
-                                        }
+                                                    }
+                                             } 
+                                    }else{
+                                        //verificar puede tratarse de un carg a rendir sin hjos pendientes pero recien abierto
+                                       echo "Este registro tiene registros pendientes no le puede cerrar";
+                                    }
+					
 				}else{
                                     echo "Este reistro es un cargo a rendir y debe de ser cerrado por la persona que se le dió el dinero"; 
                                 }
@@ -137,11 +148,14 @@ const ESTADO_DETALLE_CAJA_CREADO='10';
                         }
 
 		}
+                
+        }
 
 
 	 
 
-	}
+	
+
 
  public function borraitemhijox($id){
 	 $modeloxx=Dcajachica::model()->findByPk($id);
@@ -189,8 +203,8 @@ const ESTADO_DETALLE_CAJA_CREADO='10';
 					if ( ! empty( $_GET[ 'asDialog' ] ) ) {
 						//Close the dialog, reset the iframe and update the grid
 						echo CHtml::script ( "window.parent.$('#cru-dialog3').dialog('close');
-													                    window.parent.$('#cru-frame3').attr('src','');
-																		window.parent.$.fn.yiiGridView.update('detalle-grid');
+                                                window.parent.$('#cru-frame3').attr('src','');
+						window.parent.$.fn.yiiGridView.update('detallecaja-grid');
 																		" );
 						Yii::app ()->end ();
 					}
@@ -237,10 +251,6 @@ const ESTADO_DETALLE_CAJA_CREADO='10';
 	 */
 	public function actionCreate()
 	{
-		
-                       
-                      
-            
             $model=new $this->modelopadre;
 		$model->valorespordefecto($this->documento);
 		$model->iduser=Yii::app()->user->id;
@@ -251,10 +261,8 @@ const ESTADO_DETALLE_CAJA_CREADO='10';
             $model->codocu=$this->documento;
 			if($model->save()){
 				$this->redirect(array('update','id'=>$model->id));
-
 			}
 		}
-
 		$this->render('create',array(
 			'model'=>$model,
 		));
@@ -448,14 +456,21 @@ PUBLIC FUNCTION actioncargaimputacion (){
                if(is_null($registro))  
                    throw new CHttpException(500,'NO se encontro el registro con el id '.$id);  
                } 
+               
                if(($registro->hidcargo >0) and $registro->iduser==yii::app()->user->id and $registro->codestado==self::ESTADO_DETALLE_CAJA_CERRADO){
-                        $registro->setScenario('estado');
+                     if($registro->padre->codestado==self::ESTADO_DETALLE_CAJA_CREADO) {
+                         
+                          $registro->setScenario('estado');
                         $registro->codestado=self::ESTADO_DETALLE_CAJA_CREADO;
                              if($registro->save()){
                                     echo "Se ha abierto el registro ";
                                 }else{
                                     echo yii::app()->mensajes->getErroresIrem($registro->geterrors());
                             }
+                     } else{
+                        echo "El estado del monto entregado esta cerrado y ya no puede cambiar el estado de susu comprobantes"; 
+                     }
+                  
                    
                }else{
                    echo "Esta liquidacion no es de usted O NO TIENE EL STATUS ADECUADO PARA EFECTUAR ESTE PROCESO";
@@ -465,7 +480,30 @@ PUBLIC FUNCTION actioncargaimputacion (){
            }
    }    
      
-    public function actionajaxcierradetalle(){
+    public function actionajaxanuladetalle(){
+       if(yii::app()->request->isAjaxRequest){  
+           if(isset($_GET['id'])){ 
+               $id= (integer)MiFactoria::cleanInput($_GET['id']);
+               $registro= Dcajachica::model()->findByPk($id); 
+               if(is_null($registro))  
+                   throw new CHttpException(500,'NO se encontro el registro con el id '.$id);  
+               } 
+             if($registro->hidcargo >0){
+                          $registro->setScenario('anulacion');
+                        $registro->codestado=self::ESTADO_DETALLE_CAJA_ANULADO;
+                        $registro->haber=0;
+                             if($registro->save()){
+                                    echo "Se ha anulado el registro ";
+                                }else{
+                                    echo yii::app()->mensajes->getErroresIrem($registro->geterrors());
+                            }
+             }else{
+                 echo "Este registro no puede ser anulado porque no es hijo de otro registro";
+             }
+           }
+   }   
+   
+     public function actionajaxcierradetalle(){
        if(yii::app()->request->isAjaxRequest){  
            if(isset($_GET['id'])){ 
                $id= (integer)MiFactoria::cleanInput($_GET['id']);
@@ -474,17 +512,259 @@ PUBLIC FUNCTION actioncargaimputacion (){
                    throw new CHttpException(500,'NO se encontro el registro con el id '.$id);  
                } 
              if(($registro->hidcargo >0) and $registro->iduser==yii::app()->user->id and $registro->codestado==self::ESTADO_DETALLE_CAJA_CREADO){
-               $registro->setScenario('estado');
-               $registro->codestado=self::ESTADO_DETALLE_CAJA_CERRADO;
-               if($registro->save()){
-                   echo "Se ha cerrado el registro ";
-               }else{
-                    echo yii::app()->mensajes->getErroresIrem($registro->geterrors());
-               }
+               if($registro->padre->codestado==self::ESTADO_DETALLE_CAJA_CREADO) {
+                         
+                          $registro->setScenario('estado');
+                        $registro->codestado=self::ESTADO_DETALLE_CAJA_CERRADO;
+                             if($registro->save()){
+                                    echo "Se ha cerrado el registro ";
+                                }else{
+                                    echo yii::app()->mensajes->getErroresIrem($registro->geterrors());
+                            }
+                     } else{
+                        echo "El estado del monto entregado esta cerrado y ya no puede cambiar el estado de susu comprobantes"; 
+                     }
+                  
              }else{
                  echo "ESTA LIQUIDACION NO ES DE USTED, O NO TOEEN EL ESTADO ADECUDO APRA EE TUAR ESTE PROCESO";
              }
            }
+   }  
+   
+    public function actionajaxconfirmadetalle(){
+       if(yii::app()->request->isAjaxRequest){  
+           if(isset($_GET['id'])){ 
+               $id= (integer)MiFactoria::cleanInput($_GET['id']);
+               $registro= Dcajachica::model()->findByPk($id); 
+               if(is_null($registro))  
+                   throw new CHttpException(500,'NO se encontro el registro con el id '.$id);  
+               } 
+             if($registro->codestado==self::ESTADO_DETALLE_CAJA_CERRADO){
+                          $registro->setScenario('estado');
+                        $registro->codestado=self::ESTADO_DETALLE_CAJA_CONFIRMADO;
+                             if($registro->save()){
+                                    echo "Se ha confirmado el registro ";
+                                }else{
+                                    echo yii::app()->mensajes->getErroresIrem($registro->geterrors());
+                            }
+             }else{
+                 echo "Este registro no puede ser confrimado  porque no esta cerrado";
+             }
+           }
    }   
    
+   public function actionajaxreviertedetalle(){ ///regresa del estado anulado al estado cerrado
+       if(yii::app()->request->isAjaxRequest){  
+           if(isset($_GET['id'])){ 
+               $id= (integer)MiFactoria::cleanInput($_GET['id']);
+               $registro= Dcajachica::model()->findByPk($id); 
+               if(is_null($registro))  
+                   throw new CHttpException(500,'NO se encontro el registro con el id '.$id);  
+               } 
+             if($registro->codestado==self::ESTADO_DETALLE_CAJA_ANULADO ){
+                 if($registro->haber=0){
+                     $registro->setScenario('estado');
+                        $registro->codestado=self::ESTADO_DETALLE_CAJA_CERRADO;
+                             if($registro->save()){
+                                    echo "Se ha RESTABLECIDO el registro ";
+                                }else{
+                                    echo yii::app()->mensajes->getErroresIrem($registro->geterrors());
+                            } 
+                 }else{
+                     echo "Este registro anulado ya se liquido, con efectivo ya no puede liquidar la deuda";
+                 }
+                         
+             }else{
+                 echo "Este registro no puede ser RESTABLECIDO PORQUE  no esta anulado";
+             }
+           }
+   }  
+   
+  public function actionCreaDevolucionFondo(){
+       if(isset($_GET['id'])){ 
+               $id= (integer)MiFactoria::cleanInput($_GET['id']);
+               $registro= Dcajachica::model()->findByPk($id); 
+               if(is_null($registro))  
+                   throw new CHttpException(500,'NO se encontro el registro con el id '.$id);  
+               } 
+               
+            IF(!($registro->tipoflujo==self::TIPO_DE_FLUJO_A_RENDIR))
+                 throw new CHttpException(500,'Este registro no puede recibir efectivo, no es un cargo a rendir '.$id);  
+          $model=New Dcajachica();
+          $montosugerido=$registro->monto-$registro->rendido;
+          $model->setScenario('devuelve');
+          $this->layout="//layouts/iframe";
+       if ( isset( $_POST['Dcajachica'] ) ) {
+				
+				 $model->setScenario('insert');
+                                    $model->setAttributes(array(
+                                            'hidcaja'=>$registro->hidcaja,
+                                            'hidcargo'=>$registro->id,
+                                            'monto' =>$_POST['Dcajachica']['monto'],
+                                            'fecha' =>$_POST['Dcajachica']['fecha'],
+                                             'glosa'=>'Dev efectivo :'. substr($registro->glosa,0,20),
+                                            'referencia'=>$registro->referencia,
+                                              'debe'=>$_POST['Dcajachica']['monto'],
+                                                'haber'=>$_POST['Dcajachica']['monto'],
+                                               'monedahaber'=>yii::app()->settings->get('general','general_monedadef'),
+                                               'codtra'=>$registro->codtra,
+                                              'tipoflujo'=>self::TIPO_DE_FLUJO_DEV_FONDO,
+                                              'codestado'=>self::ESTADO_DETALLE_CAJA_CONFIRMADO,
+                                                'serie'=>$registro->serie,
+                                              'tipodocid'=>$registro->tipodocid,
+                                             'codocu'=>$registro->codocu,
+                                            'numdocid'=>$registro->numdocid,
+                                               'razon'=>'PULPO',
+                                            ));
+                                    $model->save();
+                                   //var_dump( $model->attributes); $model->save();var_dump( $model->attributes); die();
+                                    $modelo2=New Dcajachica();
+                                    $modelo2->setScenario('insert');
+                                      $modelo2->setAttributes(array(
+                                            'hidcaja'=>$registro->hidcaja,
+                                            'hidcargo'=>null,
+                                            'monto' =>-1*$_POST['Dcajachica']['monto'],
+                                            'fecha' =>-1*$_POST['Dcajachica']['fecha'],
+                                             'glosa'=>'Dev efectivo :'. substr($registro->glosa,0,20),
+                                            'referencia'=>$registro->referencia,
+                                              'debe'=>-1*$_POST['Dcajachica']['monto'],
+                                                'haber'=>-1*$_POST['Dcajachica']['monto'],
+                                               'monedahaber'=>yii::app()->settings->get('general','general_monedadef'),
+                                               'codtra'=>$registro->codtra,
+                                              'tipoflujo'=>self::TIPO_DE_FLUJO_FONDO,
+                                              'codestado'=>self::ESTADO_DETALLE_CAJA_CONFIRMADO,
+                                                'serie'=>$registro->serie,
+                                              'tipodocid'=>$registro->tipodocid,
+                                             'codocu'=>$registro->codocu,
+                                            'numdocid'=>$registro->numdocid,
+                                               'razon'=>'CALAMAR',
+                                            ));
+                                      $modelo2->save();
+                                      //var_dump($model->attributes); var_dump($modelo2->attributes);
+                                   
+                                       if ( ! empty( $_GET['asDialog'] ) ) {
+						//Close the dialog, reset the iframe and update the grid
+						echo CHtml::script ( "window.parent.$('#cru-dialog3').dialog('close');
+								" );
+						
+					
+				Yii::app()->end();	
+			} 
+                        
+                         }
+        $this->render("_form_devolucion",array("model"=>$model,"montosugerido"=>$montosugerido));   
+  
+        
+        
+  }
+   
+   public function actionajaxRevierteCaja(){ ///regresa del estado anulado al estado cerrado
+       if(yii::app()->request->isAjaxRequest){  
+           if(isset($_GET['id'])){ 
+               $id= (integer)MiFactoria::cleanInput($_GET['id']);
+               $registro= Dcajachica::model()->findByPk($id); 
+               if(is_null($registro))  
+                   throw new CHttpException(500,'NO se encontro el registro con el id '.$id);  
+               } 
+             IF($registro->cabecera->codestado==self::ESTADO_CREADO){
+             if($registro->codestado==self::ESTADO_DETALLE_CAJA_CERRADO ){
+                          $registro->setScenario('estado');
+                        $registro->codestado=self::ESTADO_DETALLE_CAJA_CREADO;
+                             if($registro->save()){
+                                    echo "Se ha RESTABLECIDO el registro ";
+                                }else{
+                                    echo yii::app()->mensajes->getErroresIrem($registro->geterrors());
+                            }
+             }else{
+                 echo "Este registro no puede ser RESTABLECIDO PORQUE  no esta cerrado";
+             }
+             
+             }else{
+                 echo "La caja cabecera no tiene el status adecuado";
+             }
+           }
+   }  
+   
+    public function actionliquidadeuda(){ ///regresa del estado anulado al estado cerrado
+       
+        
+        IF(ISSET($_GET['id'])){
+             $cabeza=Cajachica::model()->findByPk((integer) MiFactoria::cleanInput($_GET['id']));
+      
+                 IF(IS_NULL($cabeza))
+            throw new CHttpException(500,'NO se encontro el registro CABECERA con el id '.$id);  
+      
+        }
+      
+        $model= new Dcajachica();
+       $this->layout="//layouts/iframe";
+       if(isset($_POST['cajita'])){
+           $idpadre=$_POST['Dcajachica']['hidcaja']; //NO ES EL HIDCAJA REAL ES UN VALOR  REEEMPLAZADO POR OTRO AVLOR PEROS IRVE PARA PASAR EL POST DEL FORMUALRIO 
+           $autoIdAll = $_POST['cajita'];//var_dump($_POST['cajita']);yii::app()->end();
+		 foreach($autoIdAll as $autoId)
+			{
+				$this->liquidardeuda($autoId,$idpadre);
+
+			}
+                        
+                        echo CHtml::script ( "window.parent.$('#cru-dialog3').dialog('close');
+                                                window.parent.$('#cru-frame3').attr('src','');
+						window.parent.$.fn.yiiGridView.update('detallecaja-grid');
+																		" );
+						Yii::app ()->end ();
+       }
+      //var_dump(count(VwTrabajadores::model()->findAll()));die();
+         IF(ISSET($_GET['id'])){
+         $identidadcaja=$_GET['id'];
+         }
+       $this->render('deudas_trabajador',array('identidadcaja'=>$identidadcaja,'model'=>$model));
+   }  
+   
+   private function liquidardeuda($id,$idcabeza){
+       $registro= Dcajachica::model()->findByPk((integer) MiFactoria::cleanInput($id));
+       $padre= Cajachica::model()->findByPk((integer) MiFactoria::cleanInput($idcabeza));
+        if(is_null($registro))
+           throw new CHttpException(500,'NO se encontro el registro con el id '.$id);  
+      
+       if(is_null($padre))
+           throw new CHttpException(500,'NO se encontro el registro  padre con el id '.$id);  
+      
+       ///primero dbemos llenar el haber con el valor del debe para anular la deuda 
+       $registro->setScenario('montos');
+       $registro->haber=$registro->debe; $registro->save();
+       //ahora si la configuracion lo permite , debemos de lllenar esta compensacion 
+       //como un fondo para la caja actual , puestoq ue se le ha cobrado o descontado al trabajador
+       ///este cbor puede regresar como efectivo para la caja actual
+       //esto depende de la configuracion 
+       if(yii::app()->settings->get('conta','conta_cajachicadevuelvefondo')=='1'){
+           //insertar un registgro de fondo en la caja chica actual
+          // echo "salio "; die();
+            $modelo2=New Dcajachica();
+                                    $modelo2->setScenario('insert');
+                                      $modelo2->setAttributes(array(
+                                            'hidcaja'=>$padre->id,
+                                            'hidcargo'=>null,
+                                            'monto' =>-1*abs($registro->monto),
+                                            'fecha' =>$_POST['Dcajachica']['fecha'],
+                                             'glosa'=>'Liq deuda :'. substr($registro->glosa,0,20),
+                                            'referencia'=>$registro->referencia,
+                                              'debe'=>-1*abs($registro->debe),
+                                                'haber'=>-1*abs($registro->haber),
+                                               'monedahaber'=>yii::app()->settings->get('general','general_monedadef'),
+                                               'codtra'=>$registro->codtra,
+                                              'tipoflujo'=>self::TIPO_DE_FLUJO_FONDO,
+                                              'codestado'=>self::ESTADO_DETALLE_CAJA_CONFIRMADO,
+                                                'serie'=>$registro->serie,
+                                              'tipodocid'=>$registro->tipodocid,
+                                             'codocu'=>$registro->codocu,
+                                            'numdocid'=>$registro->numdocid,
+                                               'razon'=>'',
+                                            ));
+                                      if(!(
+                                      $modelo2->save()))
+                                          echo yii::app()->mensajes->getErroresItem($modelo2->geterrors());die();
+       }
+       
+       
+   }
 }

@@ -8,7 +8,7 @@
  * Designed and built with all the love in the world @twitter by @mdo and @fat.
  */
 
- .compactRadioGroup {
+ .compactRadioGroup {  
      display: inline; margin-right: 1px !important;
 }
 
@@ -773,7 +773,7 @@ div.form .errorSummary
     color: #f54d6b;
     margin: 0 0 6px 0;
     background: #fee;
-    font-size: 1em;
+    font-size: 1.1em;
 
     border-radius:5px;
     -moz-border-radius:5px; /* Firefox */
@@ -792,7 +792,7 @@ div.form .errorSummary
 div.form .errorMessage
 {
     color: rgba(255, 0, 45, 0.68);
-    font-size: 1em;
+    font-size: 1.2em;
 }
 
 div.form .errorSummary p

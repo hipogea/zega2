@@ -26,9 +26,9 @@ $('.search-form form').submit(function(){
 ");
 ?>
 
-
-
-
+<?php if($deuda >0) { ?>
+<h2><?php echo "Usted mantiene una deuda vencida de : ".round($deuda,2)."  ".yii::app()->settings->get('general','general_monedadef');?></h2>
+<?php } ?>
 <?php $this->widget('ext.groupgridview.GroupGridView', array(
 	'id'=>'cc-caja-grid',
 	'dataProvider'=>Dcajachica::model()->search_por_trabajador($codtrabajador),
@@ -42,7 +42,9 @@ $('.search-form form').submit(function(){
 		'debe',
 		'ceco',
 		'documentos.desdocu',
-		'flujos.destipo'
-
+		'flujos.destipo',
+                array('name'=>'codestado','header'=>'Estado','type'=>'raw','value'=>'CHtml::openTag("span", array("class"=>"label badge-error")).$data->estado->estado.CHtml::closeTag("span")'),
+               array('header'=>'Estado','type'=>'raw','value'=>'$data->deuda'),
+               
 	),
 )); ?>
