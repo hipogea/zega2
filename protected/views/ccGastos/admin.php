@@ -51,7 +51,7 @@ $('.search-form form').submit(function(){
 	'extraRowPos'=>'below',
 	//'filter'=>$model,
 	'columns'=>array(
-		//'id',
+		'id',
 		'ano',
 		'mes',
 		'ceco',

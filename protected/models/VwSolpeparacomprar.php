@@ -13,9 +13,11 @@ class VwSolpeparacomprar extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-		array('numero, estado, fechaent,fechacrea, tipsolpe, centro, codal, codart, imputacion, cant, desum, txtmaterial, cantatendida, cant_pendiente', 'safe', 'on'=>'search'),
+		array('numero, estado, fechaent,fechaent1,fechacrea,fechacrea1, tipsolpe, centro, codal, codart, imputacion, cant, desum, txtmaterial, cantatendida, cant_pendiente', 'safe', 'on'=>'search'),
 			//array('numero, estado, fechaent, tipsolpe, centro, codal, codart, imputacion, cant, desum, txtmaterial, cantatendida, cant_pendiente', 'safe', 'on'=>'search')
-			);
+			array('numero, estado, fechaent,fechaent1,fechacrea,fechacrea1, tipsolpe, centro, codal, codart, imputacion, cant, desum, txtmaterial, cantatendida, cant_pendiente', 'safe', 'on'=>'search_servicio'),
+		
+                    );
 	}
 	public $fechaent1;
 	public $fechacrea1;
@@ -71,8 +73,8 @@ class VwSolpeparacomprar extends CActiveRecord
 		$criteria->compare('cant_pendiente',$this->cant_pendiente);
 		$criteria->addcondition(" est  in ('30') ");
 		$criteria->addcondition(" txtmaterial like '%".MiFactoria::cleanInput($this->txtmaterial)."%' ");
-$criteria->addBetweenCondition('fechaent', ''.$this->fechaent.'', ''.$this->fechaent1.'');
-		$criteria->addBetweenCondition('fechacrea', ''.$this->fechacrea.'', ''.$this->fechacrea1.'');
+                $criteria->addBetweenCondition('fechaent', ''.yii::app()->periodo->toISO($this->fechaent).'', ''.yii::app()->periodo->toISO($this->fechaent1).'');
+		$criteria->addBetweenCondition('fechacrea', ''.yii::app()->periodo->toISO($this->fechacrea).'', ''.yii::app()->periodo->toISO($this->fechacrea1.''));
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -101,8 +103,8 @@ $criteria->addBetweenCondition('fechaent', ''.$this->fechaent.'', ''.$this->fech
 		$criteria->compare('cant_pendiente',$this->cant_pendiente);
 		$criteria->addcondition(" txtmaterial like '%".MiFactoria::cleanInput($this->txtmaterial)."%' ");
 		$criteria->addcondition("tipsolpe='S' ");
-		$criteria->addBetweenCondition('fechaent', ''.$this->fechaent.'', ''.$this->fechaent1.'');
-		$criteria->addBetweenCondition('fechacrea', ''.$this->fechacrea.'', ''.$this->fechacrea1.'');
+		$criteria->addBetweenCondition('fechaent', ''.yii::app()->periodo->toISO($this->fechaent).'', ''.yii::app()->periodo->toISO($this->fechaent1).'');
+		$criteria->addBetweenCondition('fechacrea', ''.yii::app()->periodo->toISO($this->fechacrea).'', ''.yii::app()->periodo->toISO($this->fechacrea1.''));
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

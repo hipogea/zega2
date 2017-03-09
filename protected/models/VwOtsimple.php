@@ -191,4 +191,6 @@ class VwOtsimple extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        
+      
 }

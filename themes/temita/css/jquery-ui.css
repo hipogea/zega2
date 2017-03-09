@@ -67,7 +67,7 @@ select.ui-datepicker-year{width:45%}.ui-datepicker table{width:100%;font-size:.9
 .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset{float:right}
 .ui-dialog .ui-dialog-buttonpane button{margin:.5em .4em .5em 0;cursor:pointer}
 .ui-dialog .ui-resizable-se{width:12px;height:12px;right:-5px;bottom:-5px;background-position:16px 16px}
-
+.noTitleStuff .ui-dialog-titlebar {display:none}
 
 
 .ui-draggable .ui-dialog-titlebar{cursor:move}.ui-menu{list-style:none;padding:0;margin:0;display:block;outline:none}
@@ -132,7 +132,7 @@ body .ui-tooltip{border-width:2px}.ui-widget{font-family:Verdana,Arial,sans-seri
 .ui-state-hover a,.ui-state-hover a:hover,.ui-state-hover a:link,.ui-state-hover a:visited,.ui-state-focus a,.ui-state-focus a:hover,.ui-state-focus a:link,
 .ui-state-focus a:visited{color:#212121;text-decoration:none}.ui-state-active,.ui-widget-content .ui-state-active,
                                                              .ui-widget-header .ui-state-active{border:1px solid #bcbcbc;font-weight:normal;color:#212121}
-.ui-state-active a,.ui-state-active a:link,.ui-state-active a:visited{color:#212121;text-decoration:none}
+.ui-state-active a,.ui-state-active a:link,.ui-state-active a:visited{color:#d21010;text-decoration:none}
 .ui-state-highlight,.ui-widget-content .ui-state-highlight,
 .ui-widget-header .ui-state-highlight{border:1px solid #fcefa1;background:#fbf9ee url("..//img/cerrssar.png") 50% 50% repeat-x;color:#363636}
 

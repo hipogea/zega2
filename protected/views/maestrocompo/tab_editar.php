@@ -77,7 +77,7 @@
 <?php echo $form->error($model,'nparte'); ?>
 	</div>
 									<div class="row">
-		<?php echo $form->labelEx($model,'um'); ?>
+		
 <?php
 $datos = CHtml::listData(Ums::model()->findAll(),'um','desum');
 echo $form->DropDownList($model,'um',$datos, array('empty'=>'--Unidad de medida--', 'disabled'=>($model->Sepuedecambiarum())?'':'disabled')  )  ;

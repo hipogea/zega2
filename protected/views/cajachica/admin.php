@@ -26,12 +26,12 @@ $('.search-form form').submit(function(){
 ");
 ?>
 
-<h1>Administrar Caja Menor</h1>
+<?PHP MiFactoria::titulo("Administrar cajas", "basket");  ?>
 
 
 
-<?php echo CHtml::link('Filtrar','#',array('class'=>'search-button')); ?>
-<div class="search-form" style="display:none">
+<?php //echo CHtml::link('Filtrar','#',array('class'=>'search-button')); ?>
+<div class="search-form" >
 <?php $this->renderPartial('_search',array(
 	'model'=>$model,
 )); ?>
@@ -41,8 +41,14 @@ $('.search-form form').submit(function(){
 	'id'=>'cajachica-grid',
 	'dataProvider'=>$model->search(),
 	//'filter'=>$model,
-	'cssFile' => Yii::app()->getTheme()->baseUrl.'/css/grilla_naranja.css',
+        'itemsCssClass'=>'table table-striped table-bordered table-hover',
+
+	//'cssFile' => Yii::app()->getTheme()->baseUrl.'/css/grilla_naranja.css',
 	'columns'=>array(
+               array(
+			'class'=>'CButtonColumn',
+                   'template'=>'{update}'
+		),
 		//'id',
 		'fondo.desfondo',
 		'descripcion',
@@ -54,16 +60,16 @@ $('.search-form form').submit(function(){
 		/*
 		'iduser',
 		*/
-		array(
-			'class'=>'CButtonColumn',
-		),
+		
 	),
 )); ?>
 
 <?php $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
 	'id'=>'cru-dialog3',
 	'options'=>array(
-		'title'=>'Item',
+		 'closeOnEscape'=> TRUE,
+            'dialogClass'=> 'noTitleStuff',
+             'position'=>array('my'=>'left top','at'=>'left bottom','of'=>'#Cajachica_hidperiodo'),		
 		'autoOpen'=>false,
 		'modal'=>true,
 		'width'=>800,

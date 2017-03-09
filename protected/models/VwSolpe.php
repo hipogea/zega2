@@ -148,9 +148,10 @@ class VwSolpe extends CActiveRecord
 		             //  $limite1=date("Y-m-d",strotime($this->d_fectra)-24*60*60); //UN DIA MENOS 
 					 //  $limite2=date("Y-m-d",strotime($this->d_fectra)+24*60*60); //UN DIA mas 
 		 
-                        $criteria->addBetweenCondition('fechaent', ''.$this->fechaent.'', ''.$this->fechaent1.''); 
-                          $criteria->addBetweenCondition('fechacrea', ''.$this->fechacrea.'', ''.$this->fechacrea1.''); 
-						
+                       
+        $criteria->addBetweenCondition('fechaent', ''.yii::app()->periodo->toISO($this->fechaent).'', ''.yii::app()->periodo->toISO($this->fechaent1).'');
+        $criteria->addBetweenCondition('fechacrea', ''.yii::app()->periodo->toISO($this->fechacrea).'', ''.yii::app()->periodo->toISO($this->fechacrea1).'');
+			
 					///	}
 
 		return new CActiveDataProvider($this, array(
@@ -206,8 +207,8 @@ class VwSolpe extends CActiveRecord
         //  $limite1=date("Y-m-d",strotime($this->d_fectra)-24*60*60); //UN DIA MENOS
         //  $limite2=date("Y-m-d",strotime($this->d_fectra)+24*60*60); //UN DIA mas
 
-        $criteria->addBetweenCondition('fechaent', ''.$this->fechaent.'', ''.$this->fechaent1.'');
-        $criteria->addBetweenCondition('fechacrea', ''.$this->fechacrea.'', ''.$this->fechacrea1.'');
+        $criteria->addBetweenCondition('fechaent', ''.yii::app()->periodo->toISO($this->fechaent).'', ''.yii::app()->periodo->toISO($this->fechaent1).'');
+        $criteria->addBetweenCondition('fechacrea', ''.yii::app()->periodo->toISO($this->fechacrea).'', ''.yii::app()->periodo->toISO($this->fechacrea1).'');
 
         ///	}
 

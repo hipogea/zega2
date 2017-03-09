@@ -1,6 +1,6 @@
-<div style="overflow:auto; border-width:4px;  margin:0px;padding:0px; ">
 
-    <div class="division">
+
+    
             <div class="wide form">
 
                 	<?php $form=$this->beginWidget('CActiveForm', array(
@@ -12,7 +12,7 @@
 
 
 
-
+                <BR>
 
 				<div class="row">
 					<?php
@@ -182,8 +182,8 @@
     <div class="row"></div>
     <div id="zona"></div>
  </div><!-- form -->
- </div>
-</div>
+
+
 
 
 

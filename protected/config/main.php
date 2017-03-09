@@ -109,7 +109,7 @@ return array(
 			'class'=>'system.gii.GiiModule',
 			'password'=>'grecita',
 			// If removed, Gii defaults to localhost only. Edit carefully to taste.
-                'ipFilters'=>array('190.117.148.219'),
+                'ipFilters'=>array('190.117.148.171'),
 		),
 
 
@@ -329,7 +329,7 @@ return array(
 		'db'=>array(
 			'connectionString' => 'mysql:host=localhost;dbname=neotegni_base1',
 			'emulatePrepare' => true,
-			'username' => 'neotegni_julian',
+			'username' => 'neotegni_juan',
 			'password' => 'luchito',
 			'tablePrefix' => 'public_',
 			'charset' => 'utf8',
@@ -363,12 +363,12 @@ return array(
 					'levels'=>'error,warning', //agreagamos aqui el mail para probar los correos en modo DEBUG 
 					//'enabledParamLogging'=>true,
 				),
-                          /*  array(
+                            array(
                    'class'=>'CEmailLogRoute',
-                   'levels'=>'error, warning',
+                   'levels'=>'info',
                    'emails'=>'neotegnia@gmail.com',
                                 
-                                ),*/
+                                ),
                             
                            
 				// uncomment the following to show log messages on web pages

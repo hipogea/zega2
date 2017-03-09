@@ -209,6 +209,7 @@ class OtController extends ControladorBase
 		$model->codestado=ESTADO_PREVIO;
 		$model->idusertemp=Yii::app()->user->id;
 		$model->idaux=round(microtime(true) * 1000);
+                
 		$model->codocu=$this->documentohijo; ///detalle guia
 		$model->valorespordefecto($this->documentohijo);
 		//$model->tipoitem='M';
@@ -260,6 +261,7 @@ class OtController extends ControladorBase
 		$model->est=ESTADO_PREVIO;
 		$model->idusertemp=Yii::app()->user->id;
 		$model->hcodoc=$this->documento; //
+                $model->tipimputacion='T';
                 $model->codocu='350'; //
 		$model->tipsolpe='M';
 		

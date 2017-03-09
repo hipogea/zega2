@@ -483,6 +483,7 @@ Public function recorro($matriz)
 
 	public function beforeSave() {
               $this->conviertefechas(false);
+              //var_dump($this->geterrors());die();
 		return parent::beforeSave();
 	}
 
@@ -731,7 +732,20 @@ public function preparaAuditoria(){
 private function conviertefechas($salida){
     IF(property_exists($this,'camposfechas'))
     foreach($this->camposfechas as $clave=>$campo){
-        $this->{$campo}=$this->cambiaformatofecha($this->{$campo},$salida);
+        //aprovechamos este evento para generar un erro o validar estos campos fechas 
+        if(!yii::app()->periodo->validaformatos($this->{$campo})){
+            $this->adderror($campo,'El formato de fecha ['.$this->{$campo}.'] no tiene formato valido');
+          //  $this->validate();
+        }else{
+            // $this->adderror($campo,'El vf formato de fecha ['.$this->{$campo}.'] no tiene formato valido');
+            
+     
+           // var_dump(yii::app()->periodo->validaformatos($this->{$campo}));
+            //echo "no detecto el error "; die(); 
+        }
+        //var_dump($this->geterrors());die();
+        
+          $this->{$campo}=$this->cambiaformatofecha($this->{$campo},$salida);
     }
 }  
 public function cambiaformatofecha($fecha,$salida=true){

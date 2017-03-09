@@ -229,7 +229,7 @@ echo CHtml::ajaxSubmitButton("Ver detalle material.",
 												'showOn'=>'both', // 'focus', 'button', 'both'
 												'buttonImage'=>Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'calendar_1.png',
 												'buttonImageOnly'=>true,
-													'dateFormat'=>'yy-mm-dd',
+													'dateFormat'=>'dd/mm/yy',
 														),
 												'htmlOptions'=>array(
 															'style'=>'width:120px;vertical-align:top',
@@ -315,7 +315,7 @@ echo CHtml::ajaxSubmitButton("Ver detalle material.",
 
 	
 	<div class="row buttons">
-		<?php echo ($habilitado=='')?CHtml::submitButton(($model->isNewRecord)?'Agregar' : 'Actualizar',array('onClick'=>'Loading.show();Loading.hide();')):''; ?>
+		<?php echo ($habilitado=='')?CHtml::submitButton(($model->isNewRecord)?'Agregar' : 'Actualizar'):''; ?>
 	</div>
 
 

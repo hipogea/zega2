@@ -1,4 +1,4 @@
-
+<DIV>
 
 <?php
 $prove=$modelolabor->search_por_ot($model->id);
@@ -107,7 +107,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 
 <div id="zona"></div>
 
-<div class="row">
+
 
 	<?php
 	if($this->estasEnsesion($model->id)) {
@@ -124,7 +124,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				),
 				'dialog' => 'cru-dialogdetalle',
 				'frame' => 'cru-detalle',
-				'visiblex' => array(ESTADO_CREADO),
+				'visiblex' => array('10'),
 
 			),
 
@@ -255,4 +255,5 @@ $this->widget('zii.widgets.grid.CGridView', array(
 		);
 	}
 	?>
+
 </div>

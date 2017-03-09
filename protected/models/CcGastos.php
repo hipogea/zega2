@@ -45,11 +45,11 @@ class CcGastos extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('monto', 'numerical'),
-			array('ceco', 'length', 'max'=>12),
+			array('ceco', 'length', 'max'=>16),
 			array('codmoneda', 'length', 'max'=>3),
 			array('usuario', 'length', 'max'=>25),
 			array('tipo', 'length', 'max'=>1),
-			array('fechacontable,ano,mes,clasecolector, idref', 'safe'),
+			array('fechacontable,codocuref,ano,mes,clasecolector,idetot, idref', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, ceco, fechacontable, monto, codmoneda, usuario, idref, tipo', 'safe', 'on'=>'search'),

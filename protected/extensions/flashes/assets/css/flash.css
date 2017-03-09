@@ -5,27 +5,23 @@
 
 .bloque {
 
- border: 1px solid #e8e6e8;
-    width: 98%;
-    padding: 5px 5px 5px 65px;
-    color: #88604d;
+ /*border: 1px solid #e8e6e8;*/
+    width: 100%;
+    padding: 0px;
+    color: #ec1c1c;
     margin: 0 0 6px 0;
-    background-color: rgba(226, 158, 32, 0.32);
+   /* background-color: rgba(226, 158, 32, 0.32);*/
     font-size: 1.2em;
     font-weight: bold;
-    text-shadow: #ccc 1px 0px 1px;
-    border-radius: 5px;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    -webkit-box-shadow: 11px 11px 5px -7px rgba(0,0,0,0.23);
-    -moz-box-shadow: 11px 11px 5px -7px rgba(0,0,0,0.23);
-    box-shadow: 3px 3px 3px -3px rgba(0,0,0,0.23);
+    text-shadow: #e6a5a5 1px 0px 1px;
+  
 }
 
 
 
 
 .flash-error {
+    text-shadow:none;
     background: url('../img/cancel.png');
     background-position: 20px 5px;
     background-repeat: no-repeat;
@@ -34,15 +30,14 @@
     color: #f99f96;
     margin: 0 0 6px 0;
     background-color: #fff0f0;
-    font-size: 1em;
-    font-weight: bold;
+    font-size: 0.9em;
+    font-weight: normal;
     border-radius: 5px;
-      height: 30px;
 }
 
 
 .flash-success {
-
+    text-shadow:none;
     background: url('../img/check.png');
     background-position:20px 5px;
     background-repeat:no-repeat;
@@ -51,28 +46,38 @@
     color: #9db85d;
     margin: 0 0 6px 0;
     background-color: #ebf8a4;
-    font-size: 1em;
-    font-weight: bold;
+    font-size: 0.9em;
+    font-weight: normal;
     border-radius:5px;
-      height: 30px;
 
 }
 
 
-.flash-notice {
-    background: url(../img/security.png);
-    background-position: 20px 5px;
-    background-repeat: no-repeat;
-    border: 3px solid rgba(245, 121, 0, 0.1);
-    padding: 5px 5px 5px 65px;
-    color: #ea4e01;
-    margin: 0 0 6px 0;
-    background-color: rgba(255, 244, 193, 0.73);
-    font-size: 1em;
-    font-weight: bold;
-    border-radius: 5px;
-    height: 30px;
 
+.flash-notice {
+text-shadow:none;
+background: url('../img/security.png');
+
+background-position:20px 5px;
+
+background-repeat:no-repeat;
+
+border: 1px solid #ffe869;
+
+padding: 5px 5px 5px 65px;
+
+color: #dc8435;
+
+margin: 0 0 6px 0;
+
+background-color: rgba(255, 244, 193, 0.73);
+
+font-size: 0.9em;
+
+font-weight: normal;
+
+border-radius:5px;
+}
 
 
 .flash-regular {
@@ -95,7 +100,7 @@
 }
 
 /* Círculos de colores numerados */
-.flash-errormsg {
+span.errormsg {
     background: #e07979;
     border-radius: 0.8em;
     -moz-border-radius: 0.8em;
@@ -132,7 +137,7 @@ span.grey {
     box-shadow:         2px 2px 1px 0px rgba(50, 50, 50, 0.75);
 }
 
-.flash-successmsg {
+span.successmsg {
     
     background: #99bd90;
     border-radius: 0.8em;
@@ -151,7 +156,7 @@ span.grey {
     box-shadow: 2px 2px 1px 0px rgba(81, 144, 100, 0.75);
     }
 
-.flash-noticemsg {
+span.noticemsg {
     background: #efb31e;
     border-radius: 0.8em;
     -moz-border-radius: 0.8em;
@@ -161,7 +166,7 @@ span.grey {
     font-weight: bold;
     font-size: 1em;
     line-height: 1.6em;
-    margin-right: 2px; 
+    margin-right: 2px;
     margin-left: 2px;
     text-align: center;
     width: 1.6em;
@@ -169,4 +174,3 @@ span.grey {
     -moz-box-shadow:    2px 2px 1px 0px rgba(50, 50, 50, 0.75);
     box-shadow:         2px 2px 1px 0px rgba(50, 50, 50, 0.75);
 }
-

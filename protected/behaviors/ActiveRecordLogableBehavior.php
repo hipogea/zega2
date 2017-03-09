@@ -20,8 +20,21 @@ class ActiveRecordLogableBehavior extends CActiveRecordBehavior
 				} else {
 					$old = '';
 				}
+                                
+                                
+                                ///Para los campos fechas que se modifican con afterfind y beforeSave
+                                if(property_exists($this->Owner,'camposfechas')){
+                                    if(in_array($name,$this->owner->camposfechas)){
+                                        if (strtotime($old.'')==strtotime($value.'')){
+                                            $old=$value;  
+                                        } else{
+                                            $value=yii::app()->periodo->fechaParaMostrar($value);
+                                        }
+                                             
+                                    }
+                                }
 
-				if ($value != $old) {
+				if (($value != $old) ) {
 					//$changes = $name . ' ('.$old.') => ('.$value.'), ';
                                     
                                     
@@ -42,7 +55,7 @@ class ActiveRecordLogableBehavior extends CActiveRecordBehavior
 					//Debemos de evitar loggear campos del tipo memo
 					if(strlen($old) >=16) {
 						$log->oldvalue= substr($old, 0, 16)."...";
-						$log->newvalue= substr($new, 0, 16)."...";
+						$log->newvalue= substr($value, 0, 16)."...";
 					} else {
 						$log->oldvalue= $old;
 						$log->newvalue= $value;

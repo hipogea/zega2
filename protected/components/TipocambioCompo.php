@@ -63,7 +63,7 @@ class TipocambioCompo extends CApplicationComponent
     }
 
     ///es el cambio de $MONEDA->PEN
-    public function getcompra($moneda){
+    public function getcompra($moneda,$fecha=null){
          if(!($moneda==$this->monedadefault)){
           
             if(is_null($fecha)){ // si se trata de una busqueda de cambioa actual 

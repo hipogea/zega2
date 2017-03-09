@@ -168,4 +168,26 @@ class VwOtdetalle extends CActiveRecord
           $id=(integer)MiFactoria::cleanInput($id);
 		return self::model()->find("id=:vid",array(":vid"=>$id));
         }
+         public function suggestot($keyword,$limit=20)
+	{
+		$models=$this->findAll(array(
+			'condition'=>'numero LIKE :keyword',
+			'order'=>'numero',
+			'limit'=>$limit,
+			'params'=>array(':keyword'=>"%$keyword%")
+		));
+		$suggest=array();
+		//$suggest=array(JSON_ENCODE($models[0]),'KFSHFKSIY');
+		foreach($models as $model) {
+			$suggest[] = array(
+				'label'=>$model->numero.'-'.$model->item.'-'.$model->textoactividad,  // label for dropdown list
+				'value'=>$model->numero.'-'.$model->item,  // value for input field
+				//'id'=>$model->id,       // return values from autocomplete
+				//'code'=>$model->code,
+				//'call_code'=>$model->call_code,
+			);
+		}
+		
+		return $suggest;
+	}
 }

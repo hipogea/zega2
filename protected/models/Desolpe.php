@@ -30,6 +30,7 @@ class Desolpe extends ModeloGeneral
 	 public $cantidad_reservada;
       public $cantidad_compras;
 	public $idenfavorito;
+        public $camposfechas=array('fechaent');
 	/**
 	 * @return string the associated database table name
 	 */

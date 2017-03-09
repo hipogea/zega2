@@ -48,8 +48,8 @@ class EMenu extends CMenu
                         
         $basedir = dirname(__FILE__). '/free-css-drop-down-menu';
         $baseUrl = Yii::app()->getAssetManager()->publish($basedir);
-       // echo $baseUrl;
-       // yii::app()->end();
+        //echo $baseUrl;
+        //yii::app()->end();
 
         if($this->themeCssFile == ''){
             switch ($this->theme) {
@@ -79,7 +79,7 @@ class EMenu extends CMenu
         }
 
         Yii::app()->getClientScript()->registerCSSFile($baseUrl.'/css/dropdown/'.$cssFile)
-                                    ->registerCSSFile($baseUrl.'/css/dropdown/themes/'.$this->themeCssFile);
+           ->registerCSSFile($baseUrl.'/css/dropdown/themes/'.$this->themeCssFile);
 
       //  Yii::app()->getClientScript()->registerScriptFile($baseUrl.'/js/jqueryslidemenu.js');
        // Yii::app()->getClientScript()->registerCSSFile($baseUrl.'/css/jqueryslidemenu.css');
@@ -106,8 +106,8 @@ class EMenu extends CMenu
             $count++;
             $options=isset($item['itemOptions']) ? $item['itemOptions'] : array();
             $class=array();
-//            if($item['active'] && $this->activeCssClass!='')
-//                    $class[]=$this->activeCssClass;
+              if($item['active'] && $this->activeCssClass!='')
+                     $class[]=$this->activeCssClass;
             if($count===1 && $this->firstItemCssClass!='')
                 $class[]=$this->firstItemCssClass;
             if($count===$n && $this->lastItemCssClass!='')
@@ -120,15 +120,15 @@ class EMenu extends CMenu
                     $options['class'].=' '.implode(' ',$class);
             }
 
-            if(isset($item['items']) && count($item['items']))
+        if(isset($item['items']) && count($item['items']))
             {
                 if(empty($options['class']))
                     $options['class']=$this->dirCssClass;
                 else
                     $options['class'].=' '.$this->dirCssClass;
             }
-           // $item['linkOptions'] = array_merge((array)$item['linkOptions'], $options);
-
+            $item['linkOptions'] = array_merge((array)$item['linkOptions'], $options);
+ 
             echo CHtml::openTag('li');
 
             $menu=$this->renderMenuItem($item);

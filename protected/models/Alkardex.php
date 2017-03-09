@@ -13,8 +13,9 @@ CONST CODIGO_MOVIMIENTO_SALIDA_AUTOMATICA_RQ='11';
 CONST CODIGO_MOVIMIENTO_ANULA_SALIDA_AUTOMATICA_RQ='12';
 class Alkardex extends ModeloGeneral
 {
+    const COD_DOCU_KARDEX='460';
 
-	private $_cantidadbase =null;
+    private $_cantidadbase =null;
 	private $_punitbase =null;
     //private $_conversionmoneda=null;
 	private $_montobase=null;
@@ -197,18 +198,18 @@ class Alkardex extends ModeloGeneral
 		switch ($this->codmov) {
 			case "10":
 				$this->InsertaAtencionReserva(CODIGO_DOCUMENTO_RESERVA);
-				$ceco = Desolpe::model()->findByPk($this->idref)->imputacion;
+				//$ceco = Desolpe::model()->findByPk($this->idref)->imputacion;
 				//$ceco=$this->updatesolpe()->imputacion;
-				$this->InsertaCcGastos($ceco);
+				$this->InsertaCcGastos(/*$ceco*/);
 				$this->alkardex_alinventario->actualiza_stock($this->codmov, abs($this->cantidadbase()), null, $this->id);
 				$codop='100'; //Consumo interno
 				break;
 
 			case "43":
 				$this->InsertaAtencionReserva(CODIGO_DOCUMENTO_RESERVA);
-				$ceco = Desolpe::model()->findByPk($this->idref)->imputacion;
+				//$ceco = Desolpe::model()->findByPk($this->idref)->imputacion;
 				//$ceco=$this->updatesolpe()->imputacion;
-				$this->InsertaCcGastos($ceco);
+				$this->InsertaCcGastos(/*$ceco*/);
 				$this->alkardex_alinventario->actualiza_stock($this->codmov, abs($this->cantidadbase()), null, $this->id);
 				$codop='101'; //Consumo PARA VENTAS
 				break;
@@ -217,8 +218,8 @@ class Alkardex extends ModeloGeneral
 
 			case "20":
 				$this->InsertaAtencionReserva(CODIGO_DOCUMENTO_RESERVA);
-				$ceco = Desolpe::model()->findByPk($this->idref)->imputacion;
-				$this->InsertaCcGastos($ceco);
+				///$ceco = Desolpe::model()->findByPk($this->idref)->imputacion;
+				$this->InsertaCcGastos(/*$ceco*/);
 				$this->alkardex_alinventario->actualiza_stock($this->codmov, abs($this->cantidadbase()), null, $this->idotrokardex);
 				$codop='100'; //Consumo interno
 				break;
@@ -294,7 +295,7 @@ class Alkardex extends ModeloGeneral
 
 			case "79":
 				//$this->preciounit = $this->getMonto();
-				$this->InsertaCcGastos($this->colector);
+				$this->InsertaCcGastos(/*$this->colector*/);
 				//$this->$this->alkardex_alinventario->detallesmaterial()['precioventa'];
 				$this->alkardex_alinventario->actualiza_stock($this->codmov, abs($this->cantidadbase()), null , $this->id);
 
@@ -320,8 +321,8 @@ class Alkardex extends ModeloGeneral
 			case "81":
 				$this->preciounit = $this->getMonto();
 				$this->InsertaAtencionReserva();
-				$ceco = Dpeticion::model()->findByPk($this->idref)->imputacion;
-				$this->InsertaCcGastos($ceco);
+				//$ceco = Dpeticion::model()->findByPk($this->idref)->imputacion;
+				$this->InsertaCcGastos(/*$ceco*/);
 				$this->alkardex_alinventario->actualiza_stock($this->codmov, abs($this->cantidadbase()), null);
 				$codop='101'; //Comsumo par aventyas
 				break;
@@ -355,16 +356,17 @@ class Alkardex extends ModeloGeneral
 			case "68": //Ingreso de actividad
 				$this->InsertaAlentregasCompras();
                             $this->InsertaCcGastosServ();
-				$this->InsertaCcGastos($this->getcolector());
+				//$this->InsertaCcGastos($this->getcolector());
 				//$this->alkardex_alinventario->actualiza_stock($this->codmov,abs($this->cantidadbase()));
-				$codop='575'; //Comsumo par aventyas
+				$codop='575'; //Ingreso de actividad
 				break;
 
 			case "86": //Anular Ingreso de actividad
 				$this->InsertaAlentregasCompras();
-				$this->InsertaCcGastos($this->getcolector());
+				 $this->InsertaCcGastosServ();
 				//$this->alkardex_alinventario->actualiza_stock($this->codmov,abs($this->cantidadbase()));
-				break;
+				$codop='575'; //ingresod e actividad
+                                 break;
 
 			case "54": //ANULA EL INGRESO DEL TRASLADO
 				$thisoriginal = Alkardex::model()->findByPk($this->idref); ///cone sto busca el kardex del almacen emisor
@@ -413,7 +415,7 @@ class Alkardex extends ModeloGeneral
 
 					$codop='645';
 				}else{
-					MiFactoria::Mensaje('error', $this->identidada().'  No se puede reingresar mas de lo que se atendio');
+					MiFactoria::Mensaje('error', $this->identidada().'  No se puede reingresar [ '.abs($kardorigen->cant).' ]  mas de lo que se atendio  ['.$kardorigen->reingreso_cant.'] ');
 
 				}
 
@@ -450,6 +452,7 @@ class Alkardex extends ModeloGeneral
 			}else{ //Si es una mateiral es automatico
 				$grupo=$this->maestrodetalle->catval;
 			}
+                       // echo $this->codart;echo $codop;echo$grupo;
 			yii::app()->librodiario->asiento($this->id,$this->coddoc,$codop,$grupo,$this->fecha,
 				$this->numdocref,$this->alkardex_almacenmovimientos->movimiento,$this->montomovido);
 
@@ -835,22 +838,49 @@ class Alkardex extends ModeloGeneral
 
 	}
 
-	public function InsertaCcGastos($ceco)
+	public function InsertaCcGastos($ceco=null)
 	{
 		//$row=self::CargaModelo('Alkardex',$idkardex);
 		//$row=$filakardex;
 		$model = new CcGastos();
-		$model->ceco = $ceco;
+		
 		$model->fechacontable = $this->fecha;
-		if ($this->esservicio()) {
-			$signo = 1;
-		} else {
+                if(is_null($ceco)){ //sie slibre buscar el ceco 
+                   $desolpe=Desolpe::model()->findByPk($this->idref);
+                    $tipoimputacion=$desolpe->tipimputacion;
+                   // var_dump($desolpe->attributes);
+                    $colector=$desolpe->imputacion;
+                    //var_dump($desolpe->tipimputacion);die();
+                    //$idref=$desolpe->hidot;
+                    
+                    if($tipoimputacion=='T')//ORDEN DE SERVICIO{
+                                {  $model->codocuref='890';
+                                   // $model->idref=$idref; 
+                                    $colector=$desolpe->ot->numero;unset($desolpe); 
+                                     }ELSEIF($tipoimputacion=='K'){
+                                        $model->codocuref=self::COD_DOCU_KARDEX;
+                                        // $model->idref=$this->id; 
+                                     }
+                        //$model->idref=$this->id; 
+                      $model->ceco=$colector;
+                } else{ //si es nulo entonces las cosas siguen como antes , n se modifica nada 
+                   // $tipoimputacion='K';
+                     $model->codocuref=self::COD_DOCU_KARDEX;
+                    $model->ceco=$ceco;
+                     
+                }
+		
 			$signo = -1;
-		}
+		$model->idref=$this->id;
 		$model->monto = $signo * $this->montomovido; ///ok
 		$model->iduser = Yii::app()->user->id;
 		$model->tipo = 'M';
-		$model->idref = $this->id;
+               // $model->ceco = $colector;
+                
+                
+                 
+		//$model->idref = $this->id;
+               // $model->codocuref=self::COD_DOCU_KARDEX;
 		//print_r($model->attributes);die();
 		if (!$model->save())
 			throw new CHttpException(500, "NO se Pudo insertar el registro de Costos ");
@@ -1508,6 +1538,16 @@ class Alkardex extends ModeloGeneral
             }
             
             
-        }          
-          
+        } 
+        
+        
+        //esta funcion verifica si existe un registro maestro 
+        // de kardex para poder cumplir con la regla de normalizacion
+        // ena laltabla de CCGASTOS , esto apra el caso de gastos de caja chica 
+        // que no tienen movim,ietnos de kardex formales.
+        ///por esto se ccrea un registro oculto de KARDEX para cumplir la nirmlizacion
+    
+     public function existeregistromaestrocajachica()   {
+         
+     }  
 }

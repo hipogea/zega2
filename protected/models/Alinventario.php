@@ -722,6 +722,8 @@ public function getstockTotalmaterial($codmaterial,$adatos=null){
 
 
 	protected function verificaconsistencia_stock($nombrecampostockorigen, $cant){
+            Yii::log('Alinventario verificaconsistencia_stock( nombrecampostockorigen='.$nombrecampostockorigen.','.$cant.'  ): ', CLogger::LEVEL_TRACE);      
+
 		$retorno=false;
 		foreach ($this->camposstock as $clave=>$valor ) {
 			if($clave==$nombrecampostockorigen){
@@ -758,12 +760,11 @@ public function getstockTotalmaterial($codmaterial,$adatos=null){
  {
 
 
+                 Yii::log('Alinventario actualiza_stock()_: id='.$this->id.'  codmov='.$codmov.' cant='.$cant.' idkardex='.$idkardex, Clogger::LEVEL_INFO);      
 
-
-	//echo "movimiento ". $codmov."      id invnetario  :     ". $this->id."<br>";
 		   $retorno=false;
-	// echo "salio ";
 	 if($cant > 0){
+            
 		 $modelomov=Almacenmovimientos::model()->findByPk($codmov);
 	   $signo=$modelomov->signo;
 		 $campo=$modelomov->campoafectadoinv;
@@ -771,7 +772,9 @@ public function getstockTotalmaterial($codmaterial,$adatos=null){
 		 if($signo < 0){
 		 	if($this->verificaconsistencia_stock($campo,$cant))
 		     {
-				 $this->{$campo}+= $signo*$cant;
+				 Yii::log('Alinventario verifico consisitencia stock, signo menor que cero ', CLogger::LEVEL_INFO);      
+
+                            $this->{$campo}+= $signo*$cant;
 				 //REPOSICION DE STOCKS
 				 $this->reposicionauto();
 				 $retorno=true;
@@ -816,7 +819,7 @@ public function getstockTotalmaterial($codmaterial,$adatos=null){
 							     $retorno=true;
 							  if($this->eslifofifo() )
 							   if(!$this->verificaconsistencialotes()){
-								  $regkardex=Alkardex::model()->findByPK($idkardex);
+								 // $regkardex=Alkardex::model()->findByPK($idkardex);
 								 // VAR_DUMP($regkardex->attributes);
 								  // var_dump($this->attributes);
 								 //  var_dump($this->lotesfifo);
@@ -1333,13 +1336,21 @@ public function refrescapreciolote(){
 	*******************************************/
 
 	public function reconstruyelote($hidkardex){
+            yii::log('*****funcion reconstruye lotes() ....*** ', CLogger::LEVEL_INFO);
 		//verificando la cantida que se despacho
 		$regkardex=Alkardex::model()->findByPk($hidkardex);
+                yii::log('El kardex en esta funcion es  '.$hidkardex, CLogger::LEVEL_INFO);
 		if(!is_null($regkardex)){
 			$cantidadareponer=$regkardex->cant;unset($regkardex);
+                         yii::log('La cantidad a reponer es   '.$cantidadareponer, CLogger::LEVEL_INFO);
+		
 			$registros=Dlote::model()->findAll("hidkardex=:vkardex  ",array(":vkardex"=>$hidkardex));
 			//var_dump($hidkardex);var_dump($registros);yii::app()->end();
- 			foreach($registros as $registro){
+ 			 yii::log('Se encontraron   '.count($registros).'    Registros DLOTE', CLogger::LEVEL_INFO);
+		
+                        foreach($registros as $registro){
+                             yii::log('en el for  de DLOTE   '.$registro->cant, CLogger::LEVEL_INFO);
+		
 				$registro->lote->setScenario('reconstruye');
 					$registro->lote->cant+=$registro->cant;
 				    $registro->delete();
@@ -1464,9 +1475,10 @@ private function verificaconsistencialotes(){
 	/*var_dump($this->oldAttributes);
 var_dump($this->attributes);*/
 	//var_dump($this->loteslifo);die();
-	//VAR_DUMP($this->totallote);VAR_DUMP($this->getstockregistro());die();
+	//VAR_DUMP($this->totallote);VAR_DUMP($this->getstockregistro());
 	if($this->totallote > 0){
 		$diferenciacantidad=abs($this->totallote-$this->getstockregistro());
+                //VAR_DUMP($diferenciacantidad);die();
 		if($diferenciacantidad/$this->getstockregistro() > $this->almacen->tolstockres){
 			//echo 'La sumatoria del stock ('.$matriz[0]['scant'].') del  lote   no coincide con el stock ('.$valor.'=>'.$this->getstockregistro().') del registro inventario ('.$this->id.')  ';die();
 			//VAR_DUMP($this->almacen->tolstockres);VAR_DUMP($diferenciacantidad/$this->getstockregistro());
@@ -1488,29 +1500,38 @@ var_dump($this->attributes);*/
 
 	public function tratalotes($cant,$codmov,$idkardex,$tipovaloracion=null)
 	{
-			if (is_null($tipovaloracion))
+		yii::log('tratando lotes ', CLogger::LEVEL_INFO);
+            if (is_null($tipovaloracion))
 			$tipovaloracion = $this->maestrodetalle->controlprecio;
 		if ($this->eslifofifo()) {
+                    yii::log('ohh eS LIFO FIFO ... ', CLogger::LEVEL_INFO);
 				/*verificando el signo*/
 				$modelomov = Almacenmovimientos::model()->findByPk($codmov);
 				$campo = $modelomov->campoafectadoinv;
 				$campodestino = $modelomov->campodestino;
 				$signo = $modelomov->signo;
+                                 yii::log('El movimiento es ['.$codmov.']', CLogger::LEVEL_INFO);
+			
 				//$lotes = $this->lotesporcampo($campo);
 				if ($signo > 0) {
 					/*var_dump($modelomov);
 					var_dump($modelomov->anticodmov);
 					var_dump(Almacenmovimientos::model()->findByPk($modelomov->anticodmov));die();*/
 					if (Almacenmovimientos::model()->findByPk($modelomov->anticodmov)->esconsumo == '1') {
-						$this->reconstruyelote($idkardex);
-
+						//VAR_DUMP($codmov);VAR_DUMP($modelomov->anticodmov);
+                                            yii::log('El movimiento opuesto a ['.$codmov.']  es ['.$modelomov->anticodmov.'] y es CONSUMO    ', Clogger::LEVEL_INFO);
+                                            $this->reconstruyelote($idkardex);
+                                             yii::log('SE  RECNSTRUYO LE LOTE  ', CLogger::LEVEL_INFO);
+                                           
+                                                   // ECHO "RECONS "; DIE();
 					} else {
 						IF($modelomov->idevento=='71'){ //Si es un movimiento de anulacion
+                                                    yii::log('Movimiento 71 DE ANUALCION ', CLogger::LEVEL_INFO);
 							$this->reconstruyelote($idkardex);
+                                                         yii::log('SE  RECNSTRUYO LE LOTE  ', CLogger::LEVEL_INFO);
 							//echo " op1k  <b> ".$codmov;die();
 						}ELSE{
-							//echo " op1  <b>";die();
-							//var_dump($idkardex);die();
+							 yii::log('SE CREA EL LOTE ', CLogger::LEVEL_INFO);
 							$this->crealote($idkardex);
 						}
 

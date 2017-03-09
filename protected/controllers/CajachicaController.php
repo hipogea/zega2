@@ -43,7 +43,7 @@ const ESTADO_DETALLE_CAJA_CREADO='10';
 		return array(
 
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('liquidadeuda',   'ajaxRevierteCaja',    'creadevolucionfondo',   'ajaxreviertedetalle', 'ajaxconfirmadetalle',   'ajaxanuladetalle',       'ajaxabredetalle',   'ajaxcierradetalle',   'cierracaja','cargaimputacion','admin','view','create','borraitems','aprobaritem','update','creadetalle','actualizadetalle'),
+				'actions'=>array('ajaxrefrescawidget',   'updatececos',      'salir','admin','anularcaja','liquidadeuda',   'ajaxRevierteCaja',    'creadevolucionfondo',   'ajaxreviertedetalle', 'ajaxconfirmadetalle',   'ajaxanuladetalle',       'ajaxabredetalle',   'ajaxcierradetalle',   'cierracaja','cargaimputacion','admin','view','create','borraitems','aprobaritem','update','creadetalle','actualizadetalle'),
 				'users'=>array('@'),
 			),
 
@@ -260,6 +260,8 @@ const ESTADO_DETALLE_CAJA_CREADO='10';
 			$model->codestado='10';
             $model->codocu=$this->documento;
 			if($model->save()){
+                            $model->refresh();
+                            $model->heredagastos();
 				$this->redirect(array('update','id'=>$model->id));
 			}
 		}
@@ -562,7 +564,9 @@ PUBLIC FUNCTION actioncargaimputacion (){
                    throw new CHttpException(500,'NO se encontro el registro con el id '.$id);  
                } 
              if($registro->codestado==self::ESTADO_DETALLE_CAJA_ANULADO ){
-                 if($registro->haber=0){
+                 $registropadre= Dcajachica::model()->findByPk($registor->hidcargo);
+                 if(in_array($registropadre->codestado,array(self::ESTADO_DETALLE_CAJA_CERRADO,self::ESTADO_DETALLE_CAJA_CONFIRMADO))){
+                 if(!($registro->haber=0)){
                      $registro->setScenario('estado');
                         $registro->codestado=self::ESTADO_DETALLE_CAJA_CERRADO;
                              if($registro->save()){
@@ -573,7 +577,9 @@ PUBLIC FUNCTION actioncargaimputacion (){
                  }else{
                      echo "Este registro anulado ya se liquido, con efectivo ya no puede liquidar la deuda";
                  }
-                         
+                 }else{
+                     echo "El fondo cargo a rendir ya esta cerrado no puede revertir la anulacion";
+                 }         
              }else{
                  echo "Este registro no puede ser RESTABLECIDO PORQUE  no esta anulado";
              }
@@ -590,12 +596,19 @@ PUBLIC FUNCTION actioncargaimputacion (){
                
             IF(!($registro->tipoflujo==self::TIPO_DE_FLUJO_A_RENDIR))
                  throw new CHttpException(500,'Este registro no puede recibir efectivo, no es un cargo a rendir '.$id);  
-          $model=New Dcajachica();
+          IF(!($registro->codestado==self::ESTADO_DETALLE_CAJA_CERRADO))
+                 throw new CHttpException(500,'Este registro no se ha cerrado , antes de liquidar con efectivo por favor cierrelo '.$id);  
+         
+            
+            $model=New Dcajachica();
           $montosugerido=$registro->monto-$registro->rendido;
           $model->setScenario('devuelve');
           $this->layout="//layouts/iframe";
        if ( isset( $_POST['Dcajachica'] ) ) {
-				
+           $model->attributes=$_POST['Dcajachica'];
+           //var_dump($model->getScenario());
+        
+				//var_dump ($_POST['Dcajachica']);die();
 				 $model->setScenario('insert');
                                     $model->setAttributes(array(
                                             'hidcaja'=>$registro->hidcaja,
@@ -617,30 +630,8 @@ PUBLIC FUNCTION actioncargaimputacion (){
                                                'razon'=>'PULPO',
                                             ));
                                     $model->save();
-                                   //var_dump( $model->attributes); $model->save();var_dump( $model->attributes); die();
-                                    $modelo2=New Dcajachica();
-                                    $modelo2->setScenario('insert');
-                                      $modelo2->setAttributes(array(
-                                            'hidcaja'=>$registro->hidcaja,
-                                            'hidcargo'=>null,
-                                            'monto' =>-1*$_POST['Dcajachica']['monto'],
-                                            'fecha' =>-1*$_POST['Dcajachica']['fecha'],
-                                             'glosa'=>'Dev efectivo :'. substr($registro->glosa,0,20),
-                                            'referencia'=>$registro->referencia,
-                                              'debe'=>-1*$_POST['Dcajachica']['monto'],
-                                                'haber'=>-1*$_POST['Dcajachica']['monto'],
-                                               'monedahaber'=>yii::app()->settings->get('general','general_monedadef'),
-                                               'codtra'=>$registro->codtra,
-                                              'tipoflujo'=>self::TIPO_DE_FLUJO_FONDO,
-                                              'codestado'=>self::ESTADO_DETALLE_CAJA_CONFIRMADO,
-                                                'serie'=>$registro->serie,
-                                              'tipodocid'=>$registro->tipodocid,
-                                             'codocu'=>$registro->codocu,
-                                            'numdocid'=>$registro->numdocid,
-                                               'razon'=>'CALAMAR',
-                                            ));
-                                      $modelo2->save();
-                                      //var_dump($model->attributes); var_dump($modelo2->attributes);
+                                 
+                                     // var_dump($model->attributes); var_dump($modelo2->attributes);
                                    
                                        if ( ! empty( $_GET['asDialog'] ) ) {
 						//Close the dialog, reset the iframe and update the grid
@@ -650,7 +641,7 @@ PUBLIC FUNCTION actioncargaimputacion (){
 					
 				Yii::app()->end();	
 			} 
-                        
+          
                          }
         $this->render("_form_devolucion",array("model"=>$model,"montosugerido"=>$montosugerido));   
   
@@ -668,13 +659,22 @@ PUBLIC FUNCTION actioncargaimputacion (){
                } 
              IF($registro->cabecera->codestado==self::ESTADO_CREADO){
              if($registro->codestado==self::ESTADO_DETALLE_CAJA_CERRADO ){
-                          $registro->setScenario('estado');
+                  if($registro->tipoflujo==self::TIPO_DE_FLUJO_A_RENDIR and
+                          $registro->devoluciones> 0 ){
+                        echo 'Este cargo a rendir tiene liquidACIONES Y NO PUEDE REVERTIR SUS ESTADO ';  
+               
+                  }ELSE{
+                      $registro->setScenario('estado');
                         $registro->codestado=self::ESTADO_DETALLE_CAJA_CREADO;
                              if($registro->save()){
                                     echo "Se ha RESTABLECIDO el registro ";
                                 }else{
                                     echo yii::app()->mensajes->getErroresIrem($registro->geterrors());
                             }
+                  }
+                  
+                  
+                          
              }else{
                  echo "Este registro no puede ser RESTABLECIDO PORQUE  no esta cerrado";
              }
@@ -767,4 +767,114 @@ PUBLIC FUNCTION actioncargaimputacion (){
        
        
    }
+   
+   public function actionanularcaja($id){
+         $id=(Integer) MiFactoria::cleanInput($id);
+       $caja= $this->loadModel($id);
+       if(isset($_POST['Cajachica'])){
+           $this->redirect(array('update','id'=>$caja->id));
+          yii::app()->end();
+       }else{
+        
+       if(in_array($caja->codestado,array(self::ESTADO_PREVIO,self::ESTADO_CREADO))){
+            if($caja->hijosconproceso==0){
+                
+                $caja->setScenario('estado');
+                $caja->codestado=self::ESTADO_DETALLE_CAJA_ANULADO;
+                $caja->save();
+                 MiFactoria::mensaje('success','Se anulo la caja'); 
+           
+            }else{
+               
+               MiFactoria::mensaje('error','Esta caja no puede cerrarse porque ya hay registros hijos confirmados o cerrados'); 
+            }
+           
+       }else{
+          
+           MiFactoria::Mensaje('error','Este estado no permite anular la caja');
+       } 
+        $this->render('update',array('model'=>$caja));
+       yii::app()->end();
+       }
+       
+       //var_dump(Yii::app()->user->getFlashes(false));
+      
+   }
+   
+    public function actionsalir($id){
+		$this->out($id);
+		$this->redirect(array('admin'));
+	} 
+        
+        
+     public function actionupdatececos($id)
+        {
+             $id=(integer) MiFactoria::cleanInput($id);
+           $caja=$this->loadModel($id);
+                $items= $caja->dcajachicas;//los hijos 
+              //  foreach ($items as $item)
+                   
+                 
+                 if(isset($_POST['Dcajachica']))
+                        {
+                            //echo "saliomm "; die();
+                            $valid=true;
+                             $transaccion=$items[0]->dbConnection->beginTransaction();
+                             $errores=array();
+                                 foreach($items as $i=>$item)
+                                         {
+                                     
+                                      $item->setScenario('imputaciones');
+                                     //var_dump($item->getScenario($item)); die();
+                                        if(isset($_POST['Dcajachica'][$i])){
+                                                $item->attributes=$_POST['Dcajachica'][$i];
+                                              
+                                               // var_dump($item->attributes);
+                                                //var_dump($item->geterrors());var_dump($item->getScenario($item));die();
+                                               //if($item->esimputable()) //solo los impútables
+                                                if($item->validate()){
+                                                        if($item->montoimputado!=0)
+                                                        $item->save();
+                                                         }else{
+                                                            $errores[]=$item->geterrors();
+                                                            }
+                                                 }
+                
+                                        }
+                                    if(count($errores)==0){
+                                        $transaccion->commit();
+                                        MiFactoria::Mensaje('success','Se grabaron los registros');
+                                        $this->redirect(array('update','id'=>$id));
+                                        
+                                    }else{
+                                            $transaccion->rollback(); 
+                                            MiFactoria::Mensaje('error',' NO Se grabaron los registros');
+                                       
+                                        }
+             }
+          
+    // displays the view to collect tabular input
+    $this->render('imputacionmasiva',array('items'=>$items,'model'=>$caja));
+           
+            
+        }    
+        
+        
+      public function actionajaxrefrescawidget(){ ///regresa del estado anulado al estado cerrado
+       if(yii::app()->request->isAjaxRequest){  
+            if(isset($_POST['i']) and isset($_POST['valor']) and isset($_POST['valor']) ){
+              $i=(integer) MiFactoria::cleanInput ($_POST['i']);
+               $valor=MiFactoria::cleanInput ($_POST['valor']);
+               $campo=MiFactoria::cleanInput ($_POST['campo']);
+               $this->renderpartial('zonaimputacion',
+                       array('i'=>$i,
+                           'valor'=>$valor,
+                           'campo'=>"[$i]ceco"),
+                       false,true);
+               
+            }
+              
+            
+         }
+      }
 }

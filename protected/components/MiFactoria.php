@@ -405,14 +405,25 @@ public static function InsertaCcGastos($filakardex){
          $desolpe=self::CargaModelo('Desolpe',$docompra->iddesolpe);      
         $desolpe->setScenario('punitreal');
         $desolpe->punitreal=$docompra->alkardex_gastos;
-        $desolpe->save();unset($desolpe);unset($docompra);
+        $tipoimputacion=$desolpe->tipimputacion;
+        $desolpe->save();unset($docompra);
+        if($tipoimputacion=='T')//ORDEN DE SERVICIO{
+        {  $model->codocuref='890';
+              $model->idref=$desolpe->hidot; 
+        }ELSEIF($tipoimputacion=='K'){
+            $model->codocuref='460';
+             $model->idref=$row->id; 
+        }
+         unset($desolpe);   
+        
+            
         $model=new CcGastos();
         $model->ceco=$desolpe->imputacion;
         $model->fechacontable=$row->fecha;
-        $model->monto=-1*$row->getMonto(); ///Es el opuesto de todo
+        $model->monto=$row->getMonto(); ///Es el opuesto de todo
         $model->iduser=Yii::app()->user->id;
         $model->tipo='S';
-        $model->idref=$row->id;
+      
         if(!$model->save())
             throw new CHttpException(500,"NO se Pudo insertar el registro de Costos ");
       //  self::Mensaje('success','Se inserta los gastos  '.$model->monto.'  al ceco '.self::CargaModelo('Desolpe',$row->idref)->imputacion);

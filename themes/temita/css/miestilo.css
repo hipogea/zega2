@@ -53,14 +53,15 @@ div.form.division
 }
 .division
 {
-  border-radius:0px 5px 10px 10px;
+ /* border-radius:0px 5px 10px 10px;*/
   -moz-border-radius:0px 5px 10px 10px; /* Firefox */
   -webkit-border-radius:0px 5px 10px 10px; /* Safari y Chrome */
    border-color: #bcbcbc;
    border :1px; 
+   background-color:#ace4ff;
  /*background: url(images/fondo.jpg);*/
  /*background: linear-gradient(to top,#fff 0,#f1f1f1 100%);*/
-        background: linear-gradient(to top,#f3f5fd 0,#e1e2e2 100%);
+        /*background: linear-gradient(to top,#f3f5fd 0,#e1e2e2 100%);
   /*border:1px solid #bbb;*/
   margin : 0px;
   padding: 5px;

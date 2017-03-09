@@ -354,4 +354,26 @@ public  function  resumenCostosPorCeCo($temp=false){
         public function getNextItemRecurso(){
             return str_pad($this->nrecursos+1,3,"0",STR_PAD_LEFT); 
         }  
+        
+      public function listaitems(){
+          return yii::app()->db->createCommand()->
+                  select('t.item')->
+                  from('{{detot}} t')-> 
+                  where('hidorden=:vid',array(":vid"=>$this->id))-> 
+                  queryColumn();
+      }
+      
+      public function getid($item){
+          $valores=yii::app()->db->createCommand()->
+                  select('t.id')->
+                  from('{{detot}} t, {{ot}} a')-> 
+                  where('  a.id=t.hidorden and a.id=:vid and t.item=:vitem',array(":vid"=>$this->id, ":vitem"=>$item))-> 
+                  queryAll();
+          if(count($valores)>0){
+              return $valores[0]['id']+0;              
+          }else{
+              return null;
+          }
+      }
+        
 }

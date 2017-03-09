@@ -35,25 +35,8 @@
 					),
 
 
+						
 					'ok'=>array(
-				'type'=>'D',
-				'ruta'=>array($this->id.'/cierracaja',array("id"=>$model->id)),
-				'opajax'=>array(
-					'type'=>'GET',
-					'url'=>Yii::app()->createUrl($this->id.'/cierracaja',array("id"=>$model->id)),
-					'success'=>"function(data) {
-                                              $.fn.yiiGridView.update('detalle-grid'); 
-                                              $.growlUI('Growl Notification', data,2400);                                             
-                                                return false;
-                                        }",
-				
-                                   
-				),
-				'visiblex'=>array($this::ESTADO_CREADO,$this::ESTADO_AUTORIZADO,  $this::ESTADO_ANULADO),
-
-			),
-					
-					'undo'=>array(
 						'type'=>'B',
 						'ruta'=>array($this->id.'/cierracaja',array('id'=>$model->id)),
 						'visiblex'=>array($this::ESTADO_CREADO,$this::ESTADO_AUTORIZADO,  $this::ESTADO_ANULADO),
@@ -62,8 +45,8 @@
 					
 					'tacho'=>array(
 						'type'=>'B',
-						'ruta'=>array($this->id.'/procesardocumento',array('id'=>$model->id,'ev'=>35)),
-						'visiblex'=>array($this::ESTADO_CREADO),
+						'ruta'=>array($this->id.'/anularcaja',array('id'=>$model->id)),
+						'visiblex'=>array($this::ESTADO_CREADO,$this::ESTADO_PREVIO),
 
 					),
 					
@@ -157,7 +140,7 @@
 			'ordencampo'=>1,
 			'controlador'=>$this->id,
 			'relaciones'=>$model->relations(),
-			'tamano'=>6,
+			'tamano'=>2,
 			'model'=>$model,
 			'form'=>$form,
 			'nombredialogo'=>'cru-dialog3',
@@ -166,7 +149,7 @@
 		)); ?>
 
 		<?php }else{?>
-			<?php echo $form->textField($model,'hidfondo',ARRAY('size'=>6,'disabled'=>'disabled')); ?>
+			<?php echo $form->textField($model,'hidfondo',ARRAY('VALUE'=>$model->fondo->desfondo,'size'=>26,'disabled'=>'disabled')); ?>
 
 		<?php }?>
 		<?php echo $form->error($model,'hidfondo'); ?>
@@ -185,7 +168,7 @@
 			'ordencampo'=>1,
 			'controlador'=>$this->id,
 			'relaciones'=>$model->relations(),
-			'tamano'=>6,
+			'tamano'=>4,
 			'model'=>$model,
 			'form'=>$form,
 			'nombredialogo'=>'cru-dialog3',
@@ -199,24 +182,11 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'hidperiodo'); ?>
-<?php if($model->isNewRecord) {?>
-		<?php
-		$this->widget('ext.matchcode.MatchCode',array(
-	'nombrecampo'=>'hidperiodo',
-	'ordencampo'=>3,
-	'controlador'=>$this->id,
-	'relaciones'=>$model->relations(),
-	'tamano'=>6,
-	'model'=>$model,
-	'form'=>$form,
-	'nombredialogo'=>'cru-dialog3',
-	'nombreframe'=>'cru-frame3',
-	'nombrearea'=>'fhdfj',
-	)); ?>
-		<?php }else{?>
-			<?php echo $form->textField($model,'hidperiodo',ARRAY('size'=>6,'disabled'=>'disabled')); ?>
-
-		<?php }?>
+<?php 
+$datos1 = CHtml::listData(Periodos::model()->findAll("activo='1'"),'id','desperiodo');
+		  	echo $form->DropDownList($model,'hidperiodo',$datos1, array('empty'=>'--SelecciXone un Periodo--',
+				 ) ) ;
+?>
 		<?php echo $form->error($model,'hidperiodo'); ?>
 	</div>
 
@@ -242,7 +212,7 @@
 				'dateFormat'=>'yy-mm-dd',
 			),
 			'htmlOptions'=>array(
-				'style'=>'width:60px;vertical-align:top',
+				'style'=>'width:80px;vertical-align:top',
 				'readonly'=>'readonly',
 			),
 		)); ?>
@@ -264,7 +234,7 @@
 				'dateFormat'=>'yy-mm-dd',
 			),
 			'htmlOptions'=>array(
-				'style'=>'width:60px;vertical-align:top',
+				'style'=>'width:80px;vertical-align:top',
 				'readonly'=>'readonly',
 			),
 		)); ?>
@@ -290,7 +260,7 @@
 
  <div class="row">
 		<?php echo CHtml::label('Rendido','Rendido'); ?>
-		<?php echo CHtml::openTag("span",array("class"=>"label badge-error")).$model->rendido().Chtml::closeTag("span"); ?>
+		<?php echo CHtml::openTag("span",array("class"=>"label badge-error")).$model->monto_rendido.Chtml::closeTag("span"); ?>
 		
 	</div>
 

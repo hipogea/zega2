@@ -169,14 +169,22 @@ public function estadentroperiodosactivos($fecha,$verificatolerancia=false){
         //$fecha=$this->toISO($fecha);
         //return date_format(date_create($fecha), yii::app()->settings->get->general('general','general_formatofechasalida'));
    // }else{
-       return date( yii::app()->settings->get('general','general_formatofechasalida'),  strtotime($this->toISO($fecha).''));
-   // 
+       $valor= date( yii::app()->settings->get('general','general_formatofechasalida'),  strtotime($this->toISO($fecha).''));
+        if(strlen(trim($fecha))==10){
+            return substr($valor,0,10);
+        }else{
+            if (substr(trim($fecha),11,8)=='00:00:00')
+                    return substr($valor,0,10);
+            return $valor;
+        }
+// 
     }
     
   
   
   PUBLIC function toISO($fecha){
-      if(strlen(trim($fecha)."")==19){//se trata de un datetime
+      if(strlen(''.$fecha)>0){
+         if(strlen(trim($fecha)."")>10){//se trata de un datetime
           $valor= $this->validaformatos(substr(trim($fecha)."", 0, 10));
         if($valor){
            if($this->validahoras(substr(trim($fecha),11,8))){
@@ -185,27 +193,40 @@ public function estadentroperiodosactivos($fecha,$verificatolerancia=false){
               $valor=false; 
            }
         }
+       
       }
       if(strlen(trim($fecha)."")==10){//se trata de un date
        $valor=  $this->validaformatos(trim($fecha));  
+      
+      }
+      if($valor){
+          return $valor;
+          
+      }
+      else{
+          return '';
+          //throw new CHttpException(500,__CLASS__.' El formato de la fecha ['.$fecha.'] No es el adecuado o n esta permiitdo en la aplicación');
+         }
+      }else{
+          return '';
       }
       
-       if($valor){return $valor;}else{throw new CHttpException(500,__CLASS__.' El formato de la fecha ['.$fecha.'] No es el adecuado o n esta permiitdo en la aplicación');
-         }
+      
+       
      
   }
 
    public function validaformatos($fecha){
-      if(preg_match('/[0-3]{1}[0-9]{1}\/[0-1]{1}[0-9]{1}\/[0-9]{4}/', $fecha)){//FORMATO  12/04/1989
+        if(preg_match('/[0-3]{1}[0-9]{1}\/[0-1]{1}[0-9]{1}\/[1-2]{1}[0|9]{1}[0-9]{2}$/', $fecha)){//FORMATO  12/04/1989
                $retazos=explode("/",$fecha);//print_r($retazos);
-                return $retazos[2]."-".$retazos[1]."-".$retazos[0];
+               return $retazos[2]."-".$retazos[1]."-".$retazos[0];
           } 
-     elseif(preg_match ('/[0-3]{1}[0-9]{1}\-[0-1]{1}[0-9]{1}\-[0-9]{4}/', $fecha)){//FORMATO  12-04-1989
+     elseif(preg_match ('/[0-3]{1}[0-9]{1}\-[0-1]{1}[0-9]{1}\-[1-2]{1}[0|9]{1}[0-9]{2}$/', $fecha)){//FORMATO  12-04-1989
         $retazos=explode("-",$fecha);
-         return $retazos[2]."-".$retazos[1]."-".$retazos[0];
-     }elseif(preg_match ('/[0-9]{4}\/[0-1]{1}[0-9]{1}\/[0-3]{1}[0-9]{1}/', $fecha)){ //FORMATO 1989/04/02
-         return preg_replace('/\//', "-", $fecha);
-     }elseif(preg_match ('/[0-9]{4}\-[0-1]{1}[0-9]{1}\-[0-3]{1}[0-9]{1}/',$fecha)){//FORMATO 1989-04-02
+        return $retazos[2]."-".$retazos[1]."-".$retazos[0];
+     }elseif(preg_match ('/[1-2]{1}[0|9]{1}[0-9]{2}\/[0-1]{1}[0-9]{1}\/[0-3]{1}[0-9]{1}$/', $fecha)){ //FORMATO 1989/04/02
+        return preg_replace('/\//', "-", $fecha);
+     }elseif(preg_match ('/[1-2]{1}[0|9]{1}[0-9]{2}\-[0-1]{1}[0-9]{1}\-[0-3]{1}[0-9]{1}$/',$fecha)){//FORMATO 1989-04-02
         return $fecha; 
      }else{
          return false;

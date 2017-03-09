@@ -74,7 +74,7 @@ class Maestrocompo extends ModeloGeneral
 			// Please remove those attributes that should not be searched.
 			array('codigo, marca, modelo, nparte, um, descripcion,esrotativo,  codtipo', 'safe', 'on'=>'insert'),
                     array('codigo, marca, modelo, nparte, um, descripcion,codtipo', 'safe', 'on'=>'update'),
-			array('codigo, marca, modelo, nparte, codpadre, um,esrotativo, descripcion, detalle, clase, codmaterial, flag, codtipo', 'safe', 'on'=>'search'),
+			array('codigo, marca, modelo, nparte, codpadre, um, descripcion, detalle, clase, codmaterial, flag, codtipo', 'safe', 'on'=>'search'),
 		);
                 
                 if(yii::app()->hasModule('ventas')){
@@ -514,18 +514,18 @@ public function Sepuedecambiarum() {
 		$criteria->compare('nparte',$this->nparte,true);
 		$criteria->compare('codpadre',$this->codpadre,true);
 		$criteria->compare('um',$this->um,true);
-		//$criteria->compare('descripcion',$this->descripcion,TRUE);
+		$criteria->compare('descripcion',$this->descripcion,TRUE);
 		$criteria->compare('detalle',$this->detalle,true);
 		//
 		//
 		//
-		$criteria->compare('esrotativo',$this->esrotativo,true);
+		//$criteria->compare('esrotativo',$this->esrotativo,true);
 		$criteria->compare('clase',$this->clase,true);
 		$criteria->compare('codmaterial',$this->codmaterial,true);
 		$criteria->compare('flag',$this->flag,true);
 		$criteria->compare('codtipo',$this->codtipo,true);
-		$criteria->compare('id',$this->id);
-		$criteria->addcondition(" descripcion like '%".$this->descripcion."%' ");
+		//$criteria->compare('id',$this->id);
+		//$criteria->addcondition(" descripcion like '%".$this->descripcion."%' ");
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

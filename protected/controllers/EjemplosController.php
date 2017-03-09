@@ -399,7 +399,33 @@ $mo=New Alinventario();
 
 public $layout='//layouts/column2';
 	public function actionPio() { 
-           
+            //new CC
+            $registro= Dcajachica::model()->findByPk(96);
+            var_dump($registro->imputado());die();
+            $fecha='04/02/20176886';
+           if(yii::app()->periodo->validaformatos($fecha)){  
+               echo "si e s valido";
+               
+           }else{ echo "no es  valido";
+               
+           };die();
+            if(preg_match('/[0-3]{1}[0-9]{1}\/[0-1]{1}[0-9]{1}\/[1-2]{1}[0|9]{1}[0-9]{2}$/', $fecha)){//FORMATO  12/04/1989
+               $retazos=explode("/",$fecha);//print_r($retazos);
+              echo "primer". $retazos[2]."-".$retazos[1]."-".$retazos[0];
+          } 
+     elseif(preg_match ('/[0-3]{1}[0-9]{1}\-[0-1]{1}[0-9]{1}\-[1-2]{1}[0|9]{1}[0-9]{2}$/', $fecha)){//FORMATO  12-04-1989
+        $retazos=explode("-",$fecha);
+         echo "segundo". $retazos[2]."-".$retazos[1]."-".$retazos[0];
+     }elseif(preg_match ('/[1-2]{1}[0|9]{1}[0-9]{2}\/[0-1]{1}[0-9]{1}\/[0-3]{1}[0-9]{1}$/', $fecha)){ //FORMATO 1989/04/02
+         echo "tercerp".  preg_replace('/\//', "-", $fecha);
+     }elseif(preg_match ('/[1-2]{1}[0|9]{1}[0-9]{2}\-[0-1]{1}[0-9]{1}\-[0-3]{1}[0-9]{1}$/',$fecha)){//FORMATO 1989-04-02
+       echo "la fecha ".  $fecha; 
+     }else{
+         echo "fallo";
+     } 
+            die();
+            
+           yii::app()->periodo->toISO('17/02/201455');
            // VAR_DUMP($registro->checkcompromisos(get_class($registro)));DIE();
             
             

@@ -78,6 +78,12 @@ $habilitado=($model->isNewRecord ? '' : 'Disabled')
 		?>
 		<?php echo $form->error($model,'codtipo'); ?>
 	</div>
+     <?php
+if(yii::app()->hasModule('ventas')){ ?>
+    <?php echo $form->labelEx($model,'tipogrupoventa'); ?>
+       <?php   $datosx = CHtml::listData(VentasTipoproducto::model()->findAll(),'codtipo','destipo'); ?>
+    <?php echo $form->DropDownList($model,'tipogrupoventa',$datosx, array('empty'=>'--Llene el grupo de ventas--')  )  ; ?>
+<?php }   ?>
 	<div class="row">
 		<?php echo $form->labelEx($model,'esrotativo'); ?>
 		<?php

@@ -32,29 +32,29 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			'value'=>'date("d.m.y", strtotime($data->fecha))',
 			'htmlOptions'=>array('width'=>50),
 		),
-		array('name'=>'tipoflujo','header'=>'Tipo','value'=>'$data->flujos->destipo','htmlOptions'=>array('width'=>140)),
+		array('name'=>'tipoflujo','header'=>'Tipo','value'=>'$data->flujos->destipo','htmlOptions'=>array('width'=>70)),
 		array('name'=>'st.','header'=>'st', 'type'=>'raw','value'=>'($data->tipoflujo=="102")?CHtml::OpenTag("span",array("class"=>"label badge-error"))."+".CHtml::closeTag("span"):""'),
 
-		array('name'=>'glosa','header'=>'Glosa','htmlOptions'=>array('width'=>205)),
+		array('name'=>'glosa','header'=>'Glosa','htmlOptions'=>array('width'=>300)),
 		//array('name'=>'codocu','header'=>'Documento','value'=>'$data->documentos->desdocu','htmlOptions'=>array('width'=>200)),
-		array('name'=>'referencia','header'=>'Ref.','htmlOptions'=>array('width'=>205)),
+		array('name'=>'referencia','header'=>'Ref.','htmlOptions'=>array('width'=>80)),
 		array('name'=>'moneda','header'=>'Moneda','value'=>'$data->monedahaber','htmlOptions'=>array('width'=>5)),
 		array('name'=>'debe','header'=>'Cargo','footer'=>MiFactoria::decimal(Dcajachica::getMonto($prove)),'htmlOptions'=>array('width'=>5)),
 		array('name'=>'monto','header'=>'Monto','value'=>'MiFactoria::decimal($data->monto)','htmlOptions'=>array('width'=>5)),
-		array('name'=>'rendido','header'=>'Rendido','value'=>'$data->rendido','htmlOptions'=>array('width'=>50)),
-		array('name'=>'codtra','header'=>'Responsable','value'=>'$data->trabajadores->ap."-".$data->trabajadores->am."-".$data->trabajadores->nombres','htmlOptions'=>array('width'=>405)),
-		array('name'=>'Ceco','header'=>'Cc','value'=>'$data->ceco','htmlOptions'=>array('width'=>10)),
+		array('name'=>'rendido','header'=>'Rendido','value'=>'$data->rendido','htmlOptions'=>array('width'=>5)),
+		array('name'=>'codtra','header'=>'Responsable','value'=>'$data->trabajadores->ap."-".$data->trabajadores->am."-".$data->trabajadores->nombres','htmlOptions'=>array('width'=>300)),
+		//array('name'=>'Ceco','header'=>'Cc','value'=>'$data->ceco','htmlOptions'=>array('width'=>10)),
 	//	array('name'=>'Imput','header'=>'Imput','value'=>'$data->cco->desceco','htmlOptions'=>array('width'=>140)),
-		array('name'=>'estado','header'=>'Estado','value'=>'$data->estado->estado','htmlOptions'=>array('width'=>140)),
+		array('name'=>'estado','header'=>'Estado','value'=>'$data->estado->estado','htmlOptions'=>array('width'=>80)),
 
 
 
-		//array('name'=>'saldo','header'=>'Plan','value'=>'round($data->punitplan,2)','footer'=>round(Desolpe::getTotal($prove)['plan'],2)),
+	//array('name'=>'saldo','header'=>'que','value'=>'round($data->devoluciones,2)'),
 		//array('name'=>'punitreal','header'=>'Real','value'=>'round($data->alkardex_gastos,2)','footer'=>round(Desolpe::getTotal($prove)['real'],2)),
 
 
 		array(
-			'htmlOptions'=>array('width'=>400),
+			'htmlOptions'=>array('width'=>100),
 			'class'=>'CButtonColumn',
 			 'buttons'=>array(
 			 
@@ -135,6 +135,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 		'id'=>'cru-dialogdetalle',
 		'options'=>array(
 			'title'=>'Item',
+                    'position'=>array('my'=>'top','at'=>'bottom'),
 			'autoOpen'=>false,
 			'modal'=>true,
 			'width'=>900,

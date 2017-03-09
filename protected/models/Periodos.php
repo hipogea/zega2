@@ -133,6 +133,7 @@ class Periodos extends ModeloGeneral
 		$criteria->compare('inicio',$this->inicio,true);
 		$criteria->compare('final',$this->final,true);
 		$criteria->compare('activo',$this->activo,true);
+                $criteria->compare('desperiodo',$this->desperiodo,true);
 		$criteria->compare('toleranciaatras',$this->toleranciaatras);
 		$criteria->compare('toleranciadelante',$this->toleranciadelante);
 

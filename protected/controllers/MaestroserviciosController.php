@@ -142,6 +142,7 @@ class MaestroserviciosController extends ControladorBase
 			} else { // Si no lo esta renderizar sin mas
 				$this->setBloqueo($id) ; 	///bloquea
 				$this->ClearBuffer($id); //Limpia temporal antes de levantar
+                               // var_dump($model->codmovimiento);var_dump($model->numdocref);die();
 				MiFactoria::insertadetalles($model->id,$model->codmovimiento,$model->numdocref);
 				/*echo "<br><br><br><br>";
 				print_r(yii::app()->user->getFlashes());*/

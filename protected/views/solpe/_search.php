@@ -187,7 +187,7 @@
 													 'showOn'=>'both', // 'focus', 'button', 'both'
 													 'buttonImage'=>Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'calendar_1.png',
 													 'buttonImageOnly'=>true,
-													 'dateFormat'=>'yy-mm-dd',
+													 'dateFormat'=>'dd/mm/yy',
 												 'selectOtherMonths'=>true,
  													'showAnim'=>'slide',
  													'showButtonPanel'=>false,
@@ -214,7 +214,7 @@
 																'showOn'=>'both', // 'focus', 'button', 'both'
 																'buttonImage'=>Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'calendar_1.png',
 																'buttonImageOnly'=>true,
-																'dateFormat'=>'yy-mm-dd',
+																'dateFormat'=>'dd/mm/yy',
 																'selectOtherMonths'=>true,
 																'showAnim'=>'slide',
 																'showButtonPanel'=>false,
@@ -244,7 +244,7 @@
 												'showOn'=>'both', // 'focus', 'button', 'both'
 												'buttonImage'=>Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'calendar_1.png',
 												'buttonImageOnly'=>true,
-												'dateFormat'=>'yy-mm-dd',
+												'dateFormat'=>'dd/mm/yy',
 												'selectOtherMonths'=>true,
 												'showAnim'=>'slide',
 												'showButtonPanel'=>false,
@@ -274,7 +274,7 @@
 																'showOn'=>'both', // 'focus', 'button', 'both'
 																'buttonImage'=>Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'calendar_1.png',
 																'buttonImageOnly'=>true,
-																'dateFormat'=>'yy-mm-dd',
+																'dateFormat'=>'dd/mm/yy',
 																'selectOtherMonths'=>true,
 																'showAnim'=>'slide',
 																'showButtonPanel'=>false,

@@ -417,9 +417,13 @@ public function actionprueba() {
 				$transaccion->commit();
 			}
 							else {  /// SSI HUBO UN ERRRO AL GRANAR EL MATERIAL 
-
-				 				 $transaccion->rollback();
-				 				throw new CHttpException(404,'No se pudieron grabar los datos del material ');	
+                           	 				 $transaccion->rollback();
+                                                                 // MiFactoria::Mensaje('error', $model->getErroresItem($model->geterrors()));
+                                            $this->render('create',array(
+                                            'model'=>$model,
+                                                'habilitado'=>'',
+                                                                ));
+				 				//throw new CHttpException(404,'No se pudieron grabar los datos del material ');	
 
 				 			}
 

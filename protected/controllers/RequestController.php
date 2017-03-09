@@ -124,6 +124,32 @@ return array(
 'methodName'=>'suggestPerson',
 'limit'=>30
 ),
+                    
+   'suggestMaterial'=>array(
+'class'=>'ext.actions.XSuggestAction',
+'modelName'=>'Maestrocompo',
+'methodName'=>'suggest',
+'limit'=>10
+),                 
+      
+                    
+                    
+   'suggestceco'=>array(
+'class'=>'ext.actions.XSuggestAction',
+'modelName'=>'Cc',
+'methodName'=>'suggestceco',
+'limit'=>10
+),  
+                    
+                    
+   'suggestot'=>array(
+'class'=>'ext.actions.XSuggestAction',
+'modelName'=>'VwOtdetalle',
+'methodName'=>'suggestot',
+'limit'=>10
+),                   
+                    
+                    
 'suggestPersonGroupCountry'=>array(
 'class'=>'ext.actions.XSelect2SuggestAction',
 'modelName'=>'Person',
@@ -164,7 +190,7 @@ public function actionprueba(){
 	{
 		return array(
 			array('allow',
-				'actions'=>array('llenahijos',   'llenaCertificados', 'prueba',  'otroMaestrocompo','suggestMaestrocompo',
+				'actions'=>array('suggestot','suggestceco','llenahijos',   'llenaCertificados', 'prueba',  'otroMaestrocompo','suggestMaterial',
 'suggestCountry','legacySuggestCountry','fillTree','treePath','llenaEquipos','loadContent','suggestAuPlaces',
 'suggestAuHierarchy','suggestLastname','fillAuTree','viewUnitPath','viewUnitLabel','initPerson',
 'suggestPerson','suggestPersonGroupCountry','listPersonsWithSameFirstname',

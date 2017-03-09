@@ -164,5 +164,26 @@ PUBLIC FUNCTION nrecursos(){
         $this->colocaarchivo($fullFileName);
     }
     
-    
+  public function suggestceco($keyword,$limit=20)
+	{
+		$models=$this->findAll(array(
+			'condition'=>'desceco LIKE :keyword',
+			'order'=>'desceco',
+			'limit'=>$limit,
+			'params'=>array(':keyword'=>"%$keyword%")
+		));
+		$suggest=array();
+		//$suggest=array(JSON_ENCODE($models[0]),'KFSHFKSIY');
+		foreach($models as $model) {
+			$suggest[] = array(
+				'label'=>$model->codc.' - '.$model->desceco,  // label for dropdown list
+				'value'=>$model->codc,  // value for input field
+				//'id'=>$model->id,       // return values from autocomplete
+				//'code'=>$model->code,
+				//'call_code'=>$model->call_code,
+			);
+		}
+		
+		return $suggest;
+	}  
 }

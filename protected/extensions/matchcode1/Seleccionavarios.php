@@ -1,7 +1,7 @@
 <?php
 class Seleccionavarios extends CWidget
 {
-	
+	public $id;
 	public $nombrecampo='';
 	public $relaciones;
 	public $tamano=3;

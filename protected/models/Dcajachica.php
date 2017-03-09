@@ -9,8 +9,11 @@ const ESTADO_DETALLE_CAJA_CREADO='10';
 const ESTADO_DETALLE_CAJA_CERRADO='20';
 const ESTADO_DETALLE_CAJA_CONFIRMADO='40';
     const FUJO_CARGO_A_RENDIR='102';
+    const FLUJO_DEVOLUCION_FONDO='103';
+    const FLUJO_FONDO_GASTO='101';
 	const FUJO_FONDO='100';
-
+        public $camposfechas=array('fecha');
+        public $montoimputado=0;//campo auxiliar para proceso de imputacion , se usa para colectar el porcentaje de monto imputado 
 	/**
 	 * @return string the associated database table name
 	 */
@@ -28,8 +31,15 @@ const ESTADO_DETALLE_CAJA_CONFIRMADO='40';
 		// will receive user inputs.
 		
             
-            
+           
             return array(
+                //ESCENARIO APRA IMPUTACIONES 
+                array('ceco,tipimputacion,montoimputado','required','on'=>'imputaciones'),                
+                array('ceco,tipimputacion,monto, montoimputado','safe','on'=>'imputaciones'),
+                array('montoimputado','chkmontoimputado','on'=>'imputaciones'),
+                array('tipimputacion','exists','allowEmpty' => false, 'attributeName' => 'codimpu', 'className' => 'Tipimputa','message'=>'Esta Imputacion no es valida','imputaciones'),
+			
+                
                    array('fecha,monto','safe','on'=>'devuelve'),
                   array('debe, haber, monto','safe','on'=>'montos'),
                 array('codestado,haber','safe','on'=>'anulacion'),
@@ -47,7 +57,7 @@ const ESTADO_DETALLE_CAJA_CONFIRMADO='40';
 			array('debe, haber, saldo', 'length', 'max'=>10),
 			array('monedahaber, codocu', 'length', 'max'=>3),
 			array('codtra', 'length', 'max'=>4),
-			array('ceco', 'length', 'max'=>12),
+			array('ceco', 'length', 'max'=>16),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, hidcaja, fecha, glosa, referencia, tipoflujo, debe, haber, monedahaber, saldo, codtra, ceco, fechacre, iduser, codocu', 'safe', 'on'=>'search'),
@@ -71,10 +81,13 @@ const ESTADO_DETALLE_CAJA_CONFIRMADO='40';
 			'cco' => array(self::BELONGS_TO, 'VwImputaciones', 'ceco'),
 			'ot'=>array(self::BELONGS_TO, 'VwOtdetalle', 'hidref'),
                     'moneda' => array(self::BELONGS_TO, 'Monedas', 'codmon'),
+                    'devoluciones'=>array(self::STAT, 'Dcajachica', 'hidcargo','select'=>'sum(t.monto)','condition'=>"t.hidcargo > 0 and t.tipoflujo in ( '".self::FLUJO_DEVOLUCION_FONDO."') "),
 			'flujos' => array(self::BELONGS_TO, 'Tipoflujocaja', 'tipoflujo'),
 			'rendido'=>array(self::STAT, 'Dcajachica', 'hidcargo','select'=>'sum(t.monto)','condition'=>" t.hidcargo > 0 and t.codestado  in ( '".self::ESTADO_DETALLE_CAJA_CERRADO."','".self::ESTADO_DETALLE_CAJA_CONFIRMADO."') "),//el campo foraneo
                         'deuda'=>array(self::STAT, 'Dcajachica', 'hidcargo','select'=>'sum(t.monto)','condition'=>"t.hidcargo > 0 and haber=0 and t.codestado  in ( '".self::ESTADO_DETALLE_CAJA_ANULADO."') "),
-                    
+                    'imputaciones'=> array(self::HAS_MANY, 'CcGastos', array('codocuref'=>'coddocu', 'idref'=>'id')),			
+			  //'imputado'=> array(self::STAT, 'CcGastos', array('codocuref'=>'coddocu', 'idref'=>'id'),'select'=>'sum(t.monto)'),			
+		
 		);
 	}
 
@@ -339,7 +352,7 @@ const ESTADO_DETALLE_CAJA_CONFIRMADO='40';
 		if($this->tipoflujo <> self::FUJO_CARGO_A_RENDIR)
 		{
 
-			$this->haber=$this->debe;
+			//$this->haber=$this->debe;
 		}
 
 
@@ -360,8 +373,10 @@ const ESTADO_DETALLE_CAJA_CONFIRMADO='40';
 		
  //verificando consistencia de tipimputacion
               
-           $this->trataimputacion();
-             
+         //  $this->trataimputacion();
+            if($this->getScenario()=='imputaciones'){
+                $this->insertaccGastos($this->montoimputado, $this->ceco);
+            }
 		
 		
 		return parent::beforesave();
@@ -429,5 +444,95 @@ const ESTADO_DETALLE_CAJA_CONFIRMADO='40';
             
         }
         
+   public function insertaccGastos($monto,$ceco){
+       //verificando el monto imputado
+       if($monto > 0){
+           // echo "#salio nada"; die();
+           $porimputar=$this->monto-$this->imputado();
+           if($monto <= $porimputar){
+              //echo "#salio insert"; die();
+              
+               $model = new CcGastos();
+		$model->ceco = $ceco;
+		$model->fechacontable = $this->fecha;		
+		$model->monto = $monto; ///ok
+		$model->iduser = Yii::app()->user->id;
+		$model->tipo = $this->esservicio;
+		$model->idref = $this->id;
+                $model->codocuref=self::CODIGO_DOCUMENTO;
+                 if($this->tipimputacion=='T'){
+                    $orden= explode('-', $this->ceco);
+                    $registroorden=Ot::model()->findByNumero($orden[0]);
+                    $identidad=$registroorden->getid($orden[1]);
+                    $model->idetot=$identidad;
+               }
+		if(!$model->save())
+                   throw new CHttpException(500,yii::app()->mensajes->getErroresItem($model->geterrors()));
+	
+		unset($model);//unset($row);
+           }
+           else{
+              // echo "#salio"; die();
+               //ups alguien ha metido la mano por otro sitio y ha imputado mas de la cuenta, //dejarlo asi nomas 
+           }
+       }
+     }
+     
+   public function esimputable(){
+       $loes=false;
+       if(in_array($this->codestado, array(self::ESTADO_DETALLE_CAJA_CERRADO,self::ESTADO_DETALLE_CAJA_CONFIRMADO)))
+           if(self::FLUJO_FONDO_GASTO==$this->tipoflujo)
+               $loes=true;
+       return $loes;
+   }  
     
+   //evrfa que no se exceda el monto total den las imputaciones parciale4
+  public function chkmontoimputado($attribute,$params) {
+      
+      //$montocalificado=$this->imputado;
+      if($this->monto < $this->montoimputado+$this->imputado()){
+          $this->adderror('ceco','El monto a imputar['.$this->montoimputado.'] mas lo acumulado['.$this->imputado().'] sobrepasa al monto ['.$this->monto.'], este registro ya tiene imputaciones, revise');
+           return; 
+          }
+          //verificando el ceco 
+      if($this->tipimputacion=='K'){
+            $cecquito=Cc::model()->findByPk(trim($this->ceco));
+          if(is_null($cecquito)){
+              $this->adderror('ceco','Este colector ['.$this->ceco.'] No existe ');
+              return ;
+          }else{
+              if($cecquito->semaforopresup!='1')
+                 $this->adderror('ceco','Este colector ['.$this->ceco.'] Ya esta cerrado y no esta activo ');
+              return ; 
+          }
+      }ELSEIF($this->tipimputacion=='T'){//verificando la OT
+         $orden= explode('-', $this->ceco);
+         if(count($orden)==0){
+         $this->adderror('ceco','El formato de imputacion no es el correcto');return;
+         
+                    }
+         $registroorden=Ot::model()->findByNumero($orden[0]);
+         if(is_null($registroorden)){
+            $this->adderror('ceco','Esta orden no existe');return;
+          }else{
+              if(!in_array($orden[1],$registroorden->listaitems()))
+                $this->adderror('ceco','El item ['.$orden[1].'] indicado en la orden no existe');return; 
+               
+          }
+           
+    
+      }else{
+          $this->adderror('tipimputacion','Este tipo de imputación aun no esta implementado');return;
+      }
+          
+  }
+
+	public function imputado(){
+            return  yii::app()->db->createCommand()->
+                     select('sum(t.monto) ')->
+                     from('{{ccgastos}} t')->
+                     where("codocuref=:vcoddocu and idref=:vid ",array(":vcoddocu"=>$this->coddocu,":vid"=>$this->id))->                    
+                     queryScalar();
+        }	 
+   
 }

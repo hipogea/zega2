@@ -28,12 +28,12 @@ class Reingreso extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('hidkardex, cant', 'required'),
-			array('column_4', 'numerical', 'integerOnly'=>true),
+			
 			array('cant', 'numerical'),
 			array('hidkardex', 'length', 'max'=>20),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, hidkardex, cant, column_4', 'safe', 'on'=>'search'),
+			array('id, hidkardex, cant', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -57,7 +57,7 @@ class Reingreso extends CActiveRecord
 			'id' => 'ID',
 			'hidkardex' => 'Hidkardex',
 			'cant' => 'Cant',
-			'column_4' => 'Column 4',
+			//'column_4' => 'Column 4',
 		);
 	}
 
@@ -82,7 +82,7 @@ class Reingreso extends CActiveRecord
 		$criteria->compare('id',$this->id,true);
 		$criteria->compare('hidkardex',$this->hidkardex,true);
 		$criteria->compare('cant',$this->cant);
-		$criteria->compare('column_4',$this->column_4);
+		//$criteria->compare('column_4',$this->column_4);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
