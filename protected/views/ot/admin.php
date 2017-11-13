@@ -37,12 +37,16 @@ MiFactoria::titulo("Ordenes de servicio", "asterix")
 )); ?>
 </div><!-- search-form -->
 
+
 <?PHP
  $this->widget('ext.groupgridview.GroupGridView', array(
       'id' => 'ot-grid',
       'dataProvider'=>$model->search(),
+      'itemsCssClass'=>'table table-striped table-bordered table-hover',
+	
       'mergeColumns' => array('numero','codpro','despro'),
-	 'itemsCssClass'=>'table table-striped table-bordered table-hover',
+	//'itemsCssClass'=>'table table-striped table-bordered table-hover',
+			
 	// 'extraRowColumns' => array('numero'),
 	/* 'extraRowTotals' => function($data, $row, &$totals) {
 		 if(!isset($totals['sum_totalneto'])) $totals['sum_totalneto'] = 0;
@@ -64,13 +68,38 @@ MiFactoria::titulo("Ordenes de servicio", "asterix")
                     array('name'=>'codpro','value'=>'$data->codpro','htmlOptions'=>array('width'=>10)),
 		  array('name'=>'despro','value'=>'$data->despro','htmlOptions'=>array('width'=>40)),          
                // array('name'=>'codobjeto','value'=>'$data->codobjeto','htmlOptions'=>array('width'=>3)),
-                array('name'=>'nombreobjeto','value'=>'$data->nombreobjeto','htmlOptions'=>array('width'=>40)),
-                array('name'=>'descripcion','value'=>'$data->descripcion."-".$data->marca."-".$data->modelo."-".$data->identificador','htmlOptions'=>array('width'=>400)),
-       		  array('name'=>'textocorto','header'=>'Servicio','value'=>'ucfirst(strtolower($data->textocorto))','htmlOptions'=>array('width'=>400)),
+                array('name'=>'textocorto','header'=>'Servicio','value'=>'ucfirst(strtolower($data->textocorto))','htmlOptions'=>array('width'=>100)),
         
+          array('name'=>'nombreobjeto','value'=>'$data->nombreobjeto','htmlOptions'=>array('width'=>40)),
+                array('name'=>'descripcion','value'=>'$data->descripcion','htmlOptions'=>array('width'=>25)),
+               array('name'=>'marca','value'=>'$data->marca','htmlOptions'=>array('width'=>12)),
+               array('name'=>'modelo','value'=>'$data->modelo','htmlOptions'=>array('width'=>12)),
+               
+//array('name'=>'descripcion','value'=>'$data->descripcion."-".$data->marca."-".$data->modelo."-".$data->identificador','htmlOptions'=>array('width'=>400)),
+       		  
 		 
 		      ),
     ));
 
+?>
+<?php
+//--------------------- begin new code --------------------------
+// add the (closed) dialog for the iframe
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array(
+	'id'=>'cru-dialog3',
+	'options'=>array(
+		'title'=>'Explorador',
+		'autoOpen'=>false,
+		'modal'=>true,
+		'width'=>700,
+		'height'=>500,
+	),
+));
+?>
+<iframe id="cru-frame3" width="100%" height="100%" style="overflow-y:hidden;overflow-x:hidden;"></iframe>
+<?php
+
+$this->endWidget();
+//--------------------- end new code --------------------------
 ?>
 

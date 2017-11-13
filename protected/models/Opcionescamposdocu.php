@@ -140,6 +140,23 @@ class Opcionescamposdocu extends ModeloGeneral
 		return parent::beforeSave();
 	}
 	
-	
+	/*refresca los campos para cada usuario */
+	public static function actualizacampos($docu){
+		$docu=MiFactoria::cleanInput($docu);
+		$matrizpadre=Opcionescamposdocu::Model()->findAll(" codocu=:cod",array(":cod"=>$docu));
+		foreach($matrizpadre as $fila){
+			$cantidadregistros=Yii::app()->db->createCommand()->select("id")
+				->from( "{{opcionesdocumentos}}" )
+				->where("idopdoc=:vidop AND idusuario=:vuser",array(":vidop"=>$fila->id,":vuser"=>yii::app()->user->id))
+				->queryScalar();
+			If (!$cantidadregistros) {
+				$modex=new Opcionesdocumentos();
+				$modex->setAttributes(array("idusuario"=>Yii::app()->user->id,"idopdoc"=>$fila->id),false);
+				$modex->save();
+
+			}
+		}
+		return true;
+	}
 	
 }

@@ -89,7 +89,12 @@ class DefaultController extends Controller
 		$sql = 'SHOW CREATE TABLE '.$tableName;
 		$cmd = Yii::app()->db->createCommand($sql);
 		$table = $cmd->queryRow();
-
+               /* echo "tablename : ".$tableName;*/
+                echo "<br> incio de ".$tableName;echo "<br>";
+                var_dump(ARRAY_KEYS($table));
+                echo "<br>fin de ".$tableName;echo "<br>";/*
+               // print_r($table['Create Table'] );echo "<br>";
+               // var_dump();die();
 		$create_query = $table['Create Table'] . ';';
 
 		$create_query  = preg_replace('/^CREATE TABLE/', 'CREATE TABLE IF NOT EXISTS', $create_query);
@@ -104,7 +109,7 @@ class DefaultController extends Controller
 		{
 			$this->tables[$tableName]['create'] = $create_query;
 			return $create_query;
-		}
+		}*/
 	}
 
 	public function getData($tableName)
@@ -155,8 +160,9 @@ class DefaultController extends Controller
 	}
 	public function StartBackup($addcheck = true)
 	{
-		$this->file_name =  $this->path . $this->back_temp_file . date('Y.m.d_H.i.s') . '.sql';
-
+		//var_dump($this->path ); die();
+            $this->file_name =  $this->path . $this->back_temp_file . date('Y.m.d_H.i.s') . '.sql';
+               // var_dump($this->path ); die();
 		$this->fp = fopen( $this->file_name, 'w+');
 
 		if ( $this->fp == null )
@@ -198,11 +204,13 @@ class DefaultController extends Controller
 	}
 	public function actionCreate()
 	{
+           //var_dump($this->_path);
 		$tables = $this->getTables();
 
 		if(!$this->StartBackup())
 		{
-			//render error
+			
+//render error
 			$this->render('create');
 			return;
 		}
@@ -211,6 +219,7 @@ class DefaultController extends Controller
 		{
 			$this->getColumns($tableName);
 		}
+                die();
 		foreach($tables as $tableName)
 		{
 			$this->getData($tableName);
@@ -221,7 +230,9 @@ class DefaultController extends Controller
 	}
 	public function actionClean($redirect = true)
 	{
-		$tables = $this->getTables();
+		
+            /*MUY PELIFGROSO DESACTICVADO 
+            /*$tables = $this->getTables();
 
 		if(!$this->StartBackup())
 		{
@@ -244,7 +255,9 @@ class DefaultController extends Controller
 		$this->execSqlFile($this->file_name);
 		unlink($this->file_name);
 		if ( $redirect == true) $this->redirect(array('index'));
-	}
+	*/
+                 }
+                 
 	public function actionDelete($file = null)
 	{
 		$this->updateMenuItems();

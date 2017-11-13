@@ -18,7 +18,7 @@
 						array(
 									'class'=>'CCheckBoxColumn',
 									'selectableRows' => 1,
-									'value'=>'$data->codigo."_".$data->descripcion',
+									'value'=>'$data->id."_".$data->descripcion',
 									'checkBoxHtmlOptions' => array(                
 																'name' => 'checkselected[]',
 																	),

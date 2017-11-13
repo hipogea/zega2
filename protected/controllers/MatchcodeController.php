@@ -47,7 +47,7 @@ class MatchcodeController extends Controller
                 
               
 		if($cremoto==""){
-			$rr= $clasi::model()->findByPK($vvalore);
+			$rr= $clasi::model()->findByPk($vvalore);
 			//var_dump($rr);
 			if(!is_null($rr)){
                           //   var_dump($rr->attributes);
@@ -407,9 +407,13 @@ public function actionRelaciona1()
 		}
 		$combinado=array();
         foreach($arreglo as $clave=>$valor){
+                       // $combinado[]=array('id'=>$valor);
 			$combinado[]=array('valor'=>$valor);
 		}
-		$dataProvider = new CArrayDataProvider($combinado);
+                //$rawData=Yii::app()->db->createCommand('SELECT * FROM public_tipoactivos')->queryAll();
+               //var_dump($rawData);die();
+// print_r($arreglo);echo "<br><br>";print_r($combinado);die();
+		$dataProvider = new CArrayDataProvider($combinado,array('id'=>'codtipo','keyField'=>'valor'));
 		$this->render("ext.explorador.views.vw_sesiones",array('proveedor'=>$dataProvider));
 	}
 

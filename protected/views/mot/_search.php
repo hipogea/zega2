@@ -46,7 +46,25 @@
 		<?php echo $form->textField($model,'codtraba',array('size'=>4,'maxlength'=>4)); ?>
 	</div>
 
-	
+	<div class="row">
+		<?php echo $form->label($model,'creadoel'); ?>
+		<?php echo $form->textField($model,'creadoel',array('size'=>25,'maxlength'=>25)); ?>
+	</div>
+
+	<div class="row">
+
+		<?php echo $form->textField($model,'creadopor',array('size'=>20,'maxlength'=>20)); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->label($model,'modificadoel'); ?>
+		<?php echo $form->textField($model,'modificadoel',array('size'=>25,'maxlength'=>25)); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->label($model,'modificadopor'); ?>
+		<?php echo $form->textField($model,'modificadopor'); ?>
+	</div>
 
 	<div class="row">
 		<?php echo $form->label($model,'codep'); ?>

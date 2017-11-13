@@ -45,7 +45,9 @@ $('.search-form form').submit(function(){
 	//'cssFile' => Yii::app()->getTheme()->baseUrl.'/css/grilla_naranja.css',
 	//'filter'=>$model,
 	'columns'=>array(
-		'codlugar',
+            array('name'=>'codlugar','header'=>'Codigo','type'=>'raw','value'=>'CHtml::link($data->codlugar,array("lugares/update","id"=>$data->codlugar),array())'), 
+		array('name'=>'numeroactivos', 'type'=>'raw','value'=>'($data->numeroactivos>0)?CHtml::link(CHtml::openTag("span",array("class"=>"badge badge-important")).$data->numeroactivos.CHtml::closeTag("span").CHtml::image(Yii::app()->getTheme()->baseUrl."/img/bricks.png"),"#", array("onclick"=>\'$("#cru-frame2").attr("src","\'.Yii::app()->createurl(\'/lugares/muestractivos\', array(\'id\'=> $data->id ) ).\'");$("#cru-dialog2").dialog("open"); return false;\' ) ):""'),
+		
 		'codpro',
 		'despro',
 		'departamento',
@@ -54,7 +56,6 @@ $('.search-form form').submit(function(){
 		'c_direc',
 		'deslugar',
 		//array('name'=>'numeroactivos', ),
-		array('name'=>'numeroactivos', 'type'=>'raw','value'=>'($data->numeroactivos>0)?CHtml::link(CHtml::openTag("span",array("class"=>"badge badge-important")).$data->numeroactivos.CHtml::closeTag("span"),"#", array("onclick"=>\'$("#cru-frame2").attr("src","\'.Yii::app()->createurl(\'/lugares/muestractivos\', array(\'id\'=> $data->id ) ).\'");$("#cru-dialog2").dialog("open"); return false;\' ) ):""'),
 		//ARRAY('name'=>'id','type'=>'raw','value'=>'CHtml::link(CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."Cast.png"),"#", array("onclick"=>\'$("#cru-frame2").attr("src","\'.Yii::app()->createurl(\'/alinventario/muestrakardex\', array(\'id\'=> $data->id ) ).\'");$("#cru-dialog2").dialog("open"); return false;\' ) )'),
 
 		//'centrito.nomcen',
@@ -64,10 +65,7 @@ $('.search-form form').submit(function(){
 
 
 		//'n_direc',
-		array(
-			'template'=>'{view}{update}',
-			'class'=>'CButtonColumn',
-		),
+		
 	),
 )); ?>
 

@@ -89,7 +89,7 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'emailpro'); ?>
-		<?php echo $form->textField($model,'emailpro',array('size'=>80,'maxlength'=>80)); ?>
+		<?php echo $form->textField($model,'emailpro'); ?>
 		<?php echo $form->error($model,'emailpro'); ?>
 	</div>
 

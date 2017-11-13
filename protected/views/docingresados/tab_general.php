@@ -373,19 +373,13 @@
 	</div>
    
 	
-<div class="row">
-		<?php echo $form->labelEx($model,'docref'); ?>
-		<?php echo $form->textField($model,'docref',array('size'=>14,'maxlength'=>14)); ?>
-		<?php echo $form->error($model,'docref'); ?>
-	</div>
+
 	
 
 	<div class="row">
-              <?php  if($model->escertificado() and !is_null($model->fechavencimiento)){  ?>
-		<?php echo $form->labelEx($model,'fechavencimiento'); ?>
-		<?php echo $form->textField($model,'fechavencimiento',array('style'=>'color:red; font-weight:bold;',  'size'=>8,'disabled'=>'disabled')); ?>
-		<?php //echo $form->error($model,'fechavencimiento'); ?>
-              <?php }  ?>
+		<?php echo $form->labelEx($model,'docref'); ?>
+		<?php echo $form->textField($model,'docref',array('size'=>14,'maxlength'=>14)); ?>
+		<?php echo $form->error($model,'docref'); ?>
 	</div>
 
 	

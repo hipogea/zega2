@@ -37,7 +37,7 @@ class Periodos extends ModeloGeneral
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('mes, anno, toleranciaatras, toleranciadelante', 'required'),
+			array('mes, anno, toleranciaatras,desperiodo, toleranciadelante', 'required'),
 			array('mes+anno', 'application.extensions.uniqueMultiColumnValidator','on'=>'insert','message'=>'Estos valores de mes y año ya fueron ingresados, verifique'),
 			array('toleranciaatras, toleranciadelante', 'numerical', 'integerOnly'=>true,'min'=>0,'max'=>10),
 			//array('toleranciaatras, toleranciadelante', 'max'=>10),

@@ -127,7 +127,7 @@ class Masterrelacion extends CActiveRecord
         
         
             public function beforeSave() {
-                $registrohijo=  Masterequipo::model()->findByCodigo($this->hidhijo);
+                $registrohijo=  Masterequipo::model()->findByPk($this->hidhijo);
                 $this->hidhijo=$registrohijo->id;
                 $registropadre=Masterequipo::model()->findByPk($this->hidpadre);
                 $this->codigopadre=$registropadre->codigo;

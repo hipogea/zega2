@@ -10,7 +10,7 @@ class VwOtdetalle extends CActiveRecord
 		return 'vw_otdetalle';
 	}
 
-        
+        public $descripcion; 
         public $completo;
 	/**
 	 * @return array validation rules for model attributes.
@@ -20,7 +20,7 @@ class VwOtdetalle extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('rucpro, descripcion, marca, modelo, codobjeto, item, textoactividad, numero, fechacre, fechafinprog, codpro, idobjeto, codresponsable, textocorto, textolargo, grupoplan, codcen, iduser, codocu, codestado, clase, hidoferta', 'required'),
+			array('rucpro, codobjeto, item, textoactividad, numero, fechacre, fechafinprog, codpro, idobjeto, codresponsable, textocorto, textolargo, grupoplan, codcen, iduser, codocu, codestado, clase, hidoferta', 'required'),
 			array('idobjeto, iduser', 'numerical', 'integerOnly'=>true),
 			array('despro', 'length', 'max'=>100),
 			array('rucpro', 'length', 'max'=>11),

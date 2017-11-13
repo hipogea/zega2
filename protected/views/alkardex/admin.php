@@ -52,7 +52,7 @@ $('.search-form form').submit(function(){
 	'itemsCssClass'=>'table table-striped table-bordered table-hover',
 	//'filter'=>$model,
 	'columns'=>array(
-		array('name'=>'numvale','header'=>'Vale','type'=>'raw','value'=>'CHtml::link($data->numvale,Yii::app()->createurl(\'/almacendocs/update\', array(\'id\'=> $data->hidvale ) ))'),
+		array('name'=>'numvale','header'=>'Vale','type'=>'raw','value'=>'CHtml::link($data->numvale,Yii::app()->createurl(\'/almacendocs/editar\', array(\'id\'=> $data->hidvale ) ))',"htmlOptions"=>array("target"=>"_blank")),
 		'movimiento',
         'codart',
         array('name'=>'.','header'=>'.','type'=>'raw','value'=>'($data->cant <0)?CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."salida.png","hola"):CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."entrada.png","hola")'),

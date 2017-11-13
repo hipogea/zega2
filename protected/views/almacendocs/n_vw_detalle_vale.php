@@ -1,6 +1,6 @@
 <?php
 ?>
-<div id="AjFlash" class="flash-regular"></div>
+
  <?php
        $this->renderPartial('n_vw_detalle_grilla', array('model'=>$model, 'campoestado'=>$campoestado,"idcabecera"=>$model->id,'eseditable'=>$eseditable));
 		?>

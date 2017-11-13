@@ -57,21 +57,27 @@
                $datosfilas=Tenenciastraba::model()->
                         findAll($criteriox);
                 $datos =CHtml::listData($datosfilas,
-                        'id','trabajadores.ap'); 
-                 $claveencontrada=  Tenenciastraba::getIdHidtraByTrabajador($model->docingresados->codtenencia);
-                              //  var_dump($claveencontrada); var_dump($codtenencia); 
-              $claveencontrada=  Tenenciastraba::getIdHidtraByTrabajador($codtenencia);
-                             
-              if(is_null($claveencontrada)) {
+                        'id','trabajadores.ap');
+              //  $trabajadorpordefecto=yii::app()->user->getField('codtra');
+              //$claveencontrada=null;
+               /* foreach(  $datosfilas as $fila     ){
+                   if($fila['codtra']==$trabajadorpordefecto){
+                       $claveencontrada=$fila['id'];
+                   }
+               }
+                unset($datosfilas);*/
+                //$claveencontrada=12;
+              // if(is_null($claveencontrada)) {
                    echo $form->DropDownList($model,'hidtra',$datos, array('empty'=>'--Llene el apoderado--'
-                  ));
+                  ));/*
                }else{
                   echo $form->DropDownList($model,'hidtra',$datos, array('empty'=>'--Llene el apoderado--','options'=>
                              array(
                                $claveencontrada=>array('selected'=>true)
                                  )
                   )); 
-               }
+               }*/
+		
 					?>
 		<?php echo $form->error($model,'hidtra'); ?>
 	</div>
@@ -100,22 +106,18 @@
 	</div>
     
    <div class="row">
-        <?php //var_dump(date($modelopadre->fechain));
-        echo $form->labelEx($model,'fechanominal'); ?>
+        <?php echo $form->labelEx($model,'fechanominal'); ?>
         <?php Yii::import('application.extensions.CJuiDateTimePicker.CJuiDateTimePicker');
         $this->widget('CJuiDateTimePicker',array(
             'model'=>$model, //Model object
-           'value'=>date($modelopadre->fechain),
             'attribute'=>'fechanominal', //attribute name
             'language'=>'es',
             'mode'=>'datetime', //use "time","date" or "datetime" (default)
             'options'=>array( 'dateFormat'=>'yy-mm-dd',
                 'showOn'=>'button', // 'focus', 'button', 'both'
                 'buttonText'=>Yii::t('ui',' ... '),
-                'changeMonth'=>true,
-        'changeYear'=>true,  
                 //'buttonImage'=>Yii::app()->request->baseUrl.'/images/calendar.png',
-                //'buttonImageOnly'=>true, 
+                //'buttonImageOnly'=>true,
             ),
             'htmlOptions'=>array(
                 'style'=>'width:150px;vertical-align:top',
@@ -127,66 +129,14 @@
     </div>
     
     
-      <div class="row">
-        <?php //var_dump(date($modelopadre->fechain));
-        if($modelopadre->codtenencia=='400'){
-            
-        ?>
-        <?php echo $form->labelEx($model,'proximovencimiento'); ?>
-        <?php Yii::import('application.extensions.CJuiDateTimePicker.CJuiDateTimePicker');
-        $this->widget('CJuiDateTimePicker',array(
-            'model'=>$model, //Model object
-          // 'value'=>date($model->proximovencimiento),
-            'attribute'=>'proximovencimiento', //attribute name
-            'language'=>'es',
-            'mode'=>'datetime', //use "time","date" or "datetime" (default)
-            'options'=>array( 'dateFormat'=>'yy-mm-dd',
-                'showOn'=>'button', // 'focus', 'button', 'both'
-                'buttonText'=>Yii::t('ui',' ... '),
-                'changeMonth'=>true,
-        'changeYear'=>true,  
-                //'buttonImage'=>Yii::app()->request->baseUrl.'/images/calendar.png',
-                //'buttonImageOnly'=>true, 
-            ),
-            'htmlOptions'=>array(
-                'style'=>'width:150px;vertical-align:top',
-                //'readonly'=>'readonly',
-            ),				// jquery plugin options
-        ));
-        ?>
-        <?php echo $form->error($model,'proximovencimiento'); ?>
-        <?php //var_dump(date($modelopadre->fechain));
-        }
-        ?>
-    </div>
-    
-    
-    <div class="row">
-		
-		
-		<?php 
-                $opajax=array(
-                    'type'=>'POST',
-                    'data'=>array('idpadre'=>$modelopadre->id),
-                    'dataType'=>"json",
-                    'success'=>"function(data) {"  
-                        ."$('#Procesosdocu_codocuref').val(data.codigo).change(); "              
-                    . "$('#Procesosdocu_numdocref').attr('value',data.numero); "
-                    . "   }",
-                );
-                
-                echo CHtml::ajaxButton('heredar',yii::app()->createUrl($this->id."/ajaxhereda",array()),$opajax); ?>
-	</div>
-    
-    
-    
     
      <div class="row">
 		<?php echo $form->labelEx($model,'codocuref'); ?>
 		<?php  
-                $dependenciadoc = new CDbCacheDependency('SELECT count(*) FROM {{documentos}}');
-                            $docs = Documentos::model()->cache(1000, $dependenciadoc)->findAll(array("condition"=>"clase='D' ",'order'=>'coddocu'));
-                        $datosp = CHtml::listData($docs,'coddocu','referencia');               
+                //$criterio=
+                $datosp = CHtml::listData(Documentos::model()->
+                        findAll(),
+                        'coddocu','desdocu');
 		echo $form->DropDownList($model,'codocuref',$datosp, array('empty'=>'--Llene el doc referencia--',
                   ));
 					?>

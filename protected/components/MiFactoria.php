@@ -634,7 +634,7 @@ const CAMPO_COLECTOR='mf_colector';
              }else{
                    switch ($formato) {
             case 'h': //horas
-                return round($diferencia/($seghora),2);       
+                return round($diferencia/($seghora),2).$formato;       
                 break;
             
             case 'mm': //meses 
@@ -689,7 +689,7 @@ const CAMPO_COLECTOR='mf_colector';
 
 
 
-    public static function DevuelveSolPespendientes ($numsolpe,$idvale){
+    public static function DevuelveSolPespendientes ($numsolpe,$idvale=null){
         $vale=Almacendocs::model()->findByPk($idvale);
 
         $almacen=$vale->codalmacen;
@@ -700,7 +700,7 @@ const CAMPO_COLECTOR='mf_colector';
                                                              t.id AS ".self::CAMPO_ID_REF.",
                                                              t.centro as ".self::CAMPO_CENTRO.",
                                                                t.codal as ".self::CAMPO_ALEMI.",
-'".yii::app()->settings->get('general','general_monedadef')."' as ".self::CAMPO_MONEDA.",
+                                                            '".yii::app()->settings->get('general','general_monedadef')."' as ".self::CAMPO_MONEDA.",
                                                         t.codart AS ".self::CAMPO_CODIGO_MATERIAL.",
                                                         t.um AS ".self::CAMPO_UM_MATERIAL.",
                                                          w.numero as ".self::CAMPO_NUMERO_DOC.",
@@ -960,7 +960,7 @@ const CAMPO_COLECTOR='mf_colector';
             $mensa=$mensaje."<br>".Yii::app()->user->getFlash($nivel,null,false);
          else
              $mensa=$mensaje;
-          Yii::app()->user->setFlash($nivel,$nivel."_".$mensa);
+          Yii::app()->user->setFlash($nivel,$mensa);
     }
 
 
@@ -1580,5 +1580,14 @@ if(!$mensaje->save())
         
        
     }
+    
+    public static function numericalArray($arreglo,$porcentaje=false){
+        $nuevoarreglo=array();
+        foreach($arreglo as $clave=>$valor){
+            $nuevoarreglo[]=($valor+0)*100;
+        }
+        return $nuevoarreglo;
+    }
+    
     
 }//fin de la clase Mifactoria

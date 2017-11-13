@@ -108,7 +108,6 @@
 		</div>
 
 		<?php
-               
 		$this->widget('zii.widgets.jui.CJuiTabs', array(
 				'theme' => 'default',
 				'tabs' => array(
@@ -128,15 +127,13 @@
 				'options' => array('overflow'=>'auto','collapsible' => false,),
 				'id'=>'MyTabi',)
 		);
-              
 		?>
 
 <?php $this->endWidget(); ?>
 
     
     <?php
-		 IF(!$model->isNewRecord){
-    $this->widget('zii.widgets.jui.CJuiTabs', array(
+		$this->widget('zii.widgets.jui.CJuiTabs', array(
 				'theme' => 'default',
 				'tabs' => array(
 					'Eventos'=>array('id'=>'tab_x',
@@ -155,7 +152,6 @@
 				'options' => array('overflow'=>'auto','collapsible' => false,),
 				'id'=>'MyTabix',)
 		);
-                 }
 		?>
     
     

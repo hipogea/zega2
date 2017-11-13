@@ -113,6 +113,15 @@
     </div>
 
 
+ <div style="float: left; width:300px;"> 	
+						<?php echo $form->labelEx($model,'tipodoc'); ?>
+						
+						<?php    echo $form->DropDownList($model,'tipodoc',Trabajadores::tipoDocumento(), array('empty'=>'--Seleccione tipo Doc--')  )  ;	?>
+						<?php echo $form->error($model,'tipodoc'); ?>	
+</div>
+ 
+ 
+ 
     <div class="row">
         <?php echo $form->labelEx($model,'dni'); ?>
         <?php echo $form->textField($model,'dni',array('size'=>8,'maxlength'=>8)); ?>

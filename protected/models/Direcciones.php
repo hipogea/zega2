@@ -82,6 +82,7 @@ class Direcciones extends ModeloGeneral
 			'guias2' => array(self::HAS_MANY, 'Guia', 'n_direcformaldes'),
 			'guias3' => array(self::HAS_MANY, 'Guia', 'n_dirsoc'),
 			'lugares'=>array(self::HAS_MANY, 'Lugares', 'n_direc'),
+                    'nlugares'=>array(self::STAT, 'Lugares', 'n_direc'),
 		);
 	}
 
@@ -148,8 +149,28 @@ class Direcciones extends ModeloGeneral
 
         unset( $modeloub);
 
+        
 
         return parent::beforeSave();
     }
-
+public function afterSave(){
+    $this->refresh();
+    //LUEGO SI NO EXISTE UN LUGAR PARA ESTA DIRECCION CREARLO
+        IF($this->nlugares==0)
+        {
+            $reglugar=new Lugares;
+            $reglugar->setAttributes(
+                    array(
+                        'deslugar'=>'NUEVO LUGAR (Automatico)',
+                        'codpro'=>$this->c_hcod,
+                        'n_direc'=>$this->n_direc,
+            
+                    ));
+            IF(!$reglugar->save()){
+               PRINT_R($reglugar->geterrors());die(); 
+            }
+                
+        }
+         return parent::afterSave();
+}
 }

@@ -129,4 +129,19 @@ class Librodiario extends CActiveRecord
 		$this->fechaop=date("Y-m-d H:i:s");
 		return parent::beforeSave();
 	}
+        
+         /*
+         * Carga el registro temporal de cuentas
+         */
+        public function cargatemporal(){
+             $temporal=New Templibrodiario('upd_compralocal');
+            foreach($this->attributes as $nombrecampo=>$valorcampo){
+                //if($temporal->isAttributeSafe($nombrecampo)){
+               
+                    $temporal->{$nombrecampo}=$valorcampo;
+                   
+               // }
+            } 
+          // echo  $temporal->save(); echo "<br>";
+        }
 }

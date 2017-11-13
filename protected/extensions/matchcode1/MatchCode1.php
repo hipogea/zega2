@@ -100,7 +100,7 @@ class MatchCode1 extends CWidget
 							 if( trim($this->campoex)!="")
 								 $aparametros["campoex"]=$this->campoex;
 			 				echo " <div style='float: left;'>";
-			   				echo CHtml::link(CHtml::openTag("span",array("class"=>"icon icon-binoculars icon-blue icon-fuentesize16")).CHtml::closeTag("span"),'#' ,array('onclick'=>'$("#'.$this->nombreframe.'").attr(
+			   				echo CHtml::link(CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."ayuda.png"),'#' ,array('onclick'=>'$("#'.$this->nombreframe.'").attr(
 																					"src",
 																					"'.Yii::app()->createurl('/Matchcode/recibevalor1', $aparametros
 																												)

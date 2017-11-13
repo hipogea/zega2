@@ -11,9 +11,12 @@ $nombrecompleto=$foto['archivo'];
    data-src="<?php echo $nombrecompleto;?>"
   data-sub-html="<h4><?php echo $this->titulo;?></h4><p>
   <?php 
-  echo $this->mensajegeneral."<br>";
+  echo $this->mensajegeneral." <br><form>";
+   echo CHtml::textField("sw", "sw3",array("size"=>34));
+   echo "</form>";
   echo $foto['metadatos'];
   //VAR_DUMP($foto['metadatos']);
+ 
   ?>
   </p>" 
 data-pinterest-text="Pin it1" 

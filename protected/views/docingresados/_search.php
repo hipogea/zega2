@@ -10,8 +10,6 @@ $form=$this->beginWidget('CActiveForm', array(
    
 	<div class="row">
 		<?php
-                if($this->beginCache('cache_doci_admin_toolbar',array(
-    'duration'=>600,))) {
 		$botones=array(
 			'search'=>array(
 				'type'=>'A',
@@ -24,10 +22,7 @@ $form=$this->beginWidget('CActiveForm', array(
 				'visiblex'=>array('10'),
 			),
 		);
-		
-                
-                
-                $this->widget('ext.toolbar.Barra',
+		$this->widget('ext.toolbar.Barra',
 			array(
 				//'botones'=>MiFactoria::opcionestoolbar($model->id,$this->documento,$model->codestado),
 				'botones'=>$botones,
@@ -36,19 +31,13 @@ $form=$this->beginWidget('CActiveForm', array(
 				'status'=>'10',
 
 			)
-		); 
-                
-               
-    $this->endCache('cache_doci_admin_toolbar');}
-                
-                ?>
+		); ?>
 
 	</div>
     
      <div class="panelizquierdo">
          
          <div class="row">
-             
 	<?php echo $form->label($model,'final'); ?>
 	<?php  
         $datos = array('1' => 'Archivados ','0'=> 'En proceso');
@@ -56,17 +45,6 @@ $form=$this->beginWidget('CActiveForm', array(
 
 	echo $form->DropDownList($model,'final',$datos, array('empty'=>'--Indique el status--')  )  ;	?>
 	</div>
-         
-         <div class="row">
-	<?php echo $form->label($model,'espeabieto'); ?>
-	<?php  
-        $datos = array('1' => 'Pedido Abierto ','0'=> 'Pedido normal');
-	//$datos = CHtml::listData(Tipoactivos::model()->findAll(),'codtipo','destipo');
-
-	echo $form->DropDownList($model,'espeabierto',$datos, array('empty'=>'--Indique el tipo de pedido--')  )  ;	?>
-	</div>
-         
-         
          
          <div class="row">
 		<?php echo $form->labelEx($model,'id'); ?>
@@ -136,7 +114,12 @@ $form=$this->beginWidget('CActiveForm', array(
 			   ?>
 	</div>
 	
-	
+	<div class="row">
+		<?php echo $form->labelEx($model,'hidproc'); ?>
+		<?php  $datos = CHtml::listData(Tenenciasproc::model()->findAll(),'id','eventos.descripcion');
+					echo $form->DropDownList($model,'hidproc',$datos, array('empty'=>'--Seleccione un proceso --')  )
+					?>
+	</div>
          
          
          
@@ -152,30 +135,6 @@ $form=$this->beginWidget('CActiveForm', array(
 												'tamano'=>3,
 												'model'=>$model,
 												'nombremodelo'=>'Tenencias',
-												'form'=>$form,
-												'nombredialogo'=>'cru-dialog3',
-												'nombreframe'=>'cru-frame3',
-												//'nombrearea'=>'fehdfj',
-													)
-													
-								);
-
-						
-			   ?>
-	</div>	
-         
-         
-         <div class="row">
-		<?php echo $form->labelEx($model,'codigotra'); ?>
-		<?php
-				$this->widget('ext.matchcode1.Seleccionavarios',array(		
-												'nombrecampo'=>'codigotra',												
-												//'ordencampo'=>1,
-												'controlador'=>'VwDoci',
-												'relaciones'=>$model->relations(),
-												'tamano'=>3,
-												'model'=>$model,
-												'nombremodelo'=>'Trabajadores',
 												'form'=>$form,
 												'nombredialogo'=>'cru-dialog3',
 												'nombreframe'=>'cru-frame3',
@@ -223,17 +182,7 @@ $form=$this->beginWidget('CActiveForm', array(
     </div>
       <div class="panelderecho">
 	  
-	 <div class="row">
-		<?php echo $form->label($model,'monto'); ?>
-		
-		
-		<?php echo $form->textField($model,'monto',array('size'=>28,'maxlength'=>28)); ?>
 	
-	   
-	
-
-
-	  </div>
 
 	<div class="row">
 		<?php echo $form->label($model,'correlativo'); ?>
@@ -300,65 +249,6 @@ $form=$this->beginWidget('CActiveForm', array(
 		
 	</div>
   
-          <div class="row">
-		<?php echo $form->labelEx($model,'fechanominal'); ?>
-		
-		<?php //echo $form->labelEx($model,'fecha_nac_ciudadano');  //En este caso fecha_nac_ciudadano es nuestro campo fecha ?>
- <?php $this->widget('zii.widgets.jui.CJuiDatePicker',
- array(
- 'model'=>$model,
- 'attribute'=>'fechanominal',
- 'value'=>$model->fechanominal,
- 'language' => 'es',
- 'htmlOptions' => array('readonly'=>"readonly"),
- 'options'=>array(
- 'autoSize'=>true,
- 'defaultDate'=>$model->fechanominal,
- 'dateFormat'=>'yy-mm-dd',
- 'showAnim'=>'fold',
- //'buttonImage'=>Yii::app()->baseUrl.'/images/calendar.png',
- //'buttonImageOnly'=>true,
- //'buttonText'=>'Fecha',
- 'selectOtherMonths'=>true,
- 'showAnim'=>'slide',
- 'showButtonPanel'=>true,
- 'showOn'=>'button',
- 'showOtherMonths'=>true,
- 'changeMonth' => 'true',
- 'changeYear' => 'true',
- ),
- )
-);?>
-	
-	
-	
-		
-		<?php $this->widget('zii.widgets.jui.CJuiDatePicker',
- array(
- 'model'=>$model,
- 'attribute'=>'fechanominal1',
- 'value'=>$model->fechanominal1,
- 'language' => 'es',
- 'htmlOptions' => array('readonly'=>"readonly"),
- 'options'=>array(
- 'autoSize'=>true,
- 'defaultDate'=>$model->fechanominal1,
- 'dateFormat'=>'yy-mm-dd',
- 'showAnim'=>'fold', 
- 'selectOtherMonths'=>true,
- 'showAnim'=>'slide',
- 'showButtonPanel'=>true,
- 'showOn'=>'button',
- 'showOtherMonths'=>true,
- 'changeMonth' => 'true',
- 'changeYear' => 'true',
- ),
- )
-);?>
-
-
-		
-	</div>
 	
 	<div class="row">
 	<?php echo $form->label($model,'moneda'); ?>
@@ -376,10 +266,7 @@ $form=$this->beginWidget('CActiveForm', array(
 	
 	<div class="row">
 			<?php echo $form->label($model,'tipodoc'); ?>
-			<?php  
-                            $dependenciadoc = new CDbCacheDependency('SELECT count(*) FROM {{documentos}}');
-                            $docs = Documentos::model()->cache(1000, $dependenciadoc)->findAll(array("condition"=>"clase='D' ",'order'=>'coddocu'));
-                        $datos = CHtml::listData($docs,'coddocu','referencia');
+			<?php  $datos = CHtml::listData(Documentos::model()->findAll(array("condition"=>"clase='D' ",'order'=>'desDOCU')),'coddocu','referencia');
 					echo $form->DropDownList($model,'tipodoc',$datos, array('empty'=>'--Seleccione un documento --')  );
 					//ECHO CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."nuevo.gif","",array("width"=>30,"height"=>15));
 			?>
@@ -389,12 +276,7 @@ $form=$this->beginWidget('CActiveForm', array(
 	
       </div>
 	
-	<div class="row">
-		<?php echo $form->labelEx($model,'hidproc'); ?>
-		<?php  $datos = CHtml::listData(Tenenciasproc::model()->findAll(),'id','eventos.descripcioncompleta');
-					echo $form->DropDownList($model,'hidproc',$datos, array('empty'=>'--Seleccione un proceso --')  )
-					?>
-	</div>
+	
  
 <?php $this->endWidget(); ?>
 

@@ -20,7 +20,7 @@ $('.search-button').click(function(){
 	return false;
 });
 $('.search-form form').submit(function(){
-	$('#cliprogrid').yiiGridView('update', {
+	$.fn.yiiGridView.update('clipro-grid', {
 		data: $(this).serialize()
 	});
 	return false;
@@ -36,8 +36,8 @@ $('.search-form form').submit(function(){
 )); ?>
 </div><!-- search-form -->
 
-<?php $gridWidget=$this->widget('zii.widgets.grid.CGridView', array(
-	'id'=>'cliprogrid',
+<?php $this->widget('zii.widgets.grid.CGridView', array(
+	'id'=>'clipro-grid',
 	'dataProvider'=>$model->search(),
 	  'itemsCssClass'=>'table table-striped table-bordered table-hover',
 	//'filter'=>$model,
@@ -75,13 +75,10 @@ $('.search-form form').submit(function(){
 	),
 )); ?>
 
+<?php echo CHTml::link("Exportar",Yii::app()->createUrl('/clipro/admin',array('espe'=>1)));
 
-<?php
-//Capture your CGridView widget on a variable
-//$gridWidget=$this->widget('bootstrap.widgets.TbGridView', array( . . .
-$this->renderExportGridButton($gridWidget,'Exportar resultados',array('class'=>'btn btn-info pull-right'));
-?>
-
+ 
+ ?>
 
 <?php
 //--------------------- begin new code --------------------------

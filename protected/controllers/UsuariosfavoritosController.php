@@ -52,7 +52,7 @@ class UsuariosfavoritosController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('quote','create','borrabloqueo','misbloqueos','update','borrar'),
+				'actions'=>array('prioriza','quote','create','borrabloqueo','misbloqueos','update','borrar'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -220,5 +220,25 @@ public function actionmisbloqueos(){
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
+	}
+        
+        /**
+	 * Returns the data model based on the primary key given in the GET variable.
+	 * If the data model is not found, an HTTP exception will be raised.
+	 * @param integer $id the ID of the model to be loaded
+	 * @return Usuariosfavoritos the loaded model
+	 * @throws CHttpException
+	 */
+	public function actionprioriza($id)
+	{
+		$model=Usuariosfavoritos::model()->findByPk($id);
+		if($model===null){
+                    
+                }else{
+                    $model->setscenario('prioridad');
+                    $model->valido='1';
+                    $model->save();
+                }
+			
 	}
 }

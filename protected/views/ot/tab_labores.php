@@ -1,7 +1,23 @@
 <?php
+if($this->action->id=='editadocumento'){
+   $provedor= Tempdetot::model()->search_por_ot($model->id);
+    
+}else{
+     $provedor= Detot::model()->search_por_ot($model->id);
+}
+?>
+<?php
+		$this->beginWidget('zii.widgets.CPortlet', array(
+			'title'=>"CGridview - Row hovering",
+		));
+		
+	?>
+    
+    <?php
+   
 $this->widget('zii.widgets.grid.CGridView', array(
     'id' => 'detalle-grid',
-    'dataProvider' => Tempdetot::model()->search_por_ot($model->id),
+    'dataProvider' => $provedor,
     //'filter'=>$model,
     'itemsCssClass' => 'table table-striped table-bordered table-hover',
     'summaryText' => ' Total de Items : {count}',
@@ -66,8 +82,9 @@ $this->widget('zii.widgets.grid.CGridView', array(
         //array('htmlOptions'=>array('width'=>5),'header'=>'um','value'=>'$data->ums->desum'),
         //array('htmlOptions'=>array('width'=>5), 'type'=>'raw','name'=>'codart','value'=>'$data->codart','visible'=>(!yii::app()->settings->get("materiales","materiales_codigoservicio")==$data->codart)?true:false),
         array('name' => 'textoactividad', 'value' => 'ucfirst(strtolower($data->textoactividad))'),
-                            'avance',
-        'cc',
+        ARRAY('name'=>'avance','type'=>'raw','header'=>'%Av','value' => 'CHtml::openTag("span",array("class"=>"label badge-error")).$data->avance." % ".CHtml::closeTag("span")'),
+        ARRAY('name'=>'cc','type'=>'raw','header'=>'Comp','value' => '(!empty($data->codmaster))?CHtml::image(Yii::app()->getTheme()->baseUrl."/img/bricks.png"):""'),
+        
         'grupoplan.desgrupo',
         'nhoras',
         'nhombres',
@@ -80,13 +97,17 @@ $this->widget('zii.widgets.grid.CGridView', array(
     //array('name'=>'Subt', 'type'=>'raw','header'=>'Subt','value'=>'Chtml::openTag("span", array("style"=>"float:right;font-weight:bold;")).Mifactoria::decimal($data->cant*($data->punit),3).Chtml::closeTag("span")','htmlOptions'=>array('width'=>68)),
     ),
 ));
-?>
 
-<div class="row">
+               
+                    ?>
+
+
 
 <?php
 //var_dump($this->estasEnsesion($model->id));
 if ($this->estasEnsesion($model->id)) {
+      
+    
     $botones = array(
         'add' => array(
             'type' => 'C',
@@ -100,18 +121,23 @@ if ($this->estasEnsesion($model->id)) {
             ),
             'dialog' => 'cru-dialogdetalle',
             'frame' => 'cru-detalle',
-            'visiblex' => array(ESTADO_CREADO),
+            'visiblex' => array('10'),
         ),
-        'tool' => array(
+             'tool' => array(
             'type' => 'C',
-            'ruta' => array($this->id . '/creaservicio', array(
-                    'idguia' => $model->id,
+            'ruta' => array($this->id . '/AgregaDetalleOtCompo', array(
+                    'id' => $model->id,
+                    'cest' => $model->{$this->campoestado},
+                    //"id"=>$model->n_direc,
+                    "asDialog" => 1,
+                    "gridId" => 'detalle-grid',
                 )
             ),
             'dialog' => 'cru-dialogdetalle',
             'frame' => 'cru-detalle',
-            'visiblex' => array(ESTADO_CREADO),
-        ),
+            'visiblex' => array('10'),
+        ),                
+        
         'minus' => array(
             'type' => 'D',
             'ruta' => array($this->id . '/borraitems', array()),
@@ -124,12 +150,12 @@ if ($this->estasEnsesion($model->id)) {
                                               
                                         }",
                 'beforeSend' => 'js:function(){
-                                  				 var r = confirm("Esta seguro de Eliminar estos Items?");
-                          						 if(!r){return false;}
-                               							 }
-                               					',
+                                  var r = confirm("Esta seguro de Eliminar estos Items?");
+                          	 if(!r){return false;}
+                               	}
+                               ',
             ),
-            'visiblex' => array(ESTADO_CREADO, ESTADO_AUTORIZADO, ESTADO_ANULADO, ESTADO_CONFIRMADO, ESTADO_FACTURADO),
+            'visiblex' => array('10'),
         ),
         'checklist' => array(
             'type' => 'C',
@@ -142,12 +168,12 @@ if ($this->estasEnsesion($model->id)) {
             ),
             'dialog' => 'cru-dialogdetalle',
             'frame' => 'cru-detalle',
-            'visiblex' => array(ESTADO_CREADO),
+            'visiblex' => array('10'),
         ),
         'pack2' => array(
             'type' => 'B',
             'ruta' => array($this->id . '/procesardocumento', array('id' => $model->id, 'ev' => 35)),
-            'visiblex' => array(ESTADO_CREADO),
+            'visiblex' => array('10'),
         ),
         'briefcase' => array(
             'type' => 'D',
@@ -166,8 +192,9 @@ if ($this->estasEnsesion($model->id)) {
                                							 }
                                					',
             ),
-            'visiblex' => array(ESTADO_CREADO, ESTADO_AUTORIZADO, ESTADO_ANULADO, ESTADO_CONFIRMADO, ESTADO_FACTURADO),
-        ),
+           // 'visiblex' => array($this::ESTADO_CREADO, $this::ESTADO_AUTORIZADO, $this::ESTADO_ANULADO, $this::ESTADO_CONFIRMADO, $this::ESTADO_FACTURADO),
+             'visiblex' => array('10'),
+            ),
         'join' => array(
             'type' => 'C',
             'ruta' => array($this->id . '/agregaritemsolpe', array(
@@ -179,7 +206,7 @@ if ($this->estasEnsesion($model->id)) {
             ),
             'dialog' => 'cru-dialogdetalle',
             'frame' => 'cru-detalle',
-            'visiblex' => array(ESTADO_CREADO),
+            'visiblex' => array('10'),
         ),
         'pack' => array(
             'type' => 'C',
@@ -192,11 +219,11 @@ if ($this->estasEnsesion($model->id)) {
             ),
             'dialog' => 'cru-dialogdetalle',
             'frame' => 'cru-detalle',
-            'visiblex' => array(ESTADO_CREADO),
+           'visiblex' => array($this::ESTADO_CREADO),
         ),
     );
 
-
+   //print_r($botones);die();
     $this->widget('ext.toolbar.Barra', array(
         //'botones'=>MiFactoria::opcionestoolbar($model->id,$this->documento,$model->codestado),
         'botones' => $botones,
@@ -205,8 +232,9 @@ if ($this->estasEnsesion($model->id)) {
         'status' => $model->{$this->campoestado},
             )
     );
+        //ECHO "BOtOTNE<BR>";VAR_DUMP($this::ESTADO_PREVIO);die(); 
 }
 ?>
-</div>
+<?php $this->endWidget();?>
 
 

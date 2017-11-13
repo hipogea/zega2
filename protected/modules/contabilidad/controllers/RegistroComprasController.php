@@ -12,14 +12,15 @@ class RegistroComprasController extends Controller
 	/**
 	 * @return array action filters
 	 */
+	/**
+	 * @return array action filters
+	 */
 	public function filters()
 	{
-		return array(
-			'accessControl', // perform access control for CRUD operations
-			'postOnly + delete', // we only allow deletion via POST request
-		);
+		return array('accessControl',array('CrugeAccessControlFilter'));
 	}
 
+	
       public function behaviors(){
           return array(
 			'exportableGrid' => array(
@@ -38,26 +39,19 @@ class RegistroComprasController extends Controller
               );
           
       }
-	/**
-	 * Specifies the access control rules.
-	 * This method is used by the 'accessControl' filter.
-	 * @return array access control rules
-	 */
 	public function accessRules()
 	{
+		Yii::app()->user->loginUrl = array("/cruge/ui/login");
+		
+
 		return array(
-			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
-				'users'=>array('*'),
-			),
+			
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('rellena',   'ajaxmuestraproveedor','llena','crear','update'),
+				'actions'=>array('createtempcuentas' ,  'updatetempcuentas',   'rellena','admin',   'ajaxmuestraproveedor','llena','crear','update'),
 				'users'=>array('@'),
 			),
-			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
-				'users'=>array('admin'),
-			),
+	
+			
 			array('deny',  // deny all users
 				'users'=>array('*'),
 			),
@@ -81,30 +75,61 @@ class RegistroComprasController extends Controller
 	 */
 	public function actionCrear()
 	{
-		$model=new Registrocompras('ins_compralocal');
-                    $model->valorespordefecto();
+                      
+            $model=new Registrocompras('ins_compralocal');
+                $model->hidperiodo=yii::app()->periodo->getperiodo() ;
+                   
+                    
+                    $model->iduser=yii::app()->user->id;
+                    $model->codocu=$model->documento;
+                   
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model); 
-
+               
 		if(isset($_POST[get_class($model)]))
 		{
 			$model->attributes=$_POST[get_class($model)];
                        // var_dump($model->attributes);
 			if($model->save()){
                             $model->refresh();
+                                //echo "dia2";
+                           $model->updateIdsTemporales($model->id,$model->idkey);
+                           //var_dump($model->id);var_dump($model->idkey);
+                          // die();
+                            //ECHO "DIA3";die();
+                            $model->grabatemporalcuentas($model->documento); 
+                            $model->limpiatemporales($model->documento);
+                            //ECHO "DIA4";
                             MiFactoria::Mensaje('success', 'Se creo el registro de compra con el ID ['.$model->id.']');
-                            $this->redirect(array('update','id'=>$model->id));
+                            $this->redirect(array('crear'));
                             //die();
-                        }else{
+                   }
+				
+		}else{
+                        IF (isset($_GET['ajax']))
+                            var_dump($_GET['ajax']);
+                    if(!yii::app()->request->isAjaxRequest){ 
+                    $model->valorespordefecto();
+                       usleep(400000);//dormuir al sisitema poara asegurase delk numero unico
+                    $model->idkey= uniqid();
+                   // echo "siii";die();
+                     $model->cargaCuentasDesdeConf($model->documento);
+                           // echo "FALLO";
                             //var_dump($model->geterrors());die();
                            // MiFactoria::Mensaje('error', 'Hubo errores al grabar el registro '.yii::app()->mensajes->getErroresItem($model->geterrors()));
                             
-                        }
-				
-		}
-
-		$this->render('create',array(
-			'model'=>$model,
+                    }
+                   }   //fin de siu es ajax  
+                if(is_null($model->id)){ //SI TODAVIA NO HAY ID , ES REGISTRO NEVO SOLO FILTRAR CON EL CAMPO IDKEY
+                   $proveedor= $model->getDataProviderToken($model->documento,'idkey');
+		 //echo "alo";
+                }else{//FILTRAR CON EL CAMPO HIDASIENTO
+                     $proveedor= $model->getDataProviderHidasiento($model->documento,'hidasiento');
+                    // echo "alo2";
+                }
+               // VAR_DUMP($proveedor);die();
+                 $this->render('create',array(
+			'model'=>$model,'proveedor'=>$proveedor
 		));
 	}
 
@@ -116,19 +141,23 @@ class RegistroComprasController extends Controller
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
-                $model->setScenario();
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['Cuentas']))
+               $model->setScenario('upd_compralocal');
+               
+		if(isset($_POST['Registrocompras']))
 		{
-			$model->attributes=$_POST['Cuentas'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->codcuenta));
+			$model->attributes=$_POST['Registrocompras'];
+			if($model->save()){
+                            $model->grabatemporalcuentas($model->documento);                            
+                            MiFactoria::Mensaje('success', "Se grabaron los datos de la compra ");
+                      
+                            $this->redirect(array('admin'));
+                              }
+				
 		}
-
+                $model->sacatempcuentasupdate($model->documento);
+		$proveedor=$model->getDataProviderHidasiento($model->documento,'hidasiento');
 		$this->render('update',array(
-			'model'=>$model,
+			'model'=>$model,'proveedor'=>$proveedor
 		));
 	}
 
@@ -198,7 +227,7 @@ class RegistroComprasController extends Controller
 	 */
 	public function loadModel($id)
 	{
-		$model=Cuentas::model()->findByPk($id);
+		$model= Registrocompras::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
@@ -238,13 +267,13 @@ class RegistroComprasController extends Controller
                          $registro=Clipro::model()->findByRuc($ruc);
                          //var_dump($valor);die();
                          if(is_null($registro)){
-                            $valor='No hay coincidencias'; 
+                            $valor=''; 
                          }else{
                              $valor=$registro->despro;
                          }
                         // $valor="SI PSO";
                      }else{
-                         $valor='No hay coincidencias';
+                         $valor='';
                      }
                      //var_dump($valor);
                      echo $valor;
@@ -268,4 +297,62 @@ class RegistroComprasController extends Controller
                      
                  }
          }
+         
+      public function actionupdatetempcuentas(){
+              $id=$_GET['id'];
+               $cata= Templibrodiario::model()->findByPk(MiFactoria::cleanInput($id));
+               $cata->setScenario('basico');
+               if(isset($_POST[get_class($cata)])){
+                   $cata->attributes=$_POST[get_class($cata)];
+			if($cata->save()){
+                          echo CHtml::script("window.parent.$('#cru-dialog4').dialog('close');
+									window.parent.$('#cru-frame4').attr('src','');
+									window.parent.$.fn.yiiGridView.update('cuentas-grid');
+					");
+					Yii::app()->user->setFlash('success', " Se grabaron los datos  ");
+					yii::app()->end();  
+                        }else{
+                            echo yii::app()->mensajes->getErroresItem($cata->geterrors());
+                        
+                            die();
+                        }
+                            	
+                            
+			
+               }
+               $this->layout = '//layouts/iframe';
+               $this->render('_w_cuentas',array(
+                'model'=>$cata      ));
+             
+         }
+         
+           public function actioncreatetempcuentas(){
+              $id=$_GET['id'];
+              // $cata= Templibrodiario::model()->findByPk(MiFactoria::cleanInput($id));
+              $modelo=$this->loadModel(MiFactoria::cleanInput($id));
+               $cata=$modelo->getNewTempCuenta();
+               //$cata->setScenario('basico');
+               if(isset($_POST[get_class($cata)])){
+                   $cata->attributes=$_POST[get_class($cata)];
+			if($cata->save()){
+                          echo CHtml::script("window.parent.$('#cru-dialog4').dialog('close');
+									window.parent.$('#cru-frame4').attr('src','');
+									window.parent.$.fn.yiiGridView.update('cuentas-grid');
+					");
+					Yii::app()->user->setFlash('success', " Se grabaron los datos  ");
+					yii::app()->end();  
+                        }else{
+                            echo yii::app()->mensajes->getErroresItem($cata->geterrors());
+                        
+                            die();
+                        }
+                            	
+                            
+			
+               }
+               $this->layout = '//layouts/iframe';
+               $this->render('_w_crea_cuentas',array(
+                'model'=>$cata      ));
+             
+         }   
 }

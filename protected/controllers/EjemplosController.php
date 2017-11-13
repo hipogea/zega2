@@ -398,10 +398,163 @@ $mo=New Alinventario();
 }
 
 public $layout='//layouts/column2';
-	public function actionPio() { 
-            //new CC
-            $registro= Dcajachica::model()->findByPk(96);
-            var_dump($registro->imputado());die();
+	public function actionPio() {
+            //echo "de"; die();
+            var_dump(Dailydet::model()->search_por_parte(21)->getdata());
+            die();
+              var_dump(yii::app()->periodo->toISO('18/11/2017 12:41').'');
+            var_dump(yii::app()->periodo->fechaParaBd('18/11/2017 12:41:34'));
+            die();
+            var_dump(yii::app()->periodo->validaformatos('18/11/2017 12:41'));
+            
+            
+            $model=New Dailydet('update');
+            $model->hidequipo=19;$model->hidparte=32;
+            //$model->codproyecto='490000000031';
+            $model->validate(null,false);
+            var_dump($model->geterrors());die();
+                   //var_dump($idparte);die();
+                   $model->hidparte=26;
+                   $model->hidequipo=19;
+                   $horometro=$model->getHorometroAnterior('hmf');
+                   $horometrop=$model->getHorometroAnterior('hpf');
+                    var_dump($horometro);var_dump($horometrop);die();
+            
+            $reg=Dailydet::model()->findByPk(79);
+            var_dump($reg->getHorometroSiguiente('hmf'));die();
+            /*$b=new Dailyturnos();
+            $registros=$b->search_por_ot('490000000031');*/
+           var_dump(Dailyturnos::getSecuencia('490000000031'));die();
+           
+            VAR_DUMP(yii::app()->periodo->verificaFechas($fecha1,$fecha2));
+             VAR_DUMP(yii::app()->periodo->verificaFechas($fecha2,$fecha3));
+            VAR_DUMP(yii::app()->periodo->toISO('2017-10-01 10:35:00'));DIE();
+            $maximo=yii::app()->db->createCommand()->select('hmi')
+              ->from('vw_parteopdetalle')->where("id=-4")
+            ->queryScalar();
+            var_dump($maximo);die();
+            
+            
+        $registro=Dailydet::model()->findByPk(229);
+            //var_dump(property_exists($registro, 'hmi'));
+           $vela= $registro->getHorometroAnterior('hmi');
+           var_dump($vela);
+            die();
+            var_dump(yii::app()->periodo->semanas(10,'17'));die();
+            
+            
+            $model=New VwParteopdetalle();
+             $model->fecha1='2017-10-27';
+               $model->fecha='2017-01-01';
+               $model->periodo='mes';
+                $model->grupo='codtipo';
+                $model->_level=$model->periodo;
+               $model->_campopivote=$model->grupo;
+                            //print_r($model->attributes);die();
+              echo $model->buildSqlFechas($model->fecha, $model->fecha1);
+               $proveedor=$model->proveedor(NULL);   
+           // print_r($proveedor->getData());
+            Yii::import('application.helpers.CArray');
+            $nuevoarr=CArray::rotate($proveedor->getData());
+            print_r($nuevoarr);
+            die();
+            
+            $datos=array(array('uno'=>'dos',));
+            var_dump(yii::app()->periodo->explotaFechas('2017-03-15','2017-09-23'));die();
+            var_dump(VwParteopdetalle::camposprofundidad()); die();
+            $regi=New VwParteopdetalle;
+            $regi->_campopivote='codtipo';
+            $regi->_level='semana';
+              $parametros=array('anno'=>'17','mes'=>'10');
+           echo $regi->buildSql($parametros);die();
+            
+            
+            
+           $dife=strtotime("01:30")-strtotime(date('Y-m-d'));
+           var_dump($dife/3600);die();
+            $horaac=(Integer)(microtime(true)*10000);
+            echo "hora a actual copn microtime <br>";
+            var_dump($horaac);
+            $horaacx=time();
+            echo "hora a actual copn time <br>";
+            var_dump($horaacx);
+            echo "<br>";
+             echo "fecha con  dato  microtime<br>";
+            $fechaactual=date("Y-m-d H:i:s",$horaac/10000);
+            var_dump($fechaactual);
+            echo "<br>";
+             echo "fecha con  dato  time<br>";
+            $fechaactual=date("Y-m-d H:i:s",$horaacx);
+             var_dump($fechaactual);
+             echo "<br>";
+             echo "HORA ACTUAL + 10 HORAS CON TIME <BR>";
+             //$horaactual=date('H:i:s');
+             $hfinal=date('Y-m-d H:i:s',time()+10*60*60);
+             $registro=Regimen::model()->findByPk(2);
+             $horainicio=$registro->hinicio;
+             $horafinal=$registro->horafin();
+             $limitesup=$registro->getLimiteSuperior('2017-10-29');
+              $limiteinf=$registro->getLimiteInferior('2017-10-29');
+              var_dump($limitesup);var_dump($limiteinf);
+            die();
+             
+            
+           // date_default_timezone_set('Africa/lusaka');
+            echo date('Y-m-d H:i:s');die();
+            $comportamiento=new TomaFotosBehavior();
+        $comportamiento->_codocu='390';
+         $comportamiento->_ruta=yii::app()->settings->get('general','general_directorioimg');
+         $comportamiento->_numerofotosporcarpeta=yii::app()->settings->get('general','general_nregistrosporcarpeta')+0;
+          $comportamiento->_extensionatrabajar='jpg';
+           $comportamiento->_id=10; 
+          
+           $registro=Inventario::model()->findByPk(10);
+           $registro->attachbehavior('adjuntador',$comportamiento ); 
+           
+           var_dump($registro->getCarrusel(10,'390'));die();
+            
+            
+            $registro= New Adjuntos('insert');//$registro->setAttributes($values)
+            
+       $registro->setAttributes(array(
+               "codocu"=>'891',
+                "hiddocu"=>23,                        
+                "enlace"=>'hola', 
+           "extension"=>'jpg', 
+           "iduser"=>yii::app()->user->id,
+           "subido"=>date('Y-m-d H:i:s'),
+                ));
+       if(!$registro->save()){
+           echo print_r($registro->geterrors());
+       }else{
+            echo "ok";
+       }die();
+            $registro=new Templibrodiario('basico');
+              $registro->setAttributes(ARRAY
+                     (
+                 'codcuenta'=>'6000000001',
+                 'tipo'=>'D','codocu'=>'760',
+                 'idkey'=>'59c12450ca986',
+                     ));
+              echo $registro->save();die();
+            echo uniqid();die();
+             VAR_DUMP(yii::app()->tipocambio->registroactual('USD'));DIE();
+            VAR_DUMP(yii::app()->settings->get('general','general_dni'));
+            $VALOR="12345678";
+             VAR_DUMP($VALOR);
+           var_dump(preg_match(yii::app()->settings->get('general','general_dni'),$VALOR));
+            DIE();
+            var_dump(yii::app()->periodo->getperiodo());die();
+          
+            var_dump(yii::app()->periodo->diferenciahoras("08:00","18:32"));die();
+           var_dump(is_file("/home/neotegni/public_html/recurso/recurso/carpeta/390/jpg/2/8_0_15014402750000_1.jpg"));die();
+            $regin=  Alinventario::model()->findByPk(281);
+            var_dump(Solpe::solpeautomatica($regin));die();
+            
+            
+            echo yii::app()->periodo->diferenciahoras("16:30","08:00"); die();
+            $registro= Ne::model()->findByPk(30);
+            var_dump($registro->numeroitemsvalidos);die();
             $fecha='04/02/20176886';
            if(yii::app()->periodo->validaformatos($fecha)){  
                echo "si e s valido";
@@ -695,22 +848,7 @@ die();
            
            
             $this->render('//site/mensajes');die();
-            $horaac=(Integer)(microtime(true)*10000);
-            echo "hora a actual copn microtime <br>";
-            var_dump($horaac);
-            $horaacx=time();
-            echo "hora a actual copn time <br>";
-            var_dump($horaacx);
-            echo "<br>";
-             echo "fecha con  dato  microtime<br>";
-            $fechaactual=date("Y-m-d H:i:s",$horaac/10000);
-            var_dump($fechaactual);
-            echo "<br>";
-             echo "fecha con  dato  time<br>";
-            $fechaactual=date("Y-m-d H:i:s",$horaacx);
-             var_dump($fechaactual);
-            die();
-            
+           
             
             
               echo "Comprobar el directorio con la funcio is_dir()    :     is_dir(".Yii::getPathOfAlias('webroot').")  <br> ";

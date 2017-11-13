@@ -13,7 +13,7 @@ $this->menu=array(
 );
 ?>
 
-<h1>Nuevo documento de Almacen</h1>
+
 
 
 

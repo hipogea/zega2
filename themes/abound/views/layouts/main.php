@@ -53,7 +53,29 @@
 
 <section id="navigation-main">   
 <!-- Require the navigation -->
-<?php require_once('tpl_navigation.php')?>
+
+<?php
+      /// Yii::app()->bootstrap->register(); 
+       yii::import('ext.Mobile_Detect');
+       $detectar=New Mobile_Detect();
+       $movil=($detectar->isMobile()or $detectar->isTablet());unset($detectar);
+        if ( $movil ) {
+          yii::app()->settings->set('general','general_esmovil','1',false);
+        }else{  
+            Yii::app()->bootstrap->register(); 
+           yii::app()->settings->set('general','general_esmovil','0',false); 
+        }
+        
+        ?>
+
+
+
+<input type="submit" value="" />
+<?php 
+$layi=(yii::app()->settings->get('general','general_esmovil')=='1')?'tpl_navigation.php':'tpl_navigation_pc.php';
+require_once($layi);
+
+?>
 </section><!-- /#navigation-main -->
     
 <section class="main-body">

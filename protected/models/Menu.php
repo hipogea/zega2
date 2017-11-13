@@ -25,7 +25,7 @@ class Menu extends CActiveRecord
      */
     public function tableName()
     {
-        return 'public_menu';
+        return '{{menu}}';
     }
     /**
      * @return array behaviors.

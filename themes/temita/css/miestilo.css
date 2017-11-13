@@ -58,7 +58,7 @@ div.form.division
   -webkit-border-radius:0px 5px 10px 10px; /* Safari y Chrome */
    border-color: #bcbcbc;
    border :1px; 
-   background-color:#ace4ff;
+   background-color:#ebecec;
  /*background: url(images/fondo.jpg);*/
  /*background: linear-gradient(to top,#fff 0,#f1f1f1 100%);*/
         /*background: linear-gradient(to top,#f3f5fd 0,#e1e2e2 100%);
@@ -88,7 +88,7 @@ box-shadow:2px 2px 2px -1px  rgba(0,0,0,0.23);
   border:1px solid rgba(62, 70, 90, 0.14);
   margin : 2px;
   padding: 3px;
-  width: 50%px;
+  width: 48%;
    float:left;
 
   /*display:table-cell;*/
@@ -103,7 +103,7 @@ box-shadow:2px 2px 2px -1px  rgba(0,0,0,0.23);
   margin : 2px;
   padding: 3px;
   float:left;
-  width: 50%;
+  width: 48%;
   clear:right;
 
   /*float:right;*/
@@ -162,19 +162,20 @@ box-shadow:2px 2px 2px -1px  rgba(0,0,0,0.23);
     /* border-radius: 10px; */
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
-    float: center;
-    border: 3px solid #f3c9c9;    
+   
+    border: 1px solid #f3c9c9;        
+        word-wrap: break-word;    
      width: 80%; 
     padding: 5px;
     padding: 20px;
     margin: 0 auto;
     color: #f7061a;
-    font-size: 15px;
-    font-weight: bold;
+    font-size: 12px;
+    
     line-height: 14px;
     color: #e45353;
     text-shadow: -1px -1px 8px rgba(226, 23, 23, 0.25);
-    white-space: nowrap;
+
     vertical-align: baseline;
     background-color: #fbe6e6;
 }

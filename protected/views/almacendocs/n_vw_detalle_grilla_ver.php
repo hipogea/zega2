@@ -37,8 +37,9 @@ $this->widget('zii.widgets.grid.CGridView', array(
 		//'c_itguia',
 		'cant',
 		//'um',
-		array('name'=>'unidades.desum','header'=>'Um','htmlOptions'=>array('width'=>5)),
-		'codart',
+		array('name'=>'um','header'=>'Um.','value'=>'$data->unidades->desum','htmlOptions'=>array('width'=>5)),
+		
+            'codart',
 		//'c_edgui',	
 		'maestro.descripcion',
             array(

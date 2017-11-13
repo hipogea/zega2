@@ -5,12 +5,19 @@ class Masterequipo extends ModeloGeneral
 	/**
 	 * @return string the associated database table name
 	 */
+    
+    public $descripcioncompleta;
+   // public $campossensibles=array("codigopadre");
 	public function tableName()
 	{
 		return '{{masterequipo}}';
 	}
 
-
+         public function init(){
+             $this->campoestado='descripcion';
+             $this->campossensibles=array("codigopadre");
+             return parent::init();
+         }
 	public function behaviors()
 	{
 		return array(
@@ -68,7 +75,7 @@ class Masterequipo extends ModeloGeneral
 			'parent' => array(self::BELONGS_TO, 'Masterequipo', 'parent_id'),
 			'children' => array(self::HAS_MANY, 'Masterequipo', 'parent_id'),
 			'childCount' => array(self::STAT, 'Masterequipo', 'parent_id'),
-                    'nobjetosmaster' => array(self::STAT, 'Objetosmaster', 'id'),
+                    'nobjetosmaster' => array(self::STAT, 'Objetosmaster', 'hcodobmaster'),
                     'masterrelacion' => array(self::HAS_MANY, 'Masterrelacion', 'hidpadre'),
 			
 		);
@@ -252,5 +259,43 @@ public function beforeSave() {
 		}
 	return parent::beforeSave();
 }
+
+
+public function suggestcompo($keyword,$limit=20)
+	{
+		$models=$this->findAll(array(
+			'condition'=>'descripcion LIKE :keyword  or modelo like :keyword',
+			'order'=>'descripcion',
+			'limit'=>$limit,
+			'params'=>array(':keyword'=>"%$keyword%")
+		));
+		$suggest=array();
+		//$suggest=array(JSON_ENCODE($models[0]),'KFSHFKSIY');
+		foreach($models as $model) {
+			$suggest[] = array(
+				'label'=>$model->descripcion.'-'.$model->marca.'-'.$model->modelo,  // label for dropdown list
+				'value'=>$model->codigo,  // value for input field
+				//'id'=>$model->id,       // return values from autocomplete
+				//'code'=>$model->code,
+				//'call_code'=>$model->call_code,
+			);
+		}
+		
+		return $suggest;
+	}
+
+public function afterfind(){
+    $this->descripcioncompleta=$this->descripcion.'-'.$this->marca.'-'.$this->modelo;  // label for dropdown list
+				
+    return parent::afterfind();
+}
+
+Public static  function fndescripcioncompleta($codigo){
+    $registro=self::findByCodigo($codigo);
+    return (is_null($registro))?"--":$registro->descripcioncompleta;
+}
+
+
+
 
 }

@@ -2,6 +2,9 @@
 
 class Detgui extends ModeloGeneral
 {
+    public $otref; //campo auxliar para asignar OTS
+     public $cantot; //campo auxliar para asignar OTS
+    const CODIGO_DOC='230';
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -30,8 +33,11 @@ class Detgui extends ModeloGeneral
 
 
 		$reglas=array(
-			/*array('n_libre', 'numerical', 'integerOnly'=>true),
-			array('n_cangui', 'numerical'),
+			array('otref,cantot', 'safe','on'=>'imputaciones'),
+                    array('cantot', 'numerical','min'=>0,'on'=>'imputaciones'),
+                        array('cantot', 'chkcantidadot','on'=>'imputaciones'),
+                     array('otref', 'chkot','on'=>'imputaciones'),
+			/*array('n_cangui', 'numerical'),
 			array('n_cangui', 'required','message'=>'Cantidad vacia'),
 			array('c_itguia, c_um, c_codep, codocu', 'length', 'max'=>3),
 			array('c_codgui, docref', 'length', 'max'=>8),
@@ -208,6 +214,10 @@ class Detgui extends ModeloGeneral
 									{									
 									   // $this->c_codsap=Inventario::model()->find('codigoaf=:codito',array(':codito'=>$this->c_codactivo))->codigosap;								
 													}
+                                    if($this->getScenario()=='imputaciones'){
+                                             $this->insertaneot();
+                                     }                                                                    
+                                                                                                        
 													
 										return parent::beforeSave();	
 											}  
@@ -348,5 +358,60 @@ public function search()
             
             return parent::aftersave();
         }
+      public static function findByIdguia($id,$item){
+        $criter=New CDbCriteria();
+        $criter->addCondition("n_hguia=:vnguia and c_itguia=:vitem");
+        $criter->params=array(":vnguia"=>$id,":vitem"=>$item );
+        $cri->addNotInCondition("c_estado",Estado::estadosnocalculables(self::CODIGO_DOC));
+        return self::model()->find($criter);
         
+    } 
+    
+    public funCtion esimputableot(){
+        RETURN TRUE;
+    }
+    
+    public function chkcantidadot($attribute,$params) {
+	
+        if($this->asignadosot+$this->cantot > $this->n_cangui)
+          $this->adderror('cantot',"La cantidad asignada  [$this->cantot] mas  la cantidad acumulada [$this->asignadosot] ,supera la cantidad  ingreesada [$this->n_cangui] ");	
+							
+		} 
+                
+      public function chkot($attribute,$params) {
+         $orden= explode('-', $this->otref);
+         if(count($orden)==0){
+         $this->adderror('otref','El formato de imputacion no es el correcto');return;
+         
+                    }
+         $registroorden=Ot::model()->findByNumero($orden[0]);
+         if(is_null($registroorden)){
+            $this->adderror('otref','Esta orden no existe');return;
+          }else{
+              if(!in_array($orden[1],$registroorden->listaitems()))
+                $this->adderror('otref','El item ['.$orden[1].'] indicado en la orden no existe');return; 
+               
+                }
+          
+        }           
+      
+        public function insertaneot(){
+            $registro=New Neot('nemasiva');
+             $orden= explode('-', $this->otref);        
+         
+                    
+         $registroorden=Ot::model()->findByNumero($orden[0]);
+            $registro->setAttributes(
+                    array(
+                        'hidne'=>$this->id,
+                        'hidot'=>$registroorden->getid($orden[1]),
+                        'cant'=>$this->cantot,
+                        'idot'=>$registroorden->id,
+                    )
+                    );
+            $registro->save();
+            unset($registroorden);
+        }
+         
+                
 }

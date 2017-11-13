@@ -16,7 +16,7 @@ class Cajachica extends ModeloGeneral
     
     public $limiteinferior;
     public $limitesuperior;
-    public $camposfechas=array('fechaini','fechafin');
+    public $camposfechas=array('fechaini'=>'fechaini','fechafin'=>'fechafin');
     //const TIPO_DE_FLUJO_A_RENDIR='102';
     /**
      * @return string the associated database table name
@@ -35,15 +35,13 @@ class Cajachica extends ModeloGeneral
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('hidperiodo,descripcion, fechaini,serie, fechafin, hidfondo, valornominal,codtra,codarea', 'required','message'=>'Este dato es obligatorio', 'on'=>'insert, update'),
+           array('hidperiodo,descripcion, fechaini,serie, fechafin, hidfondo, valornominal,codtra,codarea', 'required','message'=>'Este dato es obligatorio', 'on'=>'insert, update'),
             array('descripcion,liquidada,hidfondo,serie, hidperiodo, fechaini,valornominal, fechafin, codtra, codarea,codcen, iduser', 'safe', 'on'=>'insert,udpate'),
             array('serie','checksepuedeabrir','on'=>'insert'),
             array('fechaini, fechafin','checkfechas','on'=> 'insert,update'),
             array('hidperiodo, iduser', 'numerical', 'integerOnly'=>true),
             array('codtra, codcen', 'length', 'max'=>4),
-            // The following rule is used by search().
-            // @todo Please remove those attributes that should not be searched.
-            array('id, descripcion,liquidada,hidfondo, hidperiodo, fechaini, fechafin, codtra, codarea,codcen, iduser', 'safe', 'on'=>'search'),
+             array('id, descripcion,liquidada,hidfondo, hidperiodo, fechaini, fechafin, codtra, codarea,codcen, iduser', 'safe', 'on'=>'search'),
         );
     }
     public function checkfechas($attribute,$params) {
@@ -71,6 +69,7 @@ class Cajachica extends ModeloGeneral
             'hijospendientes'=>array(self::STAT, 'Dcajachica', 'hidcaja','condition'=>"tipoflujo not in ('".self::TIPO_FLUJO_CARGO."')  and codestado in ('".self::ESTADO_DETALLE_CAJA_PREVIO."','".self::ESTADO_DETALLE_CAJA_CREADO."') "),//el campo
             'hijos_cargo_por_cerrar' => array(self::STAT, 'Dcajachica', 'hidcaja','select'=>'count(t.id)','condition'=>" hidcargo >0 and codestado in ('".self::ESTADO_DETALLE_CAJA_PREVIO."','".self::ESTADO_DETALLE_CAJA_CREADO."')  "),
            'hijosconproceso'=>array(self::STAT, 'Dcajachica', 'hidcaja','select'=>'count(t.id)','condition'=>"  codestado not in ('".self::ESTADO_DETALLE_CAJA_PREVIO."','".self::ESTADO_DETALLE_CAJA_CREADO."')  "),
+           'rendido'=>array(self::STAT, 'Dcajachica', 'hidcaja','select'=>'sum(t.monto)','condition'=>"  codestado not in ('".self::ESTADO_DETALLE_CAJA_PREVIO."','".self::ESTADO_DETALLE_CAJA_CREADO."') and revisado <> '1' "),
             );
     }
     /**
@@ -118,7 +117,8 @@ class Cajachica extends ModeloGeneral
         ));
     }
     public function checksepuedeabrir($attribute,$params) {
-        $devolver=false;
+        if(yii::app()->settings->get("conta","conta_abrecajasinrequisitos")=="1"){
+             $devolver=false;
         $valorultimo=Yii::app()->db->createCommand()
             ->select('max(a.id)')
             ->from('{{cajachica}} a')
@@ -134,6 +134,10 @@ class Cajachica extends ModeloGeneral
         if(!$devolver)
             $this->adderror('serie'," Aun existe una caja en esta serie pendiente de liquidar  ");
         
+        }else{
+            return true;
+        }
+       
     }
     /**
      * Returns the static model of the specified AR class.

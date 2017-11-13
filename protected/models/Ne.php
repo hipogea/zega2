@@ -2,7 +2,7 @@
 
 class Ne extends ModeloGeneral
 {
-	
+	const CODIGO_DOC='500';
     const ESTADO_DETALLE_ANULADO='40';
     /**
 	 * Returns the static model of the specified AR class.
@@ -212,9 +212,11 @@ class Ne extends ModeloGeneral
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+                     'estado' => array(self::BELONGS_TO, 'Estado', array('c_estgui'=>'codestado','codocu'=>'codocu')),
+
 			'detalle' => array(self::HAS_MANY, 'Detgui', 'n_hguia'),
 			'tempdetalle' => array(self::HAS_MANY, 'Tempdetgui', 'n_hguia'),
-                        'numeroitemsvalidos'=>array(self::STAT, 'Tempdetgui', 'n_hguia','condition'=>" c_estado not in ('".self::ESTADO_DETALLE_ANULADO."')  and iduser =".yii::app()->user->id." "),//el campo foraneo
+                        'numeroitemsvalidos'=>array(self::STAT, 'Tempdetgui', 'n_hguia','condition'=>" c_estado not in ('".self::ESTADO_DETALLE_ANULADO."')  and idusertemp =".yii::app()->user->id." "),//el campo foraneo
 		
 			'direccionespartida' => array(self::BELONGS_TO, 'Direcciones', 'n_dirsoc'),
 			'direccionesllegada' => array(self::BELONGS_TO, 'Direcciones', 'n_direc'),
@@ -294,47 +296,18 @@ class Ne extends ModeloGeneral
 	}
 	public function beforeSave() {
 		if ($this->isNewRecord) {
-			//$mij=null;
-
-			///$this->usuario=Yii::app()->user->name;
-
-                        $this->sacadireccion();
+			 $this->sacadireccion();
 			$this->c_salida='0';
-			//$command = Yii::app()->db->createCommand(" select nextval('sq_guias') ");
-			//$this->n_guia= $command->queryScalar();
-			//$this->codocu='101';
 			$this->codobjeto='001';
 			$this->codocu='500';
 			$this->c_estgui='99';
 
-			/****************************************************************
-			 *	Sacar la direccion
-			 ****************************************************************/
-
-
-
-
-			/*******************************************************************
-			 *********************************************************************/
-					/* SACANDO EL CORRELATIVO
-					/*
-					 *
-					 */
-
-
-
-
-
 		} else
 		{
-
-
-
-			IF ($this->c_estgui=='99') {//SI SE TRATA DE UNA GUIA NUEVA COLOCARLE 'PREVIO'
+                    IF ($this->c_estgui=='99') {//SI SE TRATA DE UNA GUIA NUEVA COLOCARLE 'PREVIO'
 				$this->c_estgui='10';
 
 			}
-
 			if(is_null($this->c_numgui)){
 				$this->c_serie=substr($this->cod_cen,0,3);
 				$criterio=New CDBcriteria();
@@ -348,7 +321,6 @@ class Ne extends ModeloGeneral
 
 			//$this->ultimares=" ".strtoupper(trim($this->usuario=Yii::app()->user->name))." ".date("H:i")." :".$this->ultimares;
 		}
-
 		$criteria=new CDbCriteria;
 		$criteria->addCondition(" c_hcod='".$this->c_coclig."' ");
 		$row=Direcciones::model()->findall($criteria);
@@ -364,9 +336,6 @@ class Ne extends ModeloGeneral
 			$this->n_directran=$row[0]->n_direc;
 
 		}
-
-
-
 		/*********VERIFICANDO LOS CHOFERES****************/
 		$mij=Choferes::model()->find("brevete=:vbrevete", array(":vbrevete"=>trim($this->c_licon)));
 		if (is_null($mij)) { //si el brevete no esta registrado pues insertar en nla tabla choferes
@@ -377,7 +346,6 @@ class Ne extends ModeloGeneral
 			$nuevomodelo->save();
 
 		}
-
 		return parent::beforeSave();
 	}
 
@@ -456,10 +424,46 @@ class Ne extends ModeloGeneral
 
 		//}
 	}  
+     public function arreglaOrdenItems($estadoanulado){
+            $contador=1;
+            foreach($this->tempdetalle as $detalle){
+                 $detalle->setScenario('cambioitems');
+                if(!($detalle->c_estado==$estadoanulado)){
+                   
+                    $detalle->c_itguia=str_pad($contador,3,"0",STR_PAD_LEFT); 
+                     $contador+=1;
+                }else{
+                     $detalle->c_itguia='000'; 
+                }
+                 $detalle->save();
+                   
+                
+            }
+        }
         
-    public function getNextItem(){
+        public function getNextItem(){
             return str_pad($this->numeroitemsvalidos+1,3,"0",STR_PAD_LEFT); 
         }    
+       
         
+    public static function findByNumero($serie,$numero){
+       // var_dump($numero);var_dump($serie);die();
+        $criter=New CDbCriteria();
+        $criter->addCondition("c_numgui=:vnumero and c_serie=:vserie and c_salida <> '1' ");
+        $criter->params=array(":vnumero"=>$numero,":vserie"=>$serie );
+        return self::model()->find($criter);
         
+    } 
+    
+    public function listaitems(){
+        $cri=New CDbCriteria();
+        $cri->addCondition("n_hguia=:vid ");
+        $cri->params=array(":vid"=>$this->id);
+        $cri->addNotInCondition("c_estado",Estado::estadosnocalculablesdetalle(self::CODIGO_DOC));
+          return yii::app()->db->createCommand()->
+                  select('t.c_itguia')->
+                  from('{{detgui}} t')-> 
+                  where($cri->condition,$cri->params)-> 
+                  queryColumn();
+    }
 }

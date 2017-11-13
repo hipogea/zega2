@@ -41,7 +41,7 @@ $('.search-form form').submit(function(){
 	'dataProvider'=>VwDespacho::model()->search_vigente(),
 	'cssFile' => Yii::app()->getTheme()->baseUrl.'/css/grilla_naranja.css',
 	//'filter'=>$model,
-	//'itemsCssClass'=>'table table-striped table-bordered table-hover',
+	'itemsCssClass'=>'table table-striped table-bordered table-hover',
 	'columns'=>array(
 		'nombrepunto',
 		'codalmacen',
@@ -64,8 +64,7 @@ $('.search-form form').submit(function(){
 					array(
 						'visible'=>'true',
 						'url'=>'$this->grid->controller->createUrl("/despacho/cargadetalle", array("identi"=>$data->hidvale))',
-						'options' => array( 'ajax' => array('type' => 'GET', 'update'=>'#zona' ,'url'=>'js:$(this).attr("href")'),
-							'onClick'=>'Loading.show();Loading.hide(); ',
+						'options' => array( 'ajax' => array('type' => 'GET', 'update'=>'#zona' ,'url'=>'js:$(this).attr("href")'),							
 						) ,
 						'imageUrl'=>''.Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'hand_point.png',
 						'label'=>'Ver detalle',

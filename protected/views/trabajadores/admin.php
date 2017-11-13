@@ -51,7 +51,7 @@ $('.search-form form').submit(function(){
 
 		//'oficio.oficio',
 		array('name'=>'oficios_oficio','value'=>'$data->oficio->oficio'),
-		array('name'=>'iduser','value'=>'yii::app()->user->um->LoadUserById($data->iduser)->username'),
+		//array('name'=>'iduser','value'=>'yii::app()->user->um->LoadUserById($data->iduser)->username'),
 		/*
 		'creadopor',
 		'creadoel',

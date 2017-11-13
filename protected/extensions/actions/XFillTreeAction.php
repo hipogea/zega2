@@ -57,7 +57,7 @@ class XFillTreeAction extends CAction
         //ECHO "5656cvcvcv"; yii::app()->end();
         if(!isset($_GET['root'])||$_GET['root']=='source')
         {
-            //ECHO "cvcvcv"; yii::app()->end();die();
+           // ECHO "cvcvcv"; yii::app()->end();die();
             $rootId=$this->rootId;
             $showRoot=$this->showRoot;
                // yii::log('  hola  Mundo sin root  ','error');
@@ -73,10 +73,7 @@ class XFillTreeAction extends CAction
         //$rootId=1;
         //echo "salio";die();
       // var_dump( $this->methodName);die();
-         //var_dump($_GET['root']);var_dump($rootId);die();
-        //echo "paso"; die();
-       //var_dump($this->methodName);die();
-     //  $dataTree= Arbolcerti::model()->fillTree($rootId,$showRoot);
+        // var_dump($_GET['root']);var_dump($rootId);die();
         $dataTree=$this->getModel()->{$this->methodName}($rootId,$showRoot);
          
        // echo "arbiendo   ";

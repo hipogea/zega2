@@ -187,16 +187,20 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			'name'=>'fecha',
 			//array('name'=>'fechaent','header'=>'Para'),
 			'header'=>'Fecha',
-			'value'=>'date("d.m.Y", strtotime($data->fecha))',
+			'value'=>'$data->fecha',
 			'htmlOptions'=>array('width'=>50),
 		),
 		array('name'=>'tipoflujo','header'=>'Tipo','value'=>'$data->flujos->destipo','htmlOptions'=>array('width'=>140)),
 		array('name'=>'st.','header'=>'st', 'type'=>'raw','value'=>'($data->tipoflujo=="102")?CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."rojo.png"):""'),
 
 		array('name'=>'glosa','header'=>'Glosa','htmlOptions'=>array('width'=>205)),
-		array('name'=>'codocu','header'=>'Documento','value'=>'$data->documentos->desdocu','htmlOptions'=>array('width'=>200)),
-		array('name'=>'referencia','header'=>'Ref.','htmlOptions'=>array('width'=>205)),
-		array('name'=>'debe','header'=>'Cargo','htmlOptions'=>array('width'=>5)),
+		array('name'=>'codocu','header'=>'Documento','value'=>'$data->valorsunat($data->codocu,"010")','htmlOptions'=>array('width'=>200)),
+		array('name'=>'serie','header'=>'Serie','htmlOptions'=>array('width'=>50)),
+		
+            array('name'=>'referencia','header'=>'Ref.','htmlOptions'=>array('width'=>150)),
+		array('name'=>'razon','header'=>'Proveedor','htmlOptions'=>array('width'=>450)),
+		
+            array('name'=>'debe','header'=>'Cargo','htmlOptions'=>array('width'=>5)),
 		array('name'=>'monedahaber','header'=>'Mon','htmlOptions'=>array('width'=>5)),
 		array('name'=>'monto','header'=>'Monto','type'=>'raw','value'=>'CHTml::openTag("span",array("style"=>"color:#ff6600;float:right;font-weight:bold;")).MiFactoria::Decimal($data->monto).CHTml::closeTag("span")','footer'=>MiFactoria::Decimal((Dcajachica::getMonto($prove,2))),'htmlOptions'=>array('width'=>5)),
 

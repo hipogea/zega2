@@ -26,21 +26,21 @@
                         'go' => array(
                             'type' => 'A',
                             'ruta' => array(),
-                            'visiblex' => array(null, ESTADO_PREVIO),
+                            'visiblex' => array(null, self::ESTADO_PREVIO),
                         ),
                         'save' => array(
                             'type' => 'A',
                             'ruta' => array(),
-                            'visiblex' => array(ESTADO_CREADO, ESTADO_AUTORIZADO, ESTADO_MODIFICADO,
-                                ESTADO_CONFIRMADO, ESTADO_FACTURADO_PARCIAL, ESTADO_ACEPTADO,
-                                ESTADO_CON_ENTREGAS, ESTADO_FACTURADO_TOTAL),
+                            'visiblex' => array(self::ESTADO_CREADO, self::ESTADO_AUTORIZADO, self::ESTADO_MODIFICADO,
+                                self::ESTADO_CONFIRMADO, self::ESTADO_FACTURADO_PARCIAL, self::ESTADO_ACEPTADO,
+                                self::ESTADO_CON_ENTREGAS, self::ESTADO_FACTURADO_TOTAL),
                         ),
 
 
                         'ok' => array(
                             'type' => 'B',
                             'ruta' => array($this->id . '/procesardocumento', array('id' => $model->idguia, 'ev' => 65)),//aprobar
-                            'visiblex' => array( ESTADO_CREADO, (
+                            'visiblex' => array( self::ESTADO_CREADO, (
                                 (integer)$model->numeroitems >0 and
                                 Ocompra::puedeautorizar()
 
@@ -52,14 +52,14 @@
                         'undo' => array(
                             'type' => 'B',
                             'ruta' => array($this->id . '/procesardocumento', array('id' => $model->idguia, 'ev' => 67)), //revertir aprobacion
-                            'visiblex' => array(ESTADO_ACEPTADO),
+                            'visiblex' => array(self::ESTADO_ACEPTADO),
 
                         ),
 
                         'tacho' => array(
                             'type' => 'B',
                             'ruta' => array($this->id . '/procesardocumento', array('id' => $model->idguia, 'ev' => 66)),
-                            'visiblex' => array(ESTADO_CREADO),
+                            'visiblex' => array(self::ESTADO_CREADO),
 
                         ),
                         'pdf' => array(
@@ -78,7 +78,7 @@
                                              $("#myDivision").html(data).fadeIn().animate({opacity: 1.0}, 3000).fadeOut("slow");
                                             }'
                                             ),*/
-                            'visiblex' => array(ESTADO_ACEPTADO),
+                            'visiblex' => array(self::ESTADO_ACEPTADO),
 
                         ),
                         'mail' => array(
@@ -92,7 +92,7 @@
                                         }",
                             ),
 
-                            'visiblex' => array(ESTADO_ACEPTADO),
+                            'visiblex' => array(self::ESTADO_ACEPTADO),
 
                         ),
 
@@ -109,9 +109,9 @@
                             ),
                             'dialog' => 'cru-dialogdetalle',
                             'frame' => 'cru-detalle',
-                            'visiblex' => array(ESTADO_ACEPTADO, ESTADO_MODIFICADO,
-                                ESTADO_CONFIRMADO, ESTADO_FACTURADO_PARCIAL, ESTADO_ACEPTADO,
-                                ESTADO_CON_ENTREGAS, ESTADO_FACTURADO_TOTAL),
+                            'visiblex' => array(self::ESTADO_ACEPTADO, self::ESTADO_MODIFICADO,
+                               self::ESTADO_CONFIRMADO, self::ESTADO_FACTURADO_PARCIAL, self::ESTADO_ACEPTADO,
+                                self::ESTADO_CON_ENTREGAS, self::ESTADO_FACTURADO_TOTAL),
 
                         ),
                         
@@ -119,16 +119,16 @@
                         'config' => array(
                             'type' => 'B',
                             'ruta' => array($this->id . '/procesardocumento', array('id' => $model->idguia, 'ev' => 64)),
-                            'visiblex' => array(ESTADO_CREADO, ESTADO_MODIFICADO,
-                                ESTADO_CONFIRMADO, ESTADO_FACTURADO_PARCIAL, ESTADO_ACEPTADO,
-                                ESTADO_CON_ENTREGAS, ESTADO_FACTURADO_TOTAL),
+                            'visiblex' => array(self::ESTADO_CREADO, self::ESTADO_MODIFICADO,
+                                self::ESTADO_CONFIRMADO, self::ESTADO_FACTURADO_PARCIAL, self::ESTADO_ACEPTADO,
+                                self::ESTADO_CON_ENTREGAS, self::ESTADO_FACTURADO_TOTAL),
 
                         ),
                         'print' => array(
                             'type' => 'B',
                             'ruta' => array('coordocs/hacereporte', array('id' => $model->idreporte, 'idfiltrodocu' => $model->idguia, 'file' => 0)),
-                            'visiblex' => array(ESTADO_ACEPTADO, ESTADO_CONFIRMADO, ESTADO_FACTURADO_PARCIAL, ESTADO_ACEPTADO,
-                                ESTADO_CON_ENTREGAS, ESTADO_FACTURADO_TOTAL),
+                            'visiblex' => array(self::ESTADO_ACEPTADO, self::ESTADO_CONFIRMADO, self::ESTADO_FACTURADO_PARCIAL, self::ESTADO_ACEPTADO,
+                                self::ESTADO_CON_ENTREGAS, self::ESTADO_FACTURADO_TOTAL),
                         ),
 
                         'money' => array(
@@ -142,7 +142,7 @@
                             ),
                             'dialog' => 'cru-dialogdetalle',
                             'frame' => 'cru-detalle',
-                            'visiblex' => array(ESTADO_CREADO),
+                            'visiblex' => array(self::ESTADO_CREADO),
 
                         ),
                         
@@ -153,9 +153,8 @@
                         'out' => array(
                             'type' => 'B',
                             'ruta' => array($this->id . '/salir', array('id' => $model->idguia)),
-                            'visiblex' => array(ESTADO_CREADO, ESTADO_ACEPTADO, ESTADO_MODIFICADO,
-                                ESTADO_CONFIRMADO, ESTADO_FACTURADO_PARCIAL, ESTADO_ACEPTADO,
-                                ESTADO_CON_ENTREGAS, ESTADO_FACTURADO_TOTAL),
+                           'visiblex' => array(self::ESTADO_ACEPTADO, self::ESTADO_CONFIRMADO, self::ESTADO_FACTURADO_PARCIAL, self::ESTADO_ACEPTADO,
+                                self::ESTADO_CON_ENTREGAS, self::ESTADO_FACTURADO_TOTAL),
                         ),
                     );
                 } else {
@@ -167,9 +166,8 @@
                         'edit' => array(
                             'type' => 'B',
                             'ruta' => array($this->id . '/editadocumento', array('id' => $model->idguia, 'ev' => 65)),//aprobar
-                            'visiblex' => array(ESTADO_CREADO,ESTADO_ACEPTADO, ESTADO_MODIFICADO,
-                                ESTADO_CONFIRMADO, ESTADO_FACTURADO_PARCIAL, ESTADO_ACEPTADO,
-                                ESTADO_CON_ENTREGAS, ESTADO_FACTURADO_TOTAL),
+                            'visiblex' => array(self::ESTADO_ACEPTADO, self::ESTADO_CONFIRMADO, self::ESTADO_FACTURADO_PARCIAL, self::ESTADO_ACEPTADO,
+                                self::ESTADO_CON_ENTREGAS, self::ESTADO_FACTURADO_TOTAL),
                         ),
 
 
@@ -204,9 +202,8 @@
                             ),
                             'dialog' => 'cru-dialogdetalle',
                             'frame' => 'cru-detalle',
-                            'visiblex' => array(ESTADO_ACEPTADO, ESTADO_MODIFICADO,
-                                ESTADO_CONFIRMADO, ESTADO_FACTURADO_PARCIAL, ESTADO_ACEPTADO,
-                                ESTADO_CON_ENTREGAS, ESTADO_FACTURADO_TOTAL),
+                            'visiblex' => array(self::ESTADO_ACEPTADO, self::ESTADO_CONFIRMADO, self::ESTADO_FACTURADO_PARCIAL, self::ESTADO_ACEPTADO,
+                                self::ESTADO_CON_ENTREGAS, self::ESTADO_FACTURADO_TOTAL),
 
                         ),
                         
@@ -215,9 +212,8 @@
                         'out' => array(
                             'type' => 'B',
                             'ruta' => array($this->id . '/admin',array()),
-                            'visiblex' => array(ESTADO_CREADO, ESTADO_ACEPTADO, ESTADO_MODIFICADO,
-                                ESTADO_CONFIRMADO, ESTADO_FACTURADO_PARCIAL, ESTADO_ACEPTADO,
-                                ESTADO_CON_ENTREGAS, ESTADO_FACTURADO_TOTAL),
+                             'visiblex' => array(self::ESTADO_ACEPTADO, self::ESTADO_CONFIRMADO, self::ESTADO_FACTURADO_PARCIAL, self::ESTADO_ACEPTADO,
+                                self::ESTADO_CON_ENTREGAS, self::ESTADO_FACTURADO_TOTAL),
                         ),
                     );
                 }
@@ -333,7 +329,7 @@
                             ),
                             'dialog' => 'cru-dialogdetalle',
                             'frame' => 'cru-detalle',
-                            'visiblex' => array(ESTADO_CREADO),
+                            'visiblex' => array(self::ESTADO_CREADO),
 
                         ),
 
@@ -345,7 +341,7 @@
                             ),
                             'dialog' => 'cru-dialogdetalle',
                             'frame' => 'cru-detalle',
-                            'visiblex' => array(ESTADO_CREADO),
+                            'visiblex' => array(self::ESTADO_CREADO),
 
                         ),
 
@@ -369,7 +365,7 @@
                                					',
 
                             ),
-                            'visiblex' => array(ESTADO_CREADO, ESTADO_AUTORIZADO, ESTADO_ANULADO, ESTADO_CONFIRMADO, ESTADO_FACTURADO),
+                            'visiblex' => array(self::ESTADO_CREADO, self::ESTADO_AUTORIZADO, self::ESTADO_ANULADO, self::ESTADO_CONFIRMADO, self::ESTADO_FACTURADO),
 
                         ),
 
@@ -385,12 +381,12 @@
                             ),
                             'dialog' => 'cru-dialogdetalle',
                             'frame' => 'cru-detalle',
-                            'visiblex' => array(ESTADO_CREADO),
+                            'visiblex' => array(self::ESTADO_CREADO),
                         ),
                         'pack2' => array(
                             'type' => 'B',
                             'ruta' => array($this->id . '/procesardocumento', array('id' => $model->idguia, 'ev' => 35)),
-                            'visiblex' => array(ESTADO_CREADO),
+                            'visiblex' => array(self::ESTADO_CREADO),
 
                         ),
 
@@ -412,7 +408,7 @@
                                							 }
                                					',
                             ),
-                            'visiblex' => array(ESTADO_CREADO, ESTADO_AUTORIZADO, ESTADO_ANULADO, ESTADO_CONFIRMADO, ESTADO_FACTURADO),
+                            'visiblex' => array(self::ESTADO_CREADO, self::ESTADO_AUTORIZADO, self::ESTADO_ANULADO, self::ESTADO_CONFIRMADO, self::ESTADO_FACTURADO),
 
                         ),
 
@@ -428,7 +424,7 @@
                             ),
                             'dialog' => 'cru-dialogdetalle',
                             'frame' => 'cru-detalle',
-                            'visiblex' => array(ESTADO_CREADO),
+                            'visiblex' => array(self::ESTADO_CREADO),
 
                         ),
 
@@ -443,7 +439,7 @@
                             ),
                             'dialog' => 'cru-dialogdetalle',
                             'frame' => 'cru-detalle',
-                            'visiblex' => array(ESTADO_CREADO),
+                            'visiblex' => array(self::ESTADO_CREADO),
 
                         ),
 

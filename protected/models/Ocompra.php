@@ -248,7 +248,7 @@ public function editable() {
 
 
 
-		public function valorespordefecto(){ 
+		/*public function valorespordefecto(){ 
 						//Vamos a cargar los valores por defecto
 						$matriz=VwOpcionesdocumentos::Model()->search_d('210')->getData();
 						//recorreindo la matriz
@@ -268,7 +268,7 @@ public function editable() {
 											
 											
 										
-					}
+					}*/
 						
 						
 public function Verificaservicio() {

@@ -16,7 +16,7 @@ class TipocambioCompo extends CApplicationComponent
     public function cambiospasados(){
 
         $citer=New CDBCriteria;
-        $citer->addCondition("ultima < :fechamenos and codmon1 <> :vcodmon1");
+        $citer->addCondition("ultima < :fechamenos and codmon1 <> :vcodmon1 and activa='1'");
         //  $citer->addCondition(" codmon1 <> codmon2 ");
         $citer->params=array(":vcodmon1"=>$this->monedadefault ,":fechamenos"=>date('Y-m-d H:i:s',time()-$this->_horastolerancia*60*60));
     /*  var_dump(date('Y-m-d H:i:s',time()-$this->_horastolerancia*60*60));
@@ -46,7 +46,9 @@ class TipocambioCompo extends CApplicationComponent
                     from('{{tipocambio}}')->
                     where($citer->condition,$citer->params)->queryScalar();
                      if($compra!=false)
-                            {return $compra ;}else{  throw new CHttpException(500,__CLASS__.' '.__FUNCTION__.'  '.__LINE__.'  No se ha registrado tipo de cambio compra para la moneda '.$moneda);
+                            {return $compra ;}else{ 
+                                
+                                throw new CHttpException(500,__CLASS__.' '.__FUNCTION__.'  '.__LINE__.'  No se ha registrado tipo de cambio compra para la moneda '.$moneda);
                             }
          
             }else{ //sise trata deuna bsuqyeda de cambios pasaods 
@@ -197,6 +199,9 @@ class TipocambioCompo extends CApplicationComponent
             $registrox->setAttributes(array(
                                         'codmondef'=>$this->monedadefault,
                                          'codmon1'=>$codmon,
+                                          'activa'=>'1',
+                                            'compra'=>1,
+                                                'venta'=>1,
                                          'seguir'=>($seguir)?"1":"0",
                                         ));
             $registrox->save();
@@ -247,13 +252,13 @@ class TipocambioCompo extends CApplicationComponent
       //var_dump($pasados);die();
        //foreach($pasados as $clave=>$moneda){
            $registro=$this->registroactual($moneda);
-           if($registro[0]['seguir']=='1'){ //si tiene marcada la opcion de SEGUIMIENTO 
+           if($registro->seguir='1'){ //si tiene marcada la opcion de SEGUIMIENTO 
              $crit=New CDbCriteria();
        $crit->addCondition("fecha=:vfecha");
         $crit->addCondition("hidcambio=:vhidcambio");
         $crit->params=array(
-            ":vfecha"=>date('Y-m-d', strtotime($registro[0]['ultima'])),
-            ":vhidcambio"=>$registro[0]['id'],
+            ":vfecha"=>date('Y-m-d', strtotime($registro->ultima)),
+            ":vhidcambio"=>$registro->id,
         );
                $existe=yii::app()->db->createCommand()->
                       select('id')->from('{{logtipocambio}}')->
@@ -261,22 +266,22 @@ class TipocambioCompo extends CApplicationComponent
               if($existe !=false) { //Si  existe  actualizar
                  yii::app()->db->createCommand()->
                       update('{{logtipocambio}}',
-                      array( 'compra'=> $registro[0]['compra'],
-                          'venta'=> $registro[0]['venta']),
+                      array( 'compra'=> $registro->compra,
+                          'venta'=> $registro->venta),
                             $crit->condition,
                           $crit->params);
               }else{ //si no existe insertar
                 yii::app()->db->createCommand()->
                  insert("{{logtipocambio}}",
                          array(
-                             'hidcambio'=>$registro[0]['id'],
-                             'compra'=>$registro[0]['compra'],
-                             'codmon'=>$registro[0]['codmon1'],
-                              'codmondef'=>$registro[0]['codmondef'],
-                             'venta'=>$registro[0]['venta'],
+                             'hidcambio'=>$registro->id,
+                             'compra'=>$registro->compra,
+                             'codmon'=>$registro->codmon1,
+                              'codmondef'=>$registro->codmondef,
+                             'venta'=>$registro->venta,
                              'fecha'=>date('Y-m-d'),
                               'dia'=>date("w",time()),
-                              'iduser'=>$registro[0]['iduser'],
+                              'iduser'=>$registro->iduser,
                              'diaano'=>date("z",time()),
                          )
                          );    
@@ -295,19 +300,18 @@ class TipocambioCompo extends CApplicationComponent
        
    }
    
-   public function registroactual($moneda){
+   public function registroactual($moneda,$fila=false){
       if($moneda==$this->monedadefault) {
          return null;
       }else{
          $citer=New CDBCriteria;
         $citer->addCondition("codmondef=:monedadef AND codmon1=:monedaacomprar");
         $citer->params=array(":monedadef"=>$this->monedadefault,":monedaacomprar"=>$moneda);
-        $ultima= yii::app()->db->createCommand()->select('id,seguir,codmondef,codmon1,compra,venta,dia,ultima,iduser')->
-        from('{{tipocambio}}')->
-        where($citer->condition,$citer->params)->queryAll();
+        $ultima= Tipocambio::model()->find($citer);
         //var_dump($moneda);yii::app()->end();
         //if(!$ultima!=false)
           // throw new CHttpException(500,__CLASS__.' '.__FUNCTION__.'  '.__LINE__.'  No se ha registrado tipo de cambio compra para la moneda '.$moneda);
+       
         return $ultima; 
       }
        
@@ -535,7 +539,7 @@ private function vacancias($moneda,$fecha1,$fecha2){
   public function monedasactivas(){
        return yii::app()->db->createCommand()->
                 select('codmon1')->
-           from('{{tipocambio}}')->where("codmon1<>:cdoc",array(":cdoc"=>$this->monedadefault))->
+           from('{{tipocambio}}')->where("codmon1<>:cdoc and activa='1'",array(":cdoc"=>$this->monedadefault))->
            queryColumn();
   }
 
@@ -549,5 +553,44 @@ private function vacancias($moneda,$fecha1,$fecha2){
            return array_unique($dias);
         }
 
+   public function desactivamoneda($id){
+       $mode= Tipocambio::model()->findByPk(MiFactoria::cleanInput($id));
+        if(!is_null($mode)){
+                 
+                 $mode->setScenario('activar');
+                 $mode->activa='0';
+               if($mode->save()){
+                   MiFactoria::Mensaje('success', 'Se desactivo la moneda '.$mode->codmon1);
+               }else{
+                   MiFactoria::Mensaje('error', 'No se pudo desactivar la moneda '.$mode->codmon1. '  '.yii::app()->mensajes->getErroresItem($mode->geterrors())); 
+               }
+              
+              }  
+              
+              
+              
+   }
+   
+    public function activamoneda($codmon){
+       if(yii::app()->db->createCommand()->
+                select('codmon1')->
+           from('{{tipocambio}}')->where("codmon1=:cdoc",array(":cdoc"=>$codmon))->
+           queryScalar()===false)
+      MiFactoria::Mensaje('error', 'No se encontro la moneda '.$codmon. ' En el registro de cambios, agréguela '); 
+             
+       $mode= Tipocambio::model()->find("codmon1=:cosd",array(":cosd"=>$codmon));
+        if(!is_null($mode)){
+                 
+                 $mode->setScenario('activar');
+                 $mode->activa='1';
+               if($mode->save()){
+                   MiFactoria::Mensaje('success', 'Se desactivo la moneda '.$mode->codmon1);
+               }else{
+                   MiFactoria::Mensaje('error', 'No se pudo desactivar la moneda '.$mode->codmon1. '  '.yii::app()->mensajes->getErroresItem($mode->geterrors())); 
+               }
+              
+              } 
+    }
+   
 }
 ?>

@@ -18,4 +18,4 @@ $this->menu=array(
 
 <h1>Actualizar Moneda <?php echo $model->codmoneda; ?></h1>
 
-<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
+<?php echo $this->renderPartial('_editar', array('model'=>$model)); ?>

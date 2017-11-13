@@ -1,4 +1,9 @@
 <?php
+
+class OcompraController extends ControladorBase
+{
+
+    public $layout='//layouts/column2';
 CONST ESTADO_PREVIO='99';
 CONST ESTADO_CREADO='10';
 CONST ESTADO_ANULADO='50';
@@ -14,11 +19,6 @@ CONST ESTADO_DOCOMPRA_NUEVO='10';  // DESOLPECOMRPA CREADO
 CONST ESTADO_DOCOMPRA_APROBADO='20';// DESOLPECOMRPA APROBADO
 CONST ESTADO_DOCOMPRA_ANULADO='40';// DESOLPECOMRPA ANULADO
 const ESTADO_DOCOMPRA_CREADO='10';
-
-class OcompraController extends ControladorBase
-{
-
-    public $layout='//layouts/column2';
 
     public function __construct() {
         parent::__construct($id='ocompra',Null);
@@ -183,7 +183,7 @@ public function actionVerDocumento($id){
         $descuento=MiFactoria::cleanInput($_POST['Ocompra']['descuento']);
         Yii::app()->db->createCommand()
             ->update(
-                        '{{Docompratemp}}',array(
+                        '{{docompratemp}}',array(
                          "punitdes"=> new CDbExpression('punit*(1-:vdescuento/100)',array(":vdescuento"=>$descuento))
                                                 ),
                         "hidguia=:vid",
@@ -1924,7 +1924,9 @@ public function actionborraitems()
 		if(isset($_GET['VwOcomprasimple'])) {
 			$model->attributes=$_GET['VwOcomprasimple'];
 			$proveedor=$model->search();
-		}
+		}else{
+                    $proveedor=array();
+                }
 		$this->render('admin',array(
 			'model'=>$model,'proveedor'=>$proveedor,
 		));

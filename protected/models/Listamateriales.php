@@ -37,7 +37,7 @@ class Listamateriales extends CActiveRecord
 			array('id, nombrelista, comentario, iduser, codequipo,compartida', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, nombrelista, comentario, iduser, compartida', 'safe', 'on'=>'search'),
+			array('id, nombrelista, comentario, iduser, compartida,codtipo', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -94,7 +94,7 @@ class Listamateriales extends CActiveRecord
 		$criteria->compare('nombrelista',$this->nombrelista,true);
 		$criteria->compare('comentario',$this->comentario,true);
 		$criteria->compare('iduser',$this->iduser);
-		$criteria->compare('codequipo',$this->codequipo);
+		$criteria->compare('codtipo',$this->codtipo);
 		$criteria->compare('compartida',$this->compartida,true);
 
 		return new CActiveDataProvider($this, array(

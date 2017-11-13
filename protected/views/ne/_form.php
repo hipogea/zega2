@@ -27,55 +27,50 @@
 					'go'=>array(
 						'type'=>'A',
 						'ruta'=>array(),
-						'visiblex'=>array(ESTADO_PREVIO,NUll),
+						'visiblex'=>array($this::ESTADO_PREVIO,NUll),
 					),
 					'save'=>array(
 						'type'=>'A',
 						'ruta'=>array(),
-						'visiblex'=>array(ESTADO_CREADO,ESTADO_AUTORIZADO,ESTADO_ANULADO,ESTADO_CONFIRMADO,ESTADO_FACTURADO),
+						'visiblex'=>array($this::ESTADO_CREADO,$this::ESTADO_ANULADO,$this::ESTADO_CONFIRMADO),
 					),
 
 
 					'ok'=>array(
 						'type'=>'B',
-						'ruta'=>array($this->id.'/procesardocumento',array('id'=>$model->id,'ev'=>2)),//apreuba guia
-						'visiblex'=>array(ESTADO_CREADO),
+						'ruta'=>array($this->id.'/procesardocumento',array('id'=>$model->id,'ev'=>83)),//apreuba guia
+						'visiblex'=>array($this::ESTADO_CREADO),
 					),
 					'tacho'=>array(
 						'type'=>'B',
-						'ruta'=>array($this->id.'/procesardocumento',array('id'=>$model->id,'ev'=>35)),//anula guia
-						'visiblex'=>array(ESTADO_CREADO),
+						'ruta'=>array($this->id.'/procesardocumento',array('id'=>$model->id,'ev'=>84)),//anula guia
+						'visiblex'=>array($this::ESTADO_CREADO),
 
 					),
 					'undo'=>array(
 						'type'=>'B',
-						'ruta'=>array($this->id.'/procesardocumento',array('id'=>$model->id,'ev'=>64)),//reveiree liberacion
-						'visiblex'=>array(ESTADO_AUTORIZADO),
+						'ruta'=>array($this->id.'/procesardocumento',array('id'=>$model->id,'ev'=>85)),//reveiree liberacion
+						'visiblex'=>array($this::ESTADO_CONFIRMADO),
 
 					),
-					'truck'=>array(
-						'type'=>'B',
-						'ruta'=>array($this->id.'/procesardocumento',array('id'=>$model->id,'ev'=>36)), //confirma trasladoa
-						'visiblex'=>array(ESTADO_AUTORIZADO),
-
-					),
+					
 
 					'pack1'=>array(
 						'type'=>'B',
 						'ruta'=>array($this->id.'/procesardocumento',array('id'=>$model->id,'ev'=>37)), //confirma entrega
-						'visiblex'=>array(ESTADO_CONFIRMADO),
+						'visiblex'=>array($this::ESTADO_CONFIRMADO),
 
 					),
-					'pack'=>array(
+					/*'pack'=>array(
 						'type'=>'B',
 						'ruta'=>array($this->id.'/procesardocumento',array('id'=>$model->id,'ev'=>69)), //revertir  entrega
-						'visiblex'=>array(ESTADO_ENTREGADO),
+						'visiblex'=>array($this::ESTADO_ENTREGADO),
 
-					),
+					),*/
 					'print'=>array(
 						'type'=>'B',
 						'ruta'=>array($this->id.'/imprimirsolo',array('id'=>$model->id)),
-						'visiblex'=>array(ESTADO_AUTORIZADO),
+						'visiblex'=>array($this::ESTADO_CONFIRMADO),
 					),
 					'add'=>array(
 						'type'=>'C',
@@ -88,13 +83,13 @@
 						),
 						'dialog'=>'cru-dialogdetalle',
 						'frame'=>'cru-detalle',
-						'visiblex'=>array(ESTADO_CREADO),
+						'visiblex'=>array($this::ESTADO_CREADO),
 
 					),
 					'out'=>array(
 						'type'=>'B',
 						'ruta'=>array($this->id.'/salir',array('id'=>$model->id)),
-						'visiblex'=>array(ESTADO_PREVIO,ESTADO_CREADO,ESTADO_APROBADO,ESTADO_ANULADO,ESTADO_PROCESO_COMPRA),
+						'visiblex'=>array($this::ESTADO_PREVIO,$this::ESTADO_CREADO,$this::ESTADO_CONFIRMADO,$this::ESTADO_ANULADO),
 					),
 
 				);

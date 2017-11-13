@@ -1,3 +1,4 @@
+
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'propietarios-grid',
 	'dataProvider'=>  Tenenciastraba::model()->search_por_tenencia($model->codte),

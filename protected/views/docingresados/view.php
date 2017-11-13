@@ -2,17 +2,6 @@
 /* @var $this DocingresadosController */
 /* @var $model Docingresados */
 
- 
-$opcionesajax=ARRAY(
-    "type"=>"GET",
-    "url"=>yii::app()->createUrl($this->id."/indicadores"),
-    "update"=>"#zonita"
-);
-//echo CHtml::ajaxLink("presionar aqui",yii::app()->createUrl($this->id."/indicadores"),$opcionesajax);
-?>
-<div id="zonita">hola</div>
-
-<?PHP
 $this->breadcrumbs=array(
 	'Docingresadoses'=>array('index'),
 	$model->id,
@@ -27,24 +16,27 @@ $this->menu=array(
 );
 ?>
 
-<h1> <?php echo $model->docus->desdocu." - [ ".$model->numero. " ]-  ".$model->clipro->despro; ?> </h1>
+<h1> Documento <?php echo $model->correlativo; ?>   Ingresado</h1>
 <?php //echo CHTml::ajaxLink('limpiar','ffdfd',array())  ?> 
 <?php $this->widget('zii.widgets.CDetailView', array(
 	'data'=>$model,
 	'attributes'=>array(
 		'id',
-		'clipro.despro',
+		'codprov',
 		'fecha',
 		'fechain',
 		'correlativo',
-		'docus.desdocu',
+		'tipodoc',
 		'moneda',
 		'descorta',
-		'barcos.nomep',
+		'codepv',
 		'monto',
-                'docref',
-		//'codgrupo',
-		'trabajadores.ap',		
+		'codgrupo',
+		'codresponsable',
+		'creadopor',
+		'creadoel',
 		'texv',
+		array('name'=>'jo','value'=>''.gettype($model->conservarvalor).' '),
+		'docref',
 	),
 )); ?>

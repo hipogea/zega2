@@ -45,29 +45,13 @@
 
 		</div>
 
-   <div class="row">
-		
-		
-		<?php 
-                $opajax=array(
-                    'type'=>'POST',
-                    'data'=>array('idpadre'=>$model->docingresados->id),
-                    'dataType'=>"json",
-                    'success'=>"function(data) {"  
-                        ."$('#Procesosdocu_codocuref').val(data.codigo).change(); "              
-                    . "$('#Procesosdocu_numdocref').attr('value',data.numero); "
-                    . "   }",
-                );
-                
-                echo CHtml::ajaxButton('heredar',yii::app()->createUrl($this->id."/ajaxhereda",array()),$opajax); ?>
-	</div>
-    
+   
 		 <div class="row">
 		<?php echo $form->labelEx($model,'codocuref'); ?>
 		<?php  
                 //$criterio=
                 $datosp = CHtml::listData(Documentos::model()->
-                        findAll("controlfisico='1'"),
+                        findAll(),
                         'coddocu','desdocu');
 		echo $form->DropDownList($model,'codocuref',$datosp, array('empty'=>'--Llene el doc referencia--',
                   ));

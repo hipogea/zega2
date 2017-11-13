@@ -252,7 +252,7 @@ public $codigox;
 			'um' => 'Um',
 			'codean'=>'Cd. EAN',
 			'detalle' => 'Detalle',
-
+'tipogrupoventa' => 'G Ventas',
 
 
 			'clase' => 'Clase',

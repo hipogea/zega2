@@ -34,9 +34,9 @@ class VwOtsimple extends CActiveRecord
 			array('idobjeto, iduser', 'numerical', 'integerOnly'=>true),
 			array('despro', 'length', 'max'=>100),
 			array('rucpro', 'length', 'max'=>11),
-			array('identificador, marca', 'length', 'max'=>24),
-			array('serie', 'length', 'max'=>50),
-			array('descripcion, nombreobjeto, textocorto', 'length', 'max'=>40),
+			//array('identificador, marca', 'length', 'max'=>24),
+			//array('serie', 'length', 'max'=>50),
+			//array('descripcion, nombreobjeto, textocorto', 'length', 'max'=>40),
 			array('modelo', 'length', 'max'=>25),
 			array('codobjeto, grupoplan, codocu', 'length', 'max'=>3),
 			array('id, hidoferta', 'length', 'max'=>20),
@@ -49,7 +49,7 @@ class VwOtsimple extends CActiveRecord
 			array('fechainiprog, fechainicio, fechafin', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('despro, rucpro, identificador, serie, descripcion, marca, modelo, nombreobjeto, codobjeto, id, numero, fechacre, fechafinprog, codpro, idobjeto, codresponsable, textocorto, textolargo, grupoplan, codcen, iduser, codocu, codestado, clase, hidoferta, fechainiprog, fechainicio,fechainicio1, fechafin', 'safe', 'on'=>'search'),
+			array('despro,codigoequipo, rucpro, nombreobjeto, codobjeto, id, numero, fechacre, fechafinprog, codpro, idobjeto, codresponsable, textocorto, textolargo, grupoplan, codcen, iduser, codocu, codestado, clase, hidoferta, fechainiprog, fechainicio,fechainicio1, fechafin', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -74,7 +74,7 @@ class VwOtsimple extends CActiveRecord
 			'rucpro' => 'Rucpro',
 			'identificador' => 'Identificador',
 			'serie' => 'Serie',
-			'descripcion' => 'Descripcion',
+			///'descripcion' => 'Descripcion',
 			'marca' => 'Marca',
 			'modelo' => 'Modelo',
 			'nombreobjeto' => 'Nombreobjeto',
@@ -85,7 +85,7 @@ class VwOtsimple extends CActiveRecord
 			'fechafinprog' => 'Fec Finpr',
 			'codpro' => 'Codpro',
 			'idobjeto' => 'Idobjeto',
-			'codresponsable' => 'Codresponsable',
+			'codresponsable' => yii::t('app','codresponsable'),
 			'textocorto' => 'Textocorto',
 			'textolargo' => 'Textolargo',
 			'grupoplan' => 'Grupoplan',
@@ -111,8 +111,8 @@ class VwOtsimple extends CActiveRecord
 		$criteria=new CDbCriteria;
 		//$criteria->compare('despro',$this->despro,true);
 		//$criteria->compare('rucpro',$this->rucpro,true);
-		$criteria->compare('identificador',$this->identificador,true);
-		$criteria->compare('serie',$this->serie,true);
+		//$criteria->compare('identificador',$this->identificador,true);
+		//$criteria->compare('serie',$this->serie,true);
 		//$criteria->compare('descripcion',$this->descripcion,true);
 		//$criteria->compare('marca',$this->marca,true);
 		//$criteria->compare('modelo',$this->modelo,true);
@@ -123,7 +123,10 @@ class VwOtsimple extends CActiveRecord
 		//->compare('codpro',$this->codpro,true);
 		//$criteria->compare('idobjeto',$this->idobjeto);
 		$criteria->compare('codresponsable',$this->codresponsable,true);
-		$criteria->compare('textocorto',$this->textocorto,true);		
+		$criteria->compare('textocorto',$this->textocorto,true);
+                $criteria->compare('serie',$this->serie,true);
+		$criteria->compare('identificador',$this->identificador,true);
+                $criteria->compare('identificador',$this->codsap,true);
 		//$criteria->compare('grupoplan',$this->grupoplan,true);
 		$criteria->compare('codcen',$this->codcen,true);
 		$criteria->compare('iduser',$this->iduser);
@@ -144,10 +147,10 @@ class VwOtsimple extends CActiveRecord
 		} ELSE {
 			$criteria->compare('codpro',$this->codpro,true);
 		}
-                if(isset($_SESSION['sesion_Objetosmaster'])) {
-			$criteria->addInCondition('idobjeto', $_SESSION['sesion_Objetosmaster'], 'OR');
+                if(isset($_SESSION['sesion_Masterequipo'])) {
+			$criteria->addInCondition('codigoequipo', $_SESSION['sesion_Masterequipo'], 'OR');
 		} ELSE {
-			$criteria->compare('idobjeto',$this->idobjeto,true);
+			$criteria->compare('codigoequipo',$this->codigoequipo,true);
 		}
                 if(isset($_SESSION['sesion_Ot'])) {
 			$criteria->addInCondition('numero', $_SESSION['sesion_Ot'], 'OR');
@@ -191,6 +194,9 @@ class VwOtsimple extends CActiveRecord
 	{
 		return parent::model($className);
 	}
-        
+      
+        public  function findByPk($id){
+            return self::model()->find("id=:xid",array(":xid"=>$id));
+        }  
       
 }

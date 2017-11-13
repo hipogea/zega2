@@ -1,9 +1,5 @@
 <?php
-const ESTADO_ENACTIVIDAD='10';
-const ESTADO_FUERAOPERACION='20';
-const ESTADO_TRAMITEBAJA='70';
-const ESTADO_BAJA='80';
-const ESTADO_ARCHIVO='90';
+
 class InventarioController extends Controller
 {
 	/**
@@ -13,7 +9,11 @@ class InventarioController extends Controller
 	public $layout='//layouts/column2';
 	public $direcciones='';
 	public $campoestado='codestado';
-
+const ESTADO_ENACTIVIDAD='10';
+const ESTADO_FUERAOPERACION='20';
+const ESTADO_TRAMITEBAJA='70';
+const ESTADO_BAJA='80';
+const ESTADO_ARCHIVO='90';
 
 	
 	
@@ -58,7 +58,7 @@ class InventarioController extends Controller
 		
 			
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('create','parteactivo','admin','prove','view','observaciones','envia','exporta','detalle','confrimar','update','gestionafotos','pio','updatetotal','subearchivo','seleccionaactivo','borrafotos','tratavarios','llenaproceso','borrafoto'),
+				'actions'=>array('ajaxdeleteasignacionot',   'editasignacionot',   'basicupdate',   'asignarot',  'createBasic', 'borraarchivo','tomafoto','create','parteactivo','admin','prove','view','observaciones','envia','exporta','detalle','confrimar','update','gestionafotos','pio','updatetotal','subearchivo','seleccionaactivo','borrafotos','tratavarios','llenaproceso','borrafoto'),
 				'users'=>array('@'),
 			),
 
@@ -286,7 +286,8 @@ public function actionpio() {
 	
 	public function actionUpdatetotal($id)
 	{
-		$model=$this->loadModel($id);
+		//var_dump(yii::app()->settings->get('af','afmascara'));die();
+            $model=$this->loadModel($id);
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -710,13 +711,16 @@ public function actionpio() {
 	
 	public function actionDetalle($id)
 	{
+            $datos=Machineswork::model()->search_por_activo(10);
+            var_dump($datos->getdata());die();
 	   $model=$this->loadModel($id);
-		//$model=new Inventario('search');
-		//$model->unsetAttributes();  // clear any default values
 		if(isset($id)) {
-		$fot=new Fotos($model->idinventario,Yii::getPathOfAlias('webroot.fotosinv').DIRECTORY_SEPARATOR.$model->codpropietario.DIRECTORY_SEPARATOR,null ) ;
-		
-		$misfotos=$fot->devuelveFotos();
+		//$fot=new Fotos($model->idinventario,Yii::getPathOfAlias('webroot.fotosinv').DIRECTORY_SEPARATOR.$model->codpropietario.DIRECTORY_SEPARATOR,null ) ;
+		$model->agregacomportamientoarchivo('.jpg');
+		//$misfotos=$fot->devuelveFotos();
+                $nuevasfotos=$model->fotosparagaleria();
+                
+                //var_dump($nuevasfotos);die();
 		
 		/***********************************************************************************
 		*
@@ -732,27 +736,15 @@ public function actionpio() {
 		$criteriazo->addCondition('hidinventario = :phidinventario and codestado <> :pcodestado');								
 		$criteriazo->params = array(':phidinventario' => $model->idinventario,':pcodestado' => '01');	
 		$criteriazo->order ='fecha DESC ';
-		$proveedorlog = new CActiveDataProvider($modelolog, array('criteria'=>$criteriazo,));									
-				
-	
+		$proveedorlog = new CActiveDataProvider($modelolog, array('criteria'=>$criteriazo,));
 		$modeloobs= new VwObservaciones;
 		$criteri=new CDbCriteria;		
 		$criteri->addCondition('hidinventario = :phidinventario');								
 		$criteri->params = array(':phidinventario' => $model->idinventario);		
-		$proveedorobs = new CActiveDataProvider($modeloobs, array('criteria'=>$criteri,));	
-		
-		
-		//$modeloobs= new VwObservaciones;
-		//$criteri=new CDbCriteria;		
-		//$criteri->addCondition('hidinventario = :phidinventario');								
-		//$criteri->params = array(':phidinventario' => $model->idinventario);		
-		//$proveedorobs = new CActiveDataProvider($modeloobs, array('criteria'=>$criteri,));	
-		
-
-		
+		$proveedorobs = new CActiveDataProvider($modeloobs, array('criteria'=>$criteri,));
 		$this->render('view',array(
 							'model'=>$model,
-							'fotos'=>$misfotos,
+							'fotos'=>$nuevasfotos,
 							//'ruta'=>Yii::app()->params['rutafotosinventario_'],
 							//'fot'=>$fot,
 							 'modelolog'=>$modelolog,
@@ -930,4 +922,162 @@ public function actionpio() {
 
 		echo $mensaje;
 	}
+        
+        
+        public function actiontomafoto($id){
+      $detalle=  Inventario::model()->findByPk((integer)  MiFactoria::cleanInput($id));  
+      if(!is_null($detalle)){          
+                   
+          if (!empty($_GET['asDialog']))
+		$this->layout = '//layouts/iframe';
+		$this->render('//site/subefotos',array('model'=>$detalle));
+         
+      }else{
+         	throw new CHttpException(500,'No se encontro el item id del Inventario');  
+      }
+    } 
+    
+    //funcion AJAX
+    public function actionborraarchivo(){
+         if (yii::app()->request->isAjaxRequest) {
+            $rutaarchivo = $_GET['archivoatratar'];
+            unlink( $rutaarchivo );
+            echo "El archivo se borro";
+            
+            
+         }
+    }
+    
+     public function actioncreateBasic(){
+		$model=new Inventario('muybasico');
+                if(isset($_POST['Inventario']))
+		{
+			$model->attributes=$_POST['Inventario'];
+                       
+			if($model->save()) {
+				Yii::app()->user->setFlash('success',' Se ha creado el activo Fijo ');
+			   $this->render('update',array(
+			'model'=>$model,
+		           ));
+				Yii::app()->end();   
+			}
+		}
+
+		$this->render('createsimple',array(
+			'model'=>$model,
+		));
+	}
+            
+      public function actionasignarot($id)
+	{
+		$model=new Machineswork;
+                if(isset($_POST['Machineswork']))
+		{
+			$model->attributes=$_POST['Machineswork'];
+			//$model->usuario=Yii::app()->getModule('user')->user()->username;
+			//$modelitoactivo=Inventario::model()->findByPk($model->hidinventario);
+			//$model->codestado='10';
+                        $model->hidinventario=$id;
+			$model->save();		 
+                           // $model->refresh();				
+			if (!empty($_GET['asDialog']))
+			{
+                        //Close the dialog, reset the iframe and update the grid
+			   echo CHtml::script("window.parent.$('#cru-dialog').dialog('close');
+				window.parent.$('#cru-frame').attr('src','');
+				window.parent.$.fn.yiiGridView.update('{$_GET['gridId']}');
+					");
+				Yii::app()->end();
+		          }
+			$this->render('ot_equipo',array('id'=>$model->id));
+			Yii::app()->end();
+		}
+		if (!empty($_GET['asDialog']))
+                    $this->layout = '//layouts/iframe';
+               // ECHO "SALÑIO"; DIE();
+                        $this->render('ot_equipo',array(
+			'model'=>$model,
+                        ));
+		
+		
+		
+	}
+
+      public function actionbasicupdate($id){
+          $model=$this->loadModel($id);
+         // print_r($model->attributes);echo "<br><br>";
+          $model->setScenario('muybasico');
+          if(isset($_POST['Inventario'])){
+              $model->attributes=$_POST['Inventario']; 
+            // print_r($model->attributes);echo "<br><br>";
+             // print_r($_POST['Inventario']);
+              if($model->save()){
+                  $mensaje=yii::t('app','El registro se ha grabado satisfactoriamente');
+              
+              }else{
+                  $mensaje=yii::t('app','Problemas al momento de grabar el registro');
+              
+              }
+              MiFactoria::Mensaje('success', $mensaje);
+          }
+         $this->render('updatesimple',array('model'=>$model));
+          
+      } 
+   public function actioneditasignacionot($id)
+	{
+		
+       $id= MiFactoria::cleanInput($id);
+       $model= Machineswork::model()->findByPk($id);
+       //var_dump($model);die();
+       if($model===null)
+           throw new CHttpException(500,'No se encontro el registro');
+
+                if(isset($_POST['Machineswork']))
+		{
+			//print_r($_POST['Machineswork']);die();
+                    $model->attributes=$_POST['Machineswork'];
+			//$model->usuario=Yii::app()->getModule('user')->user()->username;
+			//$modelitoactivo=Inventario::model()->findByPk($model->hidinventario);
+			//$model->codestado='10';
+                        //$model->hidinventario=$id;
+			if($model->save()){
+                            if (!empty($_GET['asDialog']))
+			{
+                        //Close the dialog, reset the iframe and update the grid
+			   echo CHtml::script("window.parent.$('#cru-dialog1').dialog('close');
+				window.parent.$('#cru-frame1').attr('src','');
+				window.parent.$.fn.yiiGridView.update('{$_GET['gridId']}');
+					");
+				Yii::app()->end();
+		          }
+			//$this->render('ot_equipo',array('id'=>$model->id));
+			Yii::app()->end();
+                        }else{
+                        // print_r($model->geterrors());die();   
+                        }		 
+                           // $model->refresh();				
+			
+		}
+		if (!empty($_GET['asDialog']))
+                    $this->layout = '//layouts/iframe';
+               // ECHO "SALÑIO"; DIE();
+                        $this->render('ot_equipo',array(
+			'model'=>$model,
+                        ));
+		
+		
+		
+	}
+ public function actionajaxdeleteasignacionot(){
+     if(yii::app()->request->isAjaxRequest){ 
+         if(isset($_GET['id'])){      
+             $id= (integer)MiFactoria::cleanInput($_GET['id']);  
+             $registro= Machineswork::model()->findByPk($id);  
+             if(is_null($registro))           
+                 throw new CHttpException(500,'NO se encontro el registro con el id '.$id);    
+             }  
+             $registro->delete();
+             }
+     
+            }
 }

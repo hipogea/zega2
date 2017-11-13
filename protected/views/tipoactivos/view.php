@@ -16,7 +16,7 @@ $this->menu=array(
 );
 ?>
 
-<?php MiFactoria::titulo('Visualizar Tipo de Activo', 'gear') ?>
+<h1>V<?php echo $model->tipodeactivo; ?></h1>
 
 <?php $this->widget('zii.widgets.CDetailView', array(
 	'data'=>$model,

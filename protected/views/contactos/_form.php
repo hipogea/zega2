@@ -140,7 +140,7 @@
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Crear' : 'Actualizar'); ?>
 	</div>
 
-
+<?php $this->endWidget(); ?>
 
 </div><!-- form -->
 	</div>
@@ -177,74 +177,25 @@
 	   ?>
 
 	   <?PHP
-          // var_dump($_GET);
-           
-           
 	   $this->widget('zii.widgets.grid.CGridView', array(
 	   'id'=>'detalle-grid',
 		   'itemsCssClass'=>'table table-striped table-bordered table-hover',
-	   'dataProvider'=>$modeldetalle->search_por_contacto($model->id),
-	  'filter'=>$modeldetalle,
-// 'cssFile'=>Yii::app()->getTheme()->baseUrl.'/css/style-grid.css',  // your version of css file
+	   'dataProvider'=>Contactosadicio::model()->search_por_contacto($model->id),
+	  // 'cssFile'=>Yii::app()->getTheme()->baseUrl.'/css/style-grid.css',  // your version of css file
 	   'summaryText'=>'->',
 	   'columns'=>array(
-              'id',
-               array(
-            'name'=>'codocu',
-            'value'=>'$data->codocu',
-            //'filter'=>CHtml::listdata(Documentos::model()->findall("controlfisico='1'"),'coddocu','desdocu'),
-                  ),  
-                array(
-            'name'=>'codocu',
-            'value'=>'$data->documentos->desdocu',
-            'filter'=>CHtml::listdata(Documentos::model()->findall("controlfisico='1'"),'coddocu','referencia'),
-                  ),  
-	   //'documentos.desdocu',
+	   'documentos.desdocu',
 	   'mail',
-               /* ARRAY('name'=>'activo','type'=>'raw',
-                    'value'=>'CHtml::ajaxLink(CHtml::openTag("span",array("class"=>"icon icon-".(($data->activo==\'1\')?\'checkmark\':\'checkmark2\')." icon-blue icon-fuentesize16"),true),'
-                   . '$this->grid->controller->createUrl("contactos/ajaxdesactivacontatodetalle", array("id"=>$data->id)),'
-                   . 'array("type" => "GET", '
-                     . '"url" => $this->grid->controller->createUrl("contactos/ajaxdesactivacontatodetalle", array("id"=>$data->id)), '
-                    . '"data"=>array("identificadordetalle"=>$data->id), "success"=>"function(data) { $.fn.yiiGridView.update(\"detalle-grid\"); return true; }"  ),array() )',
-                     
-                    ),
-               
-	    array(
+	   array(
 	   'class'=>'CCheckBoxColumn',
-	   'value'=>'$data->id',
-            'checkBoxHtmlOptions' => array( 
-                
-                                                 "ajax" => array(
-                                                         "type"=>"POST", 
-                                                         "url"=> Yii::app()->createUrl("contactos/ajaxdesactivacontatodetalle",array()),
-                                                         "data" =>array("identificadordetalle" =>'$data->id'),
-                                                        "success" => "function(data){ $.fn.yiiGridView.update(\"detalle-grid\"); return false;}",
-                                                        "error"=>"function (xhr, ajaxOptions, thrownError){
-                                                            alert(xhr.statusText);
-                                                            alert(thrownError);}", 
-                                                        )
-                )
+	   'value'=>'$data->activo',
+
 	   ),
-                */ 
-              array(
-        'header'=>'Status',
-        'type'=>'raw',
-        'value'=>'CHtml::CheckBox("$data->activo",
-                                   $data->activo,
-                                   array(
-                                    
-                                        "style"=>"width:50px;"
-                                        )
-                                    )',
-            'htmlOptions'=>array("width"=>"50px"),
-    ),   
-             
 
 	   array(
 	   'htmlOptions'=>array('width'=>400),
 	   'class'=>'CButtonColumn',
-		   'template'=>'{update}{delete}{view}',
+		   'template'=>'{update}{delete}',
 	   'buttons'=>array(
 	   'update'=>array(
 	   'visible'=>'true',
@@ -275,16 +226,6 @@
 	   'imageUrl'=>''.Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'borrador.png',
 	   'label'=>'Ver detalle',
 	   ),
-             'view'=>  array(
-	   'visible'=>'true',
-	   'url'=>'$this->grid->controller->createUrl("contactos/ajaxdesactivacontactodetalle", array("id"=>$data->id))',
-	   'options' => array( 'ajax' => array('type' => 'GET', 'success'=>'js:function() { $.fn.yiiGridView.update("detalle-grid");}' ,'url'=>'js:$(this).attr("href")'),
-	   
-	   ) ,
-	   'imageUrl'=>Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."check16.png",
-	   'label'=>'Ver detalle',
-	   ),
-               
 	   ),
 	   ),
 	   ),
@@ -301,14 +242,14 @@
 			   "idcabeza" => $model->id ,
 		   )
 	   );
-	   echo CHtml::link ( 'Agregar ' , '#' , array ( 'onclick' => "$('#cru-frame').attr('src','$createUrl'); $('#cru-dialog').dialog('open');" ) );
+	   echo CHtml::link ( 'Agregar ' , '#' , array ( 'onclick' => "$('#cru-frame').attr('src','$createUrl '); $('#cru-dialog').dialog('open');" ) );
 	   ?>
 
    <?php
    }
    ?>
 
-<?php $this->endWidget(); ?>
+
 
 
 <?php

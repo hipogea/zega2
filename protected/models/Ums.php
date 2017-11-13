@@ -39,7 +39,8 @@ class Ums extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('um', 'required'),
+                    array('um, desum,dimension', 'safe', 'on'=>'insert,update'),
+			array('um,desum,dimension', 'required','on'=>'insert,update'),
 			array('um', 'length', 'max'=>3),
 			//array('codtipofac', 'length', 'max'=>2),
 			array('um', 'length', 'min'=>3),
@@ -102,5 +103,22 @@ class Ums extends CActiveRecord
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
+            
+            
 	}
+        
+        public static function dimensiones(){
+              return  array(
+                    'P'=>'Pressure',
+                    'L'=>'Lenght',
+                    'T'=>'Time',
+                    'A'=>'Area',
+                    'N'=>'Quantity',
+                    'M'=>'Mass',
+                    'V'=>'Volume',
+                    
+                );
+            }
+            
+       
 }

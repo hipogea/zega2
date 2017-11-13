@@ -124,7 +124,7 @@ class PartesController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		 $this->performAjaxValidation($model);		 
 	if (!isset($_GET['codep'])) {
-				$codep=$this->codep();
+				$codep=$this->codigobarco();
 		} else {
 				$codep=$_GET['codep'];
 		}		//verificndo que sea el mismo patin 

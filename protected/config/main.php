@@ -2,14 +2,15 @@
 //Yii::setPathOfAlias('bootstrap', dirname(__FILE__).'/../extensions/bootstrap');
 // uncomment the following to define a path alias
 // Yii::setPathOfAlias('local','path/to/local-folder');
-
+//Yii::setPathOfAlias('ecalendarview', dirname(__FILE__) . '/../extensions/ecalendarview');
 // This is the main Web application configuration. Any writable
 // CWebApplication properties can be configured here.
 return array(
+   
       'charset' => 'ISO-8859-1',
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'',
-	'language'=>'es',
+	'language'=>'en',
     'theme'=>'temita',
 
 	//'theme'=>'super',
@@ -17,17 +18,32 @@ return array(
 	'preload'=>array('log',
     'booster'
 	   ),
+    
+    'aliases' => array(
+        
+       // 'bootstrap' => realpath(__DIR__ . '/../extensions/bootstrap'), // change this if necessary
+    ),
+    
+     
+    
 
 	// autoloading model and component classes
 	'import'=>array(
-		//'application.nusoap.*',
-		//'ext.editable.*',
-            'application.components.*',
+            'application.extensions.jquerymobile.JQueryMobileComponent',
+           // 'application.extensions.bootstrap.components.*',
+             
+            
+           'application.components.booster.components.Booster',
+            
+            
+            
+            'application.components.*',         
 		'application.extensions.phpmailer.*',
             'application.extensions.behaviors.TomaFotosBehavior',
 		'application.models.*',
 		'application.interfaces.*',
 		'application.modules.contabilidad.models.*',
+            'application.modules.mantto.models.*',
             'application.modules.ventas.models.*',
 		'application.modules.cruge.components.*',
 		'application.modules.cruge.extensions.crugemailer.*',
@@ -36,21 +52,25 @@ return array(
              'application.extensions.matchcode.MatchCode',
             'application.extensions.CFile',
 		  'application.helpers.*',
-		//  'application.extensions.galleryManager.models.*',
-		  // 'application.extensions.galleryManager.*',
-			),
+		),
 	
 	
 	'modules'=>array(
 		// uncomment the following to enable the Gii tool
-          'ventas'=>array(),          
+          'ventas'=>array(),   
+            'operadores'=>array(),
+            'mantto'=>array(
+              
+                    ),
         'facturacion'=>array(),
     
 		//'backup'=> array('path' => __DIR__.'/../_backup/'  ),
-		'backup'=> array('path' =>'images/' ),
+		'backup'=> array('path' =>'backup/' ),
 		'ayuda'=>array(),
             'clientes'=> array(),
-		'contabilidad'=> array(),
+		'contabilidad'=> array(
+                   
+                ),
 		'cruge'=>array(
 				'tableprefix'=>'cruge_',
 
@@ -109,7 +129,7 @@ return array(
 			'class'=>'system.gii.GiiModule',
 			'password'=>'grecita',
 			// If removed, Gii defaults to localhost only. Edit carefully to taste.
-                'ipFilters'=>array('190.117.148.171'),
+                'ipFilters'=>array('179.7.*'),
 		),
 
 
@@ -131,7 +151,15 @@ return array(
 
 	// application components
 	'components'=>array(
-
+           /* 'jquerymobile'=>array(
+			'class'=>'ext.jquerymobile.JQueryMobileComponent',
+			// any available in extensions/jquerymobile/themes
+			'theme'=>'default',  
+			'autoload'=>true,  // the script insertion modality.
+		),*/
+               /* 'bootstrap' => array(
+            'class' => 'bootstrap.components.Bootstrap',   
+                        ),*/
 		'cache'=>array(
 			'class'=>'system.caching.CFileCache',
 		),
@@ -154,10 +182,9 @@ return array(
 			'class'=>'application.modules.contabilidad.components.LibrodiarioCompo',
 		),
 
-
-		/*'bootstrap'=>array(
-			'class'=>'bootstrap.components.Bootstrap',
-		),*/
+'booster' => array(
+    'class' => 'application.components.booster.components.Booster',
+),
                             'session' => array (
                                                      'autoStart' => 'true',
                                               ),
@@ -197,14 +224,14 @@ return array(
 													'class'=>'application.extensions.explorador.Explorador',
 												),		
 				 'ePdf' => array(
-								'class' => 'ext.yii-pdf.EYiiPdf',
-								'params'        => array(
-															'mpdf'     => array(
-																				'librarySourcePath' => 'application.vendors.mpdf.*',
-																				'constants'         => array(
-																											'_MPDF_TEMP_PATH' => Yii::getPathOfAlias('application.runtime'),
-																											),
-																				'class'=>'mpdf', // the literal class filename to be loaded from the vendors folder
+						'class' => 'ext.yii-pdf.EYiiPdf',
+						'params'        => array(
+							'mpdf'     => array(
+							'librarySourcePath' => 'application.vendors.mpdf.*',
+							'constants'         => array(
+										'_MPDF_TEMP_PATH' => Yii::getPathOfAlias('application.runtime'),
+										),
+									'class'=>'mpdf', // the literal class filename to be loaded from the vendors folder
                 /*'defaultParams'     => array( // More info: http://mpdf1.com/manual/index.php?tid=184
                     'mode'              => '', //  This parameter specifie*0s the mode of the new document.
                     'format'            => 'A4', // format A4, A5, ...
@@ -218,10 +245,10 @@ return array(
                     'mgf'               => 9, // margin_footer
                     'orientation'       => 'P', // landscape or portrait orientation
                 )*/
-																					),
-															'HTML2PDF' => array(
-																				'librarySourcePath' => 'application.vendors.html2pdf.*',
-																				'classFile'         => 'html2pdf.class.php', // For adding to Yii::$classMap
+								),
+						'HTML2PDF' => array(
+							'librarySourcePath' => 'application.vendors.html2pdf.*',
+							'classFile'         => 'html2pdf.class.php', // For adding to Yii::$classMap
               
 			  /*'defaultParams'     => array( // More info: http://wiki.spipu.net/doku.php?id=html2pdf:en:v4:accueil
                     'orientation' => 'P', // landscape or portrait orientation
@@ -306,14 +333,17 @@ return array(
 			),
 		),
 
-		/*'widgetFactory' => array(
+		'widgetFactory' => array(
 			'widgets' => array(
-
+                                            'JTimePicker'=>array(
+                                                             'theme'=>'temita',
+                                                            'cssFile'=>dirname(__FILE__).'/themes/temita/jquery.ui.timepicker.css',
+                                                                ),
 				'CCGridView' => array(
 					'cssFile'=>dirname(__FILE__).'/css/estilogrid.css',
 				),
 			),
-		),*/
+		),
 
 
 
@@ -327,10 +357,10 @@ return array(
         'charset' => 'utf8',
         ),*/
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=neotegni_base1',
+			'connectionString' => 'mysql:host=localhost;dbname=redtek_crc',
 			'emulatePrepare' => true,
-			'username' => 'neotegni_juan',
-			'password' => 'luchito',
+			'username' => 'redtek_julian',
+			'password' => 'geronimo',
 			'tablePrefix' => 'public_',
 			'charset' => 'utf8',
                     // 'enableParamLogging'=>true,//desactivarlo en produccion
@@ -379,6 +409,7 @@ return array(
 				*/
 			),
 		),
+            'init'=>array('jquerymobile'),
 	),
 
 	

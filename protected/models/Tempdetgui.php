@@ -131,7 +131,9 @@ class Tempdetgui extends ModeloGeneral
 	{
 		$relaciones= array(
 			'guia' => array(self::BELONGS_TO, 'Guia', 'n_hguia'),
-		//'materiales' => array(self::BELONGS_TO, 'Maestrocompo', 'c_codgui'),
+		'ne' => array(self::BELONGS_TO, 'Guia', 'n_hguia'),
+		
+//'materiales' => array(self::BELONGS_TO, 'Maestrocompo', 'c_codgui'),
 			'inventario'=>array(self::BELONGS_TO, 'Inventario', 'c_codactivo'),                    
                       'detgui'=>array(self::HAS_ONE, 'Detgui', 'idtemp'),
 		// NOTE: you may need to adjust the relation name and the related

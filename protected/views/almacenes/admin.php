@@ -28,6 +28,7 @@ $('.search-form form').submit(function(){
 
 <h1> Almacenes</h1>
 
+ 
 
 
 <?php echo CHtml::link('Buscar','#',array('class'=>'search-button')); ?>

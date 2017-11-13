@@ -43,7 +43,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				'update'=>
 					array(
 						'visible'=>($this->eseditable($model->{$this->campoestado}))?'false':'true',
-						'url'=>'$this->grid->controller->createUrl("/Ot/Modificadetallerecurso/",
+						'url'=>'$this->grid->controller->createUrl("/Ot/Modificadetalleconsignacion/",
 										    array("id"=>$data->idtemp,
                                                                                          "asDialog"=>1,
 											"gridId"=>$this->grid->id
@@ -105,7 +105,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 
 <div id="zona"></div>
 
-<div class="row">
+
 
 	<?php
 	if($this->estasEnsesion($model->id)) {
@@ -122,7 +122,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				),
 				'dialog' => 'cru-dialogdetalle',
 				'frame' => 'cru-detalle',
-				'visiblex' => array(ESTADO_CREADO),
+				'visiblex' => array($this::ESTADO_CREADO),
 
 			),
 
@@ -134,7 +134,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				),
 				'dialog' => 'cru-dialogdetalle',
 				'frame' => 'cru-detalle',
-				'visiblex' => array(ESTADO_CREADO),
+				'visiblex' => array($this::ESTADO_CREADO),
 
 			),
 
@@ -146,14 +146,12 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'type' => 'POST',
 					'url' => Yii::app()->createUrl($this->id . '/Borraitemsconsignaciones', array()),
 					'dataType'=>'text',
-                                    'success' => "function(data) {
-                                                                $.fn.yiiGridView.update('detalle-consignaciones-grid');                                              
-                                                                return false;
-                                                            }",
-                                     'complete' => "js:function(data) {
-                                                              $.growlUI('Growl Notification', data);  
-                                                            return false;
-                                                        }",
+                                   'success' => "function(data) {
+										 $.growlUI('Aviso', data);  
+                                                          
+                                              $.fn.yiiGridView.update('detalle-consignaciones-grid');                                              
+                                               return false;
+                                        }",
 					'beforeSend' => 'js:function(){
                                   				 var r = confirm("Esta seguro de Eliminar estos Items?");
                           						 if(!r){return false;}
@@ -161,7 +159,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                                					',
 
 				),
-				'visiblex' => array(ESTADO_CREADO, ESTADO_AUTORIZADO, ESTADO_ANULADO, ESTADO_CONFIRMADO, ESTADO_FACTURADO),
+				'visiblex' => array($this::ESTADO_CREADO, $this::ESTADO_AUTORIZADO, $this::ESTADO_ANULADO, $this::ESTADO_CONFIRMADO, $this::ESTADO_FACTURADO),
 
 			),
 
@@ -177,12 +175,12 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				),
 				'dialog' => 'cru-dialog3',
 				'frame' => 'cru-frame3',
-				'visiblex' => array(ESTADO_CREADO),
+				'visiblex' => array($this::ESTADO_CREADO),
 			),
 			'pack2' => array(
 				'type' => 'B',
 				'ruta' => array($this->id . '/procesardocumento', array('id' => $model->id, 'ev' => 35)),
-				'visiblex' => array(ESTADO_CREADO),
+				'visiblex' => array($this::ESTADO_CREADO),
 
 			),
 
@@ -204,7 +202,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                                							 }
                                					',
 				),
-				'visiblex' => array(ESTADO_CREADO, ESTADO_AUTORIZADO, ESTADO_ANULADO, ESTADO_CONFIRMADO, ESTADO_FACTURADO),
+				'visiblex' => array($this::ESTADO_CREADO, $this::ESTADO_AUTORIZADO, $this::ESTADO_ANULADO, $this::ESTADO_CONFIRMADO, $this::ESTADO_FACTURADO),
 
 			),
 
@@ -220,7 +218,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				),
 				'dialog' => 'cru-dialogdetalle',
 				'frame' => 'cru-detalle',
-				'visiblex' => array(ESTADO_CREADO),
+				'visiblex' => array($this::ESTADO_CREADO),
 
 			),
 
@@ -235,7 +233,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				),
 				'dialog' => 'cru-dialogdetalle',
 				'frame' => 'cru-detalle',
-				'visiblex' => array(ESTADO_CREADO),
+				'visiblex' => array($this::ESTADO_CREADO),
 
 			),
 
@@ -256,4 +254,3 @@ $this->widget('zii.widgets.grid.CGridView', array(
 		);
 	}
 	?>
-</div>

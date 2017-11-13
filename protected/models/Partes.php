@@ -58,7 +58,7 @@ class Partes extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'partes';
+		return '{{partes}}';
 	}
 
 	/**
@@ -94,9 +94,9 @@ class Partes extends CActiveRecord
 			array('puerto','required','message'=>'Indica el puerto donde Zarpaste'),
 				array('causa','required','message'=>'No has llenado como zarpa la embarcacion'),
 			array('puertodes','required','message'=>'Indica el puerto de arribo'),
-			array('fecha','required','message'=>' ¿ y la fecha ?'),
-			array('fechazarpe','required','message'=>' ¿ y la fecha de zarpe?'),
-			array('fechaarribo','required','message'=>' ¿ y la fecha de arribo?'),
+			array('fecha','required','message'=>' ï¿½ y la fecha ?'),
+			array('fechazarpe','required','message'=>' ï¿½ y la fecha de zarpe?'),
+			array('fechaarribo','required','message'=>' ï¿½ y la fecha de arribo?'),
 			array('horometro','required','message'=>'Indica el horometro de zarpe'),
 			array('zarpo','required','message'=>'Indica si zarpo o no'),
 			array('horometrodes','checkHorometro'),
@@ -175,7 +175,7 @@ class Partes extends CActiveRecord
 			'caja_paceite' => 'CAJA: Presion de aceite  (PSI)',
 			'observacionesfinales' => 'Otras observaciones que desees hacer ',
 			'panga_rpm'=>'PANGA : Velocidad del motor (RPM)',
-			'panga_taguamot'=>'PANGA: Temperatura de agua del motor (C o ºF)',
+			'panga_taguamot'=>'PANGA: Temperatura de agua del motor (C o ï¿½F)',
 			'panga_paceitecaja'=>'PANGA : Presion de aceite de Caja (PSI)',
 			'panga_paceitemotor'=>'PANGA : Presion de aceite del motor (PSI)',
 			'acylu_consumomotor'=> 'MOTOR: Consumo de aceite (gl) ',  

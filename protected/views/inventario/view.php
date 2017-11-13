@@ -9,19 +9,19 @@ $this->breadcrumbs=array(
 
 $this->menu=array(
 	
-	array('label'=>'Crear Activo', 'url'=>array('create')),
-	array('label'=>'Modificar', 'url'=>array('update', 'id'=>$model->idinventario)),
+	array('label'=>'Crear Equipo', 'url'=>array('create')),
+	array('label'=>'Modificar', 'url'=>array('basicupdate', 'id'=>$model->idinventario)),
 	//array('label'=>'Modificar', 'url'=>array('update', 'id'=>$model->idinventario)),
-	array('label'=>'Subir fotos', 'url'=>array('Subearchivo', 'id'=>$model->idinventario)),
+	//array('label'=>'Subir fotos', 'url'=>array('Subearchivo', 'id'=>$model->idinventario)),
 	//array('label'=>'Delete Inventario', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->idinventario),'confirm'=>'Are you sure you want to delete this item?')),
-	array('label'=>'Ver activos', 'url'=>array('admin')),
-	array('label'=>'Administrar este activo', 'url'=>array('updatetotal', 'id'=>$model->idinventario)),
-	array('label'=>'Procesar', 'url'=>array('/controlactivos/create', 'id'=>$model->idinventario)),
+	array('label'=>'Ver Equipos', 'url'=>array('admin')),
+	//array('label'=>'Administrar este activo', 'url'=>array('updatetotal', 'id'=>$model->idinventario)),
+	//array('label'=>'Procesar', 'url'=>array('/controlactivos/create', 'id'=>$model->idinventario)),
 );
 ?>
 <div class="division">
 <div  style="float: left; width:100%;"> 
-   <div style="float: left; width:250px;">
+   <div style="float: left; width:30%;">
    <?php 
     /* if(isset($_SESSION['sesion_Inventario_busqueda'])) {
 		 $arreglo=$_SESSION['sesion_Inventario_busqueda'];
@@ -60,12 +60,14 @@ $this->menu=array(
 		'serie',		
 		//'comentario',
 		'fecha',
-		//'documentox.desdocu',
+		//'documentos.desdocu',
 		'lugares.deslugar',
 				'posicion',
 				'estado.estado',
 		'codigopadre',
+             //'documentos.desdocu',
 		'numerodocumento',
+           
 		'adicional',
 		//'codigoafant',		
 	),
@@ -73,59 +75,25 @@ $this->menu=array(
 
 
    </div>
-		<div style="float: left; clear:right; width:410;">
+		<div style="float: left; clear:right; width:60%;">
 		
-				<?php 
-				    $rutaicono=Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'camara.png';
-					Yii::app()->clientScript->registerScript('cambiaim',"function cambiarimg(nombreimagen) { 
-									var i=1;
-									if (i == 1){ 
-									       document.images['gatito'].src=nombreimagen;
-										   document.getElementById('fnsal').innerHTML='atecnio';
-										   i=2;} 
-										   } ");
-				           $fotoprinc=(count($fotos)==0)?Yii::app()->params['imagenes'].'nodisponible.png':$fotos[0];
-							   //$fotos[]=Yii::app()->params['imagenes'].'nodisponible.png';
-							echo CHtml::image( $fotoprinc,'',array('id'=>'gatito','border'=>0,'width'=>400,'height'=>300))."<br>";
-								
-								/*$i=1;
-								foreach ($fotos as $valor) {		     
-									echo CHtml::image($rutaicono);
-									echo CHtml::link("(".$i.")","#",array('onmouseover'=>"document.images['gatito'].src='".$ruta.$valor."';document.getElementById('fnsal').innerHTML='atecnio';"));
-									//echo CHtml::link("(".$i.")","#",array('onmouseover'=>"cambiarimg('".$ruta.$valor."')"));
-									
-									$i=$i+1;
-								}
-								//echo CHtml::link("Administar fotos",array("/inventario/gestionafotos","fotos"=>$fotos));
-								//ECHO CHtml::link("Administar fotos","#",array('onclick'=>'$("#cru-frame").attr("src",'.Yii::app()->createurl("/reportepesca/updatehoras", array("id"=> 23,"asDialog"=>1,"gridId"=> "HPOLA"   ) ).'); $("#cru-dialog").dialog("open"); return false;'));
-													$createUrl = $this->createUrl('/inventario/gestionafotos',
-																		array(										       
-																				"fotos"=>$fotos,
-																				"asDialog"=>1,
-																				"gridId"=>'grt',												
-																			)
-																			);
-																$mensaje="Para hacer esto debes de inicar sesion primero";
-																echo CHtml::link(CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'tacho.png','',array('width'=>15, 'height'=>15)),'#',array('onclick'=>(!(Yii::app()->user->isGuest))?"$('#cru-frame4').attr('src','$createUrl'); $('#cru-dialog4').dialog('open');":"alert('$mensaje')"));
-																
-																//echo CHtml::link('Administar fotos',$createUrl);
-
-								
-
-
-										echo "<br>";
-										*/
-								?> 
-								
-<?php	
-//print_r($fotos);
-  $this->widget('ext.galeria.Galeria',array(
-			'images'=>$fotos,
-			'rutaimagenes'=>'',
-	        // 'rutaborra'=>'Inventario/borrafoto',
-			'idimagen'=>'gatito',//ID del a miagen para e intercambiar
-	));
-?>
+	
+      <?php
+      $comportamiento=new TomaFotosBehavior();
+        $comportamiento->_codocu='390';
+         $comportamiento->_ruta=yii::app()->settings->get('general','general_directorioimg');
+         $comportamiento->_numerofotosporcarpeta=yii::app()->settings->get('general','general_nregistrosporcarpeta')+0;
+          $comportamiento->_extensionatrabajar='jpg';
+           $comportamiento->_id=$model->idinventario; 
+           $model->attachbehavior('adjuntador',$comportamiento );  
+      $this->widget(
+    'application.components.booster.widgets.TbCarousel',
+     $model->getCarrusel($model->idinventario,'390')
+      );
+      
+      
+      ?>
+                    
 
 <?php 
 /*
@@ -173,8 +141,15 @@ $this->endWidget();
   </div>  
 			<div style="float: left; width:100%;">
 			<?php 
-	            $this->renderpartial('vw_detalles',array('model'=>$model,'modelolog'=>$modelolog,'canica'=>$model->idinventario,'proveedorlog'=>$proveedorlog,'proveedorobs'=>$proveedorobs));
-				?>  
+	            $this->renderpartial('vw_detalles',
+                            array('model'=>$model,
+                                'modelolog'=>$modelolog,
+                                'canica'=>$model->idinventario,
+                                'proveedorlog'=>$proveedorlog,
+                                'proveedorobs'=>$proveedorobs
+                                )
+                            );
+				 ?>  
 			</div>
 
  

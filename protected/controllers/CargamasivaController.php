@@ -191,7 +191,7 @@ $camposclave=array();
 																										$cadena="\$model= new ".$carga->modelo.";";	
 																					            } else {
 																										if(count($camposclave) <= 1 ){ ///si la clave princuipal es un campo
-																											$cadena=" \$model= ".$carga->modelo."::Model()->findByPk('".$nombreprimercampo."=:param ', array(':param'=>'".$data[0]."')); ";
+																											$cadena=" \$model= ".$carga->modelo."::Model()->findByPk(".$data[0]."); ";
 																										$cadvar=$nombreprimercampo."=".$data[0];
 																										}else{//si es mas de un solo campo ahi si ahya chicha
 																											/*FORMADO LA CADENA DE FILREO PARA REGISTROS CON CLAVE PRINCIPAL DE MAS DE UN CAMPO*/

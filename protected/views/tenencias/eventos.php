@@ -1,24 +1,11 @@
-<?php  
-//var_dump(Tenenciasproc::model()->search_por_tenencia($model->codte));die();
 
-  $this->widget('ext.groupgridview.GroupGridView', array(
-      'id' => 'grid1',      
-      'mergeColumns' => array('codocu','documentos'),
-	'dataProvider'=> Tenenciasproc::model()->search_por_tenencia($model->codte),
-   // 'filter'=>$modeltenenciasproc,
+<?php $this->widget('zii.widgets.grid.CGridView', array(
+	'id'=>'tenencias-grid',
+	'dataProvider'=>  Tenenciasproc::model()->search_por_tenencia($model->codte),
     'itemsCssClass'=>'table table-striped table-bordered table-hover',
 	//'filter'=>$model,
 	'columns'=>array(
-		//'codte',
-             array('name'=>'codocu','value'=>'$data->codocu','type'=>'raw',
-                // 'filter'=>CHtml::listData(Documentos::model()->findAll(),'coddocu','desdocu'  )
-                // 'filter'=>CHTml::listData(Tempdetot::model()->findAll("idusertemp=:vuser and hidorden=:vorden",array(":vorden"=>$model->id,":vuser"=>yii::app()->user->id)),'idaux','textoactividad'),
-                 ),
-            array('name'=>'documentos','type'=>'raw','value'=>'$data->documentos->desdocu'),
-            'final',
-            'automatico',
-            'esmensaje',
-            array('name'=>'hidprevio','header'=>'Previo','value'=>'($data->hidprevio>0)?$data->hidprevio:""'),
+		'codte',
             'nhorasverde',
            'nhorasnaranja',
 		array('name'=>'hidevento','header'=>'Procedimiento','value'=>'$data->eventos->descripcion'),
@@ -69,10 +56,7 @@
                     ),
 		),
 	),
-));   
-
-
-?>
+)); ?>
 
 
 <?php

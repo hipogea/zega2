@@ -6,7 +6,7 @@
 )); ?>
 <div>
 	<div class='botones'>
-		<?php echo CHtml::imageButton(Yii::app()->getTheme()->baseUrl.'/img/seleccionar.png',array('width'=>25,'height'=>25,'value'=>'Buscar','onClick'=>'Loading.show();Loading.hide();'));?>
+		<?php echo CHtml::imageButton(Yii::app()->getTheme()->baseUrl.'/img/pin.png',array('width'=>25,'height'=>25,'value'=>'Buscar','onClick'=>'Loading.show();Loading.hide();'));?>
 	</div>
 </div>
 
@@ -34,7 +34,7 @@
 						array(
 									'class'=>'CCheckBoxColumn',
 									'selectableRows' => 10,
-									'value'=>'$data->idinventario',
+									'value'=>'$data->codigoaf',
 									'checkBoxHtmlOptions' => array(                
 																'name' => 'checkselected[]',
 																	),
@@ -54,19 +54,17 @@
 	 
 	 array(
             'name'=>'codestado',
-            'value'=>'$data->estado->estado',
+            //'value'=>'$data->estado->estado',
             'filter'=>CHtml::listdata(Estado::model()->findall($criteria),'codestado','estado'),
                   ),
 				   array(
             'name'=>'codep',
-            'value'=>'$data->barcoactual->nomep',
+            //'value'=>'$data->barcoactual->nomep',
             'filter'=>CHtml::listdata(Embarcaciones::model()->findall(),'codep','nomep'),
                   ),
 		
 		
 	),
 )); ?>
-<div class="row buttons">
-		<?php echo CHtml::submitButton('Seleccionar'); ?>
-	</div>
+
 <?php $this->endWidget(); ?>

@@ -9,4 +9,4 @@ $this->menu=array(
 
 <?php MiFactoria::titulo('Crear Registro Compra ', 'gear')   ?>
 
-<?php $this->renderPartial('_form', array('model'=>$model)); ?>
+<?php $this->renderPartial('_form', array('model'=>$model,'proveedor'=>$proveedor)); ?>

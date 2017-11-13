@@ -20,7 +20,27 @@
 <?php echo $form->errorSummary($model); ?>
 	
     <div class="row">
-		
+		<?php
+				$botones=array(
+					
+					'save'=>array(
+						'type'=>'A',
+						'ruta'=>array(),
+                                            'visiblex'=>array('10'),
+						),
+				);
+				$this->widget('ext.toolbar.Barra',
+					array(
+						//'botones'=>MiFactoria::opcionestoolbar($model->id,$this->documento,$model->codestado),
+						'botones'=>$botones,
+						'size'=>24,
+						'extension'=>'png',
+						'status'=>'10',
+
+					)
+				); ?>
+
+			
 
 
 		</div>
@@ -66,9 +86,7 @@
              
          </div>
          
-         <div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Procesar' : 'Procesar'); ?>
-	</div>
+         
 <?php
  
 $this->endWidget();

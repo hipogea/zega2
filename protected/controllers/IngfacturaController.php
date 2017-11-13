@@ -1,11 +1,12 @@
 <?php
-const ESTADO_PREVIO='99';
-const ESTADO_CREADO='10';
-const ESTADO_ANULADO='20';
+
 class IngfacturaController extends ControladorBase
 {
 
-	public function __construct() {
+	const ESTADO_PREVIO='99';
+const ESTADO_CREADO='10';
+const ESTADO_ANULADO='20';
+    public function __construct() {
 		parent::__construct($id='ingfactura',Null);
 		$this->documento='857';
 		$this->modelopadre='Ingfactura';

@@ -43,14 +43,14 @@ return array(
 'fillTree'=>array(
 'class'=>'ext.actions.XFillTreeAction',
 'modelName'=>'Menu',
-    'rootId'=>$_GET['rootId'],
+   // 'rootId'=>$_GET['rootId'],
 'showRoot'=>TRUE
 ),
 
    'llenahijos'=>array(
 'class'=>'ext.actions.XFillTreeAction',
 'modelName'=>'Objetosmaster',
-    'rootId'=>$_GET['rootId'],
+   // 'rootId'=>$_GET['rootId'],
 'showRoot'=>TRUE
 ),                 
                     
@@ -125,6 +125,13 @@ return array(
 'limit'=>30
 ),
                     
+'suggestcompo'=>array(
+'class'=>'ext.actions.XSuggestAction',
+'modelName'=>'Masterequipo',
+'methodName'=>'suggestcompo',
+'limit'=>30
+),
+                    
    'suggestMaterial'=>array(
 'class'=>'ext.actions.XSuggestAction',
 'modelName'=>'Maestrocompo',
@@ -141,14 +148,24 @@ return array(
 'limit'=>10
 ),  
                     
-                    
+        'suggestNe'=>array(
+'class'=>'ext.actions.XSuggestAction',
+'modelName'=>'VwGuia',
+'methodName'=>'suggestNe',
+'limit'=>20
+),                
    'suggestot'=>array(
 'class'=>'ext.actions.XSuggestAction',
 'modelName'=>'VwOtdetalle',
 'methodName'=>'suggestot',
 'limit'=>10
 ),                   
-                    
+     'suggestotsimple'=>array(
+'class'=>'ext.actions.XSuggestAction',
+'modelName'=>'Ot',
+'methodName'=>'suggestotsimple',
+'limit'=>10
+),                 
                     
 'suggestPersonGroupCountry'=>array(
 'class'=>'ext.actions.XSelect2SuggestAction',
@@ -190,7 +207,7 @@ public function actionprueba(){
 	{
 		return array(
 			array('allow',
-				'actions'=>array('suggestot','suggestceco','llenahijos',   'llenaCertificados', 'prueba',  'otroMaestrocompo','suggestMaterial',
+				'actions'=>array('suggestotsimple','suggestcompo','suggestNe',  'suggestot','suggestceco','llenahijos',   'llenaCertificados', 'prueba',  'otroMaestrocompo','suggestMaterial',
 'suggestCountry','legacySuggestCountry','fillTree','treePath','llenaEquipos','loadContent','suggestAuPlaces',
 'suggestAuHierarchy','suggestLastname','fillAuTree','viewUnitPath','viewUnitLabel','initPerson',
 'suggestPerson','suggestPersonGroupCountry','listPersonsWithSameFirstname',

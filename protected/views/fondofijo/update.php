@@ -18,4 +18,4 @@ $this->menu=array(
 
 <h1>Editar fondo fijo    <?php echo $model->desfondo; ?></h1>
 
-<?php $this->renderPartial('_form', array('model'=>$model)); ?>
+<?php $this->renderPartial('_form', array('model'=>$model,'modelito'=>$modelito)); ?>

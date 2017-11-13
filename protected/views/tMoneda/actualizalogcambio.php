@@ -1,3 +1,12 @@
+<?php
+$this->menu=array(
+array('label'=>'Ver tipo de cambio', 'url'=>array('cambio')),
+    array('label'=>'Monedas', 'url'=>array('listamonedas')),
+	array('label'=>'Establecer Cambio', 'url'=>array('updatecambio')),
+);
+
+?>
+<h1>Actualizar cambio al :   <span style="color:red; font-weight:bold;"><?php echo $fecha;   ?></span> </h1>
 <div class="form">
 <?php echo CHtml::beginForm(); ?>
 <table class="table table-striped table-bordered table-hover">

@@ -39,7 +39,7 @@
 
 					$this->widget('ext.matchcode.MatchCode',array(
 							'nombrecampo'=>'hidhijo',
-							'ordencampo'=>2,
+							'ordencampo'=>3,
 							'controlador'=>$this->id,
 							'relaciones'=>$model->relations(),
 							'tamano'=>10,

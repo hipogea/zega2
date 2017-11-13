@@ -9,10 +9,10 @@ $this->breadcrumbs=array(
 
 $this->menu=array(
 	//array('label'=>'List Inventario', 'url'=>array('index')),
-	array('label'=>'Crear Activo', 'url'=>array('create')),
-	array('label'=>'Observaciones ', 'url'=>array('observaciones')),
-	array('label'=>'Confirmar movimientos', 'url'=>array('/vwloginventari')),
-	array('label'=>'Inventario Fisico', 'url'=>array('/admin')),
+	array('label'=>'Crear Equipo', 'url'=>array('createBasic')),
+	//array('label'=>'Observaciones ', 'url'=>array('observaciones')),
+	//array('label'=>'Confirmar movimientos', 'url'=>array('/vwloginventari')),
+	//array('label'=>'Inventario Fisico', 'url'=>array('/admin')),
 );
 
 Yii::app()->clientScript->registerScript('search', "
@@ -30,7 +30,7 @@ $('.search-form form').submit(function(){
 ?>
 
 <div class="division">
-<?php echo CHtml::link('Busqueda ','#',array('class'=>'search-button')); ?>
+
 <div class="search-form" >
 <?php $this->renderPartial('_search',array(
 	'model'=>$model,
@@ -43,13 +43,13 @@ $('.search-form form').submit(function(){
         'thumbHeight' => 90, // Optional
     )
 ); */?>
- <div id="mina"></div>
- 
+
+<DIV STYLE="float:right;">
  <?php $provedo=$model->search();
 /* print_r($provedo->getKeys());
  yii::app()->end();*/
-  $rutaimagenesx=Yii::getPathOfAlias('webroot.fotosinv').DIRECTORY_SEPARATOR;
-  $baserutacorta=substr($rutaimagenesx,strpos($rutaimagenesx,yii::app()->baseUrl));
+  //$rutaimagenesx=Yii::getPathOfAlias('webroot.fotosinv').DIRECTORY_SEPARATOR;
+  //$baserutacorta=substr($rutaimagenesx,strpos($rutaimagenesx,yii::app()->baseUrl));
 
 
 
@@ -98,34 +98,36 @@ $('.search-form form').submit(function(){
 																	)'						
 			 ),*/
 		//array('name'=>'barcooriginal','header'=>'Origen',
-		array('name'=>'barcoactual.nomep','header'=>'Actual','value'=>'$data->barcoactual->nomep'),
-		array('name'=>'.','header'=>'.','type'=>'raw','value'=>'CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."estado".$data->codestado.".png","",array("width"=>15,"height"=>15))'),
-		array('name'=>'codigosap','header'=>'C. Sap','type'=>'raw','value'=>'CHtml::link($data->codigosap,array("inventario/detalle","id"=>$data->idinventario),array("onClick"=>"Loading.show(); return true;"))'), 
+		//array('name'=>'barcoactual.nomep','header'=>'Actual','value'=>'$data->barcoactual->nomep'),
+		array('name'=>'.','header'=>'.','type'=>'raw','value'=>'CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."estado".$data->codestado.".png","",array("width"=>30,"height"=>30))'),
+		//array('name'=>'codigosap','header'=>'C. Sap','type'=>'raw','value'=>'CHtml::link($data->codigosap,array("inventario/detalle","id"=>$data->idinventario),array("onClick"=>"Loading.show(); return true;"))'), 
 		 array(
             'name'=>'imagen',
-            'type'=>'raw',
-          'value'=>'(file_exists(Yii::getPathOfAlias(\'webroot.fotosinv\').DIRECTORY_SEPARATOR.$data->codpropietario.DIRECTORY_SEPARATOR.trim($data->idinventario).\'.JPG\'))?
-						CHtml::image(Yii::app()->baseUrl.DIRECTORY_SEPARATOR.\'fotosinv\'.DIRECTORY_SEPARATOR.$data->codpropietario.DIRECTORY_SEPARATOR.trim($data->idinventario).\'.JPG\',$data->codigosap,array(\'width\'=>110,\'height\'=>100)):
+            'type'=>'html',
+          'value'=>'(is_file($data->fotoprimera()["absoluto"]))?
+						CHtml::image($data->fotoprimera()["relativo"],$data->codigosap,array(\'width\'=>120,\'height\'=>160)):
 						"--"'
+                     //'value'=>'$data->fotoprimera()["absoluto"]',
 		           ),
-		array('name'=>'codigoaf','header'=>'Plaquita','type'=>'raw','value'=>'CHtml::link($data->codigoaf,array("inventario/update","id"=>$data->idinventario),array("onClick"=>"Loading.show(); return true;"))'), 
+		array('name'=>'codigoaf','header'=>'Cod','type'=>'raw','value'=>'CHtml::link($data->codigoaf,array("inventario/basicupdate","id"=>$data->idinventario),array("onClick"=>"Loading.show(); return true;"))'), 
+		array('name'=>'idinventario','header'=>'Id','type'=>'raw','value'=>'CHtml::link($data->idinventario,array("inventario/basicupdate","id"=>$data->idinventario),array("onClick"=>"Loading.show(); return true;"))'), 
 		
-		array('name'=>'descripcion','header'=>'Descripcion del activo','value'=>'$data->descripcion'),
-		/*'marca',
+		array('name'=>'descripcion','header'=>'Descripcion','value'=>'$data->descripcion'),
+		'marca',
 		'modelo',
-		'serie',*/
-		array('name'=>'.','header'=>'.','type'=>'raw','value'=>'(!$data->rocoto=="1")?CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."ancla.png","",array("width"=>15,"height"=>15)):CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."truck.png","",array("width"=>15,"height"=>15))','htmlOptions'=>array('width'=>'50')),
-		array('name'=>'lugares_lugar','header'=>'Lugar','value'=>'$data->lugares->deslugar'),
-		//'documentox.desdocu',
+		'serie',
+		//array('name'=>'.','header'=>'.','type'=>'raw','value'=>'(!$data->rocoto=="1")?CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."ancla.png","",array("width"=>15,"height"=>15)):CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."truck.png","",array("width"=>25,"height"=>25))','htmlOptions'=>array('width'=>'30')),
+		//array('name'=>'lugares_lugar','header'=>'Lugar','value'=>'$data->lugares->deslugar'),
+            array('name'=>'imagen2','header'=>'Ubicac','value'=>'$data->lugares->empresa->despro'),
+             array('name'=>'direcci','header'=>'Pto Dir','value'=>'$data->lugares->direcciones->c_direc'),
 		array('name'=>'fecha','value'=>'date("d/m/Y",strtotime($data->fecha))'),
-		'numerodocumento',
-		
+            // array('name'=>'numerodocumento','header'=>'N° Docum','value'=>'$data->numerodocumento'),
 		
 	),
 )); 
 ?>
 <?php //$this->endWidget(); ?>
-
+</DIV>
 <?php
 //Capture your CGridView widget on a variable
 //$gridWidget=$this->widget('bootstrap.widgets.TbGridView', array( . . .
@@ -138,8 +140,8 @@ $this->renderExportGridButton($gridWidget,'Exportar resultados',array('class'=>'
 							'summaryText'=>'',
 								//'filter'=>$model,
 							'dataProvider'=>Estado::model()->search_por_docu('390'),
-							'cssFile' => '/motoristas/css/grid/grilla_natanja.css', 
-							'columns'=>array(
+							'itemsCssClass'=>'table table-striped table-bordered table-hover',
+                                                            'columns'=>array(
 							array('name'=>'estado'),
 	   
 								array('name'=>'.','header'=>'.','type'=>'raw','value'=>'CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."estado".$data->codestado.".png","",array("width"=>15,"height"=>15))'),

@@ -29,7 +29,7 @@ class MasterequipoController extends Controller
 		return array(
 
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('data','crealista','borralista','modificalista','borradetalle','modificadetalle','admin','creaadicional','create','update'),
+				'actions'=>array('borrahijo',  'data','crealista','borralista','modificalista','borradetalle','modificadetalle','admin','creaadicional','create','update'),
 				'users'=>array('@'),
 			),
 
@@ -191,10 +191,15 @@ class MasterequipoController extends Controller
 		$id=MiFactoria::cleanInput($idcabeza);
 		$registro=$this->loadModel($id);
 		$model->hidpadre=$registro->id;
+                //var_dump($model->hidpadre);die();
 	//	$model->hidcontacto=$idcabeza;
 		if(isset($_POST['Masterrelacion']))		{
 			$model->attributes=$_POST['Masterrelacion'];
-			$model->save();
+                        //$model->hidhijo=
+                        //var_dump($model->attributes);die();
+			if(!$model->save()){
+                            var_dump($model->geterrors());die();
+                        }
 			//Close the dialog, reset the iframe and update the grid
 			echo CHtml::script("window.parent.$('#cru-dialog3').dialog('close');
 													                    window.parent.$('#cru-frame3').attr('src','');
@@ -237,11 +242,16 @@ class MasterequipoController extends Controller
 	}
 
 	public function actionborradetalle($id){
-		$model=Masterrelacion::model()->findByPk($id);
-		//echo "salio";
+		$model= Masterlistamateriales::model()->findByPk($id);
+		//echo $id;die();
 		$model->delete();
 	}
 
+        public function actionborrahijo($id){
+		$model= Masterrelacion::model()->findByPk($id);
+		//echo $id;die();
+		$model->delete();
+	}
 
 public function actioncrealista($idcabeza){
 

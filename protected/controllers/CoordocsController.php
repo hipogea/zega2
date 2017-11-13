@@ -1,5 +1,18 @@
 <?php
-CONST ESTILO_POSICION_ABSOLUTA=" position:absolute; ";
+/***********************************************************
+ * Consideraciones:
+ * La libreia MPDF, SE CUELGA CUANDO ENCUENTRA CAMPOS VACIOS EN LOS 
+ * VALORES DE LOS DIVS DE LA CADENA HTML A PINTAR; POR ESO SE HA
+ * COLOCADO LA SIGUIENTE SENTENCIA EN LA FUNCION CABECERA ()
+ * IF(TRIM($VALOR!==))  ECHO CHTML "DIV...
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
+
+CONST ESTILO_POSICION_ABSOLUTA=" position:absolute; "; 
 
 class CoordocsController extends Controller
 {
@@ -167,8 +180,6 @@ class CoordocsController extends Controller
 		yii::app()->end();
 		$filamuestra=$proveedordatos[0]; *////Una muestra de filas solo para sacar los datos de la cabecera
 		foreach( $proveedorestilos as $record) {
-
-
 			if ( ! $record->esdetalle == '1' ) {  //si es un campo de cabecera
 				// var_dump($record);
 				$cadena = ESTILO_POSICION_ABSOLUTA;
@@ -187,6 +198,7 @@ class CoordocsController extends Controller
 					'lbl_font_weight',
 					'lbl_font_color',
 				);
+                                //var_dump($record->attributes);die();
 				foreach ( $record->attributes as $clave => $valor ) //RECORRIEDNO LOSD CAMPOS HORIZOTALMENTE
 
 				{
@@ -249,7 +261,7 @@ class CoordocsController extends Controller
 
                 /***********   mofiivaiones   razzo  ******/
                 if(!(strpos($record->tipodato,'text')===false)){
-                    $cadena.=' width:'.($record->longitudcampo<=0)?10:$record->longitudcamp.'px; ';
+                   // $cadena.=' width:'.($record->longitudcampo<=0)?'10px':$record->longitudcamp.'px; ';
                 }
                 /***********  fin   mofiivaiones   razzo  ******/
 
@@ -262,7 +274,8 @@ class CoordocsController extends Controller
 				if ( $record->visiblecampo == '1' )
 				{
 					$valorcampo=($record->nombre_campo=='iduser')?strtoupper(Yii::app()->user->um->loadUserById($filamuestracabecera->{$record->nombre_campo},false)->username):$filamuestracabecera->{$record->nombre_campo};
-					$HTML_cabecera .= CHtml::tag ( "div" , array ( "style" => $cadena ) , $valorcampo , true );
+					if(!(trim($valorcampo)==""))
+                                        $HTML_cabecera .= CHtml::tag ( "div" , array ( "style" => $cadena ) , $valorcampo , true );
 
 				}
 					//$HTML_cabecera .="<div style='".$cadena."'> ".$filamuestracabecera->getAttributeLabel ( $record->nombre_campo ) ."</div>";
@@ -274,7 +287,8 @@ class CoordocsController extends Controller
 			}
 		}
 		//$HTML_cabecera.=CHtml::tag ( "div" , array ( "style" => $cadena." top:".$modelo->ylogo.";  left:".$modelo->xlogo.";  "  ) , CHTml::image(Yii::app()->baseUrl.DIRECTORY_SEPARATOR.yii::app()->params['imgreportes'].$modelo->id.".JPG") , true );
-
+               // return "";
+                
 
 		return $HTML_cabecera;
 		}
@@ -340,13 +354,14 @@ return array_values($arraycolumnas);
 
 
 	public function actionhacereporte($id,$idfiltrodocu,$file=0){ //id del reporte y el ID del modelo a reportar
-
+              // $tiempo=time();
 		//echo "skdks";
             $this->layout="";
 		$id=MiFactoria::cleanInput((int)$id);
 		$idfiltrodocu=MiFactoria::cleanInput((int)$idfiltrodocu);
 		$modelo=$this->loadModel($id);
 		$nombremodelo=$modelo->modelo;
+               
 		//VAR_DUMP($modelo->tienecabecera);DIE();
 		///////////////////////////////////////////////////////
 		///sancao el numero de paginas
@@ -355,6 +370,9 @@ return array_values($arraycolumnas);
 		$criterio->params=ARRAY(":vidifiltrodocu"=>$idfiltrodocu);
 		$proveedordatos=new Miproveedor($nombremodelo,array('pagination' => false,"criteria"=>$criterio));
         $filasdatos=$proveedordatos->getdata();
+        
+        //echo "  Teimpo pasado getsdata 358: ".(time()-$tiempo)."<br>";
+        
        // var_dump($filasdatos);die();
        //cabec echo "filadatos";var_dump($filadatos);die();
 		$filamuestracabecera=$filasdatos[0]; ///una fila de datos para la cabcerea
@@ -363,15 +381,19 @@ return array_values($arraycolumnas);
 		//$numeropaginas=3;
 		$proveedorestilo=$modelo->hijos;
 		$proveedordatos->camposasumar=Coordreporte::totalizables($id);
-               
+              //echo "  Teimpo pasado getsdata 370: ".(time()-$tiempo)."<br>"; 
 		$mpdf=Yii::app()->ePdf->mpdf(
 			'',trim($modelo->tamanopapel));
+                 $mpdf->useSubstitutions=false; 
+                 $mpdf->simpleTables = true;
+                 $mpdf->packTableData = true;
+                //echo "  Teimpo pasado getsdata 373: ".(time()-$tiempo)."<br>";
         $hojaestilo='';
          //var_dump($mpdf);die();
 		if(!is_null($modelo->estilo)) {
 			$hojaestilo = file_get_contents ( $this->rutaestilos . DIRECTORY_SEPARATOR . $modelo->estilo );
 			//$hojaestilo=file_get_contents('themes/abound/css'.DIRECTORY_SEPARATOR.'estilovale.css');
-			$mpdf->WriteHTML ( $hojaestilo , 1 );
+			//$mpdf->WriteHTML ( $hojaestilo , 1 );
                         
 		}
 		$mpdf->pagenumPrefix = 'Página  ';
@@ -390,10 +412,12 @@ return array_values($arraycolumnas);
 		}*/
       //echo $this->cabecera($filamuestracabecera,$proveedorestilo,$modelo);die();
 		//var_dump($numeropaginas);die();
+                // echo "  Teimpo pasado getsdata 398: ".(time()-$tiempo)."<br>"; 
 $cadena="";
-		   for($i = 1; $i <= $numeropaginas; $i++)
+	//var_dump($numeropaginas	);die();
+for($i = 1; $i <= $numeropaginas; $i++)
 		   {
-
+                // echo "  Teimpo pasado getsdata402: ".(time()-$tiempo)."<br>"; 
 			    $criterioporpagina=New CDbCriteria;
 			  // $criterioporpagina->addCondition($modelo->campofiltro."=:vidifiltrodocu  ");
 			   $criterioporpagina->addCondition($modelo->campofiltro."= ".$idfiltrodocu);
@@ -405,16 +429,15 @@ $cadena="";
 			    $proveedorporpagina=new Miproveedor($nombremodelo,array('pagination' => false,"criteria"=>$criterioporpagina));
 			   $proveedorporpagina->camposasumar=Coordreporte::totalizables($id);
                   $amontoagregado= $proveedorporpagina->Total();
+                  // echo "  Teimpo pasado getsdata 414: ".(time()-$tiempo)."<br>"; 
 			 	$cadena=$this->renderpartial('reporte',
 					array(
 						'columnas' =>$this->makeColumnas($proveedorestilo,$amontobase,$amontoagregado,$id),
 						'cadenacabecera'=>$this->cabecera($filamuestracabecera,$proveedorestilo,$modelo),
 						'proveedordatos'=>$proveedorporpagina,
 						'modelo'=>$modelo,
-                       /***********   mofiivaiones   razzo  ******/
-                        'hojaestilo'=>Yii::app()->getTheme()->baseUrl.'/css/reportes/'.$modelo->estilo,
-                        /***********  fin mofiivaiones   razzo  ******/
-					),TRUE,	true);
+                        'hojaestilo'=>Yii::app()->getTheme()->baseUrl.'/css/reportes/'.$modelo->estilo,                        
+					),true,false);
 
 			   $amontobase=$this->sumaarray($amontobase,$amontoagregado);
 			   if($i==$numeropaginas and $modelo->comercial=='1'){ //Si es la utima pag y ademas es doc comercial
@@ -426,13 +449,19 @@ $cadena="";
 				   }
 					     $cadena.=$this->colocaimpuestos($modelo->codocu,$idfiltrodocu,$modelo->xresumen,$modelo->yresumen,$grantotal);
 			   }
+                            //echo "  Teimpo pasado getsdata 436: ".(time()-$tiempo)."<br>"; 
           //echo $cadena;yii::app()->end();
-			   $mpdf->WriteHTML($cadena,2);
+                           
+                         // echo "cadena ".$cadena."<br>";die();
+                           //echo "par ver las repeticiones <br>"; 
+			   $mpdf->WriteHTML($cadena,0);
+                           //die();
+                           //echo "  Teimpo pasado getsdata 439: ".(time()-$tiempo)."<br>"; die();
 			   if($i<$numeropaginas)
 			   $mpdf->AddPage();
 
 		   }
-                   
+                  
                    
 //echo $cadena;yii::app()->end();
 
@@ -490,9 +519,10 @@ $cadena="";
 			$mpdf->Output($rutax,'F');
 		}
         elseif($file==2){
-            $mpdf->Output();
-           // $this->layout='//layouts/docus';
-           // $this->render('web',array('cadena'=>$cadena));
+            //$mpdf->Output();
+            $this->layout='//layouts/docus';
+            echo $cadena;die();
+          // $this->render('web',array('cadena'=>$cadena));
         }
         else{
 			$mpdf->Output();
@@ -756,5 +786,53 @@ public function actioncargacampos(){
 	private function colocaimpuestos($codocu,$idocu,$xresumen,$yresumen,$grantotal){
 	  return $this->renderpartial("impuesto",array('grantotal'=>$grantotal,'xresumen'=>$xresumen,'yresumen'=>$yresumen,'codocu'=>$codocu,'idocu'=>$idocu),true,true);
      }
-
+     
+     /*
+      * Esta funcion pinta los valores de un item con comentarios y deltalle 
+      * idela para informes de reportes por ejemlo un item con desctipcion y texto largo
+      * 
+      *  1)  Descripcion
+      *  2)  Texto largo
+      *  3)  Imagenes
+      *  4)  Lista de materiales
+      * 
+      * 
+      */
+     
+     private function pintaItem(){
+         
+     }
+/*
+      * Esta funcion pinta los valores de un item con comentarios y deltalle 
+      * idela para informes de reportes por ejemlo un item con desctipcion y texto largo
+      * 
+      *  1)  Descripcion
+      *  2)  Texto largo
+      *  3)  Imagenes
+      *  4)  Lista de materiales
+      * 
+      * 
+      */
+     
+     public function actionPrueba(){
+         $mpdf=Yii::app()->ePdf->mpdf(
+			'',trim('A4'));
+                $mpdf->useSubstitutions=false; 
+                //$mpdf->simpleTables = true;
+               // $mpdf->packTableData = true;
+               //$mpdf-> shrink_tables_to_fit = 3;
+                $mpdf->use_kwt = true; 
+         $cadena=$this->renderpartial('reporte_informe',
+					array(),true,false);         
+         //echo $cadena;die();
+        //$mpdf->SetFooter('Usuario   :  '.yii::app()->user->um->loadUserById(yii::app()->user->id)->username.'|'.date("d-m-Y   H : i : s").'| Pagina {PAGENO} de  {nb}');
+		$mpdf->SetDisplayMode('fullpage');
+                $hojaestilo = file_get_contents ( $this->rutaestilos . DIRECTORY_SEPARATOR . 'estilooc.css' );
+			//$hojaestilo=file_get_contents('themes/abound/css'.DIRECTORY_SEPARATOR.'estilovale.css');
+			//echo $hojaestilo;die();
+                        $mpdf->WriteHTML ($hojaestilo , 1 );
+                        $mpdf->WriteHTML($cadena,0);
+                        $mpdf->Output();
+         
+     }
 }

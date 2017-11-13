@@ -13,7 +13,10 @@ class TipoactivosController extends Controller
 	 */
 	public function filters()
 	{
-		return array('accessControl',array('CrugeAccessControlFilter'));
+		return array(
+			'accessControl', // perform access control for CRUD operations
+			'postOnly + delete', // we only allow deletion via POST request
+		);
 	}
 
 	/**
@@ -23,8 +26,6 @@ class TipoactivosController extends Controller
 	 */
 	public function accessRules()
 	{
-		
-            Yii::app()->user->loginUrl = array("/cruge/ui/login");
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 				'actions'=>array('index','view'),
@@ -93,18 +94,9 @@ class TipoactivosController extends Controller
 		if(isset($_POST['Tipoactivos']))
 		{
 			$model->attributes=$_POST['Tipoactivos'];
-			if($model->save()){
-                            MiFactoria::Mensaje('success', 'Se grabo el registro');
-                            $this->render('update',array(
-			'model'=>$model,
-		));
-                     yii::app()->end();
-                            
-                            
-                        }
-		
-                            
-                }
+			if($model->save())
+				$this->redirect(array('view','id'=>$model->codtipo));
+		}
 
 		$this->render('update',array(
 			'model'=>$model,

@@ -72,11 +72,8 @@ class uniqueMultiColumnValidator extends CValidator
 			{
 				$message .= $labels[$attribute] . "+";
 			}
-                        $colita="";
-                        if( in_array(get_parent_class($objects[0]),array('ModeloGeneral','CActiveRecord' )))
-                                $colita=$objects[0]->getPrimaryKey().'';
 			$message = substr ($message, 0, -1);
-			$message = $this->message!==null ? $this->message."  con el id [".$colita."]" : "Ya existe esta combinacion de estos valores con el id  [".$colita."]";
+			$message = $this->message!==null ? $this->message : "Ya existe esta combinacion de estos valores .";
 			foreach ($attributes as $attribute)
 			{
 				$this->addError($object,$attribute,$message);

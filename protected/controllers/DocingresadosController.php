@@ -227,10 +227,6 @@ class DocingresadosController extends Controller {
                 )
         );
         $model->codocu = self::CODIGO_DOC_REGISTRO_INGRESO_DOCUMENTOS;
-         $model->monto=(is_null($model->monto))?0:$model->monto;
-                 $model->moneda=(is_null($model->moneda))?yii::app()->settings->get('general','general_monedadef'):$model->moneda;
-                 $model->codresponsable=(is_null($model->codresponsable))?'7012':$model->codresponsable;
-                
         if (isset($_GET['cert'])) {
             // die();
             $this->redirect('creacertificado');

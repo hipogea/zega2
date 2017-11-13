@@ -1,10 +1,11 @@
 
+
 <?php
 //ALTER TABLE mot_mat_det ADD COLUMN canti double precision;
 
  $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'mot-mat-det-grid',
-	'dataProvider'=>MotMatDet::model()->search_pedido($model->isNewRecord ?Yii::app()->session['numeropedido']:$model->id),
+	'dataProvider'=>Motmatdet::model()->search_pedido($model->isNewRecord ?Yii::app()->session['numeropedido']:$model->id),
 	//'filter'=>$model,
 	'summaryText'=>'Para agregar un registro presione el boton inferior',
 	'cssFile' => ''.Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemagrid'].'style_gridpartes.css',  // your version of css file
@@ -88,7 +89,7 @@
 																							)
 																				)',
 							 'options' => array( 'ajax' => array('type' => 'get', 'url'=>'js:$(this).attr("href")', 'success' => 'js:function(data) { $.fn.yiiGridView.update("mot-mat-det-grid")}')) ,        
-						    'imageUrl'=>'Yii::app()->getTheme()->baseUrl."/".img/hint.png', 
+						    'imageUrl'=>''.Resuelveruta::ArreglaRuta(Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemagrid']).'hint.png', 
 								'label'=>'Aprobar', 
                                 ),	
 							

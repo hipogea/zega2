@@ -657,20 +657,26 @@ PUBLIC FUNCTION actioncargaimputacion (){
                if(is_null($registro))  
                    throw new CHttpException(500,'NO se encontro el registro con el id '.$id);  
                } 
-             IF($registro->cabecera->codestado==self::ESTADO_CREADO){
-             if($registro->codestado==self::ESTADO_DETALLE_CAJA_CERRADO ){
+             IF($registro->cabecera->codestado==self::ESTADO_CREADO){//si la cabecera esta cerrasa
+                 
+             if($registro->codestado==self::ESTADO_DETALLE_CAJA_CERRADO ){ //si el detalle esta cerrado
+                 
                   if($registro->tipoflujo==self::TIPO_DE_FLUJO_A_RENDIR and
                           $registro->devoluciones> 0 ){
                         echo 'Este cargo a rendir tiene liquidACIONES Y NO PUEDE REVERTIR SUS ESTADO ';  
                
                   }ELSE{
+                      if(count($registro->imputaciones)==0){
                       $registro->setScenario('estado');
                         $registro->codestado=self::ESTADO_DETALLE_CAJA_CREADO;
                              if($registro->save()){
                                     echo "Se ha RESTABLECIDO el registro ";
                                 }else{
-                                    echo yii::app()->mensajes->getErroresIrem($registro->geterrors());
+                                    echo yii::app()->mensajes->getErroresItem($registro->geterrors());
                             }
+                      }else{
+                           echo "Este registro NO SE PUEDE REVERTIR PORQUE ya tiene imputaciones  ";
+                      }
                   }
                   
                   

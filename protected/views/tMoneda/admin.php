@@ -9,6 +9,8 @@ $this->breadcrumbs=array(
 
 $this->menu=array(
 
+	  //array('label'=>'Ver tipo de cambio', 'url'=>array('cambio')),
+    array('label'=>'Monedas', 'url'=>array('listamonedas')),
 	array('label'=>'Establecer Cambio', 'url'=>array('updatecambio')),
 );
 
@@ -41,14 +43,30 @@ $this->menu=array(
                                    $data->seguir,
                                    array(
                                     
+                                    "disabled"=>"disabled",
                                         "style"=>"width:50px;"
                                         )
                                     )',
             'htmlOptions'=>array("width"=>"50px"),
     ),   
+            
+            array(
+                    'name'=>'activa',
+                   // 'filter'=>ARRAY('1'=>'Habilitado',''=>'deshabilitado'),
+        'header'=>'Activa',
+        'type'=>'raw',
+        'value'=>'CHtml::CheckBox("$data->activa",
+                                   $data->activa,
+                                   array(
+                                    "disabled"=>"disabled",
+                                        "style"=>"width:50px;"
+                                        )
+                                    )',
+            'htmlOptions'=>array("width"=>"50px"),
+    ), 
 		array(
 			'class'=>'CButtonColumn',
-			'template'=>'{update}{view}',
+			'template'=>'{update}{view}{otro}',
 			'buttons'=>array(
                             
                             'view'=>  array(
@@ -57,7 +75,7 @@ $this->menu=array(
 	   'options' => array( 'ajax' => array('type' => 'GET', 'success'=>'js:function() { $.fn.yiiGridView.update("tmoneda-grid");}' ,'url'=>'js:$(this).attr("href")'),
 	   
 	   ) ,'imageUrl'=>Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."check16.png",
-	   'label'=>'Activar log',
+	   'label'=>'Activar/Desactivar log', 
 	   ),
                             
                             
@@ -69,7 +87,16 @@ $this->menu=array(
 										    array("moneda1"=>$data->codmon1,"moneda2"=>$data->codmon2)
 									    )',
 					'imageUrl'=>''.Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'coins.png',
-					'label'=>'Reservar',
+					'label'=>'Actualizar cambio',
+				),
+                            
+                            'otro'=>
+				array(
+					'url'=>'$this->grid->controller->createUrl("/TMoneda/desactivamoneda/",
+										    array("id"=>$data->id)
+									    )',
+					'imageUrl'=>''.Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'cross.png',
+					'label'=>'Desactivar moneda',
 				),
 			),
 

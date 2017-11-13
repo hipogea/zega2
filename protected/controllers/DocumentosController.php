@@ -135,6 +135,7 @@ class DocumentosController extends Controller
 	public function actionprefdoc()
 	{
 		$model=new Opcionescamposdocu('search');
+                
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['Opcionescamposdocu'])){
                     $model->attributes=$_GET['Opcionescamposdocu'];
@@ -232,14 +233,17 @@ class DocumentosController extends Controller
 		        $modex->save();
 			}
 		}
-		
+               // var_dump($codocupadre);var_dump($docu);die();
+		Opcionescamposdocu::actualizacampos($codocupadre);
+		Opcionescamposdocu::actualizacampos($docu);
 		
 		
 		$proveedor=VwOpcionesdocumentos::model()->search_us($docu,Yii::app()->user->id);
    //buacnado el codochijo
    $registro=Documentos::model()->findAll("coddocupadre=:vpadre",array(":vpadre"=>$docu));
   
-     if (!is_null($registro)){
+     if (!is_null($registro) AND COUNT($registro)>0){
+        
 		$codocuhijo=$registro[0]->coddocu;
 		$documentohijo=$registro[0]->desdocu;
 	 } else {

@@ -50,7 +50,7 @@ class Tempotconsignacion extends ModeloGeneral
                     array('est', 'safe','on'=>'estado'),
                     array('id, hidetot, cant, um, codart, fecnec, 
                          idusertemp, idtemp, identificador,
-                         hidot, descripcion, textolargo,item,est,centro,codal,codcli', 
+                         hidot, descripcion,idstatus, textolargo,item,est,centro,codal,codcli', 
                         'safe', 'on'=>'buffer'),
 		
 			array('idusertemp', 'numerical', 'integerOnly'=>true),
@@ -156,7 +156,7 @@ class Tempotconsignacion extends ModeloGeneral
 		$criteria->compare('descripcion',$this->descripcion,true);
 		$criteria->compare('hidetot',$this->hidetot,true);
 		$criteria->addCondition("hidot=".$id);
-
+           $criteria->addCondition("idstatus> -1");
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));

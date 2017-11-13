@@ -1,7 +1,9 @@
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'documentosop-grid',
 	'dataProvider'=>Opcionescamposdocu::model()->search_por_docu($model->coddocu),
-	//'filter'=>$model,
+	'itemsCssClass'=>'table table-striped table-bordered table-hover',
+	
+//'filter'=>$model,
 	'columns'=>array(
 		'codocu',
 		
@@ -65,23 +67,3 @@
 			
 			
 			
-			<?php
-//--------------------- begin new code --------------------------
-   // add the (closed) dialog for the iframe
-    $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
-    'id'=>'cru-dialog3',
-    'options'=>array(
-        'title'=>'Explorador',
-        'autoOpen'=>false,
-        'modal'=>true,
-        'width'=>850,
-        'height'=>500,
-    ),
-    ));
-?>
-<iframe id="cru-frame3" width="100%" height="100%"></iframe>
-<?php
- 
-$this->endWidget();
-//--------------------- end new code --------------------------
-?>

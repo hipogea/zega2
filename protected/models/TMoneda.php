@@ -16,7 +16,7 @@
  * @property Factu[] $factus
  * @property Coti[] $cotis
  */
-class TMoneda extends CActiveRecord
+class TMoneda extends ModeloGeneral
 {
 	/**
 	 * Returns the static model of the specified AR class.
@@ -33,7 +33,7 @@ class TMoneda extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return Yii::app()->params['prefijo'].'t_moneda';
+                return '{{monedas}}';
 	}
 
 	/**
@@ -46,12 +46,12 @@ class TMoneda extends CActiveRecord
 		return array(
 			array('codmoneda', 'required'),
 			array('codmoneda, simbolo', 'length', 'max'=>3),
-			array('desmon', 'length', 'max'=>10),
-			array('creadopor, modificadopor', 'length', 'max'=>25),
-			array('creadoel, modificadoel', 'length', 'max'=>20),
+			//array('desmon', 'length', 'max'=>10),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('codmoneda, simbolo, desmon, creadopor, creadoel, modificadopor, modificadoel', 'safe', 'on'=>'search'),
+                    array('habilitado', 'safe', 'on'=>'insert,update'),
+		
+			array('codmoneda, simbolo, desmon, modificadopor, modificadoel', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -108,6 +108,16 @@ class TMoneda extends CActiveRecord
 		));
 	}
         
+      public STATIC function findByCodMon($cod){
+          //VAR_DUMP($cod);die();
+         return self::model()->findByPk($cod);
       
-        
+            
+         
+      }
+    public function beforesave() {
+        if($this->cambiocampo("habilitado") and $this->habilitado=='1')
+        yii::app()->tipocambio->agregarmoneda($this->codmoneda,$seguir=false);
+        return parent::beforeSave();
+    }    
 }

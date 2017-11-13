@@ -131,9 +131,16 @@
 </div>
     
     <div class="row">
-        <?php echo $form->labelEx($model,'codmaster'); ?>
+        <?php 
+        if(!empty($model->ot->codcompo)){
+        echo $form->labelEx($model,'codmaster'); ?>
 
-		<?php $this->widget('ext.matchcode.MatchCode',array(
+		<?php 
+               $datos1tb1x = CHtml::listData(Masterequipo::model()->findAll("codigopadre=:vpadre",array(":vpadre"=>$model->ot->codcompo)),'codigo','descripcion');
+		echo $form->DropDownList($model,'codmaster',$datos1tb1x, array('empty'=>'--Seleccione un componente--')  )  ;
+		
+                
+                /*$this->widget('ext.matchcode.MatchCode',array(
 			'nombrecampo'=>'codmaster',
                     'nombrecamporemoto'=>'codigo',
 			'ordencampo'=>3,
@@ -145,11 +152,13 @@
 			'nombredialogo'=>'cru-dialog3',
 			'nombreframe'=>'cru-frame3',
 			'nombrearea'=>'f6ghhfg23ghdfssesj',
-		));
+		));*/
 		?>
 	
 
-	<?php echo $form->error($model,'codmaster'); ?>
+	<?php echo $form->error($model,'codmaster'); 
+        }
+        ?>
 	</div>      
     
     
@@ -215,7 +224,14 @@ $this->widget('zii.widgets.jui.CJuiSliderInput', array(
     
 	<div class="row">
 		<?php echo $form->labelEx($model,'txt'); ?>
-		<?php echo $form->textArea($model,'txt',array('rows'=>3,'cols'=>50,'disabled'=>($editable)?'':'disabled')); ?>
+		 <?php      $this->widget(
+                        'application.components.booster.widgets.TbRedactorJs',
+                                array(
+                                'name' => 'some_text_field',
+                                    'model'=> $model,
+                                    'attribute'=>'txt',
+                                )
+                            );?>
 		<?php echo $form->error($model,'txt'); ?>
 	</div>
 

@@ -35,8 +35,8 @@ return false;
 	'columns'=>array(
 		//'codart',
 		array('name'=>'codart','type'=>'raw','value'=>'CHtml::link($data->codart,Yii::app()->CreateUrl("/alinventario/update",array("id"=>$data->idinventario)))'),
-		'codcentro',
-		'codal',
+		ARRAY('name'=>'codcentro', 'header'=>'Cent','value'=>'$data->codcentro','htmlOptions'=>array('width'=>20)),
+            ARRAY('name'=>'codal','header'=>'Alm', 'value'=>'$data->codal','htmlOptions'=>array('width'=>20)),
 		'desum',
 		array('name'=>'color','type'=>'raw','value'=>'CHtml::image(Yii::app()->getTheme()->baseUrl."/img/reloj".$data->colorstatus().".png","")'),
 
@@ -45,9 +45,10 @@ return false;
 		'cantreposic',
 		'cantreorden',
 		'canteconomica',
-		'descripcion',
+		 ARRAY('name'=>'descripcion','header'=>'Descripcion', 'value'=>'$data->descripcion','htmlOptions'=>array('width'=>500)),
+	
                   'color',
-		'punit',
+		 ARRAY('name'=>'punit','header'=>'P. Unit', 'value'=>'round($data->punit,2)','htmlOptions'=>array('width'=>10)),
 		//array('name'=>'color','value'=>'$data->colorstatus()'),
 			),
 )); ?>

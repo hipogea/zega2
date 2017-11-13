@@ -172,7 +172,7 @@ $this->endWidget();
     $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
     'id'=>'cru-dialog1',
     'options'=>array(
-        'title'=>'Crear comentario',
+        'title'=>'',
         'autoOpen'=>false,
         'modal'=>true,
         'width'=>600,

@@ -8,7 +8,7 @@
  * @property string $desgrupo
  * @property string $interno
  */
-class Grupoplan extends CActiveRecord
+class Grupoplan extends ModeloGeneral
 {
 	/**
 	 * @return string the associated database table name
@@ -26,14 +26,16 @@ class Grupoplan extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('codgrupo', 'required'),
-			array('codgrupo', 'length', 'max'=>3),
-			array('desgrupo', 'length', 'max'=>50),
+                        array('tarifa,codmon, interno', 'safe','on'=>'BATCH_UPD'),
+                     array('tarifa,codmon', 'required','on'=>'BATCH_UPD'),
+			array('codgrupo,codcen,tarifa,escenario,codmon', 'required','on'=>'insert,update'),
+			array('codgrupo', 'length', 'max'=>3,'on'=>'insert,update'),
+			//array('desgrupo', 'length', 'max'=>50),
 			array('interno', 'length', 'max'=>1),
-			array('codgrupo, desgrupo,codcen,tarifa,codmon, interno', 'safe'),
+			array('codgrupo,escenario, codcen,tarifa,codmon, interno', 'safe','on'=>'insert,update'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('codgrupo, desgrupo, interno', 'safe', 'on'=>'search'),
+			array('codgrupo, interno,escenario,codcen,codmon', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -46,6 +48,7 @@ class Grupoplan extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'moneda' => array(self::BELONGS_TO, 'Monedas', 'codmon'),
+                        'oficios' => array(self::BELONGS_TO, 'Oficios', 'codgrupo'),
 		);
 	}
 
@@ -82,6 +85,9 @@ class Grupoplan extends CActiveRecord
 		$criteria->compare('codgrupo',$this->codgrupo,true);
 		$criteria->compare('desgrupo',$this->desgrupo,true);
 		$criteria->compare('interno',$this->interno,true);
+                $criteria->compare('escenario',$this->codgrupo,true);
+		$criteria->compare('codcen',$this->desgrupo,true);
+		//$criteria->compare('interno',$this->interno,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -98,4 +104,65 @@ class Grupoplan extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        
+        public function tarifamonedadef(){
+            if($this->codmon==yii::app()->settings->get('general','general_monedadef')){
+              return $this->tarifa;
+            }else{
+                return $this->tarifa*yii::app()->tipocambio->getCambio($this->codmon,yii::app()->settings->get('general','general_monedadef')); 
+            }
+            
+        }
+        
+        public static function getEscenarios(){
+            return array(
+                'A'=>'ESCENARIO A',
+                'B'=>'ESCENARIO B',
+                'C'=>'ESCENARIO C',
+                );
+        }
+        
+        public static function detectaVacancias($codcentro){
+            $nescenarios=count(self::getEscenarios());
+            $noficios=Oficios::model()->count();
+           // $ncentros= Centros::model()->count();
+            $ntarifastotal=$nescenarios*$noficios;
+            $ntarifas=self::model()->count("codcen=:vcodcentro",array(":vcodcentro"=>$codentro));
+            return ($ntarifas < $ntarifastotal)?true:false;
+                       
+        }
+        
+         public  function llenaVacancias($codcentro){
+             if(self::detectaVacancias($codcentro)){
+                 
+                 foreach(self::getEscenarios() as $escenario=>$valor){
+                      
+                     $roficios=Oficios::model()->findAll();
+                     foreach( $roficios as $oficio ){
+                         $registro=New Grupoplan;
+                                if(count(self::model()->findAll("codcen=:vcodcen and escenario=:vescenario and codgrupo=:vcodgrupo",
+                                 array(":vcodcen"=>$codcentro,":vescenario"=>$escenario,":vcodgrupo"=>$oficio->codof)))==0)
+                                    
+                                       
+                                //VAR_DUMP($registro);die();
+                                $registro->setAttributes(
+                                        array(
+                                            "codgrupo"=>$oficio->codof,
+                                            "codcen"=>$codcentro,
+                                             "escenario"=>$escenario,
+                                             "codmon"=>yii::app()->settings->get('general','general_monedadef'),
+                                            "tarifa"=>1,
+                                        )
+                                        );
+                               $registro->save();
+                                    //echo "grabanmdo<br>";
+                                
+                                 
+                     }
+                     
+                 }
+             }
+           return 1;
+                       
+        }
 }

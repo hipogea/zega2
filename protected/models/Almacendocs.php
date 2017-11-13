@@ -1,5 +1,4 @@
 <?php
-
 class Almacendocs extends ModeloGeneral
 {
 	CONST ESTADO_EFECTUADO='20';
@@ -716,21 +715,10 @@ public function checksolpe($attribute,$params) {
 			}else{
 			   ////Verfiicando que existan en esa solpe items que esten reservadas 
 			  // $matriz=Desolpe::model()->findAll( "hidsolpe=:mipa and est='06' and cant > 0 ",array("mipa"=>$registro[0]['id']));
-			$matriz = Yii::app()->db->createCommand(" select t.id, t.codart,t.um, s.cant,r.punit from
-  																{{desolpe}} t,
-  																 {{alreserva}}  s ,
-  																{{alinventario}}  r
-  																 where
-  																 t.codal=r.codalm and
-  																 t.centro=r.codcen and
-  																 t.codart=r.codart and
-  																 s.hidesolpe=t.id and
-  																 s.codocu='450' and
-  																 t.hidsolpe=".$registro[0]['id']." and
-  																  s.estadoreserva in ('10' ,'40') ")->queryAll();
-
-			         if(count($matriz) ==0 )  {
-				 $this->adderror('numdocref','Esta Solpe no tiene items reservados ');
+			
+                           // var_dump($matriz);
+			         if(!$this->haysolpespendientes($this->numdocref))  {
+				 $this->adderror('numdocref','Esta Solpe no tiene items reservados, o ya han sido atendidos por completo ');
 				  }
 				  
 			}
@@ -865,21 +853,24 @@ public function verificafechaservicios($attribute,$params){
 			'modificadopor' => 'Modificadopor',
 			'creadoel' => 'Creadoel',
 			'modificadoel' => 'Modificadoel',
-			'codmovimiento' => 'Movimiento',
+			'codmovimiento' => 'Movimie',
 			'numvale' => 'Numero',
-			'codtipovale' => 'Tipo docum',
-			'codtrabajador' => 'Codtrabajador',
+			'codtipovale' => 'Tip doc',
+			'codtrabajador' => 'Cod Trab',
 			'codalmacen' => 'Almacen',
+                    'codestadovale' => 'Est.',
 			'codcentro' => 'Centro',
 			'cestadovale' => 'Estado',
-			'correlativo' => 'Correlativo',
+			'correlativo' => 'Correl',
 			'codocu' => 'Codocu',
 			'id' => 'ID',
-			'fechacont' => 'Fecha Cont',
-			'fechacre' => 'Fechacre',
+                                                'codaldestino'=>'Alm Dest.',
+                     'codcendestino'=>'Cent dest.',
+			'fechacont' => 'F. Cont',
+			'fechacre' => 'F. cre',
 			'numdocref' => 'Doc Ref',
 			'posic' => 'Posic',
-			'codocuref' => 'Codocuref',
+			'codocuref' => 'Doc Ref',
 		);
 	}
 
@@ -1175,5 +1166,42 @@ public function checksolpecompra($attribute,$params) {
 				  
 			}
                     
+          }
+          /*retorna el mov opuesto del vale*/
+          public function movimientoopuesto(){
+              
+              
+          }
+          
+          //esta fucnion verifica :
+          //1) que le numero de solpe exista 
+          // 2) que la solpe tenga items pendientes de atencion
+          //3) que lasolpe tenga el esrado adecuado o reservado 
+          public function verificasolpe(){
+              
+          }
+          
+          public function haysolpespendientes($referencia){
+              $solpe=Solpe::model()->findAll("numero=:vnumero",array(":vnumero"=>$referencia));
+              if(count($solpe)>0){
+                  $idsolpe=$solpe[0]->id;
+                  
+                  
+                  
+                   $registros=  Yii::app()->db->createCommand("select t.id,s.cant,x.cant 
+                                from {{desolpe}}  t
+INNER JOIN {{alreserva}} s ON s.hidesolpe=t.id
+INNER JOIN {{solpe}}  w ON  t.hidsolpe=w.id
+LEFT JOIN {{atencionreserva}} x ON s.id=x.hidreserva
+WHERE ( (t.centro='".$this->codcentro."'   and t.codal='".$this->codalmacen."') and
+        ( ( t.codart <> '".yii::app()->settings->get('materiales','materiales_codigoservicio')."' AND   s.estadoreserva not in('30','70') AND s.codocu IN('450') and t.hidsolpe=".$idsolpe." )
+ 	 or(  t.codart <> '".yii::app()->settings->get('materiales','materiales_codigoservicio')."' AND s.estadoreserva = '40' AND   s.codocu IN('800') and t.hidsolpe=".$idsolpe."  ) )    )
+ group by t.id,s.cant,x.cant 
+ HAVING sum(x.cant) < s.cant or sum(x.cant) is null")->queryAll();
+            return (count($registros)>0)?true:false;
+              }else{
+                  return false;
+              }
+           
           }
 }

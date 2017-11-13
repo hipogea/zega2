@@ -1,10 +1,8 @@
 <?php 
+
 $this->menu=array(
 	//array('label'=>'List Docingresados', 'url'=>array('index')),
-	array('label'=>'Ingresar Documento', 'url'=>array('create')),
-    array('label'=>'Certificados Dicapi', 'url'=>array('certificadosdicapi')),
-      array('label'=>'Listado detallado', 'url'=>array('detalles')),
-     array('label'=>'Ingresar certificado', 'url'=>array('create','cert'=>'yes')),
+	array('label'=>'Nuevo', 'url'=>array('create')),
 );
 
 Yii::app()->clientScript->registerScript('search', "
@@ -37,10 +35,7 @@ $this->renderPartial('_search',array(
 
 ?>
 </div>
-<?php
-//echo  CHtml::openTag("span",array("class"=>"icon icon-man icon-blue icon-fuentesize32")).'hola amiguito'.CHtml::closeTag("span");
-
-$form=$this->beginWidget('CActiveForm', array(
+<?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'docingresados-admin'	
 )); ?>
 
@@ -62,9 +57,9 @@ $form=$this->beginWidget('CActiveForm', array(
             // 'id'=>'cajita' // the columnID for getChecked
                       ),
 		
-		//'desdocu',  
+		//'desdocu',
             'tipodoc',
-		array('name'=>'correlativo','type'=>'raw','value'=>'CHTml::openTag("span",array("style"=>"border-radius:3px;padding:4px;background-color:$data->color"))."     ".CHTml::closeTag("span")." .".CHTml::link($data->correlativo,yii::app()->createUrl("docingresados/update",array("id"=>$data->id)),array("target"=>"_blank"))','htmlOptions'=>array('width'=>70)),
+		array('name'=>'correlativo','type'=>'raw','value'=>'CHTml::openTag("span",array("style"=>"border-radius:3px;padding:4px;background-color:$data->color"))."     ".CHTml::closeTag("span")." .".CHTml::link($data->correlativo,yii::app()->createUrl("docingresados/update",array("id"=>$data->id)),array("target"=>"_blank"))'),
 		'id',
             'numero',
 		'moneda',
@@ -72,9 +67,10 @@ $form=$this->beginWidget('CActiveForm', array(
            array('name'=>'codtenencia','type'=>'raw','value'=>'CHTml::openTag("span",array("class"=>"label label-1504")).$data->codtenencia.CHTml::closeTag("span")'),
 		
 		//'codprov',
-		'despro',
-             array('name'=>'Refer','type'=>'raw','value'=>'$data->nomep'),
-	
+		'despro',			
+		//'barcos.nomep',
+		
+		
 		array(
 			'name'=>'fecha',
 			'value'=>'date("d.m.y", strtotime($data->fecha))','htmlOptions'=>array('width'=>'30')
@@ -88,8 +84,6 @@ $form=$this->beginWidget('CActiveForm', array(
 			'name'=>'cuantoshay','type'=>'raw',
 			'value'=>'Chtml::image(Yii::app()->getTheme()->baseUrl.DIRECTORY_SEPARATOR."img".DIRECTORY_SEPARATOR."attach_2.png").CHtml::openTag("span",array("class"=>"label badge-warning"),true).$data->cuantosfileshay()','htmlOptions'=>array('width'=>'30')
 		),
-            // array('name'=>'falta','type'=>'raw','value'=>'($data->tiempofaltante())','htmlOptions'=>array('width'=>120)),
-           
 		'ap',
             'descripcion',
             
@@ -228,6 +222,3 @@ $this->endWidget();
 
 
 ?>
-
-
-

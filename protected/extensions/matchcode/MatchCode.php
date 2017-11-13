@@ -162,7 +162,7 @@ class MatchCode extends CWidget
 			  
 			 				echo " </div>";
 			 				echo " <div style='float: left;'>";
-			   				echo CHtml::link(CHtml::openTag("span",array("class"=>"icon icon-binoculars icon-blue icon-fuentesize16")).CHtml::closeTag("span"),'#' ,array('onclick'=>'$("#'.$this->nombreframe.'").attr(
+			   				echo CHtml::link(CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."Search.png"),'#' ,array('onclick'=>'$("#'.$this->nombreframe.'").attr(
 																					"src",
 																					"'.Yii::app()->createurl('/Matchcode/recibevalor', 
                                                                                                                                                                                         array(
@@ -183,11 +183,11 @@ class MatchCode extends CWidget
 		// if (!is_null($this->nombrearea)) {
 		//$modelorel=$this->nombreclase;
 		if (!is_null($this->nombrearea)) {
-						echo " <div  id =".$this->nombrearea.">";
-		                                                             //var_dump($this->model->attributes);
-						echo self::pintatexto((!$this->model->isNewRecord or 
-                                                       strlen(trim($this->model->{$this->nombrecampo}))>0
-                                                        )?$this->relaciona($this->nombrecampo,$this->model->{$this->nombrecampo},$this->ordencampo):'--',array('disabled'=>'disabled','size'=>$this->tamano*3,'maxlength'=>$this->tamano));
+			echo " <div  id =".$this->nombrearea.">";
+		          //var_dump($this->model->attributes);
+			echo self::pintatexto((!$this->model->isNewRecord or 
+                       strlen(trim($this->model->{$this->nombrecampo}))>0
+                         )?$this->relaciona($this->nombrecampo,$this->model->{$this->nombrecampo},$this->ordencampo):'--',array('disabled'=>'disabled','size'=>$this->tamano*3,'maxlength'=>$this->tamano));
 
 		echo " </div>";
 															unset($modelorel);

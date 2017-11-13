@@ -1,21 +1,8 @@
-<?php
-//echo $model->getCarpeta();
-//echo "<br>";
-//var_dump($model->recuperaarchivos(true));
-//var_dump(is_dir($model->getCarpeta()));die();
-/*if($this->beginCache('cache_tab_adjunto', array(
-    'dependency'=>new CDirectoryCacheDependency($model->getCarpeta())
-            ,
-    'duration'=>600,
-    
-    ))) { */
 
-?>
 
 
 <?php	
-var_dump($model->recuperaarchivos());
-//ECHO $model->getCarpeta()."<BR>";
+//var_dump($model->fotosparagaleria());
   $this->widget('ext.galeria.Galeria',array(
       'idregistro'=>$model->id,  //Es id de un registro o de laguna referencia 
 			'images'=>$model->fotosparagaleria(),
@@ -34,8 +21,6 @@ var_dump($model->recuperaarchivos());
 			'idimagen'=>'gatito',//ID del a miagen para e intercambiar
 	));
 ?>
-
-    <?php //$this->endCache('cache_tab_adjunto'); }  ?>
 <div id="vitrina" ></div>
 <?php	
 if (!$model->isNewRecord) {

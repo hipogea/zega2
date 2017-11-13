@@ -1,18 +1,3 @@
-/*!
- * Bootstrap v2.1.1
- *
- * Copyright 2012 Twitter, Inc
- * Licensed under the Apache License v2.0
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Designed and built with all the love in the world @twitter by @mdo and @fat.
- */
-
- .compactRadioGroup {  
-     display: inline; margin-right: 1px !important;
-}
-
-
 article,aside,details,figcaption,figure,
 footer,header,hgroup,nav,section{display:block}
 audio,canvas,video{display:inline-block;*display:inline;*zoom:1}
@@ -67,8 +52,12 @@ a:hover{color:#005580;text-decoration:underline}
 .span4{width:300px}.span3{width:220px}.span2{width:140px}.span1{width:60px}.offset12{margin-left:980px}
 .offset11{margin-left:900px}.offset10{margin-left:820px}.offset9{margin-left:740px}.offset8{margin-left:660px}
 .offset7{margin-left:580px}.offset6{margin-left:500px}.offset5{margin-left:420px}.offset4{margin-left:340px}
-.offset3{margin-left:260px}.offset2{margin-left:180px}.offset1{margin-left:100px}.row-fluid{width:100%;*zoom:1}
-.row-fluid:before,.row-fluid:after{display:table;line-height:0;content:""}.row-fluid:after{clear:both}
+.offset3{margin-left:260px}.offset2{margin-left:180px}.offset1{margin-left:100px}
+
+
+.row-fluid{width:100%;*zoom:1}
+.row-fluid:before,.row-fluid:after{display:table;line-height:0;content:""}
+.row-fluid:after{clear:both}
 .row-fluid [class*="span"]
 {display:block;float:left;width:100%;min-height:30px;margin-left:4px;*margin-left:1px;
     -webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box
@@ -78,7 +67,8 @@ a:hover{color:#005580;text-decoration:underline}
 .row-fluid .span9{width:74.46808510638297%;*width:74.41489361702126%}.row-fluid .span8{width:65.95744680851064%;*width:65.90425531914893%}
 .row-fluid .span7{width:57.44680851063829%;*width:57.39361702127659%}.row-fluid .span6{width:48.93617021276595%;*width:48.88297872340425%}
 .row-fluid .span5{width:40.42553191489362%;*width:40.37234042553192%}.row-fluid .span4{width:31.914893617021278%;*width:31.861702127659576%}
-.row-fluid .span3{width:18%;*width:18%}.row-fluid .span2{width:14.893617021276595%;*width:14.840425531914894%}
+.row-fluid .span3{width:18%;*width:18%}
+.row-fluid .span2{width:14.893617021276595%;*width:14.840425531914894%}
 .row-fluid .span1{width:6.382978723404255%;*width:6.329787234042553%}
 .row-fluid .offset12{margin-left:104.25531914893617%;*margin-left:104.14893617021275%}
 .row-fluid .offset12:first-child{margin-left:102.12765957446808%;*margin-left:102.02127659574467%}
@@ -104,7 +94,8 @@ a:hover{color:#005580;text-decoration:underline}
 .row-fluid .offset2:first-child{margin-left:17.02127659574468%;*margin-left:16.914893617021278%}
 .row-fluid .offset1{margin-left:10.638297872340425%;*margin-left:10.53191489361702%}
 .row-fluid .offset1:first-child{margin-left:8.51063829787234%;*margin-left:8.404255319148938%}[class*="span"]
-.hide,.row-fluid [class*="span"].hide{display:none}[class*="span"].pull-right,.row-fluid [class*="span"]
+.hide,.row-fluid [class*="span"].hide{display:none}[class*="span"].pull-right,
+.row-fluid [class*="span"]
 .pull-right{float:right}.container{margin-right:auto;margin-left:auto;*zoom:1}
 .container:before,.container:after{display:table;line-height:0;content:""}
 .container:after{clear:both}.container-fluid{padding-right:5px;padding-left:5px;*zoom:1}
@@ -140,7 +131,7 @@ h1{
 h2{font-size:16px;line-height:10px}h3{font-size:13px;line-height:10px}
 h4{font-size:18px;line-height:20px}h5{font-size:14px;line-height:20px}h6{font-size:12px;line-height:20px}
 h1 small{font-size:24px}h2 small{font-size:18px}h3 small{font-size:14px}h4 small{font-size:14px}
-.page-header{padding-bottom:9px;margin:20px 0 30px;border-bottom:1px solid #eee}ul,ol{padding:0;margin:0 0 10px 25px}
+.page-header{padding-bottom:9px;margin:20px 0 30px;border-bottom:1px solid #eee}ul,ol{padding:0;margin:0 0 1px                       5px}
 ul ul,ul ol,ol ol,ol ul{margin-bottom:0}li{line-height:20px}ul.unstyled,ol.unstyled{margin-left:0;list-style:none}
 dl{margin-bottom:20px}dt,dd{line-height:20px}dt{font-weight:bold}dd{margin-left:10px}.dl-horizontal{*zoom:1}
 .dl-horizontal:before,.dl-horizontal:after{display:table;line-height:0;content:""}.dl-horizontal:after{clear:both}
@@ -165,7 +156,7 @@ select,textarea,input[type="text"],input[type="password"],input[type="datetime"]
 input[type="date"],input[type="month"],input[type="time"],input[type="week"],input[type="number"],
 input[type="email"],input[type="url"],input[type="search"],input[type="tel"],input[type="color"],
 .uneditable-input{
-    display:inline-block;height:13px;padding:4px 8px 8px 4px;margin-bottom:9px;
+    display:inline-block;height:28px;padding:4px 8px 8px 4px;margin-bottom:9px;
     font-size:14px;line-height:20px;color:rgb(46, 103, 158);
     -webkit-border-radius:3px;
     -moz-border-radius:3px;
@@ -203,7 +194,8 @@ input[type="checkbox"]:focus{outline:thin dotted #333;outline:5px auto -webkit-f
 .input-large{width:210px}.input-xlarge{width:270px}.input-xxlarge{width:530px}input[class*="span"],select[class*="span"],textarea[class*="span"],.uneditable-input[class*="span"],.row-fluid input[class*="span"],.row-fluid select[class*="span"],.row-fluid textarea[class*="span"],
                                                                               .row-fluid .uneditable-input[class*="span"]{float:none;margin-left:0}.input-append input[class*="span"],.input-append .uneditable-input[class*="span"],.input-prepend input[class*="span"],.input-prepend .uneditable-input[class*="span"],.row-fluid input[class*="span"],.row-fluid select[class*="span"],
                                                                                                                                                    .row-fluid textarea[class*="span"],.row-fluid .uneditable-input[class*="span"],.row-fluid .input-prepend [class*="span"],.row-fluid .input-append [class*="span"]{display:inline-block}input,textarea,.uneditable-input{margin-left:0}.controls-row [class*="span"]+[class*="span"]{margin-left:20px}input.span12,textarea.span12,.uneditable-input.span12{width:926px}
-input.span11,textarea.span11,.uneditable-input.span11{width:846px}input.span10,textarea.span10,.uneditable-input.span10{width:766px}input.span9,textarea.span9,.uneditable-input.span9{width:686px}input.span8,textarea.span8,.uneditable-input.span8{width:606px}input.span7,textarea.span7,.uneditable-input.span7{width:526px}input.span6,textarea.span6,.uneditable-input.span6{width:446px}input.span5,textarea.span5,.uneditable-input.span5{width:366px}input.span4,textarea.span4,.uneditable-input.span4{width:286px}input.span3,textarea.span3,.uneditable-input.span3{width:206px}
+input.span11,textarea.span11,.uneditable-input.span11{width:846px}input.span10,textarea.span10,.uneditable-input.span10{width:766px}input.span9,textarea.span9,.uneditable-input.span9{width:686px}input.span8,textarea.span8,.uneditable-input.span8{width:606px}input.span7,textarea.span7,.uneditable-input.span7{width:526px}input.span6,textarea.span6,.uneditable-input.span6{width:446px}input.span5,textarea.span5,.uneditable-input.span5{width:366px}input.span4,textarea.span4,.uneditable-input.span4{width:286px}
+input.span3,textarea.span3,.uneditable-input.span3{width:206px}
 input.span2,textarea.span2,.uneditable-input.span2{width:126px}
 input.span1,textarea.span1,.uneditable-input.span1{width:46px}.controls-row{*zoom:1}.controls-row:before,.controls-row:after{display:table;line-height:0;content:""}
 .controls-row:after{clear:both}.controls-row [class*="span"]{float:left}input[disabled],select[disabled],textarea[disabled],input[readonly],select[readonly],textarea[readonly]{color:#999;cursor:not-allowed;background-color:#f1eded}input[type="radio"][disabled],input[type="checkbox"][disabled],input[type="radio"][readonly],input[type="checkbox"][readonly]{background-color:transparent}
@@ -245,13 +237,13 @@ input:focus:required:invalid:focus,textarea:focus:required:invalid:focus,select:
 table{max-width:100%;background-color:transparent;border-collapse:collapse;border-spacing:0}
 .table{width:100%;margin-bottom:5px}
 .table th,.table td{
-    padding-left: 5px;
-    padding-right: 6px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    line-height:19px;
+    padding-left: 2px;
+    padding-right: 2px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    line-height:10px;
     text-shadow: #ccc 1px 0px 1px;
-    font-size:12px;
+    font-size:11px;
     color:#3c3c99;
     border-top:1px solid #ddd;
     border-right:1px solid #ddd
@@ -479,7 +471,7 @@ button.close{padding:0;cursor:pointer;background:transparent;border:0;-webkit-ap
     -webkit-box-shadow:inset 0 -1px 0 rgba(0,0,0,0.1),0 1px 10px rgba(0,0,0,0.1);
     -moz-box-shadow:inset 0 -1px 0 rgba(0,0,0,0.1),0 1px 10px rgba(0,0,0,0.1);
     box-shadow:inset 0 -1px 0 rgba(0,0,0,0.1),0 1px 10px rgba(0,0,0,0.1)}
-.navbar-fixed-bottom{bottom:0;background-color:#0F75B0;}
+.navbar-fixed-bottom{bottom:0;}
 .navbar-fixed-bottom .navbar-inner{-webkit-box-shadow:inset 0 1px 0 rgba(0,0,0,0.1),0 -1px 10px rgba(0,0,0,0.1);
     -moz-box-shadow:inset 0 1px 0 rgba(0,0,0,0.1),0 -1px 10px rgba(0,0,0,0.1);
     box-shadow:inset 0 1px 0 rgba(0,0,0,0.1),0 -1px 10px rgba(0,0,0,0.1)}
@@ -668,7 +660,7 @@ div.form select
     display: inline-block;
     /* color: #469df5; */
     font-family: helvetica;
-    font-size: 15px;
+    font-size: 13px;
     /* font-weight: bold; */
     /* padding: 4px 4px; */
     text-decoration: none;
@@ -677,7 +669,7 @@ div.form select
     border-radius: 5px;
     
 }
-div.form button {
+/*div.form button {
     -moz-box-shadow:inset 0px 1px 0px 0px #cae3fc;
     -webkit-box-shadow:inset 0px 1px 0px 0px #cae3fc;
     box-shadow:inset 0px 1px 0px 0px #cae3fc;
@@ -692,11 +684,11 @@ div.form button {
     color:#ffffff;
     font-family:arial;
     font-size:7px;
-    /*font-weight:bold;*/
+    
     padding:3px 3px;
     text-decoration:none;
     text-shadow:1px 1px 0px #1570cd;
-}
+}*/
 
 div.form fieldset
 {
@@ -709,7 +701,7 @@ div.form fieldset
 div.form label
 {
     /*font-weight: bold;*/
-    font-size: 0.9em;
+    font-size: 0.7em;
     display: block;
 }
 
@@ -792,7 +784,7 @@ div.form .errorSummary
 div.form .errorMessage
 {
     color: rgba(255, 0, 45, 0.68);
-    font-size: 1.2em;
+    font-size: 0.8em;
 }
 
 div.form .errorSummary p

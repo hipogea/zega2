@@ -12,7 +12,8 @@
 )); ?>
 
 	
-
+<?php echo $form->hiddenField($model,'coddocu'); ?>
+		
 	<div class="row">
 		<?php echo $form->labelEx($model,'coddocu'); ?>
 		<?php echo $form->textField($model,'coddocu',array('disabled'=>(!$model->isNewRecord)?'disabled':'','size'=>3,'maxlength'=>3)); ?>
@@ -108,10 +109,9 @@
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Crear' : 'Grabar'); ?>
 	</div>
 
-<?php $this->endWidget(); ?>
+   
 
-</div><!-- form -->
-</div>
+
 
 
 
@@ -119,14 +119,42 @@
                     $this->widget('zii.widgets.jui.CJuiTabs', array(
                      'theme' => 'default',
 					'tabs' => array(
-									'Opciones'=>array('id'=>'tab_',
-														'content'=>$this->renderPartial('tab_opciones', array('form'=>$form,'model'=>$model),TRUE)
+					'Opciones'=>array('id'=>'tab_',
+'content'=>$this->renderPartial('tab_opciones', array('form'=>$form,'model'=>$model),TRUE)
 																			), 
 									
-
+'Ajustes contables'=>array('id'=>'tab_.',
+'content'=>$this->renderPartial('tab_cuentas', array('form'=>$form,'model'=>$model),TRUE)
+																			), 
 									),
 					'options' => array(	'collapsible' => false,),
                     'id'=>'MyTabi',)
 			                );
                             ?>
+<?php $this->endWidget(); ?>
+    </div>
+</div>
+    
+<?php
+
+//--------------------- begin new code --------------------------
+// add the (closed) dialog for the iframe
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array(
+	'id'=>'cru-dialog4',
+	'options'=>array(
+		'title'=>'Explorador',
+		'autoOpen'=>false,
+		'modal'=>true,
+		'width'=>800,
+		'height'=>600,
+	),
+));
+?>
+<iframe id="cru-frame4" width="100%" height="100%"></iframe>
+<?php
+
+$this->endWidget();
+
+//--------------------- end new code --------------------------
+?> 
            

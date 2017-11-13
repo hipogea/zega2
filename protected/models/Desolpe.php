@@ -1,6 +1,12 @@
 <?php
 
-CONST ESTADO_PREVIO='99';
+
+
+
+class Desolpe extends ModeloGeneral
+{
+	
+    CONST ESTADO_PREVIO='99';
 CONST ESTADO_CREADO='10';
 
 CONST ESTADO_ANULADO='20';
@@ -11,11 +17,7 @@ CONST ESTADO_RESERVADO='60';
 CONST ESTADO_EN_COMPRA='70';
 CONST ESTADO_SOLICITADO='80';
 CONST ESTADO_COMPRADO_COMPLETO='90';
-
-
-class Desolpe extends ModeloGeneral
-{
-	/**
+    /**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
 	 * @return Desolpe the static model class
@@ -923,7 +925,14 @@ public function checkvalores1($attribute,$params) {
 		$modelo->codocu = $documento;
 		$modelo->fechares=date("Y-m-d H:i:s");
 		//PRINT_R($modelo->attributes);
-		return $modelo->save();
+                $devolver=false;
+                try{
+                    $devolver= $modelo->save();
+                }catch(Exception $ex){
+                    MiFactoria::Mensaje('error', $ex->getMessage());
+                }
+                    return $devolver;
+                
 	}
 
 public function chkcatval($attribute,$params){

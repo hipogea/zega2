@@ -128,7 +128,12 @@
 		<?php echo $form->label($model,'c_codactivo'); ?>
 		<?php echo $form->textField($model,'c_codactivo',array('size'=>14,'maxlength'=>14)); ?>
 	</div>
-	
+	<div class="row">
+		<?php echo $form->label($model,'c_estgui'); ?>
+            <?php 
+            echo $form->DropDownList($model,'c_estgui',Estado::estadosDocu($this->documento), array('empty'=>'--Seleccione una estado --')  )
+	       ?>
+		</div>
 	<div class="row">
 		<?php echo $form->label($model,'estadodetalle'); ?>
 		<?php echo $form->textField($model,'estadodetalle',array('size'=>14,'maxlength'=>14)); ?>

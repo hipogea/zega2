@@ -51,8 +51,8 @@ $this->widget('ext.groupgridview.GroupGridView', array(
 
 						array(
 							'visible' => 'true',
-							'url' => '$this->grid->controller->createUrl("/masterequipo/borradetalle", array("id"=>$data->id))',
-							'options' => array('ajax' => array('type' => 'GET', 'success' => 'js:function() { $.fn.yiiGridView.update("detalle-grid");}', 'url' => 'js:$(this).attr("href")'),
+							'url' => '$this->grid->controller->createUrl("/masterequipo/borradetalle", array("id"=>$data->idmasterlistamateriales))',
+							'options' => array('ajax' => array('type' => 'GET', 'success' => 'js:function() { $.fn.yiiGridView.update("detallelista-grid");}', 'url' => 'js:$(this).attr("href")'),
 								'onClick' => 'Loading.show();Loading.hide(); ',
 							),
 							'imageUrl' => '' . Yii::app()->getTheme()->baseUrl . Yii::app()->params['rutatemaimagenes'] . 'borrador.png',

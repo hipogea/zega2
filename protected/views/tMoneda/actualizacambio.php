@@ -1,3 +1,13 @@
+<h1>Tipo de cambio </h1>
+
+<?php
+$this->menu=array(
+array('label'=>'Ver tipo de cambio', 'url'=>array('cambio')),
+    array('label'=>'Monedas', 'url'=>array('listamonedas')),
+	//array('label'=>'Establecer Cambio', 'url'=>array('updatecambio')),
+);
+
+?>
 <div class="form">
 <?php echo CHtml::beginForm(); ?>
 <table class="table table-striped table-bordered table-hover">

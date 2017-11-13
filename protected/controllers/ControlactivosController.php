@@ -18,6 +18,8 @@ define('ESTAD_PREVIA','99');
 
 class ControlactivosController extends Controller
 {
+    const ESTADO_APROBADO='20';
+    CONST  ESTADO_ANULADO='90';
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
@@ -43,7 +45,7 @@ class ControlactivosController extends Controller
 		
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('cambiaestado','revertir','relaciona','recibevalor','enviacorreo','index','view'),
+				'actions'=>array('AjaxAnular','AjaxAprobar','cambiaestado','revertir','relaciona','recibevalor','enviacorreo','index','view'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -60,61 +62,7 @@ class ControlactivosController extends Controller
 		);
 	}
 
-	public function actionRelaciona()
-	  {
-			$ordencampo=$_GET['ordencampo'];
-			$campito=$_GET['campo'];
-			$vvalore=$_POST['Controlactivos'][$campito];
-			$relaciones=$_GET['relaciones'];			
-			  Yii::app()->explorador->buscavalor($campito,$vvalore,$ordencampo,$relaciones);
-			 //Fotos::buscavalor($campito,$vvalore,$ordencampo,$relaciones);
-	}
-	
-	
-	public function actionRecibevalor()
-	{
-		
-		$autoIdAll=array();
-		if(  isset($_GET['checkselected'])   ) //If user had posted the form with records selected
-				{
-				$autoIdAll = $_GET['checkselected']; ///The records selecteds 
-				};
-				if(count($autoIdAll)>0)
-										{
-												echo CHtml::script("window.parent.$('#cru-dialog3').dialog('close');													                    
-																		window.parent.$('#cru-frame3').attr('src','');
-																		var caja=window.parent.$('#cru-dialog3').data('hilo');	
-																		var valoresclave= new Array();
-																		var cadenita='{$autoIdAll[0]}';
-																		var valoresclave=cadenita.split('_');																		
-																		window.parent.$('#'+caja+'').attr('value',valoresclave[0]);
-																		window.parent.$('#'+caja+'_99').html(valoresclave[1]);
-																		");
-														Yii::app()->end();
-										} else{
-												$campo=$_GET['campo'];
-												$relaciones=$_GET['relaciones'];
-												$nombreclase=Yii::app()->explorador->nombreclase($campo,$relaciones);
-												$tipodato=gettype(Yii::app()->explorador->devuelvemodelo($campo,$relaciones));
-												$model=Yii::app()->explorador->devuelvemodelo($campo,$relaciones);												
-												$model->unsetAttributes(); 
-												if(isset($_GET[$nombreclase]))
-												$model->attributes=$_GET[$nombreclase];
-												$this->layout='//layouts/iframe' ;
-												$this->render("ext.explorador.views.vw_".$nombreclase,array('model'=>$model));
-												 //$this->render("ext.explorador.views.vw_pruebitas1",array('tipodato'=>$tipodato,'tablita'=>$nombreclase,'campo'=>$campo,'relaciones'=>$relaciones));
-												
-												}
-										
-	}
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 	/**
 	 * Displays a particular model.
@@ -241,46 +189,28 @@ class ControlactivosController extends Controller
 	 */
 	public function actionCreate($id)
 	{
-		/*$cadena='ase,derge,guri,smens,loja';
-		print_r(explode(",",$cadena));
-		yii::app()->end();*/
-		
-		
-		
 		$model=new Controlactivos;
 		$model->codestado='99';
 		$inventario=Inventario::model()->findByPk((int)$id);
+                $model->setAttributes(
+                        array(
+                            'codepanterior'=>$inventario->codep,
+                            'codcentro'=>$inventario->codpropietario,
+                        )
+                        );
 		if(is_null($inventario))
 			throw new CHttpException(404,'El enlace o direccion solicitado no existe');
-		
-			//print_r($_GET['micodigomov']);
-			//yi::app()->end();
-		if(isset($_GET['micodigomov']))
-		{
+		if(isset($_GET['micodigomov']))	{
 			
-			$model->codtipoop=$_GET['micodigomov'];
-			
-			$model->setScenario('create');
-			
+			$model->codtipoop=$_GET['micodigomov'];			
+			$model->setScenario('create');			
 		}
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['Controlactivos']))
-		{
+		if(isset($_POST['Controlactivos']))		{
 			$model->attributes=$_POST['Controlactivos'];
-			//creando el numero de serie 
-			
 				$model->idactivo=$inventario->idinventario;					   
 			if($model->save())
-			     
-					 
-				//$this->enviacorreo($model);
-				//yii::app()->user->setFlash('success','Se generó el documento ');
-				$this->redirect(array('update','id'=>$model->idformato));
-				
-			
+                            $this->redirect(array('update','id'=>$model->idformato));
 		}
 
 		$this->render('create',array(
@@ -431,4 +361,20 @@ class ControlactivosController extends Controller
 			Yii::app()->end();
 		}
 	}
+        
+            public function actionAjaxAprobar($id){
+           $registro= $this->loadModel($id);
+           $registro->setScenario('estatus');
+           $registro->codestado=self::ESTADO_APROBADO;
+           $registro->save();
+            echo "El documento ha sido aprobado";
+        }
+         public function actionAjaxAnular($id){
+           $registro= $this->loadModel($id);
+           $registro->setScenario('estatus');
+           $registro->codestado=self::ESTADO_ANULADO;
+           $registro->save();
+            echo "El documento ha sido anulado";
+            
+        }
 }

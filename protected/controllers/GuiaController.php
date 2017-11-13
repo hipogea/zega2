@@ -1295,10 +1295,10 @@ public function actionVerdetalle($id)
 							
                          
 						if(!$recInventario->save())
-							/*print_r($recInventario->geterrors());
-						echo " el documento ".$recInventario->coddocu. "  el docu de la guia ".$filaguia->codocu;
-						yii::app()->end();*/
-							$mensaje="No se pudo grabar el inventario ";
+							print_r($recInventario->geterrors());
+						//echo " el documento ".$recInventario->coddocu. "  el docu de la guia ".$filaguia->codocu;
+						//yii::app()->end();
+							//$mensaje="No se pudo grabar el inventario ";
                      }
                 unset($recInventario);
             }

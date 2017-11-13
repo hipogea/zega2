@@ -36,18 +36,32 @@ class SiteController extends Controller
 		// renders the view file 'protected/views/site/index.php'
 		// using the default layout 'protected/views/layouts/main.php'
 		  //$this->layout = '//layouts/column_inicio';
-		///  if (Yii::app()->user->isGuest) {
-		  					//$this->redirect(Yii::app()->user->ui->loginUrl);
-		            //}else {
-
-			              $this->Loginventario(); //Registra el log de inventario
-
-			 Bloqueos::clearbloqueos();
+		  if (Yii::app()->user->isGuest) 
+                  {
+                      $this->redirect(Yii::app()->user->ui->loginUrl);
+                  
+		            }else {
+                                
+        /*
+         * Este fragmetno de codigo  revisa si el suaurio dejo un redirect
+         * en sus opciones favoritos 
+         */
+        $rutap=Usuariosfavoritos::getUrlForMe(yii::app()->user->id);
+       // var_dump($rutap);die();
+         if(!is_null($rutap)){                   
+                   $this->redirect($rutap);
+                    }
+                 
+  
+$this->render('index');
+			              // $this->Loginventario(); //Registra el log de inventario
+                            }
+			 //Bloqueos::clearbloqueos();
 			  //MiFactoria::InsertaCumple(); //INSERTA CUMPLEAÑOS en lel tablon
 
 			               //
 			               //
-			       yii::app()->maletin->flush(); //Limpia el maletin del usuario
+			              // yii::app()->maletin->flush(); //Limpia el maletin del usuario
 							//
 			//  //	echo ModeloGeneral::getClassName();
 		// echo  MiFactoria::InsertaCumple();
@@ -56,7 +70,7 @@ class SiteController extends Controller
             //$this->render('indexflota');
 
 		           // }
-		$this->render('index');
+                  
 		//Yii::app()->user->ui->loginUrl
 
 		
@@ -226,11 +240,14 @@ class SiteController extends Controller
 	public function actionAgregafavorito()
 
 	{
-				$model=new Usuariosfavoritos;
+				
+            
+            $model=new Usuariosfavoritos;
 				$vaccion=$_GET['maccion'];
 			$vcontrolador=$_GET['mcontrolador'];
-			$url=Yii::app()->baseUrl.DIRECTORY_SEPARATOR.$vcontrolador.DIRECTORY_SEPARATOR.$vaccion;
-			
+			//$url=Yii::app()->baseUrl.DIRECTORY_SEPARATOR.$vcontrolador.DIRECTORY_SEPARATOR.$vaccion;
+			$url=$_GET['ritu'];
+                        //echo $url; die();
 			if(isset($_POST['Usuariosfavoritos'])) {
 				                $model->attributes=$_POST['Usuariosfavoritos'];
 										$model->save();

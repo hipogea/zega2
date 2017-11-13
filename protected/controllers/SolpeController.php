@@ -1,14 +1,14 @@
 <?php
+
+
+class SolpeController extends Controller
+{
 const ESTADO_PREVIO='99';
 const ESTADO_CREADO='10';
 const ESTADO_AUTORIZADO='20';
 const ESTADO_ANULADO='30';
 const CODIGO_DOC_DESOLPE='350';
 const CODIGO_DOC_SOLPE='340';
-
-class SolpeController extends Controller
-{
-
 
 	const DOCUMENTO_RESERVA='450';
 	const DOCUMENTO_RQ='800';
@@ -17,6 +17,7 @@ const ESTADO_RESERVA_ATENDIDO='20';
 const ESTADO_RESERVA_ANULADO='30';
 const ESTADO_RESERVA_CERRADO='70';
 const ESTADO_DESOLPE_RESERVADO='60';
+const ESTADO_DESOLPE_ANULADO='20';
 //const CODIGO_MATERIAL_SERVICIO=yii::app()->settings->get('materiales','materiales_codigoservicio');
 	
 	public $layout='//layouts/column2';
@@ -1057,14 +1058,16 @@ public function actionBorraitems()
 		$estado=$_POST['Solpe']['estado'];
 		 if(count($autoIdAll)>0 )
 			 {
-			 	if(is_null($_POST['Solpe']['id'])){  
+			 	
+                    
+                     if(is_null($_POST['Solpe']['id'])){  
                                     $modelin=$this->loadmodel($_POST['Solpe']['id']);
                                 }
                                 else{///Si es una solpe  dentro de una OT u otro  de DESOLPETEM 
-                                   $modelin=$autoIdAll[0]->solpe;  
+                                   $modelin=Desolpe::model()->findByPk($autoIdAll[0])->desolpe_solpe;  
                                     //coger la cabecera del primer hijo basta
                                 }
-                                
+                                //($modelin);die();
 				 if($modelin->tiposolpe->libre=='1') {
 					 $transaccion = $modelin->dbConnection->beginTransaction();
 
@@ -1382,6 +1385,11 @@ public function actionprocesarsolpe($id)
 			if ($modelocabecera->escompra=='1') {
 		     throw new CHttpException(500,'No se puede reservar items de solicitudes hechas para compras ');
 			 }
+                         
+                 IF(self::ESTADO_DESOLPE_ANULADO==$model->est) {
+                      throw new CHttpException(500,'Este item se encuentra anulado , no podrá reservarlo');
+                 }       
+                         
 					// Uncomment the following line if AJAX validation is needed
 					$this->performAjaxValidation($model);
 							$model->setscenario('reservar');

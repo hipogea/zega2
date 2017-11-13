@@ -35,7 +35,11 @@
 		<?php echo $form->checkBox($model,'conta_cajachicadevuelvefondo'); ?>
 		<?php echo $form->error($model,'conta_cajachicadevuelvefondo'); ?>
 	</div>
-	
+	 <div class="row">
+		<?php echo $form->labelEx($model,'conta_abrecajasinrequisitos'); ?>
+		<?php echo $form->checkBox($model,'conta_abrecajasinrequisitos'); ?>
+		<?php echo $form->error($model,'conta_abrecajasinrequisitos'); ?>
+	</div>
         
 	<BR>
 

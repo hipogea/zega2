@@ -36,10 +36,9 @@ private function abrepanel(){
 
 
 private function abreborde($imagen=null){
-    if(is_null($imagen))
+    
 	echo "<div class='bordeimagen' id='division_".$imagen."'>";
-    if(!is_null($imagen))
-        echo "<div class='bordeimagen'>";
+   
    
 }
 	
@@ -75,18 +74,22 @@ private function abreborde($imagen=null){
              $extension=strtolower(trim(strrev(substr(strrev($nombreimagen),0,3))));             
 	    $imagensola=substr($nombreimagen,0,strpos($nombreimagen,"."));
 		  echo CHTml::Ajaxlink(CHTml::image($this->_baseUrl.'/tacho.png','',array('width'=>18, 'height'=>20)),
-		  Yii::app()->createUrl($this->rutaacciones['B']['accion'],array($this->rutaacciones['B']['parametro']=>base64_encode(serialize($rutita)),
+		  Yii::app()->createUrl($this->rutaacciones['B']['accion'],array($this->rutaacciones['B']['parametro']=>$rutita,
                                                                                  'idregistro'=>$this->idregistro,
                                                                                     )
                                         ),
 		  array(
 		      'type'=>'GET',
                      // 'data'=>array( 'idregistro'=>$this->idregistro),
-			  'update'=>'#division_'.$imagensola,
+			  //'update'=>'#division_'.$imagensola,
+                      'success' => 'js:function(data) {
+                           $("#division_'.$imagensola.'").replaceWith( " <p style=\"color:red;   \" ><b> ¡ Borrado..!</b></p>" ); 
+                            $.growlUI("Aviso", data, 0, 0, 0); return false;
+                            
+                                    }',
 			 //'update'=>'#gatito',
-                      'beforeSend'=>"function(){ var r = confirm(\"Esta seguro de Este proceso?\"); if(!r){return false;} }",
-		  ),
-		  array("onClick"=>"Loading.show(); Loading.hide();")
+		  )
+		  
 		  
 		  );
                   echo CHTml::Ajaxlink(CHTml::image($this->_baseUrl.'/mail.png','',array('width'=>18, 'height'=>20)),
@@ -98,8 +101,6 @@ private function abreborde($imagen=null){
                     //  'data'=>array( 'idregistro'=>$this->idregistro),
 			  'update'=>'#division_'.$imagensola,
 			 //'update'=>'#gatito',
-                      'beforeSend'=>"function(){ var r = confirm(\"Esta seguro de Este proceso?\"); if(!r){return false;} }",
-		 
 		  ),
 		  array("onClick"=>"Loading.show(); Loading.hide();")
 		  

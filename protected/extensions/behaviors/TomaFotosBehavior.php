@@ -18,7 +18,6 @@ public $_rutabas=null;
 public $_carpetadestino=null;
 public $_extensionatrabajar=null;
 public $_nombrearchivopredef=null;
-public $_archivos=array(); ///archivos cargados, se obiente mediante EL METODO RECUPERAARCHIVOS()
 
 
 private function prepara() {
@@ -52,7 +51,7 @@ private function prepara() {
     
   public function getCarpeta (){
       if(is_null($this->_carpetadestino))
-          $this->prepara();
+          $this->prepara ();
       return $this->_carpetadestino;
       
   }  
@@ -157,27 +156,33 @@ private function prepara() {
         $this->creacarpeta();
         // var_dump($filename);
         if(strtolower(trim($this->extension($filename)))==strtolower(trim($this->_extensionatrabajar)) or 
-                strtolower(trim($this->extension($filename)))=='tmp'
+                strtolower(trim($this->extension($filename)))=='tmp' or 
+               in_array( strtolower(trim($this->extension($filename))),array('gif','png','jpeg') ) 
                 )
            {
            // $this->creacarpeta();
           IF (is_file($filename)) {
+              if(in_array( strtolower(trim($this->extension($filename))),array('gif','png','jpeg')))
+              $filename=$this->FileReceptor($filename);
+             
                // var_dump($filename);
+               Yii::log(' el  id    : '.serialize($this->Owner),'error');
               $nombrec= trim((string)ceil($this->_id/$this->_numerofotosporcarpeta)).DIRECTORY_SEPARATOR;
        $ruta=$this->_rutabas.DIRECTORY_SEPARATOR.$this->_codocu.DIRECTORY_SEPARATOR.$this->_extensionatrabajar.DIRECTORY_SEPARATOR.$nombrec;
       // var_dump($ruta);
       //  var_dump($this->colocanombre());die();
         Yii::log(' ya llegamos    '.serialize($fullFileName),'error');
-           
+            Yii::log(' el filenama    '.$filename,'error');
              if(copy($filename,$ruta.$this->colocanombre())){
+                 $this->insertaregistro($ruta.$this->colocanombre());
                  //var_dump($ruta.$this->colocanombre());die();
                    @unlink($filename);
-                 yii::log('mas   error','jajaja  se pudo copiar con la funcion copy  : '.$filename.'  ,  '.$ruta.$this->colocanombre());
+                 yii::log('jajaja  se pudo copiar con la funcion copy  : '.$filename.'  '.$ruta.$this->colocanombre(),'error');
                  return $ruta.$this->colocanombre();
              }else{
                   @unlink($filename);
                    //var_dump($ruta.$this->colocanombre());die();
-                 yii::log('  mens   error','no se pudo copiar con la funcion copy  : '.$filename.'  ,  '.$ruta.$this->colocanombre());
+                 yii::log(' no se pudo copiar con la funcion copy  : '.$filename.'  '.$ruta.$this->colocanombre(),'error');
                  return false;
              }
           }else{
@@ -210,15 +215,13 @@ private function prepara() {
              return $this->_id."_0_".((integer)microtime(true)*10000)."_".yii::app()->user->id.".".$this->_extensionatrabajar;
        
         }else{
-            $this->_nombrearchivopredef=preg_replace("/[^a-zA-Z0-9]/", "",$this->_nombrearchivopredef);
             return $this->_id."_".$this->_nombrearchivopredef."_".( ((microtime(true))*10000)    )."_".yii::app()->user->id.".".$this->_extensionatrabajar;
         
         }          
        
     }
     
-    public function recuperaarchivos($rutasabsolutas=true){
-        if(count($this->_archivos)==0){
+    public function recuperaarchivos($rutasabsolutas){
         $this->creacarpeta(); //por si acaso se invoque esta funcion antes de 
         //que se suban archivos, nos aseguramso de crear las carperas asociadas
         $archivos= CFileHelper::findFiles(
@@ -228,7 +231,7 @@ private function prepara() {
                 'level'=>0,
                 'absolutePaths'=>$rutasabsolutas,
                 ));
-        // var_dump($archivos);die();
+         
         $archivosfiltrados=array(); //nuevo array apra guaradar los datos 
    foreach($archivos as $clave=>$archivo)
      {
@@ -253,8 +256,7 @@ private function prepara() {
                                      $rutaarchivo=$this->limpiaruta($rutaarchivo);
                                      $datosruta= pathinfo($this->_carpetadestino.$nombrearchivo);
                                      
-                         
-                                     $archivosfiltrados[]=array(
+                                              $archivosfiltrados[]=array(
                                                   'nombre'=>$datosruta['filename'],
                                                   'extension'=>$datosruta['extension'],
                                                   'nombrecompleto'=>$datosruta['basename'],
@@ -263,8 +265,8 @@ private function prepara() {
                                                   'subidoel'=>$this->getcreado($archivo),
                                                   'tamano'=>$this->getSize($this->_carpetadestino.$nombrearchivo),
                                                   'rutacorta'=>$this->limpiaruta(DIRECTORY_SEPARATOR.trim($this->rutarelativa(),DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR),
-                                                  //'rutalarga'=>$this->limpiaruta(Yii::getPathOfAlias('webroot').$this->rutarelativa()),*/
-                                                    
+                                                  //'rutalarga'=>$this->limpiaruta(Yii::getPathOfAlias('webroot').$this->rutarelativa()),
+                                                 
                                                  /* 'rutacorta'=>($rutasabsolutas)?$this->limpiaruta(
                                                   DIRECTORY_SEPARATOR.trim($this->rutarelativa(),DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR):
                                                   DIRECTORY_SEPARATOR.trim($this->limpiaruta($datosruta['dirname']),DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR,
@@ -277,11 +279,9 @@ private function prepara() {
                                       
                                 }
                            }
-                           
-        $this->_archivos=$archivosfiltrados;
-      
-        } 
-        return $this->_archivos;
+
+        return $archivosfiltrados;
+        
     }
     
     public function borraarchivos(){
@@ -302,18 +302,18 @@ private function prepara() {
     public function getcreado($nombrecorto){
         $aparts=explode("_",$nombrecorto);
        /* var_dump($nombrecorto);
-        print_r($aparts);
+        print_r($aparts);die();
        var_dump((integer)$aparts[1]);echo "     El nombre original <br>";
         var_dump(date("Y-m-d H:i:s",(integer)($aparts[1])));echo " La fecha con el original <br>";
         var_dump((integer)$aparts[1]/10000);echo " El marcador divido en re 10000 <br>";
          var_dump(date("Y-m-d H:i:s",(integer)($aparts[2]/10000)));echo "<br>";
         die();*/
-        return date("Y-m-d H:i:s",(($aparts[3])/10000));
+        return date("Y-m-d H:i:s",(($aparts[2])/10000));
     }
     public function getquiensubio($nombrecorto){
         $aparts=explode("_",$nombrecorto);
         
-        return strrev(substr(strrev($aparts[4]),4));
+        return strrev(substr(strrev($aparts[3]),4));
     }
     
     public function getSize($archivo){
@@ -438,7 +438,6 @@ private function prepara() {
   
   public function renombraarchivo($filename,$nuevonombre){
        $datosruta= pathinfo($filename);
-       $nuevonombre=preg_replace("/[^a-zA-Z0-9]/", "", $nuevonombre);
        $nombrecortado=$this->nombrecortado($filename);
        $nuevonombre=$nombrecortado[0]."_".
                str_replace("","_",$nuevonombre). ///nos aseguramos que no haya ningun  caracter: '_'
@@ -465,22 +464,161 @@ private function prepara() {
        }
        return $cade;
    }
+  
+   //transforma todas los formatos de  las imagenes a aRCHIVOS jpeg
    
-   //devuel los datros del archivo mas reciente segun la fecha de creacion en el servidor
-   //un array com los datros 
-   public function getLastFile(){
-       if(count($this->_archivos)>0){
-           
-       }else{
-          $this->recuperaarchivos(true); 
-       }
-       
-       $maximo['subidoel']='1969-12-31';
-           foreach($this->_archivos as $archivo){
-               if($maximo['subidoel'] < $archivo['subidoel']){
-                   $maximo=$archivo;
-               }
-           }
-           return $archivo;
+   public function FileReceptor($fullFileName) {
+        // userdata is the same passed via widget config.
+                    $path_parts = pathinfo($fullFileName);
+                    $ruta_imagen = $fullFileName;
+		   $miniatura_ancho_maximo = 200;
+		   $miniatura_alto_maximo = 200;
+		   $info_imagen = getimagesize($fullFileName);
+		   $imagen_ancho = $info_imagen[0];
+		   $imagen_alto = $info_imagen[1];
+		   $imagen_tipo = $info_imagen['mime'];
+			$proporcion_imagen = $imagen_ancho / $imagen_alto;
+			$proporcion_miniatura = $miniatura_ancho_maximo / $miniatura_alto_maximo;
+
+		if ( $proporcion_imagen > $proporcion_miniatura ){
+				$miniatura_ancho = $miniatura_ancho_maximo;
+				$miniatura_alto = $miniatura_ancho_maximo / $proporcion_imagen;
+		} else if ( $proporcion_imagen < $proporcion_miniatura ){
+				$miniatura_ancho = $miniatura_ancho_maximo * $proporcion_imagen;
+				$miniatura_alto = $miniatura_alto_maximo;
+		} else {
+			$miniatura_ancho = $miniatura_ancho_maximo;
+			$miniatura_alto = $miniatura_alto_maximo;
+		}
+			switch ( $imagen_tipo ){
+					case "image/jpg":
+					case "image/jpeg":
+					$imagen = imagecreatefromjpeg($fullFileName );
+					break;
+					case "image/png":
+					$imagen = imagecreatefrompng( $fullFileName );
+					break;
+				case "image/gif":
+					$imagen = imagecreatefromgif( $fullFileName );
+					break;
+				}
+             $lienzo = imagecreatetruecolor( $miniatura_ancho, $miniatura_alto );
+                imagecopyresampled($lienzo, $imagen, 0, 0, 0, 0, $miniatura_ancho, $miniatura_alto, $imagen_ancho, $imagen_alto);
+                imagejpeg($lienzo,$path_parts['dirname'].DIRECTORY_SEPARATOR.$path_parts['filename'].'.JPG', 100);
+               @unlink($fullFileName);
+               return $path_parts['dirname'].DIRECTORY_SEPARATOR.$path_parts['filename'].'.JPG';
+    	}
+   public function sacaprimerafoto(){
+       $fotos=$this->fotosparagaleria();
+       IF(COUNT($fotos)>0)
+     return array(
+         "absoluto"=>  str_replace(yii::app()->baseUrl,"",Yii::getPathOfAlias('webroot')).$fotos [0]['archivo'],
+         "relativo"=>  $fotos[0]['archivo']
+         );
+       return array(
+         "absoluto"=>''  ,
+         "relativo"=>''  
+         );
    }
+   
+   
+   /*
+    * FUNCIONES BASADAS EN EL MODELO adjuntos 
+    */
+   public function insertaregistro($ruta){
+       $registro= New Adjuntos('insert');//$registro->setAttributes($values)
+       $registro->setAttributes(array(
+               "codocu"=>$this->_codocu,
+                "hiddocu"=>$this->_id,                        
+                "enlace"=>$ruta, 
+           "extension"=>$this->_extensionatrabajar, 
+           "iduser"=>yii::app()->user->id,
+           "subido"=>date('Y-m-d H:i:s'),
+                ));
+       if(!$registro->save()){
+           yii::log("chicharron  error","error");
+       }else{
+            yii::log("chicharrones  ok","error");
+       }
+   }
+   
+   public function ActualizaTextos($id,$titulo,$textos){
+       /*$criterio=New CDBcriteria();
+       $criterio->addCondition("hiddocu=:vid");
+        $criterio->addCondition("codocu=:vcodocu");*/
+       $registro= Adjuntos::model()->findByPk($id);
+       $registro->actualizaTextos($titulo,$textos);
+   }
+   
+   
+   //devuelve un conjnto de registro del modelo adjuntos
+   //con un id y un codocu
+   public function getDataProvider($id,$codocu){
+       $criterio=New CDBcriteria();
+       $criterio->addCondition("hiddocu=:vid");
+        $criterio->addCondition("codocu=:vcodocu");
+        $criterio->params=array(
+            ":vid"=>$id,
+            ":vcodocu"=>$codocu
+        );
+        return new CActiveDataProvider("Adjuntos", array(
+			'criteria'=>$criterio,
+		));
+   }
+   
+   
+   public function rutaCorta($rutaabsoluta){
+       $cad=yii::app()->baseUrl.str_replace(Yii::getPathOfAlias('webroot') , '', $rutaabsoluta);
+       RETURN $cad;
+       
+   }
+   
+  public function opAjax(){
+      return array(
+          "type"
+      );
+  }
+   
+  /*Decuelve un aray de fotos de un registro listo 
+   * para insertarlo en un carrusel:
+  $this->widget(
+    'booster.widgets.TbCarousel',
+    array(
+        'items' => array(
+            array(
+                'image' => bu('images/first-placeholder830x400.gif'),
+                'label' => 'First Thumbnail label',
+                'caption' => 'First Caption.'
+            ),
+            array(
+                'image' => bu('images/second-placeholder830x400.gif'),
+                'label' => 'Second Thumbnail label',
+                'caption' => 'Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.'
+            ),
+            array(
+                'image' => bu('images/third-placeholder830x400.gif'),
+                'label' => 'Third Thumbnail label',
+                'caption' => 'Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.'
+            ),
+        ),
+    )
+);*/
+  public function getCarrusel($id,$codocu){
+      $datos=$this->getDataProvider($id, $codocu)->getdata();
+    $arreglo=array();
+      if(count($datos)>0 ){
+          foreach($datos as $fila){
+              $arreglo['items'][]=array(
+                  'image'=>$this->rutaCorta($fila->enlace),
+                   'label'=>$fila->titulo,
+                  'caption'=>$fila->texto,
+                      );
+              
+          }
+      }
+      return $arreglo;
+      
+  }
+  
+   
 }

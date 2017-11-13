@@ -29,23 +29,21 @@ class Embarcaciones extends ModeloGeneral
 		// will receive user inputs.
 		return array(
 
-			array('codep', 'unique','message'=>'Este código ya está en uso','on'=>'insert,update,BATCH_INS'),
-			array('nomep,codep,cbodega,matricula', 'required','on'=>'insert,update'),
-                    array('nomep,codep', 'required','on'=>'BATCH_INS'),
-			array('codep', 'match', 'pattern'=>'/[1-9]{1}[0-9]{2}/','message'=>'El codigo es inválido, comience con un dígito','on'=>'insert,update,BATCH_INS'),
+			array('codep', 'unique','message'=>'Este código ya está en uso'),
+			array('nomep,codep,cbodega,matricula', 'required'),
+			array('codep', 'match', 'pattern'=>'/[1-9]{1}[0-9]{2}/','message'=>'El codigo es inválido, comience con un dígito'),
 			//array('codep', 'numerical', 'integerOnly'=>true),
-			array('cbodega', 'numerical', 'integerOnly'=>true,'on'=>'insert,update,BATCH_INS'),
-			array('codep', 'length', 'max'=>3,'on'=>'insert,update,BATCH_INS'),
-			array('nomep', 'length', 'max'=>25,'on'=>'insert,update,BATCH_INS'),
-			array('matricula', 'length', 'max'=>15,'on'=>'insert,update,BATCH_INS'),
-			array('activa', 'length', 'max'=>1,'on'=>'insert,update,BATCH_INS'),
-			array('codsap', 'length', 'max'=>5,'on'=>'insert,update,BATCH_INS'),
+			array('cbodega', 'numerical', 'integerOnly'=>true),
+			array('codep', 'length', 'max'=>3),
+			array('nomep', 'length', 'max'=>25),
+			array('matricula', 'length', 'max'=>15),
+			array('activa', 'length', 'max'=>1),
+			array('codsap', 'length', 'max'=>5),
 			//array('creadoel, modificadoel', 'length', 'max'=>20),
 			//array('codcentro', 'length', 'max'=>4),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-                        array('codep, nomep, matricula,eslora, manga, puntal, cbodega, activa, codsap', 'safe', 'on'=>'insert,update'),
-			array('codep, nomep, matricula,eslora, manga, puntal, cbodega, activa, codsap', 'safe', 'on'=>'search,BATCH_INS'),
+			array('codep, nomep, matricula, cbodega, activa, codsap', 'safe', 'on'=>'search'),
 		);
 	}
 

@@ -66,47 +66,35 @@ public function filters()
 	public function actionCreate($idinventario)
 	{
 		$model=new Observaciones;
-
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['Observaciones']))
+                if(isset($_POST['Observaciones']))
 		{
 			$model->attributes=$_POST['Observaciones'];
 			//$model->usuario=Yii::app()->getModule('user')->user()->username;
 			$modelitoactivo=Inventario::model()->findByPk($model->hidinventario);
 			$model->codestado='10';
-			if($model->save())
-			  // echo "salio";
-			  $this->enviamail($modelitoactivo,$model);
-			    $model->refresh();
-				
-								if (!empty($_GET['asDialog']))
-												{
-													//Close the dialog, reset the iframe and update the grid
-													echo CHtml::script("window.parent.$('#cru-dialog').dialog('close');
-													                    window.parent.$('#cru-frame').attr('src','');
-																		window.parent.$.fn.yiiGridView.update('{$_GET['gridId']}');
-																	
-																		");
-														Yii::app()->end();
-												}
-				
-				
-				$this->render('Confirma',array('id'=>$model->id));
+                        $model->hidinventario=$idinventario;
+			$model->save();		 
+                           // $model->refresh();				
+			if (!empty($_GET['asDialog']))
+			{
+                        //Close the dialog, reset the iframe and update the grid
+			   echo CHtml::script("window.parent.$('#cru-dialog').dialog('close');
+				window.parent.$('#cru-frame').attr('src','');
+				window.parent.$.fn.yiiGridView.update('{$_GET['gridId']}');
+					");
 				Yii::app()->end();
+		          }
+			$this->render('Confirma',array('id'=>$model->id));
+			Yii::app()->end();
 		}
-		
-		
-		
-		$modeloinventario=Inventario::model()->findByPk($idinventario);
+		/*$modeloinventario=Inventario::model()->findByPk($idinventario);
 		$fot=new Fotos($modeloinventario->codigosap,Yii::app()->params['rutafotosinventario'],'.JPG' ) ;		
-		$misfotos=$fot->devuelveFotos();
+		$misfotos=$fot->devuelveFotos();*/
 		if (!empty($_GET['asDialog']))
-					$this->layout = '//layouts/iframe';
-		$this->render('create',array(
+                    $this->layout = '//layouts/iframe';
+                        $this->render('create',array(
 			'model'=>$model,'modeloinventario'=>$modeloinventario,'misfotos'=>$misfotos,'ruta'=>Yii::app()->params['rutafotosinventario_'],'fot'=>$fot,
-		));
+                        ));
 		
 		
 		
@@ -241,7 +229,7 @@ public function filters()
 		 //$this->direcciones='jramirez@exalmar.com.pe';
 		  // Contactos::model()->find('c_hcod=:c_hcod', array(':c_hcod'=>$model->codpro))
     	
-		$this->direcciones='jramirez@exalmar.com.pe,ecastaneda@exalmar.com.pe,focana@exalmar.com.pe,jtoledo@exalmar.com.pe,mcampana@exalmar.com.pe,jvenegas@exalmar.com.pe,jaguilar@exalmar.com.pe';
+		//$this->direcciones='jramirez@exalmar.com.pe,ecastaneda@exalmar.com.pe,focana@exalmar.com.pe,jtoledo@exalmar.com.pe,mcampana@exalmar.com.pe,jvenegas@exalmar.com.pe,jaguilar@exalmar.com.pe';
 		// $this->direcciones='jramirez@exalmar.com.pe';//,jtoledo@exalmar.com.pe,ecastaneda@exalmar.com.pe';
 		$adminEmail =Yii::app()->user->getField('nombres')." ".Yii::app()->user->getField('apaterno')." ".Yii::app()->user->getField('amaterno')." <".Yii::app()->user->email.">" ;
 	    $headers = "MIME-Version: 1.0\r\nFrom: $adminEmail\r\nReply-To: $adminEmail\r\nContent-Type: text/html; charset=utf-8";

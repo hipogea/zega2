@@ -1,4 +1,10 @@
 <?php
+
+class MaestroserviciosController extends ControladorBase
+{
+
+	public $eseditable= true;
+	public $campoestado= 'cestadovale';
 const CODIGO_MOVIMIENTO_INGRESO_ACTIVIDAD='68';
 const CODIGO_MOVIMIENTO_ANULAR_INGRESO_ACTIVIDAD='86';
 const CODIGO_DOC_VALE_ALMACEN='101';
@@ -6,12 +12,6 @@ const ESTADO_EFECTUADO='20';
 const ESTADO_CREADO='10';
 const ESTADO_PREVIO='99';
 
-
-class MaestroserviciosController extends ControladorBase
-{
-
-	public $eseditable= true;
-	public $campoestado= 'cestadovale';
 
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning

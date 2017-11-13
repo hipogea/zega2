@@ -1,55 +1,18 @@
 <?php
-
-/**
- * This is the model class for table "controlactivos".
- *
- * The followings are the available columns in table 'controlactivos':
- * @property string $idactivo
- * @property string $tipo
- * @property string $guiaremision
- * @property string $numerofactura
- * @property string $fecha
- * @property string $idemplazamientoactual
- * @property string $idemplazamientoanterior
- * @property string $codobraencurso
- * @property string $ccanterior
- * @property string $ccactual
- * @property string $comentario
- * @property string $numformato
- * @property string $idformato
- * @property string $codestado
- * @property string $almacen
- * @property string $valesalida
- * @property string $ocompra
- * @property string $creadopor
- * @property string $creadoel
- * @property string $modificadopor
- * @property string $modificadoel
- * @property string $coddocu
- * @property string $codepanterior
- * @property string $codep
- * @property string $codlugaranterior
- * @property string $codlugarnuevo
- * @property string $codcentro
- * @property string $solicitante
- * @property string $documento
- * @property string $numeroref
- */
-class Controlactivos extends CActiveRecord
+class Controlactivos extends ModeloGeneral
 {
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
 	 * @return ControlActivos the static model class
 	 */
+    CONST ESTADO_CREADO='10';
+    CONST ESTADO_APROBADO='20';
+        CONST ESTADO_ANULADO='90';
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
 	}
-
-	/**
-	 * @return string the associated database table name
-	 */
 	public function tableName()
 	{
 		return '{{controlactivos}}';
@@ -70,6 +33,7 @@ class Controlactivos extends CActiveRecord
 			array('codepanterior', 'required', 'message'=>'Llena la referencia origen'),
 			array('codcentro', 'required', 'message'=>'Llena el centro donde se gestionara'),
 			array('fecha', 'required', 'message'=>'Llena la fecha '),
+                    array('fechaap', 'safe', 'on'=>'update'),
 			array('comentario', 'required', 'message'=>'Escribe el detalle'),
 			//array('codestado', 'required', 'message'=>'Lldocueena la referencia origen'),
 			//array('documento', 'required', 'message'=>'Indica el documento de referencia'),
@@ -87,7 +51,9 @@ class Controlactivos extends CActiveRecord
 			//array('coddocu, codepanterior, codep, documento', 'length', 'max'=>3),
 			//array('codlugaranterior, codlugarnuevo', 'length', 'max'=>6),
 		//	array('codcentro, solicitante', 'length', 'max'=>4),
-			array('idactivo, fecha,  comentario', 'safe'),
+			array('fechaan, codocuan, codcenan,numerodocan,documento', 'safe','on'=>'cambioestado'), 
+                     array('codestado', 'safe', 'on'=>'estatus'),
+                         array('idactivo, fecha,  comentario', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('idactivo, tipo, guiaremision, numerofactura, fecha, idemplazamientoactual, idemplazamientoanterior, codobraencurso, ccanterior, ccactual, comentario, numformato, idformato, codestado, almacen, valesalida, ocompra, creadopor, creadoel, modificadopor, modificadoel, coddocu, codepanterior, codep, codlugaranterior, codlugarnuevo, codcentro, solicitante, documento, numeroref', 'safe', 'on'=>'search'),
@@ -95,20 +61,32 @@ class Controlactivos extends CActiveRecord
 	}
     public $maximovalor;
 	public function beforeSave() {
-							if ($this->isNewRecord) {
-									
-									    $this->codestado='10';
-										$this->coddocu='170';
-										$command = Yii::app()->db->createCommand("select count(idformato)  from  {{controlactivos}} where   CODcentro='".$model->codcentro."'"); 
-			$siguiente=$command->queryScalar()+1;
-		
+		if ($this->isNewRecord) {									
+			$this->codestado=self::ESTADO_CREADO;
+			$this->coddocu='102';
+			$command = Yii::app()->db->createCommand("select count(idformato)  from  {{controlactivos}} where   CODcentro='".$model->codcentro."'"); 
+			$siguiente=$command->queryScalar()+1;		
 			$this->numformato=$this->codtipoop.'-'.$this->codcentro.'-'.str_pad($siguiente.'',5,"0",STR_PAD_LEFT);
 										
-									} else
-									{
-										 }
-									return parent::beforeSave();
-				}
+		} else
+		{
+                    if($this->cambiocampo('codestado')){
+                        $this->setScenario('cambioestado');
+                        IF($this->codestado==self::ESTADO_APROBADO){//SI SE APRUEBA EL PROCESO
+                            $this->actualizainventario();
+                        }
+                        IF($this->codestado==self::ESTADO_ANULADO){//SI SE ANULA EL PROCESO
+                            if($this->oldVal('codestado')==self::ESTADO_APROBADO) //SI  seha anulado un proceso que ya estaba aprobado 
+                            $this->revierteinventario();
+                        }
+                        IF($this->codestado==self::ESTADO_CREADO){//UNICA POSIBILIDAD QUE SE HAYA REVERTIDO EL PROCESO
+                            $this->revierteinventario();
+                        }
+                        
+                    }
+		}
+		return parent::beforeSave();
+	}
 	
 	
 	
@@ -124,15 +102,68 @@ class Controlactivos extends CActiveRecord
 		'barcoactual'=>array(self::BELONGS_TO, 'Embarcaciones', 'codep'),
 		'barcoanterior'=>array(self::BELONGS_TO, 'Embarcaciones', 'codepanterior'),
 		'centro'=>array(self::BELONGS_TO, 'Centros', 'codcentro'),
-		'estado'=>array(self::BELONGS_TO, 'Estado', 'codestado'),
+		//'estado'=>array(self::BELONGS_TO, 'Estado', 'codestado'),
 		'solicitante'=>array(self::BELONGS_TO, 'Trabajadores', 'codigotra'),
-		'inventario'=>array(self::BELONGS_TO, 'VwInventario', 'idactivo'),
-		
+		'inventario'=>array(self::BELONGS_TO, 'Inventario', 'idactivo'),
+		'tipoop'=>array(self::BELONGS_TO, 'Tipoop', 'codtipoop'),
+                    'estado' => array(self::BELONGS_TO, 'Estado', array('codestado'=>'codestado','coddocu'=>'codocu')),
+
 		);
 	}
 
+  private function actualizainventario(){ 
+     if(!$this->isNewRecord)  {
+         //primero guardar los valores originales antes de modificar el registro de inventario
+         //$this->setScenario('actualizainventario');
+         $registroinv=$this->inventario;
+         $registroinv->setScenario('proceso');
+        
+         $this->setAttributes(array(
+                                            'codestadoan'=>$registroinv->codestado,
+                                             'fechaan'=>$registroinv->fecha,
+                                             'codocuan'=>$registroinv->coddocu,
+                                            'codcenan'=>$registroinv->codpropietario,
+                                               'numerodocan'=>$registroinv->numerodocumento,
+                                                 ));
+         $registroinv->setAttributes(array(
+                                            'codestado'=>$this->tipoop->codestado2,
+                                             'fecha'=>(is_null($this->fechaap))?$this->fecha:$this->fechaap,
+                                             'coddocu'=>$this->documento,
+                                             'codpropietario'=>$this->codcentro,
+                                               'numerodocumento'=>$this->numeroref,
+                                                 ));
+        $registroinv->save();
+     } 
+  }
 
-
+  private function revierteinventario(){ //reveierte el inventario 
+     if(!$this->isNewRecord)  {
+         //primero guardar los valores originales antes de modificar el registro de inventario
+         //$this->setScenario('actualizainventario');
+         $registroinv=$this->inventario;
+         $registroinv->setScenario('proceso');
+        
+         $registroinv->setAttributes(array(
+                                            'codestado'=>$this->codestadoan,
+                                             'fecha'=>$this->fechaan,
+                                             'coddocu'=>$this->codocuan,
+                                               'numerodocumento'=>$this->numerodocan,
+                                                'codpropietario'=>$this->codcenan,
+                                                 ));
+          $this->setAttributes(array(
+                                            'codestadoan'=>NULL,
+                                             'fechaan'=>NULL,
+                                             'codocuan'=>NULL,
+                                               'numerodocan'=>NULL,
+                                                'codcenan'=>null
+                                                 ));
+        $registroinv->save();
+     } 
+  }
+  
+  
+  
+  
 	/**
 	 * @return array customized attribute labels (name=>label)
 	 */
@@ -140,35 +171,36 @@ class Controlactivos extends CActiveRecord
 	{
 		return array(
 			'idactivo' => 'Activo',
-			'tipo' => 'Tipo de solicitud ',
-			'guiaremision' => 'Guiaremision',
-			'numerofactura' => 'Numerofactura',
+                    'codpropietario' => 'Propiet',
+			'tipo' => 'Tipo Proc ',
+			'guiaremision' => 'G. R.',
+			'numerofactura' => 'Num Fac.',
 			'fecha' => 'Fecha ',
 			'idemplazamientoactual' => 'Idemplazamientoactual',
 			'idemplazamientoanterior' => 'Idemplazamientoanterior',
-			'codobraencurso' => 'Codobraencurso',
-			'ccanterior' => 'Cc Origen',
-			'ccactual' => 'Cc Destino',
+			'codobraencurso' => 'Obr. Curso',
+			'ccanterior' => 'Cc Ori',
+			'ccactual' => 'Cc Dest',
 			'comentario' => 'Comentario',
 			'numformato' => 'Numero',
 			'idformato' => 'Idformato',
 			'codestado' => 'Estado',
 			'almacen' => 'Almacen',
-			'valesalida' => 'Valesalida',
-			'ocompra' => 'Ocompra',
+			'valesalida' => 'V. Salida',
+			'ocompra' => 'O. Compra',
 			'creadopor' => 'Creadopor',
 			'creadoel' => 'Creadoel',
 			'modificadopor' => 'Modificadopor',
 			'modificadoel' => 'Modificadoel',
-			'coddocu' => 'Coddocu',
-			'codepanterior' => 'Referencia anterior',
-			'codep' => 'Referencia Destino',
-			'codlugaranterior' => 'Codlugaranterior',
-			'codlugarnuevo' => 'Codlugarnuevo',
+			'coddocu' => 'Doc',
+			'codepanterior' => 'Dep ant.',
+			'codep' => 'Dep Dest.',
+			'codlugaranterior' => 'Lug Ant',
+			'codlugarnuevo' => 'Lug. Nuevo',
 			'codcentro' => 'Centro',
-			'solicitante' => 'Solicitante',
+			'solicitante' => 'Solicit',
 			'documento' => 'Documento',
-			'numeroref' => 'Numero del documento',
+			'numeroref' => 'N doc',
 		);
 	}
 

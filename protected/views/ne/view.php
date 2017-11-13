@@ -9,41 +9,15 @@ $this->menu=array(
 );
 ?>
 
-<h1> Ingreso  Generado<?php echo $model->c_serie."-".$model->c_numgui  ?> </h1>
+<?php MiFactoria::titulo('Ingreso  Generado'.$model->c_serie."-".$model->c_numgui."  ",'arrow_down');  ?> 
 
+<?php				
+       $this->renderPartial('viewcabecera', array("model"=>$model)); 
+       ?>
 
-<?php $this->widget('zii.widgets.CDetailView', array(
-	'data'=>$model,
-	'attributes'=>array(
-		'c_serie',
-		'c_numgui',
-		'destinatario.despro',
-		'd_fectra',
-		'd_fecgui',
-		'direccionesllegada.c_direc',
-		'iddocuaux',
-		'codocuaux',
-		//'creadoel',
-		//'modificadopor',
-		//'modificadoel',
-		//'codcentro',
-	),
-)); ?>
+<?php				
+       $this->renderPartial('vw_detalle_grilla', array("idcabecera"=>$model->id,'eseditable'=>'false')); 
 
-
-
-<?php
-				
-       $this->renderPartial('vw_detalle_grilla', array("idcabecera"=>$model->n_guia,'eseditable'=>'false'));   
-	
-
-				  
-				
-				  
-		
-
-
-
- ?>
-
+       ?>
+</div>
 

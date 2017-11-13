@@ -20,13 +20,18 @@ class ContactosController extends Controller
 	{
 		Yii::app()->user->loginUrl = array("/cruge/ui/login");
 		return array(
-			
+			array('allow',  // allow all users to perform 'index' and 'view' actions
+				'actions'=>array('index','view'),
+				'users'=>array('*'),
+			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('admin',  'create','contactosporprove','borradetalle','modificadetalle','creaadicional','update'),
+				'actions'=>array('admin','delete','create','contactosporprove','borradetalle','modificadetalle','creaadicional','update'),
 				'users'=>array('@'),
 			),
 			
-			
+			array('deny',  // deny all users
+				'users'=>array('*'),
+			),
 		);
 	}
 
@@ -126,19 +131,14 @@ class ContactosController extends Controller
 		$model=new Contactos;
 		$model->setScenario("creasolo");
 		// Uncomment the following line if AJAX validation is needed
-		$this->performAjaxValidation($model);
+		// $this->performAjaxValidation($model);
 
 		if(isset($_POST['Contactos']))
 		{
 			$model->attributes=$_POST['Contactos'];
 			
-			if($model->save()){
-                            MiFactoria::mensaje('success','Se grabo el contacto ');
-                            $this->redirect(array('admin'));
-                        }else{
-                             MiFactoria::mensaje('error','No se pudo grabar el contacto ');
-                        }
-				
+			if($model->save())
+				$this->redirect(array('view','id'=>$model->id));
 		}
 
 		$this->render('create',array(
@@ -161,19 +161,14 @@ class ContactosController extends Controller
 		if(isset($_POST['Contactos']))
 		{
 			$model->attributes=$_POST['Contactos'];
-			if($model->save()){
-                            MiFactoria::Mensaje('success','Se modificaron los datos del contacto');
-                              if (!empty($_GET['asDialog']))
+			if($model->save())
+						           if (!empty($_GET['asDialog']))
 												{
 													//Close the dialog, reset the iframe and update the grid
 													echo CHtml::script("window.parent.$('#cru-dialog2').dialog('close');window.parent.$('#cru-frame2').attr('src','');window.parent.$.fn.yiiGridView.update('{$_GET['gridId']}');");
 														Yii::app()->end();
 												}
-			  $this->redirect(array('admin'));
-                        }else{
-                             MiFactoria::Mensaje('error','No se pudieron modificar los datos del contacto'.yii::app()->mensajes->getErroresItem($model->getErrors()));
-                        }
-						         
+			  $this->redirect(array('view','id'=>$model->id));
 			
 				
 		}
@@ -182,18 +177,10 @@ class ContactosController extends Controller
 				if (!empty($_GET['asDialog'])){
 					$this->layout = '//layouts/iframe';
 					$codigoproveedor=$_GET['codpro'];
-					} else {
-                                            $codigoproveedor=$model->c_hcod;
-                                        
-                                        }
+					} else {$codigoproveedor=$model->c_hcod;}
     //----- end new code --------------------
-                $modeldetalle=New Contactosadicio('search_por_contacto');
-                if (!empty($_GET['Contactosadicio'])){
-                    $modeldetalle->attributes= $_GET['Contactosadicio'];
-                }
-		$this->render('update',array(
+		$this->render('_form',array(
 			'model'=>$model,'codpro'=>$codigoproveedor,
-                    'modeldetalle'=>$modeldetalle,
 		));
 	}
 

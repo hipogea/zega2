@@ -9,13 +9,13 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	//array('label'=>'List Tipoactivos', 'url'=>array('index')),
-	array('label'=>'Crear', 'url'=>array('create')),
-	//array('label'=>'View Tipoactivos', 'url'=>array('view', 'id'=>$model->codtipo)),
-	array('label'=>'Listado', 'url'=>array('admin')),
+	array('label'=>'List Tipoactivos', 'url'=>array('index')),
+	array('label'=>'Create Tipoactivos', 'url'=>array('create')),
+	array('label'=>'View Tipoactivos', 'url'=>array('view', 'id'=>$model->codtipo)),
+	array('label'=>'Manage Tipoactivos', 'url'=>array('admin')),
 );
 ?>
 
-<?php MiFactoria::titulo('Actualizar Tipo de Activo', 'gear') ?>
+<h1>Update Tipoactivos <?php echo $model->codtipo; ?></h1>
 
 <?php $this->renderPartial('_form', array('model'=>$model)); ?>

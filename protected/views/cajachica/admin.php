@@ -37,10 +37,12 @@ $('.search-form form').submit(function(){
 )); ?>
 </div><!-- search-form -->
 
-<?php $this->widget('zii.widgets.grid.CGridView', array(
-	'id'=>'cajachica-grid',
-	'dataProvider'=>$model->search(),
-	//'filter'=>$model,
+<?php 
+ $this->widget('ext.groupgridview.GroupGridView', array(
+     'id'=>'cajachica-grid',
+      'dataProvider'=>$model->search(),
+      'mergeColumns' => array('ap','hidfondo'),
+
         'itemsCssClass'=>'table table-striped table-bordered table-hover',
 
 	//'cssFile' => Yii::app()->getTheme()->baseUrl.'/css/grilla_naranja.css',
@@ -50,12 +52,14 @@ $('.search-form form').submit(function(){
                    'template'=>'{update}'
 		),
 		//'id',
-		'fondo.desfondo',
+		array('name'=>'hidfondo','value'=>'$data->fondo->desfondo'),
 		'descripcion',
+              array('name'=>'valornominal','value'=>'round($data->valornominal,2)'),
+               array('name'=>'Rendido','value'=>'round($data->rendido,2)'),
 		'fechaini',
-		'fechafin',
+		'fechafin', 
 		'fondo.codcen',
-		'trabajadores.ap',
+		 array('name'=>'ap','value'=>'$data->trabajadores->nombrecompleto'),
 
 		/*
 		'iduser',

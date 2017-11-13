@@ -151,7 +151,7 @@ class Solpe extends CActiveRecord
 			'numero' => 'Numero',
 			'tipo' => 'Tipo',
 			'escompra' => 'Tipo',
-			'textocabecera' => 'Textocabecera',
+			'textocabecera' => 'Texto',
 			'creado' => 'Creado',
 			'autor' => 'Autor',
 			'estado' => 'Estado',
@@ -470,7 +470,7 @@ public function beforeSave() {
 			$detallesolpe->tipsolpe = 'M';
 			$detallesolpe->cant = $obinventario->detallesmaterial()['cantsol'];
 			$detallesolpe->codart = $obinventario->codart;
-			$detallesolpe->iduser=yii::app()->settings->get('genera','general_userauto');
+			$detallesolpe->iduser=yii::app()->settings->get('general','general_userauto');
 			//$detallesolpe->idreserva = $id;
 			if($detallesolpe->save ()){
 				MiFactoria::Mensaje('notice','Se creo  la Solicitud automatica del material '.$obinventario->codart.'-'.$obinventario->codalm.'-'.$obinventario->codcen." <br>");

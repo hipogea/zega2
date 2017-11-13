@@ -11,7 +11,7 @@ class Almacenmovimientos extends CActiveRecord
 	
 	public function tableName()
 	{
-		return Yii::app()->params['prefijo'].'almacenmovimientos';
+		return '{{almacenmovimientos}}';
 	}
 
 	/**

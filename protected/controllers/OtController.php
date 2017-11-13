@@ -1,5 +1,10 @@
 <?php
-CONST ESTADO_PREVIO='99';
+        
+
+class OtController extends ControladorBase
+{
+	
+        CONST ESTADO_PREVIO='99';
 	CONST ESTADO_CREADO='10';
 	CONST ESTADO_ANULADO='50';
 	CONST ESTADO_MODIFICADO='20';
@@ -14,10 +19,10 @@ CONST ESTADO_PREVIO='99';
 	CONST ESTADO_DOCOMPRA_APROBADO='20';// DESOLPECOMRPA APROBADO
 	CONST ESTADO_DOCOMPRA_ANULADO='40';// DESOLPECOMRPA ANULADO
 	const ESTADO_DOCOMPRA_CREADO='10';
-
-class OtController extends ControladorBase
-{
-	
+    const ESTADO_DETALLE_ANULADO='98';
+    
+    
+    
       const ESTADO_DETALLE_CONSIGNACIONES_ANULADA='40';    
         const COD_MOV_CONSIGNACION='14';  
          const COD_MOV_ANULA_CONSIGNACION='15';   
@@ -87,8 +92,8 @@ class OtController extends ControladorBase
 			$modeloconsi->attributes=$_GET['Tempotconsignacion'];
 			//var_dump($modelhijo->attributes);die();
 		}
-		if($model->{$this->campoestado}==ESTADO_PREVIO)
-			$model->{$this->campoestado}=ESTADO_CREADO;                       
+		if($model->{$this->campoestado}==self::ESTADO_PREVIO)
+			$model->{$this->campoestado}=self::ESTADO_CREADO;                       
 		if($this->itsFirsTime($id))
 		{
 			$uintruso=$this->getUsersWorkingNow($id);
@@ -96,7 +101,7 @@ class OtController extends ControladorBase
 			{ //si esta ocupado
 				MiFactoria::Mensaje('error', "Solo puede visualizar, este documento, esta siendo modificado por el usuario    :     <b>". Yii::app()->user->um->loadUserById($uintruso)->username." </b>");
 				$this->out($id);
-				$this->redirect(array('VerDocumento','id'=>$model->idguia));
+				$this->redirect(array('VerDocumento','id'=>$model->id));
 			} else { // Si no lo esta renderizar sin mas
 				
                             $this->setBloqueo($id) ; 	///bloquea                           
@@ -206,7 +211,7 @@ class OtController extends ControladorBase
 		$model=new Tempdetot();
               // die();
 		$model->hidorden=$idcabeza;
-		$model->codestado=ESTADO_PREVIO;
+		$model->codestado=self::ESTADO_PREVIO;
 		$model->idusertemp=Yii::app()->user->id;
 		$model->idaux=round(microtime(true) * 1000);
                 
@@ -258,7 +263,7 @@ class OtController extends ControladorBase
 		//$descuento=(is_null($modelopadre->descuento))?0:(1-$modelopadre->descuento/100);
 		$model=new Tempdesolpe('buffer');
 		$model->hidot=$idcabeza;
-		$model->est=ESTADO_PREVIO;
+		$model->est=self::ESTADO_PREVIO;
 		$model->idusertemp=Yii::app()->user->id;
 		$model->hcodoc=$this->documento; //
                 $model->tipimputacion='T';
@@ -363,7 +368,7 @@ class OtController extends ControladorBase
 		return array(
 
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('muestrakardex', 'modificadetalleconsignacion',   'Borraitemsconsignaciones',   'JalaMaterialesExt',   'ajaxobjetosporclipro',    'ajaxmuestralistamateriales','JalaMateriales','view','imputa','cargagaleria','tomafoto','creaconsignacion','borraitemsdesolpe','nadax','creaservicio','modificadetallerecurso','creadetallerecurso','verprecios','crearpdf','verDetoc','firmar','aprobar','cargaprecios','enviarpdf','admin','borrarimpuesto','reporte','agregarmasivamente','cargadirecciones','borraitems','sacaitem','sacaum','salir','agregaimpuesto','agregaritemsolpe','procesardocumento','refrescadescuento','VerDocumento','EditaDocumento','creadocumento','Agregardelmaletin','borraitem','imprimirsolo','cargaentregas','agregarsolpe','agregarsolpetotal','pasaatemporal','create','imprimirsolo','imprimir','imprimir2','enviarmail',
+				'actions'=>array('AjaxUpadteTextosImg','Editatarifas','updatecuadrilla','ajaxborratrabajadores',  'AjaxAgregaTrabajadores','ajaxcompo','AgregaDetalleOtCompo','muestrakardex', 'modificadetalleconsignacion',   'Borraitemsconsignaciones',   'JalaMaterialesExt',   'ajaxobjetosporclipro',    'ajaxmuestralistamateriales','JalaMateriales','view','imputa','cargagaleria','tomafoto','creaconsignacion','borraitemsdesolpe','nadax','creaservicio','modificadetallerecurso','creadetallerecurso','verprecios','crearpdf','verDetoc','firmar','aprobar','cargaprecios','enviarpdf','admin','borrarimpuesto','reporte','agregarmasivamente','cargadirecciones','borraitems','sacaitem','sacaum','salir','agregaimpuesto','agregaritemsolpe','procesardocumento','refrescadescuento','VerDocumento','EditaDocumento','creadocumento','Agregardelmaletin','borraitem','imprimirsolo','cargaentregas','agregarsolpe','agregarsolpetotal','pasaatemporal','create','imprimirsolo','imprimir','imprimir2','enviarmail',
 					'procesaroc','hijo','Aprobaroc','Reporteoc','Anularoc','Configuraop','Revertiroc', ///acciones de proceso
 					'libmasiva','creadetalle','Verdetalle','muestraimput','update','nada','Modificadetalle'),
 				'users'=>array('@'),
@@ -988,7 +993,7 @@ class OtController extends ControladorBase
 				$criterio->params=array(':idguia'=>$idguia);
 				$detallecompra->setattributes(
 					array(
-						'estadodetalle'=>ESTADO_PREVIO,
+						'estadodetalle'=>self::ESTADO_PREVIO,
 						'codocu'=>$this->documentohijo,
 						'hidguia'=>$idguia,
 						'idusertemp'=>Yii::app()->user->id,
@@ -1211,10 +1216,10 @@ class OtController extends ControladorBase
 				} else { ///si no tiene entrgas aun no cantemos victoria
 					//OJO QUE ALMOMENTO DE CONFIRMAR EL BUFFER DEBEMOS AEGURARNOQ UE EN EL EVENTO
 					//AFTERSAVE() DEL REGISTRO DOCOMPRA
-
-					$detalletemp->setScenario('cambiaestado');
-					$detalletemp->codestado = ESTADO_DOCOMPRA_ANULADO;
-					$mensaje .= ($detalletemp->save()) ? "" : " No se pudo anular el item " . $detalletemp->item . "<br>";
+                                        $detalletemp->idstatus=-1;
+					/*$detalletemp->setScenario('cambiaestado');*/
+					$detalletemp->codestado = self::ESTADO_DETALLE_ANULADO;
+					$mensaje .= ($detalletemp->save()) ? "Se anulo el item de la Ot" : " No se pudo anular el item " . $detalletemp->item . "<br>";
 				}
 
 			}
@@ -1694,7 +1699,7 @@ class OtController extends ControladorBase
 	public function eseditable($estadodelmodelo)
 	{
 		$retorna='disabled';
-		iF(in_array($estadodelmodelo , ARRAY(ESTADO_CREADO,ESTADO_PREVIO,NULL,'',ESTADO_MODIFICADO)) and strtolower($this->action->id) <> 'verdocumento')
+		iF(in_array($estadodelmodelo , ARRAY(self::ESTADO_CREADO,self::ESTADO_PREVIO,NULL,'',self::ESTADO_MODIFICADO)) and strtolower($this->action->id) <> 'verdocumento')
 			$retorna='';
 
 		RETURN $retorna;
@@ -1708,7 +1713,7 @@ class OtController extends ControladorBase
 	public function eseditablebase($estadodelmodelo)
 	{
 		$retorna='disabled';
-		iF(in_array($estadodelmodelo , ARRAY(ESTADO_PREVIO,NULL,'')))
+		iF(in_array($estadodelmodelo , ARRAY(self::ESTADO_PREVIO,NULL,'')))
 			$retorna='';
 
 		RETURN $retorna;
@@ -1808,7 +1813,10 @@ class OtController extends ControladorBase
 		if(isset($_GET['VwOtsimple'])) {
 			$model->attributes=$_GET['VwOtsimple'];
 			$proveedor=$model->search();
-		}
+		}else
+                {
+                    $proveedor=array();
+                }
 		$this->render('admin',array(
 			'model'=>$model,'proveedor'=>$proveedor,
 		));
@@ -2010,7 +2018,7 @@ class OtController extends ControladorBase
 							//Solo si no esta anulado
 							$row->setScenario('cambiaestado');
 							if( !in_array($row->estadodetalle,Estado::estadosnocalculablesdetalle($compra->codocu)))
-								$row->estadodetalle=ESTADO_DOCOMPRA_APROBADO;
+								$row->estadodetalle=self::ESTADO_DOCOMPRA_APROBADO;
 							if(!$row->save())
 								$mensaje.=" OcurriÃ³ un error  en el item ".$row->item." al guardar los datos del estado detalle  <br>";
 
@@ -2037,7 +2045,7 @@ class OtController extends ControladorBase
 
 						$row->setScenario('cambiaestado');
 						if( !in_array($row->estadodetalle,Estado::estadosnocalculablesdetalle($compra->codocu)))
-							$row->estadodetalle=ESTADO_DOCOMPRA_CREADO;
+							$row->estadodetalle=self::ESTADO_DOCOMPRA_CREADO;
 						$mensaje .= ($row->save()) ? "" : " No se pudo revertir  el item " . $row->item . "<br>";
 						/*print_r($row->geterrors());
                            print_r($row->geterrors());yii::app()->end();*/
@@ -2060,7 +2068,7 @@ class OtController extends ControladorBase
 						$mensaje.="  El item ".$row->item."  Ya tiene ingresos de almacen <br>";
 					} else { //si no tiene atenciones entonces normal no mas Revertimos
 						$row->setScenario('cambiaestado');
-						$row->estadodetalle = ESTADO_DOCOMPRA_ANULADO;
+						$row->estadodetalle = self::ESTADO_DOCOMPRA_ANULADO;
 						$mensaje .= ($row->save()) ? "" : " No se pudo anular el item " . $row->item . "<br>";
 
 					}
@@ -2298,7 +2306,7 @@ class OtController extends ControladorBase
 		$modelocabeza=$this->loadModel((integer)MiFactoria::cleanInput($id));
 		$model=new Tempdesolpe('buffer');
 		$model->hidot=$id;
-		$model->est=ESTADO_PREVIO;
+		$model->est=self::ESTADO_PREVIO;
 		$model->idusertemp=Yii::app()->user->id;
 		$model->hcodoc=$this->documento; ///detalle guia
 		$model->tipsolpe='S';
@@ -2397,7 +2405,7 @@ class OtController extends ControladorBase
 
 public function actionBorraitemsconsignaciones()
 	{
-	
+	$mensaje="ok";
         if(yii::app()->request->isAjaxRequest){
 		$autoIdAll = $_POST['cajitaconsignaciones'];		
 		 if(count($autoIdAll)>0 )
@@ -2407,7 +2415,7 @@ public function actionBorraitemsconsignaciones()
                                     //coger la cabecera del primer hijo basta 
 					// $transaccion = $modelin->dbConnection->beginTransaction();
 					 foreach ($autoIdAll as $autoId) {
-						 $this->borraitemconsignacion($autoId);
+						$mensaje.= $this->borraitemconsignacion($autoId)."<br>";
 					 }
 					
 					// $transaccion->commit();
@@ -2416,6 +2424,7 @@ public function actionBorraitemsconsignaciones()
 				// Yii::app()->end();
 			} ///luego actualizar yodos los cambos
         }
+        echo $mensaje;
 	}
 	
 public function borraitemconsignacion($autoId) //Borra un registro de coinsnaciones
@@ -2423,29 +2432,32 @@ public function borraitemconsignacion($autoId) //Borra un registro de coinsnacio
 	//  1) No debe de haber reservas activas, esto se logra contandolas con la propiedad "numerodereservas" del objeto modelo
 	{
 		$modelito=Tempotconsignacion::model()->findByPk($autoId);
-			if($modelito->id >0) { ///Si ya tiene relacion con la tabla Desolpe firme
+			if($modelito->id >0)  { ///Si ya tiene relacion con la tabla Desolpe firme
                             //si ya tiene
-                            $modelito1=$modelito->otconsignacion;
-				
+                            $modelito1=$modelito->otconsignacion;				
 				if($modelito1->cantatendida==0 ){//Si no ha habido atenciones anularala
                                      //SOLAMNET COLOCAR EL ESTADI AULADO 
                                       $modelito->setScenario('estado');  
                                     $modelito->est=self::ESTADO_DETALLE_CONSIGNACIONES_ANULADA;
+                                    $modelito->idstatus=-1;
                                     $modelito->save();
+                                     $mensaje.="Se anulo el registro <br>";
 				} else {
+                                    $mensaje.="Este registro presenta atenciones no puede borrarlo<br>";
                                     //MiFactoria::Mensaje('error', "Este item no puede ser anulado porque ya tiene atenciones");
 				}
                                 
                                 
 				} else {
-                            
+                                  
                             $command = Yii::app()->db->createCommand("delete from  {{tempotconsignacion}}   where idtemp =".$autoId."   ");
 				$command->execute();
 				//MiFactoria::Mensaje('succcess', "El registro de cosignacion ".$modelito1->solpe->numero."-".$modelito1->item. " se ha borrado");
-			   
+			    $mensaje.="Se borro el registro <br>";
+                            
                             
 			}
-                        echo "holaa iugos <br>";
+                        return $mensaje;
 		/*foreach(Yii::app()->user->getFlashes() as $key => $message) {
 			echo "*)". $message . "\n";		}*/
 		//echo $this->renderpartial("vw_mensajes",array());
@@ -2455,20 +2467,21 @@ public function borraitemconsignacion($autoId) //Borra un registro de coinsnacio
 	//  1) No debe de haber reservas activas, esto se logra contandolas con la propiedad "numerodereservas" del objeto modelo
 	{
 		$modelito=Tempdesolpe::model()->findByPk($autoId);
+                $mensaje="";
 			if($modelito->id >0) { ///Si ya tiene relacion con la tabla Desolpe firme
                             //si ya tiene
                             $modelito1=$modelito->desolpe;
 				$modelito1->setscenario('Atencionreserva');
 				if($modelito1->numeroreservas==0 ){
 					if($modelito->est=='20'){ //si ya estaba nulado
-						Yii::app()->user->setFlash('error', "El registro de solicitud ".$modelito1->desolpe_solpe->numero."-".$modelito1->item. "Ya fue anulado");
+						$mensaje.="El registro de solicitud ".$modelito1->desolpe_solpe->numero."-".$modelito1->item. "Ya fue anulado <br>";
 					} else {
 						$modelito->est='20';
 						$modelito->save();
-						Yii::app()->user->setFlash('succcess', "El registro de solicitud ".$modelito1->desolpe_solpe->numero."-".$modelito1->item. " se ha anulado sin problemas");
+						$mensaje.="El registro de solicitud ".$modelito1->desolpe_solpe->numero."-".$modelito1->item. " se ha anulado sin problemas <br>";
 					}
 				} else {
-					Yii::app()->user->setFlash('error', "El registro de solicitud ".$modelito1->desolpe_solpe->numero."-".$modelito1->item. " No puede ser anulado  por que presenta reservas activas");
+					$mensaje.="El registro de solicitud ".$modelito1->desolpe_solpe->numero."-".$modelito1->item. " No puede ser anulado  por que presenta reservas activas<br>";
 				}
                                 
                                 
@@ -2476,12 +2489,12 @@ public function borraitemconsignacion($autoId) //Borra un registro de coinsnacio
                             
                             $command = Yii::app()->db->createCommand("delete from  {{tempdesolpe}}   where idtemp =".$autoId."   ");
 				$command->execute();
-				Yii::app()->user->setFlash('succcess', "El registro de solicitud ".$modelito1->solpe->numero."-".$modelito1->item. " se ha borrado");
+				$mensaje.="El registro de solicitud ".$modelito1->solpe->numero."-".$modelito1->item. " se ha borrado<br>";
 			   
                             
 			}
-		foreach(Yii::app()->user->getFlashes() as $key => $message) {
-			echo "*)". $message . "\n";		}
+		
+			echo $mensaje;		
 		//echo $this->renderpartial("vw_mensajes",array());
 	} 
     public function actionCreaconsignacion($idcabeza,$cest)
@@ -2493,7 +2506,7 @@ public function borraitemconsignacion($autoId) //Borra un registro de coinsnacio
 		//$descuento=(is_null($modelopadre->descuento))?0:(1-$modelopadre->descuento/100);
         $model=new Tempotconsignacion();
 		$model->hidot=$idcabeza;
-		$model->est=ESTADO_PREVIO;
+		$model->est=self::ESTADO_PREVIO;
 		$model->idusertemp=Yii::app()->user->id;
 		//$model->hcodoc=$this->documento; //
                // $model->codocu='350'; //
@@ -2550,6 +2563,8 @@ public function borraitemconsignacion($autoId) //Borra un registro de coinsnacio
                       ))
                    // throw new CHttpException(500,'eroor      '.$_FILES['webcam']['tmp_name']); 
               //echo $_FILES['webcam']['tmp_name'];die();
+                      Yii::log(' sew jecuta el controlador de OT CONTORTRLLLER  ','error');
+            Yii::log(' el filenama    '.$filename,'error');
                $detalle->colocaarchivo($nombretemp);
                unlink($nombretemp);
               //move_uploaded_file($_FILES['webcam']['tmp_name'],Yii::getPathOfAlias('webroot').'/images/webcam.jpg');
@@ -2577,16 +2592,23 @@ public function borraitemconsignacion($autoId) //Borra un registro de coinsnacio
             if(isset($_GET['id'])){
                 $id= (integer)MiFactoria::cleanInput($_GET['id']);
                  $detalle= Tempdetot::model()->findByPk($id);
-                 
+                 $detalle->agregacomportamientoarchivo('.jpg');
                  if(!is_null($detalle)){
               // var_dump($detalle->fotosparagaleria());die();
-                      $this->renderpartial('//site/galeria',
+                     /* $this->renderpartial('//site/galeria',
                               array(
                                     'titulo'=>$detalle->textoactividad,
                                    'modo'=>3,
                                      'mensajegeneral'=>$detalle->ot->textocorto,                                   
                                    'fotos'=>$detalle->fotosparagaleria(),
                               )
+                              );*/
+                     $this->renderpartial('//site/tab_imggrilla',
+                              array(
+                                    'model'=>$detalle,
+                                  'id'=>$detalle->id,
+                                  'codocu'=>$detalle->documento,
+                                   ),false,true
                               );
          
                  }else{
@@ -2859,7 +2881,7 @@ public function borraitemconsignacion($autoId) //Borra un registro de coinsnacio
 					//Close the dialog, reset the iframe and update the grid
 			echo CHtml::script("window.parent.$('#cru-dialogdetalle').dialog('close');
 				window.parent.$('#cru-detalle').attr('src','');
-                                window.parent.$.fn.yiiGridView.update('detalle-consignacion-grid');
+                                window.parent.$.fn.yiiGridView.update('detalle-consignaciones-grid');
 				
 			");
 
@@ -2884,8 +2906,224 @@ public function borraitemconsignacion($autoId) //Borra un registro de coinsnacio
          $this->render('//alinventario/vistakardex',array('proveedor'=>$proveedor));
          
      }
-        
+   
+public function actionAgregaDetalleOtCompo($id){
     
+    $modelopadre=$this->loadModel($id);
+              
+		//$descuento=(is_null($modelopadre->descuento))?0:(1-$modelopadre->descuento/100);
+		$model=new Tempdetot('ingreso');
+              // die();
+		$model->hidorden=$id;
+		$model->codestado=self::ESTADO_PREVIO;
+		$model->idusertemp=Yii::app()->user->id;
+		$model->idaux=round(microtime(true) * 1000);                
+		$model->codocu=$this->documentohijo; 
+		$model->valorespordefecto($this->documentohijo);
+		if(isset($_POST['Tempdetot']))		{
+                        $model->attributes=$_POST['Tempdetot'];
+			$model->item=$modelopadre->getNextItem();
+			$this->performAjaxValidationdetalle($model);
+			if($model->save()){
+				if (!empty($_GET['asDialog']))
+				{
+					echo CHtml::script("window.parent.$('#cru-dialogdetalle').dialog('close');
+                                                             window.parent.$('#cru-detalle').attr('src','');
+								window.parent.$.fn.yiiGridView.update('detalle-grid');
+								window.parent.$.fn.yiiGridView.update('resumenoc-grid');
+								");
+				}
+			}
+		}
+		$this->layout = '//layouts/iframe';                
+		$this->render('_form_detalle_compo',array(
+			'model'=>$model, 'idcabeza'=>$modelopadre->id,'editable'=>true
+		));
+    
+       }
+     
+       
+        public function actionajaxcompo(){
+        if(yii::app()->request->isAjaxRequest){
+            $opcion=  MiFactoria::cleanInput($_POST['codigocompo']);
+            //$identidad=  (integer)MiFactoria::cleanInput($_POST['id']);
+            $registro= Masterequipo::findByCodigo($opcion);
+            if(!is_null($registro)){
+                echo $registro->descripcioncompleta ;
+            }else{
+               echo "El código ingresado no pertenece a ningún componente" ;
+            
+            }
+                
+            
+        }
+    }    
+     
+    public function actionAdminDetalle()
+	{
+		$model=new VwOtdetalle('search');
+		$model->unsetAttributes();  // clear any default values
+		if(isset($_GET['VwOtdetalle'])) {
+			$model->attributes=$_GET['VwOtdetalle'];
+			$proveedor=$model->search();
+		}
+		$this->render('admindetalle',array(
+			'model'=>$model,'proveedor'=>$proveedor,
+		));
+	}
+    
+    
+     public function actionAjaxAgregaTrabajadores($id){
+         $model= Ot::model()->findByPk((integer)MiFactoria::cleanInput($id));
+         //var_dump($model);die();
+         if(!is_null($model)){
+             if(isset($_POST['cajita'])){
+			
+                        $autoIdAll = $_POST['cajita'];			
+			if(count($autoIdAll)>0 ) 
+			{
+                            
+				foreach($autoIdAll as $autoId)
+				{
+					// verificando si ya exoste
+                                    $registro= Ottraba::model()->findByPk($autoId);
+                                  if(is_null($registro)){
+                                     $modelo=New Ottraba();
+                                    $modelo->setAttributes(
+                                                array(
+                                                    'hidot'=>$model->id,
+                                                    'codtra'=>$autoId,                                                    
+                                                )
+                                                );                                               
+                                        $modelo->save(); 
+                                  }
+                                    
+                                    
+				}
+			}
+                    
+                    
+				if (!empty($_GET['asDialog']))
+				{
+					//Close the dialog, reset the iframe and update the grid
+                                echo CHtml::script("window.parent.$('#cru-dialogdetalle').dialog('close');
+                                                    window.parent.$('#cru-detalle').attr('src','');
+                                                    window.parent.$.fn.yiiGridView.update('detalle-trabajadores');				
+                                                    ");
+			}
+
+		}
+                
+               $this->layout = '//layouts/iframe';		
+		$this->render('_form_trabajadores',arraY('identidad'=>$modelo->id)); 
+         }else{
+             
+         }
+		
+		
+     }   
+        
+   public function actionajaxborratrabajadores(){
+       IF( Yii::app()->request->isAjaxRequest){
+	if(isset($_POST['cajita'])){            
+            $autoIdAll = $_POST['cajita'];
+			
+			if(count($autoIdAll)>0 ) //and ($this->eseditable($estado)==''))
+			{
+				foreach($autoIdAll as $autoId)
+				{
+					$registro= Ottraba::model()->findByPk($autoId);
+                                        $registro->delete();
+				}
+			}
+                              }           
+		  }
+            }
+            
+   public function actionupdatecuadrilla(){
+       IF( Yii::app()->request->isAjaxRequest){
+	if(isset($_POST['cajita'])){            
+            $autoIdAll = $_POST['cajita'];
+			
+			if(count($autoIdAll)>0 ) //and ($this->eseditable($estado)==''))
+			{
+				foreach($autoIdAll as $autoId)
+				{
+					$registro= Cuadrilla::model()->findByPk($autoId);
+                                        $registro->delete();
+				}
+			}
+                              }           
+		  }
+   }
+   
+   public function actionEditatarifas($id)
+	{		
+          // echo"ss";
+            $model= Ottraba::Model()->findByPk(MiFactoria::cleanInput((int)$id));
+             //echo "ggererererererere";
+		if ($model===null)
+			throw new CHttpException(404,'No se encontro ningun documento para estos datos');
+		//colocar el escenario correcto
+		if(isset($_POST['Ottraba']))		{
+			$model->attributes=$_POST['Ottraba'];
+			if($model->save()){
+				if (!empty($_GET['asDialog']))
+				{
+					//Close the dialog, reset the iframe and update the grid
+					echo CHtml::script("
+                window.parent.$('#cru-dialogdetalle').dialog('close');
+		window.parent.$('#cru-detalle').attr('src','');                            
+                window.parent.$.fn.yiiGridView.update('trabajadores-grid');");
+					Yii::app()->end();
+				}
+			}else{
+				print_r($model->geterrors());
+			}
+
+		}
+
+		if (!empty($_GET['asDialog'])){
+                    
+                    $this->layout = '//layouts/iframe';
+                }
+			
+
+		$this->render('_form_tarifa',array(
+			'model'=>$model,'editable'=>true
+		));
+
+
+
+	}
+   
+   
+  /*
+   * ESTA FUNCION ACTUALZIA LOS TEXTOS DFE LAS IMAGENES
+   */   
+public function actionAjaxUpadteTextosImg(){
+        
+        if(yii::app()->request->isAjaxRequest){ 
+            $titulo=unserialize(base64_decode($_GET['titulo']));
+             $mensajegeneral=unserialize(base64_decode($_GET['texto']));  
+            
+                $id= (integer)MiFactoria::cleanInput($_GET['id']);  
+                $idadjunto= (integer)MiFactoria::cleanInput($_GET['idadjunto']); 
+                $registro= Detot::model()->findByPk($id);        
+                if(is_null($registro))                 
+                    throw new CHttpException(500,'NO se encontro el registro con el id '.$id);       
+                 $registro->ActualizaTextos($id,$idadjunto,$titulo,$textos);   
+                
+         }
+    }
+     
 } 
     
+
+/**
+	 * Manages all models.
+	 */
+	
+
+
 ?>

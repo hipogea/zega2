@@ -154,10 +154,7 @@ class Estado extends CActiveRecord
 	}
 
 	public static function estadosnocalculables($codocu){
-		/*esta funcion devuel los estado del detalle de un domcuento
-		*  que no son calculables x ejemplo una item anualado o cualquier otro estado que no s etome necuenta
-		 *
-		 */
+		
 		$codocu=MiFactoria::cleanInput($codocu);
 
 			return Yii::app()->db->createCommand()
@@ -180,6 +177,13 @@ public static function listaestadosnocalculables($codocu){
 	   $CADENA.=")";
 	//var_dump($CADENA);yii::app()->end();
 	return $CADENA;
+}
+
+
+public static function estadosDocu($codocu){
+	$criterio=new CDbCriteria;
+		$criterio->addCondition("codocu='".$codocu."'");
+         return CHtml::listData(self::model()->findAll($criterio),'codestado','estado');
 }
 
 }

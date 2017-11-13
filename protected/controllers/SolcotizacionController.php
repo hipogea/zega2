@@ -1,8 +1,5 @@
 <?php
-const ESTADO_CREADO='10';
-const ESTADO_ANULADO='30';
-const ESTADO_PREVIO='99';
-const NOMBRECLASE_DESOLPE='Desolpe';
+
 class SolcotizacionController extends Controller
 {
 	/**
@@ -10,7 +7,10 @@ class SolcotizacionController extends Controller
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
 	public $layout='//layouts/column2';
-
+const ESTADO_CREADO='10';
+const ESTADO_ANULADO='30';
+const ESTADO_PREVIO='99';
+const NOMBRECLASE_DESOLPE='Desolpe';
 	/**
 	 * @return array action filters
 	 */

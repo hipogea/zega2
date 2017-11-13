@@ -6,6 +6,7 @@ const ESTADO_REGISTRO_NUEVO='00'; ///ESTO SOLO PARA INCLUIR LA CONDICION isNewRe
     
     PRIVATE $_venumModels=null;
 	private $_modelPath=null;
+        private $_modelPathsModules=array();
 	public $oldAttributes=array(); //arayu ara guaradar los atributos viejos
 	public $documento=NULL;
 	//public $campodenumero=NULL; //Nombre de campo que guarda el valor del numero del doc
@@ -54,6 +55,14 @@ const ESTADO_REGISTRO_NUEVO='00'; ///ESTO SOLO PARA INCLUIR LA CONDICION isNewRe
         public function hasvaluedefault($namefield){
             return VwOpcionesdocumentos::tienevalorpordefecto($this, $namefield);
         }
+        public function getValueDefault($namefield){
+            IF($this->hasvaluedefault($namefield)){
+                return VwOpcionesdocumentos::valorespordefecto($this, $namefield);
+            }ELSE{
+                RETURN NULL;
+            }
+            
+        }
 	public function devuelveimpuestos(){
 
 		if($this->isdocParent) {
@@ -100,6 +109,54 @@ const ESTADO_REGISTRO_NUEVO='00'; ///ESTO SOLO PARA INCLUIR LA CONDICION isNewRe
 		else
 			return Yii::app()->getBasePath().DIRECTORY_SEPARATOR.'models';
 	}
+        
+        public  function getModelPathsFromModules()
+	{
+		if(count($this->_modelPathsModules)>0)
+			return $this->_modelPathsModules;
+		else{
+                    $p=Yii::app()->getBasePath().DIRECTORY_SEPARATOR.'modules';
+                   foreach (scandir($p) as $f) 
+                       {
+                         $ruta=Yii::app()->getBasePath().DIRECTORY_SEPARATOR.'modules'.DIRECTORY_SEPARATOR.$f;
+                            if ($f == '.' || $f == '..') {
+				continue;
+				}
+			     if (strlen($f)) {
+				if ($f[0] == '.') {
+						continue;
+				}
+				}
+                         foreach (scandir($ruta) as $f1) {
+				if($f1=="models"){
+                                                    foreach (scandir($ruta.DIRECTORY_SEPARATOR.$f1) as $f2) {
+                                                                if ($f2 == '.' || $f2 == '..') {
+                                                                    continue;
+                                                                    }
+                                                                if (strlen($f2)) {
+                                                                    if ($f2[0] == '.') {
+                                                                    continue;
+                                                                                    }
+                                                                                }
+                                                                                $this->_venumModels[] = substr($f2,0,strpos($f2,'.php'));
+                                                                    }
+                                                }
+                                    }
+                                
+                         }
+                                
+                       
+
+				
+
+                              } 
+                                
+
+				
+
+			} 
+                
+	
 	/**
 	 * enumControllers
 	 *    lista los nombres de los controllers declarados.
@@ -124,6 +181,9 @@ const ESTADO_REGISTRO_NUEVO='00'; ///ESTO SOLO PARA INCLUIR LA CONDICION isNewRe
 				$this->_venumModels[] = substr($f,0,strpos($f,'.php'));
 
 			}
+                        
+                        $this->getModelPathsFromModules();
+                        
 			return $this->_venumModels;
 		} else {
 			return $this->_venumModels ;
@@ -148,6 +208,7 @@ public function etiquetascampos (){
 		 {$arreglo[$cla]=$cla;}ELSE{$arreglo[$cla]=$this->attributeLabels()[$cla];}
 
 	}
+        
 	//print_r($arreglo);
 	return $arreglo;
 }
@@ -410,11 +471,15 @@ public function etiquetascampos (){
 	}
 
 	public function cambiocampo($nombrecampo){
+            if(!$this->isNewRecord){
 		if($this->oldVal($nombrecampo)<>$this->{$nombrecampo}){
 			return true;
 		}else{
 			return false;
 		}
+            }else{
+                return true;
+            }
 
 	}
 
@@ -467,14 +532,11 @@ Public function recorro($matriz)
 
   public function afterfind() {
 	 ///Copiar los valores originales
-	$this->oldAttributes=$this->Attributes;
-        if(yii::app()->user->id==1){
-            // ECHO "<BR> ". get_class($this)."  :     <BR>";
-      
-           //VAR_DUMP($this->oldAttributes); 
-           //ECHO "<BR><BR><BR>";
-        }
-           $this->conviertefechas(true);             
+	
+           $this->conviertefechas(true);
+           //siempre despeus apra que oldd atrrtibutes agarre el 
+           //el campo Fechas ya convertido
+           $this->oldAttributes=$this->Attributes;        
 
 	  Return parent::afterfind();
   }
@@ -482,8 +544,9 @@ Public function recorro($matriz)
 
 
 	public function beforeSave() {
+            //echo "de";die();
               $this->conviertefechas(false);
-              //var_dump($this->geterrors());die();
+              //var_dump($this->geterrors());die();F
 		return parent::beforeSave();
 	}
 
@@ -586,16 +649,16 @@ public static function model($className=__CLASS__)
                 if(in_array($nombrecampo,array_keys($this->campossensibles)))
                                  {
                                     // isnewrecord =false; verificando si es un campo que solo sepudee ingersar una osla vez y ya no s emodifica 
-                                         if(in_array(self::ESTADO_REGISTRO_NUEVO,array($this->campossensibles[$nombrecampo]))){
+                                        // if(in_array(self::ESTADO_REGISTRO_NUEVO,array($this->campossensibles[$nombrecampo]))){
                                              //Yii::log(' campossensibles primer criterioel campo '.$nombrecampo.'   '.self::ESTADO_REGISTRO_NUEVO,'error');
-                                             return true;
+                                             //return true;
                                             
-                                         } else{ //isnewrecord =false; ahora toca revisar  segun el estado
-                                              if(in_array($this->{$this->campoestado},array($this->campossensibles[$nombrecampo]))){
+                                        // } else{ //isnewrecord =false; ahora toca revisar  segun el estado
+                                             // if(in_array($this->{$this->campoestado},array($this->campossensibles[$nombrecampo]))){
                                                 // Yii::log(' campossensibles segundo criteiro '.$nombrecampo.'   ','error');
                                             
-                                                  return true; 
-                                                } else{///muy bien ahora que ya paso los 2 criterios (1) ingreso unica vez y 2) estado del documento)
+                                                  //return true; 
+                                                //} else{///muy bien ahora que ya paso los 2 criterios (1) ingreso unica vez y 2) estado del documento)
                                                          // ahora toca revisar el criterio 3) de los compromisos, a nivel BASE DE DATOS de las tablas hijas relacionadas
                                                      if($this->checkcompromisos(get_class($this))) {//sis tiene compromisos  ya no  puede ser editable
                                                          // Yii::log(' ahora que ya paso los 2 criterios '.$nombrecampo.'   ','error');
@@ -606,11 +669,11 @@ public static function model($className=__CLASS__)
                                                          
                                                          return true;
                                                      }
-                                                }
+                                                //}
       
-                                             }
+                                             //}
                                  
-                                            } else{
+                                     } else{
                                                // var_dump($nombrecampo);var_dump(array_keys($this->campossensibles));die();
                                                // Yii::log(' campossensibles el campo '.$nombrecampo.'   no esta en los campos sensibles ','error');
                                             
@@ -727,35 +790,32 @@ public function preparaAuditoria(){
             }
             
         }   
+        
+ 
+        
+        
+        
  ///cambia las fechas del modelo en los formatos estabeldicdos en la configuracion de
         //de la aplicacion
-private function conviertefechas($salida){
+private function conviertefechas($salida){    
     IF(property_exists($this,'camposfechas'))
-    foreach($this->camposfechas as $clave=>$campo){
-        //aprovechamos este evento para generar un erro o validar estos campos fechas 
-        if(!yii::app()->periodo->validaformatos($this->{$campo})){
-            $this->adderror($campo,'El formato de fecha ['.$this->{$campo}.'] no tiene formato valido');
-          //  $this->validate();
-        }else{
-            // $this->adderror($campo,'El vf formato de fecha ['.$this->{$campo}.'] no tiene formato valido');
+    foreach($this->camposfechas as $clave=>$campo)
+        {
+        //var_dump($campo);
+       $this->{$campo}=$this->cambiaformatofecha($this->{$campo},$salida);
             
-     
-           // var_dump(yii::app()->periodo->validaformatos($this->{$campo}));
-            //echo "no detecto el error "; die(); 
-        }
-        //var_dump($this->geterrors());die();
-        
-          $this->{$campo}=$this->cambiaformatofecha($this->{$campo},$salida);
-    }
-}  
+   }
+}
 public function cambiaformatofecha($fecha,$salida=true){
    
     if($salida){ 
+        die();
         return yii::app()->periodo->fechaParaMostrar($fecha);
-    }else{
-        return yii::app()->periodo->fechaParaBd($fecha);
-       //return date_format(date_create($fecha), yii::app()->settings->get->general('general','general_formatofechaingreso'));
-     
+    }else{//SI va a ingresar
+        //var_dump(yi i::app()->periodo->validaformatos($fecha));
+        
+             return yii::app()->periodo->fechaParaBd($fecha);
+       
     }
     //return 1;
 }

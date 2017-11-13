@@ -7,7 +7,7 @@ $this->widget('ext.coco.CocoWidget'
 		'onCompleted'=>'function(id,filename,jsoninfo){  }',
 		'onCancelled'=>'function(id,filename){ alert("cancelled"); }',
 		'onMessage'=>'function(m){ alert(m); }',
-		'allowedExtensions'=>array('pdf','JPEG','JPG','gif','PNG'), // server-side mime-type validated
+		'allowedExtensions'=>array('pdf','JPEG','JPG','gif','PNG','pdf'), // server-side mime-type validated
 		'sizeLimit'=>8000000, // limit in server-side and in client-side
 		'uploadDir' => 'carpeta/',
                   //$model->getulpoaddirectory(), // coco will @mkdir it

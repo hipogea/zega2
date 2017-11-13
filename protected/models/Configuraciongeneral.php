@@ -19,9 +19,16 @@ class Configuraciongeneral extends CFormModel
          public $general_nregistrosporcarpeta; ///porcenytaje de exceso para la caja chica
           public $general_codigomanualempresa; ///indinca si el codigo proveedor es manual o automatico
             public $general_codempresa;
+             public $general_zonahoraria;
              public $general_cambiofindesemana;
              public $general_formatofechasalida;
               public $general_formatofechaingreso;
+               public $general_dni; //expresion regualr de DNI
+             public $general_ruc;//expresion regualr de RUC
+              public $general_pasaporte;//expresion regualr de PASAPORTE
+               public $general_extranjeria;//expresion regualr de DNI
+              
+              
 	/*****documentos***/
 	public $documentos_numeromaxbloqueos;
 	public $documentos_docmascara;
@@ -88,6 +95,7 @@ public $materiales_verpresolpe;
 	public $conta_formatonumerocomprobantes; ///formato XXXX-XXXXXXXX para facturas boletas
         public $conta_multisociedad; // Permitre trabajar varioas soceidades contab lemente  en una mis a sesion 
        public $conta_cajachicadevuelvefondo; // Define si el pafgoi de una deuda de caja chica de un trabajador puede convertirse nuevamente en fondo 
+    public $conta_abrecajasinrequisitos; // Define si se peude aperturar caja sin nates haber cerrado la anteriori 
 
 
 
@@ -108,6 +116,7 @@ public $materiales_verpresolpe;
 				   general_userauto,
                                    general_nregistrosporcarpeta,
                                    general_codempresa,
+                                   general_zonahoraria,
                                    general_cambiofindesemana,
                                    transporte_motivoot,
 					documentos_numeromaxbloqueos,
@@ -136,12 +145,12 @@ public $materiales_verpresolpe;
 			array(''
                             .'general_formatofechaingreso,general_formatofechasalida,conta_cajachicadevuelvefondo,conta_patroncuentas,conta_montodetraccion,conta_nperiodosabiertos,'
                              .' conta_formatonumerocomprobantes,conta_multisociedad,'
-                            . 'general_codempresa,general_codigomanualempresa,general_cambiofindesemana,email_smptauth,email_usamaildeusuario,email_passwordhost,email_nombrewebmaster,general_codigomanualempresa,transporte_umdefault,'
+                            . 'general_codempresa,general_codigomanualempresa,general_cambiofindesemana,general_dni,general_ruc, general_pasaporte,general_extranjeria,email_smptauth,email_usamaildeusuario,email_passwordhost,email_nombrewebmaster,general_codigomanualempresa,transporte_umdefault,'
                             . 'transporte_motivoot,transporte_objinterno,general_nregistrosporcarpeta,transporte_rutafotos,'
                             . 'general_directorioimg,transporte_objenguia,general_userauto,inventario_auto,'
                             . 'inventario_bloqueado,inventario_mascaraubicaciones,materiales_contabilidad,'
                             . 'materiales_verpresolpe,documentos_selloagua,documentos_controlrecepcion,'
-                            . 'transporte_lugares','safe'),
+                            . 'transporte_lugares,conta_abrecajasinrequisitos,general_zonahoraria','safe'),
 			array(
 				// array('transporte_tiempopermitidohastaentrega','numerical', 'integerOnly'=>true, 'min'=>0, 'max'=>100),
 				'general_nregistrosporcarpeta,transporte_tiempopermitidohastaentrega', 'numerical', 'integerOnly'=>true,
@@ -167,13 +176,17 @@ public $materiales_verpresolpe;
 	{
 		return array(
 
-
+                        'general_dni'=>'F. DNI',
+                    'general_ruc'=>'F. RUC',
+                    'general_pasaporte'=>'F. PASAPORTE',
+                    'general_extranjeria'=>'F. C. Extranj',
 			'general_monedadef'=>'Moneda base',
 			'general_porcexcesocaja'=>'Exceso cajachica (%)',
 			'general_userauto'=>'Uusario para operaciones automaticas',
                     'general_directorioimg'=>'Directorio de almacenamiento de Imagenes',
                     'general_nregistrosporcarpeta'=>'Cantidad registros por carpeta',
                    'general_codigomanualempresa'=>'Cod manual Empresas',
+                    'general_zonahoraria'=>'Zona Horaria',
                     'general_codempresa'=>'Codigo empresa',
                     'general_cambiofindesemana'=>'Ajustar Tip Cambio por fin de Semana',
 	'documentos_numeromaxbloqueos'=>'Cant Max Documentos abiertos por usuario',
@@ -219,6 +232,7 @@ public $materiales_verpresolpe;
                   'conta_multisociedad'=>'MultiSocie',
                     'conta_cajachicadevuelvefondo'=>'Permite convertir deudas cobradas en fondo caja chica?',
 'general_formatofechasalida'=>'Formato Fecha para mostrar',
+                    'conta_abrecajasinrequisitos'=>'Abrir caja con requisito previo',
                     'general_formatofechaingreso'=>'Formato Fecha para almacenar en BD',
 		);
 	}

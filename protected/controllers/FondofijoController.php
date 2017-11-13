@@ -87,7 +87,16 @@ class FondofijoController extends Controller
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
-
+                $modelito=new Dcajachica('search');
+              //  $modelito=new Dcajachica('search');
+		$modelito->unsetAttributes();  // clear any default values
+		if(isset($_GET['Dcajachica'])){
+                    $modelito->attributes=$_GET['Dcajachica'];
+                   //var_dump($modelito->serie);
+                }
+			
+                
+//=new Dcajachica('search');
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
@@ -97,9 +106,12 @@ class FondofijoController extends Controller
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
+                
+                
+                
 
 		$this->render('update',array(
-			'model'=>$model,
+			'model'=>$model,'modelito'=>$modelito
 		));
 	}
 
@@ -134,12 +146,14 @@ class FondofijoController extends Controller
 	public function actionAdmin()
 	{
 		$model=new Fondofijo('search');
+              //  $modelito=new Dcajachica('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['Fondofijo']))
 			$model->attributes=$_GET['Fondofijo'];
 
 		$this->render('admin',array(
 			'model'=>$model,
+                    //'modelito'=>$modelito
 		));
 	}
 

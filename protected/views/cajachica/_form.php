@@ -54,7 +54,7 @@
 					
 					
 					
-					'boook' => array(
+					'book' => array(
                             'type' => 'C',
                             'ruta' => array($this->id.'/liquidadeuda', array("id"=>$model->id)
                                             ),
@@ -67,12 +67,16 @@
 					
 					
 					
+					'join'=>array(
+						'type'=>'B',
+						'ruta'=>array($this->id.'/updatececos',array('id'=>$model->id)),
+						'visiblex'=>array($this::ESTADO_CREADO,$this::ESTADO_AUTORIZADO, $this::ESTADO_LIQUIDADO),
+					              ),
 					'print'=>array(
 						'type'=>'B',
 						'ruta'=>array($this->id.'/imprimirsolo',array('id'=>$model->id)),
 						'visiblex'=>array($this::ESTADO_CREADO,$this::ESTADO_AUTORIZADO, $this::ESTADO_LIQUIDADO),
 					              ),
-					
 					'out'=>array(
 						'type'=>'B',
 						'ruta'=>array($this->id.'/salir',array('id'=>$model->id)),

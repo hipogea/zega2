@@ -46,6 +46,7 @@ class Usuariosfavoritos extends CActiveRecord
 			array('valido', 'length', 'max'=>1),
 			array('chapa', 'length', 'max'=>40),
 			array('hiduser, fecharegistro', 'safe'),
+                    array('valido', 'safe','on'=>'prioridad'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array(' hiduser, url, fecharegistro, valido, chapa', 'safe', 'on'=>'search'),
@@ -74,7 +75,7 @@ class Usuariosfavoritos extends CActiveRecord
 			'hiduser' => 'Hiduser',
 			'url' => 'Url',
 			'fecharegistro' => 'Fecharegistro',
-			'valido' => 'Valido',
+			'valido' => 'Inicial',
 			'chapa' => 'Alias ',
 		);
 	}
@@ -111,9 +112,9 @@ class Usuariosfavoritos extends CActiveRecord
 		$criteria=new CDbCriteria;
 		$criteria->addCondition("hiduser=".$iduser);
  
-                     $dependecy = new CDbCacheDependency('SELECT count(*) FROM {{usuariosfavoritos}}');
+                     //$dependecy = new CDbCacheDependency('SELECT count(*) FROM {{usuariosfavoritos}}');
  
-                return new CActiveDataProvider($this->cache(600, $dependecy, 2), array ( 
+                return new CActiveDataProvider($this/*->cache(600, $dependecy, 2)*/, array ( 
                         'criteria'=>$criteria,
                         'pagination'=>array('pageSize'=>10),
                                             ));
@@ -123,4 +124,26 @@ class Usuariosfavoritos extends CActiveRecord
 			'criteria'=>$criteria,
 		));*/
 	}
+        public static function getUrlForMe($iduser){
+            $criteria=new CDbCriteria;
+		$criteria->addCondition("hiduser=:vusuario");
+                $criteria->addCondition("valido='1'");
+                $criteria->params=array(":vusuario"=>$iduser+0);
+                $retorno=self::model()->find($criteria);
+                //var_dump($retorno->url);
+               if(!is_null($retorno)){
+                  return  $retorno->url;
+               }else{
+                   return null;
+               }
+            
+        }
+        
+        public function aftersave(){
+            $this->refresh();
+            if($this->valido=='1'){
+                $this->updateAll(array('valido'=>'0'),"id <> :xid and   hiduser = :vusuario ",array(":xid"=>$this->id,":vusuario"=>$this->hiduser));
+            }
+            return parent::aftersave();
+        }
 }

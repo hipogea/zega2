@@ -1,9 +1,11 @@
 <?php
-CONST ESTADO_PREVIO='99';
-const DOCUMENTO='220';
+
 class Docompratemp extends ModeloGeneral
 {
-	/**
+	CONST ESTADO_PREVIO='99';
+const DOCUMENTO='220';
+    
+    /**
 	 * @return string the associated database table name
 	 */
 	public function tableName()

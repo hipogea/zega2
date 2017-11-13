@@ -76,14 +76,43 @@
 		<?php echo $form->checkBox($model,'general_codigomanualempresa'); ?>
                     <?php // echo $form->error($model,'general_codigomanualempresa'); ?>
 	</div>
+        
+        
         <div class="row">
-		<?php echo $form->labelEx($model,'general_cambiofindesemana'); ?>
-		<?php echo $form->checkBox($model,'general_cambiofindesemana'); ?>
-                    <?php // echo $form->error($model,'general_codigomanualempresa'); ?>
+		<?php echo $form->labelEx($model,'general_zonahoraria'); ?>
+		<?php echo $form->textField($model,'general_zonahoraria',array('size'=>23,'maxlength'=>23)); ?>
+		<?php echo $form->error($model,'general_zonahoraria'); ?>
 	</div>
-        
-        
-        
+        <div class="row">
+		<?php echo $form->labelEx($model,'general_formatofechasalida'); ?>
+		<?php echo $form->textField($model,'general_formatofechasalida',array('size'=>43,'maxlength'=>43)); ?>
+		<?php echo $form->error($model,'general_formatofechasalida'); ?>
+	</div>
+        <div class="row">
+		<?php echo $form->labelEx($model,'general_formatofechaingreso'); ?>
+		<?php echo $form->textField($model,'general_formatofechaingreso',array('size'=>43,'maxlength'=>43)); ?>
+		<?php echo $form->error($model,'general_formatofechaingreso'); ?>
+	</div>
+         <div class="row">
+		<?php echo $form->labelEx($model,'general_dni'); ?>
+		<?php echo $form->textField($model,'general_dni',array('size'=>43,'maxlength'=>43)); ?>
+		<?php echo $form->error($model,'general_dni'); ?>
+	</div>
+        <div class="row">
+		<?php echo $form->labelEx($model,'general_ruc'); ?>
+		<?php echo $form->textField($model,'general_ruc',array('size'=>43,'maxlength'=>43)); ?>
+		<?php echo $form->error($model,'general_ruc'); ?>
+	</div>
+        <div class="row">
+		<?php echo $form->labelEx($model,'general_pasaporte'); ?>
+		<?php echo $form->textField($model,'general_pasaporte',array('size'=>43,'maxlength'=>43)); ?>
+		<?php echo $form->error($model,'general_pasaporte'); ?>
+	</div>
+        <div class="row">
+		<?php echo $form->labelEx($model,'general_extranjeria'); ?>
+		<?php echo $form->textField($model,'general_extranjeria',array('size'=>43,'maxlength'=>43)); ?>
+		<?php echo $form->error($model,'general_extranjeria'); ?>
+	</div>
 	<BR>
 
 

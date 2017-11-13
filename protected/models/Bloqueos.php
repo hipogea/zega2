@@ -167,7 +167,7 @@ class Bloqueos extends CActiveRecord
 		$criterio->params=array(":fechalimite"=>$fechalimite);
 /*	echo "fecha actual ".date("Y-m-d H:i:s")."<br>";
 		echo  "fechalimite  ".	$fechalimite."<br>";*/
-		$filasborradas= Bloqueos::model()->delete($criterio->condition,$criterio->params);
+		$filasborradas= Bloqueos::model()->deleteAll($criterio->condition,$criterio->params);
 		/*var_dump($criterio);*/
 		return $filasborradas;
 	}

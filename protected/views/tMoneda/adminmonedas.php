@@ -8,7 +8,8 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-
+        array('label'=>'Ver tipo de cambio', 'url'=>array('cambio')),
+    array('label'=>'Monedas', 'url'=>array('listamonedas')),
 	array('label'=>'Establecer Cambio', 'url'=>array('updatecambio')),
 );
 
@@ -45,13 +46,22 @@ $this->menu=array(
              
 		array(
 			'class'=>'CButtonColumn',
-			'template'=>'{update}',
+			'template'=>'{update}{otro}',
 			'buttons'=>array('update'=>
 				array(
 					'url'=>'$this->grid->controller->createUrl("TMoneda/activamoneda",
 										    array("codmon"=>$data->codmoneda)
 									    )',
 					'imageUrl'=>''.Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'coins.png',
+					'label'=>'Reservar',
+				),
+                            
+                            'otro'=>
+				array(
+					'url'=>'$this->grid->controller->createUrl("TMoneda/actualiza",
+										    array("codmon"=>$data->codmoneda)
+									    )',
+					'imageUrl'=>''.Yii::app()->getTheme()->baseUrl.Yii::app()->params['rutatemaimagenes'].'Edit.png',
 					'label'=>'Reservar',
 				),
 			),

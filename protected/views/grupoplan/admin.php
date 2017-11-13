@@ -38,15 +38,17 @@ $('.search-form form').submit(function(){
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'grupoplan-grid',
+    'itemsCssClass'=>'table table-striped table-bordered table-hover',
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
 	'columns'=>array(
 		'codgrupo',
-		'desgrupo',
+		'oficios.oficio',
 		'interno',
 		'codcen',
 		'moneda.codmoneda',
 		'tarifa',
+            'escenario',
 		array(
 			'class'=>'CButtonColumn',
 		),

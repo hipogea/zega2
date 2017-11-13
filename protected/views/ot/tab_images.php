@@ -39,11 +39,11 @@ var_dump($modelopadre->tempdetot[0]->fotosparagaleria());*/
     
         ?>
 </div>
-
+<div id="<?php echo $identificadorwidget;   ?>"></div>
 
 <?php
 
-   $this->widget('ext.galeriafirme.GaleriaFirme',
+  /* $this->widget('ext.galeriafirme.GaleriaFirme',
 					array(
                                             'titulo'=>'',
                                             'id'=>$identificadorwidget,
@@ -55,7 +55,7 @@ var_dump($modelopadre->tempdetot[0]->fotosparagaleria());*/
 
 					)
 				);
-   
+   */
   /* $this->widget('ext.galeriafirme.GaleriaFirme',
 					array(
                                             'titulo'=>'',

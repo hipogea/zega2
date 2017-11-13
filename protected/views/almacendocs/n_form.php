@@ -42,6 +42,13 @@
 				'ruta'=>array($this->id.'/imprimir',array('id'=>$model->id)),
 				'visiblex'=>array(ESTADO_EFECTUADO),
 			),
+                    
+                    'tacho'=>array(
+				'type'=>'B',
+				'ruta'=>array($this->id.'/crearvale',array('micodigomov'=>$model->almacenmovimientos->anticodmov,'numerovale'=>$model->numvale)),
+				'visiblex'=>array(ESTADO_EFECTUADO,$model->almacenmovimientos->idevento!=71), //71 es el evento de anular vale
+			),
+                    
 			'book'=>array(
 				'type'=>'C',
 				'ruta'=>array($this->id.'/creadetalle',array(
@@ -249,11 +256,12 @@
 
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'codestadovale'); ?>
+		<?php 
+                if(!$model->isNewRecord)
+			 { echo $form->labelEx($model,'codestadovale'); ?>
 		
 		<?php 
-			if(!$model->isNewRecord)
-			 {
+			
 		     echo CHtml::textField('hola',
 			 $model->almacendocs_estado->estado,
 			  array('disabled'=>'disabled','size'=>20));
@@ -397,21 +405,21 @@
 		<?php echo $form->error($model,'codocuref'); ?>
 	</div>
 
-	<div class="row">
+	
+
+
+
+</div>
+<div class="row">
 		<?php echo $form->labelEx($model,'textolargo'); ?>
 		<?php
 
-		echo $form->Textarea($model,'textolargo',array('rows'=>3, 'columns'=>150,'disabled'=>($model->isNewRecord)?'':'disabled') ) ;
+		echo $form->Textarea($model,'textolargo',array('rows'=>3, 'columns'=>300,'disabled'=>($model->isNewRecord)?'':'disabled') ) ;
 
 
 		?>
 		<?php echo $form->error($model,'textolargo'); ?>
 	</div>
-
-
-
-</div>
-
 	
 
 	<?php if ( !$model->isNewRecord )  {

@@ -1,9 +1,9 @@
 <?php
-$provedo=VwInventario::model()->search_por_lugar($codlugar);
+$provedo=Inventario::model()->search_por_lugar($codlugar);
 /* print_r($provedo->getKeys());
  yii::app()->end();*/
-  $rutaimagenesx=Yii::getPathOfAlias('webroot.fotosinv').DIRECTORY_SEPARATOR;
-  $baserutacorta=substr($rutaimagenesx,strpos($rutaimagenesx,yii::app()->baseUrl));
+  //$rutaimagenesx=Yii::getPathOfAlias('webroot.fotosinv').DIRECTORY_SEPARATOR;
+ // $baserutacorta=substr($rutaimagenesx,strpos($rutaimagenesx,yii::app()->baseUrl));
  ?>
 
 <?php
@@ -28,10 +28,11 @@ $this->widget('zii.widgets.CDetailView', array(
 		array('name'=>'codigosap','header'=>'C. Sap','type'=>'raw','value'=>'CHtml::link($data->codigosap,array("inventario/detalle","id"=>$data->idinventario),array("onClick"=>"Loading.show(); return true;"))'), 
 		 array(
             'name'=>'imagen',
-            'type'=>'raw',
-          'value'=>'(file_exists(Yii::getPathOfAlias(\'webroot.fotosinv\').DIRECTORY_SEPARATOR.$data->codpropietario.DIRECTORY_SEPARATOR.trim($data->idinventario).\'.JPG\'))?
-						CHtml::image(Yii::app()->baseUrl.DIRECTORY_SEPARATOR.\'fotosinv\'.DIRECTORY_SEPARATOR.$data->codpropietario.DIRECTORY_SEPARATOR.trim($data->idinventario).\'.JPG\',$data->codigosap,array(\'width\'=>60,\'height\'=>50)):
+            'type'=>'html',
+          'value'=>'(is_file($data->fotoprimera()["absoluto"]))?
+						CHtml::image($data->fotoprimera()["relativo"],$data->codigosap,array(\'width\'=>70,\'height\'=>80)):
 						"--"'
+                     //'value'=>'$data->fotoprimera()["absoluto"]',
 		           ),
 		array('name'=>'codigoaf','header'=>'Plaquita','type'=>'raw','value'=>'CHtml::link($data->codigoaf,array("inventario/update","id"=>$data->idinventario),array("onClick"=>"Loading.show(); return true;"))'),
 		array('name'=>'.','header'=>'.','type'=>'raw','value'=>'(!$data->rocoto=="1")?CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."ancla.png","",array("width"=>15,"height"=>15)):CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."truck.png","",array("width"=>15,"height"=>15))','htmlOptions'=>array('width'=>'50')),

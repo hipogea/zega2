@@ -29,7 +29,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			'name'=>'fecha',
 			//array('name'=>'fechaent','header'=>'Para'),
 			'header'=>'Fecha',
-			'value'=>'date("d.m.y", strtotime($data->fecha))',
+			'value'=>'$data->fecha',
 			'htmlOptions'=>array('width'=>50),
 		),
 		array('name'=>'tipoflujo','header'=>'Tipo','value'=>'$data->flujos->destipo','htmlOptions'=>array('width'=>70)),
@@ -37,8 +37,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
 
 		array('name'=>'glosa','header'=>'Glosa','htmlOptions'=>array('width'=>300)),
 		//array('name'=>'codocu','header'=>'Documento','value'=>'$data->documentos->desdocu','htmlOptions'=>array('width'=>200)),
-		array('name'=>'referencia','header'=>'Ref.','htmlOptions'=>array('width'=>80)),
-		array('name'=>'moneda','header'=>'Moneda','value'=>'$data->monedahaber','htmlOptions'=>array('width'=>5)),
+		array('name'=>'codocu','header'=>'Documento','value'=>'$data->valorsunat($data->codocu,"010")','htmlOptions'=>array('width'=>200)),
+		array('name'=>'serie','header'=>'Serie','htmlOptions'=>array('width'=>50)),
+		
+            array('name'=>'referencia','header'=>'Ref.','htmlOptions'=>array('width'=>80)),
+		array('name'=>'razon','header'=>'Proveedor','htmlOptions'=>array('width'=>450)),
+		
+            array('name'=>'moneda','header'=>'Moneda','value'=>'$data->monedahaber','htmlOptions'=>array('width'=>5)),
 		array('name'=>'debe','header'=>'Cargo','footer'=>MiFactoria::decimal(Dcajachica::getMonto($prove)),'htmlOptions'=>array('width'=>5)),
 		array('name'=>'monto','header'=>'Monto','value'=>'MiFactoria::decimal($data->monto)','htmlOptions'=>array('width'=>5)),
 		array('name'=>'rendido','header'=>'Rendido','value'=>'$data->rendido','htmlOptions'=>array('width'=>5)),

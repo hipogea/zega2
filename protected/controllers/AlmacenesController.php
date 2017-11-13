@@ -12,7 +12,7 @@ class AlmacenesController extends Controller
 	 * @return array action filters
 	 */
 	public function filters()
-	{
+	{ 
 		return array('accessControl',array('CrugeAccessControlFilter'));
 	}
 

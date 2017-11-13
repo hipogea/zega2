@@ -40,7 +40,7 @@
 
 						array(
 							'visible' => 'true',
-							'url' => '$this->grid->controller->createUrl("/masterequipo/borradetalle", array("id"=>$data->id))',
+							'url' => '$this->grid->controller->createUrl("/masterequipo/borrahijo", array("id"=>$data->id))',
 							'options' => array('ajax' => array('type' => 'GET', 'success' => 'js:function() { $.fn.yiiGridView.update("detalle-grid");}', 'url' => 'js:$(this).attr("href")'),
 								'onClick' => 'Loading.show();Loading.hide(); ',
 							),

@@ -13,6 +13,11 @@ class Inventario extends ModeloGeneral
 	public $codlugar_;
 	public $documento_desdocu;
 	    public $proceso;
+            
+         public function init(){
+             $this->documento='390';
+             return parent::init();
+          }
 	
 	public static function model($className=__CLASS__)
 	{
@@ -61,6 +66,13 @@ class Inventario extends ModeloGeneral
 			   
 			  //atribuitos seguros en los escenarios 
 			  //BATCH_INS_BASICO
+                         array('codep,tienecarter, codepanterior,codeporiginal,coddocu,fecha,numerodocumento,codlugar,tipo,codpropietario,codarea,codigosap,codigoaf,descripcion,marca,modelo,serie,comentario','safe','on'=>'muybasico'),
+                          array('codep, tipo,codpropietario,codarea,codigosap,codigoaf,descripcion,marca,modelo,serie,comentario','safe','on'=>'muybasicoupdate'),
+                    array('tipo,codpropietario,codarea,descripcion,marca,modelo','required','on'=>'muybasicoupdate'),
+                    array('codigoaf', 'unique', 'attributeName'=> 'codigoaf', 'caseSensitive' => 'true','message'=>'Este numero de placa ya esta registrada','on'=>'muybasico'),
+			
+                    
+                    
 			  array('codpropietario,
 			          codarea,
 					  codlugar,
@@ -79,9 +91,9 @@ class Inventario extends ModeloGeneral
 			 array('codpropietario','exist','allowEmpty' => false, 'attributeName' => 'codcen', 'className' => 'Centros','message'=>'Esta planta no existe','on'=>'BATCH_INS_BASICO,BATCH_INS_TOTAL,BATCH_UPD_TOTAL'),
 			 array('codarea','exist','allowEmpty' => false, 'attributeName' => 'codarea', 'className' => 'Areas','message'=>'Esta area no existe','on'=>'BATCH_INS_BASICO,BATCH_INS_TOTAL,BATCH_UPD_TOTAL'),
 			 array('codlugar','exist','allowEmpty' => false, 'attributeName' => 'codlugar', 'className' => 'Lugares','message'=>'Este lugar no existe','on'=>'BATCH_INS_BASICO,BATCH_INS_TOTAL,BATCH_UPD_TOTAL,BATCH_UPD_INVENTARIO_FISICO,BATCH_UPD_LUGAR'),
-        	array('codep','exist','allowEmpty' => false, 'attributeName' => 'codep', 'className' => 'Embarcaciones','message'=>'Esta embarcacion no existe','on'=>'BATCH_INS_BASICO,BATCH_INS_TOTAL,BATCH_UPD_TOTAL,BATCH_UPD_INVENTARIO_FISICO,BATCH_UPD_EMBARCACION'),
+        	array('codep','exist','allowEmpty' => false, 'attributeName' => 'codep', 'className' => 'Embarcaciones','message'=>'Esta dependencia no existe','on'=>'BATCH_INS_BASICO,BATCH_INS_TOTAL,BATCH_UPD_TOTAL,BATCH_UPD_INVENTARIO_FISICO,BATCH_UPD_EMBARCACION'),
 				array('codigoaf','required','message'=>'Debes de llenar la plaquita','on'=>'BATCH_INS_BASICO,BATCH_INS_TOTAL,BATCH_UPD_TOTAL'),	 
-			   array('codigoaf', 'match', 'pattern'=>'/90-3[0-5]{1}00-[0-9]{5}/','message'=>'El codigo de placa no es el correcto','on'=>'BATCH_INS_BASICO,BATCH_INS_TOTAL,BATCH_UPD_TOTAL'),			
+			   array('codigoaf', 'match', 'pattern'=>yii::app()->settings->get('af','af_afmascara'),'message'=>'El codigo de placa no es el correcto debe ser de la forma '.yii::app()->settings->get('af','af_afmascara'),'on'=>'BATCH_INS_BASICO,BATCH_INS_TOTAL,BATCH_UPD_TOTAL'),			
 			   array('tipo','required','message'=>'Debes de llenar el tipo','on'=>'BATCH_INS_BASICO,BATCH_INS_TOTAL,BATCH_UPD_TOTAL'),
 			    array('descripcion','length','min'=>10,'max'=>40,'message'=>'Descripcion no es del tamaño adecuado ','on'=>'BATCH_INS_BASICO,BATCH_INS_TOTAL,BATCH_UPD_TOTAL,BATCH_UPD_DATOS_TECNICOS'),
 				  array('descripcion','required','message'=>'Descripcion es obligatorio ','on'=>'BATCH_INS_BASICO,BATCH_INS_TOTAL,BATCH_UPD_TOTAL,BATCH_UPD_DATOS_TECNICOS'),
@@ -94,7 +106,7 @@ class Inventario extends ModeloGeneral
 				//BATCH_INS_TOTAL
 					array('codeporiginal,codepanterior, codestado,coddocu,numerodocumento',
 						'safe','on'=>'BATCH_INS_TOTAL,BATCH_UPD_TOTAL' ),
-					array('codeporiginal,codepanterior','exist','allowEmpty' => false, 'attributeName' => 'codeporiginal', 'className' => 'Embarcaciones','message'=>'Esta embarcacion no existe','on'=>'BATCH_INS_TOTAL,BATCH_UPD_TOTAL'),
+					array('codeporiginal,codepanterior','exist','allowEmpty' => false, 'attributeName' => 'codeporiginal', 'className' => 'Embarcaciones','message'=>'Esta dependencia no existe','on'=>'BATCH_INS_TOTAL,BATCH_UPD_TOTAL'),
 				    array('coddocu','exist','allowEmpty' => false, 'attributeName' => 'coddocu', 'className' => 'Documentos','message'=>$this->coddocu.' Este documento no existe','on'=>'BATCH_INS_TOTAL,BATCH_UPD_TOTAL,BATCH_UPD_INVENTARIO_FISICO'),
 				     array('codestado','required','on'=>'BATCH_INS_TOTAL,BATCH_UPD_TOTAL,BATCH_UPD_ESTADO,BATCH_UPD_INVENTARIO_FISICO'),
 				 
@@ -132,7 +144,7 @@ class Inventario extends ModeloGeneral
 			 ////paral os updfates es ncensario el campoclave  CODIGOAF
 			 array('codigoaf','exist','allowEmpty' => false, 'attributeName' => 'codigoaf', 'className' => 'Inventario','message'=>'No se encontró este activo','on'=>
 			 'BATCH_UPD_ESTADO,BATCH_UPD_INVENTARIO_FISICO,BATCH_UPD_DATOS_TECNICOS,BATCH_UPD_EMBARCACION,BATCH_UPD_LUGAR'),
-			array('codigoaf', 'match', 'pattern'=>'/90-3[0-5]{1}00-[0-9]{5}/','message'=>'El codigo de placa no es el correcto','on'=>
+			array('codigoaf', 'match', 'pattern'=>yii::app()->settings->get('af','af_afmascara'),'message'=>'El codigo de placa no es el correcto debe ser de la forma '.yii::app()->settings->get('af','af_afmascara'),'on'=>
 			'BATCH_UPD_ESTADO,BATCH_UPD_INVENTARIO_FISICO,BATCH_UPD_DATOS_TECNICOS,BATCH_UPD_EMBARCACION,BATCH_UPD_LUGAR'),			
 			  
 			 
@@ -141,7 +153,7 @@ class Inventario extends ModeloGeneral
 			array('codpropietario','exist','allowEmpty' => false, 'attributeName' => 'codcen', 'className' => 'Centros','message'=>'Esta planta no existe','on'=>'inscarga,updacarga'),
 			array('codarea','exist','allowEmpty' => false, 'attributeName' => 'codarea', 'className' => 'Areas','message'=>'Esta area no existe','on'=>'inscarga,updacarga'),
 			array('codlugar','exist','allowEmpty' => false, 'attributeName' => 'codlugar', 'className' => 'Lugares','message'=>'Este lugar no existe','on'=>'inscarga,updacarga'),			
-			array('codep,codepanterior,codeporiginal','exist','allowEmpty' => false, 'attributeName' => 'codep', 'className' => 'Embarcaciones','message'=>'Esta embarcacion no existe','on'=>'inscarga,updacarga'),
+			array('codep,codepanterior,codeporiginal','exist','allowEmpty' => false, 'attributeName' => 'codep', 'className' => 'Embarcaciones','message'=>'Esta dependencia no existe','on'=>'inscarga,updacarga'),
 			array('coddocu','exist','allowEmpty' => false, 'attributeName' => 'coddocu', 'className' => 'Documentos','message'=>'Este documento no existe','on'=>'inscarga,updacarga'),
 			array('codep,fecha,coddocu,codlugar,codigosap,codigoaf,descripcion,marca,modelo,serie,numerodocumento,codepanterior,ubicacion,tipo,codestado,codarea,codpropietario,codeporiginal', 'safe','on'=>'inscarga,updacarga'),
 			
@@ -172,7 +184,7 @@ class Inventario extends ModeloGeneral
 			array('codigoaf', 'unique', 'attributeName'=> 'codigoaf', 'caseSensitive' => 'true','message'=>'Este numero de placa ya esta registrada','on'=>'insert,update,inscarga,updacarga'),
 			array('codigosap', 'unique', 'attributeName'=> 'codigosap', 'caseSensitive' => 'true','message'=>'Este codigo ya esta registrada','on'=>'insert,update,inscarga,updacarga'),
 			array('codigoaf', 'length', 'max'=>13,'on'=>'insert,update,inscarga,updacarga'),
-			array('codigoaf', 'match', 'pattern'=>'/90-3[0-5]{1}00-[0-9]{5}/','message'=>'El codigo de placa no es el correcto','on'=>'insert,update,inscarga,updacarga'),			
+			array('codigoaf', 'match', 'pattern'=>yii::app()->settings->get('af','af_afmascara'),'message'=>'El codigo de placa no es el correcto debe ser de la forma '.yii::app()->settings->get('af','af_afmascara'),'on'=>'insert,update,inscarga,updacarga'),			
 			array('descripcion', 'length', 'max'=>40,'on'=>'insert,update,inscarga,updacarga'),
 			//array('marca', 'length', 'max'=>15),
 			array('clasefoto', 'length', 'max'=>30,'on'=>'insert,update,inscarga,updacarga'),
@@ -185,7 +197,10 @@ class Inventario extends ModeloGeneral
 
 			array('clasefoto', 'safe','on'=>'subefoto'),
 				
-				
+				array('codestado,fecha,coddocu,numerodocumento,codpropietario','safe','on'=>'proceso'),
+                    
+                    
+                    
 				array('codlugar, codestado', 'safe','on'=>'procesar'),
 				array('codlugar, codestado', 'checkdatitos','on'=>'procesar'),
 				array('proceso', 'required','message'=>'Debes de indicar un proceso','on'=>'procesar'),
@@ -207,13 +222,17 @@ class Inventario extends ModeloGeneral
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+                    'nproyectos'=>array(self::STAT,'Machineswork','hidinventario'),
 		'barcoactual'=>array(self::BELONGS_TO, 'Embarcaciones', 'codep'),
 		'barcoanterior'=>array(self::BELONGS_TO, 'Embarcaciones', 'codepanterior'),
 		'barcooriginal'=>array(self::BELONGS_TO, 'Embarcaciones', 'codeporiginal'),
 		'lugares'=>array(self::BELONGS_TO, 'Lugares', 'codlugar'),
-		'documentox'=>array(self::BELONGS_TO, 'Documentos', 'coddocu'),
+	//'documentox'=>array(self::BELONGS_TO, 'Documentos', 'codocu'),
+                    'documentos'=>array(self::BELONGS_TO, 'Documentos', 'coddocu'),
 		'area'=>array(self::BELONGS_TO, 'Areas', 'codarea'),
-		'estado'=>array(self::BELONGS_TO, 'Estado', array('codestado','codigodoc')),
+		//'estado'=>array(self::BELONGS_TO, 'Estado', array('codestado','codigodoc')),
+                'estado' => array(self::BELONGS_TO, 'Estado', array('codestado'=>'codestado','codigodoc'=>'codocu')),
+
 			'master'=>array(self::BELONGS_TO, 'Masterequipo','codmaster'),
 		'fisicodetalle'=>array(self::HAS_MANY, 'Inventariofisicodetalle', 'idinventario'),
 		'guia'=>array(self::BELONGS_TO, 'Guia', 'iddocu'),
@@ -252,7 +271,9 @@ public static function canttransporte(){
 
 
 	public function checkcodmaster($attribute,$params) 	{
-		if($this->oldattributes['codmaster']<> $this->codmaster ){
+            //print_r($this->oldAttributes);die();
+            if(!$this->isNewRecord)
+		if($this->cambiocampo('codmaster') ){
 			//si cambio el dato del codmastger verificar que todo este OK
 
 
@@ -273,8 +294,8 @@ public static function canttransporte(){
 	{
 		return array(			
 			'c_estado' => 'C Estado',
-			'codep' => 'Embarcacion actual',
-			'codarea'=>'Area responsable',
+			'codep' => 'Dep act',
+			'codarea'=>'Area',
 			'comentario' => 'Comentario',
 			'fecha' => 'Fecha',			
 			'codlugar' => 'Lugar',
@@ -293,13 +314,13 @@ public static function canttransporte(){
 			'posicion' => 'Posicion',
 			'codcentro' => 'Codcentro',
 			'codcentrooriginal' => 'Codcentrooriginal',
-			'codeporiginal' => 'Embarcacion original',
+			'codeporiginal' => 'Dep orig',
 			'rocoto' => 'En transporte',
-			'codepanterior' => 'Embarcacion anterior',
+			'codepanterior' => 'Dep ant',
 			'codcentroanterior' => 'Codcentroanterior',
 			'clase' => 'Clase',
 			'baja' => 'Baja',
-			'tienecarter'=>'Tiene control de lubricacion',
+			'tienecarter'=>'Has Additional Control Time',
 			'lugares.deslugar'=>'Lugar',			
 			'barcoactual.nomep'=>'Ep actual',
 			'barcoanterior.nomep'=>'Ep anterior',
@@ -367,7 +388,7 @@ public static function canttransporte(){
 		$modelog->codep=$vcodep; //7COn que barco 
 		$modelog->comentario=$this->comentario;
 		$modelog->fecha=$this->fecha;
-		$modelog->coddocu=$this->coddocu;
+		$modelog->coddocu=$this->codocu;
 		$modelog->codocumov=$codigodoc; ///el codigo del doc de trabnsporte no dle invnetairo 
 		$modelog->codestado='20';
 		$modelog->codlugar=$this->codlugar;		
@@ -645,8 +666,11 @@ public static function canttransporte(){
 	public function beforeSave() {
 				
 		if ($this->isNewRecord) {
-			       $this->coddocu='390';
+			       $this->codigodoc='390';
                                $this->codestado='10';
+                       if($this->getScenario()=='muybasico'){
+                           $this->llenacamposadicionales();
+                       }
 				if(is_null($this->codigosap) or empty($this->codigosap) or trim($this->codigosap=="")) 
 				{
 					/*$criterio=new CDbCriteria;
@@ -732,4 +756,63 @@ public static function canttransporte(){
 			'criteria'=>$criteria,
 		                 ));
 	}
+        
+    public static function colocaarchivox($fullFileName,$userdata=null) {
+        $filename=$fullFileName;
+        $extension=pathinfo($filename)['extension'];
+        $registro=self::model()->findByPk($userdata);
+        $extension= strtolower($extension);
+        $registro->agregacomportamientoarchivo($extension);               
+              
+       $registro->colocaarchivo($fullFileName);
+    }
+    
+    public function agregacomportamientoarchivo($extension){
+         $comportamiento=new TomaFotosBehavior();
+        $comportamiento->_codocu='390';
+         $comportamiento->_ruta=yii::app()->settings->get('general','general_directorioimg');
+         $comportamiento->_numerofotosporcarpeta=yii::app()->settings->get('general','general_nregistrosporcarpeta')+0;
+          $comportamiento->_extensionatrabajar=$extension;
+           $comportamiento->_id=$this->idinventario; 
+           $this->attachbehavior('adjuntador',$comportamiento );  
+    }
+    
+    public function fotoprimera(){
+        $this->agregacomportamientoarchivo(".jpg");
+        return $this->sacaprimerafoto();
+    }
+    public function search_por_lugar($codlugar)
+	{
+			$criteria=new CDbCriteria;
+
+
+		$criteria->addCondition("codlugar='".$codlugar."'");
+
+
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
+	}
+  
+        private function llenacamposadicionales(){
+            if($this->getScenario()=='muybasico'){
+                //revisa las ep
+                
+                $barco=yii::app()->db->createCommand()->select('codep')
+                        ->from('{{embarcaciones}}')
+                        ->limit(1)->queryScalar();
+                $documento=yii::app()->db->createCommand()->select('codocu')
+                        ->from('{{estado}}')->where("codestado=:vestado",array(":vestado"=>$this->codestado))
+                        ->limit(1)->queryScalar();
+                 $lugar=yii::app()->db->createCommand()->select('codlugar')
+                        ->from('{{lugares}}')
+                        ->limit(1)->queryScalar();
+                 $this->setAttributes(array(
+                     'codep'=>$barco,'codepanterior'=>$barco,'codeporiginal'=>$barco,'codlugar'=>$lugar,
+                     'fecha'=>date('Y-m-d'),'numerodocumento'=>'0000','coddocu'=>$documento
+                         ));
+                 
+            }
+        }
+       
 }

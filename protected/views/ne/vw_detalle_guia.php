@@ -55,7 +55,7 @@ $this->endWidget();
 		$botones=array(
 			'add'=>array(
 				'type'=>'C',
-				'ruta'=>array('guia/creadetalle',array(
+				'ruta'=>array('ne/creadetalle',array(
 					'idcabeza'=>$modelcabecera->id,
 					'cest'=>$modelcabecera->{$this->campoestado},
 					//"id"=>$model->n_direc,
@@ -66,13 +66,13 @@ $this->endWidget();
 				),
 				'dialog'=>'cru-dialogdetalle',
 				'frame'=>'cru-detalle',
-				'visiblex'=>array(ESTADO_PREVIO,ESTADO_CREADO),
+				'visiblex'=>array($this::ESTADO_PREVIO,$this::ESTADO_CREADO),
 
 			),
                                                 
                             'tool'=>array(
 				'type'=>'C',
-				'ruta'=>array('guia/Creadetalle',array(
+				'ruta'=>array('ne/Creadetalle',array(
 					'idcabeza'=>$modelcabecera->id,
 					'cest'=>$modelcabecera->{$this->campoestado},
 					//"id"=>$model->n_direc,
@@ -83,14 +83,14 @@ $this->endWidget();
 				),
 				'dialog'=>'cru-dialogdetalle',
 				'frame'=>'cru-detalle',
-				'visiblex'=>array(ESTADO_PREVIO,ESTADO_CREADO),
+				'visiblex'=>array($this::ESTADO_PREVIO,$this::ESTADO_CREADO),
 
 			),                    
                                                 
                                                 
 			'asset'=>array(
 				'type'=>'C',
-				'ruta'=>array('guia/creadetalle',array(
+				'ruta'=>array('ne/creadetalle',array(
 					'idcabeza'=>$modelcabecera->id,
 					'cest'=>$modelcabecera->{$this->campoestado},
 					//"id"=>$model->n_direc,
@@ -101,14 +101,14 @@ $this->endWidget();
 				),
 				'dialog'=>'cru-dialogdetalle',
 				'frame'=>'cru-detalle',
-				'visiblex'=>array(ESTADO_PREVIO,ESTADO_CREADO),
+				'visiblex'=>array($this::ESTADO_PREVIO,$this::ESTADO_CREADO),
 
 			),
 
 
 			'minus'=>array(
 				'type'=>'D',
-				'ruta'=>array('guia/borraitems',array()),
+				'ruta'=>array($this->id.'/borraitems',array()),
 				'opajax'=>array(
 					'type'=>'POST',
 					'url'=>Yii::app()->createUrl($this->id.'/borraitems',array()),
@@ -120,7 +120,7 @@ $this->endWidget();
                                							 }
                                					',
 				),
-				'visiblex'=>array(ESTADO_PREVIO,ESTADO_CREADO,ESTADO_AUTORIZADO,ESTADO_ANULADO,ESTADO_CONFIRMADO,ESTADO_FACTURADO),
+				'visiblex'=>array($this::ESTADO_PREVIO,$this::ESTADO_CREADO,$this::ESTADO_ANULADO,$this::ESTADO_CONFIRMADO),
 
 			),
 
@@ -136,18 +136,18 @@ $this->endWidget();
 				),
 				'dialog'=>'cru-dialogdetalle',
 				'frame'=>'cru-detalle',
-				'visiblex'=>array(ESTADO_PREVIO,ESTADO_CREADO),
+				'visiblex'=>array($this::ESTADO_PREVIO,$this::ESTADO_CREADO),
 			),
 			'pack2'=>array(
 				'type'=>'B',
 				'ruta'=>array($this->id.'/procesardocumento',array('id'=>$model->id,'ev'=>35)),
-				'visiblex'=>array(ESTADO_PREVIO,ESTADO_CREADO),
+				'visiblex'=>array($this::ESTADO_PREVIO,$this::ESTADO_CREADO),
 
 			),
 			'adddoc'=>array(
 				'type'=>'B',
 				'ruta'=>array($this->id.'/procesardocumento',array('id'=>$model->id,'ev'=>64)),
-				'visiblex'=>array(ESTADO_PREVIO,ESTADO_AUTORIZADO),
+				'visiblex'=>array($this::ESTADO_PREVIO,$this::ESTADO_CONFIRMADO),
 
 			),
 

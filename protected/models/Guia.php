@@ -300,10 +300,12 @@ class Guia extends ModeloGeneral
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+                    'estado' => array(self::BELONGS_TO, 'Estado', array('codestado'=>'c_estgui','coddocu'=>'codocu')),
+
 			'detalle' => array(self::HAS_MANY, 'Detgui', 'n_hguia'),
 			'tempdetalle' => array(self::HAS_MANY, 'Tempdetgui', 'n_hguia'),
 			'numeroitems'=>array(self::STAT, 'Tempdetgui', 'n_hguia'),//el campo foraneo
-                    'numeroitemsvalidos'=>array(self::STAT, 'Tempdetgui', 'n_hguia','condition'=>" c_estado not in ('".self::ESTADO_DETALLE_ANULADO."')  and iduser =".yii::app()->user->id." "),//el campo foraneo
+                    'numeroitemsvalidos'=>array(self::STAT, 'Tempdetgui', 'n_hguia','condition'=>" c_estado not in ('".self::ESTADO_DETALLE_ANULADO."')  and idusertemp=".yii::app()->user->id." "),//el campo foraneo
 			'direccionespartida' => array(self::BELONGS_TO, 'Direcciones', 'n_dirsoc'),
 			'direccionesllegada' => array(self::BELONGS_TO, 'Direcciones', 'n_direc'),
 			'transportistas' => array(self::BELONGS_TO, 'Clipro', 'c_codtra'),

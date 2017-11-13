@@ -165,6 +165,92 @@
 </div>
 </div>
 
+
+<div class="division">
+<div class="wide form">
+<?php
+Yii::app()->clientScript->registerScript('search', "
+$('.activados-form form').submit(function(){
+	$('#fondofijo-grid').yiiGridView('update', {
+		data: $(this).serialize()
+	});
+	return false;
+});
+");
+
+?>
+    <div class="activados-form">
+       <?php $form=$this->beginWidget('CActiveForm', array(
+	'action'=>Yii::app()->createUrl($this->route),
+	'method'=>'get',
+            )); ?> 
+  
+
+
+
+
+	<div class="row">
+		<?php echo $form->labelEx($modelito,'serie'); ?>
+		<?php echo $form->textField($modelito,'serie',array('size'=>10,'maxlength'=>10)); ?>
+		<?php echo $form->error($modelito,'serie'); ?>
+	</div>
+
+	<div class="row buttons">
+		<?php echo CHtml::submitButton($modelito->isNewRecord ? 'Crear' : 'Grabar'); ?>
+	</div>
+        
+
+<?php $this->endWidget(); ?>
+    </div>
+    
+    
+<?php $this->widget('zii.widgets.grid.CGridView', array(
+	'id'=>'fondofijo-grid',
+	'dataProvider'=>$model->search(),
+	'itemsCssClass'=>'table table-striped table-bordered table-hover',
+	'columns'=>array(
+		'id',
+		'desfondo',
+		'codtra',
+		'codcen',
+		'iduser',
+		'fondo',
+		/*
+		'codmon',
+		'numerodias',
+		'gastomax',
+		'rojo',
+		'naranja',
+		'azul',
+		*/
+		array(
+			'class'=>'CButtonColumn',
+			'template'=>'{update}{view}'
+		),
+	),
+)); ?>
+    
+    
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <?php
 //--------------------- begin new code --------------------------
 // add the (closed) dialog for the iframe

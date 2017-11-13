@@ -1,12 +1,12 @@
 <?php
+
+class PeticionController extends ControladorBase
+{
 const ESTADO_PREVIO='99';
 const ESTADO_CREADO='10';
 const ESTADO_APROBADO='20';
 const ESTADO_ANULADO='50';
 const ESTADO_PROCESO_COMPRA='30';
-class PeticionController extends ControladorBase
-{
-
 
 	//public $layout='//layouts/column2';
 	//public $documento='130';

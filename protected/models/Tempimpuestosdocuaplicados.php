@@ -40,7 +40,8 @@ class Tempimpuestosdocuaplicados extends CActiveRecord
 			array('idstatus,id,idusertemp', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('idtemp, codocu,  iddocu, codimpuesto, valorimpuesto, idusertemp, idstatus', 'safe', 'on'=>'search'),
+                    array('idtemp,codocu,iddocu,codimpuesto,valorimpuesto,idusertemp,idstatus', 'safe', 'on'=>'buffer'),
+			array('idtemp,codocu, iddocu,codimpuesto,valorimpuesto,idusertemp,idstatus', 'safe', 'on'=>'search'),
 		);
 	}
 

@@ -274,7 +274,7 @@ private function relacionesnietas(){
 					$valor::model()->deleteAllByAttributes(array_combine($campoenlace,$id));
 				}else{
                                    // var_dump($campoenlace);echo "<br>";
-					$valor::model()->deleteAllByAttributes(array($campoenlace=>$id));
+					$valor::model()->deleteAllByAttributes(array($campoenlace=>$id,"idusertemp"=>yii::app()->user->id));
 				}
 		                                    }
                                                

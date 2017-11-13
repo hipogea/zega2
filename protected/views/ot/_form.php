@@ -1,6 +1,8 @@
 
 <div class="division"> 
+    <div class="wide form">
 <div class="form">
+    
     <?php 
         
        $form=$this->beginWidget('CActiveForm', array(
@@ -9,7 +11,7 @@
 	// controller action is handling ajax validation correctly.
 	// There is a call to performAjaxValidation() commented in generated controller code.
 	// See class documentation of CActiveForm for details on this.
-	'enableAjaxValidation'=>false,
+	'enableAjaxValidation'=>false, 
 )); ?>
 	           
 	<div class="wide form">
@@ -20,15 +22,29 @@
                         'go' => array(
                             'type' => 'A',
                             'ruta' => array(),
-                            'visiblex' => array('10'),
+                            'visiblex' => array('99'),
                         ),
                         'save' => array(
                             'type' => 'A',
                             'ruta' => array(),
                             'visiblex' => array('10'),
                          ),
+                            
+                         'worker' => array(
+                            'type' => 'C',
+                            'ruta' => array($this->id . '/cuadrilla', array(
+                                'id' => $model->id,
+                                //"id"=>$model->n_direc,
+                                "asDialog" => 1,
+                                "gridId" => 'detalle-grid',
+                            )
+                            ),
+                            'dialog' => 'cru-dialogdetalle',
+                            'frame' => 'cru-detalle',
+                            'visiblex' => array('10'),
 
-                        'ok' => array(
+                        ),
+                      /*  'ok' => array(
                             'type' => 'B',
                             'ruta' => array($this->id . '/procesardocumento', array('id' => $model->id, 'ev' => 65)),//aprobar
                             'visiblex' => array('10'),
@@ -118,7 +134,7 @@
                             'visiblex' => array('10'),
 
                         ),
-
+                            */
                         'out' => array(
                             'type' => 'B',
                             'ruta' => array($this->id . '/salir', array('id' => $model->id)),
@@ -153,13 +169,19 @@
 <?php echo $form->hiddenField($model,'id'); ?>
 			
 		<div class="panelderecho">
+                    
 		<div class="row">
+                    <?php if(!$model->isNewRecord){ ?>
 		<?php echo $form->labelEx($model,'numero'); ?>
 
 			<?php echo $form->textField($model,'numero',array('class'=>'numerodocumento','size'=>10,'maxlength'=>10,'Disabled'=>'Disabled')); ?>
-			<?php echo $form->textField($model,'textocorto',array('size'=>30,'maxlength'=>40)); ?>
+                    <?php } ?>
+                </div>
+                <div class="row">
+                    <?php echo $form->labelEx($model,'textocorto'); ?>
+                            <?php echo $form->textField($model,'textocorto',array('size'=>30,'maxlength'=>40)); ?>
 		<?php echo $form->error($model,'textocorto'); ?>
-	</div>
+	         </div>
         <div class="row">
             <?php if(!$model->isNewRecord) { ?>
 		<?php echo $form->labelEx($model,'codpro'); ?>
@@ -297,11 +319,7 @@
 			<?php 
                         echo $form->error($model,'fechafin'); ?>
 		</div>
-       <div class="row">
-		<?php echo $form->labelEx($model,'fechacre'); ?>
-		<?php echo $form->textField($model,'fechacre',array('disabled'=>'disabled')); ?>
-		<?php echo $form->error($model,'fechacre'); ?>
-	</div>
+       
 
 		<div class="row">
 			
@@ -318,7 +336,7 @@
 						'ordencampo'=>1,
 						'controlador'=>$this->id,
 						'relaciones'=>$model->relations(),
-						'tamano'=>6,
+						'tamano'=>3,
                                                 //'nombreclase'=> get_class($model),                                                
 						'model'=>$model,
 						'form'=>$form,
@@ -348,7 +366,7 @@
 						'ordencampo'=>1,
 						'controlador'=>$this->id,
 						'relaciones'=>$model->relations(),
-						'tamano'=>6,
+						'tamano'=>3,
                                                // 'nombreclase'=> get_class($model),                                                
 						'model'=>$model,
 						'form'=>$form,
@@ -363,18 +381,98 @@
                    <?php echo $form->error($model,'codpro1'); ?>
 		</div>
                  
-                 <div class="row">
-                         <?php echo $form->labelEx($model,'coddobjeto'); ?>
+                    <div class="row">
+
+		<?php echo $form->labelEx($model,'idcontacto'); ?>
+		<?php 
+                if($model->isNewRecord){ 
+		          $datos1=array();
+                          echo Chtml::ajaxLink(
+			Chtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."filter.png"),
+			CController::createUrl('Contactos/Contactosporprove'), array(
+				'type' => 'POST',
+				'url' => CController::createUrl('Contactos/Contactosporprove'), //  la acción que va a cargar el segundo div
+				'update' => '#Ot_idcontacto', // el div que se va a actualizar
+				'data'=>array('codigoprov'=>'js:Ot_codpro1.value'),
+			)
+
+		            );
+                }else{
+		$criterio=new CDbCriteria;
+		$criterio->addcondition("c_hcod='".$model->codpro1."'");
+		$datos1 = CHtml::listData(Contactos::model()->findAll($criterio),'id','c_nombre');
+		
+		    }
+                        echo $form->DropDownList($model,'idcontacto',$datos1, array('empty'=>'--Seleccione Contacto--' ) ) ;
+                
+
+		?>
+		<?php echo $form->error($model,'idcontacto'); ?>
+		<?php 
+                
+		// ?>
+                        <div class="row">            
+                        <?php echo $form->labelEx($model,'serie'); ?>
+			<?php echo $form->textField($model,'serie',array('size'=>16)); ?>
+                        <?php echo $form->error($model,'serie'); ?>
+                      </div>
+
+	              <div class="row">            
+                        <?php echo $form->labelEx($model,'identificador'); ?>
+			<?php echo $form->textField($model,'identificador',array('size'=>16)); ?>
+                        <?php echo $form->error($model,'identificador'); ?>
+                      </div>
+
+	           <div class="row">            
+                        <?php echo $form->labelEx($model,'codsap'); ?>
+			<?php echo $form->textField($model,'codsap',array('size'=>9)); ?>
+                        <?php echo $form->error($model,'codsap'); ?>
+                      </div>
+
+	</div>
+                    
+                    
+                    
+                     
+                </div>	
+			<div class="panelizquierdo">
+
+
+	
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'textolargo'); ?>
+		 <?php      $this->widget(
+                        'application.components.booster.widgets.TbRedactorJs',
+                                array(
+                                'name' => 'some_text_field',
+                                    'model'=> $model,
+                                    'attribute'=>'textolargo',
+                                )
+                            );?>
+		<?php echo $form->error($model,'textolargo'); ?>
+	</div>
+
+      <div class="row">
+                         <?php
+                         
+                         if(!$model->isNewRecord){
+                         echo $form->labelEx($model,'codobjeto'); ?>
                             <?php
-                                if(!$model->isNewRecord){
+                                
                                             $criterio=new CDbCriteria;
                                             $criterio->addcondition("codpro='".$model->clipro->codpro."'");
                                             $datos1 = CHtml::listData(ObjetosCliente::model()->findAll($criterio),'codobjeto','nombreobjeto');
 		
-                                    }else{
-                                        $datos1=array();
-                                        }
-             echo Chtml::ajaxLink(
+                                
+                                        
+            
+
+
+				
+       
+		echo $form->DropDownList($model,'codobjeto',$datos1, array('empty'=>'--Seleccione Emplazamiento--','disabled'=>($model->escampohabilitado('codobjeto'))?'':'disabled' ) ); 
+                echo Chtml::ajaxLink(
 			Chtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."filter.png"),
 			CController::createUrl($this->id.'/ajaxobjetosporclipro'), array(
 				'type' => 'POST',
@@ -383,18 +481,24 @@
 				'data'=>array('identidad'=>'js:Ot_codpro.value'),
 			) );
 
-
-				
-       
-		echo $form->DropDownList($model,'codobjeto',$datos1, array('empty'=>'--Seleccione Emplazamiento--' ) ) ;
-
-
 		?>
            
-               <?php echo $form->error($model,'codobjeto'); ?>     
+              
+                <?php echo $form->error($model,'codobjeto'); }?>  
+          
                     </div>   
+            
+	<div class="row">
+		<?php echo $form->labelEx($model,'codcen'); ?>
+		<?php                
+                            $datos1R = CHtml::listData(Centros::model()->findAll(array('order'=>'nomcen')),'codcen','nomcen');
+		 			 echo $form->DropDownList($model,'codcen',$datos1R, array('empty'=>'--Seleccione un centro--',));  
+		?>
+                    <?php echo $form->error($model,'codcen'); ?>
+	</div>
 
-		<div class="row">
+	
+	<div class="row">
 			<?php echo $form->labelEx($model,'codresponsable'); ?>
 			<?php
 
@@ -424,75 +528,69 @@
 			?>
 
 		</div>
-
-		</div>
-			<div class="panelizquierdo">
-
-
 	
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'textolargo'); ?>
-		<?php echo $form->textArea($model,'textolargo',array('rows'=>3, 'cols'=>40)); ?>
-		<?php echo $form->error($model,'textolargo'); ?>
-	</div>
-
-
-            
-	<div class="row">
-		<?php echo $form->labelEx($model,'codcen'); ?>
-		<?php                
-                            $datos1R = CHtml::listData(Centros::model()->findAll(array('order'=>'nomcen')),'codcen','nomcen');
-		 			 echo $form->DropDownList($model,'codcen',$datos1R, array('empty'=>'--Seleccione un centro--',));  
-		?>
-                    <?php echo $form->error($model,'codcen'); ?>
-	</div>
-
-	
-
-	
-
+                <div class="row">
+                    <?php echo $form->labelEx($model,'codcompo'); ?>
+		<?php 	
+			$this->widget('zii.widgets.jui.CJuiAutoComplete', array(
+			'model'=>$model,
+			'attribute'=>"codcompo",
+                        'source'=>Yii::app()->createUrl('request/suggestcompo'),
+                        'options'=>array(
+				'showAnim'=>'fold',),
+                            
+                         'htmlOptions'=>array(
+                                    'ajax'=>array( 
+                                                'type'=>'POST', 
+                                                'data'=>array('codigocompo'=>'js:'.get_class($model).'_codproyecto.value'),
+                                                'url'=>Yii::app()->createUrl($this->id.'/ajaxot'),
+						'success'=>'js:function(data){$("#'.get_class($model).'_desobjeto").val(data);}',
+                         
+                                                ) ,
+                                            'size'=>'12',
+                                              'disabled'=>($model->escampohabilitado('codcompo'))?'':'disabled',
+                                                    ),   
+                             		));?>
+                    <?php echo $form->textField($model,'desobjeto',array('disabled'=>'disabled','value'=> Masterequipo::fndescripcioncompleta($model->codcompo))); ?>
+                   <?php echo $form->error($model,'codcompo'); ?>
+		</div>               
+                            
+                            
 	<div class="row">
     <?php if(!$model->isNewRecord){ ?>
 		<?php echo $form->labelEx($model,'codestado'); ?>
-		<?php echo CHtml::textField('modeldgdgd',$model->estado->estado,array('disabled'=>($editable)?'':'disabled')); ?>
+		<?php echo CHtml::textField('modeldgdgd',$model->estado->estado,array('disabled'=>'disabled')); ?>
     <?php }   ?>	
 	</div>
 
 	
-
-	
-
 			</div>
 
 
 
-</div><!-- form -->
-
-	</div>
 
 
 
-
-
-<?php
+<div class="row">
+<?php  
  if(!$model->isNewRecord){
 $this->widget('zii.widgets.jui.CJuiTabs', array(
 		'theme' => 'default',
 		'tabs' => array(
 			'Labores'=>array('id'=>'tab_',
 				'content'=>$this->renderPartial('tab_labores', array('form'=>$form,'model'=>$model),TRUE)
-			),
-			'Recursos'=>array('id'=>'tab_ui',
+			), 
+			/*'Recursos'=>array('id'=>'tab_ui',
 				'content'=>$this->renderPartial('tab_recursos', array('form'=>$form,'model'=>$model,'modelolabor'=>$modelolabor),TRUE)
 			),
                     
                     'Rec externos'=>array('id'=>'tab_uifre4',
 				'content'=>$this->renderPartial('tab_consignaciones', array('form'=>$form,'model'=>$model,'modeloconsi'=>$modeloconsi),TRUE)
 			),
-                    
+                    /*
                     'Componentes rotativos'=>array('id'=>'tab_uifre5',
-				'content'=>$this->renderPartial('tab_neot', array('modeloconsi'=>$modeloconsi),TRUE)
+				'content'=>$this->renderPartial('tab_neot', array('model'=>$model,'modeloconsi'=>$modeloconsi),TRUE)
 			),
                      'Imputaciones Caja Menor'=>array('id'=>'tab_imgghty454',
 				'content'=>$this->renderPartial('tab_cajachica', array('modelopadre'=>$model),TRUE)
@@ -501,6 +599,12 @@ $this->widget('zii.widgets.jui.CJuiTabs', array(
                     'Registro visual'=>array('id'=>'tab_img',
 				'content'=>$this->renderPartial('tab_images', array('modelopadre'=>$model),TRUE)
 			),
+                    
+                    
+                     'Registro visual'=>array('id'=>'tab_img',
+				'content'=>$this->renderPartial('tab_images', array('modelopadre'=>$model),TRUE)
+			),
+                    
                     
                     
                     
@@ -513,7 +617,7 @@ $this->widget('zii.widgets.jui.CJuiTabs', array(
                     'Costos'=>array('id'=>'tab__n__..__',
 				'content'=>$this->renderPartial('tab_resumencostos', array('proveedorceco'=>$model->resumenCostosPorCeCo(false),'proveedordef'=>$model->resumenCostosPorTipo(true),'model'=>$model),TRUE)
 			),
-
+*/
 
 		),
 		'options' => array('overflow'=>'auto','collapsible' => false,),
@@ -522,12 +626,15 @@ $this->widget('zii.widgets.jui.CJuiTabs', array(
 
  }
 ?>
-
+</div>
 
 
 <?php $this->endWidget(); ?>
+</div>
+</div>
 
 </div>
+
 
 <?php
 $this->beginWidget('zii.widgets.jui.CJuiDialog', array(

@@ -531,14 +531,18 @@ public function getstockTotalmaterial($codmaterial,$adatos=null){
 			}else{
 				$stock=$this->getstockregistro();
 			}
+                        
+                        
 			//VERIFICANDO QUE EL STOCK ESTE DEBAJO DEL REORDEN, PERO TOMANDO EN CUENTA LA
 			//CATIDAD DE SOLICITUD ECONOMICA, ES DECIR
 			$valorref=$this->detallesmaterial()['reorden'] - $this->detallesmaterial()['cantsol'];
 			$valorref=($valorref<0)?0:$valorref; //no permitir valores anegativos
 			IF($stock <  $valorref or $valorref=0){ //En estos casso reponer stock, solcitando una solpe automatica de repsicon de mateiales
-				$numero=Solpe::Solicitudautomatica($this);
+				$numero=Solpe::solpeautomatica($this);
 				MiFactoria::Mensaje('notice','Se ha creado la solicitud automatica para reposicion de stock '.$numero);
-			}
+			}else{
+                            MiFactoria::Mensaje('notice','Condicion no cumplida :  El stock '.$stock.'  es mayor o igual a la difernecia del reorden['.$this->detallesmaterial()["reorden"].'  y la cantidad solicitada  '. $this->detallesmaterial()['cantsol']);
+                        }
 
 		}
 	}
@@ -725,6 +729,10 @@ public function getstockTotalmaterial($codmaterial,$adatos=null){
             Yii::log('Alinventario verificaconsistencia_stock( nombrecampostockorigen='.$nombrecampostockorigen.','.$cant.'  ): ', CLogger::LEVEL_TRACE);      
 
 		$retorno=false;
+                if($this->eslifofifo() )
+			 if(!$this->verificaconsistencialotes()){
+                             return false;
+                         }
 		foreach ($this->camposstock as $clave=>$valor ) {
 			if($clave==$nombrecampostockorigen){
 				if( $this->{$valor} >= $cant ) {
@@ -761,7 +769,7 @@ public function getstockTotalmaterial($codmaterial,$adatos=null){
 
 
                  Yii::log('Alinventario actualiza_stock()_: id='.$this->id.'  codmov='.$codmov.' cant='.$cant.' idkardex='.$idkardex, Clogger::LEVEL_INFO);      
-
+                        $mensa="nada";
 		   $retorno=false;
 	 if($cant > 0){
             
@@ -780,7 +788,7 @@ public function getstockTotalmaterial($codmaterial,$adatos=null){
 				 $retorno=true;
 		     } else {
 				MiFactoria::Mensaje ( 'error' , __CLASS__ . '=>' . __FUNCTION__ . '  INCONSISTENCIA DE STOCK, CANTIDAD A SACRA MAYOR QUE EL STOCK ' );
-				$retorno=false;
+				$retorno=false;$mensa="primer";
 				//echo " verifica osdnsitencioa de sotclk dio  falso <br>  ";YII::APP()->END();
 			}
 		    } elseif($signo==0){  //// Si es un movimiento entre stocks , no entra ni sale nada
@@ -791,16 +799,26 @@ public function getstockTotalmaterial($codmaterial,$adatos=null){
 						$retorno=true;
 			 			}  else {
 						MiFactoria::Mensaje ( 'error' , __CLASS__ . '=>' . __FUNCTION__ . '  INCONSISTENCIA DE STOCK, CANTIDAD A SACRA MAYOR QUE EL STOCK ' );
-
+                                                    $mensa="segundo";
 						$retorno=false;
 					}
 		   }  else { /// Si es un ingreso
-			 $this->{$campo}+=$cant;
-			 $retorno=true;
+                       if($this->eslifofifo() ){
+			 if(!$this->verificaconsistencialotes()){
+			 MiFactoria::Mensaje ( 'error' , __CLASS__ . '=>' . __FUNCTION__ . '    '.__LINE__.'  Se verifico que no hay consistencias con los lotes de este registro de inventario ');
+				$retorno=false;
+                                $mensa="tercer";
+                                   }
+                       
+                         }else{
+                                $this->{$campo}+=$cant;
+                                $retorno=true;
+                         }
 		 }
 	 } else {
 		 MiFactoria::Mensaje('error',$this->identidada().' La cantidad no es postiva ');
 		 $retorno=false;
+                 $mensa="curto";
 		}
     if(!$this->tratalotes($cant,$codmov,$idkardex)){echo "erro ala tratar lotes ";die();}
 	 if($modelomov->actualizaprecio=='1' or  ($this->eslifofifo())  )
@@ -811,24 +829,16 @@ public function getstockTotalmaterial($codmaterial,$adatos=null){
 	 if($retorno) {
 			 	 $this->setScenario ( self::ESCENARIO_ACTUALIZARSTOCK );
 						  if ( ! $this->save () ) {
-				  					MiFactoria::Mensaje ( 'error' , __CLASS__ . '=>' . __FUNCTION__ . ' Material ' . $this->codart . ' Hubo un problema al grabar el registro de inventario ' );
+				  					//MiFactoria::Mensaje ( 'error' , __CLASS__ . '=>' . __FUNCTION__ . ' Material ' . $this->codart . ' Hubo un problema al grabar el registro de inventario ' );
 							  MiFactoria::Mensaje ( 'error' , __CLASS__ . '=>' . __FUNCTION__ . '  '.yii::app()->mensajes->getErroresItem($this->geterrors()) );
 							  $retorno = false;
 							          //echo " fallo al grabar <br>";
 			  		                } else {
 							     $retorno=true;
-							  if($this->eslifofifo() )
-							   if(!$this->verificaconsistencialotes()){
-								 // $regkardex=Alkardex::model()->findByPK($idkardex);
-								 // VAR_DUMP($regkardex->attributes);
-								  // var_dump($this->attributes);
-								 //  var_dump($this->lotesfifo);
-								   MiFactoria::Mensaje ( 'error' , __CLASS__ . '=>' . __FUNCTION__ . '    '.__LINE__.'  Se verifico que no hay consistencias con los lotes de este registro de inventario ');
-								   $retorno=true;
-							   }
+							  
 								   }
 		  		} else {
-			  MiFactoria::Mensaje ( 'error' , __CLASS__ . '=>' . __FUNCTION__ . ' Hubo un error al intentar actaulizar el inventario' );
+			  MiFactoria::Mensaje ( 'error' , __CLASS__ . '=>' . __FUNCTION__ . ' Hubo un error al intentar actaulizar el inventario  '.$mensa );
 			  //  echo "no hay consistencia para actualkziar invnetario";
 	 }
 

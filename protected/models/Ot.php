@@ -15,10 +15,13 @@ class Ot extends  ModeloGeneral
 	}
 	public function init(){
 		$this->documento='890';
+                $this->campoestado='codestado';
 
 	}
-        public $camposfechas=array('fechafinprog', 'fechainiprog','fechainicio', 'fechafin');
+        public $desobjeto; //campo auxiliar para mostrar la descripcion del objeto del  a cabecera
         
+        public $camposfechas=array('fechafinprog', 'fechainiprog','fechainicio', 'fechafin');
+        public $campossensibles=array('codobjeto','codcompo');
         public function behaviors()
 	{
 		return array(
@@ -50,14 +53,18 @@ class Ot extends  ModeloGeneral
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('fechainiprog,codobjeto, codpro,codresponsable, textocorto, codcen', 'required'),
-                     //array('codobjeto','required','message'=>'Debe especificar un objeto'),
+                    array('codcompo','exist','allowEmpty' => true, 'attributeName' => 'codigo', 'className' => 'Masterequipo','message'=>'Este componente no existe'),
+		       array('fechainiprog, codpro,codresponsable, textocorto, codcen', 'required'),
+                        array('codobjeto','required','message'=>'Debe especificar un objeto','on'=>'update'),
+			 array('codobjeto','checkobjeto','on'=>'update'),
+                     array('numero','checkitems','on'=>'update'),
 			
 			array('fechafinprog, fechainiprog,fechainicio, fechafin','checkfechas'),
                     array('codpro','exist','allowEmpty' => false, 'attributeName' => 'codpro', 'className' => 'Clipro','message'=>'Esta empresa no existe'),
-			   array('codpro1','exist','allowEmpty' => true, 'attributeName' => 'codpro', 'className' => 'Clipro','message'=>'Esta empresa no existe'),
-		                    array('idobjeto', 'checkobjeto','on'=>'insert'),
-                            array('textolargo,codobjeto','safe','on'=>'insert,update'),
+	            array('idcontacto','checkcontacto','on' => 'insert,update'),			 
+                    array('codpro1','exist','allowEmpty' => true, 'attributeName' => 'codpro', 'className' => 'Clipro','message'=>'Esta empresa no existe'),
+		                   // array('idobjeto', 'checkobjeto','on'=>'insert'),
+                            array('textolargo,codobjeto,codcompo,desobjeto,serie,identificador,codsap','safe','on'=>'insert,update'),
 			array('idobjeto, iduser', 'numerical', 'integerOnly'=>true),
 			array('numero', 'length', 'max'=>12),
 			array('codpro', 'length', 'max'=>8),
@@ -119,21 +126,25 @@ class Ot extends  ModeloGeneral
 		return array(
 			'id' => 'ID',
 			'numero' => 'Numero',
-			'fechacre' => 'Fechacre',
-			'fechafinprog' => 'Fechafinprog',
-			'codpro' => 'Cl final',
-                    'codpro1' => 'Cl',
+			'fechacre' => 'F. Crea',
+                    'fechainiprog' => 'F. in Prog',
+                        'fechainicio'=>'F. inic',
+			'fechafinprog' => 'F.fin Prg',
+			'codpro' => 'Cli final',
+                    'codobjeto'=>'Referencia',
+                    'codpro1' => 'Cli ',
 			'idobjeto' => 'Idobjeto',
-			'codresponsable' => 'Responsabl',
+			'codresponsable' => 'Respons',
 			'textocorto' => 'Descrip',
 			'textolargo' => 'Detalles',
 			'grupoplan' => 'G Plan',
 			'codcen' => 'Centro',
 			'iduser' => 'Usuario',
 			'codocu' => 'Doc',
-			'codestado' => 'Estado',
+			'codestado' => 'Estado', 
 			'clase' => 'Clase',
 			'hidoferta' => 'Hidoferta',
+                    'codobjeto' => 'Hidoferta',
 		);
 	}
 
@@ -195,8 +206,8 @@ class Ot extends  ModeloGeneral
 	 * @param $params
 	 *
 	 */
-	public function checkobjeto($attribute,$params) {
-            var_dump($this->idobjeto);var_dump(Objetosmaster::model()->findByPk($this->idobjeto));die();
+	/*public function checkobjeto($attribute,$params) {
+            //var_dump($this->idobjeto);var_dump(Objetosmaster::model()->findByPk($this->idobjeto));die();
             if($this->isNewRecord){
                 $codigocli= Objetosmaster::model()->findByPk($this->idobjeto)->objetoscliente->codpro;
             }else{
@@ -206,7 +217,7 @@ class Ot extends  ModeloGeneral
                 $this->adderror('idobjeto','Este equipo no pertenece a la organizacion '.$this->clipro->despro);
 	  
 		}
-
+*/
 
 	/**************************
 	 * Checkea las fechas de inicio y programacion no son consistentes
@@ -225,6 +236,7 @@ class Ot extends  ModeloGeneral
 		}
 
 	public function beforeSave() {
+          //echo "beofres";die();
 		if ($this->isNewRecord) {
 			$this->codestado='10';
 			$this->codocu='890';
@@ -375,5 +387,80 @@ public  function  resumenCostosPorCeCo($temp=false){
               return null;
           }
       }
-        
+      
+      public function getids(){
+          $valores=yii::app()->db->createCommand()->
+                  select('t.id')->
+                  from('{{detot}} t')-> 
+                  where('  t.hidorden=:vid ',array(":vid"=>$this->id))-> 
+                  queryColumn();
+          if(count($valores)>0){
+              return $valores;              
+          }else{
+              return array(-1);
+          }
+      }
+  
+        /**************************
+	 * Checkea que le objeto y el cliente final sean compatible 
+	 * @param $attribute
+	 * @param $params
+	 *
+	 */
+	public function checkobjeto($attribute,$params) {
+           if(!is_null($this->codobjeto)){
+              $obj= ObjetosCliente::model()->findByPk(array('codpro'=>$this->codpro, 'codobjeto'=>$this->codobjeto));
+            if(is_null($obj)){
+                 $this->addError ('codobjeto', 'La referencia a este objeto no coincide con el cliente');
+                      return;  
+           }
+           
+           
+            }
+             else{
+               $this->addError ('codobjeto', 'Llene el objeto referencia '.$this->codobjeto);
+                 
+           }
+           
+            }
+               
+		
+      public function checkitems($attribute,$params) {
+           if($this->numeroitems==0)
+              $this->addError ('numero', 'No pude generar la orden porque no tiene detalles ');
+                      return;  
+		}
+       public function checkcontacto($attribute,$params) {
+	       $matriz= Contactos::model()->findAll("id=:idx and c_hcod=:vcdf",array(":vcdf"=>$this->codpro1,":idx"=>$this->idcontacto));
+		   if (count($matriz)==0)
+		   {
+				  		// if(!$this->codpro==$fila->c_hcod)
+					   			$this->adderror('idcontacto','Este contacto no pertenece a la empresa '.$this->codpro1.' o no existe ');
+
+		   }
+			}  
+                        
+    public function suggestotsimple($keyword,$limit=20)
+	{
+		$models=$this->findAll(array(
+			'condition'=>'numero LIKE :keyword',
+			'order'=>'numero',
+			'limit'=>$limit,
+			'params'=>array(':keyword'=>"%$keyword%")
+		));
+		$suggest=array();
+		//$suggest=array(JSON_ENCODE($models[0]),'KFSHFKSIY');
+		foreach($models as $model) {
+			$suggest[] = array(
+				'label'=>$model->numero.'-'.$model->textocorto,  // label for dropdown list
+				'value'=>$model->numero,  // value for input field
+				//'id'=>$model->id,       // return values from autocomplete
+				//'code'=>$model->code,
+				//'call_code'=>$model->call_code,
+			);
+		}
+		
+		return $suggest;
+	}                     
+      
 }

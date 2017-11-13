@@ -41,7 +41,7 @@ class CuentasController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('llena','create','update'),
+				'actions'=>array('llena','create','update','deleteByDoc','updateByDoc','createByDoc'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -204,5 +204,94 @@ class CuentasController extends Controller
 		  $comando2->execute();
 
 	  }
+         }
+         
+         
+         /*
+          * ESTA FUNCIO crea LAS CUENTAS DEL ASIENTO DE UN DOTERMINADO DOCUMENTO
+          * PARA QUE SALGA POR DEFECTO 
+          * @CODOCU
+          * 
+          */
+         
+         public function actioncreateByDoc(){
+             $codocu=$_GET['codocu'];
+             if(!is_null(Documentos::verificadoc($codocu)))
+             {
+               $cata=New Cuentasdoc;
+               if(isset($_POST['Cuentasdoc'])){
+                   $cata->attributes=$_POST['Cuentasdoc'];
+                   $cata->codocu= $codocu;
+			if($cata->save())
+                            	echo CHtml::script("window.parent.$('#cru-dialog4').dialog('close');
+									window.parent.$('#cru-detalle4').attr('src','');
+									window.parent.$.fn.yiiGridView.update('documentosop-grid');
+					");
+					Yii::app()->user->setFlash('success', " Se grabaron los datos  ");
+					
+                            
+			
+               }
+               $this->layout = '//layouts/iframe';
+               $this->render('//documentos/_form_cuentas',array(
+                'model'=>$cata      ));
+             }
+         }
+           /* ESTA FUNCIO MODIFICA LAS CUENTAS DEL ASIENTO DE UN DOTERMINADO DOCUMENTO
+          * PARA QUE SALGA POR DEFECTO 
+          * @CODOCU
+          * 
+          */
+         
+         public function actionupdateByDoc($codocu){
+             $cata=Documentos::verificadoc($codocu);
+             if(!is_null($cata))
+             {
+               //$cata=New Cuentasdoc;
+               if(isset($_POST['Cuentasdoc'])){
+                   $cata->attributes=$_POST['Cuentasdoc'];
+			if($cata->save())
+                            	echo CHtml::script("window.parent.$('#cru-dialogdetalle').dialog('close');
+									window.parent.$('#cru-detalle').attr('src','');
+									window.parent.$.fn.yiiGridView.update('detalle-grid');
+					");
+					Yii::app()->user->setFlash('success', " Se grabaron los datos  ");
+					
+                            
+			
+               }
+               $this->layout = '//layouts/iframe';
+               $this->render('_form_cuentas',array(
+                'model'=>$cata      ));
+             }
+         }
+         
+          /* ESTA FUNCIO borra LAS CUENTAS DEL ASIENTO DE UN DOTERMINADO DOCUMENTO
+          * PARA QUE SALGA POR DEFECTO 
+          * @CODOCU
+          * 
+          */
+         
+         public function actiondeleteByDoc(){
+            
+               $codocu=$_POST['Documentos']['coddocu'];
+       $autoIdAll = $_POST['cajita'];
+        $cata=Documentos::verificadoc($codocu);
+             if(!is_null($cata))
+             {
+               
+       if(count($autoIdAll)>0 ) //and ($this->eseditable($estado)==''))
+       {
+           foreach($autoIdAll as $autoId)
+           {
+              echo "borrando \n";
+               Cuentasdoc::model()->findByPk(array("codocu"=>$codocu,"codcuenta"=>$autoId))->delete();
+
+           }
+       }
+   
+             }else{
+                 echo "No se encontro el codigo de documento ".$codocu;
+             }
          }
 }

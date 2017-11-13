@@ -103,8 +103,8 @@
                             <?php if(!$model->isNewRecord ) { ?>
 				<?php echo $form->labelEx($model,'codigopadre'); ?>
 				<?php
+                            if($model->escampohabilitado('codobjeto')){
 
-/*
 				$this->widget('ext.matchcode.MatchCode',array(
 						'nombrecampo'=>'codigopadre',
 						'ordencampo'=>3,
@@ -119,10 +119,20 @@
 						'nombrearea'=>'fehdxaaafj',
 					)
 
-				);*/
-                                echo CHtml::textField('h52sgs',$model->parent->codigo,array('size'=>3, 'disabled'=>'disabled'));
+                            );}
+                            else{
+                              echo CHtml::textField('h52sgs',$model->parent->codigo,array('size'=>8, 'disabled'=>'disabled'));
                                 echo CHtml::textField('h542sgs',$model->parent->descripcion,array('size'=>40, 'disabled'=>'disabled'));
-				?>
+				  
+                            }
+                            /*var_dump($model->padres);echo "<br><br>";
+                            var_dump($model->padres);echo "<br><br>";
+                            var_dump($model->canthijos);echo "<br><br>";
+                            var_dump($model->children);echo "<br><br>";
+                            var_dump($model->childCount);echo "<br><br>";
+                            var_dump($model->nobjetosmaster);echo "<br><br>";
+                            var_dump($model->masterrelacion);echo "<br><br>";*/
+                                ?>
 				<?php echo $form->error($model,'codigopadre'); ?>
                             <?php } ?>
 

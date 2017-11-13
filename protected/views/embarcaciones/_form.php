@@ -5,8 +5,7 @@
 ?>
 
 <div class="form">
-<div class="wide form">
-    <div class="division">
+
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'embarcaciones-form',
 	'enableAjaxValidation'=>false,
@@ -39,22 +38,6 @@
 		<?php echo $form->textField($model,'cbodega'); ?>
 		<?php echo $form->error($model,'cbodega'); ?>
 	</div>
-        
-        <div class="row">
-		<?php echo $form->labelEx($model,'eslora'); ?>
-		<?php echo $form->textField($model,'eslora'); ?>
-		<?php echo $form->error($model,'eslora'); ?>
-	</div>
-        <div class="row">
-		<?php echo $form->labelEx($model,'manga'); ?>
-		<?php echo $form->textField($model,'manga'); ?>
-		<?php echo $form->error($model,'manga'); ?>
-	</div>
-        <div class="row">
-		<?php echo $form->labelEx($model,'puntal'); ?>
-		<?php echo $form->textField($model,'puntal'); ?>
-		<?php echo $form->error($model,'puntal'); ?>
-	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'activa'); ?>
@@ -70,8 +53,7 @@
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Crear' : 'Grabar'); ?>
 	</div>
-        </div>
-</div>
+
 <?php $this->endWidget(); ?>
 
 </div><!-- form -->

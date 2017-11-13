@@ -1,6 +1,6 @@
 <?php
 
-class Trabajadores extends CActiveRecord
+class Trabajadores extends ModeloGeneral
 {
 	/**
 	 * Returns the static model of the specified AR class.
@@ -12,7 +12,7 @@ class Trabajadores extends CActiveRecord
 		return parent::model($className);
 	}
 
-	
+	public $nombrecompleto;
 	
 	public $oficios_oficio;
 	/**
@@ -43,20 +43,21 @@ class Trabajadores extends CActiveRecord
 		return array(
 			//array('codigotra', 'required'),
 			//array('codigotra', 'length', 'max'=>4),
-			array('iduser', 'safe'),
+			array('activo', 'safe','on'=>'insert,update,BATCH_INS,BATCH_UPD'),
 			array('ap', 'length', 'max'=>30),
-			array('am', 'length', 'max'=>35),
+			//array('am', 'length', 'max'=>35),
 			array('dni', 'numerical'),
 			array('nombres', 'length', 'max'=>25),
-			array('iduser', 'unique','message'=>'Este usuario ya ha sido tomado por otro trabajador'),
-			array('nombres', 'required', 'message'=>'Indica los nombres'),
-			array('cumple', 'required', 'message'=>'Indica el onomastico'),
-			array('ap', 'required', 'message'=>'Indica el apellido paterno'),
-			array('dni', 'length', 'max'=>8),
+			array('iduser', 'unique','message'=>'Este usuario ya ha sido tomado por otro trabajador','on'=>'insert,update'),
+			array('nombres', 'required', 'message'=>'Indica los nombres','on'=>'insert,update,BATCH_INS,BATCH_UPD'),
+			array('cumple', 'required', 'message'=>'Indica la fecha de Nacimiento','on'=>'insert,update,BATCH_INS,BATCH_UPD'),
+			array('ap,am', 'required','message'=>'Indica los apellidos completos','on'=>'insert,update,BATCH_INS,BATCH_UPD'),
+			array('dni', 'length', 'max'=>10),
 			//array('codigoaf', 'unique', 'attributeName'=> 'codigoaf', 'caseSensitive' => 'true','message'=>'Hermano, esta placa ya esta registrada'),
 			
-			array('dni', 'unique', 'attributeName'=> 'dni','message'=>'Hermano, este DNI ya esta registrado'),
-			array('codpuesto', 'required','message'=>'Debes de llenar el puesto'),
+			array('dni,tipodoc', 'unique', 'attributeName'=> 'dni','message'=>'Hermano, este documento '.$this->dni.'ya esta registrado','on'=>'insert,update,BATCH_INS,BATCH_UPD'),
+			array('codpuesto', 'required','message'=>'Debes de llenar el puesto','on'=>'insert,update,BATCH_INS,BATCH_UPD'),
+                    
             array('oficios_oficio,codigotra,cumple,iduser, ap,fecingreso, domicilio, activo, tiposangre, telfijo,prefijo, telmoviles','safe', 'on'=>'update,insert'),
 			//array('creadoel, modificadoel', 'length', 'max'=>20),
 			// The following rule is used by search().
@@ -79,7 +80,7 @@ class Trabajadores extends CActiveRecord
 		return array(
 			'oficio' => array(self::BELONGS_TO, 'Oficios', 'codpuesto'),
 			'usuarios'=>array(self::BELONGS_TO, 'CrugeUser', 'codpuesto'),
-			'usuarios'=>array(self::BELONGS_TO, 'CrugeUser', 'codpuesto'),
+			
 		);
 	}
 
@@ -89,12 +90,12 @@ class Trabajadores extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'codigotra' => 'Codigo',
-			'ap' => 'A Paterno',
-			'am' => 'A Materno',
-			'nombres' => 'Nombres',
+			'codigotra' => yii::t('app','Codigo'),
+			'ap' => yii::t('app','A Paterno'),
+			'am' => yii::t('app','A Materno'),
+			'nombres' => yii::t('app','Nombres'),
 			'dni' => 'D.N.I.',
-			'codpuesto' => 'Codpuesto',
+			'fecingreso' => yii::t('app','F Ingreso'),
 			'creadopor' => 'Creadopor',
 			'creadoel' => 'Creadoel',
 			'modificadopor' => 'Modificadopor',
@@ -118,7 +119,7 @@ class Trabajadores extends CActiveRecord
 
 										//$this->ultimares=" ".strtoupper(trim($this->usuario=Yii::app()->user->name))." ".date("H:i")." :".$this->ultimares;
 									}
-		if($this->oldattributes['iduser'] <> $this->iduser) ///Si han actualizado el campo iduser
+		if($this->cambiocampo('iduser')) ///Si han actualizado el campo iduser
 		                                {
 											if(!is_null($this->iduser))  {
 												$registros = Yii::app()->db->createCommand(" select idfield  from	cruge_field t where t.fieldname='codtra' ")->queryAll();
@@ -220,7 +221,17 @@ class Trabajadores extends CActiveRecord
             if(strlen(trim($codi))>0 and !is_null($codi) and !is_null( $regtrabajador)  ){
                return $regtrabajador->codigotra;
             }else{
-                return '';
+                return null;
             }
         }
+        
+        public function afterfind(){
+            $this->nombrecompleto=$this->ap."-".$this->am."-".$this->nombres;
+            return parent::afterfind();
+        }
+        
+        public static function tipoDocumento(){
+            return array('A'=>'DNI','B'=>'Pasaporte','C'=>'PTP');
+        }
+        
 }

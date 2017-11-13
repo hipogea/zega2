@@ -198,9 +198,10 @@ public $maximovalor;
 		if ($this->isNewRecord) {
 			$this->iduser=Yii::app()->user->id;
 			$this->fechacreac=date("Y-m-d H:i:s");
+                        $this->codestado=self::ESTADO_CREADO;
 			//$gg=new Numeromaximo;
 
-			//$this->codocu=self::DOCUMENTO;
+			$this->codocu=self::CODIGO_DOCUMENTO;
 			//$this->codestado=self::ESTADO_PREVIO;
 
 			$this->numero=$this->correlativo(self::CAMPO_DE_NUMERO,null,self::CODIGO_DOCUMENTO,null);
@@ -255,5 +256,84 @@ public $maximovalor;
 
         return $mensaje;
 
+    }
+    
+    public static function peticionDesdeOt($id){
+      
+         if(yii::app()->request->isAjaxRequest){    
+               $id=(integer) MiFactoria::cleanInput($id);
+                $regot=Ot::model()->fidnByPk($id);
+                    if(!is_null($regot)){
+                        if($regot->cotizaciones==0){
+                           $registro= New Peticion('ins_ot');
+                           $registro->setAttributes(
+                                   array(
+                                       'codpro'=>$regot->codpro,
+                                       'comentario'=>$regot->textolargo,
+                                       'tenorsup'=>'A',
+                                       'tenorinf'=>'A',
+                                       'textocorto'=>$regot->textocorto,
+                                       'codproadqui'=>$regot->codpro1,
+                                        'grupocompras'=>'100',
+                                       'fpago'=>'12',
+                                       'idcontacto'=>$regot->idcontacto,
+                                       'codcen'=>$regot->codcen,
+                                       'codmon'=>yii::app()->settings->get('general','general_monedadef'),
+                                        'codmon'=>yii::app()->settings->get('general','general_monedadef'),
+                                   ) 
+                                   ); 
+                           $registro->save();
+                           $registro->refresh();
+                         //AHORA HAY QUE GENERAR EL DETALLE detot (actividades)
+                           FOREACH($regot->detot as $regdetot){
+                               
+                               //insetrtando el registro actividad
+                               $dpeticion=New Dpeticionot('ins_ot');
+                                $dpeticion->setAttributes(array(
+			'hidetot' => $regdetot->id,
+			'hidpeticion' => $registro->id,
+			'hidecuot' => null,
+			'hidrecuexot' => null,
+			'um' => null,
+			'codart' => null,
+			'punit' => 0,
+			'plista' => 0,
+			'igv_monto' => 0,
+			'descuento' => 0,
+			'pventa' => 0,
+			'cant' => 1,
+			'comentario' => $regdetot->txt,
+			//'codestado' => 'Codestado',
+			'codcen' => $regot->codcen,
+			'codal' => null,
+			//'codocu' => 'Codocu',
+			//'iduser' => 'Iduser',
+			'disponibilidad' => null,
+			'item' =>  $regdetot->item,
+			'descripcion' => $regdetot->textoactividad,
+			'tipo' => 'S',
+			//'imputacion' => 'Imputacion',
+                                        ));
+                           $dpeticion->save();   unset($dpeticion); 
+                               
+                               
+                               
+                               $recursos=Desolpe::model()->findAll("hidlabor=:vhidlabor and hidot=:vhidot",array(":vhidot"=>$regdetot->hidorden,":vhidlabor"=>$regdetot->id));
+                                 FOREACH($recursos as $recurso){
+                                       
+                                   }
+                                $consignaciones= Otconsignacion::model()->findAll("hidot=:vhidot and hidetot=:vhidetot",array(":vhidot"=>$regdetot->hidorden,":vhidetot"=>$regdetot->id));
+                                   FOREACH($consignaciones as $consignacion){
+                                       
+                                   }
+                           }
+                           
+                        }else{
+                            echo "Esta orden ya tiene cotizacion activa";
+                        }
+                     }else{
+                        echo "El registro de ot no puedo ser hallado";
+                        }
+      }
     }
 }

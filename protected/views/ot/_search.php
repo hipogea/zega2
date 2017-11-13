@@ -41,28 +41,10 @@
 	
 	  <div class="panelizquierdo">
     
-    <div class="row">
-			<?php echo $form->labelEx($model,'numero'); ?>
-			<?php
-			$this->widget('ext.matchcode1.Seleccionavarios',array(
-					'nombrecampo'=>'numero',
-					//'ordencampo'=>1,
-					'controlador'=>'VwOtsimple',
-					'relaciones'=>$model->relations(),
-					'tamano'=>12,
-					'model'=>$model,
-					'nombremodelo'=>'Ot',
-					'form'=>$form,
-					'nombredialogo'=>'cru-dialog3',
-					'nombreframe'=>'cru-frame3',
-					//'nombrearea'=>'fehdfj',
-				)
-
-			);
-
-
-			?>
-		</div>
+   <div class="row">
+		<?php echo $form->label($model,'numero'); ?>
+		<?php echo $form->textField($model,'numero',array('size'=>10,'maxlength'=>10)); ?>
+	</div>
 
 	
 
@@ -92,16 +74,16 @@
 		</div>
 
 	  <div class="row">
-			<?php echo $form->labelEx($model,'idobjeto'); ?>
+			<?php echo $form->labelEx($model,'codigoequipo'); ?>
 			<?php
 			$this->widget('ext.matchcode1.Seleccionavarios',array(
-					'nombrecampo'=>'idobjeto',
+					'nombrecampo'=>'codigoeqiupo',
 					//'ordencampo'=>1,
 					'controlador'=>'VwOtsimple',
 					'relaciones'=>$model->relations(),
 					'tamano'=>12,
 					'model'=>$model,
-					'nombremodelo'=>'Objetosmaster',
+					'nombremodelo'=>'Masterequipo',
 					'form'=>$form,
 					'nombredialogo'=>'cru-dialog3',
 					'nombreframe'=>'cru-frame3',
@@ -121,7 +103,7 @@
 
 	<div class="row">
 		<?php echo $form->label($model,'textocorto'); ?>
-		<?php echo $form->textField($model,'textocorto',array('size'=>40,'maxlength'=>40)); ?>
+		<?php echo $form->textField($model,'textocorto',array('size'=>20,'maxlength'=>20)); ?>
 	</div>
 
               <br><br><br>
@@ -441,28 +423,7 @@
 					?>
 	</div>
 
-	 <div class="row">
-			<?php echo $form->labelEx($model,'iduser'); ?>
-			<?php
-			$this->widget('ext.matchcode1.Seleccionavarios',array(
-					'nombrecampo'=>'iduser',
-					//'ordencampo'=>1,
-					'controlador'=>'VwOtsimple',
-					'relaciones'=>$model->relations(),
-					'tamano'=>12,
-					'model'=>$model,
-					'nombremodelo'=>'VwUsuarios',
-					'form'=>$form,
-					'nombredialogo'=>'cru-dialog3',
-					'nombreframe'=>'cru-frame3',
-					//'nombrearea'=>'fehdfj',
-				)
-
-			);
-
-
-			?>
-		</div>
+	
 	
     </div>
 
@@ -473,23 +434,5 @@
 </div><!-- search-form -->
 </div>
 
-<?php
-//--------------------- begin new code --------------------------
-// add the (closed) dialog for the iframe
-$this->beginWidget('zii.widgets.jui.CJuiDialog', array(
-	'id'=>'cru-dialog3',
-	'options'=>array(
-		'title'=>'Explorador',
-		'autoOpen'=>false,
-		'modal'=>true,
-		'width'=>700,
-		'height'=>500,
-	),
-));
-?>
-<iframe id="cru-frame3" width="100%" height="100%" style="overflow-y:hidden;overflow-x:hidden;"></iframe>
-<?php
 
-$this->endWidget();
-//--------------------- end new code --------------------------
-?>
+

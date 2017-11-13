@@ -248,4 +248,9 @@ public function afterfind(){
     return parent::afterfind();
 }
 
+public static function verificadoc($codocu){
+    $codocu= MiFactoria::cleanInput($codocu);
+    return self::model()->findByPk($codocu);
+}
+
 }

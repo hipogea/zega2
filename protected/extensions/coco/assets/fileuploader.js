@@ -1,5 +1,5 @@
 /**
- * http://github.com/valums/file-uploader
+ * http://github.com/valums/file-uploader 
  *
  * Multiple file upload component with progress-bar, drag-and-drop.
  * © 2010 Andrew Valums ( andrew(at)valums.com )
@@ -496,7 +496,7 @@ qq.FileUploader = function(o){
                 '<span class="qq-upload-spinner"></span>' +
                 '<span class="qq-upload-size"></span>' +
                 '<a class="qq-upload-cancel" href="#">Cancel</a>' +
-                '<span class="qq-upload-failed-text">Failed</span>' +
+                '<span class="qq-upload-failed-text">Hubo un Error</span>' +
             '</li>',
 
         classes: {

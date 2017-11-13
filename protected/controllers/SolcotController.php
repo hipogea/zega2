@@ -1,10 +1,5 @@
 <?php
 
-const ESTADO_CREADO='10';
-const ESTADO_ANULADO='30';
-const ESTADO_PUBLICADO='40';
-const ESTADO_PREVIO='99';
-const NOMBRECLASE_DESOLPE='Desolpe';
 
 class SolcotController extends Controller
 {
@@ -14,6 +9,11 @@ class SolcotController extends Controller
 	 */
 	public $layout='//layouts/column2';
 
+const ESTADO_CREADO='10';
+const ESTADO_ANULADO='30';
+const ESTADO_PUBLICADO='40';
+const ESTADO_PREVIO='99';
+const NOMBRECLASE_DESOLPE='Desolpe';
 	public function filters()
 	{
 		return array('accessControl',array('CrugeAccessControlFilter'));

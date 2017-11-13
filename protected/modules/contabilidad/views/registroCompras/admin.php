@@ -5,7 +5,7 @@ $this->menu=array(
 	//array('label'=>'Liberacion masiva', 'url'=>array('libmasiva')),
 	array('label'=>'Nuevo Reg Material', 'url'=>array('Crear')),
         array('label'=>'Nuevo Reg Servicio', 'url'=>array('Creaservicio')),
-	//array('label'=>'Valores por defecto', 'url'=>$this->createUrl('Opcionescamposdocu/configurausuario',array('docu'=>$this->documento,'docuhijo'=>$this->documentohijo))),
+	array('label'=>'Valores por defecto', 'url'=>$this->createUrl('/Opcionescamposdocu/configurausuario',array('docu'=>$model->documento))),
 
 );
 
@@ -32,7 +32,7 @@ $('.search-form form').submit(function(){
 
 <div class="search-form" >
 	<div class="division">
-<?php //$this->renderPartial('_search',array('model'=>$model)); ?>
+<?php $this->renderPartial('_search',array('model'=>$model)); ?>
 </div><!-- search-form -->
 </DIV>
 
@@ -81,13 +81,15 @@ $('.search-form form').submit(function(){
      
      
       'columns' => array(
+                       ARRAY('name'=>'id','header'=>'Id','type'=>'raw','value'=>'$data->id','htmlOptions'=>array('width'=>'5')),
+		 
 		  //ARRAY('name'=>'femision','header'=>'F. emi','type'=>'raw','value'=>'CHTml::link($data->numcot,Yii::app()->createurl("ocompra/editadocumento", array("id"=> $data->idguia )) ,ARRAY("target"=>"_blank"))'),
 		 //ARRAY('name'=>'numcot','header'=>'Numero','type'=>'raw','value'=>'CHTml::link(CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."find.png"),Yii::app()->createurl("ocompra/verdocumento", array("id"=> $data->idguia)) ,array("target"=>"_blank") )','htmlOptions'=>array('width'=>'10')),
-                  ARRAY('name'=>'femision','header'=>'F. emi','type'=>'raw','value'=>'date("d.m.y", strtotime($data->femision))','htmlOptions'=>array('width'=>'15')),
-		 ARRAY('name'=>'fvencimiento','header'=>'F. emi','type'=>'raw','value'=>'date("d.m.y", strtotime($data->fvencimiento))','htmlOptions'=>array('width'=>'15')),
+                  ARRAY('name'=>'femision','header'=>'F. emi','type'=>'raw','value'=>'$data->femision','htmlOptions'=>array('width'=>'15')),
+		 //ARRAY('name'=>'fvencimiento','header'=>'F. emi','type'=>'raw','value'=>'date("d.m.y", strtotime($data->fvencimiento))','htmlOptions'=>array('width'=>'15')),
 		 ARRAY('name'=>'tipo','header'=>'Tipo','type'=>'raw','value'=>'$data->tipo','htmlOptions'=>array('width'=>'5')),
 		  ARRAY('name'=>'numerocomprobante','header'=>'Num','type'=>'raw','value'=>'$data->numerocomprobante','htmlOptions'=>array('width'=>'40')),
-		 ARRAY('name'=>'numerocomprobante','header'=>'Num','type'=>'raw','value'=>'$data->numerocomprobante','htmlOptions'=>array('width'=>'40')),
+		// ARRAY('name'=>'numerocomprobante','header'=>'Num','type'=>'raw','value'=>'$data->numerocomprobante','htmlOptions'=>array('width'=>'40')),
 		ARRAY('name'=>'tipo','header'=>'Tipo Doc','type'=>'raw','value'=>'$data->valorsunat($data->tipo,"010")','htmlOptions'=>array('width'=>'40')),
 		ARRAY('name'=>'Nombre','header'=>'Razon Soc/Nombre','type'=>'raw','value'=>'$data->razpronombre','htmlOptions'=>array('width'=>'200')),
 		ARRAY('name'=>'expobaseimpgrav','header'=>'Base A','type'=>'raw','value'=>'$data->razpronombre','htmlOptions'=>array('width'=>'200')),
@@ -111,7 +113,11 @@ $('.search-form form').submit(function(){
 		  ARRAY('name'=>'subto','header'=>'Subtotal','value'=>'MiFactoria::decimal($data->subto,2)'),
 		  ARRAY('name'=>'descontado','header'=>'Dcto','value'=>'MiFactoria::decimal($data->descontado,2)'),
 		  ARRAY('name'=>'totalneto','header'=>'Neto','value'=>'MiFactoria::decimal($data->totalneto,2)'),
-		    */  ),
+		    */ 
+          array(
+			'class'=>'CButtonColumn',
+		)
+          ),
     ));
 
 ?>
@@ -165,8 +171,6 @@ $('.search-form form').submit(function(){
 		'tenorinf',
 		'montototal',
 		*/
-		/*array(
-			'class'=>'CButtonColumn',
-		),*/
+		
 	/*),
 )); */ ?>

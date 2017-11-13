@@ -36,7 +36,7 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'url'); ?>
-		<?php echo $form->textField($model,'url',array('value'=>$url)); ?>
+		<?php echo $form->textField($model,'url',array('value'=>$url,'size'=>40,'maxlength'=>40)); ?>
 		<?php echo $form->error($model,'url'); ?>
 	</div>
 
@@ -46,7 +46,11 @@
 		<?php echo $form->error($model,'chapa'); ?>
 	</div>
 
-	
+	<div class="row">
+		<?php echo $form->labelEx($model,'valido'); ?>
+		<?php echo $form->checkBox($model,'valido'); ?>
+		
+	</div>
 
 	
 

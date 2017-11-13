@@ -1,8 +1,10 @@
 <?php
-CONST ESTADO_GUIA_APROBADA='30';
+
 class VwGuia extends CActiveRecord
 {
-	/**
+CONST ESTADO_AUTORIZADA='30';	
+CONST ESTADO_CONFIRMADA='20';	
+    /**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
 	 * @return VwGuia the static model class
@@ -89,14 +91,19 @@ class VwGuia extends CActiveRecord
 	public static function hayactivoentransporte($codigoaf,$id=null){
 		//$registro=self::model()->find("c_codactivo=:vcodactivo and c_estgui=:vestado AND ",array(":vcodactivo"=>$codigoaf,":vestado"=>ESTADO_GUIA_APROBADA));
 	$criteria=New CDBCriteria();
-		$criteria->addCondition("c_codactivo=:vcodactivo and c_estgui=:vestado ");
+		
 		if(!is_null($id))
 		{
-			$criteria->addCondition(" n_hguia <> :id ");
-			$criteria->params=array(":vcodactivo"=>$codigoaf, ":vestado"=>ESTADO_GUIA_APROBADA,":id"=>$id);
+                        $criteria->addCondition("c_codactivo=:vcodactivo  and n_hguia <> :id ");
+			//$criteria->addCondition(" n_hguia <> :id ");
+			$criteria->params=array(":vcodactivo"=>$codigoaf,":id"=>$id);
+                        $criteria->addInCondition( "c_estgui",array(self::ESTADO_CONFIRMADA,self::ESTADO_CONFIRMADA));
 
 		} else{
-			$criteria->params=array(":vcodactivo"=>$codigoaf, ":vestado"=>ESTADO_GUIA_APROBADA);
+                   $criteria->addCondition("c_codactivo=:vcodactivo  ");
+			
+			  $criteria->addInCondition( "c_estgui",array(self::ESTADO_CONFIRMADA,self::ESTADO_CONFIRMADA));
+
 		}
 		$registro=VwGuia::model()->find($criteria);
 
@@ -518,4 +525,28 @@ class VwGuia extends CActiveRecord
         return parent::afterFind();
     }
 	
+    
+    public function suggestNe($keyword,$limit=20)
+	{
+		$models=$this->findAll(array(
+			'condition'=>"c_numgui LIKE :keyword and c_salida<>'1' and c_estgui=:vestado" ,
+			'order'=>'c_numgui',
+			'limit'=>$limit,
+			'params'=>array(':vestado'=>self::ESTADO_CONFIRMADA,':keyword'=>"%$keyword%")
+		));
+		$suggest=array();
+		//$suggest=array(JSON_ENCODE($models[0]),'KFSHFKSIY');
+		foreach($models as $model) {
+			$suggest[] = array(
+				'label'=>$model->c_serie.'-'.$model->c_numgui.'-'.$model->c_itguia.'-'.$model->c_codgui.'-'.$model->c_descri,  // label for dropdown list
+				'value'=>$model->c_serie.'-'.$model->c_numgui.'-'.$model->c_itguia,  // value for input field
+				//'id'=>$model->id,       // return values from autocomplete
+				//'code'=>$model->code,
+				//'call_code'=>$model->call_code,
+			);
+		}
+		
+		return $suggest;
+	}
+    
 }

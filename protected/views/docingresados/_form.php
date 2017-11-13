@@ -21,10 +21,7 @@
 				
 		<?php  echo $form->errorSummary($model); ?>		
 	<div class="row">
-		
-                <?php
-               /* if($this->beginCache('cache_doci_upd_toolbar',array(
-    'duration'=>600,))) {*/
+		<?php
 				$botones=array(
 					
 					'save'=>array(
@@ -66,20 +63,7 @@
                             'visiblex' => array(!$esfinal),
 
                         ),
-				 'adddoc' => array(
-                            'type' => 'C',
-                            'ruta' => array($this->id . '/creasub', array(
-                                'id' => $model->id,
-                                //"id"=>$model->n_direc,                               
-                                "asDialog" => 1,
-                                "gridId" => 'detalle-grid',
-                            )
-                            ),
-                            'dialog' => 'cru-dialog31',
-                            'frame' => 'cru-frame31',
-                            'visiblex' => array(!$esfinal),
-
-                        ),		
+						
 
 				);
 
@@ -99,7 +83,7 @@
 				); ?>
 
 			
-    <?php // $this->endCache('cache_doci_upd_toolbar'); }  ?>
+
 
 		</div>
 

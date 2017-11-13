@@ -33,8 +33,11 @@ class Configuracion extends CActiveRecord {
         return array(
              array('valor', 'safe'),
            
-            array('codparam, valor', 'required', 'on' => 'parametro'),
-            array('codparam,  valor, explicacion', 'safe', 'on' => 'parametro'),
+            array('codparam,codocu,codcen, valor', 'required', 'on' => 'insert,parametro'),
+            array('codparam,  valor, explicacion', 'safe', 'on' => 'insert,parametro'),
+             array('codparam', 'exist','allowEmpty' => false, 'attributeName' => 'codparam', 'className' => 'Parametros','message'=>'El valor del parametro no existe'),
+            //array('n_direc,n_dirsoc','exist','allowEmpty' => false, 'attributeName' => 'n_direc', 'className' => 'Direcciones','message'=>'Esta dirección no existe'),
+			
             //  array('codcen, codocu, codparam, desparam, valor, tipodato, explicacion, lista, iduser, longitud', 'required'),
             array('iduser', 'numerical', 'integerOnly' => true),
             //array('codocu','exist','allowEmpty' => false, 'attributeName' => 'coddocu', 'className' => 'Documentos','message'=>'Esta empresa no existe'),
@@ -132,7 +135,7 @@ class Configuracion extends CActiveRecord {
        // $criteria->compare('lista', $this->lista, true);
         $criteria->compare('iduser', $this->iduser);
         //$criteria->compare('longitud', $this->longitud);
-        $criteria->addCondition("codcen='".$codcen."' and iduser < 0");
+        $criteria->addCondition("codcen='".$codcen."' and iduser < 0 ");
      // $criteria->params=array(":vcodcen"=>$codcen);
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
@@ -181,15 +184,17 @@ class Configuracion extends CActiveRecord {
         
         
             
-            if($this->isNewRecord){
+      if($this->isNewRecord){
+          
                 if($this->iduser >0){
-             $this->refrescausuarios();                 
-            }else{
-               $this->iduser=-1; 
-            }
-                    }else{
-                        
+                            $this->refrescausuarios();                 
+                            }else{
+                            $this->iduser=-1; 
+               
                     }
+         }else{
+                        
+              }
         
         
         return parent::afterSave();
@@ -258,4 +263,17 @@ class Configuracion extends CActiveRecord {
         }
       
             }
+            
+        public function checkparametro($attribute,$params) {
+            //Verificando que el cod del parametro es valido
+          
+            $registro=Parametros::Model()->findByPk($this->codparam);
+            if(!$registro->valido=='1')
+            $this->adderror('codparam','El parametro {codparam} no esta activo  ');
+				    
+									
+				
+									
+									
+	}     
 }

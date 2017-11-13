@@ -15,15 +15,16 @@ class Detot extends ModeloGeneral
 		//var_dump(yii::app()->settings->get('general','general_nregistrosporcarpeta'));die();
             
             return array(
-			// Classname => path to Class
-			'imagenesjpg'=>array(
+			/*'imagenesjpg'=>array(
 				'class'=>'ext.behaviors.TomaFotosBehavior',
                             '_codocu'=>'210',
                             '_ruta'=>yii::app()->settings->get('general','general_directorioimg'),
                             '_numerofotosporcarpeta'=>yii::app()->settings->get('general','general_nregistrosporcarpeta')+0,
                             '_extensionatrabajar'=>'.jpg',
                             '_id'=>$this->getPrimarykey(),
-                                ));
+                                )*/
+                
+                                );
 
 	}
 
@@ -63,6 +64,7 @@ class Detot extends ModeloGeneral
 			'ot' => array(self::BELONGS_TO, 'Ot', 'hidorden'),
 			'trabajadores' => array(self::BELONGS_TO, 'Trabajadores', 'codresponsable'),
 		  'tempdetot'=>array(self::HAS_ONE, 'Tempdetot', 'id'),
+                    'regimen' => array(self::BELONGS_TO, 'Regimen', 'hidregimen'),
                   //  'nrecursos' => array(self::STAT, 'Desolpe', 'hidlabor'),
                     );
 	}
@@ -159,31 +161,34 @@ PUBLIC FUNCTION nrecursos(){
         
     }
     
-    public function colocaarchivox($fullFileName,$userdata=null) {
+    public function colocaarchivox($fullFileName,$userdata=null,$extension) {
        // $filename=$fullFileName;
+        $extension= strtolower($extension);
+        $comportamiento=new TomaFotosBehavior();
+        $comportamiento->_codocu='210';
+         $comportamiento->_ruta=yii::app()->settings->get('general','general_directorioimg');
+         $comportamiento->_numerofotosporcarpeta=yii::app()->settings->get('general','general_nregistrosporcarpeta')+0;
+          $comportamiento->_extensionatrabajar=$extension;
+           $comportamiento->_id=$this->getPrimarykey();
+                
+        $this->attachbehavior('auditoriaBehavior',$comportamiento );
+        
         $this->colocaarchivo($fullFileName);
     }
     
-  public function suggestceco($keyword,$limit=20)
+ 
+   public function search_por_ot($id)
 	{
-		$models=$this->findAll(array(
-			'condition'=>'desceco LIKE :keyword',
-			'order'=>'desceco',
-			'limit'=>$limit,
-			'params'=>array(':keyword'=>"%$keyword%")
+		// @todo Please modify the following code to remove attributes that should not be searched.
+
+		$criteria=new CDbCriteria;
+
+		$criteria->addCondition("hidorden=".$id);
+          $criteria->addCondition("idstatus > -1"); //no mostrar los eliminados
+
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
 		));
-		$suggest=array();
-		//$suggest=array(JSON_ENCODE($models[0]),'KFSHFKSIY');
-		foreach($models as $model) {
-			$suggest[] = array(
-				'label'=>$model->codc.' - '.$model->desceco,  // label for dropdown list
-				'value'=>$model->codc,  // value for input field
-				//'id'=>$model->id,       // return values from autocomplete
-				//'code'=>$model->code,
-				//'call_code'=>$model->call_code,
-			);
-		}
-		
-		return $suggest;
-	}  
+	}     
+    
 }

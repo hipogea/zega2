@@ -114,14 +114,11 @@ solo pasar los valores almacendaos en el  maletin
     
     public function borrafila($id){
         
-        $id=(int)MiFactoria::cleanInput($id);
-        $comando=yii::app()->db->createCommand();
-        $comando->delete($this->_tabla,
-                "idregistro=:idregistro and iduser=".yii::app()->user->id." ",
+        $id=(int)MiFactoria::cleanInput($id);       
+        $filas=yii::app()->db->createCommand()->delete($this->_tabla,
+                "id=:idregistro and iduser=".yii::app()->user->id." ",
                 array(":idregistro"=>$id)
                 );
-        
-        //var_dump($comando->getText());
      return $filas;
 
     }

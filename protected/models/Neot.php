@@ -20,6 +20,7 @@ class Neot extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
+        public $ordenitem;
 	public function tableName()
 	{
 		return '{{neot}}';
@@ -33,9 +34,10 @@ class Neot extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('hidne, hidot, cant', 'required'),
+                    array('hidne, hidot, ordenitem, cant', 'safe','on'=>'nemasiva'),
+			array('hidne, hidot, ordenitem, cant', 'required','on'=>'insert,update'),
 			array('iduser', 'numerical', 'integerOnly'=>true),
-                     array('hidot','exist','allowEmpty' => false, 'attributeName' => 'id', 'className' => 'Detot','message'=>'La referncia al detalle de la Ot no existe','on'=>'insert,update'),
+                     array('hidot','exist','allowEmpty' => false, 'attributeName' => 'id', 'className' => 'Detot','message'=>'La referencia al detalle de la Ot no existe','on'=>'insert,update'),
                         array('hidne','exist','allowEmpty' => false, 'attributeName' => 'id', 'className' => 'Detgui','message'=>'La referncia al detalle de la Ne  no existe','on'=>'insert,update'),
                      
 			array('cant', 'numerical'),
@@ -173,6 +175,8 @@ class Neot extends CActiveRecord
         public function beforesave(){
             if($this->hidot >0 and is_null($this->idot));
             $this->idot=Detot::model()->findByPk($this->hidot)->ot->id;
+            $this->iduser=yii::app()->user->id;
+            $this->fecreacion=date("Y-m-d H:i:s");
             return parent::beforesave();
         }
         

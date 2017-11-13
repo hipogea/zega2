@@ -20,7 +20,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 		   ),
            // 'id'=>'cajita' // the columnID for getChecked
        ),
-	      array('name'=>'st.','header'=>'st', 'type'=>'raw','value'=>'($data->idstatus==-1)?CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."tacho1.png"):""'),
+	      array('name'=>'st.','header'=>'st', 'type'=>'raw','value'=>'($data->c_estado=='.$this::CODIGO_ESTADO_DETALLE_ANULADO.')?CHtml::image(Yii::app()->getTheme()->baseUrl.Yii::app()->params["rutatemaimagenes"]."tacho1.png"):""'),
 		//'n_hguia',
 		'c_itguia',
 		'n_cangui',

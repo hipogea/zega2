@@ -1,13 +1,19 @@
 <?php
-const ESTADO_PREVIO='99';
-const ESTADO_CREADO='10';
-const ESTADO_CONFIRMADO='20';
-const ESTADO_ARCHIVADO='30';
 
-const CODIGO_LUGAR_A_BORDO='000011';
 class NeController extends ControladorBase
 {
-	/**
+	
+    const ESTADO_PREVIO='99';
+const ESTADO_CREADO='10';
+const ESTADO_CONFIRMADO='20';
+//const ESTADO_AUTORIZADO='30';
+const ESTADO_ARCHIVADO='30';
+const ESTADO_ANULADO='40';
+const CODIGO_LUGAR_A_BORDO='000011';
+const CODIGO_ESTADO_DETALLE_ANULADO='40';
+    
+    
+    /**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
@@ -80,8 +86,8 @@ class NeController extends ControladorBase
 	public function actionEditaDocumento($id)
 	{
 		$model=MiFactoria::CargaModelo($this->modelopadre,$id);
-		if($model->{$this->campoestado}==ESTADO_PREVIO)
-			$model->{$this->campoestado}=ESTADO_CREADO;
+		if($model->{$this->campoestado}==self::ESTADO_PREVIO)
+			$model->{$this->campoestado}=self::ESTADO_CREADO;
 		//$this->performAjaxValidation($model);
 		/*ECHO isset($_POST[$this->modelopadre])?"<br><br><br><br><br><br><br><br>SI ES UN  POST['".$this->modelopadre."']":"<br><br><br><br><br><br><br><br>NO es un  POST";
 			ECHO isset($_GET[$this->modelopadre])?"<BR> ES UN  GET(MODELOPADRE) ":"<BR> NO  ES UN  GET(MODELOPADRE)";
@@ -143,7 +149,7 @@ class NeController extends ControladorBase
 								$this->terminabloqueo($id);
 								//$this->terminabloqueo($id); // Desbloquea
 								Yii::app()->user->setFlash('success', "Se grabo el documento  ".$this->SQL);
-								//$this->render('update',array('model'=>$model));
+								//$this->redirect(array());
 								$this->redirect(array('visualiza','id'=>$model->id));
 							} else {
 								//echo CActiveForm::validate($model);
@@ -235,7 +241,7 @@ class NeController extends ControladorBase
 
 
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('pendientes', 'lista','asignaot',  'relacionaot','CreaDocumento','salir','Imprimirsolo','cargadespacho','creadetalleActivo','agregardespacho','procesardocumento','EditaDocumento','Borraitems','imprimir','Configuraop',
+				'actions'=>array('asignaotmasiva',     'pendientes', 'lista','asignaot',  'relacionaot','CreaDocumento','salir','Imprimirsolo','cargadespacho','creadetalleActivo','agregardespacho','procesardocumento','EditaDocumento','Borraitems','imprimir','Configuraop',
 					'Pide','Modificadetalle','Visualiza','Excel','imprimirsolo',
 					'defaulte','pintamaterial','Libmasiva','pintaactivo','pintaequipo','Anularentrega',
 					'creadetalle','relaciona','recibevalor','Verdetalle',
@@ -568,7 +574,7 @@ class NeController extends ControladorBase
 	public function actionCreate()
 	{
 		$model=new Ne;
-		$model->{$this->campoestado}=ESTADO_PREVIO;
+		$model->{$this->campoestado}=self::ESTADO_PREVIO;
 		//$model->valorespordefecto();
 		// $this->layout='//layouts/column_inicio_chico';
 		// Uncomment the following line if AJAX validation is needed
@@ -645,7 +651,7 @@ class NeController extends ControladorBase
 
 	public function actionVisualiza($id)	{
 		if( is_null($id)  or empty($id) )
-			throw new CHttpException(404,'No se encontro la guia especificada');
+			throw new CHttpException(404,'No se encontro el documento especificada');
 
 		$model=$model=$this->loadModel($id);
 		
@@ -653,7 +659,7 @@ class NeController extends ControladorBase
                 //$this->setBloqueo($id) ; 	///bloquea
 				$this->ClearBuffer($id); //Limpia temporal antes de levantar
 				$this->IniciaBuffer($id); //Levanta temporales
-				$this->render('update',array('model'=>$model));
+				$this->render('view',array('model'=>$model));
 				yii::app()->end();
                 
 	}
@@ -713,14 +719,17 @@ class NeController extends ControladorBase
 	{
 		 $id= (integer) MiFactoria::cleanInput($idcabeza);
         if ($cest == '10' OR $cest == '99') {
-     $this->loadModel($id);
+     $modelocabeza=$this->loadModel($id);
 			$model = new Tempdetgui();
 			//var_dump($model->rules());die();
                         $tipo=  MiFactoria::cleanInput($_GET['tipo']);
                         if(!in_array($tipo,  MiFactoria::tiposmateriales()))
-                                throw new CHttpException(500,__CLASS__.'   '.__FUNCTION__.'  El tipo de material especificado {$tipo} no existe ');
-                                $model->colocaescenario($tipo);
-                                $model->c_af=$tipo;
+                                throw new CHttpException(500,__CLASS__.'   '.__FUNCTION__.'  El tipo de material especificado {'.$tipo.'   } no existe ');
+                                 $model->c_af=$tipo;
+                         
+                               $relaciones=$model->colocaescenario($tipo);
+                               //var_dump($model->relations());die();
+                                 $model->c_um=yii::app()->settings->get('transporte','transporte_umdefault');
 			//$model->setScenario('INS_NUEVO');
 			$model->valorespordefecto($this->documentohijo);
 			if (isset($_POST['Tempdetgui'])) {
@@ -728,10 +737,8 @@ class NeController extends ControladorBase
 				$model->codocu = $this->documentohijo; ///detalle guia
 				$model->n_hguia = $idcabeza;
 				//crietria para filtrar la cantidad de items del detalle
-				$criterio = new CDbCriteria;
-				$criterio->condition = "n_hguia=:idguia  ";
-				$criterio->params = array(':idguia' => $idcabeza);
-				$model->c_itguia = str_pad(Tempdetgui::model()->count($criterio) + 1, 3, "0", STR_PAD_LEFT);
+				
+				$model->c_itguia = $modelocabeza->getNextItem();
 				//str_pad($somevariable,$anchocampo,"0",STR_PAD_LEFT);
 				////con esto calculamos el numero de items
 				//echo "  El valor de  ".$idcabeza."       ".$model->n_hguia."   ";
@@ -747,8 +754,8 @@ class NeController extends ControladorBase
 			}
 			// if (!empty($_GET['asDialog']))
 			$this->layout = '//layouts/iframe';
-			$this->render('_form_'.strtolower($tipo), array(
-				'model' => $model, 'idcabeza' => $idcabeza
+			$this->render('//guia/_form_'.strtolower($tipo), array(
+				'model' => $model, 'idcabeza' => $idcabeza,'relaciones'=>$relaciones
 			));
 		} else { //si ya cambio el estado impisble agregar mas items
 			if (!empty($_GET['asDialog']))
@@ -1007,22 +1014,29 @@ class NeController extends ControladorBase
 
 		$autoIdAll = $_POST['cajita'];
 		$estado=$_POST[$this->modelopadre][$this->campoestado];
-		if(in_array($estado,array(ESTADO_CREADO,ESTADO_PREVIO)))
-		{
-			foreach($autoIdAll as $autoId)
-			{
+                //VAR_DUMP($estado);die();
+		 if(in_array($estado,array(self::ESTADO_CREADO,self::ESTADO_PREVIO)))
+			 {
+				 foreach($autoIdAll as $autoId)
+					{
 
-				if($this->borraitemhijo($this->modeloshijos['Detgui'],$autoId))
-				{
-					yii::app()->user->setFlash('success',' OK, Se borro la linea ');
-				} else {
-					yii::app()->user->setFlash('error','ERROR-  se pudo  borrar la linea');
-
-				}
-			}
-		} ELSE {
-			yii::app()->user->setFlash('error',' El estado del documento no permite borrar el Item');
-		}
+						$tempito= Tempdetgui::model()->findByPk($autoId);
+                                                if(!is_null($tempito)){
+                                                    $tempito->setScenario('cambioestado');
+                                                    $tempito->c_estado=self::CODIGO_ESTADO_DETALLE_ANULADO;
+                                                    if($tempito->save()){
+                                                       
+                                                        yii::app()->user->setFlash('success',' OK, Se borro la linea ');
+                                                    }else{
+                                                       yii::app()->user->setFlash('error','ERROR-  se pudo  borrar la linea '.yii::app()->mensajes->getErroresItem($tempito->geterrors())); 
+                                                    }
+                                                }
+                                 
+					}
+                                         $tempito->ne->arreglaOrdenItems(self::CODIGO_ESTADO_DETALLE_ANULADO);
+			} ELSE {
+			 yii::app()->user->setFlash('error',' El estado del documento no permite borrar el Item');
+		   }
 
 		foreach(Yii::app()->user->getFlashes() as $key => $message) {
 			echo "*)". $message . "\n";		}
@@ -1253,7 +1267,7 @@ class NeController extends ControladorBase
 		$mensaje="";
 		switch ($idevento) {
 			case 2: ///APROBAR GUIA
-				$filas=Guia::model()->findByPk($id)->detalle;
+				$filas=Ne::model()->findByPk($id)->detalle;
 				foreach($filas as $row ) {
 					if(!is_null($row->c_codactivo)){
 						$recInventario=Inventario::recordByPlate(trim($row->c_codactivo));
@@ -1263,7 +1277,7 @@ class NeController extends ControladorBase
 							/*$recInventario->setScenario('cambiaestado');
                             $recInventario->rocoto='1';
                              $recInventario->save();*/
-							$guiaocupada=VwGuia::hayactivoentransporte($row->c_codactivo);
+							$guiaocupada=VwGuia::hayactivoentransporte($row->c_codactivo,$row->n_hguia);
 							if(!is_null($guiaocupada))
 								$mensaje.=" El activo ".$row->c_codactivo." ya esta registrado en la guia ".$guiaocupada;
 						}
@@ -1310,7 +1324,7 @@ class NeController extends ControladorBase
 
 
 			case 68: ///deshacer confirmacion de transporte
-				$filas=Guia::model()->findByPk($id)->detalle;
+				$filas=Ne::model()->findByPk($id)->detalle;
 				foreach($filas as $row ) {
 					if(!is_null($row->c_codactivo)){
 						$recInventario=Inventario::recordByPlate(trim($row->c_codactivo));
@@ -1328,7 +1342,7 @@ class NeController extends ControladorBase
 				break;
 
 			case 37: ///Confirmar entrega  20 -> 80
-				$filaguia=Guia::model()->findByPk($id);
+				$filaguia=Ne::model()->findByPk($id);
 				$filas=$filaguia->detalle;
 				foreach($filas as $row ) {
 					if(!is_null($row->c_codactivo)){
@@ -1376,7 +1390,7 @@ class NeController extends ControladorBase
 
 
 			case 69: ///REVERTIR entrega  80 -> 20
-				$filaguia=Guia::model()->findByPk($id);
+				$filaguia=Ne::model()->findByPk($id);
 				//se podra rever tor siempre que nohay pASADO MUCHO TIEMPO Y ADEMAS EL ACTIVO ESTE EN ESE LUGAR
 				/// 1) SI ESTAMOS A TIEMPO , SEGUN PARAMETRO DE TIEMPO CONNFIGURABLE
 				$diftiempo=strtotime('now')-strtotime($filaguia->d_fectra);
@@ -1612,5 +1626,58 @@ class NeController extends ControladorBase
 		));
 	}
 	
+      public function actionasignaotmasiva($id){
+           {
+             $id=(integer) MiFactoria::cleanInput($id);
+           $registropadre=$this->loadModel($id);
+                $items=  $registropadre->detalle;//los hijos 
+              //  foreach ($items as $item)
+                   
+                 
+                 if(isset($_POST['Detgui']))
+                        {
+                            //echo "saliomm "; die();
+                            $valid=true;
+                             $transaccion=$items[0]->dbConnection->beginTransaction();
+                             $errores=array();
+                                 foreach($items as $i=>$item)
+                                         {
+                                     
+                                      $item->setScenario('imputaciones');
+                                     //var_dump($item->getScenario($item)); die();
+                                        if(isset($_POST['Detgui'][$i])){
+                                                $item->attributes=$_POST['Detgui'][$i];
+                                              
+                                               // var_dump($item->attributes);
+                                                //var_dump($item->geterrors());var_dump($item->getScenario($item));die();
+                                               //if($item->esimputable()) //solo los impútables
+                                                if($item->validate()){
+                                                        //if($item->montoimputado!=0)
+                                                        $item->save();
+                                                         }else{
+                                                            $errores[]=$item->geterrors();
+                                                            }
+                                                 }
+                
+                                        }
+                                    if(count($errores)==0){
+                                        $transaccion->commit();
+                                        MiFactoria::Mensaje('success','Se grabaron los registros');
+                                        $this->redirect(array('visualiza','id'=>$id));
+                                        
+                                    }else{
+                                            $transaccion->rollback(); 
+                                            MiFactoria::Mensaje('error',' NO Se grabaron los registros');
+                                       
+                                        }
+             }
+          
+    // displays the view to collect tabular input
+    $this->render('imputacionmasivaot',array('items'=>$items,'model'=> $registropadre));
+           
+            
+        }    
         
+          
+      }  
 }

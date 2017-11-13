@@ -22,6 +22,19 @@ const ESTADO_DETALLE_CAJA_CONFIRMADO='40';
 		return '{{dcajachica}}';
 	}
 
+         public function behaviors()
+	{
+		return array(
+			                    
+                    'tablasunat'=>array(
+				'class'=>'contabilidad.behaviors.tablasSunatBehavior',
+                                                           ),
+                 'docucontable'=>array(
+				'class'=>'contabilidad.behaviors.formatoNumeroBehavior',
+                                                           ),
+               );
+                
+	}
 	/**
 	 * @return array validation rules for model attributes.
 	 */
@@ -51,11 +64,11 @@ const ESTADO_DETALLE_CAJA_CONFIRMADO='40';
             //array('ceco','exist','allowEmpty' => false, 'attributeName' => 'codc', 'className' => 'Cc','message'=>'Este ceco no existe'),
             array('fecha', 'checkfecha_detalle','on'=>'upd_rencidiontrabajador,ins_rendiciontrabajador'),
 			//array('tipoflujo', 'checkflujo','on'=>'upd_rencidiontrabajador,ins_rendiciontrabajador'),
-			array('hidcaja, fecha, glosa, referencia, debe, tipoflujo,  codtra, codocu', 'required'),
+			array('hidcaja, fecha, glosa, referencia, debe,monedahaber, tipoflujo,  codtra, codocu', 'required','on'=>'insert,update'),
 			array('hidcaja, iduser', 'numerical', 'integerOnly'=>true),
 			array('glosa, referencia', 'length', 'max'=>60),
 			array('debe, haber, saldo', 'length', 'max'=>10),
-			array('monedahaber, codocu', 'length', 'max'=>3),
+			array('monedahaber, codocu', 'length', 'max'=>3), 
 			array('codtra', 'length', 'max'=>4),
 			array('ceco', 'length', 'max'=>16),
 			// The following rule is used by search().
@@ -86,7 +99,7 @@ const ESTADO_DETALLE_CAJA_CONFIRMADO='40';
 			'rendido'=>array(self::STAT, 'Dcajachica', 'hidcargo','select'=>'sum(t.monto)','condition'=>" t.hidcargo > 0 and t.codestado  in ( '".self::ESTADO_DETALLE_CAJA_CERRADO."','".self::ESTADO_DETALLE_CAJA_CONFIRMADO."') "),//el campo foraneo
                         'deuda'=>array(self::STAT, 'Dcajachica', 'hidcargo','select'=>'sum(t.monto)','condition'=>"t.hidcargo > 0 and haber=0 and t.codestado  in ( '".self::ESTADO_DETALLE_CAJA_ANULADO."') "),
                     'imputaciones'=> array(self::HAS_MANY, 'CcGastos', array('codocuref'=>'coddocu', 'idref'=>'id')),			
-			  //'imputado'=> array(self::STAT, 'CcGastos', array('codocuref'=>'coddocu', 'idref'=>'id'),'select'=>'sum(t.monto)'),			
+		'imputado'=> array(self::STAT, 'CcGastos', array('codocuref'=>'coddocu', 'idref'=>'id'),'select'=>'sum(t.monto)'),			
 		
 		);
 	}
@@ -309,14 +322,19 @@ const ESTADO_DETALLE_CAJA_CONFIRMADO='40';
 		//Primero veriifcansdo si es usuario propietario
 		$mensaje="";
 		   if($this->isPropietariocaja()){
-                            echo "cero";
+                           // echo "cero";
 			   if($this->isTratable())
 			    {
 				
                                if(!$this->tieneHijos())
 					{
-                                        echo "dos";
-						$this->delete();
+                                       //echo "dos";
+                                            IF(count($this->imputaciones)==0){
+                                               $this->delete(); 
+                                            }else{
+                                                $mensaje.="El registro a borrar ya tiene imputaciones";
+                                            }
+						
 
 					}else {
 						$mensaje.="  Este registro tiene rendiciones hijas <br>";
@@ -378,6 +396,19 @@ const ESTADO_DETALLE_CAJA_CONFIRMADO='40';
                 $this->insertaccGastos($this->montoimputado, $this->ceco);
             }
 		
+            
+            //Si se apropbo el registro 
+            //Tambien actualizar el regisrto de compra de contabilidad
+            if(yii::app()->hasModule('contabilidad'))
+            if($this->cambiocampo('codestado') and $this->codestado==self::ESTADO_DETALLE_CAJA_CERRADO){
+                if(!is_null(Registrocompras::cogeCajaChica($this->id))){
+                   // echo "bien";die();
+                    MiFactoria::Mensaje('success', 'Se agrego al registro de comrpas este comprobante');
+                }else{
+                    //echo "mal"; die();
+                     MiFactoria::Mensaje('error', 'No se pudo agregar este comprobaten al registro de compras');
+                }
+            }
 		
 		return parent::beforesave();
 	}
@@ -535,4 +566,8 @@ const ESTADO_DETALLE_CAJA_CONFIRMADO='40';
                      queryScalar();
         }	 
    
+   public function aftersave(){
+       //veridfica que los 
+       return parent::aftersave();
+   }    
 }

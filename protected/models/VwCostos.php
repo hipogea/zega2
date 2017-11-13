@@ -86,7 +86,7 @@ class VwCostos extends CActiveRecord
 			array('fechacontable', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, ceco, fechacontable, monto, codmoneda, usuario, idref, tipo, creadoel, ano, mes, clasecolector, iduser, numvale, codart, codmov, valido, destino, checki, cant, alemi, aldes, fecha, coddoc, numdoc, um, comentario, codocuref, numdocref, codcentro, idkardex, codestado, prefijo, fechadoc, correlativo, numkardex, solicitante, hidvale, descripcion, desdocu, movimiento, desum', 'safe', 'on'=>'search'),
+			array('id, ceco, idetot, fechacontable, monto, codmoneda, usuario, idref, tipo, creadoel, ano, mes, clasecolector, iduser, numvale, codart, codmov, valido, destino, checki, cant, alemi, aldes, fecha, coddoc, numdoc, um, comentario, codocuref, numdocref, codcentro, idkardex, codestado, prefijo, fechadoc, correlativo, numkardex, solicitante, hidvale, descripcion, desdocu, movimiento, desum', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -231,4 +231,22 @@ class VwCostos extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        
+        public function search_por_ot($arrayids)
+	{
+		// @todo Please modify the following code to remove attributes that should not be searched.
+
+		$criteria=new CDbCriteria;
+                
+                 $criteria->addInCondition("idetot",$arrayids);
+
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+			'pagination' => array(
+				'pageSize' => 100,
+			),
+		));
+	}
+
+        
 }

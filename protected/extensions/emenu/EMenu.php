@@ -127,7 +127,7 @@ class EMenu extends CMenu
                 else
                     $options['class'].=' '.$this->dirCssClass;
             }
-            $item['linkOptions'] = array_merge((array)$item['linkOptions'], $options);
+           // $item['linkOptions'] = array_merge((array)$item['linkOptions'], $options);
  
             echo CHtml::openTag('li');
 

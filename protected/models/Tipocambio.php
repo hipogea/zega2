@@ -42,8 +42,8 @@ class Tipocambio extends ModeloGeneral
 		return array(
                      array('codmondef+codmon1', 'application.extensions.uniqueMultiColumnValidator','on'=>'insert,update,nuevamoneda,general,analitica'),
                     
-                     array('seguir', 'safe', 'on'=>'seguimiento'),
-			
+                     array('seguir,activa', 'safe', 'on'=>'seguimiento,rapido'),
+			 array('activa', 'safe', 'on'=>'activar,nuevamoneda'),
                     array('codmon1, codmondef,dia,seguir', 'safe', 'on'=>'nuevamoneda'),
 			
 			array('compra,venta', 'numerical'),
@@ -94,8 +94,8 @@ public function checkvalores($attribute,$params) {
 			'codmon1' => 'Codmon1',
 			'codmon2' => 'Codmon2',
 			'id' => 'ID',
-			'denominador' => 'Denominador',
-			'numerador' => 'Numerador',
+			'seguir' => 'C/historial',
+			'activa' => 'Con cambio',
 		);
 	}
 
@@ -159,6 +159,10 @@ return parent::afterSave();
 		$criteria->compare('numerador',$this->numerador);
                 $criteria->addCondition("codmon1<>:vcodmon1");
                 $criteria->params=array(":vcodmon1"=>yii::app()->settings->get('general','general_monedadef'));
+		
+                $criteria->addIncondition('codmon1',yii::app()->tipocambio->monedasactivas());
+               // $criteria->addCondition("codmon1<>:vcodmon1");
+               // $criteria->params=array(":vcodmon1"=>yii::app()->settings->get('general','general_monedadef'));
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));

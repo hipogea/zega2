@@ -32,7 +32,7 @@ class TMonedaController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('updatecambiolog',    'ajaxcambioporfecha',      'activalog',   'updatecambio',    'activamoneda',   'listamonedas',   'create','update','admin','cambio','colocacambio','actualizacambio'),
+				'actions'=>array('desactivamoneda', 'actualiza',   'updatecambiolog',    'ajaxcambioporfecha',      'activalog',   'updatecambio',    'activamoneda',   'listamonedas',   'create','update','admin','cambio','colocacambio','actualizacambio'),
 				'users'=>array('@'),
 			),
 
@@ -235,9 +235,11 @@ class TMonedaController extends Controller
                  ///ACTUALIZANDO EL STATUS DE LA MONEDA 
                  $regmoneda=Monedas::model()->findByPk($codmon);
                  if(is_null($regmoneda)){
-                    MiFactoria::mensaje('error','NO ha especificado una moneda para agregar');
+                    MiFactoria::mensaje('error','La moneda '.$codmon.' No existe');
                   
                  } else{
+                     //veridicando que este habilitada 
+                    
                      $regmoneda->setScenario('status');
                      $regmoneda->habilitado='1';
                     $regmoneda->save();
@@ -258,7 +260,9 @@ class TMonedaController extends Controller
         
         public function actionupdatecambio($fecha=null)
         {
-             $items= Tipocambio::model()->findAll("codmon1 <> :vcodmon1",array(":vcodmon1"=>yii::app()->settings->get('general','general_monedadef')));    
+             $items= Tipocambio::model()->search()->getdata();
+                     
+                   //  Tipocambio::model()->findAll("codmon1 <> :vcodmon1",array(":vcodmon1"=>yii::app()->settings->get('general','general_monedadef')));    
                 if(isset($_POST['Tipocambio']))
                         {
                             //echo "saliomm "; die();
@@ -321,10 +325,10 @@ class TMonedaController extends Controller
                         //var_dump($cambioac);
                         $registro->setAttributes(                               
                                     array(
-                                                         'hidcambio'=>$cambioac[0]['id']->id,
+                                                         'hidcambio'=>$cambioac->id,
                                                          'compra'=>null,
                                                         'codmon'=>$monedafalta,
-                                                        'codmondef'=>$cambioac[0]['codmondef'],
+                                                        'codmondef'=>$cambioac->codmondef,
                                                         'venta'=>null,
                                                         'fecha'=>$_GET['fecha'],
                                                         'dia'=>date("w",strtotime($_GET['fecha'])),
@@ -335,7 +339,7 @@ class TMonedaController extends Controller
                        $items[]=$registro;
                     }
                     if(!isset($_POST['Logtipocambio']))
-                    $this->render('actualizalogcambio',array('items'=>$items));
+                    $this->render('actualizalogcambio',array('items'=>$items,'fecha'=>$_GET['fecha']));
            
             }
             
@@ -400,7 +404,49 @@ class TMonedaController extends Controller
           }
       } 
       
-      
+    public function actiondesactivamoneda($id){
+         yii::app()->tipocambio->desactivamoneda($id);
+        $this->redirect(array('cambio'));
+        
+        
+        
+    }  
+    
+    public function actionactualiza(){
+        $codmon= MiFactoria::cleanInput($_GET['codmon']);
+         $model= TMoneda::model()->findByPk($codmon); 
+          $modelocambio=yii::app()->tipocambio->registroactual($codmon);
+                      
+        IF(!is_null($model)){
+          if(isset($_POST['TMoneda']))
+		{
+			$model->attributes=$_POST['TMoneda'];
+			
+                         if(!is_null($modelocambio)){
+                             $modelocambio->setScenario('rapido');
+                             $modelocambio->attributes=$_POST['Tipocambio'];
+                             if($model->save() and $modelocambio->save())
+				$this->redirect(array('listamonedas'));
+                         }else{
+                             if($model->save())
+				$this->redirect(array('listamonedas'));
+                         }
+                            
+           // var_dump($modelocambio);
+                        
+                        
+		}  
+           
+             $this->render("_editar",array('model'=>$model,'modelocambio'=>$modelocambio));
+              
+            
+        }else{
+           throw new CHttpException(500,__CLASS__.'   '.__FUNCTION__.' '.__LINE__.' ...No se han encotrado esta moneda :'.$codmon);
+ 
+        }
+        
+        
+    } 
 }
         
 

@@ -17,13 +17,24 @@
 		<?php echo $form->textField($model,'nombrelista',array('size'=>60,'maxlength'=>60)); ?>
 	</div>
 
+<div class="row">
+		<?php echo $form->labelEx($model,'codtipo'); ?>
+		<?php
 
+                        $datos = CHtml::listData(Tipolista::model()->findAll(array('order'=>'destipo')),'codtipo','destipo');
+    echo $form->DropDownList($model,'codtipo',$datos, array('empty'=>'--Llene el tipo--'));
+
+
+		?>
+		<?php echo $form->error($model,'codtipo'); ?>
+
+	</div>
 
 
 
 	<div class="row">
 		<?php echo $form->label($model,'compartida'); ?>
-		<?php echo $form->CheckBox($model,'compartida'); ?>
+		<?php //echo $form->CheckBox($model,'compartida'); ?>
 	</div>
 
 	<div class="row buttons">

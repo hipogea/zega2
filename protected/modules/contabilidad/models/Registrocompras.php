@@ -9,8 +9,25 @@ class Registrocompras extends ModeloGeneral
     
     const COD_IGV='100';
     const COD_ISC='300';
+    public $camposfechas=array('femision','fvencimiento');
     //const MONEDA_REPORTE = yii::app()->settings->get('general','general_monedadef');
-	public function tableName()
+	
+    public function init(){
+        $this->documento='760';
+        }
+        
+    ///CAMPOS PARES CON EL LIBRO DIARIO
+        //  campodoc=>campolibrodiario en ese orden
+    public $array_map_camposlibro=array(            
+           'glosa'=>'glosa',
+             'iduser'=>'iduser',
+               'codocu'=>'codocu',
+                 'idkey'=>'idkey',
+                 'numerocomprobante'=>'docref',
+                'id'=>'hidasiento'
+          ); 
+    
+    public function tableName()
 	{
 		return '{{registrocompras}}';
 	}
@@ -46,6 +63,7 @@ class Registrocompras extends ModeloGeneral
                     //para toods elos escenarios 
                     
                     array('femision','checkfecha'),
+                    array('numerodocid','checkdoc'),
                    // array('hidperiodo','safe'),
                     //array('hidperiodo','required'),
                     
@@ -60,20 +78,21 @@ class Registrocompras extends ModeloGeneral
                      * 
                      */
                     
-                    
+                   // array('iduser,idkey,codocu,codcuenta', 'on'=>'temporal'),
+			
                     
                     
                      //array('codmon','safe'),
                     ///compra local
                     array('femision, fvencimiento, tipo, numerocomprobante,'
                         . ' tipodocid, numerodocid, razpronombre, baseimpnograv, '
-                        . 'igvnograv, isc, otrostributos, importetotal, numerodocnodomiciliado, '
-                        . 'numconstdetraccion, fechaemidetra, tipocambio, reffechaorigen, reftipo, '
-                        . 'refserie, refnumero, fechacre, socio, hidperiodo,codocuref,numdocref,hidref','safe', 'on'=>'ins_compralocal,upd_compralocal'),
+                        . 'igvnograv, isc, otrostributos, importetotal, numerodocnodomiciliado,codmon, '
+                        . 'numconstdetraccion, fechaemidetra, tipocambio, reffechaorigen, reftipo,tipgrabado, '
+                        . 'refserie, glosa,refnumero,importe,iduser,idkey, fechacre, socio, hidperiodo,codocuref,numdocref,hidref,hidcaja','safe', 'on'=>'ins_compralocal,upd_compralocal'),
 			
-                     array('femision, fvencimiento, tipo, numerocomprobante,'
-                        . ' tipodocid, numerodocid, razpronombre,  '
-                       . '  socio','required', 'on'=>'ins_compralocal,upd_compralocal'),
+                     array('femision,hidperiodo, tipo,glosa, numerocomprobante,codmon,'
+                        . ' tipodocid, serie,esservicio,numerodocid, razpronombre,importe,tipgrabado,  '
+                       . 'socio','required', 'on'=>'ins_compralocal,upd_compralocal'),
                     
                     
                     
@@ -167,17 +186,17 @@ class Registrocompras extends ModeloGeneral
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('id',$this->id,true);
+		//$criteria->compare('id',$this->id,true);
 		$criteria->compare('femision',$this->femision,true);
 		$criteria->compare('fvencimiento',$this->fvencimiento,true);
 		$criteria->compare('tipo',$this->tipo,true);
-		$criteria->compare('codaduana',$this->codaduana,true);
-		$criteria->compare('annodua',$this->annodua,true);
+		//$criteria->compare('codaduana',$this->codaduana,true);
+		//$criteria->compare('annodua',$this->annodua,true);
 		$criteria->compare('numerocomprobante',$this->numerocomprobante,true);
 		$criteria->compare('tipodocid',$this->tipodocid,true);
 		$criteria->compare('numerodocid',$this->numerodocid,true);
 		$criteria->compare('razpronombre',$this->razpronombre,true);
-		$criteria->compare('expobaseimpgrav',$this->expobaseimpgrav);
+		/*$criteria->compare('expobaseimpgrav',$this->expobaseimpgrav);
 		$criteria->compare('expigvgrav',$this->expigvgrav);
 		$criteria->compare('expbaseimpnograv',$this->expbaseimpnograv);
 		$criteria->compare('expigvnograv',$this->expigvnograv);
@@ -197,7 +216,14 @@ class Registrocompras extends ModeloGeneral
 		$criteria->compare('fechacre',$this->fechacre,true);
 		$criteria->compare('socio',$this->socio,true);
 		$criteria->compare('hidperiodo',$this->hidperiodo);
-
+*/
+                 if((isset($this->femision) && trim($this->femision) != "") && (isset($this->femision1) && trim($this->femision1) != ""))  {
+		             //  $limite1=date("Y-m-d",strotime($this->d_fectra)-24*60*60); //UN DIA MENOS 
+					 //  $limite2=date("Y-m-d",strotime($this->d_fectra)+24*60*60); //UN DIA mas 
+		 
+                        $criteria->addBetweenCondition('femision', ''.$this->femision.'', ''.$this->femision1.'');
+						
+						}
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
@@ -217,7 +243,7 @@ class Registrocompras extends ModeloGeneral
          public function beforesave(){
             if(!$this->isNewRecord){
                 $this->fechacre=date("Y-m-d H:i:s");
-                $this->tipocambio=yii::app()->tipocambio->getventa(self::MONEDA_REPORTE);
+                $this->tipocambio=yii::app()->tipocambio->getventa(yii::app()->settings->get('general','general_monedadef'));
                 
             }
             
@@ -263,11 +289,57 @@ class Registrocompras extends ModeloGeneral
        
        
    public function checkfecha($attribute,$params) {
+       if(!yii::app()->periodo-> estadentroperiodo($this->femision,false,$this->hidperiodo))
        //if(is_null($this->hidperiodo))
           // $this->adderror('hidperiodo','Debe de especificar el periodo, es un valor nulo'); 
-       if(!yii::app()->periodo->estadentrodefechas($this->femision,$this->fechacontable,$this->fvencimiento))
-               $this->addError ('fechacontable', 'Revise el orden de las fechas no son consistentes');
+      // if(!yii::app()->periodo->estadentrodefechas($this->femision,$this->fechacontable,$this->fvencimiento))
+               $this->addError ('femision', 'Revise la fecha de emisión no coindide con el periodo ');
 	
-       
-		          }
+      }
+      
+      public function checkdoc($attribute,$params) {
+          $resultado=$this->validaNumerosDoc($this->tipodocid,$this->numerodocid);
+         // var_dump($resultado);die();
+          if(is_array($resultado))
+            $this->addError ('numerodocid', $resultado['mal']);
+	
+      }
+      
+      /*
+       * Esta funcion coge el registro de caja chica para incoprpralo a los de compras 
+       */
+      public static function cogeCajaChica($id){
+          if(is_null(self::model()->find("hidcaja=:vhidcaja",array(":vhidcaja"=>$id)))){
+          $dcaja= Dcajachica::model()->findByPk($id);
+          if(!is_null($dcaja)){
+             $regcompra=New Registrocompras('ins_compralocal'); 
+             $regcompra->setAttributes(
+                          array(
+                              'socio'=>$dcaja->cabecera->fondo->socio,
+                              'femision'=>$dcaja->fecha,
+                               'numerocomprobante'=>$dcaja->referencia,
+                               'razpronombre'=>$dcaja->razon,
+                              'hidperiodo'=>yii::app()->periodo->getperiodo(),
+                               'tipodocid'=>$dcaja->tipodocid,
+                               'numerodocid'=>$dcaja->numdocid,
+                              'glosa'=>$dcaja->glosa,
+                               'codmon'=>$dcaja->monedahaber,
+                               'importe'=>$dcaja->haber,
+                              'serie'=>$dcaja->serie,
+                               'esservicio'=>$dcaja->esservicio,
+                               'tipo'=>$dcaja->codocu,
+                              'tipgrabado'=>'1',
+                              'hidcaja'=>$dcaja->id,
+                          )
+                             );
+             $grabo=$regcompra->save();
+             //if(!$grabo)
+                 //print_r(yii::app()->mensajes->getErroresItem($regcompra->geterrors()));
+                  //die();
+            return ($grabo)?$regcompra:null;
+          }else{
+              return null;
+          }
+          }  
+      }
 }

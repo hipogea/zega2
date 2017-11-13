@@ -182,10 +182,22 @@ class VwOpcionesdocumentos extends CActiveRecord
 	}
 
 
-	public static function valorespordefecto($model){
+	
+        public static function valorespordefecto($model,$nombrecampo=null){
 		$nombreclase=get_class($model);
 
 		$criteria=new CDbCriteria;
+                if(!is_null($nombrecampo) and $model->hasAttribute($nombrecampo)){
+                  $criteria->addCondition(" nombredelmodelo=:vnamemodelo and idusuario=:vidusuario and campo=:vcampo");
+		  $criteria->params=array(":vcampo"=>$nombrecampo ,":vnamemodelo"=>$nombreclase ,":vidusuario"=>yii::app()->user->id);
+		  $registros=self::model()->findAll($criteria);
+                        if(count($registros)>0)
+                                {
+                                    return $registros[0]->valor;
+                                    }else{
+                                            return null;
+                                    }
+                }else{
 		$criteria->addCondition(" nombredelmodelo=:vnamemodelo and idusuario=:vidusuario ");
 		$criteria->params=array(":vnamemodelo"=>$nombreclase ,":vidusuario"=>yii::app()->user->id);
 		$registros=self::model()->findAll($criteria);
@@ -196,10 +208,10 @@ class VwOpcionesdocumentos extends CActiveRecord
 			//echo  " model->{fila->campo} :  ".$fila->campo."    =  ".$fila->valor."<br>";
 			//print_r($model->attributes);yii::app()->end();
 		}
+                }
 		//echo "<br><br>";
       //print_r($model->attributes);yii::app()->end();
 	}
-        
         public static function tienevalorpordefecto($model,$campo){
 		$nombreclase=get_class($model);
 

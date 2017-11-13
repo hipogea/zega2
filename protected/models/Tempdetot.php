@@ -2,10 +2,18 @@
 
 class Tempdetot extends ModeloGeneral
 {
-	/**
+	
+    public $numeroingreso; //campo auxiliar para recolactar las notas dE entrada para asociar componentes ingresados  dentro de la orden 
+    public $canticomp;
+    /**
 	 * @return string the associated database table name
 	 */
-	public function tableName()
+    
+    public function init(){
+        $this->documento='891';
+        return parent::init();
+    }
+	public function tableName() 
 	{
 		return '{{tempdetot}}';
 	}
@@ -16,14 +24,14 @@ class Tempdetot extends ModeloGeneral
             
             return array(
 			// Classname => path to Class
-			'adjuntos'=>array(
+			/*'adjuntos'=>array(
 				'class'=>'ext.behaviors.TomaFotosBehavior',
                             '_codocu'=>'891',
                             '_ruta'=>yii::app()->settings->get('general','general_directorioimg'),
                             '_numerofotosporcarpeta'=>yii::app()->settings->get('general','general_nregistrosporcarpeta')+0,
                             '_extensionatrabajar'=>'.jpg',
                             '_id'=>$this->id,
-                                ));
+                                )*/);
 
 	}
 	/**
@@ -31,9 +39,14 @@ class Tempdetot extends ModeloGeneral
 	 */
 	public function rules()
 	{
-		// NOTE: you should only define rules for those attributes that
+// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
+                    array('numeroingreso,canticomp','safe','on'=>'ingreso'),
+                   // array('codmaster','exist','allowEmpty' => false,'attributeName' => 'codigo', 'className' => 'Masterequipo','message'=>'Este código de componente no existe'),
+                     array('codmaster,canticomp','required','on'=>'ingreso'),
+                      array('codmaster','checkingreso','on'=>'ingreso'),
+                    
                     array('idlabor','exist','allowEmpty' => true, 'attributeName' => 'id', 'className' => 'Listamateriales','message'=>'Esta actividad no está registrada : '.gettype($this->idlabor)),
 		array('idlabor', 'checkcamposdefecto'),
 			//array('id, hidorden, item, textoactividad, codresponsable, fechainic, fechafinprog, fechacre, flaginterno, codocu, codestado, codmaster, idinventario, iduser, idusertemp, idstatus', 'required'),
@@ -71,6 +84,8 @@ class Tempdetot extends ModeloGeneral
 			'estado'=>array(self::BELONGS_TO,'Estado',array('codestado'=>'codestado','codocu'=>'codocu')),
                     'listamateriales'=> array(self::BELONGS_TO, 'Listamateriales', 'idlabor'),
                           'nrecursos' => array(self::STAT, 'Tempdesolpe', 'hidlabor'),
+                    'regimen' => array(self::BELONGS_TO, 'Regimen', 'hidregimen'),
+                    
                    //  'nrecursos'=>array(self::STAT, 'Tempdesolpe', array('idaux'=>'hidlabor')),
 		);
 	}
@@ -149,7 +164,7 @@ class Tempdetot extends ModeloGeneral
 		$criteria=new CDbCriteria;
 
 		$criteria->addCondition("hidorden=".$id);
-
+          $criteria->addCondition("idstatus > -1"); //no mostrar los eliminados
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -174,12 +189,13 @@ class Tempdetot extends ModeloGeneral
             if($this->isNewRecord) {
                  $this->codmon = yii::app()->settings->get('general', 'general_monedadef');
                 }
-                            if($this->cambiocampo('nhoras')	or $this->cambiocampo('codgrupoplan'))
+                            /*if($this->cambiocampo('nhoras')	or $this->cambiocampo('codgrupoplan'))
                                 {
-                                    $this->monto=$this->nhoras*$this->nhombres*
+                                  //VAR_DUMP($this->grupoplan); DIE();
+                                $this->monto=$this->nhoras*$this->nhombres*
                                             yii::app()->tipocambio->getcambio($this->grupoplan->codmon,$this->codmon)*
                                             $this->grupoplan->tarifa;
-                                }
+                                }*/
                /* if(!is_null($this->idlabor)){
                     if($this->cambiocampo('idlabor')){
                       //$this->cargarecursos(); 
@@ -223,15 +239,24 @@ class Tempdetot extends ModeloGeneral
         
     }
          
-    public function colocaarchivox($fullFileName,$userdata=null) {
-       // $filename=$fullFileName;
-        
-       // $path_parts = pathinfo($fullFileName);
-       // var_dump($fullFileName); die();
-       Yii::log(' ejecutando '.serialize($fullFileName),'error');
-      // var_dump(self::model()->findByPk((integer)$userdata)->id); die();
-       self::model()->findByPk($userdata)->colocaarchivo($fullFileName);
-       
+    public static function colocaarchivox($fullFileName,$userdata=null) {
+        $filename=$fullFileName;
+        $extension=pathinfo($filename)['extension'];
+        $registro=self::model()->findByPk($userdata);
+        $extension= strtolower($extension);
+        $registro->agregacomportamientoarchivo($extension);               
+              
+       $registro->colocaarchivo($fullFileName);
+    }
+    
+    public function agregacomportamientoarchivo($extension){
+         $comportamiento=new TomaFotosBehavior();
+        $comportamiento->_codocu='891';
+         $comportamiento->_ruta=yii::app()->settings->get('general','general_directorioimg');
+         $comportamiento->_numerofotosporcarpeta=yii::app()->settings->get('general','general_nregistrosporcarpeta')+0;
+          $comportamiento->_extensionatrabajar=$extension;
+           $comportamiento->_id=$this->id; 
+           $this->attachbehavior('adjuntador',$comportamiento );  
     }
     
     //7carga los materiales relacinados a la tabla tempdesolpe a al actividad de la lista materiales 
@@ -334,7 +359,48 @@ class Tempdetot extends ModeloGeneral
         
     }
     
-    public function checkcamposdefecto(){
+    public function checkingreso(){
+             //verificando el numero de ingreso 
+         $ingreso= explode('-', $this->numeroingreso);
+         if(count($ingreso)!=3){
+         $this->adderror('numeroingreso','El formato de Ingreso  no es el correcto');return;
+         
+                    }
+         $registroingreso=Ne::findByNumero($ingreso[0],$ingreso[1]);
+         if(is_null($registroingreso)){
+            $this->adderror('numeroingreso','Este numero de ingreso  no existe');return;
+          }else{
+              if(!in_array($ingreso[2],$registroingreso->listaitems()))
+                $this->adderror('numeroingreso','El item ['.$ingreso[2].'] indicado en el ingreso no existe');return; 
+               
+          }
+        //verificando el componente 
+          $registrodetalle=Detgui::model()->findByIdguia($registroingreso->id,$ingreso[1]);
+            if(is_null($registrodetalle)){
+            $this->adderror('numeroingreso','El item especificado  no existe');return;
+          }else{
+              
+              if(is_null(Masterequipo::model()->findByCodigo(trim($registrodetalle->c_codgui))))
+               $this->adderror('numeroingreso','El codigo del componente ['.$registrodetalle->c_codgui.'] no pertenece al registro maestro');return;
+         
+          }
+          
+          //AHORA  SI LOS OBJETOS DE REFERFNCI COINCIDEN EN EL ENCABEZADO DE LAORDEN Y EL DETLLE DE L INGRESO
+          $regot=Ot::model()->findByPk($this->hidorden);
+          IF(!($regot->codobjeto==$registroingreso->codob))
+           $this->adderror('numeroingreso','El objeto referencia del ingreso no coindice con le objeto de la Orden ');return;
+         
+          //AHROA LAS CANTIDADES
+         if($this->canticomp > $registroingreso->asignadosot-$registroingreso->n_cangui)
+             $this->adderror('n_cangui','La cantidada asignada ['.$this->canticomp.'] sobrepasa  a la diferencia en lacantidad ingresada ['.$registroingreso->n_cangui.'] y la cantidada asignada ['.$registroingreso->asignadosot.']');return;
+         
+         
+             
+             
+                    }
+
+    
+     public function checkcamposdefecto(){
              
              if($this->idlabor >0){
                  $reg=new Tempdesolpe();
@@ -354,8 +420,46 @@ class Tempdetot extends ModeloGeneral
              
 
                     }
-
     
-    
-    
+                    
+     public function registracomponente($idne,$cant, $verificar=true){
+         
+         if(!isnull($this->codob)){  
+            if($verificar){
+               $registro= Detgui::model()->findByPk($idne);
+               if(!is_null($registro)){
+                   if($registro->n_cangui-$registro->asignadosot <= $cant){
+                      for( $i= 1 ; $i <= $cant ; $i++ ) {
+                            $modelo=new Neot;
+                            $modelo->setAttributes(
+                                array(
+                                    'hidne'=>$idne,
+                                    'hidot'=>$this->id,
+                                     'cant'=>1,
+                                    )
+                                                );
+                                    $modelo->save();
+                            } 
+                    }
+               }
+            }else{
+                for( $i= 1 ; $i <= $cant ; $i++ ) {
+                            $modelo=new Neot;
+                            $modelo->setAttributes(
+                                array(
+                                    'hidne'=>$idne,
+                                    'hidot'=>$this->id,
+                                     'cant'=>1,
+                                    )
+                                                );
+                                    $modelo->save();
+                            } 
+            }
+             
+         }
+         
+     }
+     
+     
+     
 }

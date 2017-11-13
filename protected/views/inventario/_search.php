@@ -11,26 +11,40 @@
 	'method'=>'get',
 )); ?>
 
-	<div class="row">
-		<?php //echo $form->label($model,'idinventario'); ?>
-		<?php //echo $form->textField($model,'idinventario'); ?>
-	</div>
-
-	<div class="row">
-		<?php //echo $form->label($model,'codigo'); ?>
-		<?php //echo $form->textField($model,'codigo',array('size'=>6,'maxlength'=>6)); ?>
-	</div>
-
-	<div class="row">
-		<?php // echo $form->label($model,'c_estado'); ?>
-		<?php //echo $form->textField($model,'c_estado',array('size'=>1,'maxlength'=>1)); ?>
-	</div>
 	
+    
+	<div class="row">
+		<?php
+		$botones=array(
+			'search'=>array(
+				'type'=>'A',
+				'ruta'=>array(),
+				'visiblex'=>array('10'),
+			),
+			'clear'=>array(
+				'type'=>'E',
+				'ruta'=>array(),
+				'visiblex'=>array('10'),
+			),
+		);
+		$this->widget('ext.toolbar.Barra',
+			array(
+				//'botones'=>MiFactoria::opcionestoolbar($model->id,$this->documento,$model->codestado),
+				'botones'=>$botones,
+				'size'=>24,
+				'extension'=>'png',
+				'status'=>'10',
+
+			)
+		); ?>
+
+	</div>
+    
 	<div class="panelizquierdo">
 	
 			  <div class="row">
     <?php  
-		$documento='032';
+		$documento='390';
 		$criteria = new CDbCriteria;
 		$criteria->condition='codocu=:docu';
 		$criteria->params=array(':docu'=>$documento);
@@ -45,7 +59,7 @@
 	<div class="row">
 		<?php echo $form->label($model,'codep'); ?>
 				<?php  $datos = CHtml::listData(Embarcaciones::model()->findAll(array('order'=>'nomep')),'codep','nomep');
-					echo $form->DropDownList($model,'codep',$datos, array('empty'=>'--Seleccione una Embarcacion --')  )
+					echo $form->DropDownList($model,'codep',$datos, array('empty'=>'--Seleccione Dependencia --')  )
 					?>
 		 </div>
 		 
@@ -165,8 +179,11 @@
 	</div>
 	
 	
-	<div class="row buttons">
-		<?php echo CHtml::submitButton('Filtrar'); ?>
+            <br>
+            <BR>
+            <BR>
+            
+		
 	</div>
 	
 	</div>
@@ -181,7 +198,7 @@
     $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
     'id'=>'cru-dialog3',
     'options'=>array(
-        'title'=>'Reporte de pesca',
+        'title'=>'Explorador',
         'autoOpen'=>false,
         'modal'=>true,
         'width'=>600,

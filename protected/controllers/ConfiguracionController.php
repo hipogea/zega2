@@ -22,7 +22,7 @@ class ConfiguracionController extends Controller
 		return array(
 			
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('admin',   'editar','index','ver','creaconfig'),
+				'actions'=>array('editar','index','ver','creaconfig'),
 				'users'=>array('@'),
 			),
 			

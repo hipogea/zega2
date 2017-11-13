@@ -27,25 +27,31 @@
         'jquery.ui.theme.css' =>  $baseUrl.'/css/jquery.ui.theme.css',
         'jquery.ui.tooltip.css' =>  $baseUrl.'/css/jquery.ui.tooltip.css',*/
                  );
-      $cs->registerCssFile($baseUrl.'/css/pace.css');
-   
-	 $cs->registerScriptFile($baseUrl.'/js/pace.min.js');
     
-    $cs->registerCssFile($baseUrl.'/css/bootstrap.min.css');
-    //->registerCssFile($baseUrl.'/css/ma.css');
-    //$cs->registerCssFile($baseUrl.'/css/bootstrap-responsive.min.css');
-    $cs->registerCssFile($baseUrl.'/css/abound.css'); 
-    $cs->registerCssFile($baseUrl.'/css/miestilo.css');///sas
-   // $cs->registerScriptFile($baseUrl.'/js/plugins/blockuiplugin.js',CClientScript::POS_HEAD);
-  //  $cs->registerScriptFile($baseUrl.'/js/loading.js');
+	  $cs->registerCssFile($baseUrl.'/css/bootstrap-responsive.min.css');
+	 $cs->registerCssFile($baseUrl.'/css/abound.css');
+          $cs->registerCssFile($baseUrl.'/css/iconosfuentes.css'); 
+         $cs->registerCssFile($baseUrl.'/css/miestilo.css');        
+            $cs->scriptMap=array(
+                     'jquery-ui.css' => $baseUrl.'/css/jquery-ui.css',
+                    'styles.css' => $baseUrl.'/css/styles.css',
+                    'pager.css' => $baseUrl.'/css/pager.css',
+                                 );
+          
+      $cs->registerCssFile($baseUrl.'/css/bootstrap.min.css');
+    
+    
+
     ?>
 </head>
 <body>
     
-<?php echo CHtml::script("
+<?php /*echo CHtml::script("
 $(document).ajaxStart(function () {
  $.blockUI(
-        {fadeIn: 700,
+        {
+        message:'Procesando...',
+fadeIn: 700,
             fadeOut: 700,
             timeout: 2000,
             showOverlay: false,
@@ -66,7 +72,7 @@ $(document).ajaxStart(function () {
         }
  );
 }).ajaxStop($.unblockUI);
-");  ?>
+");*/  ?>
 <div id="page">
     <?php
    // if(count(yii::app()->tipocambio->cambiospasados())>0){MiFactoria::mensaje('notice','El tipo de cambio no se ha actualizado');}

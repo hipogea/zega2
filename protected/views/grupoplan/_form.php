@@ -23,15 +23,15 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'codgrupo'); ?>
-		<?php echo $form->textField($model,'codgrupo',array('size'=>3,'maxlength'=>3)); ?>
+            <?php $datosx=CHTml::listdata(Oficios::model()->findAll(),'codof','oficio'); ?>
+		<?php echo $form->DropdownList($model,'codgrupo',$datosx,array('empty'=>'--Seleccione oficia--')); ?>
+		
+            
+		<?php //echo $form->textField($model,'codgrupo',array('size'=>3,'maxlength'=>3)); ?>
 		<?php echo $form->error($model,'codgrupo'); ?>
 	</div>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'desgrupo'); ?>
-		<?php echo $form->textField($model,'desgrupo',array('size'=>50,'maxlength'=>50)); ?>
-		<?php echo $form->error($model,'desgrupo'); ?>
-	</div>
+	
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'codmon'); ?>
@@ -40,12 +40,7 @@
 		<?php echo $form->error($model,'codmon'); ?>
 	</div>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'desgrupo'); ?>
-		<?php echo $form->textField($model,'desgrupo',array('size'=>50,'maxlength'=>50)); ?>
-		<?php echo $form->error($model,'desgrupo'); ?>
-	</div>
-
+	
 	<div class="row">
 
 
@@ -64,6 +59,12 @@
 		<?php echo $form->error($model,'tarifa'); ?>
 	</div>
 
+          <div class="row">
+		<?php echo $form->labelEx($model,'escenario'); ?>
+		<?php  echo $form->DropDownList($model,'escenario', Grupoplan::getEscenarios(), array('empty'=>'--Llene el Escenario--')); ?>
+
+		<?php echo $form->error($model,'escenario'); ?>
+	</div>
 
 
 	<div class="row buttons">

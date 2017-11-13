@@ -37,14 +37,16 @@ $('.search-form form').submit(function(){
 )); ?>
 </div><!-- search-form -->
 
-<?php $this->widget('zii.widgets.grid.CGridView', array(
+<?php 
+$this->widget('ext.groupgridview.GroupGridView', array(
 	'id'=>'listamateriales-grid',
      'itemsCssClass'=>'table table-striped table-bordered table-hover',
+    'mergeColumns' => array('destipo'),
 	'dataProvider'=>$model->search(),
 	'cssFile' => Yii::app()->getTheme()->baseUrl.'/css/grilla_naranja.css',
 
 	'columns'=>array(
-
+                   array('name'=>'destipo','value'=>'$data->tipolista->destipo','htmlOptions'=>array("width"=>200)),
 		'nombrelista',
 		'comentario',
 		array('name'=>'codequipo','type'=>'raw','value'=>'CHTml::link($data->codequipo,yii::app()->createUrl("/masterequipo/",array("view"=>$data->codequipo)),array("target"=>"_blank"))'),

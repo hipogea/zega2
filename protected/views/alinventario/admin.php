@@ -30,6 +30,9 @@ $('#alinventario-grid2').yiiGridView('update', {
 <?php MiFactoria::titulo('Existencias','package')  ?>
 
 
+
+
+
 <?php // echo CHtml::link('Filtrar','#',array('class'=>'search-button')); ?>
 <div class="search-form" style="">
 <?php $this->renderPartial('_search',array(
